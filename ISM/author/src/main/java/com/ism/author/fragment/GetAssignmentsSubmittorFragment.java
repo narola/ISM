@@ -167,4 +167,63 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
     }
 
 
+    /**
+     * Created by c162 on 26/10/15.
+     */
+    public static class BooksFragment extends Fragment {
+
+
+        private static final String TAG = BooksFragment.class.getSimpleName();
+        private View view;
+
+        private FragmentListener fragListener;
+
+        public static BooksFragment newInstance() {
+            BooksFragment fragBooks = new BooksFragment();
+            return fragBooks;
+        }
+
+        public BooksFragment() {
+            // Required empty public constructor
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            view = inflater.inflate(R.layout.fragment_my_books, container, false);
+
+            initGlobal();
+
+            return view;
+        }
+
+        private void initGlobal() {
+
+        }
+
+        @Override
+        public void onAttach(Activity activity) {
+            super.onAttach(activity);
+            try {
+                fragListener = (FragmentListener) activity;
+                if (fragListener != null) {
+                    fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_BOOKS);
+                }
+            } catch (ClassCastException e) {
+                Debug.e(TAG, "onAttach Exception : " + e.toString());
+            }
+        }
+
+        @Override
+        public void onDetach() {
+            super.onDetach();
+            try {
+                if (fragListener != null) {
+                    fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_BOOKS);
+                }
+            } catch (ClassCastException e) {
+                Debug.e(TAG, "onDetach Exception : " + e.toString());
+            }
+            fragListener = null;
+        }
+    }
 }

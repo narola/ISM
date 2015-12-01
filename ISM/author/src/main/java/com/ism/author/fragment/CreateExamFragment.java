@@ -293,6 +293,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         spExamExamCategory.setSelection(arrListExamCategory.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_CATEGORY)));
         spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_MODE)));
         spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_DURATION)));
+        etExamQuestionscorevalue.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_QUESTION_SCORE));
 
     }
 
@@ -711,6 +712,15 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     }
 
+    private String getQuestionScoreValue() {
+
+        if (etExamQuestionscorevalue.getText().equals("")) {
+            return "0";
+        } else {
+            return etExamQuestionscorevalue.getText().toString();
+        }
+    }
+
     private void backToTrialScreen() {
 //        ((AuthorHostActivity) mContext).onBackPressed();
     }
@@ -743,14 +753,14 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             getArguments().putString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
                     Integer.parseInt(arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
             getArguments().putString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
-                    Integer.parseInt(arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getClassName()) : 0));
+                    arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getClassName() : 0));
             getArguments().putString(ExamsAdapter.ARG_EXAM_SUBJECT_ID, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
                     Integer.parseInt(arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
             getArguments().putString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
-                    Integer.parseInt(arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName()) : 0));
-            getArguments().putString(ExamsAdapter.ARG_EXAM_TOPIC_ID, "");
+                    arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName() : 0));
+            getArguments().putString(ExamsAdapter.ARG_EXAM_TOPIC_ID, WebConstants.TEST_TOPIC_ID);
             getArguments().putString(ExamsAdapter.ARG_EXAM_TOPIC_NAME, "");
-            getArguments().putString(ExamsAdapter.ARG_EXAM_BOOK_ID, "");
+            getArguments().putString(ExamsAdapter.ARG_EXAM_BOOK_ID, WebConstants.TEST_BOOK_ID);
             getArguments().putString(ExamsAdapter.ARG_EXAM_BOOK_NAME, "");
             getArguments().putString(ExamsAdapter.ARG_EXAM_CATEGORY, arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
             getArguments().putString(ExamsAdapter.ARG_EXAM_TYPE, getExamType());
@@ -760,7 +770,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
             getArguments().putString(ExamsAdapter.ARG_EXAM_NO, "0");
             getArguments().putString(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE, arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
-            getArguments().putString(ExamsAdapter.ARG_EXAM_QUESTION_SCORE, etExamQuestionscorevalue.getText().toString());
+            getArguments().putString(ExamsAdapter.ARG_EXAM_QUESTION_SCORE, getQuestionScoreValue());
             getArguments().putString(ExamsAdapter.ARG_EXAM_CREATED_DATE, "");
 
         } catch (Exception e) {

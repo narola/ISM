@@ -210,10 +210,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         holder.imgQuestionCopy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                ((AddQuestionContainerFragment) mFragment).setQuestionData(arrListQuestions.get(position));
-                ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
-                ((AddQuestionContainerFragment) mFragment).flipCard();
+                openAddEditQuestionFragment(position, false);
 
             }
         });
@@ -222,10 +219,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             @Override
             public void onClick(View v) {
 
-
-                ((AddQuestionContainerFragment) mFragment).setQuestionData(arrListQuestions.get(position));
-                ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
-                ((AddQuestionContainerFragment) mFragment).flipCard();
+                openAddEditQuestionFragment(position, true);
 
             }
         });
@@ -243,6 +237,9 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     }
 
+    private void openAddEditQuestionFragment(int position, Boolean isCopy) {
+        getFragment().setDataOnFragmentFlip(arrListQuestions.get(position), true, isCopy);
+    }
 
     @Override
     public int getItemCount() {

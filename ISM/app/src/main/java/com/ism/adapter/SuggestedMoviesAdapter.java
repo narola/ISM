@@ -41,12 +41,12 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
     ArrayList<MovieData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
-    SuggestedBookAdapter.AddToFavouriteListner addToFavouriteListner;
+    HostActivity.AddToFavouriteListner addToFavouriteListner;
     private int addToFavItemId;
     MovieFilter movieFilter;
     private ArrayList<MovieData> arrayListFilter=new ArrayList<>();
 
-    public SuggestedMoviesAdapter(Context context, ArrayList<MovieData> arrayList, SuggestedBookAdapter.AddToFavouriteListner addToFavouriteListner) {
+    public SuggestedMoviesAdapter(Context context, ArrayList<MovieData> arrayList, HostActivity.AddToFavouriteListner addToFavouriteListner) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter=arrayList;

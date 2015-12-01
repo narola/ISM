@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.FavoriteMoviesAdapter;
-import com.ism.adapter.SuggestedBookAdapter;
 import com.ism.adapter.SuggestedMoviesAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 09/11/15.
  */
-public class MoviesFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener, SuggestedBookAdapter.AddToFavouriteListner {
+public class MoviesFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener, HostActivity.AddToFavouriteListner {
 
     private static final String TAG = MoviesFragment.class.getSimpleName();
     ImageLoader imageLoader;
@@ -298,5 +297,10 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
     @Override
     public void onAddToFav(int position) {
         callApiGetMoviesForUser();
+    }
+
+    @Override
+    public void onRemoveFromFav(int position) {
+
     }
 }

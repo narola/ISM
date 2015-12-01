@@ -53,6 +53,7 @@ public class WebConstants {
 	public static final int GET_PASTTIME_FOR_USER = 58;
 	public static final int GET_MOVIES_FOR_USER = 59;
 	public static final int MANAGE_FAVOURITES = 60;
+	public static final int MANAGE_BOOK_LIBRARY = 61;
 
 
 
@@ -111,6 +112,7 @@ public class WebConstants {
 	public static final String URL_GET_PASTTIME_FOR_USER =  URL_HOST_147 + "GetPastimeForUser";
 	public static final String URL_GET_ROLEMODEL_FOR_USER =  URL_HOST_147 + "GetRoleModelForUser";
 	public static final String URL_MANAGE_FAVOURITES =  URL_HOST_147 + "ManageFavorite";
+	public static final String URL_MANAGE_BOOK_LIBRARY =  URL_HOST_147 + "ManageBookLibrary";
 	public static final String URL_EDIT_PROFILE_PIC = " ";
 
 

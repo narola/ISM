@@ -11,53 +11,44 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.BookDetailsDialog;
 import com.ism.fragment.userprofile.BooksFragment;
-import com.ism.object.MyTypeFace;
+import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.model.BookData;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
 /**
  * Created by c162 on 19/11/15.
  */
-public class SuggestedBookAdapter extends BaseAdapter implements Filterable {
+public class SuggestedBookAdapter extends BaseAdapter implements Filterable ,HostActivity.AddToFavouriteListner{
     private static final String TAG = SuggestedBookAdapter.class.getSimpleName();
-    private final ImageLoader imageLoader;
     Context context;
     ArrayList<BookData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
-    MyTypeFace myTypeFace;
-    AddToFavouriteListner addToFavouriteListner;
+    HostActivity.AddToFavouriteListner addToFavouriteListner;
     SuggestedBookFilter suggestedBookFilter;
     ArrayList<BookData> arrayListFilter = new ArrayList<>();
     private ArrayList<String> arrayFavResourceIds=new ArrayList<String>();
 
 
-    public SuggestedBookAdapter(Context context, ArrayList<BookData> arrayList, AddToFavouriteListner favouriteBooksListner) {
+    public SuggestedBookAdapter(Context context, ArrayList<BookData> arrayList, HostActivity.AddToFavouriteListner favouriteBooksListner) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter=arrayList;
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         inflater = LayoutInflater.from(context);
-        myTypeFace = new MyTypeFace(context);
         this.addToFavouriteListner = favouriteBooksListner;
     }
-    public ArrayList<String> getUnFavResourceIds(){
-        return arrayFavResourceIds;
-    }
+   // public ArrayList<String> getUnFavResourceIds(){
+  //      return arrayFavResourceIds;
+  //  }
 //    public void setFavResourceIds( ArrayList<String> arrayFavResourceIds){
 //        this.arrayFavResourceIds=arrayFavResourceIds;
 //    }
-    public interface AddToFavouriteListner {
-        public void onAddToFav(int position);
-    }
 
     @Override
     public int getCount() {
@@ -99,12 +90,12 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable {
 
         try {
 
-            holder.txtBookAuthor.setTypeface(myTypeFace.getRalewayRegular());
+            holder.txtBookAuthor.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-            holder.txtBookName.setTypeface(myTypeFace.getRalewayRegular());
+            holder.txtBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 //			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            imageLoader.displayImage(WebConstants.URL_HOST_202+arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available,R.drawable.img_no_cover_available));
+            Global.imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
             holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
             // if(arrayList.get(position).ge)
@@ -113,7 +104,9 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable {
                 @Override
                 public void onClick(View v) {
                     Debug.i(TAG, "onClickAddToFav : " + position);
-                    arrayFavResourceIds.add(arrayList.get(position).getBookId());
+                   // arrayFavResourceIds.add(arrayList.get(position).getBookId());
+                    addToFavouriteListner.onAddToFav(position);
+
                    // callApiAddResourceToFav();
                 }
             });
@@ -121,7 +114,7 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable {
                 @Override
                 public void onClick(View v) {
 //                    myPopup(position);
-                    BookDetailsDialog  bookDetailsDialog=new BookDetailsDialog(context,arrayList,position,imageLoader);
+                    BookDetailsDialog  bookDetailsDialog=new BookDetailsDialog(context,arrayList,position,Global.imageLoader);
                     bookDetailsDialog.show();
                 }
             });
@@ -134,97 +127,6 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
-//    public PopupWindow myPopup(int position) {
-//
-//        LayoutInflater inflater = (LayoutInflater) context
-//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//
-//        View view = inflater.inflate(R.layout.dailog_book_details, null);
-//
-//        final PopupWindow popupWindow = new PopupWindow(view,
-//                400,
-//                500, true);
-//
-//        popupWindow.setOutsideTouchable(false);
-//        popupWindow.setTouchable(true);
-//        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-//        // popupWindow.setTouchInterceptor(customPopUpTouchListenr);
-//
-//        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-//        // TextView txtDetails = (TextView) view.findViewById(R.id.txt_about_me_details);
-//
-//        final TextView txtBookDetails = (TextView) view
-//                .findViewById(R.id.txt_book_details);
-//        TextView txtDone = (TextView) view
-//                .findViewById(R.id.txt_done);
-//        TextView txtBook = (TextView) view
-//                .findViewById(R.id.txt_book);
-//        TextView txtBookName = (TextView) view
-//                .findViewById(R.id.txt_book_name);
-//        TextView txtPublisher = (TextView) view
-//                .findViewById(R.id.txt_publisher);
-//        TextView txtPublisherName = (TextView) view
-//                .findViewById(R.id.txt_publisher_name);
-//        TextView txtAuthor = (TextView) view
-//                .findViewById(R.id.txt_author);
-//        TextView txtAuthorName = (TextView) view
-//                .findViewById(R.id.txt_author_name);
-//        TextView txtPrice = (TextView) view
-//                .findViewById(R.id.txt_price);
-//        TextView txtPriceValue = (TextView) view
-//                .findViewById(R.id.txt_price_value);
-//        TextView txtDesc = (TextView) view
-//                .findViewById(R.id.txt_desc);
-//        TextView txtDescDetails = (TextView) view
-//                .findViewById(R.id.txt_desc_details);
-//        TextView txtEbook = (TextView) view
-//                .findViewById(R.id.txt_ebook_for_link);
-//        TextView txtEbookLink = (TextView) view
-//                .findViewById(R.id.txt_ebook_link);
-//
-//        txtAuthor.setTypeface(myTypeFace.getRalewayRegular());
-//        txtAuthorName.setTypeface(myTypeFace.getRalewayRegular());
-//        txtBook.setTypeface(myTypeFace.getRalewayRegular());
-//        txtBookDetails.setTypeface(myTypeFace.getRalewayRegular());
-//        txtBookName.setTypeface(myTypeFace.getRalewayRegular());
-//        txtDesc.setTypeface(myTypeFace.getRalewayRegular());
-//        txtDescDetails.setTypeface(myTypeFace.getRalewayRegular());
-//        txtDone.setTypeface(myTypeFace.getRalewayRegular());
-//        txtPublisher.setTypeface(myTypeFace.getRalewayRegular());
-//        txtPublisherName.setTypeface(myTypeFace.getRalewayRegular());
-//        txtPrice.setTypeface(myTypeFace.getRalewayRegular());
-//        txtPriceValue.setTypeface(myTypeFace.getRalewayRegular());
-//        txtEbook.setTypeface(myTypeFace.getRalewayRegular());
-//        txtEbookLink.setTypeface(myTypeFace.getRalewayRegular());
-//
-//
-//        txtAuthorName.setText(arrayList.get(position).getAuthorName());
-//        txtPublisherName.setText(arrayList.get(position).getPublisherName());
-//        txtPriceValue.setText(arrayList.get(position).getPrice());
-//        txtDescDetails.setText(arrayList.get(position).getDescription());
-//        txtBookName.setText(arrayList.get(position).getBookName());
-//        txtEbookLink.setText(arrayList.get(position).getEbookLink());
-//        //txtAuthor.setText(arrayList.get(position).getAuthorName());
-//
-//
-//        txtDone.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                // TODO Auto-generated method stub
-//
-//                popupWindow.dismiss();
-//
-//            }
-//        });
-//        popupWindow.setFocusable(true);
-//        popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-//        popupWindow.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
-//        popupWindow.setContentView(view);
-//        return popupWindow;
-//
-//    }
-
 
     @Override
     public Filter getFilter() {
@@ -232,6 +134,16 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable {
             suggestedBookFilter = new SuggestedBookFilter();
         }
         return suggestedBookFilter;
+    }
+
+    @Override
+    public void onAddToFav(int position) {
+
+    }
+
+    @Override
+    public void onRemoveFromFav(int position) {
+
     }
 
     class SuggestedBookFilter extends Filter {

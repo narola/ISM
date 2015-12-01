@@ -14,6 +14,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.Exams;
 
@@ -128,9 +129,9 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             bundleExamDetails.putString(ARG_EXAM_CLASSROOM_NAME, arrListExams.get(position).getClassroomName());
             bundleExamDetails.putString(ARG_EXAM_SUBJECT_ID, arrListExams.get(position).getSubjectId());
             bundleExamDetails.putString(ARG_EXAM_SUBJECT_NAME, arrListExams.get(position).getSubjectName());
-            bundleExamDetails.putString(ARG_EXAM_TOPIC_ID, "");
+            bundleExamDetails.putString(ARG_EXAM_TOPIC_ID, WebConstants.TEST_TOPIC_ID);
             bundleExamDetails.putString(ARG_EXAM_TOPIC_NAME, "");
-            bundleExamDetails.putString(ARG_EXAM_BOOK_ID, "");
+            bundleExamDetails.putString(ARG_EXAM_BOOK_ID, WebConstants.TEST_BOOK_ID);
             bundleExamDetails.putString(ARG_EXAM_BOOK_NAME, "");
             bundleExamDetails.putString(ARG_EXAM_CATEGORY, arrListExams.get(position).getExamCategory());
             bundleExamDetails.putString(ARG_EXAM_TYPE, arrListExams.get(position).getExamType());

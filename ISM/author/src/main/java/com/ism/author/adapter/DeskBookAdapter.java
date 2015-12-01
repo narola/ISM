@@ -93,7 +93,7 @@ public class DeskBookAdapter extends BaseAdapter implements Filterable {
             holder.txtBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 //			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            Global.imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            Global.imageLoader.displayImage(WebConstants.URL + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
             Debug.i(TAG,"book name : " +arrayList.get(position).getBookName());
          //   holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());

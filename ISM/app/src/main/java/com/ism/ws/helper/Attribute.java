@@ -77,6 +77,8 @@ public class Attribute {
 	private String blockUser;
 	private ArrayList<String> unfavoriteResourceId;
 	private ArrayList<String> favResourceId;
+	private ArrayList<String> removeBookId;
+	private ArrayList<String> addBookId;
 
 
 	public ArrayList<String> getUnfavoriteResourceId() {
@@ -497,5 +499,23 @@ public class Attribute {
 
 	public void setVoucherAmount(String voucherAmount) {
 		this.voucherAmount = voucherAmount;
+	}
+
+
+	public void setRemoveBookId(ArrayList<String> removeBookId) {
+		this.removeBookId = removeBookId;
+	}
+	@JsonProperty("remove_book_id")
+	public ArrayList<String> getRemoveBookId() {
+		return removeBookId;
+	}
+	@JsonProperty("add_book_id")
+	public ArrayList<String> getAddBookId() {
+		return addBookId;
+	}
+
+	public void setAddBookId(ArrayList<String> addBookId) {
+
+		this.addBookId = addBookId;
 	}
 }
