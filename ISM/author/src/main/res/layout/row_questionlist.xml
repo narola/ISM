@@ -107,13 +107,14 @@
                     android:id="@+id/img_question_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/img_edit_question" />
+                    android:layout_marginRight="@dimen/d10dp"
+                    android:background="@drawable/img_edit_question"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/img_question_copy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d10dp"
                     android:background="@drawable/img_copy_question" />
 
                 <ImageView

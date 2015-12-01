@@ -449,11 +449,15 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void setQuestionData(ArrayList<Questions> questions) {
         questionBankListAdapter.addAll(questions);
+        Debug.e(TAG, "The no of questions are::" + questions.size());
         filterResults(Integer.valueOf(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID)), null);
         if (getArguments() != null) {
             if (getArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
                 ArrayList<Questions> arrListExamQuestions = getArguments().
                         getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+
+                Debug.e(TAG, "THE NO OF QUESTION IS QUESTION BANK ARE::" + questions.size());
+                Debug.e(TAG, "THE NO OF QUESTIONS OF EXAM ARE::" + arrListExamQuestions.size());
                 updateQuestionStatusAfterSetDataOfExam(arrListExamQuestions);
             }
         }
