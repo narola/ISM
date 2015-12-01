@@ -202,7 +202,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         lvMessages = (ListView) view.findViewById(R.id.lv_message);
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
         btnViewAll.setTypeface(Global.myTypeFace.getRalewayRegular());
-        txtEmpty=(TextView)view.findViewById(R.id.txt_empty);
+        txtEmpty = (TextView) view.findViewById(R.id.txt_empty);
         txtEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         callApiGetMessages();
@@ -257,7 +257,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
 
         lvNotifications = (ListView) view.findViewById(R.id.lv_notification);
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
-        txtEmpty=(TextView)view.findViewById(R.id.txt_empty);
+        txtEmpty = (TextView) view.findViewById(R.id.txt_empty);
         txtEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         btnViewAll.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -348,7 +348,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_studymates, null);
         lvStudymates = (ListView) view.findViewById(R.id.lv_studymates);
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
-        txtEmpty=(TextView)view.findViewById(R.id.txt_empty);
+        txtEmpty = (TextView) view.findViewById(R.id.txt_empty);
         txtEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
         btnViewAll.setTypeface(Global.myTypeFace.getRalewayRegular());
 
@@ -390,13 +390,13 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ALL_STUDYMATE_REQUEST, bundleAllStudymateRequest);
     }
 
-    public void onclickStudymateRequestView(int position)
-    {
-        if(popupFriendRequest!=null) {
+    public void onclickStudymateRequestView(int position) {
+        if (popupFriendRequest != null) {
             popupFriendRequest.dismiss();
             loadFragmentAllStudymateRequest(position);
         }
     }
+
     private void callApiGetStudymateRequests() {
         try {
             if (Utility.isConnected(activityHost)) {
@@ -513,7 +513,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-					Log.e(TAG, "onResponseUpdateReadStatus success");
+                    Log.e(TAG, "onResponseUpdateReadStatus success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseUpdateReadStatus failed");
                 }
@@ -534,12 +534,11 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                     Log.e(TAG, "onResponseGetStudymateRequest success");
                     arrListStudyMateRequest = responseHandler.getStudymateRequest();
                     fillListStudymate();
-                    if(arrListStudyMateRequest.size()==0){
+                    if (arrListStudyMateRequest.size() == 0) {
                         txtEmpty.setVisibility(View.VISIBLE);
                         btnViewAll.setVisibility(View.GONE);
                         lvStudymates.setVisibility(View.GONE);
-                    }
-                    else{
+                    } else {
                         txtEmpty.setVisibility(View.GONE);
                         btnViewAll.setVisibility(View.VISIBLE);
                         lvStudymates.setVisibility(View.VISIBLE);
@@ -557,7 +556,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
 
     private void fillListStudymate() {
         if (arrListStudyMateRequest != null) {
-            adpStudymate = new StudymateRequestAdapter(getActivity(), arrListStudyMateRequest, 4,this);
+            adpStudymate = new StudymateRequestAdapter(getActivity(), arrListStudyMateRequest, 4, this);
             lvStudymates.setAdapter(adpStudymate);
             ArrayList<String> recordIds = new ArrayList<String>();
             for (int i = 0; i < (arrListStudyMateRequest.size() >= 4 ? 4 : arrListStudyMateRequest.size()); i++) {
@@ -594,12 +593,11 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                     Log.e(TAG, "onResponseGetNotification success");
                     arrListNotification = responseHandler.getNotification();
                     fillListNotification();
-                    if(arrListNotification.size()==0){
+                    if (arrListNotification.size() == 0) {
                         txtEmpty.setVisibility(View.VISIBLE);
                         btnViewAll.setVisibility(View.GONE);
                         lvNotifications.setVisibility(View.GONE);
-                    }
-                    else{
+                    } else {
                         txtEmpty.setVisibility(View.GONE);
                         btnViewAll.setVisibility(View.VISIBLE);
                         lvNotifications.setVisibility(View.VISIBLE);
@@ -636,12 +634,11 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                     Log.e(TAG, "onResponseGetMessages success");
                     arrListMessage = responseHandler.getMessages();
                     fillListMessage();
-                    if(arrListMessage.size()==0){
+                    if (arrListMessage.size() == 0) {
                         txtEmpty.setVisibility(View.VISIBLE);
                         btnViewAll.setVisibility(View.GONE);
                         lvMessages.setVisibility(View.GONE);
-                    }
-                    else{
+                    } else {
                         txtEmpty.setVisibility(View.GONE);
                         btnViewAll.setVisibility(View.VISIBLE);
                         lvMessages.setVisibility(View.VISIBLE);

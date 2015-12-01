@@ -46,6 +46,7 @@ public class WebConstants {
     public static final int CREATEQUESTION = 30;
     public static final int GETALLHASHTAG = 31;
     public static final int SETHASHTAG = 32;
+    public static final int TEMPCREATEQUESTION = 33;
     //user settings preferences
 
     public static final int GENERAL_SETTING_PREFERENCES = 51;
@@ -56,7 +57,7 @@ public class WebConstants {
     public static final int RESPOND_TO_REQUEST = 56;
     public static final int UPDATE_READ_STATUS = 57;
 
-    public static final int GET_MY_FEEDS =58 ;
+    public static final int GET_MY_FEEDS = 58;
     public static final int GET_ABOUT_ME = 59;
     /*webservice url*/
     public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
@@ -98,6 +99,7 @@ public class WebConstants {
     public static final String URL_GET_STUDYMATE_REQUEST = URL_KINJAL_HOST + "GetStudymateRequest";
     public static final String URL_BLOCK_USER = URL_KINJAL_HOST + "BlockUser";
     public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
+    public static final String URL_TEMPCREATEQUESTION = URL_KINJAL_HOST + "TempCreateQuestion";
     public static final String URL_GETALLHASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
     public static final String URL_RESPOND_TO_REQUEST = URL_KINJAL_HOST + "AcceptRequestFromStudymate";
     public static final String URL_UPDATE_READ_STATUS = URL_KINJAL_HOST + "UpdateReadStatus"; // studymate_request, messages, notification

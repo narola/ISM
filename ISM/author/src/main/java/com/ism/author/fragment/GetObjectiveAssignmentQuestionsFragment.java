@@ -25,7 +25,6 @@ import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.ExamQuestions;
 import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
@@ -99,6 +98,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         rvGetObjectiveAssignmentQuestionslist.setAdapter(getObjectiveAssignmentQuestionsAdapter);
         rvGetObjectiveAssignmentQuestionslist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        setAssignmentDetails();
         callApiGetExamQuestions();
 
         imgEditExam.setOnClickListener(new View.OnClickListener() {
@@ -140,8 +140,8 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-//                request.setExamId("9");
+//                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setExamId("9");
                 new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
@@ -228,7 +228,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                     arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
                     getObjectiveAssignmentQuestionsAdapter.addAll(arrListQuestions);
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
-                    setAssignmentDetails(responseObjGetAllExamQuestions.getExamQuestions().get(0));
+
 
                     if (getArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                         callAPiGetExamEvaluation();
@@ -265,20 +265,25 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         }
     }
 
-    private void setAssignmentDetails(ExamQuestions examQuestions) {
+    private void setAssignmentDetails() {
 
-        tvObjectiveAssignmentSubject.setText(getResources().getString(R.string.strbookname) + ": ");
-        if (examQuestions.getBookName() != null) {
-            tvObjectiveAssignmentSubject.append(Utility.getSpannableString(examQuestions.getBookName(), getResources().getColor(R.color.bg_assessment)));
+        if (getArguments() != null) {
+
+            tvObjectiveAssignmentSubject.setText(getResources().getString(R.string.strbookname) + ": ");
+            if (getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME) != null) {
+                tvObjectiveAssignmentSubject.append(Utility.getSpannableString(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME), getResources().getColor(R.color.bg_assessment)));
+            }
+            tvObjectiveAssignmentClass.setText(getResources().getString(R.string.strclass) + ": ");
+            if (getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME) != null) {
+                tvObjectiveAssignmentClass.append(Utility.getSpannableString(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME), getResources().getColor(R.color.bg_assessment)));
+            }
+            tvObjectiveAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + ": " + getArguments().getString(ExamsAdapter.ARG_EXAM_NO));
+            tvObjectiveAssignmentTitle.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
+            tvObjectiveAssignmentDate.setText(getActivity().getResources().getString(R.string.strassignmentdatecolon) + " " +
+                    Utility.getFormattedDate("dd-MMM-yyyy", getArguments().getString(ExamsAdapter.ARG_EXAM_CREATED_DATE)));
+
         }
-        tvObjectiveAssignmentClass.setText(getResources().getString(R.string.strclass) + ": ");
-        if (examQuestions.getClassName() != null) {
-            tvObjectiveAssignmentClass.append(Utility.getSpannableString(examQuestions.getClassName(), getResources().getColor(R.color.bg_assessment)));
-        }
-        tvObjectiveAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + ": 1");
-        tvObjectiveAssignmentTitle.setText(examQuestions.getExamName());
-        tvObjectiveAssignmentDate.setText(getActivity().getResources().getString(R.string.strassignmentdatecolon) + " " +
-                Utility.getFormattedDate("dd-MMM-yyyy", examQuestions.getCreatedDate()));
+
 
     }
 

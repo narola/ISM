@@ -322,7 +322,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         tvStudentRollNo.setText(getResources().getString(R.string.strrollno) + " " +
                 (getBaseFragment().getArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION) + 1));
         tvAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + " " +
-                getBaseFragment().getArguments().getInt(ExamsAdapter.ARG_ASSIGNMENT_NO));
+                getBaseFragment().getArguments().getInt(ExamsAdapter.ARG_EXAM_NO));
         tvAssignmentTitle.setText(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
 
 

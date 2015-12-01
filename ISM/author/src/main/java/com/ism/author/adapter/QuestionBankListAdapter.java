@@ -77,15 +77,33 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
-            holder.imgDropdownViewAnswer.setSelected(false);
 
-            holder.llQuestionAnswers.removeAllViews();
-            if (holder.llQuestionAnswers.getChildCount() == 0) {
-                for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
-                    View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
-                    holder.llQuestionAnswers.addView(ansView);
+            if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
+                holder.tvQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
+                holder.tvQuestionAns.setText(arrListQuestions.get(position).getSolution());
+            } else {
+                holder.llQuestionAnswers.removeAllViews();
+                if (holder.llQuestionAnswers.getChildCount() == 0) {
+                    for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
+                        View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
+                        holder.llQuestionAnswers.addView(ansView);
+                    }
+
                 }
-
+            }
+            holder.imgDropdownViewAnswer.setSelected(arrListQuestions.get(position).getIsDropdownOpen());
+            holder.imgDropdownViewAnswer.setActivated(arrListQuestions.get(position).getIsDropdownOpen());
+            if (arrListQuestions.get(position).getIsDropdownOpen()) {
+                if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
+                    holder.tvQuestionAns.setVisibility(View.VISIBLE);
+                    holder.llQuestionAnswers.setVisibility(View.GONE);
+                } else {
+                    holder.tvQuestionAns.setVisibility(View.GONE);
+                    holder.llQuestionAnswers.setVisibility(View.VISIBLE);
+                }
+            } else {
+                holder.tvQuestionAns.setVisibility(View.GONE);
+                holder.llQuestionAnswers.setVisibility(View.GONE);
             }
 
             holder.imgDropdownViewAnswer.setOnClickListener(new View.OnClickListener() {
@@ -93,25 +111,25 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                 public void onClick(View v) {
 
                     holder.imgDropdownViewAnswer.setSelected(!holder.imgDropdownViewAnswer.isSelected());
-                    if (holder.imgDropdownViewAnswer.isSelected()) {
-                        holder.imgDropdownViewAnswer.setActivated(true);
-                        if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
-                            holder.tvQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
-                            holder.tvQuestionAns.setText(arrListQuestions.get(position).getSolution());
-                            holder.tvQuestionAns.setVisibility(View.VISIBLE);
-
-                        } else {
-                            holder.llQuestionAnswers.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        holder.imgDropdownViewAnswer.setActivated(false);
-                        if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
-                            holder.tvQuestionAns.setVisibility(View.GONE);
-                        } else {
-                            holder.llQuestionAnswers.setVisibility(View.GONE);
-//                            holder.llQuestionAnswers.removeAllViews();
-                        }
-                    }
+                    arrListQuestions.get(position).setIsDropdownOpen(holder.imgDropdownViewAnswer.isSelected());
+                    holder.imgDropdownViewAnswer.setActivated(holder.imgDropdownViewAnswer.isSelected());
+//                    if (holder.imgDropdownViewAnswer.isSelected()) {
+//                        holder.imgDropdownViewAnswer.setActivated(true);
+//                        arrListQuestions.get(position).setIsDropdownOpen(true);
+//                        if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
+//                            holder.tvQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
+//                            holder.tvQuestionAns.setText(arrListQuestions.get(position).getSolution());
+//                            holder.tvQuestionAns.setVisibility(View.VISIBLE);
+//                        } else {
+//                            holder.llQuestionAnswers.setVisibility(View.VISIBLE);
+//                        }
+//                    } else {
+//                        holder.imgDropdownViewAnswer.setActivated(false);
+//                        arrListQuestions.get(position).setIsDropdownOpen(false);
+//                        holder.tvQuestionAns.setVisibility(View.GONE);
+//                        holder.llQuestionAnswers.setVisibility(View.GONE);
+//                    }
+                    notifyDataSetChanged();
                 }
             });
 
@@ -124,28 +142,42 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                     Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS:::" + getFragment().getListOfPreviewQuestion().size());
 
-                    if (getFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective)) &&
-                            arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strdescriptive))) {
+                    if (canAddToPreview) {
 
-                    } else if (getFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective)) &&
-                            arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strmcq))) {
+                        if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strquestionformatmcq))) {
 
-                    }
+                            if (getFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                                    (mContext.getString(R.string.strobjective))) {
+                                isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
+                            } else {
+                                Utils.showToast(mContext.getString(R.string.msg_validation_addsubjective_question), mContext);
+                            }
+
+                        } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
+                                (mContext.getString(R.string.strquestionformatdescriptive))) {
+
+                            if (getFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                                    (mContext.getString(R.string.strsubjective))) {
+                                isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
+                            } else {
+                                Utils.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
+                            }
 
 
-//                    if (!getFragment().getListOfPreviewQuestion().contains(arrListQuestions.get(position))) {
-                    if (!checkForQuestionPresence(arrListQuestions.get(position).getQuestionId())) {
-                        if (holder.chkSelectQuestion.isChecked()) {
-                            arrListQuestions.get(position).setIsQuestionAddedInPreview(true);
-                            getFragment().getListOfPreviewQuestionsToAdd().add(arrListQuestions.get(position));
-                        } else {
-                            arrListQuestions.get(position).setIsQuestionAddedInPreview(false);
-                            getFragment().getListOfPreviewQuestionsToAdd().remove(arrListQuestions.get(position));
+                        } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
+                                (mContext.getString(R.string.strquestionformatfillups))) {
+                            if (getFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                                    (mContext.getString(R.string.strsubjective))) {
+                                isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
+                            } else {
+                                Utils.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
+                            }
                         }
+                        notifyDataSetChanged();
                     } else {
-                        arrListQuestions.get(position).setIsQuestionAddedInPreview(true);
+                        holder.chkSelectQuestion.setChecked(arrListQuestions.get(position).getIsQuestionAddedInPreview());
+                        Utils.showToast(mContext.getString(R.string.msg_validation_add_question), mContext);
                     }
-                    notifyDataSetChanged();
 
                 }
             });
@@ -169,6 +201,21 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             Log.e(TAG, "onBindViewHolder Exception : " + e.toString());
         }
 
+    }
+
+
+    private void isValidationForAddToPreview(Questions question, CheckBox checkBox) {
+        if (!checkForQuestionPresence(question.getQuestionId())) {
+            if (checkBox.isChecked()) {
+                question.setIsQuestionAddedInPreview(true);
+                getFragment().getListOfPreviewQuestionsToAdd().add(question);
+            } else {
+                question.setIsQuestionAddedInPreview(false);
+                getFragment().getListOfPreviewQuestionsToAdd().remove(question);
+            }
+        } else {
+            question.setIsQuestionAddedInPreview(true);
+        }
     }
 
     private Boolean checkForQuestionPresence(String questionId) {
@@ -249,7 +296,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     }
 
 
-    ArrayList<Questions> copyListOfQuestions;
+    public ArrayList<Questions> copyListOfQuestions;
 
     public void filter(CharSequence charText) {
         arrListQuestions.clear();
@@ -266,6 +313,22 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         }
         notifyDataSetChanged();
     }
+
+
+    public Boolean canAddToPreview = false;
+
+
+//    if (!checkForQuestionPresence(arrListQuestions.get(position).getQuestionId())) {
+//                                if (holder.chkSelectQuestion.isChecked()) {
+//                                    arrListQuestions.get(position).setIsQuestionAddedInPreview(true);
+//                                    getFragment().getListOfPreviewQuestionsToAdd().add(arrListQuestions.get(position));
+//                                } else {
+//                                    arrListQuestions.get(position).setIsQuestionAddedInPreview(false);
+//                                    getFragment().getListOfPreviewQuestionsToAdd().remove(arrListQuestions.get(position));
+//                                }
+//                            } else {
+//                                arrListQuestions.get(position).setIsQuestionAddedInPreview(true);
+//                            }
 
 
 }
