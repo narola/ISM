@@ -87,7 +87,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
     private void callApiFreezeQuestions() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             if (arrListQuestions.size() > 0) {
                 try {
                     Attribute attribute = new Attribute();
@@ -155,7 +155,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     private void onResponseSetQuestionsForExam(Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseObj = (ResponseHandler) object;
                 if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {

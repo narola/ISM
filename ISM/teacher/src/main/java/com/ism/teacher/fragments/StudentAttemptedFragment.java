@@ -81,7 +81,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
         if (Utility.isInternetConnected(getActivity())) {
             try {
-//                 ((TeacherHostActivity) getActivity()).startProgress();
+//                 ((TeacherHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
             } catch (Exception e) {
@@ -103,7 +103,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
         if (Utility.isInternetConnected(getActivity())) {
             try {
-                // ((AuthorHostActivity) getActivity()).startProgress();
+                // ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_QUESTIONS);
             } catch (Exception e) {
@@ -122,8 +122,8 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     private void callAPIStudentEvaluations(String studentId, String examId) {
         try {
-            if (Utility.isOnline(getActivity())) {
-                //    ((TeacherHostActivity) context).startProgress();
+            if (Utility.isConnected(getActivity())) {
+                //    ((TeacherHostActivity) context).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setStudentId(studentId);
                 attribute.setExamId(examId);
@@ -141,7 +141,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        ((TeacherHostActivity) getActivity()).stopProgress();
+        ((TeacherHostActivity) getActivity()).hideProgress();
         try {
 
             switch (API_METHOD) {
@@ -166,7 +166,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     private void onResponseGetAllStudentAttempted(Object object) {
         ResponseHandler responseHandler = (ResponseHandler) object;
         if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-            // ((AuthorHostActivity)getActivity()).stopProgress();
+            // ((AuthorHostActivity)getActivity()).hideProgress();
             if (responseHandler.getExamSubmission().size() != 0) {
 
                 Debug.i(TAG, "Arraylist of student attempted  ::" + responseHandler);
@@ -178,7 +178,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                 attribute.setExamId(WebConstants.EXAM_ID_3_OBJECTIVE);
                 //requestObject.setStudentId("202");
 
-                // ((AuthorHostActivity) getActivity()).startProgress();
+                // ((AuthorHostActivity) getActivity()).showProgress();
                 callapigetexamquestions(attribute);
 
             }

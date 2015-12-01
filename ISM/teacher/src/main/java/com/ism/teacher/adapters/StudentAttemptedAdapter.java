@@ -90,17 +90,17 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 //                        lastSelected = position;
 //                    }
 //                    if (arrayList.get(position).isFlagged()) {
-//                        ((TeacherHostActivity) context).startProgress();
+//                        ((TeacherHostActivity) context).showProgress();
 //
 //                        //static call
 //                        callAPIStudentEvaluations();
 ////                        callAPIStudentEvaluations(arrayList.get(position).getStudentId(), resObjStudentAttempted.getExamSubmission().get(0).getExamId(), studentName);
 //                    } else {
-//                        ((TeacherHostActivity) context).startProgress();
+//                        ((TeacherHostActivity) context).showProgress();
 //                        GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, null);
 //                        GetObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
 //                        getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
-//                        ((TeacherHostActivity) context).stopProgress();
+//                        ((TeacherHostActivity) context).hideProgress();
 //                    }
 //                    notifyDataSetChanged();
 //
@@ -116,7 +116,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     private void callAPIStudentEvaluations(String studentId, String examId, String studentName) {
         try {
             if (Utility.isInternetConnected(context)) {
-                ((TeacherHostActivity) context).startProgress();
+                ((TeacherHostActivity) context).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setStudentId(WebConstants.STUDENT_ID_202_OBJECCTIVE);
                 attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
@@ -134,7 +134,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     private void callAPIStudentEvaluations() {
         try {
             if (Utility.isInternetConnected(context)) {
-                ((TeacherHostActivity) context).startProgress();
+                ((TeacherHostActivity) context).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setStudentId(WebConstants.STUDENT_ID_202_OBJECCTIVE);
                 attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
@@ -158,7 +158,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
         try {
-            ((TeacherHostActivity) context).stopProgress();
+            ((TeacherHostActivity) context).hideProgress();
 
             if (API_METHOD == WebConstants.GET_EXAM_EVALUATIONS) {
                 ResponseHandler responseHandler = (ResponseHandler) object;

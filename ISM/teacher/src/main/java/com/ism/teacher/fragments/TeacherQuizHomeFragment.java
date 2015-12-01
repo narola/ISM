@@ -53,7 +53,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     List<String> arrayListSubjects, arrayListClasses, arrayListSubmissionDate, arrayListAssessed;
     ArrayList<Exams> arrayListAssignments = new ArrayList<>();
     private ArrayList<Classrooms> arrListClassRooms;
-    private ArrayList<Subjects>  arrListSubject;
+    private ArrayList<Subjects> arrListSubject;
 
 
     //Objects
@@ -70,7 +70,8 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         this.mFragment = fragment;
     }
 
-    public TeacherQuizHomeFragment(){}
+    public TeacherQuizHomeFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -139,11 +140,13 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         callApiGetSubjects();
         callApiGetClassrooms();
         callApiGetAllAssignments();
+
+
     }
 
     private void callApiGetClassrooms() {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 Utility.showSpinnerProgress(progAssignmentClass);
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -160,7 +163,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     private void callApiGetSubjects() {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 Utility.showSpinnerProgress(progAssignmentSubject);
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -177,7 +180,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     private void callApiGetAllAssignments() {
         if (Utility.isInternetConnected(getActivity())) {
             try {
-                ((TeacherHostActivity) getActivity()).startProgress();
+                ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(WebConstants.USER_ID_370);
                 attribute.setRole(AppConstant.TEACHER_ROLE_ID);
@@ -195,7 +198,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     @Override
     public void onResponse(int apicode, Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            ((TeacherHostActivity) getActivity()).hideProgress();
             switch (apicode) {
                 case WebConstants.GET_ALL_ASSIGNMENTS:
                     onResponseGetAllAssignments(object);

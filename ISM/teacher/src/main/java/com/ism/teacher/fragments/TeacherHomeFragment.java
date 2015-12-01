@@ -115,7 +115,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     private void callAllFeedsApi() {
         try {
-            ((TeacherHostActivity) getActivity()).startProgress();
+            ((TeacherHostActivity) getActivity()).showProgress();
             Attribute attribute = new Attribute();
             attribute.setUserId(WebConstants.USER_ID_370);
             new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -169,7 +169,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     private void onResponseGetAllFeeds(Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

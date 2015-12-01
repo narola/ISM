@@ -131,9 +131,9 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
 
     private void callApiGetExamQuestions() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
-                ((TeacherHostActivity) getActivity()).startProgress();
+                ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
                 request.setExamId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
 //                request.setExamId("9");
@@ -150,9 +150,9 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     /*if bundle arguments are not null then we will call get exam evaluation for student nd set data according to it*/
     private void callAPiGetExamEvaluation() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
-                ((TeacherHostActivity) getActivity()).startProgress();
+                ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
 //                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
 //                request.setStudentId(getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
@@ -187,7 +187,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     private void onResponseGetAllExamQuestions(Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 responseObjGetAllExamQuestions = (ResponseHandler) object;
                 if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -213,7 +213,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     private void onResponseGetExamEvaluation(Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

@@ -77,7 +77,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
-
             if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
                 holder.tvQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
                 holder.tvQuestionAns.setText(arrListQuestions.get(position).getSolution());

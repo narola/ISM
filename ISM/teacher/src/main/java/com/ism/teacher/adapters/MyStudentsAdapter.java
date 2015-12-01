@@ -17,7 +17,6 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.helper.MyTypeFace;
@@ -178,7 +177,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
         try {
             if (Utility.isInternetConnected(mContext)) {
-                ((TeacherHostActivity) mContext).startProgress();
+                ((TeacherHostActivity) mContext).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setStudentId(student_id);
                 attribute.setExamId(exam_id);

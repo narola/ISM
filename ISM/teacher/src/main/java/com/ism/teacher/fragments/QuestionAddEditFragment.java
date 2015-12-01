@@ -573,10 +573,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
 
     private void callAPiGetAllHashTag() {
-        if (Utility.isOnline(getActivity())) {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+        if (Utility.isConnected(getActivity())) {
+            ((TeacherHostActivity) getActivity()).hideProgress();
             try {
-                ((TeacherHostActivity) getActivity()).stopProgress();
+                ((TeacherHostActivity) getActivity()).hideProgress();
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_HASHTAG);
 
@@ -592,9 +592,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void callApiCreateQuestion() {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
-                ((TeacherHostActivity) getActivity()).startProgress();
+                ((TeacherHostActivity) getActivity()).showProgress();
                 Debug.e(TAG, "The user id is::" + WebConstants.TEST_USER_ID);
                 Debug.e(TAG, "The question text is::" + etAddquestionTitle.getText().toString());
                 Debug.e(TAG, "The subject id is::" + getArguments().getString(AssignmentExamFragment.ARG_EXAM_SUBJECT_ID));
@@ -652,16 +652,15 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         int spPosition = spAddquestionType.getSelectedItemPosition();
         switch (spPosition) {
             case 1:
-                questionFormat = "text";
+                questionFormat = getString(R.string.strquestionformatmcq).toUpperCase();
                 break;
             case 2:
-                questionFormat = "text";
+                questionFormat = getString(R.string.strquestionformatdescriptive);
                 break;
             case 3:
-                questionFormat = "MCQ";
+                questionFormat = getString(R.string.strquestionformatdescriptive);
                 break;
         }
-
         return questionFormat;
     }
 
@@ -701,7 +700,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void onReponseCreateQuestion(Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -753,7 +752,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         question.setSolution(etEvaluationNote2.getText().toString());
         question.setTopicId(getArguments().getString(AssignmentExamFragment.ARG_EXAM_TOPIC_ID));
         question.setSubjectId(getArguments().getString(AssignmentExamFragment.ARG_EXAM_SUBJECT_ID));
-        question.setSubjectName(getArguments().getString(AssignmentsAdapter.ARG_SUBJECT_NAME));
+        question.setSubjectName(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
         question.setClassroomId(getArguments().getString(AssignmentExamFragment.ARG_EXAM_CLASSROOM_ID));
         question.setBookId(getArguments().getString(AssignmentExamFragment.ARG_EXAM_BOOK_ID));
 //                        question.setTags(arrListTags);
@@ -785,7 +784,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void onResponseGetAllHashTag(Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
