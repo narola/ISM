@@ -16,8 +16,8 @@
 
 	<com.ism.views.CircleImageView
 		android:id="@+id/img_dp"
-		android:layout_width="@dimen/dp_size_list_comment"
-		android:layout_height="@dimen/dp_size_list_comment"
+		android:layout_width="@dimen/dp_size_list_small"
+		android:layout_height="@dimen/dp_size_list_small"
 		android:layout_below="@id/view_divider"
 		android:layout_marginTop="@dimen/dp_margin_list"
 		android:layout_marginLeft="@dimen/dp_margin_list"

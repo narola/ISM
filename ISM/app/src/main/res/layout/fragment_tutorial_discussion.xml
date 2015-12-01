@@ -4,12 +4,89 @@
              android:layout_height="match_parent"
              tools:context="com.ism.fragment.TutorialDiscussionFragment">
 
-	<TextView
-		android:id="@+id/txt_day"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:gravity="center"
-		android:textSize="20sp"
-		android:layout_centerInParent="true"/>
 
+	<LinearLayout
+		android:id="@+id/ll_topic"
+		android:layout_width="@dimen/chat_layout_width"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="center"
+		android:padding="5dp"
+		android:background="@color/color_green">
+
+		<TextView
+			android:id="@+id/txt_topic"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="20sp"
+			android:textColor="@android:color/white"
+			android:textAllCaps="true"
+			android:text="@string/topic"/>
+
+		<TextView
+			android:id="@+id/txt_topic_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="20sp"
+			android:textColor="@android:color/white"
+			android:textAllCaps="true"/>
+	</LinearLayout>
+
+	<android.support.v7.widget.RecyclerView
+		android:id="@+id/recycler_chat"
+		android:layout_width="@dimen/chat_layout_width"
+		android:layout_height="match_parent"
+		android:layout_below="@id/ll_topic"
+		android:layout_above="@+id/ll_attachments"
+		android:background="@color/bg_discussion"></android.support.v7.widget.RecyclerView>
+
+	<TextView
+		android:id="@+id/txt_alert"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Active hours are finished!"
+		android:layout_above="@+id/ll_attachments"
+		android:layout_margin="10dp"
+		android:padding="10dp"/>
+
+	<LinearLayout
+		android:id="@+id/ll_attachments"
+		android:layout_width="@dimen/chat_layout_width"
+		android:layout_height="@dimen/attachment_button_height"
+		android:layout_alignParentBottom="true"
+		android:orientation="horizontal"
+		android:background="@color/color_green">
+
+		<ImageView
+			android:id="@+id/img_attach_file"
+			android:layout_width="@dimen/attachment_button_width"
+			android:layout_height="match_parent"
+			android:layout_marginLeft="10dp"
+			android:scaleType="centerInside"
+			android:src="@drawable/ic_attach_file"/>
+
+		<ImageView
+			android:id="@+id/img_attach_image"
+			android:layout_width="@dimen/attachment_button_width"
+			android:layout_height="match_parent"
+			android:layout_marginLeft="10dp"
+			android:scaleType="centerInside"
+			android:src="@drawable/ic_attach_image"/>
+
+		<ImageView
+			android:id="@+id/img_attach_audio"
+			android:layout_width="@dimen/attachment_button_width"
+			android:layout_height="match_parent"
+			android:layout_marginLeft="10dp"
+			android:scaleType="centerInside"
+			android:src="@drawable/ic_attach_audio"/>
+
+		<ImageView
+			android:id="@+id/img_attach_link"
+			android:layout_width="@dimen/attachment_button_width"
+			android:layout_height="match_parent"
+			android:layout_marginLeft="10dp"
+			android:scaleType="centerInside"
+			android:src="@drawable/ic_attach_link"/>
+	</LinearLayout>
 </RelativeLayout>

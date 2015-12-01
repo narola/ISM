@@ -14,12 +14,10 @@ import com.ism.R;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.BookDetailsDialog;
 import com.ism.fragment.userprofile.BooksFragment;
-import com.ism.object.MyTypeFace;
+import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.model.BookData;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -28,30 +26,22 @@ import java.util.ArrayList;
  */
 public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = FavoriteBooksAdapter.class.getSimpleName();
-    private final ImageLoader imageLoader;
+    private final BooksFragment fragment;
     Context context;
     ArrayList<BookData> arrayList = new ArrayList<>();
     ArrayList<BookData> arrayListFilter = new ArrayList<>();
-    private ArrayList<String> arrayUnFavResourceIds =new ArrayList<String>();
+    private ArrayList<String> arrayUnFavResourceIds = new ArrayList<String>();
     LayoutInflater inflater;
-    MyTypeFace myTypeFace;
     FavBookFilter favBookFilter;
 
-    public FavoriteBooksAdapter(Context context, ArrayList<BookData> arrayList) {
+    public FavoriteBooksAdapter(Context context, ArrayList<BookData> arrayList, BooksFragment fragment) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter = arrayList;
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         inflater = LayoutInflater.from(context);
-        myTypeFace = new MyTypeFace(context);
+        this.fragment = fragment;
     }
-    public ArrayList<String> getUnFavResourceIds(){
-        return arrayUnFavResourceIds;
-    }
-    public void setUnFavResourceIds( ArrayList<String> arrayUnFavResourceIds){
-        this.arrayUnFavResourceIds=arrayUnFavResourceIds;
-    }
+
     @Override
     public int getCount() {
         return arrayList.size();
@@ -82,6 +72,8 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
             holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
             holder.imgInfo.setVisibility(View.VISIBLE);
             holder.imgAddToUnFav.setVisibility((View.VISIBLE));
+            holder.imgLibraryBook.setVisibility((View.VISIBLE));
+
             holder.imgAddToUnFav.setBackgroundResource(R.drawable.img_like_red);
             convertView.setTag(holder);
         } else {
@@ -89,16 +81,16 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
         }
 
         try {
-            holder.txtBookAuthor.setTypeface(myTypeFace.getRalewayRegular());
-            holder.txtBookName.setTypeface(myTypeFace.getRalewayRegular());
-            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            holder.txtBookAuthor.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.txtBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            Global.imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
             holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 //                    myPopup(position);
-                    BookDetailsDialog bookDetailsDialog = new BookDetailsDialog(context, arrayList, position, imageLoader);
+                    BookDetailsDialog bookDetailsDialog = new BookDetailsDialog(context, arrayList, position, Global.imageLoader);
                     bookDetailsDialog.show();
                 }
             });
@@ -106,7 +98,19 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
                 @Override
                 public void onClick(View v) {
                     Debug.i(TAG, "onClickAddToUnFav : " + position);
-                    arrayUnFavResourceIds.add(arrayList.get(position).getBookId());
+                    fragment.onRemoveFromFav(position);
+                    // callApiAddResourceToFav();
+                }
+            });
+            holder.imgLibraryBook.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Debug.i(TAG, "onClickAddToUnFav : " + position);
+                    //if()
+                   // fragment.onAddToLibrary(arrayList.get(position).getBookId());
+                   // else{
+                  //      fragment.onRemoveFromLibrary(arrayList.get(position).getBookId());
+                  //  }
                     // callApiAddResourceToFav();
                 }
             });
@@ -137,12 +141,12 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
 
                 Debug.i(TAG, "Search string : " + constraint);
 
-                if (constraint!= null) {
+                if (constraint != null) {
                     Debug.i(TAG, "Search string : " + constraint);
                     ArrayList<BookData> filterList = new ArrayList<BookData>();
                     for (int i = 0; i < arrayListFilter.size(); i++) {
                         Debug.i(TAG, "arrayListFilter.get(i).getAuthorName() : " + arrayListFilter.get(i).getBookName());
-                        if (arrayListFilter.get(i).getBookName().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getPublisherName().toLowerCase().contains(constraint.toString().toLowerCase()) ) {
+                        if (arrayListFilter.get(i).getBookName().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getPublisherName().toLowerCase().contains(constraint.toString().toLowerCase())) {
 //                            if (arrayListFilter.get(i).getAuthorName().contains(constraint) || arrayListFilter.get(i).getBookName().contains(constraint) || arrayListFilter.get(i).getPublisherName().contains(constraint)) {
                             Debug.i(TAG, "i : " + i);
                             BookData book = new BookData();
@@ -156,17 +160,17 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
                             book.setPrice(arrayListFilter.get(i).getPrice());
                             book.setPublisherName(arrayListFilter.get(i).getPublisherName());
                             filterList.add(book);
-                            Debug.i(TAG,"FilterList size :"+ filterList.size());
+                            Debug.i(TAG, "FilterList size :" + filterList.size());
 
                         }
                     }
                     results.count = filterList.size();
                     results.values = filterList;
-                    Debug.i(TAG,"FilterList size :"+ filterList.size());
+                    Debug.i(TAG, "FilterList size :" + filterList.size());
                 } else {
                     results.count = arrayListFilter.size();
                     results.values = arrayListFilter;
-                    Debug.i(TAG,"Else FilterList size :"+ arrayListFilter.size());
+                    Debug.i(TAG, "Else FilterList size :" + arrayListFilter.size());
                 }
                 return results;
             } catch (Exception e) {
@@ -183,12 +187,10 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
             try {
 
                 arrayList = (ArrayList<BookData>) results.values;
-                if(arrayList.size()==0)
-                {
+                if (arrayList.size() == 0) {
                     BooksFragment.txtFavEmpty.setVisibility(View.VISIBLE);
                     BooksFragment.listViewFavBooks.setVisibility(View.GONE);
-                }
-                else{
+                } else {
                     BooksFragment.txtFavEmpty.setVisibility(View.GONE);
                     BooksFragment.listViewFavBooks.setVisibility(View.VISIBLE);
                 }

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+	<RelativeLayout
+		android:id="@+id/rl_header"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_centerInParent="true"
+			android:background="@color/border_table"/>
+
+		<TextView
+			android:id="@+id/txt_time_header"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:background="@color/bg_discussion"
+			android:paddingLeft="10dp"
+			android:paddingRight="10dp"
+			android:text="Tuesday"
+			android:textAllCaps="true"
+			android:textColor="#b4b7ba"
+			android:textSize="18sp"/>
+	</RelativeLayout>
+
+	<LinearLayout
+		android:id="@+id/ll_chat"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/rl_header"
+		android:orientation="horizontal">
+
+		<com.ism.views.CircleImageView
+			android:id="@+id/img_dp"
+			android:layout_width="@dimen/dp_size_list_small"
+			android:layout_height="@dimen/dp_size_list_small"
+			android:layout_marginTop="20dp"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
+			android:src="@drawable/userdp"/>
+
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="10dp"
+			android:paddingRight="10dp">
+
+			<TextView
+				android:id="@+id/txt_user_name"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="5dp"
+				android:layout_marginTop="5dp"
+				android:textColor="@color/bg_app_dark"
+				android:textSize="@dimen/text_size_normal_chat"/>
+
+			<TextView
+				android:id="@+id/txt_time"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:layout_marginBottom="5dp"
+				android:layout_marginTop="5dp"
+				android:textColor="@color/bg_app_dark"
+				android:textSize="@dimen/text_size_small_chat"/>
+
+			<TextView
+				android:id="@+id/txt_message"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/txt_user_name"
+				android:layout_marginBottom="15dp"
+				android:textColor="@color/bg_app_dark"
+				android:textSize="@dimen/text_size_normal_chat"/>
+		</RelativeLayout>
+	</LinearLayout>
+</RelativeLayout>

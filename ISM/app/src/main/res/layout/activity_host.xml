@@ -255,7 +255,7 @@
             android:id="@+id/img_logout"
             android:layout_width="@dimen/controller_left_width"
             android:layout_height="@dimen/controller_left_width"
-            android:background="@color/bg_logout"
+            android:background="@drawable/bg_logout"
             android:scaleType="centerInside"
             android:src="@drawable/ic_logout" />
     </LinearLayout>

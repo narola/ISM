@@ -41,10 +41,10 @@ public class SuggestedPastTimeAdapter extends BaseAdapter implements WebserviceW
     ArrayList<PastimeData> arrayListFilter = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
-    SuggestedBookAdapter.AddToFavouriteListner addToFavouriteListner;
+    HostActivity.AddToFavouriteListner addToFavouriteListner;
     private int addToFavItem;
     PastimesFilter pastimesFilter;
-    public SuggestedPastTimeAdapter(Context context, ArrayList<PastimeData> arrayList, SuggestedBookAdapter.AddToFavouriteListner addToFavouriteListner) {
+    public SuggestedPastTimeAdapter(Context context, ArrayList<PastimeData> arrayList, HostActivity.AddToFavouriteListner addToFavouriteListner) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter = arrayList;

@@ -23,13 +23,138 @@ public class User {
     private String userId;
     private String profilePic;
     private String fullName;
+    private String username;
+    private String aboutMeText;
+    private String totalExams;
+    private String totalBooks;
+    private String totalQuestionAsked;
+    private String totalFavoriteQuestions;
+    private String birthdate;
+    private String totalFollwers;
+    private String contactNumber;
+    private String totalPost;
+    private String totalAssignment;
+    private String totalFollowing;
+    private String totalBadgesEarned;
 
+    private String totalQuestionsAnswered;
+
+    @JsonProperty("education")
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    private String education;
+
+    @JsonProperty("username")
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @JsonProperty("total_exams")
+    public String getTotalExams() {
+        return this.totalExams;
+    }
+
+    public void setTotalExams(String totalExams) {
+        this.totalExams = totalExams;
+    }
+
+    @JsonProperty("total_books")
+    public String getTotalBooks() {
+        return this.totalBooks;
+    }
+
+    public void setTotalBooks(String totalBooks) {
+        this.totalBooks = totalBooks;
+    }
+
+
+    @JsonProperty("total_Favorite_questions")
+    public String getTotalFavoriteQuestions() {
+        return this.totalFavoriteQuestions;
+    }
+    public void setTotalFavoriteQuestions(String totalFavoriteQuestions) {
+        this.totalFavoriteQuestions = totalFavoriteQuestions;
+    }
+
+    @JsonProperty("birthdate")
+    public String getBirthdate() {
+        return this.birthdate;
+    }
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    @JsonProperty("aboutMeText")
+    public String getAboutMeText() {
+        return this.aboutMeText;
+    }
+    public void setAboutMeText(String aboutMeText) {
+        this.aboutMeText = aboutMeText;
+    }
+
+    @JsonProperty("total_follweres")
+    public String getTotalFollowers() {
+        return this.totalFollwers;
+    }
+
+    public void setTotalFollowers(String totalFollowers) {
+        this.totalFollwers = totalFollowers;
+    }
+
+    @JsonProperty("contact_number")
+    public String getContactNumber() {
+        return this.contactNumber;
+    }
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    @JsonProperty("total_post")
+    public String getTotalPost() {
+        return this.totalPost;
+    }
+    public void setTotalPost(String totalPost) {
+        this.totalPost = totalPost;
+    }
+
+    @JsonProperty("total_assignment")
+    public String getTotalAssignment() {
+        return this.totalAssignment;
+    }
+    public void setTotalAssignment(String totalAssignment) {
+        this.totalAssignment = totalAssignment;
+    }
+
+    @JsonProperty("total_following")
+    public String getTotalFollowing() {
+        return this.totalFollowing;
+    }
+    public void setTotalFollowing(String totalFollowing) {
+        this.totalFollowing = totalFollowing;
+    }
+
+    @JsonProperty("total_badges_earned")
+    public String getTotalBadgesEarned() {
+        return this.totalBadgesEarned;
+    }
+    public void setTotalBadgesEarned(String totalBadgesEarned) {
+        this.totalBadgesEarned = totalBadgesEarned;
+    }
 
     @JsonProperty("class_id")
     public String getClassId() {
         return this.classId;
     }
-
     public void setClassId(String classId) {
         this.classId = classId;
     }
@@ -124,11 +249,11 @@ public class User {
         this.schoolName = schoolName;
     }
 
-
     @JsonProperty("user_id")
     public String getUserId() {
         return this.userId;
     }
+
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -152,5 +277,22 @@ public class User {
         this.fullName = fullName;
     }
 
+    //
+//    }
+//        this.ismScore = ismScore;
+//    public void setIsmScore(String ismScore) {
+//
+//    }
+//        return this.ismScore;
+//    public String getIsmScore() {
+//    @JsonProperty("ism_score")
 
+    public void setTotalQuestionsAnswered(String totalQuestionsAnswered) {
+        this.totalQuestionsAnswered = totalQuestionsAnswered;
+    }
+
+
+    public String getTotalQuestionsAnswered() {
+        return totalQuestionsAnswered;
+    }
 }

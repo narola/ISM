@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -52,7 +53,6 @@ import com.ism.author.fragment.userprofile.AuthorProfileFragment;
 import com.ism.author.fragment.userprofile.FollowersFragment;
 import com.ism.author.fragment.userprofile.HighScoreFragment;
 import com.ism.author.fragment.userprofile.MyActivityFragment;
-import com.ism.author.fragment.userprofile.MyBooksFragment;
 import com.ism.author.fragment.userprofile.MyFeedsFragment;
 import com.ism.author.fragment.userprofile.StudentAttemptedAssignmentFragment;
 import com.ism.author.fragment.userprofile.ViewProfileFragment;
@@ -63,6 +63,7 @@ import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.BookData;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -91,11 +92,11 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
     private HostListenerProfileController listenerHostProfileController;
-
-
+    private AddToFavouriteListner addToFavouriteListner;
     private HostListenerAllNotification listenerHostAllNotification;
 
     private HostListenerAllMessage listenerHostAllMessage;
+
     private ArrayList<ControllerTopMenuItem> controllerTopMenuTrial, currentControllerTopMenu, controllerTopMenuAssessment, controlTopMenuMyDesk;
     /*
     * these are the fragments for the main fragment.
@@ -119,11 +120,11 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_ALL_NOTIFICATION = 19;
     public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 20;
     public static final int FRAGMENT_MY_DESK = 21;
-
-
     //these are the right side fragments
 
+
     public static final int FRAGMENT_PROFILE_CONTROLLER = 31;
+
     public static final int FRAGMENT_HIGHSCORE = 32;
     public static final int FRAGMENT_STUDENT_ATTEMPTED = 33;
     public static final int FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT = 34;
@@ -132,18 +133,16 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_MY_ACTIVITY = 37;
     public static final int FRAGMENT_MY_BOOKS = 38;
     public static final int FRAGMENT_VIEW_PROFILE = 39;
-
-
     private InputMethodManager inputMethod;
-    //these are the fragments for the author edit profile screen.
 
 
     public static int currentMainFragment;
+
+
     public static int currentRightFragment;
     private int currentMainFragmentBg;
     private ActionProcessButton progress_bar;
     private ProgressGenerator progressGenerator;
-
 
     public interface HostListenerProfileController {
         public void onBadgesFetched();
@@ -162,7 +161,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         public void onControllerTopBackClick();
     }
 
-
     public void setListenerHostProfileController(HostListenerProfileController listenerHostProfileController) {
         this.listenerHostProfileController = listenerHostProfileController;
     }
@@ -175,13 +173,16 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         this.listenerHostAllMessage = listenerHostAllMessage;
     }
 
+    public void setListenerFavourites(AddToFavouriteListner addToFavouriteListner) {
+        this.addToFavouriteListner = addToFavouriteListner;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author_host);
 
         inigGlobal();
-
 
     }
 
@@ -194,7 +195,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
-        Global.strUserId = "370";
+        Global.strUserId = "52";
         Global.strFullName = "Arti Patel";
         Global.strProfilePic = WebConstants.USER_IMAGES + "user_370/123_test.png";
         rlControllerTop = (RelativeLayout) findViewById(R.id.rl_controller_top);
@@ -330,7 +331,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
                 case FRAGMENT_MY_BOOKS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            MyBooksFragment.newInstance()).commit();
+                            GetAssignmentsSubmittorFragment.BooksFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_FOLLOWERS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
@@ -787,7 +788,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
         View view = inflater.inflate(R.layout.row_trial, null);
         popupWindow = new PopupWindow(view, 400,
-                android.view.ViewGroup.LayoutParams.MATCH_PARENT, true);
+                ViewGroup.LayoutParams.MATCH_PARENT, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
@@ -1036,5 +1037,20 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             Debug.i(TAG, "onResponseGetAllBadges Exceptiion : " + e.toString());
         }
     }
+
+    public interface AddToFavouriteListner {
+        public void onAddToFav(int position);
+
+        public void onRemoveFromFav(int position);
+
+        public void onAddToLibrary(String id);
+
+        public void onRemoveFromLibrary(String id);
+
+        public void onSearchFav(ArrayList<BookData> arrayList);
+
+        public void onSearchSuggested(ArrayList<BookData> arrayList);
+    }
+
 
 }

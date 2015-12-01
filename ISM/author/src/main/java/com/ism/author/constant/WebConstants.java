@@ -62,6 +62,8 @@ public class WebConstants {
     public static final int GET_MY_FEEDS = 58;
     public static final int GET_ABOUT_ME = 59;
     public static final int GET_BOOKS_FOR_USER = 60;
+    public static final int MANAGE_FAVOURITES = 61;
+    public static final int MANAGE_BOOK_LIBRARY = 62;
     /*webservice url*/
     public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
     public static final String URL_FORGOTPASSWORD = URL_KINJAL_HOST + "ForgotPassword";
@@ -109,8 +111,8 @@ public class WebConstants {
 
     public static final String URL_GET_HIGH_SCORERS = URL_KINJAL_HOST + "GetHighScorers";
     public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
-    /*status for apisuccess ans apifailed*/
 
+    /*status for apisuccess ans apifailed*/
     public static final String URL_GET_WALLET_SUMMARY = URL_KINJAL_HOST + "GetWalletSummary";
     public static final String URL_GET_MY_FEEDS = URL_KINJAL_HOST + "GetMyFeeds";
     public static final String URL_GET_ABOUT_ME = URL_KINJAL_HOST + "GetAboutMe";
@@ -118,9 +120,9 @@ public class WebConstants {
 
     /*status for apisuccess ans apifailed*/
     public static final String SUCCESS = "success";
+
+
     public static final String FAILED = "failed";
-
-
     public static final String STATUS_SUCCESS = "success";
     public static final String STATUS_FAILED = "failed";
     /*these are the temparory questionData for testing*/
@@ -135,9 +137,9 @@ public class WebConstants {
      */
     public static final String STUDYMATE_REQUEST = "studymate_request";
     public static final String MESSAGES = "messages";
+
+
     public static final String NOTIFICATION = "notification";
-
-
     public static final String ROLE_ALL = "all";
     public static final String ROLE_STUDENT = "student";
 }

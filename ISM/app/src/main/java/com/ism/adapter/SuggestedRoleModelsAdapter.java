@@ -40,11 +40,11 @@ public class SuggestedRoleModelsAdapter extends BaseAdapter implements Webservic
     ArrayList<RolemodelData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
-    SuggestedBookAdapter.AddToFavouriteListner addToFavouriteListner;
+    HostActivity.AddToFavouriteListner addToFavouriteListner;
     private int addToFavItemId;
     RoleModelsFilter roleModelsFilter;
     ArrayList<RolemodelData> arrayListFilter = new ArrayList<>();
-    public SuggestedRoleModelsAdapter(Context context, ArrayList<RolemodelData> arrayList,SuggestedBookAdapter.AddToFavouriteListner addToFavouriteListner)  {
+    public SuggestedRoleModelsAdapter(Context context, ArrayList<RolemodelData> arrayList,HostActivity.AddToFavouriteListner addToFavouriteListner)  {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter = arrayList;
