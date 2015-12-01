@@ -1,4 +1,4 @@
-package com.ism.dialog;
+package com.ism.author.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,26 +8,24 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
-import com.ism.R;
-import com.ism.constant.WebConstants;
-import com.ism.object.MyTypeFace;
-import com.ism.utility.Utility;
-import com.ism.ws.model.BookData;
+import com.ism.author.ISMAuthor;
+import com.ism.author.R;
+import com.ism.author.Utility.Utility;
+import com.ism.author.constant.WebConstants;
+import com.ism.author.object.Global;
+import com.ism.author.ws.model.BookData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
 /**
- * Created by c162 on 24/10/15.
+ * Created by c162 on 30/11/15.
  */
 public class BookDetailsDialog extends Dialog implements View.OnClickListener {
-    ImageLoader imageLoader;
     private final int position;
     private Context mContext;
     private TextView tvDialogClose;
     private ArrayList<BookData> arrayList;
-    MyTypeFace myTypeFace;
     private TextView txtDone;
 
     public BookDetailsDialog(Context mContext, ArrayList<BookData>
@@ -37,11 +35,9 @@ public class BookDetailsDialog extends Dialog implements View.OnClickListener {
         this.mContext = mContext;
         this.arrayList = arrayList;
         this.position = position;
-        myTypeFace = new MyTypeFace(mContext);
         Window w = getWindow();
         getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.imageLoader = imageLoader;
         setContentView(R.layout.dailog_book_details);
         w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         w.setBackgroundDrawableResource(android.R.color.transparent);
@@ -68,20 +64,20 @@ public class BookDetailsDialog extends Dialog implements View.OnClickListener {
         TextView txtEbookLink = (TextView) findViewById(R.id.txt_ebook_link);
         ImageView imgBook = (ImageView) findViewById(R.id.img_book_image);
         ImageView imgAuthor = (ImageView) findViewById(R.id.img_author);
-        txtAuthor.setTypeface(myTypeFace.getRalewayRegular());
-        txtAuthorName.setTypeface(myTypeFace.getRalewayRegular());
-        txtBook.setTypeface(myTypeFace.getRalewayRegular());
-        txtBookDetails.setTypeface(myTypeFace.getRalewayRegular());
-        txtBookName.setTypeface(myTypeFace.getRalewayRegular());
-        txtDesc.setTypeface(myTypeFace.getRalewayRegular());
-        txtDescDetails.setTypeface(myTypeFace.getRalewayRegular());
-        txtDone.setTypeface(myTypeFace.getRalewayRegular());
-        txtPublisher.setTypeface(myTypeFace.getRalewayRegular());
-        txtPublisherName.setTypeface(myTypeFace.getRalewayRegular());
-        txtPrice.setTypeface(myTypeFace.getRalewayRegular());
-        txtPriceValue.setTypeface(myTypeFace.getRalewayRegular());
-        txtEbook.setTypeface(myTypeFace.getRalewayRegular());
-        txtEbookLink.setTypeface(myTypeFace.getRalewayRegular());
+        txtAuthor.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAuthorName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtBook.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtBookDetails.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtDesc.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtDescDetails.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtDone.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtPublisher.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtPublisherName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtPrice.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtPriceValue.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtEbook.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtEbookLink.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         txtAuthorName.setText(arrayList.get(position).getAuthorName());
@@ -90,8 +86,8 @@ public class BookDetailsDialog extends Dialog implements View.OnClickListener {
         txtDescDetails.setText(arrayList.get(position).getDescription());
         txtBookName.setText(arrayList.get(position).getBookName());
         txtEbookLink.setText(arrayList.get(position).getEbookLink());
-        imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getBookImage(), imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available,R.drawable.img_no_cover_available));
-        imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getAuthorImage(), imgAuthor, ISMStudent.options);
+        Global.imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getBookImage(), imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+        Global.imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getAuthorImage(), imgAuthor, ISMAuthor.options);
         txtDone.setOnClickListener(this);
 
     }

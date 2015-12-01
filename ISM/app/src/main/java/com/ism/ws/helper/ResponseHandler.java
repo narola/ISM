@@ -21,7 +21,6 @@ import com.ism.ws.model.StudymateRequest;
 import com.ism.ws.model.TutorialGroup;
 import com.ism.ws.model.User;
 import com.ism.ws.model.UserPreferences;
-import com.ism.ws.model.Voucher;
 import com.ism.ws.model.Wallet;
 
 import java.util.ArrayList;
@@ -124,14 +123,14 @@ public class ResponseHandler {
         return books;
     }
 
-    @JsonProperty("preference")
-    public ArrayList<SettingPreferences> getPreference() {
-        return preference;
-    }
-
     public void setBooks(ArrayList<Books> books) {
         this.books = books;
     }
+
+	@JsonProperty("preference")
+	public ArrayList<SettingPreferences> getPreference() {
+		return preference;
+	}
 
     @JsonProperty("badges")
     public ArrayList<Badges> getBadges() {

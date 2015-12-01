@@ -209,6 +209,9 @@ public class WebserviceWrapper {
                         case WebConstants.TEMPCREATEQUESTION:
                             responseObject = new WebserviceConnector(WebConstants.URL_TEMPCREATEQUESTION).execute(ResponseHandler.class, attribute);
                             break;
+                        case WebConstants.GET_BOOKS_FOR_USER:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseHandler.class, attribute);
+                            break;
 
                     }
                 }

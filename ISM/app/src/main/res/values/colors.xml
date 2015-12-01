@@ -64,4 +64,5 @@
     <color name="border_table">#DCDFE4</color>
     <color name="green_online">#27A611</color>
     <color name="gray_offline">#b7b7b7</color>
+    <color name="bg_green_light">#95E3D5</color>
 </resources>

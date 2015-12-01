@@ -2,20 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
 				android:background="@android:color/white">
 
 	<View
 		android:id="@+id/view_status"
 		android:layout_width="@dimen/status_ring_size"
 		android:layout_height="@dimen/status_ring_size"
-		android:layout_centerVertical="true"
-		android:layout_marginLeft="10dp"/>
+		android:layout_marginTop="33dp"/>
 
     <com.ism.views.CircleImageView
         android:id="@+id/img_dp"
         android:layout_width="@dimen/dp_size_list_studymates"
         android:layout_height="@dimen/dp_size_list_studymates"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_toRightOf="@id/view_status"
         android:src="@drawable/userdp"/>
 
@@ -25,7 +26,66 @@
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/img_dp"
 		android:layout_marginLeft="10dp"
-		android:layout_marginTop="20dp"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="20sp"/>
+		android:textSize="19sp"/>
+
+	<TextView
+		android:id="@+id/txt_school"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/img_dp"
+		android:layout_marginLeft="10dp"
+		android:layout_below="@id/txt_user_name"
+		android:textColor="@color/bg_app_dark"
+		android:textSize="18sp"/>
+
+	<TextView
+		android:id="@+id/txt_location"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/img_dp"
+		android:layout_marginLeft="10dp"
+		android:layout_below="@id/txt_school"
+		android:textColor="@color/bg_app_dark"
+		android:textSize="17sp"/>
+
+	<TextView
+		android:id="@+id/txt_following"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/img_dp"
+		android:layout_marginLeft="10dp"
+		android:layout_below="@id/txt_location"
+		android:textColor="@color/color_green"
+		android:textSize="15sp"/>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerVertical="true"
+		android:orientation="vertical"
+		android:layout_alignParentRight="true">
+
+		<Button
+			android:id="@+id/btn_view_profile"
+			android:layout_width="170dp"
+			android:layout_height="35dp"
+			android:text="@string/view_profile"
+			android:background="@drawable/bg_button_green_small"
+			android:textColor="@android:color/white"
+			android:layout_alignParentRight="true"
+			android:textAllCaps="false"
+			android:textSize="17sp"
+			android:layout_marginRight="10dp"/>
+
+		<Spinner
+			android:id="@+id/spinner_studymate_options"
+			android:layout_width="170dp"
+			android:layout_height="35dp"
+			android:layout_below="@id/btn_view_profile"
+			android:layout_marginTop="10dp"
+			android:layout_alignParentRight="true"
+			android:background="@drawable/bg_spinner_simple"
+			android:layout_marginRight="10dp"></Spinner>
+	</LinearLayout>
 </RelativeLayout>

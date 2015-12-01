@@ -81,4 +81,6 @@
     <dimen name="status_ring_radius">5dp</dimen>
     <dimen name="status_ring_thickness">2dp</dimen>
     <dimen name="status_ring_size">16dp</dimen>
+    <dimen name="button_small_corner_radius">3dp</dimen>
+    <dimen name="find_studymate_tag_width">120dp</dimen>
 </resources>

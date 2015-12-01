@@ -2,10 +2,10 @@ package com.ism.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ism.R;
 
@@ -17,6 +17,9 @@ public class TutorialDiscussionFragment extends Fragment {
 	private static final String TAG = TutorialDiscussionFragment.class.getSimpleName();
 
 	private View view;
+	private TextView txtDay;
+
+	private TutorialDiscussionFragmentListener listenerTutorialDiscussion;
 
 	private static final String ARG_WEEK_DAY = "weekDay";
 	private int intWeekDay;
@@ -34,7 +37,7 @@ public class TutorialDiscussionFragment extends Fragment {
 	}
 
 	public interface TutorialDiscussionFragmentListener {
-		public void onDayChanged(int day);
+		public void onDayChanged(int dayId);
 	}
 
 	@Override
@@ -55,11 +58,40 @@ public class TutorialDiscussionFragment extends Fragment {
 	}
 
 	private void initGlobal() {
+		txtDay = (TextView) view.findViewById(R.id.txt_day);
+
 		setDay(intWeekDay);
+	}
+
+	public void setTutorialDiscussionListener(TutorialDiscussionFragmentListener listenerTutorialDiscussion) {
+		this.listenerTutorialDiscussion = listenerTutorialDiscussion;
 	}
 
 	public void setDay(int day) {
 		intWeekDay = day;
+		switch (intWeekDay) {
+			case TutorialFragment.MON:
+				txtDay.setText("Monday");
+				break;
+			case TutorialFragment.TUE:
+				txtDay.setText("Tuesday");
+				break;
+			case TutorialFragment.WED:
+				txtDay.setText("Wednesday");
+				break;
+			case TutorialFragment.THU:
+				txtDay.setText("Thursday");
+				break;
+			case TutorialFragment.FRI:
+				txtDay.setText("Friday");
+				break;
+			case TutorialFragment.SAT:
+				txtDay.setText("Saturday");
+				break;
+			case TutorialFragment.SUN:
+				txtDay.setText("Sunday");
+				break;
+		}
 	}
 
 }

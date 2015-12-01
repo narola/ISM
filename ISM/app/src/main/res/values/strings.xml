@@ -323,4 +323,9 @@
 	<string name="commented_on">Commented on</string>
 	<string name="recommended_studymates">Recommended Studymates</string>
 	<string name="add_studymate">Add Studymate</string>
+	<string name="view_profile">View Profile</string>
+	<string name="people">People</string>
+	<string name="school">School</string>
+	<string name="area">Area</string>
+	<string name="course">Course</string>
 </resources>

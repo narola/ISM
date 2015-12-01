@@ -40,6 +40,9 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 	public static final int TUE = 1;
 	public static final int WED = 2;
 	public static final int THU = 3;
+	public static final int FRI = 4;
+	public static final int SAT = 5;
+	public static final int SUN = 6;
 	public static final int FRAGMENT_DISCUSSION = 0;
 	public static final int FRAGMENT_FRI = 1;
 	public static final int FRAGMENT_SAT = 2;
@@ -83,38 +86,35 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 		    public void onClick(View v) {
 			    switch (v.getId()) {
 				    case R.id.txt_monday:
-					    setWeekDaySelection(txtMonday);
 					    intCurrentDay = MON;
 						loadFragment(FRAGMENT_DISCUSSION);
 					    break;
 				    case R.id.txt_tuesday:
-					    setWeekDaySelection(txtTuesday);
 					    intCurrentDay = TUE;
 					    loadFragment(FRAGMENT_DISCUSSION);
 					    break;
 				    case R.id.txt_wednesday:
-					    setWeekDaySelection(txtWednesday);
 					    intCurrentDay = WED;
 					    loadFragment(FRAGMENT_DISCUSSION);
 					    break;
 				    case R.id.txt_thursday:
-					    setWeekDaySelection(txtThursday);
 					    intCurrentDay = THU;
 					    loadFragment(FRAGMENT_DISCUSSION);
 					    break;
 				    case R.id.txt_friday:
-					    setWeekDaySelection(txtFriday);
+					    intCurrentDay = FRI;
 					    loadFragment(FRAGMENT_FRI);
 					    break;
 				    case R.id.txt_saturday:
-					    setWeekDaySelection(txtSaturday);
+					    intCurrentDay = SAT;
 					    loadFragment(FRAGMENT_SAT);
 					    break;
 				    case R.id.txt_sunday:
-					    setWeekDaySelection(txtSunday);
+					    intCurrentDay = SUN;
 					    loadFragment(FRAGMENT_SUN);
 					    break;
 			    }
+			    setWeekDaySelection(intCurrentDay);
 		    }
 	    };
 
@@ -129,12 +129,12 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 	    txtMonday.performClick();
     }
 
-	private void setWeekDaySelection(TextView textSelectedWeekDay) {
-		for (int i = 0; i < txtWeekDays.length; i++) {
-			if (textSelectedWeekDay != txtWeekDays[i]) {
-				txtWeekDays[i].setEnabled(true);
+	private void setWeekDaySelection(int selectedDayId) {
+		for (int dayId = 0; dayId < txtWeekDays.length; dayId++) {
+			if (selectedDayId != dayId) {
+				txtWeekDays[dayId].setEnabled(true);
 			} else {
-				txtWeekDays[i].setEnabled(false);
+				txtWeekDays[dayId].setEnabled(false);
 			}
 		}
 	}
@@ -143,10 +143,8 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 		try {
 			switch (fragment) {
 				case FRAGMENT_DISCUSSION:
-					if (intCurrentFragment == FRAGMENT_DISCUSSION) {
-						if (fragTutorialDiscussion != null) {
-							fragTutorialDiscussion.setDay(intCurrentDay);
-						}
+					if (intCurrentFragment == FRAGMENT_DISCUSSION && fragTutorialDiscussion != null) {
+						fragTutorialDiscussion.setDay(intCurrentDay);
 					} else {
 						fragTutorialDiscussion = TutorialDiscussionFragment.newInstance(intCurrentDay);
 						getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, fragTutorialDiscussion).commit();
@@ -195,8 +193,8 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
     }
 
 	@Override
-	public void onDayChanged(int day) {
-
+	public void onDayChanged(int dayId) {
+		setWeekDaySelection(dayId);
 	}
 
 }
