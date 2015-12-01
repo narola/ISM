@@ -79,51 +79,113 @@ $url = uri_string();
                     <ul class="nav navbar-nav">
 
                         <!-- ============================================================= -->
-                        <?php /*
-                        <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_home"></span> Tutorial Group</a>
+                        <?php /* */ ?>
+                        <li class="<?php
+                        if (in_array($url, array('admin/group', 'admin/topic/allocate','admin/topic/lists', 'admin/topic/add','admin/banners'))) {
+                            echo 'active';
+                        }
+                        ?>
+                            dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_group"></span> Tutorial Group</a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Groups</a></li>
-                                <li><a href="#">Topics</a></li>
-                                <li><a href="#">Performance</a></li>
+                                <li><a href="admin/group">Groups</a></li>
+                                <li class="<?php echo ($url == 'admin/topic/allocate' || $url == 'admin/topic/lists' || $url == 'admin/topic/add') ? 'active' : ''; ?> dropdown sub_menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Topics</a>
+                                    <ul class="dropdown-menu">
+                                        <li <?php echo ($url == 'admin/topic/allocate') ? 'class="active"' : ''; ?>><a href="admin/topic/allocate">Allocate Topics</a></li>
+                                        <li <?php echo ($url == 'admin/topic/lists') ? 'class="active"' : ''; ?>><a href="admin/topic/lists">List of Topics</a></li>
+                                        <li <?php echo ($url == 'admin/topic/add') ? 'class="active"' : ''; ?>><a href="admin/topic/add">Add New Topic</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
-                        <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_home"></span> Resources</a>
+
+                        <li class="<?php
+                        if (in_array($url, array('admin/book', 'admin/badges','admin/activities', 'admin/questionnaires','admin/banners'))) {
+                            echo 'active';
+                        }
+                        ?>
+                            dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_manage"></span> Manage</a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Books</a></li>
-                                <li><a href="#">Badges</a></li>
-                                <li><a href="#">Activities</a></li>
-                                <li><a href="#">Questionnaires</a></li>
-                                <li><a href="#">Banners</a></li>
+                                <li <?php echo ($url == 'admin/book') ? 'class="active"' : ''; ?>><a href="admin/book">Books</a></li>
+                                <li><a href="admin/badges">Badges</a></li>
+                                <li><a href="admin/activities">Activities</a></li>
+                                <li><a href="admin/questionnaires">Questionnaires</a></li>
+                                <li><a href="admin/banners">Banners</a></li>
+                                <li class="<?php echo ($url == 'admin/subjects/lists' || $url == 'admin/subjects/add_subject' ) ? 'active' : ''; ?> dropdown sub_menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Subjects</a>
+                                    <ul class="dropdown-menu">
+                                        <li <?php echo ($url == 'admin/subjects/lists') ? 'class="active"' : ''; ?>><a href="admin/subject/lists">List of Subjects</a></li>
+                                        <li <?php echo ($url == 'admin/subjects/add_subject') ? 'class="active"' : ''; ?>><a href="admin/subject/add_subject">Add New Subject</a></li>
+                                    </ul>
+                                </li>
+                                <li class="<?php echo ($url == 'admin/course/lists' || $url == 'admin/course/add_course' ) ? 'active' : ''; ?> dropdown sub_menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Courses</a>
+                                    <ul class="dropdown-menu">
+                                        <li <?php echo ($url == 'admin/course/lists') ? 'class="active"' : ''; ?>><a href="admin/course/lists">List of Courses</a></li>
+                                        <li <?php echo ($url == 'admin/course/add_course') ? 'class="active"' : ''; ?>><a href="admin/course/add_course">Add New Course</a></li>
+                                    </ul>
+                                </li>
+                                <li <?php echo ($url == 'admin/classroom') ? 'class="active"' : ''; ?>><a href="admin/classroom">Classroom</a></li>
+                                
                             </ul>
                         </li>
-                        <li>
+
+                        <li class="<?php
+                        if (in_array($url, array('admin/spam', 'admin/word_watch','admin/permissions', 'admin/roles'))) {
+                            echo 'active';
+                        }
+                        ?>
+                            dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_home"></span> Security</a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Spam</a></li>
-                                <li><a href="#">Word Watch</a></li>
-                                <li><a href="#">Permissions</a></li>
-                                <li><a href="#">Roles</a></li>
+                                <li <?php echo ($url == 'admin/spam') ? 'class="active"' : ''; ?>><a href="admin/spam">Spam</a></li>
+                                <li <?php echo ($url == 'admin/word_watch') ? 'class="active"' : ''; ?>><a href="admin/word_watch">Word Watch</a></li>
+                                <li <?php echo ($url == 'admin/permissions') ? 'class="active"' : ''; ?>><a href="admin/permissions">Permissions</a></li>
+                                <li <?php echo ($url == 'admin/roles') ? 'class="active"' : ''; ?>><a href="admin/roles">Roles</a></li>
                             </ul>
                         </li>
-                        <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_home"></span> System</a>
+
+                        <li class="<?php
+                        if (in_array($url, array('admin/notice', 'admin/feeds','admin/features'))) {
+                            echo 'active';
+                        }
+                        ?>
+                            dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_organize"></span> System</a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Notice board</a></li>
-                                <li><a href="#">Feeds</a></li>
-                                <li><a href="#">Features</a></li>
+                                <li <?php echo ($url == 'admin/notice') ? 'class="active"' : ''; ?> ><a href="admin/notice">Notice board</a></li>
+                                <li <?php echo ($url == 'admin/feeds') ? 'class="active"' : ''; ?> ><a href="admin/feeds">Feeds</a></li>
+                                <li <?php echo ($url == 'admin/features') ? 'class="active"' : ''; ?> ><a href="admin/features">Features</a></li>
                             </ul>
                         </li>
 
-                        <li><a href="#"><span class="icon icon_menu_home"></span> Examination</a></li>
-                        <li><a href="#"><span class="icon icon_menu_home"></span> Reports</a></li>
+                        <li class="
+                        <?php
+                        if (in_array($url, array('admin/exam', 'admin/exam/add','admin/question/set'))) {
+                            echo 'active';
+                        }
+                        ?>
+                            dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Examination</a>
+                            <ul class="dropdown-menu">
+                                <li <?php echo ($url == 'admin/question/set') ? 'class="active"' : ''; ?> ><a href="admin/question/set">Question Bank</a></li>
+                                <li <?php echo ($url == 'admin/exam') ? 'class="active"' : ''; ?>><a href="admin/exam">Exams</a></li>
+                            </ul>
+                        </li>
+                        <li class="<?php
+                        if (in_array($url, array('admin/report'))) {
+                            echo 'active';
+                        }
+                        ?>">
+                            <a href="admin/report"><span class="icon icon_menu_report"></span> Reports</a>
+                        </li>
 
-                       */ ?>
+                       <?php /* */ ?>
 
                         <!-- ============================================================= -->
                         
-                        <?php /* */ ?>
+                        <?php /*  * / ? > 
                         <li><a href="#"><span class="icon icon_menu_home"></span> Home</a></li>
                         <li class="
                         <?php
@@ -208,7 +270,7 @@ $url = uri_string();
                         ?>"><a href="admin/report"><span class="icon icon_menu_report"></span> Reports</a></li>
 
 
-                       <?php /* */ ?>
+                      < ? php / *  */ ?>
                     </ul>
                     <!-- <ul class="nav navbar-nav navbar-right">
                         <li><a class="" href="#"><span class="icon icon_search"></span></a></li>
@@ -278,12 +340,55 @@ $url = uri_string();
 
                     <ul class="personal_menu">
                         <li class="<?php
+                            if (in_array($url, array('admin/school'))) {
+                                echo 'active';
+                            }
+                        ?>">
+                            <a href="admin/school"><span class="icon icon_feed"></span>Schools</a>
+                        </li>
+
+                        <li class="<?php
+                            if (in_array($url, array('admin/student'))) {
+                                echo 'active';
+                            }
+                        ?>">
+                            <a href="admin/student"><span class="icon icon_feed"></span>Students</a>
+                        </li>
+
+                        <li class="<?php
+                            if (in_array($url, array('admin/teacher'))) {
+                                echo 'active';
+                            }
+                        ?>">
+                            <a href="admin/teacher"><span class="icon icon_feed"></span>Teachers</a>
+                        </li>
+
+                        <li class="<?php
+                            if (in_array($url, array('admin/author'))) {
+                                echo 'active';
+                            }
+                        ?>">
+                            <a href="admin/author"><span class="icon icon_feed"></span>Authors</a>
+                        </li>
+
+                        <li class="<?php
+                        if (in_array($url, array('admin/auto_generated_credentials'))) {
+                            echo 'active';
+                        }
+                        ?>" >
+                            <a href="admin/auto_generated_credentials"><span class="icon icon_credencial"></span>Generate Credentials</a>
+                        </li>
+                    </ul>
+
+                    <?php /*
+                    <ul class="personal_menu">
+                        <li class="<?php
                             if (in_array($url, array('admin/feeds'))) {
                                 echo 'active';
                             }
                         ?>">
                             <a href="admin/feeds"><span class="icon icon_feed"></span>Feeds</a>
-                        </li><!-- class="active"-->
+                        </li>
                         <li class="<?php
                             if (in_array($url, array('admin/spam'))) {
                                 echo 'active';
@@ -319,6 +424,7 @@ $url = uri_string();
                         ?>" >
                             <a href="admin/auto_generated_credentials"><span class="icon icon_credencial"></span>Generate Credentials</a>
                         </li>
+                      */ ?> 
 
                     </ul>
                     <a href="admin/logout" class="logout"><span class="icon icon_logout"></span>LogOut</a>

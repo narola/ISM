@@ -99,6 +99,8 @@ class Book extends ADMIN_Controller {
 		// START To check weather page is on 1st page or not ? if it is on first page do not show add notice field
 		$this->data['page_number'] =  $this->uri->segment(5);
 		$config['per_page'] = 4;
+		$config['uri_segment'] = 5;
+		
 		//END
 		
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
