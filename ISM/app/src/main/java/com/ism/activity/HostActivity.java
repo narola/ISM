@@ -337,7 +337,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         txtAction.setOnClickListener(onClickMenuItem);
 
     }
-
     public void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -944,10 +943,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     public void setListenerHostAboutMe(HostListenerAboutMe hostListenerAboutMe) {
         this.hostListenerAboutMe = hostListenerAboutMe;
-    }
-
-    public void setListenerAddToFavouriteListner(AddToFavouriteListner addToFavouriteListner) {
-        this.addToFavouriteListner = addToFavouriteListner;
     }
 
     public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {

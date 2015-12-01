@@ -33,7 +33,8 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 28/10/15.
  */
-public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, AuthorHostActivity.AddToFavouriteListner, AuthorHostActivity.AddToLibraryListner {
+public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, AuthorHostActivity.AddToFavouriteListner
+{
 
 
     private static final String TAG = MyDeskBooksFragment.class.getSimpleName();
@@ -59,12 +60,23 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
     private ArrayList<String> arrayListFav = new ArrayList<>();
     private ArrayList<String> arrayListUnFav = new ArrayList<>();
     private ArrayList<String> arrayListAddBooksToLibrary = new ArrayList<>();
-    private ArrayList<String> arrayListRemoveBooksFromLibrary;
+    private ArrayList<String> arrayListRemoveBooksFromLibrary = new ArrayList<>();
 
     public static MyDeskBooksFragment newInstance() {
         MyDeskBooksFragment fragBooks = new MyDeskBooksFragment();
         return fragBooks;
     }
+
+    @Override
+    public void onSearchFav(ArrayList<BookData> arrayList) {
+        setUpFavList(arrayList);
+    }
+
+    @Override
+    public void onSearchSuggested(ArrayList<BookData> arrayList) {
+        setUpSuggestedList(arrayList);
+    }
+
 
     public MyDeskBooksFragment() {
         // Required empty public constructor
@@ -235,10 +247,10 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
     public void setUpFavList(ArrayList<BookData> arrayListFavBooks) {
         try {
 
-                favoriteBooksAdapter = new FavoriteBooksAdapter(getActivity(), arrayListFavBooks, this, this);
-                listViewFavBooks.setAdapter(favoriteBooksAdapter);
-                favoriteBooksAdapter.notifyDataSetChanged();
-                setVisibilityFavItems(arrayListFavBooks.size());
+            favoriteBooksAdapter = new FavoriteBooksAdapter(getActivity(), arrayListFavBooks, this);
+            listViewFavBooks.setAdapter(favoriteBooksAdapter);
+            favoriteBooksAdapter.notifyDataSetChanged();
+            setVisibilityFavItems(arrayListFavBooks.size());
 
         } catch (Exception e) {
             Debug.e(TAG, "setUpFavList Exceptions :" + e.getLocalizedMessage());
@@ -247,7 +259,7 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
 
     public void setUpSuggestedList(ArrayList<BookData> arrayListSuggestedBooks) {
         try {
-            suggestedBooksAdapter = new SuggestedBookAdapter(getActivity(), arrayListSuggestedBooks, this, this);
+            suggestedBooksAdapter = new SuggestedBookAdapter(getActivity(), arrayListSuggestedBooks, this);
             listViewSuggestedBooks.setAdapter(suggestedBooksAdapter);
             suggestedBooksAdapter.notifyDataSetChanged();
             setVisibilitySuggestedItems(arrayListSuggestedBooks.size());
@@ -430,11 +442,12 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
 
     @Override
     public void onAddToLibrary(String id) {
-
+        arrayListAddBooksToLibrary.add(id);
     }
 
     @Override
     public void onRemoveFromLibrary(String id) {
+        arrayListRemoveBooksFromLibrary.add(id);
 
     }
 }

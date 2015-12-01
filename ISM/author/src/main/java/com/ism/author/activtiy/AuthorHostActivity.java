@@ -63,6 +63,7 @@ import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.BookData;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -92,12 +93,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
     private HostListenerProfileController listenerHostProfileController;
     private AddToFavouriteListner addToFavouriteListner;
-    private AddToLibraryListner addToLibraryListner;
-
-
     private HostListenerAllNotification listenerHostAllNotification;
 
     private HostListenerAllMessage listenerHostAllMessage;
+
     private ArrayList<ControllerTopMenuItem> controllerTopMenuTrial, currentControllerTopMenu, controllerTopMenuAssessment, controlTopMenuMyDesk;
     /*
     * these are the fragments for the main fragment.
@@ -121,11 +120,11 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_ALL_NOTIFICATION = 19;
     public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 20;
     public static final int FRAGMENT_MY_DESK = 21;
-
-
     //these are the right side fragments
 
+
     public static final int FRAGMENT_PROFILE_CONTROLLER = 31;
+
     public static final int FRAGMENT_HIGHSCORE = 32;
     public static final int FRAGMENT_STUDENT_ATTEMPTED = 33;
     public static final int FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT = 34;
@@ -134,73 +133,16 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_MY_ACTIVITY = 37;
     public static final int FRAGMENT_MY_BOOKS = 38;
     public static final int FRAGMENT_VIEW_PROFILE = 39;
-
-
     private InputMethodManager inputMethod;
-    //these are the fragments for the author edit profile screen.
 
 
     public static int currentMainFragment;
+
+
     public static int currentRightFragment;
     private int currentMainFragmentBg;
     private ActionProcessButton progress_bar;
     private ProgressGenerator progressGenerator;
-
-    //    /**
-//     * ATTENTION: This was auto-generated to implement the App Indexing API.
-//     * See https://g.co/AppIndexing/AndroidStudio for more information.
-//     */
-//    private GoogleApiClient client;
-//
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//        // ATTENTION: This was auto-generated to implement the App Indexing API.
-//        // See https://g.co/AppIndexing/AndroidStudio for more information.
-//        client.connect();
-//        Action viewAction = Action.newAction(
-//                Action.TYPE_VIEW, // TODO: choose an action type.
-//                "AuthorHost Page", // TODO: Define a title for the content shown.
-//                // TODO: If you have web page content that matches this app activity's content,
-//                // make sure this auto-generated web page URL is correct.
-//                // Otherwise, set the URL to null.
-//                Uri.parse("http://host/path"),
-//                // TODO: Make sure this auto-generated app deep link URI is correct.
-//                Uri.parse("android-app://com.ism.author.activtiy/http/host/path")
-//        );
-//        AppIndex.AppIndexApi.start(client, viewAction);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//
-//        // ATTENTION: This was auto-generated to implement the App Indexing API.
-//        // See https://g.co/AppIndexing/AndroidStudio for more information.
-//        Action viewAction = Action.newAction(
-//                Action.TYPE_VIEW, // TODO: choose an action type.
-//                "AuthorHost Page", // TODO: Define a title for the content shown.
-//                // TODO: If you have web page content that matches this app activity's content,
-//                // make sure this auto-generated web page URL is correct.
-//                // Otherwise, set the URL to null.
-//                Uri.parse("http://host/path"),
-//                // TODO: Make sure this auto-generated app deep link URI is correct.
-//                Uri.parse("android-app://com.ism.author.activtiy/http/host/path")
-//        );
-//        AppIndex.AppIndexApi.end(client, viewAction);
-//        client.disconnect();
-//    }
-//
-    public interface AddToLibraryListner {
-        public void onAddToLibrary(String id);
-
-        public void onRemoveFromLibrary(String id);
-    }
-
-    public void setListenerAddToLibrary(AddToLibraryListner addToLibraryListner) {
-        this.addToLibraryListner = addToLibraryListner;
-    }
 
     public interface HostListenerProfileController {
         public void onBadgesFetched();
@@ -218,7 +160,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public interface HostListenerAllMessage {
         public void onControllerTopBackClick();
     }
-
 
     public void setListenerHostProfileController(HostListenerProfileController listenerHostProfileController) {
         this.listenerHostProfileController = listenerHostProfileController;
@@ -243,10 +184,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
         inigGlobal();
 
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        // client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -1105,6 +1042,14 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         public void onAddToFav(int position);
 
         public void onRemoveFromFav(int position);
+
+        public void onAddToLibrary(String id);
+
+        public void onRemoveFromLibrary(String id);
+
+        public void onSearchFav(ArrayList<BookData> arrayList);
+
+        public void onSearchSuggested(ArrayList<BookData> arrayList);
     }
 
 

@@ -28,7 +28,6 @@ import java.util.ArrayList;
 public class SuggestedBookAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = SuggestedBookAdapter.class.getSimpleName();
     private final AuthorHostActivity.AddToFavouriteListner addToFavouriteListner;
-    private final AuthorHostActivity.AddToLibraryListner addToLibraryListner;
     Context context;
     ArrayList<BookData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
@@ -37,12 +36,11 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable {
     private ArrayList<String> arrayFavResourceIds = new ArrayList<String>();
     private MyDeskBooksFragment myDeskBooksFragment;
 
-    public SuggestedBookAdapter(Context context, ArrayList<BookData> arrayList,AuthorHostActivity.AddToFavouriteListner addToFavouriteListner,AuthorHostActivity.AddToLibraryListner addToLibraryListner) {
+    public SuggestedBookAdapter(Context context, ArrayList<BookData> arrayList,AuthorHostActivity.AddToFavouriteListner addToFavouriteListner) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter = arrayList;
         this.addToFavouriteListner=addToFavouriteListner;
-        this.addToLibraryListner=addToLibraryListner;
         inflater = LayoutInflater.from(context);
         myDeskBooksFragment=new MyDeskBooksFragment().newInstance();
     }
@@ -97,6 +95,13 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable {
 //			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
             Global.imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
+            if (arrayList.get(position).getIsLibrary().equals("1")) {
+                holder.imgBookAdd.setActivated(true);
+            }else {
+                holder.imgBookAdd.setActivated(false);
+
+            }
+
             holder.imgAddToFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -118,21 +123,15 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable {
                 public void onClick(View v) {
                     if (arrayList.get(position).getIsLibrary().equals("1")) {
                         arrayList.get(position).setIsLibrary("0");
+                        addToFavouriteListner.onRemoveFromLibrary(arrayList.get(position).getBookId());
                         holder.imgBookAdd.setActivated(false);
-                        addToLibraryListner.onRemoveFromLibrary(arrayList.get(position).getBookId());
-                    }else {
-                        arrayList.get(position).setIsLibrary("1");
+                    } else {
                         holder.imgBookAdd.setActivated(true);
-                        addToLibraryListner.onAddToLibrary(arrayList.get(position).getBookId());
+                        arrayList.get(position).setIsLibrary("1");
+                        addToFavouriteListner.onAddToLibrary(arrayList.get(position).getBookId());
                     }
-                    notifyDataSetChanged();
                 }
             });
-            if (arrayList.get(position).getIsLibrary().equals("1")) {
-                holder.imgBookAdd.setActivated(true);
-            }else {
-                holder.imgBookAdd.setActivated(false);
-            }
 
         } catch (Exception e) {
             Debug.i(TAG, "getView Exception : " + e.getLocalizedMessage());
@@ -205,7 +204,7 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable {
             try {
 
                 arrayList = (ArrayList<BookData>) results.values;
-                myDeskBooksFragment.setVisibilitySuggestedItems(arrayList.size());
+                addToFavouriteListner.onSearchSuggested(arrayList);
                 notifyDataSetChanged();
             } catch (Exception e) {
                 Debug.i(TAG, "publishResults on Exception :  " + e.getLocalizedMessage());

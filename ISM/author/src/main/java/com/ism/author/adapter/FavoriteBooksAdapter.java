@@ -29,7 +29,6 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = FavoriteBooksAdapter.class.getSimpleName();
     private final MyDeskBooksFragment fragment;
     private final AuthorHostActivity.AddToFavouriteListner addToFavouriteListner;
-    private final AuthorHostActivity.AddToLibraryListner addToLibraryListner;
     Context context;
     ArrayList<BookData> arrayList = new ArrayList<>();
     ArrayList<BookData> arrayListFilter = new ArrayList<>();
@@ -37,13 +36,12 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
     LayoutInflater inflater;
     FavBookFilter favBookFilter;
 
-    public FavoriteBooksAdapter(Context context, ArrayList<BookData> arrayList,AuthorHostActivity.AddToFavouriteListner addToFavouriteListner,AuthorHostActivity.AddToLibraryListner addToLibraryListner) {
+    public FavoriteBooksAdapter(Context context, ArrayList<BookData> arrayList,AuthorHostActivity.AddToFavouriteListner addToFavouriteListner ) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter = arrayList;
         inflater = LayoutInflater.from(context);
         this.addToFavouriteListner=addToFavouriteListner;
-        this.addToLibraryListner=addToLibraryListner;
         this.fragment = new MyDeskBooksFragment().newInstance();
     }
 
@@ -98,10 +96,9 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
             arrayList.get(position).setIsLibrary("0");
             if (arrayList.get(position).getIsLibrary().equals("1")) {
                 holder.imgLibraryBook.setActivated(true);
-               // holder.imgLibraryBook.setImageResource(R.drawable.img_remove_book);
-            }else {
+                           }else {
                 holder.imgLibraryBook.setActivated(false);
-               // holder.imgLibraryBook.setImageResource(R.drawable.img_add_book);
+
             }
 
             holder.imgAddToUnFav.setOnClickListener(new View.OnClickListener() {
@@ -119,14 +116,13 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
 
                     if (arrayList.get(position).getIsLibrary().equals("1")) {
                         arrayList.get(position).setIsLibrary("0");
-                        addToLibraryListner.onRemoveFromLibrary(arrayList.get(position).getBookId());
+                        addToFavouriteListner.onRemoveFromLibrary(arrayList.get(position).getBookId());
                         holder.imgLibraryBook.setActivated(false);
                     } else {
                         holder.imgLibraryBook.setActivated(true);
                         arrayList.get(position).setIsLibrary("1");
-                      addToLibraryListner.onAddToLibrary(arrayList.get(position).getBookId());
+                      addToFavouriteListner.onAddToLibrary(arrayList.get(position).getBookId());
                     }
-                     // holder.imgLibraryBook.setImageResource(arrayList.get(position).getIsLibrary().equals("0") ? R.drawable.img_add_book : R.drawable.img_remove_book);
 //                    notifyDataSetChanged();
                 }
             });
@@ -203,7 +199,7 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
             try {
 
                 arrayList = (ArrayList<BookData>) results.values;
-                fragment.setVisibilityFavItems(arrayList.size());
+               addToFavouriteListner.onSearchFav(arrayList);
                 Debug.i(TAG, "publishResults arrayList :  " + arrayList.size());
                 notifyDataSetChanged();
             } catch (Exception e) {

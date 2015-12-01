@@ -27,8 +27,8 @@
 		android:layout_height="wrap_content"
 		android:layout_centerHorizontal="true"
 		android:layout_below="@id/txt_user_name"
-		android:textColor="@color/bg_app_dark"
-		android:textSize="18sp"/>
+		android:textColor="@color/color_green"
+		android:textSize="16sp"/>
 
 	<TextView
 		android:id="@+id/txt_school"
@@ -37,16 +37,16 @@
 		android:layout_centerHorizontal="true"
 		android:layout_below="@id/txt_following"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="18sp"/>
+		android:textSize="16sp"/>
 
 	<TextView
-		android:id="@+id/txt_stream"
+		android:id="@+id/txt_course"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_centerHorizontal="true"
 		android:layout_below="@id/txt_school"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="18sp"/>
+		android:textSize="16sp"/>
 
 	<Button
 		android:id="@+id/btn_add_studymate"

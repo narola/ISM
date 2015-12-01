@@ -58,6 +58,7 @@ public class YourStudymatesFragment extends Fragment {
 				outRect.bottom = 1;
 			}
 		};
+
 		recyclerYourStudymates.addItemDecoration(decoration);
 		recyclerYourStudymates.setLayoutManager(new LinearLayoutManager(getActivity()));
 
