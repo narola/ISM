@@ -11,6 +11,18 @@ public class Question {
 
     private String questionId;
 
+    @JsonProperty("hasgtag")
+    public String getHashtag() {
+        return hashtag;
+    }
+
+    public Question setHashtag(String hashtag) {
+        this.hashtag = hashtag;
+        return this;
+    }
+
+    private String hashtag;
+
     @JsonProperty("question_id")
     public String getQuestionId() {
         return this.questionId;

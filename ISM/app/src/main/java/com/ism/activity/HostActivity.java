@@ -933,7 +933,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         this.hostListenerAboutMe = hostListenerAboutMe;
     }
 
-    public void setshowControllerTopBackButton(HostListenerAllNotification listenerHostAllNotification) {
+    public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
         this.listenerHostAllNotification = listenerHostAllNotification;
     }
 

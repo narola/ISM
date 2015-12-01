@@ -131,7 +131,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                     ((AuthorHostActivity) getActivity()).showProgress();
                     Attribute attribute = new Attribute();
                     attribute.setExamId("61");
-                    attribute.setQuestionId(getArrListQuestionId());
+//                    attribute.setQuestionId(getArrListQuestionId());
 
                     new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                             .execute(WebConstants.SETQUESTIONSFOREXAM);
