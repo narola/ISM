@@ -18,7 +18,6 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.GetObjectiveAssignmentQuestionsAdapter;
 import com.ism.teacher.adapters.StudentAttemptedAdapter;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.ws.helper.Attribute;
@@ -28,9 +27,6 @@ import com.ism.teacher.ws.helper.WebserviceWrapper;
 import java.util.List;
 
 
-/**
- * Created by c162 on 04/11/15.
- */
 
 public class StudentAttemptedFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
     private static final String TAG = StudentAttemptedFragment.class.getSimpleName();
@@ -45,10 +41,6 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     //Test
     Context context;
-    public String examid_from_param = "";
-    public String studentid_from_param = "";
-    public boolean callEvaluationApiFlag = false;
-    ResponseHandler responseObjectEval;
 
     public static StudentAttemptedFragment newInstance(Bundle bundleArguments) {
         StudentAttemptedFragment studentAttemptedFragment = new StudentAttemptedFragment();
@@ -72,18 +64,6 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     private void initGlobal() {
         rvList = (RecyclerView) view.findViewById(R.id.rv_list);
         rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        if (getArguments() != null) {
-
-            this.callEvaluationApiFlag = getArguments().getBoolean(AppConstant.ARG_CALL_EVALUATION_API_FLAG);
-            this.examid_from_param = getArguments().getString(AppConstant.ARG_EXAM_ID);
-            ;
-            this.studentid_from_param = getArguments().getString(AppConstant.ARG_STUDENT_ID);
-
-
-        } else {
-            this.callEvaluationApiFlag = false;
-        }
 
         Attribute attribute = new Attribute();
         attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
@@ -169,10 +149,10 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                     onResponseGetAllStudentAttempted(object);
                     break;
                 case WebConstants.GET_EXAM_QUESTIONS:
-                 //   onResponseGetExamQuestions(object);
+                    //   onResponseGetExamQuestions(object);
                     break;
                 case WebConstants.GET_EXAM_EVALUATIONS:
-               //     onResponseGetEvaluation(object);
+                    //     onResponseGetEvaluation(object);
                     break;
             }
 

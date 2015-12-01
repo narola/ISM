@@ -231,6 +231,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
         return v;
     }
+
     public void filter(CharSequence charText) {
 
         arrListQuestions.clear();

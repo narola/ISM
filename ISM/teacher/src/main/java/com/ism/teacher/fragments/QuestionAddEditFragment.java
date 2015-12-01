@@ -29,6 +29,7 @@ import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
+import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.autocomplete.ContactsCompletionView;
 import com.ism.teacher.autocomplete.FilteredArrayAdapter;
 import com.ism.teacher.autocomplete.TokenCompleteTextView;
@@ -51,9 +52,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by c166 on 31/10/15.
- */
 public class QuestionAddEditFragment extends Fragment implements TokenCompleteTextView.TokenListener, View.OnClickListener, WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = QuestionAddEditFragment.class.getSimpleName();
@@ -197,8 +195,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
         callAPiGetAllHashTag();
     }
-
-
     //intiGlobalEnds
 
     Uri selectedUri = null;
@@ -437,9 +433,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 etEvaluationNote2.setText(questions.getEvaluationNotes());
             }
 
-            if (questions.getTags().size() > 0) {
-                for (int i = 0; i < questions.getTags().size(); i++) {
-                    tagsView.addObject(new HashTagsModel(questions.getTags().get(i).getTagName(), questions.getTags().get(i).getTagId()));
+            if (questions.getTags() != null) {
+                if (questions.getTags().size() > 0) {
+                    for (int i = 0; i < questions.getTags().size(); i++) {
+                        tagsView.addObject(new HashTagsModel(questions.getTags().get(i).getTagName(), questions.getTags().get(i).getTagId()));
+                    }
                 }
             }
 
@@ -755,7 +753,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         question.setSolution(etEvaluationNote2.getText().toString());
         question.setTopicId(getArguments().getString(AssignmentExamFragment.ARG_EXAM_TOPIC_ID));
         question.setSubjectId(getArguments().getString(AssignmentExamFragment.ARG_EXAM_SUBJECT_ID));
-        question.setSubjectName(getArguments().getString(AppConstant.ARG_SUBJECT_NAME));
+        question.setSubjectName(getArguments().getString(AssignmentsAdapter.ARG_SUBJECT_NAME));
         question.setClassroomId(getArguments().getString(AssignmentExamFragment.ARG_EXAM_CLASSROOM_ID));
         question.setBookId(getArguments().getString(AssignmentExamFragment.ARG_EXAM_BOOK_ID));
 //                        question.setTags(arrListTags);

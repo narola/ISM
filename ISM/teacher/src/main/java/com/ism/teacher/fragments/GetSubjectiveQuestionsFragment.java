@@ -19,9 +19,10 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
+import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
+import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.adapters.SubjectiveQuestionListAdapter;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.views.CircleImageView;
@@ -163,7 +164,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
                 Attribute request = new Attribute();
 //                request.setExamId(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 request.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
-                Debug.e(TAG, "The exam ID is::" + getBaseFragment().getArguments().getString(AppConstant.ARG_EXAM_ID));
+                Debug.e(TAG, "The exam ID is::" + getBaseFragment().getArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_QUESTIONS);
             } catch (Exception e) {
@@ -180,7 +181,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
             try {
                 ((TeacherHostActivity) getActivity()).startProgress();
                 Attribute request = new Attribute();
-                request.setExamId(getBaseFragment().getArguments().getString(AppConstant.ARG_STUDENT_ID));
+                request.setExamId(getBaseFragment().getArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID));
                 request.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
 //                request.setStudentId("1");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -225,7 +226,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
                      * condition to call evaluation based on flag
                      */
 
-                    if (getBaseFragment().getArguments().getBoolean(AppConstant.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                    if (getBaseFragment().getArguments().getBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                         loadStudentEvaluationData();
                         getBaseFragment().showGetStudentsandPalleteFragment();
                         rlBottomEvaluationTab.setVisibility(View.VISIBLE);
@@ -283,7 +284,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     private void loadNextStudentData() {
         isFromLeft = false;
-        int position = getBaseFragment().getArguments().getInt(AppConstant.ARG_STUDENT_POSITION);
+        int position = getBaseFragment().getArguments().getInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION);
         if (position < arrListExamSubmittor.size() - 1) {
             position++;
             setStudentData(position);
@@ -292,10 +293,10 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     private void loadPreviousStudentData() {
         isFromLeft = true;
-        int position = getBaseFragment().getArguments().getInt(AppConstant.ARG_STUDENT_POSITION);
+        int position = getBaseFragment().getArguments().getInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION);
         if (position >= 1) {
             position--;
-            getBaseFragment().getArguments().putInt(AppConstant.ARG_STUDENT_POSITION, position);
+            getBaseFragment().getArguments().putInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION, position);
             setStudentData(position);
         }
     }
@@ -321,7 +322,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     }
 
     public void loadStudentEvaluationData() {
-        if (getBaseFragment().getArguments().getString(AppConstant.ARG_STUDENT_ID) != null) {
+        if (getBaseFragment().getArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID) != null) {
             setQuestions();
             callAPiGetExamEvaluation();
             scrollToSpecificQuestion(0);
@@ -337,19 +338,19 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
         arrListExamSubmittor = getBaseFragment().getArguments().getParcelableArrayList(MyStudentsAdapter.ARG_ARR_LIST_STUDENTS);
         tvStudentEvalutionNo.setText(getActivity().getResources().getString(R.string.strevaluation) + " " +
-                (getBaseFragment().getArguments().getInt(AppConstant.ARG_STUDENT_POSITION) + 1) + " " +
+                (getBaseFragment().getArguments().getInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION) + 1) + " " +
                 getActivity().getResources().getString(R.string.strof) + " " +
                 arrListExamSubmittor.size());
 
         imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                 imgStudentProfilePic, ISMTeacher.options);
 
-        tvStudentName.setText(getBaseFragment().getArguments().getString(AppConstant.ARG_STUDENT_NAME));
+        tvStudentName.setText(getBaseFragment().getArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_NAME));
         tvStudentRollNo.setText(getResources().getString(R.string.strrollno) + " " +
-                (getBaseFragment().getArguments().getInt(AppConstant.ARG_STUDENT_POSITION) + 1));
+                (getBaseFragment().getArguments().getInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION) + 1));
         tvAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + " " +
-                getBaseFragment().getArguments().getInt(AppConstant.ARG_ASSIGNMENT_NO));
-        tvAssignmentTitle.setText(getBaseFragment().getArguments().getString(AppConstant.ARG_EXAM_NAME));
+                getBaseFragment().getArguments().getInt(AssignmentsAdapter.ARG_ASSIGNMENT_NO));
+        tvAssignmentTitle.setText(getBaseFragment().getArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
 
 
     }

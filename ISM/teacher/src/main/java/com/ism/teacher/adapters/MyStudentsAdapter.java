@@ -127,7 +127,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
             imageLoader.displayImage(WebConstants.USER_IMAGES + arrayListStudents.get(position).getStudentProfilePic(), holder.imgStudentPic, ISMTeacher.options);
 
-            if (getBundleArgument().getString(AppConstant.ARG_STUDENT_ID).equals(arrayListStudents.get(position).getStudentId())) {
+            if (getBundleArgument().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID).equals(arrayListStudents.get(position).getStudentId())) {
                 holder.txtStudentName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
             } else {
                 holder.txtStudentName.setTextColor(mContext.getResources().getColor(R.color.color_gray));
@@ -206,12 +206,12 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
     public void setBundleArgument(int position) {
 
-        getBundleArgument().putInt(AppConstant.ARG_STUDENT_POSITION, position);
-        getBundleArgument().putString(AppConstant.ARG_STUDENT_PROFILE_PIC,
+        getBundleArgument().putInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION, position);
+        getBundleArgument().putString(AssignmentSubmitterAdapter.ARG_STUDENT_PROFILE_PIC,
                 arrayListStudents.get(position).getStudentProfilePic());
-        getBundleArgument().putString(AppConstant.ARG_STUDENT_NAME,
+        getBundleArgument().putString(AssignmentSubmitterAdapter.ARG_STUDENT_NAME,
                 arrayListStudents.get(position).getStudentName());
-        getBundleArgument().putString(AppConstant.ARG_STUDENT_ID,
+        getBundleArgument().putString(AssignmentSubmitterAdapter.ARG_STUDENT_ID,
                 arrayListStudents.get(position).getStudentId());
 
         notifyDataSetChanged();

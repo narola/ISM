@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.ws.model.Questions;
 
 import java.util.ArrayList;
@@ -72,14 +71,6 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            exam_id_received_from_bundle = getArguments().getString(AppConstant.ARG_EXAM_ID);
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_add_question_teacher, container, false);
 
@@ -99,7 +90,6 @@ public class AddQuestionContainerFragment extends Fragment {
             getFragmentManager()
                     .beginTransaction()
                     .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
-                            //.add(R.id.fl_addquestionfragment_container_left, QuestionListFragment.newInstance(getArguments()))
                     .commit();
 
             showHideFragment(questionAddEditFragment);
@@ -171,15 +161,6 @@ public class AddQuestionContainerFragment extends Fragment {
 
     }
 
-    public String getExam_id_received_from_bundle() {
-        if (!exam_id_received_from_bundle.equalsIgnoreCase("")) {
-            return exam_id_received_from_bundle;
-        } else {
-            return "";
-        }
-    }
-
-
 
  /*thsese are the listof questions to add it in preview */
 
@@ -198,19 +179,6 @@ public class AddQuestionContainerFragment extends Fragment {
     public void addQuestionsToPreviewFragment() {
         Debug.e(TAG, "The size of question list to add it in preview" + getListOfPreviewQuestionsToAdd().size());
         previewQuestionFragment.addQuestionsToPreviewFragment(getListOfPreviewQuestionsToAdd());
-    }
-
-    /*this is to update check box view in questionlist after delete it from preview questions*/
-    public void updateQuestionListviewAfterRemoveInPreview(Questions questions) {
-        questionListFragment.updateViewAfterDeleteInPreviewQuestion(questions);
-        previewQuestionFragment.arrListQuestions.remove(questions);
-
-    }
-
-    /*this isto update question status after set data from exam*/
-
-    public void updateQuestionStatusAfterSetDataOfExam(ArrayList<Questions> arrListQuestions) {
-        questionListFragment.updateQuestionStatusAfterSetDataOfExam();
     }
 
 
@@ -265,6 +233,16 @@ public class AddQuestionContainerFragment extends Fragment {
         if (isChecked) {
             previewQuestionFragment.addQuestionDataAfterAddQuestion(question);
         }
+    }
+
+    public void setListOfExamQuestions(ArrayList<Questions> arrListExamQuestions) {
+        previewQuestionFragment.setExamQuestions(arrListExamQuestions);
+    }
+
+    /*this is to update check box view in questionlist after delete it from preview questions*/
+    public void updateQuestionListviewAfterRemoveInPreview(Questions question) {
+        questionListFragment.updateViewAfterDeleteInPreviewQuestion(question.getQuestionId());
+        previewQuestionFragment.arrListQuestions.remove(question);
     }
 
 }
