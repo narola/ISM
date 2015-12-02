@@ -22,7 +22,7 @@ public class RequestWs {
             return new WebServiceRequest(url).execute(nameValuePair, cls,
 					null);
 		} else {*/
-        Debug.i(TAG, "URL : " + url);
+        Debug.i(TAG, "Url : " + url);
         Debug.i(TAG, "reqCls : " + reqCls);
 
         return new WebserviceConnector(url).execute(cls, reqCls);
