@@ -49,6 +49,7 @@ switch ($_REQUEST['Service'])
     case "GetStudentProfile":
     case "ManageBookLibrary":
     case "GetBlockedUser":
+    case "GetBooksForAuthor":
     {
         include_once 'ProfileFunctions.php';
         $profile = new ProfileFunctions();
@@ -107,6 +108,7 @@ switch ($_REQUEST['Service'])
     case "GetStudentResultsByExam":
     case "GetHighScorers":
     case "TempCreateQuestion":
+    case "GetBooks":
     {
         include_once 'ExamFunctions.php';
         $exam = new ExamFunctions();

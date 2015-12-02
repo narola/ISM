@@ -89,7 +89,7 @@ class StudyMateFunctions
 
                 if ($updateResult) {
                     $message = REQUEST_ACCEPTED;
-                    $status = "success";
+                    $status = SUCCESS;
                 }
             } else {
                 $message = DEFAULT_NO_RECORDS;
@@ -142,7 +142,7 @@ class StudyMateFunctions
 
                 if ($insertResult) {
                     $message = "Request sent.";
-                    $status = "success";
+                    $status = SUCCESS;
                 } else {
                     $message = "";
                     $status = "failed";
@@ -377,13 +377,13 @@ INNER JOIN  `user_favorite_book` book on author.user_id=book.user_id, book.book_
                     } else {
                         $post['user_id'] = $studymate_id;
                         $users[] = $studymate_id;
-                        $post['full_name'] = $val['username'];
+                        $post['full_name'] = $val['full_name'];
                         $post['profile_pic'] = $val['profile_pic'];
                         $data[] = $post;
                     }
 
                 }
-                $status = "success";
+                $status = SUCCESS;
                 $message = "";
 
             } else {
@@ -449,7 +449,7 @@ INNER JOIN  `user_favorite_book` book on author.user_id=book.user_id, book.book_
                     } else {
                         $post['user_id'] = $studymate_id;
                         $users[] = $studymate_id;
-                        $post['full_name'] = $val['username'];
+                        $post['full_name'] = $val['full_name'];
                         $post['profile_pic'] = $val['profile_pic'];
                         $post['is_online'] = $val['is_online'];
                         $post['school_name'] = $val['school_name'];
@@ -457,7 +457,7 @@ INNER JOIN  `user_favorite_book` book on author.user_id=book.user_id, book.book_
                     }
 
                 }
-                $status = "success";
+                $status = SUCCESS;
                 $message = "";
 
             } else {
@@ -471,7 +471,7 @@ INNER JOIN  `user_favorite_book` book on author.user_id=book.user_id, book.book_
             $status="failed";
             $message = MALICIOUS_SOURCE;
         }
-        $response['studymate_details']=$data;
+        $response['studymates']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
 
@@ -545,7 +545,7 @@ INNER JOIN  `user_favorite_book` book on author.user_id=book.user_id, book.book_
                     $data[] = $post;
                 }
 
-                $status = "success";
+                $status = SUCCESS;
                 $message = "";
 
             } else {

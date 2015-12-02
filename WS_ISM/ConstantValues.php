@@ -34,4 +34,8 @@ define("SUCCESSFULLY_UPDATED","Updated successfully");
 
 define("RECORD_ALREADY_EXIST","Record already exist.");
 
+define("SUCCESS","success");
+
+define("FAILED","failed");
+
 ?>

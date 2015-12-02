@@ -117,6 +117,12 @@ class ExamFunctions
                 return $this->tempCreateQuestion($postData);//in progress
             }
                 break;
+
+            case "GetBooks":
+            {
+                return $this->getBooks($postData);//in progress
+            }
+                break;
         }
     }
 
@@ -255,7 +261,7 @@ class ExamFunctions
 
                 $data[] = $post;
                 $message = "";
-                $status = "success";
+                $status = SUCCESS;
             } else {
 
                 $status = "failed";
@@ -347,7 +353,7 @@ class ExamFunctions
                 $post['examsubmittor'] = $evaluations;
                 $data[] = $post;
                 //$message="";
-                $status = "success";
+                $status = SUCCESS;
             } else {
 
                 $status = "failed";
@@ -456,7 +462,7 @@ class ExamFunctions
             // echo $insertValues;
             if ($result) {
                 $post['exam_id'] = mysqli_insert_id($GLOBALS['con']);
-                $status = "success";
+                $status = SUCCESS;
                 if ($exam_start_date != null and $exam_start_time != null) {
                     $insertExamScheduleFields = "`exam_id`, `schedule_by`, `exam_assessor`, `start_date`, `start_time`, `school_classroom_id`";
                     $insertExamScheduleValues = "" . $post['exam_id'] . "," . $user_id . "," . $user_id . ",'" . $exam_start_date . "','" . $exam_start_time . "'," . $classroom_id;
@@ -464,7 +470,7 @@ class ExamFunctions
                     $resultExamSchedule = mysqli_query($GLOBALS['con'], $queryInsertExamSchedule) or $message = mysqli_error($GLOBALS['con']);
                     //  echo $queryInsertExamSchedule;
                     if ($resultExamSchedule) {
-                        $status = "success";
+                        $status = SUCCESS;
                         //  $message="Exam created and scheduled";
                     } else {
                         $status = "failed";
@@ -537,7 +543,7 @@ class ExamFunctions
                         $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
                         // echo $query;
                         if ($result) {
-                            $status = "success";
+                            $status = SUCCESS;
                             $message = "";
                         } else {
                             $status = "failed";
@@ -667,7 +673,7 @@ class ExamFunctions
 
                             $data[] = $post;
                         }
-                        $status = "success";
+                        $status = SUCCESS;
                         $message = "";
                     } /*else {
                         $status = "failed";
@@ -723,7 +729,7 @@ class ExamFunctions
                     //$post['subject_id']=$row;
                     $data[] = $row;
                 }
-                $status = "success";
+                $status = SUCCESS;
 
             } else {
                 $status = "failed";
@@ -774,7 +780,7 @@ class ExamFunctions
                     $data[] = $row;
 
                 }
-                $status = "success";
+                $status = SUCCESS;
 
             } else {
                 $status = "failed";
@@ -828,7 +834,7 @@ class ExamFunctions
                     $data[] = $row;
 
                 }
-                $status = "success";
+                $status = SUCCESS;
 
             } else {
                 $status = "failed";
@@ -878,7 +884,7 @@ class ExamFunctions
                     //$post['subject_id']=$row;
                     $data[] = $row;
                 }
-                $status = "success";
+                $status = SUCCESS;
 
             } else {
                 $status = "failed";
@@ -966,7 +972,7 @@ class ExamFunctions
                 }
             }
 
-            $status = "success";
+            $status = SUCCESS;
             $message = "";
             if ($data == null) {
                 $status = "failed";
@@ -985,40 +991,59 @@ class ExamFunctions
         return $response;
     }
 
-    public function getExamData($rowExam){
-         $post=array();
-        $post['exam_id']=$rowExam['id'];
+    public function getExamData($rowExam)
+    {
+        $post = array();
+        $post['exam_id'] = $rowExam['id'];
         // $post['question_title']=$rowExam['id'];
-        $post['exam_name']=$rowExam['exam_name'];
-        $post['classroom_id']=$rowExam['classroom_id'];
-        $post['subject_id']=$rowExam['subject_id'];
-        $query="SELECT class_name FROM ".TABLE_CLASSROOMS." WHERE id=".$rowExam['classroom_id'] ." AND is_delete=0 ";
+        $post['exam_name'] = $rowExam['exam_name'];
+        $post['classroom_id'] = $rowExam['classroom_id'];
+
+        $query = "SELECT class_name FROM " . TABLE_CLASSROOMS . " WHERE id=" . $rowExam['classroom_id'] . " AND is_delete=0 ";
 //                        echo $query;
-        $result=mysqli_query($GLOBALS['con'],$query) or  $message=mysqli_error($GLOBALS['con']);
-        if(mysqli_num_rows($result))
-        {
-            while($rowName=mysqli_fetch_assoc($result)) {
-                $post['classroom_name']=$rowName['class_name'];
+        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+        if (mysqli_num_rows($result)) {
+            while ($rowName = mysqli_fetch_assoc($result)) {
+                $post['classroom_name'] = $rowName['class_name'];
             }
         }
         // total student
         //    echo $query;
-        $query="SELECT * FROM ".TABLE_STUDENT_PROFILE." WHERE classroom_id=".$rowExam['classroom_id'] ." AND is_delete=0 ";
-        $result=mysqli_query($GLOBALS['con'],$query) or  $message=mysqli_error($GLOBALS['con']);
+        $query = "SELECT * FROM " . TABLE_STUDENT_PROFILE . " WHERE classroom_id=" . $rowExam['classroom_id'] . " AND is_delete=0 ";
+        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
-       // $post['total_student']=0;// need to change
-        $post['total_student']=mysqli_num_rows($result);
+        // $post['total_student']=0;// need to change
+        $post['total_student'] = mysqli_num_rows($result);
 
-        //subject name
-        $query="SELECT subject_name FROM ".TABLE_SUBJECTS." WHERE id=".$rowExam['subject_id'] ." AND is_delete=0 ";
+
+
+            $post['subject_id'] = $rowExam['subject_id'];
+            //subject name
+            $query = "SELECT subject_name FROM " . TABLE_SUBJECTS . " WHERE id=" . $rowExam['subject_id'] . " AND is_delete=0 ";
 //                        echo $query;
-        $result=mysqli_query($GLOBALS['con'],$query) or  $message=mysqli_error($GLOBALS['con']);
-        if(mysqli_num_rows($result))
-        {
-            while($rowName=mysqli_fetch_assoc($result)) {
-                $post['subject_name']=$rowName['subject_name'];
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            if (mysqli_num_rows($result)) {
+                while ($rowName = mysqli_fetch_assoc($result)) {
+                    $post['subject_name'] = $rowName['subject_name'];
+                }
             }
-        }
+
+
+
+            $post['book_id'] = $rowExam['book_id'];
+            //book name
+            $query = "SELECT book_name FROM " . TABLE_BOOKS . " WHERE id=" . $rowExam['book_id'] . " AND is_delete=0 ";
+//                        echo $query;
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            if (mysqli_num_rows($result)) {
+                while ($rowName = mysqli_fetch_assoc($result)) {
+
+                    $post['book_name'] = $rowName['book_name'];
+                }
+            }
+
+
+
         $post['exam_type']=$rowExam['exam_type'];
         $post['exam_category']=$rowExam['exam_category'];
         $post['exam_mode']=$rowExam['exam_mode'];
@@ -1027,7 +1052,7 @@ class ExamFunctions
 
 
         //total questions
-        $query="SELECT `evaluation_status`, `total_questions`, `average_score` FROM `exam_evaluation` WHERE `exam_id`=".$rowExam['id'] ." AND is_delete=0 ";
+        $query="SELECT `evaluation_status`, `total_questions`, `average_score`, `total_student_attempted`, `total_assessed` FROM `exam_evaluation` WHERE `exam_id`=".$rowExam['id'] ." AND is_delete=0 ";
         $result=mysqli_query($GLOBALS['con'],$query) or  $message=mysqli_error($GLOBALS['con']);
        // echo $query;
         if(mysqli_num_rows($result))
@@ -1036,13 +1061,20 @@ class ExamFunctions
                 $post['total_question']=$rowName['total_question'];
                 $post['evaluation_status']=$rowName['evaluation_status'];
                 $post['average_score']=$rowName['average_score'];
+                $post['total_assessed']=$rowName['total_assessed'];
+                $post['total_unassessed']= $rowName['total_student_attempted'] - $rowName['total_assessed'];
             }
         }
         else{
             $post['total_question']="";
             $post['evaluation_status']="";
             $post['average_score']="";
+            $post['total_assessed']="";
+            $post['total_unassessed']= "";
         }
+
+
+
         return $post;
     }
 
@@ -1157,7 +1189,7 @@ class ExamFunctions
 
                                 $post[] = $questions;
                             }
-                            $status = "success";
+                            $status = SUCCESS;
                             $message = "";
                         } else {
                             $status = "failed";
@@ -1268,7 +1300,7 @@ class ExamFunctions
                         $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
 
                         if ($result) {
-                            $status = "success";
+                            $status = SUCCESS;
                             $message = SUCCESSFULLY_UPDATED;
                             $post['question_id'] = $question_id;
                         } else {
@@ -1289,7 +1321,7 @@ class ExamFunctions
 
 
                     if ($result) {
-                        $status = "success";
+                        $status = SUCCESS;
                         $message = SUCCESSFULLY_ADDED;
                         $post['question_id'] = $questionID;
                     } else {
@@ -1317,7 +1349,7 @@ class ExamFunctions
                                         $resultQuestionQuery = mysqli_query($GLOBALS['con'],$updateQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
 
                                         if ($resultQuestionQuery) {
-                                            $status = "success";
+                                            $status = SUCCESS;
                                             $message = SUCCESSFULLY_UPDATED;
                                         } else {
                                             $status = "failed";
@@ -1335,7 +1367,7 @@ class ExamFunctions
 
 
                                     if ($resultQuestionQuery) {
-                                        $status = "success";
+                                        $status = SUCCESS;
                                         $message = SUCCESSFULLY_ADDED;
                                     } else {
                                         $status = "failed";
@@ -1426,7 +1458,7 @@ class ExamFunctions
                     $result_procedure = mysqli_query($GLOBALS['con'], $procedure_update_set) or $message = mysqli_error($GLOBALS['con']);
 
                     if ($result_procedure) {
-                        $status = "success";
+                        $status = SUCCESS;
                         $message = "Successfully uploaded!.";
                     } else {
                         $status = "failed";
@@ -1522,7 +1554,7 @@ class ExamFunctions
 
                     $data[] = $post;
 
-                    $status = "success";
+                    $status = SUCCESS;
                     $message = "";
                 }
             } else {
@@ -1609,7 +1641,7 @@ class ExamFunctions
 
                     $data[] = $post;
 
-                    $status = "success";
+                    $status = SUCCESS;
                     $message = "";
                 }
             } else {
@@ -1685,7 +1717,7 @@ class ExamFunctions
                     while ($val = mysqli_fetch_assoc($result)) {
 
                         $data[] = $val;
-                        $status = "success";
+                        $status = SUCCESS;
                     }
                 } else {
                     $status = "failed";
@@ -1775,7 +1807,7 @@ class ExamFunctions
 
                     if($result)
                     {
-                        $status="success";
+                        $status=SUCCESS;
                         $message=SUCCESSFULLY_UPDATED;
                         $post['question_id']=$question_id;
                     }
@@ -1801,7 +1833,7 @@ class ExamFunctions
 
                 if($result)
                 {
-                    $status="success";
+                    $status=SUCCESS;
                     $message=SUCCESSFULLY_ADDED;
                     $post['question_id']=$questionID;
                 }
@@ -1855,7 +1887,7 @@ class ExamFunctions
 
                                     if($resultQuestionQuery)
                                     {
-                                        $status="success";
+                                        $status=SUCCESS;
                                         $message=SUCCESSFULLY_UPDATED;
                                     }
                                     else
@@ -1877,7 +1909,7 @@ class ExamFunctions
 
                                 if($resultQuestionQuery)
                                 {
-                                    $status="success";
+                                    $status=SUCCESS;
                                     $message=SUCCESSFULLY_ADDED;
                                 }
                                 else
@@ -1908,7 +1940,59 @@ class ExamFunctions
 
         return $response;
     }
-    
+
+
+    /*
+     * getCourses
+    */
+    public function getBooks ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $query = "SELECT `id`, `book_name`, `book_description`,`ebook_link`,`image_link` FROM ".TABLE_BOOKS ." WHERE is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            //echo $query;
+            if (mysqli_num_rows($result)) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    //$post['subject_id']=$row;
+                    $data[] = $row;
+
+                }
+                $status = SUCCESS;
+
+            } else {
+                $status = "failed";
+                $message = DEFAULT_NO_RECORDS;
+            }
+        }
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['books']=$data;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+
 
 }
 
