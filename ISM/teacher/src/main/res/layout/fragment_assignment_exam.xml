@@ -22,17 +22,70 @@
                 android:layout_height="@dimen/d1dp"
                 android:background="@color/news_feed_separator_color" />
 
-            <TextView
-                android:id="@+id/tv_exam_title"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/d15dp"
-                android:drawableLeft="@drawable/btn_personal_info"
-                android:drawablePadding="@dimen/d15dp"
-                android:gravity="center_vertical"
-                android:text="@string/strpersonalinformation"
-                android:textAllCaps="true"
-                android:textSize="@dimen/d18dp" />
+                android:orientation="horizontal"
+                android:padding="@dimen/d10dp">
+
+
+                <TextView
+                    android:id="@+id/tv_exam_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:drawableLeft="@drawable/btn_personal_info"
+                    android:drawablePadding="@dimen/d15dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/strpersonalinformation"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/d18dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="@dimen/d15dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_exam_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_green"
+                        android:text="@string/strsave"
+                        android:textAllCaps="true"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/d20dp" />
+
+                    <Button
+                        android:id="@+id/btn_exam_setquestion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/d15dp"
+                        android:background="@drawable/btn_setquestion_assignment"
+                        android:text="@string/strsetquestion"
+                        android:textAllCaps="true"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/d20dp"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_exam_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/d15dp"
+                        android:background="@drawable/btn_cancel_assignment"
+                        android:text="@string/strcancel"
+                        android:textAllCaps="true"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/d20dp" />
+                </LinearLayout>
+            </RelativeLayout>
+
 
             <ImageView
                 android:layout_width="match_parent"
@@ -693,48 +746,6 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/d20dp"
-                android:layout_marginTop="@dimen/d20dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btn_exam_save"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_green"
-                    android:text="@string/strsave"
-                    android:textAllCaps="true"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
-
-                <Button
-                    android:id="@+id/btn_exam_setquestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d15dp"
-                    android:background="@drawable/btn_setquestion_assignment"
-                    android:text="@string/strsetquestion"
-                    android:textAllCaps="true"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp"
-                    android:visibility="visible" />
-
-                <Button
-                    android:id="@+id/btn_exam_cancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d15dp"
-                    android:background="@drawable/btn_cancel_assignment"
-                    android:text="@string/strcancel"
-                    android:textAllCaps="true"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

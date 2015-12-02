@@ -582,14 +582,14 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         view.startAnimation(slideOutAnimation);
     }
 
-    public void startProgress() {
+    public void showProgress() {
         progress_bar.setProgress(1);
         progress_bar.setEnabled(false);
         progress_bar.setVisibility(View.VISIBLE);
         progressGenerator.start(progress_bar);
     }
 
-    public void stopProgress() {
+    public void hideProgress() {
         progress_bar.setProgress(100);
         progress_bar.setVisibility(View.INVISIBLE);
     }

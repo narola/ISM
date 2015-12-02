@@ -83,7 +83,7 @@ public class NotificationAdapter extends BaseAdapter {
 		}
 
 		try {
-			imageLoader.displayImage(WebConstants.URL_USERS_IMAGE_PATH + arrListNotification.get(position).getNotificationFromProfilePic(),
+			imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrListNotification.get(position).getNotificationFromProfilePic(),
 					holder.imgDp, ISMStudent.options);
 			imageLoader.displayImage(Global.strProfilePic, holder.imgDp, ISMStudent.options);
 			holder.txtNameNotification.setText(Html.fromHtml("<font color='#1BC4A2'>" + arrListNotification.get(position).getNotificationFromName()

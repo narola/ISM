@@ -24,7 +24,7 @@ import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
-import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
@@ -42,9 +42,6 @@ import java.util.List;
 
 import jp.wasabeef.richeditor.RichEditor;
 
-/**
- * Created by c166 on 28/10/15.
- */
 public class AssignmentExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
     private View view;
@@ -81,6 +78,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     /**
      * Fragment Args
      */
+
     public static String ARG_EXAM_CLASSROOM_ID = "examClassRoomId";
     public static String ARG_EXAM_SUBJECT_ID = "examSubjectId";
     public static String ARG_EXAM_TOPIC_ID = "examTopicId";
@@ -277,35 +275,48 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             }
         });
 
-        if (getArguments() != null) {
-            setExamDetails();
-            btnExamSetquestion.setVisibility(View.VISIBLE);
-        } else {
-//            btnExamSetquestion.setVisibility(View.GONE);
-        }
+
         callApiGetClassrooms();
         callApiGetSubjects();
 
+
+        /**
+         * Checking args to know this is new assign exam or edit assignment
+         *  if (getArguments() != null) means edit assign
+         *  so disable exam mode and subject selection spinner
+         */
+
+        if (getArguments() != null) {
+            setExamDetails();
+            btnExamSetquestion.setVisibility(View.VISIBLE);
+            spExamExammode.setEnabled(false);
+            spExamSubjectname.setEnabled(false);
+
+        } else {
+//            btnExamSetquestion.setVisibility(View.GONE);
+
+        }
     }
 
 
     private void setExamDetails() {
 
-        etExamName.setText(getArguments().getString(AppConstant.ARG_EXAM_NAME));
-        spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(AppConstant.ARG_PASS_PERCENTAGE)));
-        setExamType(getArguments().getString(AppConstant.ARG_EXAM_TYPE));
-        spExamExamCategory.setSelection(arrListExamCategory.indexOf(getArguments().getString(AppConstant.ARG_EXAM_CATEGORY)));
-        spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(AppConstant.ARG_EXAM_MODE)));
-        spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(AppConstant.ARG_EXAM_DURATION)));
+        etExamName.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
+        spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE)));
+        setExamType(getArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
+        spExamExamCategory.setSelection(arrListExamCategory.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CATEGORY)));
+
+        spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE)));
+        spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_DURATION)));
 
     }
 
     private void callApiGetClassrooms() {
 
 
-        if (Utility.isOnline(mContext)) {
+        if (Utility.isConnected(mContext)) {
             try {
-                ((TeacherHostActivity) getActivity()).stopProgress();
+                //   ((TeacherHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_CLASSROOMS);
             } catch (Exception e) {
@@ -317,9 +328,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     }
 
     private void callApiGetSubjects() {
-        if (Utility.isOnline(mContext)) {
+        if (Utility.isConnected(mContext)) {
             try {
-                ((TeacherHostActivity) getActivity()).stopProgress();
+                //     ((TeacherHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_SUBJECT);
             } catch (Exception e) {
@@ -332,9 +343,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
 
     private void callApiGetTopics(int subject_id) {
-        if (Utility.isOnline(mContext)) {
+        if (Utility.isConnected(mContext)) {
             try {
-                ((TeacherHostActivity) getActivity()).stopProgress();
+                //    ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setSubjectId(String.valueOf(subject_id));
                 new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -350,9 +361,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     private void callApiCreateExam() {
 
-        if (Utility.isOnline(mContext)) {
+        if (Utility.isConnected(mContext)) {
             try {
-                ((TeacherHostActivity) getActivity()).stopProgress();
+                ((TeacherHostActivity) getActivity()).hideProgress();
                 Attribute attribute = new Attribute();
 
                 attribute.setExamName(etExamName.getText().toString());
@@ -538,7 +549,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     }
 
     private void setExamType(String value) {
-        if (value.equals("subject")) {
+        if (value.equalsIgnoreCase("subject")) {
             tbExamSelectexamfor.setChecked(true);
         } else if (value.equals("topic")) {
             tbExamSelectexamfor.setChecked(false);
@@ -577,7 +588,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     private void onResponseGetClassrooms(Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            //   ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -592,7 +603,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                     }
                     Adapters.setUpSpinner(mContext, spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL);
                     if (getArguments() != null) {
-                        spExamClassroom.setSelection(classrooms.indexOf(getArguments().getString(AppConstant.ARG_CLASSROOM_NAME)));
+                        spExamClassroom.setSelection(classrooms.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME)));
                     }
 
 
@@ -610,7 +621,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     private void onResponseGetSubjects(Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            //  ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -625,7 +636,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                     Adapters.setUpSpinner(mContext, spExamSubjectname, subjects, Adapters.ADAPTER_NORMAL);
 
                     if (getArguments() != null) {
-                        spExamSubjectname.setSelection(subjects.indexOf(getArguments().getString(AppConstant.ARG_SUBJECT_NAME)));
+                        spExamSubjectname.setSelection(subjects.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME)));
                     }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), mContext);
@@ -640,7 +651,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     private void onResponseGetTopics(Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            //   ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -667,7 +678,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     private void onResponseCreateExam(Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            //    ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -675,10 +686,10 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                     btnExamSetquestion.setVisibility(View.VISIBLE);
 
                     if (getArguments() != null) {
-                        getArguments().putString(AppConstant.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+                        getArguments().putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
                     } else {
                         Bundle bundleExamDetails = new Bundle();
-                        bundleExamDetails.putString(AppConstant.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+                        bundleExamDetails.putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
                         setArguments(bundleExamDetails);
                     }
 
@@ -751,7 +762,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             getArguments().putString(ARG_EXAM_BOOK_ID, "3");
             getArguments().putString(ARG_EXAM_QUESTION_SCORE, etExamQuestionscorevalue.getText().toString().equals("") ?
                     "0" : etExamQuestionscorevalue.getText().toString());
-            getArguments().putString(AppConstant.ARG_SUBJECT_NAME, arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName());
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME, arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName());
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_MODE,
+                    arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
         } catch (Exception e) {
             Debug.e(TAG, "SetBundleArgumentsException : " + e.toString());
         }

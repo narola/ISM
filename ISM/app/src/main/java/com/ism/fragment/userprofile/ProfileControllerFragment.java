@@ -152,7 +152,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
                         showMessages();
                         break;
                     case R.id.img_friend_request:
-                        showFriendRequests();
+                        showStudymateRequests();
                         break;
                 }
                 highlightNotificationIcon(v.getId());
@@ -334,7 +334,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         }
     }
 
-    private void showFriendRequests() {
+    private void showStudymateRequests() {
         txtRequestNo.setVisibility(View.GONE);
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_studymates, null);
 
@@ -520,6 +520,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
     }
 
 	private void fillListStudymate() {
+        Log.e(TAG, "userId : " + Global.strUserId);
 		if (arrListStudyMateRequest != null) {
 			adpStudymate = new StudymateRequestAdapter(getActivity(), this, arrListStudyMateRequest, 4);
 			lvStudymates.setAdapter(adpStudymate);
