@@ -352,7 +352,7 @@ $url = uri_string();
                                 echo 'active';
                             }
                         ?>">
-                            <a href="admin/student"><span class="icon icon_feed"></span>Students</a>
+                            <a href="admin/student"><span class="icon icon_menu_group"></span>Students</a>
                         </li>
 
                         <li class="<?php
@@ -360,7 +360,7 @@ $url = uri_string();
                                 echo 'active';
                             }
                         ?>">
-                            <a href="admin/teacher"><span class="icon icon_feed"></span>Teachers</a>
+                            <a href="admin/teacher"><span class="icon icon_menu_group"></span>Teachers</a>
                         </li>
 
                         <li class="<?php
@@ -368,7 +368,7 @@ $url = uri_string();
                                 echo 'active';
                             }
                         ?>">
-                            <a href="admin/author"><span class="icon icon_feed"></span>Authors</a>
+                            <a href="admin/author"><span class="icon icon_menu_group"></span>Authors</a>
                         </li>
 
                         <li class="<?php

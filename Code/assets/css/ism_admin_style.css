@@ -2019,7 +2019,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .table_report .table>tbody>tr>td:last-child,
 .table_report .table>thead>tr>th:last-child{
 	border-right:none;
-}
+} 
 .messages .topic_content{
 	border-right:none;
 }
@@ -2296,6 +2296,7 @@ td p.active {
     padding: 1px 5px;
     position: absolute;
     right: 10px;
+    font-weight: 600;
 }
 .view_books:hover{
 	color: #fff;
@@ -2306,4 +2307,33 @@ td p.active {
 .authorbook .view_books{
 	bottom: auto;
 	top:-43px;
+}
+.list-input ul li {
+    list-style: outside none none;
+    margin-bottom: 10px;
+}
+.upload_ques_img {
+    background-image: url("../images/question_image.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    height: 155px;
+}
+
+.upload_ques_img.pdf {
+    background-image: url("../images/pdf_image.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    height: 155px;
+}
+.upload_ques_img.epub {
+    background-image: url("../images/epub_image.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    height: 155px;
+}
+input.form-control.smallinput {
+    width: 92% !important;
 }

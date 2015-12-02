@@ -85,7 +85,7 @@
                                                 </li>
                                                 
                                                 <?php } ?>
-                                                <a class="view_books pull-right" href="admin/book/view_all/<?php echo $author['author']['id']; ?>">View All</a>
+                                                <a class="view_books pull-right btn-xs btn" href="admin/book/view_all/<?php echo $author['author']['id']; ?>">View All</a>
                                             <?php } else{
                                                 echo 'No books belongs to this author.';
                                             }

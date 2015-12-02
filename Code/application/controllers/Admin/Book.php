@@ -181,8 +181,13 @@ class Book extends ADMIN_Controller {
 		}
 
 		$this->data['book_detail'] = $book_detail;
-		$this->data['page_title'] = 'Book Details';
 		// p($book_detail, true);
+		$this->data['page_title'] = 'Book Details';
 		$this->template->load('admin/default','admin/book/book_detail',$this->data);
+	}
+
+	public function add(){
+		$this->data['page_title'] = 'Add New Book';
+		$this->template->load('admin/default','admin/book/add',$this->data);
 	}
 }

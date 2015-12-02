@@ -5,7 +5,7 @@
                     	<ol class="breadcrumb">
                           <li><a href="#">Manage</a></li>
                           <li><a href="#">book</a></li>
-                          <li class="active">Add New Book</li>
+                          <li class="active">List Of Books</li>
                         </ol>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                             </select>
                         </div>
                         <div class="pull-right">
-                          <a class="btn btn_green add_topic">Add New Book</a>
+                          <a href="admin/book/add" class="btn btn_green add_topic">Add New Book</a>
                         </div>
                         
                     </div>
