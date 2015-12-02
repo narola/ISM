@@ -8,7 +8,6 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by c85 on 19/11/15.
  * {@link RealmObject} class to handle detail of user's package.
- *
  */
 public class MembershipPackage extends RealmObject {
 
