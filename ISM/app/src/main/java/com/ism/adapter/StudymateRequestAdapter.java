@@ -202,8 +202,8 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 		try {
 			disableDialogButtons();
 			Attribute attribute = new Attribute();
-			attribute.setUserId(studymateId);
-			attribute.setStudymateId(Global.strUserId);
+			attribute.setMateOf(studymateId);
+			attribute.setMateId(Global.strUserId);
 
 			new WebserviceWrapper(context, attribute, this).new WebserviceCaller().
 					execute(WebConstants.RESPOND_TO_REQUEST);
