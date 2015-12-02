@@ -1,7 +1,6 @@
 package com.ism.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,47 +13,34 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.MovieDetailsDialog;
-import com.ism.fragment.userprofile.MoviesFragment;
 import com.ism.object.Global;
-import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
-import com.ism.ws.helper.Attribute;
-import com.ism.ws.helper.ResponseHandler;
-import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.MovieData;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
 /**
  * Created by c162 on 19/11/15.
  */
-public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWrapper.WebserviceResponse, Filterable {
+public class SuggestedMoviesAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = SuggestedMoviesAdapter.class.getSimpleName();
-    private final ImageLoader imageLoader;
     Context context;
     ArrayList<MovieData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
-    MyTypeFace myTypeFace;
-    HostActivity.AddToFavouriteListner addToFavouriteListner;
+    HostActivity.ManageResourcesListner manageResourcesListner;
     private int addToFavItemId;
     MovieFilter movieFilter;
     private ArrayList<MovieData> arrayListFilter=new ArrayList<>();
 
-    public SuggestedMoviesAdapter(Context context, ArrayList<MovieData> arrayList, HostActivity.AddToFavouriteListner addToFavouriteListner) {
+    public SuggestedMoviesAdapter(Context context, ArrayList<MovieData> arrayList, HostActivity.ManageResourcesListner manageResourcesListner) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter=arrayList;
-        this.addToFavouriteListner = addToFavouriteListner;
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+        this.manageResourcesListner = manageResourcesListner;
         inflater = LayoutInflater.from(context);
-        myTypeFace = new MyTypeFace(context);
     }
 
 
@@ -97,18 +83,18 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
         }
 
         try {
-            holder.txtMovieYear.setTypeface(myTypeFace.getRalewayRegular());
-            holder.txtMovieName.setTypeface(myTypeFace.getRalewayRegular());
+            holder.txtMovieYear.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.txtMovieName.setTypeface(Global.myTypeFace.getRalewayRegular());
             holder.txtMovieName.setGravity(Gravity.LEFT);
             holder.txtMovieYear.setGravity(Gravity.LEFT);
             holder.txtMovieName.setText(arrayList.get(position).getMovieName());
             holder.txtMovieYear.setText(arrayList.get(position).getMovieGenre());
-            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getMovieImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            Global.imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getMovieImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.imgMovieToFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addToFavItemId = position;
-                    callApiAddResourceToFav(position);
+                   manageResourcesListner.onAddToFav(position);
+
 
                 }
             });
@@ -116,7 +102,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
                 @Override
                 public void onClick(View v) {
 //                    myPopup(position);
-                    MovieDetailsDialog movieDetailsDialog = new MovieDetailsDialog(context, arrayList, position, imageLoader);
+                    MovieDetailsDialog movieDetailsDialog = new MovieDetailsDialog(context, arrayList, position, Global.imageLoader);
                     movieDetailsDialog.show();
                 }
             });
@@ -128,58 +114,6 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
         return convertView;
     }
 
-    private void callApiAddResourceToFav(int position) {
-        try {
-            if (Utility.isConnected(context)) {
-                ((HostActivity) context).showProgress();
-                Attribute attribute = new Attribute();
-                attribute.setUserId(Global.strUserId);
-                //attribute.setResourceId(arrayList.get(position).getMovieId());
-                attribute.setResourceName(AppConstant.RESOURCE_MOVIES);
-
-                new WebserviceWrapper(context, attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
-            } else {
-                Utility.alertOffline(context);
-            }
-        } catch (Exception e) {
-            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
-        }
-    }
-
-    private void onResponseAddResourceToFavorite(Object object, Exception error) {
-        try {
-            ((HostActivity) context).hideProgress();
-            if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite success" + addToFavouriteListner);
-                    if (addToFavouriteListner != null)
-                        addToFavouriteListner.onAddToFav(addToFavItemId);
-
-                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
-                }
-            } else if (error != null) {
-                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
-            }
-        } catch (Exception e) {
-            Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
-        }
-    }
-
-    @Override
-    public void onResponse(Object object, Exception error, int apiCode) {
-        try {
-            switch (apiCode) {
-                case WebConstants.MANAGE_FAVOURITES:
-                    onResponseAddResourceToFavorite(object, error);
-                    break;
-
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "onResponse Exception : " + e.toString());
-        }
-    }
 
     @Override
     public Filter getFilter() {
@@ -240,13 +174,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
             try {
 
                 arrayList = (ArrayList<MovieData>) results.values;
-                if (arrayList.size() == 0) {
-                    MoviesFragment.txtSuggestedEmpty.setVisibility(View.VISIBLE);
-                    MoviesFragment.listViewSuggested.setVisibility(View.GONE);
-                } else {
-                    MoviesFragment.txtSuggestedEmpty.setVisibility(View.GONE);
-                    MoviesFragment.listViewSuggested.setVisibility(View.VISIBLE);
-                }
+                manageResourcesListner.onSearchSuggested(arrayList);
                 notifyDataSetChanged();
             } catch (Exception e) {
                 Debug.i(TAG, "publishResults on Exception :  " + e.getLocalizedMessage());

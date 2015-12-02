@@ -106,17 +106,16 @@ public class WebConstants {
     public static final String URL_UPDATE_READ_STATUS = URL_KINJAL_HOST + "UpdateReadStatus"; // studymate_request, messages, notification
     public static final String URL_GET_HIGH_SCORERS = URL_KINJAL_HOST + "GetHighScorers";
     public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
-    /*status for apisuccess ans apifailed*/
     public static final String URL_MANAGE_FAVOURITES = URL_KINJAL_HOST + "ManageFavorite";
     public static final String URL_GET_MY_FEEDS = URL_KINJAL_HOST + "GetMyFeeds";
     public static final String URL_MANAGE_BOOK_LIBRARY =  URL_KINJAL_HOST + "ManageBookLibrary";
     public static final String URL_GET_ABOUT_ME =  URL_KINJAL_HOST + "GetAboutMe";
     public static final String URL_GET_BOOKS_FOR_USER =  URL_KINJAL_HOST + "GetBooksForUser";
+    public static final String URL_GET_BLOCKED_USER =  URL_KINJAL_HOST + "GetBookedUser";
+
     /*status for apisuccess ans apifailed*/
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
-    public static final String STATUS_SUCCESS = "success";
-    public static final String STATUS_FAILED = "failed";
     /*these are the temparory questionData for testing*/
     public static final String TEST_USER_ID = "370";
     public static final String TEST_USER_NAME = "Admin";

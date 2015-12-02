@@ -14,7 +14,6 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.BookDetailsDialog;
-import com.ism.fragment.userprofile.BooksFragment;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -25,23 +24,23 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class SuggestedBookAdapter extends BaseAdapter implements Filterable ,HostActivity.AddToFavouriteListner{
+public class SuggestedBookAdapter extends BaseAdapter implements Filterable{
     private static final String TAG = SuggestedBookAdapter.class.getSimpleName();
+    private final HostActivity.BooksListner booksListner;
     Context context;
     ArrayList<BookData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
-    HostActivity.AddToFavouriteListner addToFavouriteListner;
     SuggestedBookFilter suggestedBookFilter;
     ArrayList<BookData> arrayListFilter = new ArrayList<>();
     private ArrayList<String> arrayFavResourceIds=new ArrayList<String>();
 
 
-    public SuggestedBookAdapter(Context context, ArrayList<BookData> arrayList, HostActivity.AddToFavouriteListner favouriteBooksListner) {
+    public SuggestedBookAdapter(Context context, ArrayList<BookData> arrayList,HostActivity.BooksListner booksListner) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter=arrayList;
         inflater = LayoutInflater.from(context);
-        this.addToFavouriteListner = favouriteBooksListner;
+        this.booksListner = booksListner;
     }
    // public ArrayList<String> getUnFavResourceIds(){
   //      return arrayFavResourceIds;
@@ -67,7 +66,7 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable ,Hos
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.row_user_books, null);
             holder = new ViewHolder();
@@ -75,11 +74,11 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable ,Hos
             holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
             holder.imgAddToFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
-            holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
+            holder.imgLibraryBook = (ImageView) convertView.findViewById(R.id.img_book_add);
             holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
 
-            holder.imgBookAdd.setVisibility(View.VISIBLE);
+            holder.imgLibraryBook.setVisibility(View.VISIBLE);
             holder.imgAddToFav.setVisibility(View.VISIBLE);
             holder.imgInfo.setVisibility(View.VISIBLE);
 
@@ -98,14 +97,19 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable ,Hos
             Global.imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
             holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
-            // if(arrayList.get(position).ge)
-//
+
+            if (arrayList.get(position).getIsInLibrary().equals("1")) {
+                holder.imgLibraryBook.setActivated(true);
+            }else {
+                holder.imgLibraryBook.setActivated(false);
+
+            }
             holder.imgAddToFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Debug.i(TAG, "onClickAddToFav : " + position);
                    // arrayFavResourceIds.add(arrayList.get(position).getBookId());
-                    addToFavouriteListner.onAddToFav(position);
+                    booksListner.onAddToFav(position);
 
                    // callApiAddResourceToFav();
                 }
@@ -118,7 +122,23 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable ,Hos
                     bookDetailsDialog.show();
                 }
             });
+            holder.imgLibraryBook.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Debug.i(TAG, "onClickAddToLibrary : " + position);
 
+                    if (arrayList.get(position).getIsInLibrary().equals("1")) {
+                        arrayList.get(position).setIsInLibrary("0");
+                        booksListner.onRemoveFromLibrary(arrayList.get(position).getBookId());
+                        holder.imgLibraryBook.setActivated(false);
+                    } else {
+                        holder.imgLibraryBook.setActivated(true);
+                        arrayList.get(position).setIsInLibrary("1");
+                        booksListner.onAddToLibrary(arrayList.get(position).getBookId());
+                    }
+//                    notifyDataSetChanged();
+                }
+            });
 
         } catch (Exception e) {
             Debug.i(TAG, "getView Exception : " + e.getLocalizedMessage());
@@ -134,16 +154,6 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable ,Hos
             suggestedBookFilter = new SuggestedBookFilter();
         }
         return suggestedBookFilter;
-    }
-
-    @Override
-    public void onAddToFav(int position) {
-
-    }
-
-    @Override
-    public void onRemoveFromFav(int position) {
-
     }
 
     class SuggestedBookFilter extends Filter {
@@ -200,15 +210,7 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable ,Hos
             try {
 
                 arrayList = (ArrayList<BookData>) results.values;
-                if(arrayList.size()==0)
-                {
-                    BooksFragment.txtSuggestedEmpty.setVisibility(View.VISIBLE);
-                    BooksFragment.listViewSuggestedBooks.setVisibility(View.GONE);
-                }
-                else{
-                    BooksFragment.txtSuggestedEmpty.setVisibility(View.GONE);
-                    BooksFragment.listViewSuggestedBooks.setVisibility(View.VISIBLE);
-                }
+                booksListner.onSearchSuggested(arrayList);
                 notifyDataSetChanged();
             } catch (Exception e) {
                 Debug.i(TAG, "publishResults on Exception :  " + e.getLocalizedMessage());
@@ -221,7 +223,7 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable ,Hos
         private ImageView imgBook;
         private ImageView imgInfo;
         private ImageView imgAddToFav;
-        private ImageView imgBookAdd;
+        private ImageView imgLibraryBook;
         private TextView txtBookAuthor;
         private TextView txtBookName;
 

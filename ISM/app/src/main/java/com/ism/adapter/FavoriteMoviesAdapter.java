@@ -12,15 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.MovieDetailsDialog;
-import com.ism.fragment.userprofile.MoviesFragment;
-import com.ism.object.MyTypeFace;
+import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.model.MovieData;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -29,22 +27,19 @@ import java.util.ArrayList;
  */
 public class FavoriteMoviesAdapter extends BaseAdapter implements Filterable{
     private static final String TAG = FavoriteMoviesAdapter.class.getSimpleName();
-    private final ImageLoader imageLoader;
+    private final HostActivity.ManageResourcesListner manageResourcesListner;
     Context context;
     ArrayList<MovieData> arrayList = new ArrayList<>();
     ArrayList<MovieData> arrayListFilter = new ArrayList<>();
     MovieFilter movieFilter;
     LayoutInflater inflater;
-    MyTypeFace myTypeFace;
 
-    public FavoriteMoviesAdapter(Context context, ArrayList<MovieData> arrayList) {
+    public FavoriteMoviesAdapter(Context context, ArrayList<MovieData> arrayList,HostActivity.ManageResourcesListner  manageResourcesListner) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter=arrayList;
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+        this.manageResourcesListner=manageResourcesListner;
         inflater = LayoutInflater.from(context);
-        myTypeFace = new MyTypeFace(context);
     }
 
 
@@ -73,9 +68,9 @@ public class FavoriteMoviesAdapter extends BaseAdapter implements Filterable{
             holder.imgMovie = (ImageView) convertView.findViewById(R.id.img_pic);
             holder.txtMovieName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.txtYear = (TextView) convertView.findViewById(R.id.txt_author);
-            holder.imgLike = (ImageView) convertView.findViewById(R.id.img_add_fav);
+            holder.imgRemoveFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
-            holder.imgLike.setVisibility(View.VISIBLE);
+            holder.imgRemoveFav.setVisibility(View.VISIBLE);
             holder.imgInfo.setVisibility(View.VISIBLE);
 
 
@@ -86,12 +81,12 @@ public class FavoriteMoviesAdapter extends BaseAdapter implements Filterable{
 
         try {
 
-            holder.txtMovieName.setTypeface(myTypeFace.getRalewayRegular());
-            holder.txtYear.setTypeface(myTypeFace.getRalewayRegular());
+            holder.txtMovieName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.txtYear.setTypeface(Global.myTypeFace.getRalewayRegular());
             holder.txtMovieName.setGravity(Gravity.LEFT);
             holder.txtYear.setGravity(Gravity.LEFT);
-            holder.imgLike.setBackgroundResource(R.drawable.img_like_red);
-            imageLoader.displayImage(WebConstants.URL_HOST_202+arrayList.get(position).getMovieImage(), holder.imgMovie, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            holder.imgRemoveFav.setBackgroundResource(R.drawable.img_like_red);
+            Global.imageLoader.displayImage(WebConstants.URL_HOST_202+arrayList.get(position).getMovieImage(), holder.imgMovie, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtMovieName.setText(arrayList.get(position).getMovieName());
             holder.txtYear.setText(arrayList.get(position).getMovieGenre());
             // if(arrayList.get(position).ge)
@@ -99,11 +94,18 @@ public class FavoriteMoviesAdapter extends BaseAdapter implements Filterable{
                 @Override
                 public void onClick(View v) {
 //                    myPopup(position);
-                    MovieDetailsDialog movieDetailsDialog = new MovieDetailsDialog(context, arrayList, position, imageLoader);
+                    MovieDetailsDialog movieDetailsDialog = new MovieDetailsDialog(context, arrayList, position, Global.imageLoader);
                     movieDetailsDialog.show();
                 }
             });
+            holder.imgRemoveFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    manageResourcesListner.onRemoveFromFav(position);
+                    Debug.i(TAG, "onClickAddToFav : " + position);
 
+                }
+            });
         } catch (Exception e) {
             Debug.i(TAG, "getView Exception : " + e.getLocalizedMessage());
         }
@@ -170,15 +172,7 @@ public class FavoriteMoviesAdapter extends BaseAdapter implements Filterable{
             try {
 
                 arrayList = (ArrayList<MovieData>) results.values;
-                if(arrayList.size()==0)
-                {
-                    MoviesFragment.txtFavEmpty.setVisibility(View.VISIBLE);
-                    MoviesFragment.listViewFav.setVisibility(View.GONE);
-                }
-                else{
-                    MoviesFragment.txtFavEmpty.setVisibility(View.GONE);
-                    MoviesFragment.listViewFav.setVisibility(View.VISIBLE);
-                }
+                manageResourcesListner.onSearchFav(arrayList);
                 notifyDataSetChanged();
             } catch (Exception e) {
                 Debug.i(TAG, "publishResults on Exception :  " + e.getLocalizedMessage());
@@ -191,7 +185,7 @@ public class FavoriteMoviesAdapter extends BaseAdapter implements Filterable{
         private ImageView imgMovie;
         private TextView txtMovieName;
         private TextView txtYear;
-        public ImageView imgLike;
+        public ImageView imgRemoveFav;
         public ImageView imgInfo;
     }
 }

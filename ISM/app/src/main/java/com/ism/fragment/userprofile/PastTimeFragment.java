@@ -17,6 +17,7 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.FavouritePastTimeAdapter;
 import com.ism.adapter.SuggestedPastTimeAdapter;
+import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 09/11/15.
  */
-public class PastTimeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener, HostActivity.AddToFavouriteListner {
+public class PastTimeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener, HostActivity.ManageResourcesListner {
 
     private static final String TAG = PastTimeFragment.class.getSimpleName();
     ImageLoader imageLoader;
@@ -52,6 +53,9 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
     private TextView txtSuggestedPastimes, txtFavPastimes;
     private ImageView imgFavSearch, imgSuggestedSearch;
     private EditText etFavSearch, etSuggestedSearch;
+    private ArrayList<String> arrayListUnFavItems = new ArrayList<>();
+    private ArrayList<String> arrayListFavItems = new ArrayList<>();
+
     public static PastTimeFragment newInstance() {
         PastTimeFragment fragment = new PastTimeFragment();
         return fragment;
@@ -75,8 +79,8 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
 
         myTypeFace = new MyTypeFace(getActivity());
 
-        txtFavEmpty=(TextView)view.findViewById(R.id.txt_fav_empty);
-        txtSuggestedEmpty=(TextView)view.findViewById(R.id.txt_suggested_empty);
+        txtFavEmpty = (TextView) view.findViewById(R.id.txt_fav_empty);
+        txtSuggestedEmpty = (TextView) view.findViewById(R.id.txt_suggested_empty);
         txtSuggestedPastimes = (TextView) view.findViewById(R.id.txt_read_books);
         txtFavPastimes = (TextView) view.findViewById(R.id.txt_fav_books);
         txtSuggestedPastimes.setText(R.string.strSuggestedPastimes);
@@ -170,51 +174,35 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
 
     private void setUpSuggestedList(ArrayList<PastimeData> arrayListSuggested) {
         try {
-
-            if(!arrayListSuggested.isEmpty()){
-                txtSuggestedEmpty.setVisibility(View.GONE);
-                listViewSuggested.setVisibility(View.VISIBLE);
-                suggestedPastTimeAdapter=new SuggestedPastTimeAdapter(getActivity(),arrayListSuggested,this);
-                listViewSuggested.setAdapter(suggestedPastTimeAdapter);
-            }else{
-                txtSuggestedEmpty.setVisibility(View.VISIBLE);
-                listViewSuggested.setVisibility(View.GONE);
-            }
-        }
-        catch (Exception e){
-            Debug.e(TAG,"setUpSuggestedList Exceptions :" +e.getLocalizedMessage());
+            suggestedPastTimeAdapter = new SuggestedPastTimeAdapter(getActivity(), arrayListSuggested, this);
+            listViewSuggested.setAdapter(suggestedPastTimeAdapter);
+            setVisibilitySuggestedItems(arrayListSuggested.size());
+        } catch (Exception e) {
+            Debug.e(TAG, "setUpSuggestedList Exceptions :" + e.getLocalizedMessage());
         }
 
     }
 
     private void setUpFavList(ArrayList<PastimeData> arrayListFav) {
         try {
-            if(!arrayListFav.isEmpty()){
-                txtFavEmpty.setVisibility(View.GONE);
-                listViewFav.setVisibility(View.VISIBLE);
-                favouritePastTimeAdapter=new FavouritePastTimeAdapter(getActivity(),arrayListFav);
-                listViewFav.setAdapter(favouritePastTimeAdapter);
 
-            }else{
-                txtFavEmpty.setVisibility(View.VISIBLE);
-                listViewFav.setVisibility(View.GONE);
-            }
-        }
-        catch (Exception e){
-            Debug.e(TAG,"setUpFavList Exceptions :" +e.getLocalizedMessage());
+            favouritePastTimeAdapter = new FavouritePastTimeAdapter(getActivity(), arrayListFav,this);
+            listViewFav.setAdapter(favouritePastTimeAdapter);
+            setVisibilityFavItems(arrayListFav.size());
+        } catch (Exception e) {
+            Debug.e(TAG, "setUpFavList Exceptions :" + e.getLocalizedMessage());
         }
     }
 
 
     private void callApiGetPastimeForUser() {
         try {
-            if(Utility.isConnected(getActivity())) {
+            if (Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_PASTTIME_FOR_USER);
-            }
-            else{
+            } else {
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
@@ -231,22 +219,42 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
                 case WebConstants.GET_PASTTIME_FOR_USER:
                     onResponseUserPastTime(object, error);
                     break;
-
+                case WebConstants.MANAGE_FAVOURITES:
+                    onResponseAddResourceToFavorite(object, error);
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());
         }
 
     }
+    private void onResponseAddResourceToFavorite(Object object, Exception error) {
+        try {
+            activityHost.hideProgress();
+            if (object != null) {
+                Debug.i(TAG, "Response object :" + object);
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                    Debug.i(TAG, "onResponseAddResourceToFavorite success");
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
+                }
+            } else if (error != null) {
+                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
+        }
+    }
 
     private void onResponseUserPastTime(Object object, Exception error) {
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseHandler  responseHandler = (ResponseHandler) object;
+                ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                        arrayListFav =responseHandler.getPastime().get(0).getFavoritePastime();
-                        arrayListSuggested =responseHandler.getPastime().get(0).getSuggestedPastime();
+                    arrayListFav = responseHandler.getPastime().get(0).getFavoritePastime();
+                    arrayListSuggested = responseHandler.getPastime().get(0).getSuggestedPastime();
                     setUpFavList(arrayListFav);
                     setUpSuggestedList(arrayListSuggested);
                     Debug.i(TAG, "onResponseUserPastTime success");
@@ -288,12 +296,106 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            if (arrayListFavItems .size()!=0 || arrayListUnFavItems.size()!=0)
+                callApiAddResourceToFav();
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onPause Exception : " + e.toString());
+        }
+
+
+    }
+
+    private void callApiAddResourceToFav() {
+        try {
+            if (Utility.isConnected(getActivity())) {
+                activityHost.showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setUserId(Global.strUserId);
+                if (arrayListFavItems == null)
+                    attribute.setFavResourceId(new ArrayList<String>());
+                else {
+                    attribute.setFavResourceId(arrayListFavItems);// get all resource ids from suggested list to add resource ids in user favourites
+                }
+                if (arrayListUnFavItems == null)
+                    attribute.setUnfavoriteResourceId(new ArrayList<String>());// get All the resource ids from favourite list to add resource id in user unfavourites
+                else {
+                    attribute.setUnfavoriteResourceId(arrayListUnFavItems);// get All the resource ids from favourite list to add resource id in user unfavourites
+                }
+                attribute.setResourceName(AppConstant.RESOURCE_PASTTIMES);
+                Debug.i(TAG, "Attributes object :" + attribute);
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
+            } else {
+                Utility.alertOffline(getActivity());
+            }
+        } catch (Exception e) {
+            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    @Override
     public void onAddToFav(int position) {
-        callApiGetPastimeForUser();
+        Debug.i(TAG, "OnAddToFav" + position);
+        try {
+            arrayListFavItems.add(arrayListSuggested.get(position).getPastimeId());
+            arrayListFav.add(arrayListSuggested.get(position));
+            arrayListSuggested.remove(position);
+            setVisibilityFavItems(arrayListFav.size());
+            setVisibilitySuggestedItems(arrayListSuggested.size());
+            favouritePastTimeAdapter.notifyDataSetChanged();
+            suggestedPastTimeAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            Debug.e(TAG, "onAddToFav Exception : " + e.getLocalizedMessage());
+        }
     }
 
     @Override
     public void onRemoveFromFav(int position) {
-
+        Debug.i(TAG, "onRemoveFromFav" + position);
+        try {
+            arrayListUnFavItems.add(arrayListFav.get(position).getPastimeId());
+            arrayListSuggested.add(arrayListFav.get(position));
+            arrayListFav.remove(position);
+            setVisibilityFavItems(arrayListFav.size());
+            setVisibilitySuggestedItems(arrayListSuggested.size());
+            favouritePastTimeAdapter.notifyDataSetChanged();
+            suggestedPastTimeAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            Debug.e(TAG, "onRemoveFromFav Exception : " + e.getLocalizedMessage());
+        }
     }
+
+    @Override
+    public void onSearchFav(Object o) {
+        setUpFavList((ArrayList<PastimeData>) o);
+    }
+
+    @Override
+    public void onSearchSuggested(Object o) {
+        setUpSuggestedList((ArrayList<PastimeData>) o);
+    }
+
+    public void setVisibilityFavItems(int size) {
+
+        if (size == 0) {
+            txtFavEmpty.setVisibility(View.VISIBLE);
+            listViewFav.setVisibility(View.GONE);
+        } else {
+            txtFavEmpty.setVisibility(View.GONE);
+            listViewFav.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void setVisibilitySuggestedItems(int size) {
+        if (size == 0) {
+            txtSuggestedEmpty.setVisibility(View.VISIBLE);
+            listViewSuggested.setVisibility(View.GONE);
+        } else {
+            txtSuggestedEmpty.setVisibility(View.GONE);
+            listViewSuggested.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

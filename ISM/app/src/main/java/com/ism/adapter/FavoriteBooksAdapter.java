@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.BookDetailsDialog;
-import com.ism.fragment.userprofile.BooksFragment;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = FavoriteBooksAdapter.class.getSimpleName();
-    private final BooksFragment fragment;
+    private final HostActivity.BooksListner booksListner;
     Context context;
     ArrayList<BookData> arrayList = new ArrayList<>();
     ArrayList<BookData> arrayListFilter = new ArrayList<>();
@@ -34,12 +34,12 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
     LayoutInflater inflater;
     FavBookFilter favBookFilter;
 
-    public FavoriteBooksAdapter(Context context, ArrayList<BookData> arrayList, BooksFragment fragment) {
+    public FavoriteBooksAdapter(Context context, ArrayList<BookData> arrayList, HostActivity.BooksListner booksListner) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter = arrayList;
         inflater = LayoutInflater.from(context);
-        this.fragment = fragment;
+        this.booksListner=booksListner;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.row_user_books, null);
             holder = new ViewHolder();
@@ -85,6 +85,12 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
             holder.txtBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
             Global.imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
+             if (arrayList.get(position).getIsInLibrary().equals("1")) {
+                holder.imgLibraryBook.setActivated(true);
+            }else {
+                holder.imgLibraryBook.setActivated(false);
+
+            }
             holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -98,20 +104,23 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
                 @Override
                 public void onClick(View v) {
                     Debug.i(TAG, "onClickAddToUnFav : " + position);
-                    fragment.onRemoveFromFav(position);
+                    booksListner.onRemoveFromFav(position);
                     // callApiAddResourceToFav();
                 }
             });
             holder.imgLibraryBook.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Debug.i(TAG, "onClickAddToUnFav : " + position);
-                    //if()
-                   // fragment.onAddToLibrary(arrayList.get(position).getBookId());
-                   // else{
-                  //      fragment.onRemoveFromLibrary(arrayList.get(position).getBookId());
-                  //  }
-                    // callApiAddResourceToFav();
+                    Debug.i(TAG, "onClickAddToLibrary : " + position);
+                    if (arrayList.get(position).getIsInLibrary().equals("1")) {
+                        arrayList.get(position).setIsInLibrary("0");
+                        booksListner.onRemoveFromLibrary(arrayList.get(position).getBookId());
+                        holder.imgLibraryBook.setActivated(false);
+                    } else {
+                        holder.imgLibraryBook.setActivated(true);
+                        arrayList.get(position).setIsInLibrary("1");
+                        booksListner.onAddToLibrary(arrayList.get(position).getBookId());
+                    }
                 }
             });
 
@@ -187,13 +196,7 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
             try {
 
                 arrayList = (ArrayList<BookData>) results.values;
-                if (arrayList.size() == 0) {
-                    BooksFragment.txtFavEmpty.setVisibility(View.VISIBLE);
-                    BooksFragment.listViewFavBooks.setVisibility(View.GONE);
-                } else {
-                    BooksFragment.txtFavEmpty.setVisibility(View.GONE);
-                    BooksFragment.listViewFavBooks.setVisibility(View.VISIBLE);
-                }
+                booksListner.onSearchFav(arrayList);
                 Debug.i(TAG, "publishResults arrayList :  " + arrayList.size());
                 notifyDataSetChanged();
             } catch (Exception e) {

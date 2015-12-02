@@ -43,6 +43,7 @@ public class WebConstants {
 	public static final int GENERAL_SETTING_PREFERENCES = 72;
 	public static final int GET_USER_PREFERENCES=73;
 	public static final int BLOCK_USER = 74;
+	public static final int BLOCKED_USER = 75;
 
 	//edit profiles
 
@@ -60,61 +61,62 @@ public class WebConstants {
 	/**
 	 *  URLs
 	 */
-	private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";  // KRUNAL
+	private static final String URL = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";  // KRUNAL
 	private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
 
-	public static final String HOST_147 = "http://192.168.1.147/";      // KINJAL
-	private static final String URL_HOST_147 = HOST_147 + "WS_ISM/ISMServices.php?Service=";      // KINJAL
+	public static final String HOST_202 = "http://192.168.1.202/pg/ISM/";      // pg
+//	public static final String HOST_202 = "http://clientapp.narolaifotech.com/pg/ISM/";      // pg
+//	private static final String URL = HOST_202 + "WS_ISM/ISMServices.php?Service=";
 
 //	private static final String URL_IMAGE_PATH = "http://192.168.1.147/WS_ISM/Images";
 	public static final String URL_HOST_202 = "http://192.168.1.202/pg/ISM/WS_ISM/";
 
 	public static final String URL_USERS_IMAGE_PATH = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/";
-	public static final String URL_ACCEPT_TUTORIAL_GROUP = URL_HOST_147 + "AcceptTutorialGroup";
-	public static final String URL_ALLOCATE_TUTORIAL_GROUP = URL_HOST_147 + "AllocateTutorialGroup";
-	public static final String URL_GET_CITIES = URL_HOST_147 + "GetCities";
-	public static final String URL_GET_STATES = URL_HOST_147 + "GetStates";
-	public static final String URL_GET_COUNTRIES = URL_HOST_147 + "GetCountries";
-	public static final String URL_LOGIN = URL_HOST_147 + "AuthenticateUser";
-	public static final String URL_TAG_STUDY_MATES = URL_HOST_147 + "TagFriendInFeed";
-	public static final String URL_GET_ALL_STUDY_MATES = URL_HOST_147 + "GetStudymates";
-	public static final String URL_GET_ALL_COMMENTS = URL_HOST_147 + "GetAllComments";
-	public static final String URL_ADD_COMMENT = URL_HOST_147 + "AddComment";
-	public static final String URL_GET_ALL_FEEDS = URL_HOST_147 + "GetAllFeeds";
-	public static final String URL_REGISTER_USER = URL_HOST_147 + "RegisterUser";
-	public static final String URL_REQUEST_SCHOOL_INFO = URL_HOST_147 + "RequestForSchoolInfoUpdation";
-	public static final String URL_REQUEST_CREDENTIALS = URL_HOST_147 + "RequestForCredentials";
-	public static final String URL_FORGOT_PASSWORD = URL_HOST_147 + "ForgotPassword";
-	public static final String URL_GET_ALL_NOTICES = URL_HOST_147 + "GetAllNotices";
-	public static final String URL_USER_PREFERENCES = URL_HOST_147 + "GetUserPreferences";
-	public static final String URL_GENERAL_SETTING_PREFERENCES = URL_HOST_147 + "GetAllPreferences";
-	public static final String URL_MANAGE_GENERAL_SETTING = URL_HOST_147 + "ManageGeneralSettings";
-	public static final String URL_GET_NOTIFICATION = URL_HOST_147 + "GetNotification";
-	public static final String URL_GET_MESSAGES = URL_HOST_147 + "GetMessages";
-	public static final String URL_GET_STUDYMATE_REQUEST = URL_HOST_147 + "GetStudymateRequest";
-	public static final String URL_BLOCK_USER = URL_HOST_147 + "BlockUser";
-	public static final String URL_GET_ALL_BADGES_COUNT = URL_HOST_147 + "GetAllBadgeCount";
-	public static final String URL_RESPOND_TO_REQUEST = URL_HOST_147 + "AcceptRequestFromStudymate";
-	public static final String URL_UPDATE_READ_STATUS = URL_HOST_147 + "UpdateReadStatus"; // studymate_request, messages, notification
-	public static final String URL_GET_HIGH_SCORERS = URL_HOST_147 + "GetHighScorers";
-	public static final String URL_GET_WALLET_SUMMARY = URL_HOST_147 + "GetWalletSummary";
-	public static final String URL_GENERATE_VOUCHER = URL_HOST_147 + "GenerateVoucher";
-	public static final String URL_GET_MY_FEEDS = URL_HOST_147 + "GetMyFeeds";
+	public static final String URL_ACCEPT_TUTORIAL_GROUP = URL + "AcceptTutorialGroup";
+	public static final String URL_ALLOCATE_TUTORIAL_GROUP = URL + "AllocateTutorialGroup";
+	public static final String URL_GET_CITIES = URL + "GetCities";
+	public static final String URL_GET_STATES = URL + "GetStates";
+	public static final String URL_GET_COUNTRIES = URL + "GetCountries";
+	public static final String URL_LOGIN = URL + "AuthenticateUser";
+	public static final String URL_TAG_STUDY_MATES = URL + "TagFriendInFeed";
+	public static final String URL_GET_ALL_STUDY_MATES = URL + "GetStudymates";
+	public static final String URL_GET_ALL_COMMENTS = URL + "GetAllComments";
+	public static final String URL_ADD_COMMENT = URL + "AddComment";
+	public static final String URL_GET_ALL_FEEDS = URL + "GetAllFeeds";
+	public static final String URL_REGISTER_USER = URL + "RegisterUser";
+	public static final String URL_REQUEST_SCHOOL_INFO = URL + "RequestForSchoolInfoUpdation";
+	public static final String URL_REQUEST_CREDENTIALS = URL + "RequestForCredentials";
+	public static final String URL_FORGOT_PASSWORD = URL + "ForgotPassword";
+	public static final String URL_GET_ALL_NOTICES = URL + "GetAllNotices";
+	public static final String URL_USER_PREFERENCES = URL + "GetUserPreferences";
+	public static final String URL_GENERAL_SETTING_PREFERENCES = URL + "GetAllPreferences";
+	public static final String URL_MANAGE_GENERAL_SETTING = URL + "ManageGeneralSettings";
+	public static final String URL_GET_NOTIFICATION = URL + "GetNotification";
+	public static final String URL_GET_MESSAGES = URL + "GetMessages";
+	public static final String URL_GET_STUDYMATE_REQUEST = URL + "GetStudymateRequest";
+	public static final String URL_BLOCK_USER = URL + "BlockUser";
+	public static final String URL_GET_ALL_BADGES_COUNT = URL + "GetAllBadgeCount";
+	public static final String URL_RESPOND_TO_REQUEST = URL + "AcceptRequestFromStudymate";
+	public static final String URL_UPDATE_READ_STATUS = URL + "UpdateReadStatus"; // studymate_request, messages, notification
+	public static final String URL_GET_HIGH_SCORERS = URL + "GetHighScorers";
+	public static final String URL_GET_WALLET_SUMMARY = URL + "GetWalletSummary";
+	public static final String URL_GENERATE_VOUCHER = URL + "GenerateVoucher";
+	public static final String URL_GET_MY_FEEDS = URL + "GetMyFeeds";
 
 
 	/*
 	* edit profile
 	* */
-	public static final String URL_GET_ABOUT_ME =  URL_HOST_147 + "GetAboutMe";
-	public static final String URL_GET_BOOKS_FOR_USER =  URL_HOST_147 + "GetBooksForUser";
-	public static final String URL_EDIT_ABOUT_ME =  URL_HOST_147 + "EditAboutMe";
-	public static final String URL_GET_MOVIES_FOR_USER =  URL_HOST_147 + "GetMoviesForUser";
-	public static final String URL_GET_PASTTIME_FOR_USER =  URL_HOST_147 + "GetPastimeForUser";
-	public static final String URL_GET_ROLEMODEL_FOR_USER =  URL_HOST_147 + "GetRoleModelForUser";
-	public static final String URL_MANAGE_FAVOURITES =  URL_HOST_147 + "ManageFavorite";
-	public static final String URL_MANAGE_BOOK_LIBRARY =  URL_HOST_147 + "ManageBookLibrary";
+	public static final String URL_GET_ABOUT_ME =  URL + "GetAboutMe";
+	public static final String URL_GET_BOOKS_FOR_USER =  URL + "GetBooksForUser";
+	public static final String URL_EDIT_ABOUT_ME =  URL + "EditAboutMe";
+	public static final String URL_GET_MOVIES_FOR_USER =  URL + "GetMoviesForUser";
+	public static final String URL_GET_PASTTIME_FOR_USER =  URL + "GetPastimeForUser";
+	public static final String URL_GET_ROLEMODEL_FOR_USER =  URL + "GetRoleModelForUser";
+	public static final String URL_MANAGE_FAVOURITES =  URL + "ManageFavorite";
+	public static final String URL_MANAGE_BOOK_LIBRARY =  URL + "ManageBookLibrary";
 	public static final String URL_EDIT_PROFILE_PIC = " ";
-
+	public static final String URL_GET_BLOCKED_USER =  URL + "GetBlockedUser";
 
 	/**
 	 * Parameter values
