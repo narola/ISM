@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.ism.teacher.ISMTeacher;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
@@ -26,7 +25,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
-
 
 /**
  * these is the assignment subjects adapter
@@ -47,6 +45,12 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
 
     FragmentManager fragmentManager;
 
+    public static String ARG_STUDENT_ID = "studenId";
+    public static String ARG_STUDENT_POSITION = "studenPosition";
+    public static String ARG_STUDENT_PROFILE_PIC = "studentProfilePic";
+    public static String ARG_STUDENT_NAME = "studentName";
+
+
     public AssignmentSubmitterAdapter(Context mContext, Bundle bundleArgument) {
         this.mContext = mContext;
         this.bundleArgument = bundleArgument;
@@ -55,10 +59,9 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
         myTypeFace = new MyTypeFace(mContext);
 
         if (bundleArgument != null) {
-            examid = bundleArgument.getString(AppConstant.ARG_EXAM_ID);
-            exam_mode = bundleArgument.getString(AppConstant.ARG_EXAM_MODE);
+            examid = bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_ID);
+            exam_mode = bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_MODE);
         }
-
         //Get FragmentManager
         fragmentManager = ((Activity) mContext).getFragmentManager();
     }
@@ -115,34 +118,32 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
             @Override
             public void onClick(View view) {
 
-                bundleArgument.putString(AppConstant.ARG_STUDENT_ID, arrListExamSubmittor.get(position).getStudentId());
-                bundleArgument.putInt(AppConstant.ARG_STUDENT_POSITION, position);
-                bundleArgument.putString(AppConstant.ARG_STUDENT_PROFILE_PIC, arrListExamSubmittor.get(position).getStudentProfilePic());
-                bundleArgument.putString(AppConstant.ARG_STUDENT_NAME, arrListExamSubmittor.get(position).getStudentName());
+                bundleArgument.putString(ARG_STUDENT_ID, arrListExamSubmittor.get(position).getStudentId());
+                bundleArgument.putInt(ARG_STUDENT_POSITION, position);
+                bundleArgument.putString(ARG_STUDENT_PROFILE_PIC, arrListExamSubmittor.get(position).getStudentProfilePic());
+                bundleArgument.putString(ARG_STUDENT_NAME, arrListExamSubmittor.get(position).getStudentName());
 
-                bundleArgument.putBoolean(AppConstant.ARG_CALL_EVALUATION_API_FLAG, true);
+                bundleArgument.putBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
 
+                /**
+                 * For objective Questions
+                 * Call  GetObjectiveAssignmentQuestionsFragment
+                 */
 
                 if (exam_mode.equalsIgnoreCase(EXAM_OBJECTIVE)) {
 
-                    //Objective Question + Evaluation api(student id)
-                    // last param is true because we have to call evaluation along with subjective ques list+ student id
-                    // examObjectiveDetailFragment = new GetObjectiveAssignmentQuestionsFragment(mContext, examid, arrListExamSubmittor.get(position).getStudentId(), true);
                     fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(bundleArgument)).commit();
+                }
 
-                } else if (exam_mode.equalsIgnoreCase(EXAM_SUBJECTIVE)) {
+                /**
+                 * For subjective Questions
+                 * Call  GetSubjectiveAssignmentQuestionsFragment divided into three parts
+                 * Students,Subjective Ques with evaluation and palette of answers
+                 */
 
-                    //Subjective Question + Evaluation api(student id)
-                    // last param is true because we have to call evaluation along with subjective ques list+ student id
-
-
-                    // examSubjectiveDetailFragment = new GetSubjectiveAssignmentQuestionsFragment(mContext, examid, WebConstants.STUDENT_ID_1, true, arrListExamSubmittor.get(position).getStudentName());
-//                    examSubjectiveDetailFragment = new GetSubjectiveAssignmentQuestionsFragment(mContext, examid, arrayListAssignments.get(position).getStudentId(), true);
-                    //  fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, examSubjectiveDetailFragment).commit();
+                else if (exam_mode.equalsIgnoreCase(EXAM_SUBJECTIVE)) {
 
                     fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(bundleArgument)).commit();
-
-
                 }
             }
         });

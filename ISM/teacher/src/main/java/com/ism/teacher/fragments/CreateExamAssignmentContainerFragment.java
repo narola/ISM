@@ -31,9 +31,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     private View view;
     private MyTypeFace myTypeFace;
 
-
-    AssignmentExamFragment assignmentExamFragment;
-
     public static CreateExamAssignmentContainerFragment newInstance(Bundle bundleArgument) {
         CreateExamAssignmentContainerFragment createExamAssignmentContainerFragment = new CreateExamAssignmentContainerFragment();
         createExamAssignmentContainerFragment.setArguments(bundleArgument);
@@ -108,6 +105,12 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
                                        }
         );
 
+        /**
+         * When click of edit question on top of View
+         * then whole data is passed to call AssignmentExam(with args) which is in second tab.
+         * And the data is set in the specific fields.
+         * setExamDetails(); in AssignmentExam is used to set data using passed args.
+         */
 
         if (getArguments() != null) {
             initTab(1);
@@ -139,11 +142,8 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance(getArguments())).commit();
                     break;
                 case FRAGMENT_ASSIGNMENT_EXAM:
-//                    assignmentExamFragment = new AssignmentExamFragment(CreateExamAssignmentContainerFragment.this);
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, assignmentExamFragment).commit();
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance(this,getActivity(), getArguments())).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance(this, getActivity(), getArguments())).commit();
                     break;
-
             }
 
         } catch (Exception e) {
@@ -155,7 +155,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
     private void initTab(int position) {
 
-
         if (position == 0) {
 
             tv_tab_activity.setTextColor(getResources().getColor(R.color.color_black));
@@ -165,7 +164,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
             loadFragmentInContainer(FRAGMENT_ASSIGNMENT_ACTIVITY);
 
         } else if (position == 1) {
-
 
             tv_tab_activity.setTextColor(getResources().getColor(R.color.color_text_hint));
             img_sep_tab_activity.setVisibility(View.INVISIBLE);

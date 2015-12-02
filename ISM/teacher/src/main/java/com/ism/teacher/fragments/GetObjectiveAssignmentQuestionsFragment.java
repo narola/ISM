@@ -14,11 +14,10 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
+import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.GetObjectiveAssignmentQuestionsAdapter;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -27,18 +26,16 @@ import com.ism.teacher.ws.model.Questions;
 
 import java.util.ArrayList;
 
-
 /**
- * Created by c162 on 04/11/15.
+ * At top this frag displays book name,class and assignment related details.
+ * This fragment contains the list of objective questions list below.
  */
-
-public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse{
+public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 
     private static final String TAG = GetObjectiveAssignmentQuestionsFragment.class.getSimpleName();
     private View view;
     private MyTypeFace myTypeFace;
-    private FragmentListener fragListener;
 
     private TextView tvObjectiveAssignmentSubject, tvObjectiveAssignmentClass, tvObjectiveAssignmentNo, tvObjectiveAssignmentTitle,
             tvObjectiveAssignmentDateTitle, tvObjectiveAssignmentDate;
@@ -47,9 +44,12 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private RecyclerView rvGetObjectiveAssignmentQuestionslist;
     private GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
+
+    ResponseHandler responseObjGetAllExamQuestions = null;
+
     public static String ARG_ARR_LIST_QUESTIONS = "arrListQuestions";
     public static String ARG_EXAM_TYPE = "examType";
-    ResponseHandler responseObjGetAllExamQuestions = null;
+
 
     public static GetObjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArguments) {
         GetObjectiveAssignmentQuestionsFragment getObjectiveAssignmentQuestionsFragment = new GetObjectiveAssignmentQuestionsFragment();
@@ -112,19 +112,18 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
 
     }
+
     private void setExamQuestions() {
 
         if (responseObjGetAllExamQuestions != null) {
             getArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
-            getArguments().putString(ARG_EXAM_TYPE, "test");
+            //getArguments().putString(AppConstant.ARG_EXAM_TYPE, getString(R.string.strobjective));
+            getArguments().putString(ARG_EXAM_TYPE,"Objective");
 
-
-
-//            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
-//                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getArguments());
-//
 //            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
 //                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
+            getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
+                    CreateExamAssignmentContainerFragment.newInstance(getArguments())).commit();
 
         }
 
@@ -132,11 +131,11 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
 
     private void callApiGetExamQuestions() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
-                ((TeacherHostActivity) getActivity()).startProgress();
+                ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setExamId(getArguments().getString(AppConstant.ARG_EXAM_ID));
+                request.setExamId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
 //                request.setExamId("9");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_QUESTIONS);
@@ -151,9 +150,9 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     /*if bundle arguments are not null then we will call get exam evaluation for student nd set data according to it*/
     private void callAPiGetExamEvaluation() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
-                ((TeacherHostActivity) getActivity()).startProgress();
+                ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
 //                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
 //                request.setStudentId(getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
@@ -188,7 +187,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     private void onResponseGetAllExamQuestions(Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 responseObjGetAllExamQuestions = (ResponseHandler) object;
                 if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -197,7 +196,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
                     setAssignmentDetails(responseObjGetAllExamQuestions.getExamQuestions().get(0));
 
-                    if (getArguments().getBoolean(AppConstant.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                    if (getArguments().getBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                         callAPiGetExamEvaluation();
                     }
 
@@ -214,7 +213,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     private void onResponseGetExamEvaluation(Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

@@ -172,7 +172,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (arrListSubject != null && position > 0) {
 
-                    if (Utility.isOnline(getActivity())) {
+                    if (Utility.isConnected(getActivity())) {
 
                         callApiGetTopics(Integer.parseInt(arrListSubject.get(position - 1).getId()));
                     } else {

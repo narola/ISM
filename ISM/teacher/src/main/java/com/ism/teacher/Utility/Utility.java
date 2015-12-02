@@ -71,7 +71,7 @@ public class Utility {
 	 * @param context
 	 * @return
 	 */
-	public static boolean isOnline(Context context) {
+	public static boolean isConnected(Context context) {
 		NetworkInfo networkInfo = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 		return networkInfo != null && networkInfo.isConnectedOrConnecting();
 	}
@@ -289,11 +289,11 @@ public class Utility {
 	}
 
 	public static void showProgressBar(TeacherHostActivity activity) {
-		activity.startProgress();
+		activity.showProgress();
 	}
 
 	public static void hideProgressBar(TeacherHostActivity activity) {
-		activity.stopProgress();
+		activity.hideProgress();
 	}
 
 

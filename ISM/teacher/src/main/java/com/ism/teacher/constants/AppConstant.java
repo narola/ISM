@@ -10,8 +10,8 @@ import java.io.File;
 public class AppConstant {
 
     //Pick from Gallery
-    public static  final int REQUEST_CODE_PICK_FROM_GALLERY =1;
-    public static  final int REQUEST_CODE_ADD_POST =2;
+    public static final int REQUEST_CODE_PICK_FROM_GALLERY = 1;
+    public static final int REQUEST_CODE_ADD_POST = 2;
     //All fonts
 
     public static final String RalewayBlack = "Raleway-Black.ttf";
@@ -66,31 +66,5 @@ public class AppConstant {
 
     public static final int LIKE = 1;
     public static final int DISLIKE = 0;
-
-
-    /**
-     * Bundle Tags
-     */
-
-    public static final String ARG_EXAM_ID = "exam_id";
-    public static final String ARG_EXAM_NAME = "examName";
-    public static final String ARG_CLASSROOM_ID = "classRoomId";
-    public static final String ARG_CLASSROOM_NAME = "classRoomName";
-    public static final String ARG_EXAM_CATEGORY = "examCategory";
-    public static final String ARG_SUBJECT_NAME = "subjectName";
-    public static final String ARG_PASS_PERCENTAGE = "passPercentage";
-    public static final String ARG_EXAM_TYPE = "examType";
-    public static final String ARG_EXAM_MODE = "examMode";
-    public static final String ARG_EXAM_DURATION = "examDuration";
-    public static final String ARG_ASSIGNMENT_NO = "examAssignmentNo";
-    public static final String ARG_STUDENT_ID = "studenId";
-    public static final String ARG_STUDENT_POSITION = "studenPosition";
-    public static final String ARG_STUDENT_PROFILE_PIC = "studentProfilePic";
-    public static final String ARG_STUDENT_NAME = "studentName";
-    public static final String ARG_CALL_EVALUATION_API_FLAG = "callEvaluationApiFlag";
-
-    public static String ARG_ISLOAD_FRAGMENTFOREVALUATION = "examIsLoadFragmentForEvaluation";
-
-
 
 }

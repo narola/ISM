@@ -88,7 +88,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/d15dp"
-                android:background="@drawable/img_edit_question" />
+                android:background="@drawable/img_edit_question"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/img_preview_question_copy"

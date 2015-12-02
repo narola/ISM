@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.AddQuestionContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Answers;
@@ -36,6 +37,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     Fragment mFragment;
     boolean dropdownFlag = false;
+    public Boolean canAddToPreview = false;
 
     public QuestionBankListAdapter(Context context, Fragment fragment) {
         this.mContext = context;
@@ -165,24 +167,42 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             @Override
             public void onClick(View v) {
 
+                if (canAddToPreview) {
 
-                if (!((AddQuestionContainerFragment) mFragment).previewQuestionFragment.arrListQuestions.contains(arrListQuestions.get(position))) {
+                    if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strquestionformatmcq))) {
+
+                        if (getFragment().getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                                (mContext.getString(R.string.strobjective))) {
+                            isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
+                        } else {
+                            Utility.showToast(mContext.getString(R.string.msg_validation_addsubjective_question), mContext);
+                        }
+
+                    } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
+                            (mContext.getString(R.string.strquestionformatdescriptive))) {
+
+                        if (getFragment().getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                                (mContext.getString(R.string.strsubjective))) {
+                            isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
+                        } else {
+                            Utility.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
+                        }
 
 
-                    if (holder.chkSelectQuestion.isChecked()) {
-                        arrListQuestions.get(position).setIsQuestionAddedInPreview(true);
-                        ((AddQuestionContainerFragment) mFragment).listOfPreviewQuestionsToAdd.add(arrListQuestions.get(position));
-
-                    } else {
-                        arrListQuestions.get(position).setIsQuestionAddedInPreview(false);
-                        ((AddQuestionContainerFragment) mFragment).listOfPreviewQuestionsToAdd.remove(arrListQuestions.get(position));
+                    } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
+                            (mContext.getString(R.string.strquestionformatfillups))) {
+                        if (getFragment().getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                                (mContext.getString(R.string.strsubjective))) {
+                            isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
+                        } else {
+                            Utility.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
+                        }
                     }
-
+                    notifyDataSetChanged();
                 } else {
-                    arrListQuestions.get(position).setIsQuestionAddedInPreview(true);
+                    holder.chkSelectQuestion.setChecked(arrListQuestions.get(position).getIsQuestionAddedInPreview());
+                    Utility.showToast(mContext.getString(R.string.msg_validation_add_question), mContext);
                 }
-                notifyDataSetChanged();
-
 
             }
         });
@@ -190,10 +210,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         holder.imgQuestionCopy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                ((AddQuestionContainerFragment) mFragment).setQuestionData(arrListQuestions.get(position));
-                ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
-                ((AddQuestionContainerFragment) mFragment).flipCard();
+                openAddEditQuestionFragment(position, false);
 
             }
         });
@@ -202,17 +219,27 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             @Override
             public void onClick(View v) {
 
-
-                ((AddQuestionContainerFragment) mFragment).setQuestionData(arrListQuestions.get(position));
-                ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
-                ((AddQuestionContainerFragment) mFragment).flipCard();
+                openAddEditQuestionFragment(position, true);
 
             }
         });
 
 
+        /**
+         * hide the edit question
+         */
+
+        if (arrListQuestions.get(position).getQuestionCreatorId().equalsIgnoreCase(WebConstants.USER_ID_370)) {
+            holder.imgQuestionEdit.setVisibility(View.VISIBLE);
+        } else {
+            holder.imgQuestionEdit.setVisibility(View.GONE);
+        }
+
     }
 
+    private void openAddEditQuestionFragment(int position, Boolean isCopy) {
+        getFragment().setDataOnFragmentFlip(arrListQuestions.get(position), true, isCopy);
+    }
 
     @Override
     public int getItemCount() {
@@ -231,6 +258,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
         return v;
     }
+
     public void filter(CharSequence charText) {
 
         arrListQuestions.clear();
@@ -248,5 +276,34 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         notifyDataSetChanged();
     }
 
+    private AddQuestionContainerFragment getFragment() {
+        return (AddQuestionContainerFragment) mFragment;
+    }
 
+
+    private void isValidationForAddToPreview(Questions question, CheckBox checkBox) {
+        if (!checkForQuestionPresence(question.getQuestionId())) {
+            if (checkBox.isChecked()) {
+                question.setIsQuestionAddedInPreview(true);
+                getFragment().getListOfPreviewQuestionsToAdd().add(question);
+            } else {
+                question.setIsQuestionAddedInPreview(false);
+                getFragment().getListOfPreviewQuestionsToAdd().remove(question);
+            }
+        } else {
+            question.setIsQuestionAddedInPreview(true);
+        }
+    }
+
+    private Boolean checkForQuestionPresence(String questionId) {
+        Boolean isPresent = false;
+        for (Questions question : getFragment().getListOfPreviewQuestion()) {
+            if (question.getQuestionId().equals(questionId)) {
+                isPresent = true;
+                break;
+            }
+
+        }
+        return isPresent;
+    }
 }

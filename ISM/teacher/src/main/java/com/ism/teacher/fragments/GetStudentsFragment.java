@@ -150,7 +150,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
             attribute.setUserId(WebConstants.USER_ID_340);
             attribute.setRole(WebConstants.TEACHER_ROLE_ID);
 
-            ((TeacherHostActivity) getActivity()).startProgress();
+            ((TeacherHostActivity) getActivity()).showProgress();
             new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
 
@@ -164,7 +164,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     @Override
     public void onResponse(int api_code, Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
+            ((TeacherHostActivity) getActivity()).hideProgress();
             switch (api_code) {
                 case WebConstants.GET_ALL_EXAM_SUBMISSION:
                     onResponseMyStudents(object);

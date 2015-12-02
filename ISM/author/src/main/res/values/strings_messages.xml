@@ -62,5 +62,7 @@
     <string name="msg_validation_addsubjective_question">You cant add Objective Question in Subjective Exam.</string>
     <string name="msg_validation_addobjective_question">You cant add Subjective Question in Objective Exam.</string>
     <string name="msg_validation_add_question">You cant add another subject question in this Exam.</string>
+    <string name="question_add_success">Question Added Successfully.</string>
+    <string name="question_edit_success">Question Edited Successfully.</string>
 
 </resources>

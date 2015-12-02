@@ -39,6 +39,8 @@ import java.util.ArrayList;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseHandler {
+    private String TAG = ResponseHandler.class.getSimpleName();
+
 
     private String message;
     private String status;
@@ -46,7 +48,7 @@ public class ResponseHandler {
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
     public static final String DUPLICATE_ENTRY = "Duplicate entry";
-    private String TAG = ResponseHandler.class.getSimpleName();
+
     private ArrayList<Badges> badges;
     private ArrayList<Notification> notification;
     private ArrayList<StudymateRequest> studymateRequest;
@@ -322,6 +324,7 @@ public class ResponseHandler {
     public void setTags(ArrayList<HashTags> tags) {
         this.tags = tags;
     }
+
     @JsonProperty("books")
     public ArrayList<Books> getBooks() {
         return books;
