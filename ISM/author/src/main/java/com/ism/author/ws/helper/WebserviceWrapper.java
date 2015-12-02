@@ -53,8 +53,8 @@ public class WebserviceWrapper {
             try {
 
 ////            Check if we can get access from the network.
-////	            URL url = new URL("http://192.168.1.147/");
-//                URL url = new URL("http://google.com/");
+////	            URL_HOST_202 url = new URL_HOST_202("http://192.168.1.147/");
+//                URL_HOST_202 url = new URL_HOST_202("http://google.com/");
                 URL url = new URL(WebConstants.URL_KINJAL_HOST);
                 HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
                 urlc.setRequestProperty("Connection", "close");

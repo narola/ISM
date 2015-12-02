@@ -84,7 +84,6 @@ public class Utility {
     }
 
 
-
     /**
      * Krunal Panchal
      * Toast alert when user is offline.
@@ -204,6 +203,7 @@ public class Utility {
         return mContext.getResources().getString(stringId);
 
     }
+
     /**
      * Arti Patel
      * initialization of Imageloader
@@ -286,6 +286,7 @@ public class Utility {
     /**
      * Arti Patel
      * get Image path from uri
+     *
      * @param uri
      * @param context
      * @return
@@ -313,6 +314,7 @@ public class Utility {
         cursor.close();
         return filePath;
     }
+
     /**
      * Arti Patel
      * set animation on view

@@ -414,9 +414,9 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 }
             }
             FileInputStream fileInputStream = new FileInputStream(sourceFile);
-            // open a URL connection to the Servlet
+            // open a URL_HOST_202 connection to the Servlet
             URL url = new URL("http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=UploadMedia");
-            // Open a HTTP connection to the URL
+            // Open a HTTP connection to the URL_HOST_202
             conn = (HttpURLConnection) url.openConnection();
             // Allow Inputs
             conn.setDoInput(true);

@@ -14,7 +14,7 @@ public class WebConstants {
     public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
     public static final String USER_IMAGES_TEST = "http://192.168.1.147/WS_ISM/Images/users_images/";
     public static final String HOST_202 = "http://192.168.1.202/pg/ISM/";      // pg
-    public static final String URL = HOST_202 + "WS_ISM/ISMServices.php?Service=";
+    public static final String URL_HOST_202 = HOST_202 + "WS_ISM/ISMServices.php?Service=";
     //	webservice constants for apiCode.
     public static final int LOGIN = 1;
     public static final int FORGOTPASSWORD = 2;
@@ -117,6 +117,8 @@ public class WebConstants {
     public static final String URL_GET_MY_FEEDS = URL_KINJAL_HOST + "GetMyFeeds";
     public static final String URL_GET_ABOUT_ME = URL_KINJAL_HOST + "GetAboutMe";
     public static final String URL_GET_BOOKS_FOR_USER = URL_KINJAL_HOST + "GetBooksForUser";
+    public static final String URL_MANAGE_FAVOURITES = URL_KINJAL_HOST + "ManageFavorite";
+    public static final String URL_MANAGE_BOOK_LIBRARY = URL_KINJAL_HOST + "ManageBookLibrary";
 
     /*status for apisuccess ans apifailed*/
     public static final String SUCCESS = "success";
