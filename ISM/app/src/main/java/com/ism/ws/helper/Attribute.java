@@ -3,6 +3,7 @@ package com.ism.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.constant.WebConstants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -71,14 +72,14 @@ public class Attribute {
     private String aboutMeText;
     private String ambitionInLife;
 
-    private String secret_key;
-    private String access_key;
-    private String fileName;
-    private String resourceName;
-    private String voucherAmount;
-    private String blockUser;
-    private String mateOf;
-    private String mateId;
+	private String fileName;
+	private String resourceName;
+	private String voucherAmount;
+	private String blockUser;
+	private String mateOf;
+	private String mateId;
+	private String secretKey;
+	private String accessKey;
 
     private ArrayList<String> unfavoriteResourceId;
     private ArrayList<String> favResourceId;
@@ -86,531 +87,495 @@ public class Attribute {
     private ArrayList<String> addBookId;
     private String studymateId;
 
-
-    public ArrayList<String> getUnfavoriteResourceId() {
-        return this.unfavoriteResourceId;
-    }
-
-    @JsonProperty("unfavorite_resource_id")
-    public void setUnfavoriteResourceId(ArrayList<String> unfavoriteResourceId) {
-        this.unfavoriteResourceId = unfavoriteResourceId;
-    }
-
-    public ArrayList<String> getFavResourceId() {
-        return this.favResourceId;
-    }
-
-    @JsonProperty("fav_resource_id")
-    public void setFavResourceId(ArrayList<String> favResourceId) {
-        this.favResourceId = favResourceId;
-    }
-
-    public String getBlockUser() {
-        return blockUser;
-    }
-
-    @JsonProperty("block_user")
-    public void setBlockUser(String blockUser) {
-        this.blockUser = blockUser;
-    }
-
-    public String getResourceName() {
-        return resourceName;
-    }
-
-    @JsonProperty("resource_name")
-    public void setResourceName(String resourceName) {
-        this.resourceName = resourceName;
-    }
-
-    public String getAmbitionInLife() {
-        return ambitionInLife;
-    }
-
-    @JsonProperty("ambitionInLife")
-    public void setAmbitionInLife(String ambitionInLife) {
-        this.ambitionInLife = ambitionInLife;
-    }
-
-    public String getAboutMeText() {
-        return aboutMeText;
-    }
-
-    @JsonProperty("aboutMeText")
-    public void setAboutMeText(String aboutMeText) {
-        this.aboutMeText = aboutMeText;
-    }
-
-    @JsonProperty("access_key")
-    public String getAccess_key() {
-        return access_key;
-    }
-
-    public void setAccess_key(String access_key) {
-        this.access_key = access_key;
-    }
-
-    @JsonProperty("secret_key")
-
-    public String getSecret_key() {
-        return secret_key;
-    }
-
-    public void setSecret_key(String secret_key) {
-        this.secret_key = secret_key;
-    }
-
-    public String getKeyId() {
-        return keyId;
-    }
-
-    @JsonProperty("key_id")
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
-    }
-
-    public String getSettingValue() {
-        return settingValue;
-    }
-
-    @JsonProperty("preference_value")
-    public void setSettingValue(String settingValue) {
-        this.settingValue = settingValue;
-    }
-
-    public String getUserId() {
-        return this.userId;
-    }
-
-    @JsonProperty("user_id")
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getJoiningStatus() {
-        return this.joiningStatus;
-    }
-
-    @JsonProperty("joining_status")
-    public void setJoiningStatus(String joiningStatus) {
-        this.joiningStatus = joiningStatus;
-    }
-
-    public String getGroupId() {
-        return this.groupId;
-    }
-
-    @JsonProperty("group_id")
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
-
-    public String getSchoolName() {
-        return this.schoolName;
-    }
-
-    @JsonProperty("school_name")
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
-    }
-
-    public String getHomeAddress() {
-        return this.homeAddress;
-    }
-
-    @JsonProperty("home_address")
-    public void setHomeAddress(String homeAddress) {
-        this.homeAddress = homeAddress;
-    }
-
-    public int getCityId() {
-        return this.cityId;
-    }
-
-    @JsonProperty("city_id")
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
-    }
-
-    public String getLastname() {
-        return this.lastname;
-    }
-
-    @JsonProperty("lastname")
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getFirstname() {
-        return this.firstname;
-    }
-
-    @JsonProperty("firstname")
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public int getStateId() {
-        return this.stateId;
-    }
-
-    @JsonProperty("state_id")
-    public void setStateId(int stateId) {
-        this.stateId = stateId;
-    }
-
-    public String getCountryId() {
-        return this.countryId;
-    }
-
-    @JsonProperty("country_id")
-    public void setCountryId(String countryId) {
-        this.countryId = countryId;
-    }
-
-    public String getContactNumber() {
-        return this.contactNumber;
-    }
-
-    @JsonProperty("contact_number")
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
-
-    public String getEmailAddress() {
-        return this.emailAddress;
-    }
-
-    @JsonProperty("email_address")
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
-
-    @JsonProperty("email_id")
-    public String getEmailId() {
-        return this.emailId;
-    }
-
-    @JsonProperty("username")
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @JsonProperty("password")
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getProfileImage() {
-        return this.profileImage;
-    }
-
-    @JsonProperty("profile_image")
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
-
-    public int getCourseId() {
-        return this.courseId;
-    }
-
-    @JsonProperty("course_id")
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
-    }
-
-    public int getSchoolId() {
-        return this.schoolId;
-    }
-
-    @JsonProperty("school_id")
-    public void setSchoolId(int schoolId) {
-        this.schoolId = schoolId;
-    }
-
-    public String getDeviceToken() {
-        return this.deviceToken;
-    }
-
-    @JsonProperty("device_token")
-    public void setDeviceToken(String deviceToken) {
-        this.deviceToken = deviceToken;
-    }
-
-    public String getAcademicYear() {
-        return this.academicYear;
-    }
-
-    @JsonProperty("academic_year")
-    public void setAcademicYear(String academicYear) {
-        this.academicYear = academicYear;
-    }
-
-    public String getProfileImageName() {
-        return this.profileImageName;
-    }
-
-    @JsonProperty("profile_image_name")
-    public void setProfileImageName(String profileImageName) {
-        this.profileImageName = profileImageName;
-    }
-
-    public String getBirthdate() {
-        return this.birthdate;
-    }
-
-    @JsonProperty("birthdate")
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
-    }
-
-    public String getGender() {
-        return this.gender;
-    }
-
-    @JsonProperty("gender")
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getDeviceType() {
-        return this.deviceType;
-    }
-
-    @JsonProperty("device_type")
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
-    }
-
-    public int getClassroomId() {
-        return this.classroomId;
-    }
-
-    @JsonProperty("classroom_id")
-    public void setClassroomId(int classroomId) {
-        this.classroomId = classroomId;
-    }
-
-    public String getRoleId() {
-        return this.roleId;
-    }
-
-    @JsonProperty("role_id")
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-//    @JsonProperty("preferences")
-//    public void setPreferences(ArrayList<Attribute> preferences) {
-//        this.preferences = preferences;
-//    }
-//
-//    @JsonProperty("file")
-//    public void setFile(File file) {
-//        this.file = file;
-//    }
-//
-
-
-//    public File getFile() {
-//        return file;
-//    }
-
-	/*public String getStudymateId() {
-        return studymateId;
+	public Attribute() {
+		setSecretKey(WebConstants.SECRET_KEY);
+		setAccessKey(WebConstants.ACCESS_KEY);
 	}
 
+	@JsonProperty("secret_key")
+	public String getSecretKey() {
+		return secretKey;
+	}
+
+	public void setSecretKey(String secretKey) {
+		this.secretKey = secretKey;
+	}
+
+	@JsonProperty("access_key")
+	public String getAccessKey() {
+		return accessKey;
+	}
+
+	public void setAccessKey(String accessKey) {
+		this.accessKey = accessKey;
+	}
+
+	public ArrayList<String> getUnfavoriteResourceId() {
+		return this.unfavoriteResourceId;
+	}
+
+	@JsonProperty("unfavorite_resource_id")
+	public void setUnfavoriteResourceId(ArrayList<String> unfavoriteResourceId) {
+		this.unfavoriteResourceId = unfavoriteResourceId;
+	}
+
+	public ArrayList<String> getFavResourceId() {
+		return this.favResourceId;
+	}
+
+	@JsonProperty("fav_resource_id")
+	public void setFavResourceId(ArrayList<String> favResourceId) {
+		this.favResourceId = favResourceId;
+	}
+
+	public String getBlockUser() {
+		return blockUser;
+	}
+
+	@JsonProperty("block_user")
+	public void setBlockUser(String blockUser) {
+		this.blockUser = blockUser;
+	}
+
+	public String getResourceName() {
+		return resourceName;
+	}
+
+	@JsonProperty("resource_name")
+	public void setResourceName(String resourceName) {
+		this.resourceName = resourceName;
+	}
+
+	public String getAmbitionInLife() {
+		return ambitionInLife;
+	}
+
+	@JsonProperty("ambitionInLife")
+	public void setAmbitionInLife(String ambitionInLife) {
+		this.ambitionInLife = ambitionInLife;
+	}
+
+	public String getAboutMeText() {
+		return aboutMeText;
+	}
+
+	@JsonProperty("aboutMeText")
+	public void setAboutMeText(String aboutMeText) {
+		this.aboutMeText = aboutMeText;
+	}
+
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	@JsonProperty("key_id")
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public String getSettingValue() {
+		return settingValue;
+	}
+
+	@JsonProperty("preference_value")
+	public void setSettingValue(String settingValue) {
+		this.settingValue = settingValue;
+	}
+
+	public String getUserId() {
+		return this.userId;
+	}
+
+	@JsonProperty("user_id")
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getJoiningStatus() {
+		return this.joiningStatus;
+	}
+
+	@JsonProperty("joining_status")
+	public void setJoiningStatus(String joiningStatus) {
+		this.joiningStatus = joiningStatus;
+	}
+
+	public String getGroupId() {
+		return this.groupId;
+	}
+
+	@JsonProperty("group_id")
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	public String getSchoolName() {
+		return this.schoolName;
+	}
+
+	@JsonProperty("school_name")
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
+
+	public String getHomeAddress() {
+		return this.homeAddress;
+	}
+
+	@JsonProperty("home_address")
+	public void setHomeAddress(String homeAddress) {
+		this.homeAddress = homeAddress;
+	}
+
+	public int getCityId() {
+		return this.cityId;
+	}
+
+	@JsonProperty("city_id")
+	public void setCityId(int cityId) {
+		this.cityId = cityId;
+	}
+
+	public String getLastname() {
+		return this.lastname;
+	}
+
+	@JsonProperty("lastname")
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getFirstname() {
+		return this.firstname;
+	}
+
+	@JsonProperty("firstname")
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public int getStateId() {
+		return this.stateId;
+	}
+
+	@JsonProperty("state_id")
+	public void setStateId(int stateId) {
+		this.stateId = stateId;
+	}
+
+	public String getCountryId() {
+		return this.countryId;
+	}
+
+	@JsonProperty("country_id")
+	public void setCountryId(String countryId) {
+		this.countryId = countryId;
+	}
+
+	public String getContactNumber() {
+		return this.contactNumber;
+	}
+
+	@JsonProperty("contact_number")
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+
+	public String getEmailAddress() {
+		return this.emailAddress;
+	}
+
+	@JsonProperty("email_address")
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+	@JsonProperty("email_id")
+	public String getEmailId() {
+		return this.emailId;
+	}
+
+	@JsonProperty("username")
+	public String getUsername() {
+		return this.username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	@JsonProperty("password")
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getProfileImage() {
+		return this.profileImage;
+	}
+
+	@JsonProperty("profile_image")
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
+	}
+
+	public int getCourseId() {
+		return this.courseId;
+	}
+
+	@JsonProperty("course_id")
+	public void setCourseId(int courseId) {
+		this.courseId = courseId;
+	}
+
+	public int getSchoolId() {
+		return this.schoolId;
+	}
+
+	@JsonProperty("school_id")
+	public void setSchoolId(int schoolId) {
+		this.schoolId = schoolId;
+	}
+
+	public String getDeviceToken() {
+		return this.deviceToken;
+	}
+
+	@JsonProperty("device_token")
+	public void setDeviceToken(String deviceToken) {
+		this.deviceToken = deviceToken;
+	}
+
+	public String getAcademicYear() {
+		return this.academicYear;
+	}
+
+	@JsonProperty("academic_year")
+	public void setAcademicYear(String academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public String getProfileImageName() {
+		return this.profileImageName;
+	}
+
+	@JsonProperty("profile_image_name")
+	public void setProfileImageName(String profileImageName) {
+		this.profileImageName = profileImageName;
+	}
+
+	public String getBirthdate() {
+		return this.birthdate;
+	}
+
+	@JsonProperty("birthdate")
+	public void setBirthdate(String birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public String getGender() {
+		return this.gender;
+	}
+
+	@JsonProperty("gender")
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getDeviceType() {
+		return this.deviceType;
+	}
+
+	@JsonProperty("device_type")
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
+	}
+
+	public int getClassroomId() {
+		return this.classroomId;
+	}
+
+	@JsonProperty("classroom_id")
+	public void setClassroomId(int classroomId) {
+		this.classroomId = classroomId;
+	}
+
+	public String getRoleId() {
+		return this.roleId;
+	}
+
+	@JsonProperty("role_id")
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	@JsonProperty("name")
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getMessage() {
+		return this.message;
+	}
+
+	@JsonProperty("message")
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getFeedId() {
+		return feedId;
+	}
+
+	@JsonProperty("feed_id")
+	public void setFeedId(String feedId) {
+		this.feedId = feedId;
+	}
+
+	public String getCommentBy() {
+		return commentBy;
+	}
+
+	@JsonProperty("comment_by")
+	public void setCommentBy(String commentBy) {
+		this.commentBy = commentBy;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	@JsonProperty("comment")
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String[] getTaggedUserIds() {
+		return taggedUserIds;
+	}
+
+	@JsonProperty("tagged_user_id")
+	public void setTaggedUserIds(String[] taggedUserIds) {
+		this.taggedUserIds = taggedUserIds;
+	}
+
+	public String getTaggedBy() {
+		return taggedBy;
+	}
+
+	@JsonProperty("tagged_by")
+	public void setTaggedBy(String taggedBy) {
+		this.taggedBy = taggedBy;
+	}
+
+	public ArrayList<Attribute> getPreferences() {
+		return preferences;
+	}
+
+	@JsonProperty("preferences")
+	public void setPreferences(ArrayList<Attribute> preferences) {
+		this.preferences = preferences;
+	}
+
+	@JsonProperty("file")
+	public void setFile(File file) {
+		this.file = file;
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	/*public String getStudymateId() {
+		return studymateId;
+	}
 
 	@JsonProperty("studymate_id")
 	public void setStudymateId(String studymateId) {
 		this.studymateId = studymateId;
 	}*/
 
-    public String getMessage() {
-        return this.message;
-    }
+	public String getReadCategory() {
+		return readCategory;
+	}
 
-    @JsonProperty("message")
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	@JsonProperty("read_category")
+	public void setReadCategory(String readCategory) {
+		this.readCategory = readCategory;
+	}
 
-    public String getFeedId() {
-        return feedId;
-    }
+	public ArrayList<String> getRecordIds() {
+		return recordIds;
+	}
 
-    @JsonProperty("feed_id")
-    public void setFeedId(String feedId) {
-        this.feedId = feedId;
-    }
+	@JsonProperty("record_id")
+	public void setRecordIds(ArrayList<String> recordIds) {
+		this.recordIds = recordIds;
+	}
 
-    public String getCommentBy() {
-        return commentBy;
-    }
+	public String getFileName() {
+		return fileName;
+	}
 
-    @JsonProperty("comment_by")
-    public void setCommentBy(String commentBy) {
-        this.commentBy = commentBy;
-    }
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
-    public String getComment() {
-        return comment;
-    }
+	@JsonProperty("voucher_amount")
+	public String getVoucherAmount() {
+		return voucherAmount;
+	}
 
-    @JsonProperty("comment")
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+	public void setVoucherAmount(String voucherAmount) {
+		this.voucherAmount = voucherAmount;
+	}
 
-    public String[] getTaggedUserIds() {
-        return taggedUserIds;
-    }
+	public void setRemoveBookId(ArrayList<String> removeBookId) {
+		this.removeBookId = removeBookId;
+	}
 
-    @JsonProperty("tagged_user_id")
-    public void setTaggedUserIds(String[] taggedUserIds) {
-        this.taggedUserIds = taggedUserIds;
-    }
+	@JsonProperty("remove_book_id")
+	public ArrayList<String> getRemoveBookId() {
+		return removeBookId;
+	}
 
-    public String getTaggedBy() {
-        return taggedBy;
-    }
+	@JsonProperty("add_book_id")
+	public ArrayList<String> getAddBookId() {
+		return addBookId;
+	}
 
-    @JsonProperty("tagged_by")
-    public void setTaggedBy(String taggedBy) {
-        this.taggedBy = taggedBy;
-    }
+	public void setAddBookId(ArrayList<String> addBookId) {
+		this.addBookId = addBookId;
+	}
 
-//    public void setRemoveBookId(ArrayList<String> removeBookId) {
-//        this.removeBookId = removeBookId;
-//    }
-//
-//    @JsonProperty("remove_book_id")
-//    public ArrayList<String> getRemoveBookId() {
-//        return removeBookId;
-//    }
-//
-//    @JsonProperty("add_book_id")
-//    public ArrayList<String> getAddBookId() {
-//        return addBookId;
-//    }
+	@JsonProperty("mate_of")
+	public String getMateOf() {
+		return mateOf;
+	}
 
-    public ArrayList<Attribute> getPreferences() {
-        return preferences;
-    }
+	public void setMateOf(String mateOf) {
+		this.mateOf = mateOf;
+	}
 
-    @JsonProperty("preferences")
-    public void setPreferences(ArrayList<Attribute> preferences) {
-        this.preferences = preferences;
-    }
+	@JsonProperty("mate_id")
+	public String getMateId() {
+		return mateId;
+	}
 
-    @JsonProperty("file")
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public String getStudymateId() {
-        return studymateId;
-    }
-
-    @JsonProperty("studymate_id")
-    public void setStudymateId(String studymateId) {
-        this.studymateId = studymateId;
-    }
-
-    public String getReadCategory() {
-        return readCategory;
-    }
-
-    @JsonProperty("read_category")
-    public void setReadCategory(String readCategory) {
-        this.readCategory = readCategory;
-    }
-
-    public ArrayList<String> getRecordIds() {
-        return recordIds;
-    }
-
-    @JsonProperty("record_id")
-    public void setRecordIds(ArrayList<String> recordIds) {
-        this.recordIds = recordIds;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    @JsonProperty("voucher_amount")
-    public String getVoucherAmount() {
-        return voucherAmount;
-    }
-
-    public void setVoucherAmount(String voucherAmount) {
-        this.voucherAmount = voucherAmount;
-    }
-
-    public void setRemoveBookId(ArrayList<String> removeBookId) {
-        this.removeBookId = removeBookId;
-    }
-
-    @JsonProperty("remove_book_id")
-    public ArrayList<String> getRemoveBookId() {
-        return removeBookId;
-    }
-
-    @JsonProperty("add_book_id")
-    public ArrayList<String> getAddBookId() {
-        return addBookId;
-    }
-
-    public void setAddBookId(ArrayList<String> addBookId) {
-        this.addBookId = addBookId;
-    }
-
-    @JsonProperty("mate_of")
-    public String getMateOf() {
-        return mateOf;
-    }
-
-    public void setMateOf(String mateOf) {
-        this.mateOf = mateOf;
-    }
-
-    @JsonProperty("mate_id")
-    public String getMateId() {
-        return mateId;
-    }
-
-    public void setMateId(String mateId) {
-        this.mateId = mateId;
-    }
+	public void setMateId(String mateId) {
+		this.mateId = mateId;
+	}
 
 }

@@ -10,12 +10,6 @@ import java.io.File;
 public class AppConstant {
 
     /**
-     *  Constants
-     */
-    public static final String USERID = "USERID";
-    public static final String PASSWORD = "PASSWORD";
-
-    /**
      *  All fonts
      */
     public static final String RalewayBlack = "Raleway-Black.ttf";
@@ -47,7 +41,6 @@ public class AppConstant {
     /*
     *  resource name for edit profile
     */
-
     public  static final String RESOURCE_BOOKS="books";
     public  static final String RESOURCE_ROLEMODEL="rolemodel";
     public  static final String RESOURCE_PASTTIMES="pastimes";

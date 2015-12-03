@@ -85,7 +85,7 @@ public class SuggestedPastTimeAdapter extends BaseAdapter implements Filterable{
 
         try {
             holder.txtPastimeName.setTypeface(myTypeFace.getRalewayRegular());
-            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getPastimeImage(), holder.imgPastime, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getPastimeImage(), holder.imgPastime, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtPastimeName.setText(arrayList.get(position).getPastimeName());
             holder.txtName.setText("");
             holder.imgAddToFav.setOnClickListener(new View.OnClickListener() {

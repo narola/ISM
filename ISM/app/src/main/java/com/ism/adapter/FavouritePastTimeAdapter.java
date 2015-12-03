@@ -87,7 +87,7 @@ public class FavouritePastTimeAdapter extends BaseAdapter implements Filterable 
             holder.txtPastimeName.setTypeface(myTypeFace.getRalewayRegular());
             holder.txtName.setText("");
             holder.txtPastimeName.setText(arrayList.get(position).getPastimeName());
-            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getPastimeImage(), holder.imgPastime, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getPastimeImage(), holder.imgPastime, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

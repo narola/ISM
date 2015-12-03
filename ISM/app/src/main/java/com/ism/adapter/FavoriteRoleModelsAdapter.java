@@ -89,7 +89,7 @@ public class FavoriteRoleModelsAdapter extends BaseAdapter implements Filterable
             holder.txtBookName.setTypeface(myTypeFace.getRalewayRegular());
             holder.txtBookName.setText(arrayList.get(position).getModelName());
             holder.txtOrganization.setText(arrayList.get(position).getOrganization());
-            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getModelImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getModelImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
 
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
                 @Override

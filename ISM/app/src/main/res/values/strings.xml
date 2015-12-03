@@ -13,7 +13,11 @@
 	<string-array name="accordion_notice">
 		<item>NOTICE</item>
 		<item>HIGH SCORE</item>
-		<!--<item>EVENTS</item>-->
+	</string-array>
+
+	<string-array name="chat">
+		<item>STUDYMATES</item>
+		<item>MY TEACHER</item>
 	</string-array>
 
 	<integer-array name="accordion_notice_visibility">
@@ -331,4 +335,5 @@
 	<string name="strAccessKey">PLF25jEXMPXkKwavzk2mmKMj/j1br7vn8zv3IRID4js</string>
 	<string name="strSecretKey">juPC8Mos1bMZTbjKm/gFiCUqcI7+H8zr2UdlLfnCwo4=</string>
 	<string name="topic">"Topic - "</string>
+	<string name="suggested_studymates">Suggested Studymates</string>
 </resources>

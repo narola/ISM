@@ -96,8 +96,8 @@ public class WebserviceWrapper {
                         case WebConstants.GET_ALL_COMMENTS:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_COMMENTS).execute(ResponseHandler.class, attribute);
                             break;
-                        case WebConstants.GET_ALL_STUDY_MATES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_STUDY_MATES).execute(ResponseHandler.class, attribute);
+                        case WebConstants.GET_ALL_STUDYMATES:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_STUDYMATES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.TAG_STUDY_MATES:
                             responseObject = new WebserviceConnector(WebConstants.URL_TAG_STUDY_MATES).execute(ResponseHandler.class, attribute);
@@ -176,6 +176,9 @@ public class WebserviceWrapper {
                             break;
                         case WebConstants.MANAGE_BOOK_LIBRARY:
                             responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_BOOK_LIBRARY).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_ALL_STUDYMATES_WITH_DETAILS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_STUDYMATES_WITH_DETAILS).execute(ResponseHandler.class, attribute);
                             break;
                     }
                 }

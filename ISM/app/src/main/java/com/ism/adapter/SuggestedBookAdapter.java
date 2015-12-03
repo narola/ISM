@@ -93,8 +93,8 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable{
 
             holder.txtBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-//			imageLoader.displayImage(AppConstant.HOST_IMAGE_USER + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            Global.imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+//			imageLoader.displayImage(AppConstant.HOST_IMAGE_USER_OLD + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
+            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
             holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
 

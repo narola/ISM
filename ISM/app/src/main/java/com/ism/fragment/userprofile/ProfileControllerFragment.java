@@ -106,6 +106,8 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         imgMessage = (ImageView) view.findViewById(R.id.img_message);
         imgFriendRequest = (ImageView) view.findViewById(R.id.img_friend_request);
 
+	    txtUserName.setText(Global.strFullName);
+
         arrTxtLabel = new TextView[]{txtGeneralSettings, txtMyFeeds, txtStudyMates, txtMyActivity, txtWallet};
         arrImgNotificationIcon = new ImageView[]{imgNotification, imgMessage, imgFriendRequest};
 

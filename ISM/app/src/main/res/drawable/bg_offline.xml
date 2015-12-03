@@ -3,5 +3,5 @@
        android:shape="ring"
 		android:thickness="@dimen/status_ring_thickness"
 		android:innerRadius="@dimen/status_ring_radius">
-	<solid android:color="@color/gray_offline"/>
+	<solid android:color="@color/bg_app_dark"/>
 </shape>

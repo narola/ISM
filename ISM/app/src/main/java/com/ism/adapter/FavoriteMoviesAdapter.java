@@ -86,7 +86,7 @@ public class FavoriteMoviesAdapter extends BaseAdapter implements Filterable{
             holder.txtMovieName.setGravity(Gravity.LEFT);
             holder.txtYear.setGravity(Gravity.LEFT);
             holder.imgRemoveFav.setBackgroundResource(R.drawable.img_like_red);
-            Global.imageLoader.displayImage(WebConstants.URL_HOST_202+arrayList.get(position).getMovieImage(), holder.imgMovie, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD+arrayList.get(position).getMovieImage(), holder.imgMovie, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtMovieName.setText(arrayList.get(position).getMovieName());
             holder.txtYear.setText(arrayList.get(position).getMovieGenre());
             // if(arrayList.get(position).ge)

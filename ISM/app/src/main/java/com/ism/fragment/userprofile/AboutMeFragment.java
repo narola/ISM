@@ -433,7 +433,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtTotalQueAsked.setText(data.getTotalQuestionAsked());
             txtTotalStudymates.setText(data.getTotalStudymates());
 //            imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMStudent.options);
-            imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + data.getProfilePic(), imgProfilePic, ISMStudent.options);
+            imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic(), imgProfilePic, ISMStudent.options);
         } catch (Exception e) {
             Debug.i(TAG, "SetupData :" + e.getLocalizedMessage());
         }

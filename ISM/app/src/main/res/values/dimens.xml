@@ -88,4 +88,5 @@
     <dimen name="attachment_button_height">40dp</dimen>
     <dimen name="text_size_normal_chat">16sp</dimen>
     <dimen name="text_size_small_chat">15sp</dimen>
+    <dimen name="margin_chat">5dp</dimen>
 </resources>

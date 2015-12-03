@@ -87,7 +87,7 @@ public class SuggestedRoleModelsAdapter extends BaseAdapter implements Filterabl
         try {
             holder.txtOrganization.setTypeface(myTypeFace.getRalewayRegular());
             holder.txtBookName.setTypeface(myTypeFace.getRalewayRegular());
-            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getModelImage(), holder.imgRoleModel, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getModelImage(), holder.imgRoleModel, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getModelName());
             holder.txtOrganization.setText(arrayList.get(position).getOrganization());
             holder.imgAddToFav.setOnClickListener(new View.OnClickListener() {

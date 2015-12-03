@@ -5,44 +5,55 @@
                 android:background="@color/bg_app_dark"
                 tools:context=".fragment.userprofile.ProfileControllerFragment">
 
-	<com.ism.views.CircleImageView
-		android:id="@+id/img_dp"
-		android:layout_width="80dp"
-		android:layout_height="80dp"
-		android:layout_marginBottom="10dp"
-		android:layout_marginLeft="10dp"
-		android:layout_marginTop="20dp"
-		android:src="@drawable/userdp"/>
-
-	<TextView
-		android:id="@+id/txt_name"
+	<RelativeLayout
+		android:id="@+id/rl_user"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="25dp"
-		android:layout_toRightOf="@id/img_dp"
-		android:gravity="center"
-		android:text="ADAM ROSS"
-		android:textAllCaps="true"
-		android:textColor="@android:color/white"
-		android:textSize="22sp"/>
+		android:layout_height="wrap_content">
 
-	<TextView
-		android:id="@+id/txt_edit_profile"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/txt_name"
-		android:layout_marginTop="5dp"
-		android:layout_toRightOf="@id/img_dp"
-		android:gravity="center"
-		android:text="@string/edit_profile"
-		android:textColor="@color/color_green"
-		android:textSize="20sp"/>
+		<com.ism.views.CircleImageView
+			android:id="@+id/img_dp"
+			android:layout_width="80dp"
+			android:layout_height="80dp"
+			android:layout_marginBottom="10dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginTop="20dp"
+			android:src="@drawable/userdp"/>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_toRightOf="@id/img_dp"
+			android:layout_centerVertical="true">
+
+			<TextView
+				android:id="@+id/txt_name"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:layout_marginTop="20dp"
+				android:textAllCaps="true"
+				android:textColor="@android:color/white"
+				android:textSize="22sp"/>
+
+			<TextView
+				android:id="@+id/txt_edit_profile"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/txt_name"
+				android:layout_marginTop="5dp"
+				android:gravity="center"
+				android:text="@string/edit_profile"
+				android:textColor="@color/color_green"
+				android:textSize="20sp"/>
+		</LinearLayout>
+	</RelativeLayout>
 
 	<ImageView
 		android:id="@+id/img_notification"
 		android:layout_width="@dimen/controller_top_button_width"
 		android:layout_height="@dimen/notification_button_height"
-		android:layout_below="@id/img_dp"
+		android:layout_below="@id/rl_user"
 		android:layout_marginTop="@dimen/notification_margin_top"
 		android:background="@drawable/bg_right_notification_button"
 		android:src="@drawable/img_notification"/>
@@ -51,7 +62,7 @@
 		android:id="@+id/txt_notification"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/img_dp"
+		android:layout_below="@id/rl_user"
 		android:layout_marginRight="5dp"
 		android:background="@drawable/bg_notificaton"
 		android:textSize="@dimen/notification_digit_text_size"
@@ -65,7 +76,7 @@
 		android:id="@+id/img_message"
 		android:layout_width="@dimen/controller_top_button_width"
 		android:layout_height="@dimen/notification_button_height"
-		android:layout_below="@id/img_dp"
+		android:layout_below="@id/rl_user"
 		android:layout_toRightOf="@id/img_notification"
 		android:layout_marginTop="@dimen/notification_margin_top"
 		android:background="@drawable/bg_right_notification_button"
@@ -75,7 +86,7 @@
 		android:id="@+id/txt_message"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/img_dp"
+		android:layout_below="@id/rl_user"
 		android:layout_marginRight="5dp"
 		android:background="@drawable/bg_message"
 		android:textSize="@dimen/notification_digit_text_size"
@@ -89,7 +100,7 @@
 		android:id="@+id/img_friend_request"
 		android:layout_width="@dimen/controller_top_button_width"
 		android:layout_height="@dimen/notification_button_height"
-		android:layout_below="@id/img_dp"
+		android:layout_below="@id/rl_user"
 		android:layout_toRightOf="@id/img_message"
 		android:layout_marginTop="@dimen/notification_margin_top"
 		android:background="@color/bg_notification_layout"
@@ -99,7 +110,7 @@
 		android:id="@+id/txt_friend_request"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/img_dp"
+		android:layout_below="@id/rl_user"
 		android:layout_marginRight="5dp"
 		android:background="@drawable/bg_friend_request"
 		android:textSize="@dimen/notification_digit_text_size"
