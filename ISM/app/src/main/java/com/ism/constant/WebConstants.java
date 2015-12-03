@@ -21,7 +21,7 @@ public class WebConstants {
 	public static final int GET_ALL_FEEDS = 11;
 	public static final int ADD_COMMENT = 12;
 	public static final int GET_ALL_COMMENTS = 13;
-	public static final int GET_ALL_STUDY_MATES = 14;
+	public static final int GET_ALL_STUDYMATES = 14;
 	public static final int TAG_STUDY_MATES = 15;
 	public static final int GET_ALL_NOTICES = 16;
 	public static final int GET_NOTIFICATION = 17;
@@ -35,6 +35,7 @@ public class WebConstants {
 	public static final int GET_WALLET_SUMMARY = 25;
 	public static final int GENERATE_VOUCHER = 26;
 	public static final int GET_MY_FEEDS = 27;
+	public static final int GET_ALL_STUDYMATES_WITH_DETAILS = 28;
 
 
 	//general settings
@@ -43,6 +44,7 @@ public class WebConstants {
 	public static final int GENERAL_SETTING_PREFERENCES = 72;
 	public static final int GET_USER_PREFERENCES=73;
 	public static final int BLOCK_USER = 74;
+	public static final int BLOCKED_USER = 75;
 
 	//edit profiles
 
@@ -60,11 +62,16 @@ public class WebConstants {
 	/**
 	 *  URLs
 	 */
+	private static final String URL = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";  // KRUNAL
+	private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
 //	private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";  // KRUNAL
 //	private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
 //	private static final String URL_HOST_147 = HOST_147 + "WS_ISM/ISMServices.php?Service=";                // KINJAL
 //	private static final String URL_IMAGE_PATH = "http://192.168.1.147/WS_ISM/Images"
 
+	public static final String HOST_202 = "http://192.168.1.202/pg/ISM/";      // pg
+//	public static final String HOST_202 = "http://clientapp.narolaifotech.com/pg/ISM/";      // pg
+//	private static final String URL = HOST_202 + "WS_ISM/ISMServices.php?Service=";
 
 //	public static final String HOST = "http://192.168.1.202/";                                              // SERVER
 //	public static final String HOST = "http://clientapp.narolainfotech.com/";                               // SERVER
@@ -74,9 +81,12 @@ public class WebConstants {
 	private static final String DIR_PATH = "WS_ISM/";    //  KINJAL
 
 	private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
-	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_Images/";
+//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_Images/";
+	public static final String HOST_IMAGE_USER = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_Images/";
+	public static final String HOST_IMAGE_FEED = HOST + DIR_PATH + "images/feeds/";
 
-	public static final String URL_HOST_202 = "http://192.168.1.202/pg/ISM/WS_ISM/";
+
+	public static final String HOST_IMAGE_USER_OLD = "http://192.168.1.202/pg/ISM/WS_ISM/";
 	public static final String URL_ACCEPT_TUTORIAL_GROUP = HOST_WS + "AcceptTutorialGroup";
 	public static final String URL_ALLOCATE_TUTORIAL_GROUP = HOST_WS + "AllocateTutorialGroup";
 	public static final String URL_GET_CITIES = HOST_WS + "GetCities";
@@ -84,7 +94,7 @@ public class WebConstants {
 	public static final String URL_GET_COUNTRIES = HOST_WS + "GetCountries";
 	public static final String URL_LOGIN = HOST_WS + "AuthenticateUser";
 	public static final String URL_TAG_STUDY_MATES = HOST_WS + "TagFriendInFeed";
-	public static final String URL_GET_ALL_STUDY_MATES = HOST_WS + "GetStudymates";
+	public static final String URL_GET_ALL_STUDYMATES = HOST_WS + "GetStudymates";
 	public static final String URL_GET_ALL_COMMENTS = HOST_WS + "GetAllComments";
 	public static final String URL_ADD_COMMENT = HOST_WS + "AddComment";
 	public static final String URL_GET_ALL_FEEDS = HOST_WS + "GetAllFeeds";
@@ -107,30 +117,36 @@ public class WebConstants {
 	public static final String URL_GET_WALLET_SUMMARY = HOST_WS + "GetWalletSummary";
 	public static final String URL_GENERATE_VOUCHER = HOST_WS + "GenerateVoucher";
 	public static final String URL_GET_MY_FEEDS = HOST_WS + "GetMyFeeds";
+	public static final String URL_GET_ALL_STUDYMATES_WITH_DETAILS = HOST_WS + "GetStudymatesWithDetails";
 
-
-	/**
-	 * edit profile
-	 */
-	public static final String URL_GET_ABOUT_ME =  HOST_WS + "GetAboutMe";
-	public static final String URL_GET_BOOKS_FOR_USER =  HOST_WS + "GetBooksForUser";
-	public static final String URL_EDIT_ABOUT_ME =  HOST_WS + "EditAboutMe";
-	public static final String URL_GET_MOVIES_FOR_USER =  HOST_WS + "GetMoviesForUser";
-	public static final String URL_GET_PASTTIME_FOR_USER =  HOST_WS + "GetPastimeForUser";
-	public static final String URL_GET_ROLEMODEL_FOR_USER =  HOST_WS + "GetRoleModelForUser";
-	public static final String URL_MANAGE_FAVOURITES =  HOST_WS + "ManageFavorite";
-	public static final String URL_MANAGE_BOOK_LIBRARY =  HOST_WS + "ManageBookLibrary";
+	/*
+	* edit profile
+	* */
+	public static final String URL_GET_ABOUT_ME =  URL + "GetAboutMe";
+	public static final String URL_GET_BOOKS_FOR_USER =  URL + "GetBooksForUser";
+	public static final String URL_EDIT_ABOUT_ME =  URL + "EditAboutMe";
+	public static final String URL_GET_MOVIES_FOR_USER =  URL + "GetMoviesForUser";
+	public static final String URL_GET_PASTTIME_FOR_USER =  URL + "GetPastimeForUser";
+	public static final String URL_GET_ROLEMODEL_FOR_USER =  URL + "GetRoleModelForUser";
+	public static final String URL_MANAGE_FAVOURITES =  URL + "ManageFavorite";
+	public static final String URL_MANAGE_BOOK_LIBRARY =  URL + "ManageBookLibrary";
 	public static final String URL_EDIT_PROFILE_PIC = " ";
-
+	public static final String URL_GET_BLOCKED_USER =  URL + "GetBlockedUser";
 
 	/**
-	 * Parameter values
+	 * Parameter value Constants
 	 */
 	public static final String STUDYMATE_REQUEST = "studymate_request";
 	public static final String MESSAGES = "messages";
 	public static final String NOTIFICATION = "notification";
 	public static final String ROLE_ALL = "all";
 	public static final String ROLE_STUDENT = "student";
+
+	/**
+	 * Parameter value Variables
+	 */
+	public static String SECRET_KEY;
+	public static String ACCESS_KEY;
 
 	/**
 	 * Response values

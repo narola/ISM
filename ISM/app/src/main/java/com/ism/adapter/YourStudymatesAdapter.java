@@ -59,7 +59,7 @@ public class YourStudymatesAdapter extends RecyclerView.Adapter<YourStudymatesAd
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_your_studymate_request, parent, false));
+		return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_your_studymates, parent, false));
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BookData {
-	
+
     private String ebookLink;
     private String authorImage;
     private String price;
@@ -24,15 +24,24 @@ public class BookData {
     private String description;
     private String bookName;
     private ArrayList<Tags> tags;
+    private String isInLibrary;
 
+    @JsonProperty("is_in_library")
+    public String getIsInLibrary() {
+        return isInLibrary;
+    }
 
-    @JsonProperty("ebook_link")
-    public String getEbookLink() {
-        return this.ebookLink;
+    public void setIsInLibrary(String isInLibrary) {
+        this.isInLibrary = isInLibrary;
     }
 
     public void setEbookLink(String ebookLink) {
         this.ebookLink = ebookLink;
+    }
+
+    @JsonProperty("ebook_link")
+    public String getEbookLink() {
+        return this.ebookLink;
     }
 
     @JsonProperty("author_image")
@@ -106,6 +115,7 @@ public class BookData {
     public void setBookName(String bookName) {
         this.bookName = bookName;
     }
+
     @JsonProperty("tags")
     public ArrayList<Tags> getTags() {
         return this.tags;
@@ -115,5 +125,5 @@ public class BookData {
         this.tags = tags;
     }
 
-    
+
 }

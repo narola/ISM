@@ -16,14 +16,14 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/sp_questionlist_course"
+                android:id="@+id/sp_questionlist_examtype"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/spinner_selector"
                 android:entries="@array/list"
-                android:spinnerMode="dropdown"
-                android:padding="@dimen/d10dp"/>
+                android:padding="@dimen/d10dp"
+                android:spinnerMode="dropdown" />
 
             <Spinner
                 android:id="@+id/sp_questionlist_subject"
@@ -32,8 +32,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/spinner_selector"
                 android:entries="@array/list"
-                android:spinnerMode="dropdown"
-                android:padding="@dimen/d10dp"/>
+                android:padding="@dimen/d10dp"
+                android:spinnerMode="dropdown" />
 
 
             <Spinner
@@ -43,8 +43,31 @@
                 android:layout_weight="1"
                 android:background="@drawable/spinner_selector"
                 android:entries="@array/list"
-                android:spinnerMode="dropdown"
-                android:padding="@dimen/d10dp"/>
+                android:padding="@dimen/d10dp"
+                android:spinnerMode="dropdown" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/d15dp">
+
+                <ImageView
+                    android:id="@+id/img_sort_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sortingup"
+                    android:layout_marginBottom="@dimen/d5dp"/>
+
+                <ImageView
+                    android:id="@+id/img_sort_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sortingdown" />
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="0dp"

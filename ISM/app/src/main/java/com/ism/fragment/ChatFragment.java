@@ -7,21 +7,37 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
 
 import com.ism.activity.HostActivity;
 import com.ism.R;
+import com.ism.adapter.StudymateChatAdapter;
+import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
+import com.ism.object.Global;
+import com.ism.utility.Utility;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.User;
+
+import java.util.ArrayList;
 
 /**
  * Created by c161 on --/10/15.
  */
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = ChatFragment.class.getSimpleName();
 
     private View view;
+	private ListView lvStudymates;
+	private Button btnSuggestedStudymates, btnFindMoreStudymates;
 
     private FragmentListener fragListener;
+	private ArrayList<User> arrListStudymate;
+	private StudymateChatAdapter adpStudymateChat;
 
     public static ChatFragment newInstance() {
         ChatFragment fragChat = new ChatFragment();
@@ -29,7 +45,6 @@ public class ChatFragment extends Fragment {
     }
 
     public ChatFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -42,10 +57,31 @@ public class ChatFragment extends Fragment {
     }
 
     private void initGlobal() {
+	    lvStudymates = (ListView) view.findViewById(R.id.lv_studymates);
+	    btnSuggestedStudymates = (Button) view.findViewById(R.id.btn_suggested_studymates);
+	    btnFindMoreStudymates = (Button) view.findViewById(R.id.btn_find_more_studymates);
+
+		if (Utility.isConnected(getActivity())) {
+			callApiGetStudymates();
+		} else {
+			Utility.alertOffline(getActivity());
+		}
 
     }
 
-    @Override
+	private void callApiGetStudymates() {
+		try {
+			Attribute attribute = new Attribute();
+			attribute.setUserId(Global.strUserId);
+
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+					.execute(WebConstants.GET_ALL_STUDYMATES_WITH_DETAILS);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiGetStudymates Exception : " + e.toString());
+		}
+	}
+
+	@Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -71,4 +107,41 @@ public class ChatFragment extends Fragment {
         fragListener = null;
     }
 
+	@Override
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.GET_ALL_STUDYMATES_WITH_DETAILS:
+					onResponseGetStudymates(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseGetStudymates(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					arrListStudymate = responseHandler.getStudymates();
+					fillListStudymates();
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "onResponseGetStudymates failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseGetStudymates api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseGetStudymates Exception : " + e.toString());
+		}
+	}
+
+	private void fillListStudymates() {
+		if (arrListStudymate != null) {
+			adpStudymateChat = new StudymateChatAdapter(getActivity(), arrListStudymate);
+			lvStudymates.setAdapter(adpStudymateChat);
+		}
+	}
 }

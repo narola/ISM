@@ -38,7 +38,7 @@ public class WebserviceConnector {
 			connection.setDoOutput(true); // Triggers POST.
 //			connection.setRequestProperty("Accept-Charset", charset);
 //			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
-
+			Log.i("api", url + "");
 			ObjectWriter writer = getMapper().writer();
 			String jsonObject = "";
 			if (request != null) {
@@ -69,7 +69,7 @@ public class WebserviceConnector {
 				response.close();
 				json = sb.toString();
 
-//				Log.e(TAG, "Response json : " + json);
+				Log.e(TAG, "Response json : " + json);
 
 				ret = getMapper().readValue(json, responseType);
 

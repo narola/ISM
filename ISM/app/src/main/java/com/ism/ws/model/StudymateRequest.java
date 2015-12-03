@@ -20,6 +20,8 @@ public class StudymateRequest implements Parcelable {
     private String recordId;
     private String isSeen;
     private String requesterProfile;
+    private String requesterSchoolName;
+    private String requesterCourseName;
     private String requestFromId;
 
 	public StudymateRequest() {
@@ -87,6 +89,24 @@ public class StudymateRequest implements Parcelable {
 
     public void setRequesterProfile(String requesterProfile) {
         this.requesterProfile = requesterProfile;
+    }
+
+    @JsonProperty("requester_school_name")
+    public String getRequesterSchoolName() {
+        return requesterSchoolName;
+    }
+
+    public void setRequesterSchoolName(String requesterSchoolName) {
+        this.requesterSchoolName = requesterSchoolName;
+    }
+
+    @JsonProperty("requester_course_name")
+    public String getRequesterCourseName() {
+        return requesterCourseName;
+    }
+
+    public void setRequesterCourseName(String requesterCourseName) {
+        this.requesterCourseName = requesterCourseName;
     }
 
     @JsonProperty("request_from_id")

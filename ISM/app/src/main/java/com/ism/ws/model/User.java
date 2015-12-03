@@ -48,6 +48,7 @@ public class User {
 	private String courseId;
     private String examScore;
     private String subjectName;
+    private String isOnline;
 	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 
     @JsonProperty("total_exams")
@@ -138,6 +139,7 @@ public class User {
     public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
     }
+
     @JsonProperty("school_name")
     public String getSchoolName() {
         return this.schoolName;
@@ -355,6 +357,15 @@ public class User {
 
     public void setSubjectName(String subjectName) {
         this.subjectName = subjectName;
+    }
+
+	@JsonProperty("is_online")
+    public String getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(String isOnline) {
+        this.isOnline = isOnline;
     }
 
 }

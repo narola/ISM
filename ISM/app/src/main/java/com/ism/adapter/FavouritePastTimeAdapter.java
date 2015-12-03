@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.PastimesDetailsDialog;
-import com.ism.fragment.userprofile.PastTimeFragment;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -26,9 +26,10 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class FavouritePastTimeAdapter extends BaseAdapter implements Filterable{
+public class FavouritePastTimeAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = FavouritePastTimeAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
+    private final HostActivity.ManageResourcesListner manageResourcesListner;
     Context context;
     ArrayList<PastimeData> arrayList = new ArrayList<>();
     ArrayList<PastimeData> arrayListFilter = new ArrayList<>();
@@ -36,11 +37,12 @@ public class FavouritePastTimeAdapter extends BaseAdapter implements Filterable{
     MyTypeFace myTypeFace;
     PastimesFilter pastimesFilter;
 
-    public FavouritePastTimeAdapter(Context context, ArrayList<PastimeData> arrayList) {
+    public FavouritePastTimeAdapter(Context context, ArrayList<PastimeData> arrayList, HostActivity.ManageResourcesListner manageResourcesListner) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter = arrayList;
         imageLoader = ImageLoader.getInstance();
+        this.manageResourcesListner = manageResourcesListner;
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         inflater = LayoutInflater.from(context);
         myTypeFace = new MyTypeFace(context);
@@ -72,10 +74,10 @@ public class FavouritePastTimeAdapter extends BaseAdapter implements Filterable{
             holder.txtPastimeName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
             holder.txtName = (TextView) convertView.findViewById(R.id.txt_author);
-            holder.imgLike = (ImageView) convertView.findViewById(R.id.img_add_fav);
-            holder.imgLike.setVisibility(View.VISIBLE);
+            holder.imgRemoveFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
+            holder.imgRemoveFav.setVisibility(View.VISIBLE);
             holder.imgInfo.setVisibility(View.VISIBLE);
-            holder.imgLike.setBackgroundResource(R.drawable.img_like_red);
+            holder.imgRemoveFav.setBackgroundResource(R.drawable.img_like_red);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -85,7 +87,7 @@ public class FavouritePastTimeAdapter extends BaseAdapter implements Filterable{
             holder.txtPastimeName.setTypeface(myTypeFace.getRalewayRegular());
             holder.txtName.setText("");
             holder.txtPastimeName.setText(arrayList.get(position).getPastimeName());
-            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getPastimeImage(), holder.imgPastime, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getPastimeImage(), holder.imgPastime, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -94,12 +96,21 @@ public class FavouritePastTimeAdapter extends BaseAdapter implements Filterable{
                     pastimesDetailsDialog.show();
                 }
             });
+            holder.imgRemoveFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    manageResourcesListner.onRemoveFromFav(position);
+                    Debug.i(TAG, "onClickAddToFav : " + position);
+
+                }
+            });
         } catch (Exception e) {
             Debug.i(TAG, "getView Exception : " + e.getLocalizedMessage());
         }
 
         return convertView;
     }
+
     @Override
     public Filter getFilter() {
         if (pastimesFilter == null) {
@@ -121,7 +132,7 @@ public class FavouritePastTimeAdapter extends BaseAdapter implements Filterable{
 
                 if (constraint != null) {
                     Debug.i(TAG, "Search string : " + constraint);
-                    Debug.i(TAG, "Initailly list size  : " + arrayListFilter.size());
+                   // Debug.i(TAG, "Initailly list size  : " + arrayListFilter.size());
                     ArrayList<PastimeData> filterList = new ArrayList<PastimeData>();
                     for (int i = 0; i < arrayListFilter.size(); i++) {
                         if (arrayListFilter.get(i).getPastimeName().toLowerCase().contains(constraint.toString().toLowerCase())) {
@@ -156,13 +167,7 @@ public class FavouritePastTimeAdapter extends BaseAdapter implements Filterable{
             try {
 
                 arrayList = (ArrayList<PastimeData>) results.values;
-                if (arrayList.size() == 0) {
-                    PastTimeFragment.txtFavEmpty.setVisibility(View.VISIBLE);
-                    PastTimeFragment.listViewFav.setVisibility(View.GONE);
-                } else {
-                    PastTimeFragment.txtFavEmpty.setVisibility(View.GONE);
-                    PastTimeFragment.listViewFav.setVisibility(View.VISIBLE);
-                }
+                manageResourcesListner.onSearchFav(arrayList);
                 notifyDataSetChanged();
             } catch (Exception e) {
                 Debug.i(TAG, "publishResults on Exception :  " + e.getLocalizedMessage());
@@ -178,6 +183,6 @@ public class FavouritePastTimeAdapter extends BaseAdapter implements Filterable{
         private TextView txtPastimeName;
         private TextView txtName;
         private ImageView imgInfo;
-        public ImageView imgLike;
+        public ImageView imgRemoveFav;
     }
 }

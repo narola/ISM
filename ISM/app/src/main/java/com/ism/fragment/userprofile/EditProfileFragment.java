@@ -54,6 +54,7 @@ public class EditProfileFragment extends Fragment {
     }
 
     private void initGlobal() {
+
         txtAboutMe = (TextView) view.findViewById(R.id.txt_about_me);
         txtBooks = (TextView) view.findViewById(R.id.txt_books);
         txtMovies = (TextView) view.findViewById(R.id.txt_movies);

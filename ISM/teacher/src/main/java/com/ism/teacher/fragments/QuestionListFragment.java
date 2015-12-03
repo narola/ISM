@@ -39,6 +39,7 @@ import com.ism.teacher.ws.model.Topics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -58,7 +59,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         this.setArguments(bundleArguments);
     }
 
-    private Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistTopic;
+    private Spinner spQuestionlistExamtype, spQuestionlistSubject, spQuestionlistTopic;
     private List<String> arrListExamType, arrListDefalt;
     private List<Subjects> arrListSubject;
     private List<Courses> arrListCourses;
@@ -71,6 +72,12 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private MyTypeFace myTypeFace;
     private ImageView imgSearchQuestions;
 
+
+    public static final String MCQ_FORMAT = "MCQ";
+    public static final String DESCRIPTIVE_FORMAT = "descriptive";
+
+    private ImageView imgSortUp, imgSortDown;
+    public static final int SORT_UP = 1, SORT_DOWN = 2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,9 +92,15 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
         myTypeFace = new MyTypeFace(getActivity());
 
+        imgSortUp = (ImageView) view.findViewById(R.id.img_sort_up);
+        imgSortDown = (ImageView) view.findViewById(R.id.img_sort_down);
+
+        imgSortUp.setOnClickListener(this);
+        imgSortDown.setOnClickListener(this);
+
         imgSearchQuestions = (ImageView) view.findViewById(R.id.img_search_questions);
 
-        spQuestionlistCourse = (Spinner) view.findViewById(R.id.sp_questionlist_course);
+        spQuestionlistExamtype = (Spinner) view.findViewById(R.id.sp_questionlist_examtype);
         spQuestionlistSubject = (Spinner) view.findViewById(R.id.sp_questionlist_subject);
         spQuestionlistTopic = (Spinner) view.findViewById(R.id.sp_questionlist_topic);
 
@@ -114,7 +127,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         arrListExamType = new ArrayList<String>();
         arrListExamType.add(getString(R.string.strexamtype));
         arrListExamType = Arrays.asList(getResources().getStringArray(R.array.examtype));
-        Adapters.setUpSpinner(getActivity(), spQuestionlistCourse, arrListExamType, Adapters.ADAPTER_SMALL);
+        Adapters.setUpSpinner(getActivity(), spQuestionlistExamtype, arrListExamType, Adapters.ADAPTER_SMALL);
 
 
         arrListDefalt = new ArrayList<String>();
@@ -129,8 +142,9 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 //                    startSlideAnimation(etSearchMystudents, 0, etSearchMystudents.getWidth(), 0, 0);
 //                    startSlideAnimation(imgSearchMystudents, -imgSearchMystudents.getWidth(), 0, 0, 0);
                     etSearchQuestions.setVisibility(View.GONE);
-                    questionBankListAdapter.filter("");
                     etSearchQuestions.setText("");
+                    questionBankListAdapter.filter("");
+
 
                 } else {
                     startSlideAnimation(etSearchQuestions, etSearchQuestions.getWidth(), 0, 0, 0);
@@ -149,7 +163,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                questionBankListAdapter.filter(s);
+
+                if (s.length() > 0) {
+                    questionBankListAdapter.filter(s);
+                }
             }
 
             @Override
@@ -162,7 +179,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         spQuestionlistSubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
 
                 if (arrListSubject != null && position > 0) {
 
@@ -216,9 +232,40 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             }
         });
 
+        spQuestionlistExamtype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                Debug.e(TAG, "position is" + position);
+
+                switch (position) {
+                    case 1:
+                        clearFilters();
+                        break;
+                    case 2:
+                        filterResultsForExamType(DESCRIPTIVE_FORMAT);
+                        break;
+                    case 3:
+                        filterResultsForExamType(MCQ_FORMAT);
+                        break;
+                    case 4:
+                        //filterResultsForFavorite();
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
         callApiGetQuestionBank();
         callApiGetSubjects();
+    }
+
+    private void clearFilters() {
+        questionBankListAdapter.addAll(arrListQuestions);
     }
 
     private void startSlideAnimation(final View view, int fromX, int toX, int fromY, int toY) {
@@ -380,7 +427,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                         courses.add(course.getCourseName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spQuestionlistCourse, courses, Adapters.ADAPTER_SMALL);
+                    Adapters.setUpSpinner(getActivity(), spQuestionlistExamtype, courses, Adapters.ADAPTER_SMALL);
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), getActivity());
@@ -460,19 +507,59 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     @Override
     public void onClick(View v) {
-        if (v == tvQuestionlistAddPreview) {
 
-            if (getFragment().getListOfPreviewQuestionsToAdd().size() > 0) {
+        switch (v.getId()) {
+            case R.id.tv_questionlist_add_preview:
+                if (getFragment().getListOfPreviewQuestionsToAdd().size() > 0) {
 
-                Debug.e(TAG, "The size of preview questions is" + getFragment().getListOfPreviewQuestion().size());
-                getFragment().addQuestionsToPreviewFragment();
-                getFragment().getListOfPreviewQuestionsToAdd().clear();
-            } else {
-                Utility.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
-            }
-        } else if (v == tvQuestionlistAddNewQuestion) {
-            getFragment().setDataOnFragmentFlip(null, false, true);
+                    Debug.e(TAG, "The size of preview questions is" + getFragment().getListOfPreviewQuestion().size());
+                    getFragment().addQuestionsToPreviewFragment();
+                    getFragment().getListOfPreviewQuestionsToAdd().clear();
+                } else {
+                    Utility.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
+                }
+                break;
+
+            case R.id.tv_questionlist_add_new_question:
+                getFragment().setDataOnFragmentFlip(null, false, true);
+                break;
+
+            case R.id.img_sort_up:
+                //Toast.makeText(getActivity(), "Sort up", Toast.LENGTH_SHORT).show();
+                performSorting(SORT_UP);
+                break;
+
+            case R.id.img_sort_down:
+//                Toast.makeText(getActivity(), "Sort down", Toast.LENGTH_SHORT).show();
+                performSorting(SORT_DOWN);
+                break;
         }
+    }
+
+    private void performSorting(int typeOfSort) {
+
+        if (arrListQuestions.size() > 0) {
+
+            if (typeOfSort == 1) {
+                Debug.e("SOrt_up====================", "sort up");
+                Collections.sort(arrListQuestions);
+                for (Questions element : arrListQuestions) {
+                    System.out.println(element.getQuestionId());
+                }
+            } else {
+                Debug.e("SOrt_down====================", "sort down");
+
+                Collections.sort(arrListQuestions, Collections.reverseOrder());
+                for (Questions element : arrListQuestions) {
+                    System.out.println(element.getQuestionId());
+                }
+            }
+            questionBankListAdapter.addAll(arrListQuestions);
+            questionBankListAdapter.notifyDataSetChanged();
+
+
+        }
+
     }
 
     public void updateViewAfterDeleteInPreviewQuestion(String questionId) {
@@ -533,7 +620,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
     }
 
-
     public ArrayList<Questions> copylistOfQuestionBank = new ArrayList<Questions>();
 
     private void filterResults(int subjectId, String topicId) {
@@ -542,13 +628,15 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         if (arrListQuestions.size() > 0) {
             for (Questions wp : arrListQuestions) {
                 int count = 0;
-                //filter based on subject id and topic id based on subjects
+
+                //filter based on subject id and topic id (based on subjects)
                 if (topicId != null && !topicId.equalsIgnoreCase("")) {
                     if (wp.getTopicId().equalsIgnoreCase(topicId) && wp.getSubjectId().equalsIgnoreCase(Integer.toString(subjectId))) {
                         Debug.e(TAG + "filter success", "" + count++);
                         copylistOfQuestionBank.add(wp);
                     }
                 }
+
                 //filter based on only subject id (after args passed from assignment exam subject id
                 else {
                     if (wp.getSubjectId().equalsIgnoreCase(Integer.toString(subjectId))) {
@@ -560,7 +648,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             if (copylistOfQuestionBank.size() > 0) {
                 questionBankListAdapter.addAll(copylistOfQuestionBank);
             } else {
-                questionBankListAdapter.addAll(copylistOfQuestionBank);
+                //questionBankListAdapter.addAll(copylistOfQuestionBank);
                 Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
             }
 
@@ -568,22 +656,28 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
     }
 
-    private boolean isExamTypeSet() {
-        if (arrListExamType != null && arrListExamType.size() == 0 || spQuestionlistTopic.getSelectedItemPosition() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+    private void filterResultsForExamType(String examtype) {
+        Debug.e(TAG, "examtype is:" + examtype);
+        copylistOfQuestionBank.clear();
 
+        if (arrListQuestions.size() > 0) {
+            for (Questions wp : arrListQuestions) {
+                //filter based on only exam type
+                if (wp.getQuestionFormat().equalsIgnoreCase(examtype)) {
+                    copylistOfQuestionBank.add(wp);
+                }
+
+            }
+            if (copylistOfQuestionBank.size() > 0) {
+                Debug.e(TAG + "results after filter:", "" + copylistOfQuestionBank.size());
+                questionBankListAdapter.addAll(copylistOfQuestionBank);
+            } else {
+                questionBankListAdapter.addAll(copylistOfQuestionBank);
+                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 
 
-    private boolean isSubjectSet() {
-        if (arrListSubject != null && arrListSubject.size() == 0 || spQuestionlistSubject.getSelectedItemPosition() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
 }
