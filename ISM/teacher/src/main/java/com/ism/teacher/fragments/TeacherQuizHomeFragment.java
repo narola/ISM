@@ -169,27 +169,39 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
                      */
                     Debug.e(TAG, "subject is:" + arrListSubject.get(position - 2).getSubjectName());
                     filterSubjectIdWiseAssignments(arrListSubject.get(position - 2).getId());
+                    spAssignentAssessed.setSelection(0);
+                    spAssignmentClasswise.setSelection(0);
 
                 } else {
 
                     clearFilters();
+                    spAssignentAssessed.setSelection(0);
+                    spAssignmentClasswise.setSelection(0);
                 }
             }
         } else if (view == spAssignmentClasswise) {
             if (arrListClassRooms != null && position > 0) {
                 if (position > 1) {
                     filterClassroomIdWiseAssignments(arrListClassRooms.get(position - 2).getId());
+                    spAssignentAssessed.setSelection(0);
+                    spAssignmentSubject.setSelection(0);
 
                 } else {
                     clearFilters();
+                    spAssignentAssessed.setSelection(0);
+                    spAssignmentClasswise.setSelection(0);
                 }
             }
         } else if (view == spAssignentAssessed) {
             if (position > 1) {
                 filterAssessedNotAssessedAssignments(arrListAssessment.get(position));
+                spAssignmentClasswise.setSelection(0);
+                spAssignmentSubject.setSelection(0);
 
             } else {
                 clearFilters();
+                spAssignentAssessed.setSelection(0);
+                spAssignmentClasswise.setSelection(0);
             }
         }
 

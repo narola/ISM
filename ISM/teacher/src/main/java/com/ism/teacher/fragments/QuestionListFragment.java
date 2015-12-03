@@ -59,7 +59,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         this.setArguments(bundleArguments);
     }
 
-    private Spinner spQuestionlistExamtype, spQuestionlistSubject, spQuestionlistTopic;
+    private Spinner spQuestionlistFiltertype, spQuestionlistSubject, spQuestionlistTopic;
     private List<String> arrListExamType, arrListDefalt;
     private List<Subjects> arrListSubject;
     private List<Courses> arrListCourses;
@@ -69,6 +69,9 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private RecyclerView rvQuestionlist;
     private QuestionBankListAdapter questionBankListAdapter;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
+    public ArrayList<Questions> copylistOfQuestionBank = new ArrayList<Questions>();
+    public ArrayList<Questions> latestlistOfQuestionBank = new ArrayList<Questions>();
+
     private MyTypeFace myTypeFace;
     private ImageView imgSearchQuestions;
 
@@ -100,7 +103,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
         imgSearchQuestions = (ImageView) view.findViewById(R.id.img_search_questions);
 
-        spQuestionlistExamtype = (Spinner) view.findViewById(R.id.sp_questionlist_examtype);
+        spQuestionlistFiltertype = (Spinner) view.findViewById(R.id.sp_questionlist_filtertype);
         spQuestionlistSubject = (Spinner) view.findViewById(R.id.sp_questionlist_subject);
         spQuestionlistTopic = (Spinner) view.findViewById(R.id.sp_questionlist_topic);
 
@@ -125,9 +128,9 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
 
         arrListExamType = new ArrayList<String>();
-        arrListExamType.add(getString(R.string.strexamtype));
-        arrListExamType = Arrays.asList(getResources().getStringArray(R.array.examtype));
-        Adapters.setUpSpinner(getActivity(), spQuestionlistExamtype, arrListExamType, Adapters.ADAPTER_SMALL);
+//        arrListExamType.add(getString(R.string.strexamtype));
+        arrListExamType = Arrays.asList(getResources().getStringArray(R.array.filtertype));
+        Adapters.setUpSpinner(getActivity(), spQuestionlistFiltertype, arrListExamType, Adapters.ADAPTER_SMALL);
 
 
         arrListDefalt = new ArrayList<String>();
@@ -180,7 +183,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                if (arrListSubject != null && position > 0) {
+                if (arrListSubject != null && position > 1) {
 
                     /*this is to check that question are of this exam*/
                     if (arrListSubject.get(position - 1).getId().equals(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID))) {
@@ -189,10 +192,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                         questionBankListAdapter.canAddToPreview = false;
                     }
                     if (arrListQuestions.size() > 0 && arrListSubject != null) {
-                        filterResults(Integer.parseInt(arrListSubject.get(position - 1).getId()), null);
+                        filterResults(Integer.parseInt(arrListSubject.get(position - 2).getId()), null);
                     }
                     if (Utility.isConnected(getActivity())) {
-                        callApiGetTopics(Integer.parseInt(arrListSubject.get(position - 1).getId()));
+                        callApiGetTopics(Integer.parseInt(arrListSubject.get(position - 2).getId()));
                     } else {
                         Utility.toastOffline(getActivity());
                     }
@@ -232,7 +235,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             }
         });
 
-        spQuestionlistExamtype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spQuestionlistFiltertype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 Debug.e(TAG, "position is" + position);
@@ -389,6 +392,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     arrListSubject.addAll(responseHandler.getSubjects());
                     List<String> subjects = new ArrayList<String>();
                     subjects.add(getString(R.string.strsubject));
+                    subjects.add(getString(R.string.strall));
                     for (Subjects subject : arrListSubject) {
                         subjects.add(subject.getSubjectName());
 
@@ -427,7 +431,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                         courses.add(course.getCourseName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spQuestionlistExamtype, courses, Adapters.ADAPTER_SMALL);
+                    Adapters.setUpSpinner(getActivity(), spQuestionlistFiltertype, courses, Adapters.ADAPTER_SMALL);
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), getActivity());
@@ -525,42 +529,15 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 break;
 
             case R.id.img_sort_up:
-                //Toast.makeText(getActivity(), "Sort up", Toast.LENGTH_SHORT).show();
                 performSorting(SORT_UP);
                 break;
 
             case R.id.img_sort_down:
-//                Toast.makeText(getActivity(), "Sort down", Toast.LENGTH_SHORT).show();
                 performSorting(SORT_DOWN);
                 break;
         }
     }
 
-    private void performSorting(int typeOfSort) {
-
-        if (arrListQuestions.size() > 0) {
-
-            if (typeOfSort == 1) {
-                Debug.e("SOrt_up====================", "sort up");
-                Collections.sort(arrListQuestions);
-                for (Questions element : arrListQuestions) {
-                    System.out.println(element.getQuestionId());
-                }
-            } else {
-                Debug.e("SOrt_down====================", "sort down");
-
-                Collections.sort(arrListQuestions, Collections.reverseOrder());
-                for (Questions element : arrListQuestions) {
-                    System.out.println(element.getQuestionId());
-                }
-            }
-            questionBankListAdapter.addAll(arrListQuestions);
-            questionBankListAdapter.notifyDataSetChanged();
-
-
-        }
-
-    }
 
     public void updateViewAfterDeleteInPreviewQuestion(String questionId) {
         for (Questions question : arrListQuestions) {
@@ -620,10 +597,30 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
     }
 
-    public ArrayList<Questions> copylistOfQuestionBank = new ArrayList<Questions>();
+    private void performSorting(int typeOfSort) {
+
+        if (latestlistOfQuestionBank.size() > 0) {
+
+            if (typeOfSort == SORT_UP) {
+                // Debug.e("SOrt_up====================", "sort up");
+                Collections.sort(latestlistOfQuestionBank);
+
+            } else {
+//                Debug.e("SOrt_down====================", "sort down");
+                Collections.sort(latestlistOfQuestionBank, Collections.reverseOrder());
+            }
+//            for (Questions element : arrListQuestions) {
+//                System.out.println(element.getQuestionId());
+//            }
+            questionBankListAdapter.addAll(latestlistOfQuestionBank);
+            questionBankListAdapter.notifyDataSetChanged();
+        }
+
+    }
 
     private void filterResults(int subjectId, String topicId) {
         copylistOfQuestionBank.clear();
+        //latestlistOfQuestionBank.clear();
 
         if (arrListQuestions.size() > 0) {
             for (Questions wp : arrListQuestions) {
@@ -634,6 +631,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     if (wp.getTopicId().equalsIgnoreCase(topicId) && wp.getSubjectId().equalsIgnoreCase(Integer.toString(subjectId))) {
                         Debug.e(TAG + "filter success", "" + count++);
                         copylistOfQuestionBank.add(wp);
+                        latestlistOfQuestionBank.addAll(copylistOfQuestionBank);
                     }
                 }
 
@@ -642,41 +640,63 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     if (wp.getSubjectId().equalsIgnoreCase(Integer.toString(subjectId))) {
                         Debug.e(TAG + "filter success", "" + count++);
                         copylistOfQuestionBank.add(wp);
+                        latestlistOfQuestionBank.addAll(copylistOfQuestionBank);
                     }
                 }
             }
+
             if (copylistOfQuestionBank.size() > 0) {
                 questionBankListAdapter.addAll(copylistOfQuestionBank);
             } else {
-                //questionBankListAdapter.addAll(copylistOfQuestionBank);
+                questionBankListAdapter.addAll(copylistOfQuestionBank);
                 Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
             }
-
 
         }
     }
 
     private void filterResultsForExamType(String examtype) {
         Debug.e(TAG, "examtype is:" + examtype);
-        copylistOfQuestionBank.clear();
+//        copylistOfQuestionBank.clear();
+//
+//        if (arrListQuestions.size() > 0) {
+//            for (Questions wp : arrListQuestions) {
+//                //filter based on only exam type
+//                if (wp.getQuestionFormat().equalsIgnoreCase(examtype)) {
+//                    copylistOfQuestionBank.add(wp);
+//                }
+//
+//            }
+//            if (copylistOfQuestionBank.size() > 0) {
+//                Debug.e(TAG + "results after filter:", "" + copylistOfQuestionBank.size());
+//                questionBankListAdapter.addAll(copylistOfQuestionBank);
+//            } else {
+//                questionBankListAdapter.addAll(copylistOfQuestionBank);
+//                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        }
 
-        if (arrListQuestions.size() > 0) {
-            for (Questions wp : arrListQuestions) {
+        latestlistOfQuestionBank.clear();
+
+        if (copylistOfQuestionBank.size() > 0) {
+            for (Questions wp : copylistOfQuestionBank) {
                 //filter based on only exam type
                 if (wp.getQuestionFormat().equalsIgnoreCase(examtype)) {
-                    copylistOfQuestionBank.add(wp);
+                    latestlistOfQuestionBank.add(wp);
                 }
 
             }
-            if (copylistOfQuestionBank.size() > 0) {
+            if (latestlistOfQuestionBank.size() > 0) {
                 Debug.e(TAG + "results after filter:", "" + copylistOfQuestionBank.size());
-                questionBankListAdapter.addAll(copylistOfQuestionBank);
+                questionBankListAdapter.addAll(latestlistOfQuestionBank);
             } else {
-                questionBankListAdapter.addAll(copylistOfQuestionBank);
+                questionBankListAdapter.addAll(latestlistOfQuestionBank);
                 Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
             }
 
         }
+
     }
 
 
