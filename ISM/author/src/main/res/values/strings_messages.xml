@@ -66,5 +66,7 @@
     <string name="question_edit_success">Question Edited Successfully.</string>
     <string name="msg_validation_question_type">You cant change the question type, just copy the question if you want to change question format.
     </string>
+    <string name="msg_validation_no_exams_filter">No exams found to filter.</string>
+    <string name="msg_validation_no_questions_filter">No questions found to filter.</string>
 
 </resources>

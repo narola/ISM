@@ -52,12 +52,22 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private static final String TAG = CreateExamFragment.class.getSimpleName();
     private View view;
     private Context mContext;
+    private Fragment fragment;
+    public static String ARG_IS_CREATE_EXAM = "isCreateExam";
 
     //    private FragmentListener fragListener;
-    public static CreateExamFragment newInstance(Bundle bundleArgument, Context context) {
+    public static CreateExamFragment newInstance(Bundle bundleArgument, Context mContext) {
         CreateExamFragment createExamFragment = new CreateExamFragment();
-        createExamFragment.setArguments(bundleArgument);
-        createExamFragment.mContext = context;
+        if (bundleArgument != null) {
+            createExamFragment.setArguments(bundleArgument);
+            createExamFragment.getArguments().putBoolean(ARG_IS_CREATE_EXAM, false);
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(ARG_IS_CREATE_EXAM, true);
+            createExamFragment.setArguments(bundle);
+        }
+
+        createExamFragment.mContext = mContext;
         return createExamFragment;
     }
 
@@ -265,7 +275,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             }
         });
 
-        if (getArguments() != null) {
+        if (!getArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
             setExamDetails();
             btnExamSetquestion.setVisibility(View.VISIBLE);
             spExamBookname.setEnabled(false);
@@ -674,14 +684,15 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
                     Debug.e(TAG, "The Created ExamId is::" + responseHandler.getCreateExam().get(0).getExamId());
 
-                    if (getArguments() != null) {
-                        getArguments().putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
-                    } else {
-                        Bundle bundleExamDetails = new Bundle();
-                        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
-                        setArguments(bundleExamDetails);
-                    }
 
+                    getArguments().putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+//                    if (getArguments() != null) {
+//                        getArguments().putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+//                    } else {
+//                        Bundle bundleExamDetails = new Bundle();
+//                        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+//                        this.setArguments(bundleExamDetails);
+//                    }
                     setBundleArguments();
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -730,6 +741,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     public void onClick(View v) {
         if (v == btnExamSave) {
             if (isInputsValid()) {
+
                 callApiCreateExam();
             } else {
                 svCreateExam.fullScroll(ScrollView.FOCUS_UP);
@@ -777,6 +789,11 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         } catch (Exception e) {
             Debug.e(TAG, "SetBundleArgumentsException : " + e.toString());
         }
+    }
+
+
+    private CreateExamAssignmentContainerFragment getBaseFragment() {
+        return (CreateExamAssignmentContainerFragment) fragment;
     }
 
 }

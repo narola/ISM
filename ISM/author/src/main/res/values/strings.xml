@@ -176,6 +176,7 @@
     <string name="add_notes">Add Notes</string>
     <string name="add_new_favorite">Add new Favorite</string>
     <string name="strbookname">Book Name</string>
+    <string name="strbook">Book :</string>
     <string name="notes">Notes</string>
     <string name="assignments">Assignments</string>
     <string name="links">Links</string>
@@ -275,6 +276,7 @@
 
     <string-array name="assessment_type">
         <item>Assessment Type</item>
+        <item>@string/strall</item>
         <item>assessed</item>
         <item>unassessed</item>
     </string-array>

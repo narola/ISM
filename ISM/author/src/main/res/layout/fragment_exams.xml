@@ -67,7 +67,7 @@
                 android:orientation="vertical">
 
                 <Spinner
-                    android:id="@+id/sp_exam_assessed"
+                    android:id="@+id/sp_exam_evaluation_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shadow_grey_small_size" />

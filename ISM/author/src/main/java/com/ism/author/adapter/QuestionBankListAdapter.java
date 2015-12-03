@@ -17,7 +17,6 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
-import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.AddQuestionContainerFragment;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.Answers;
@@ -62,10 +61,10 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             holder.tvQuestionNo.setTypeface(myTypeFace.getRalewayBold());
             holder.tvQuestionNo.setPaintFlags(holder.tvQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-            holder.tvQuestionCategory.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvQuestionCategory.setText(mContext.getString(R.string.strcategory));
+            holder.tvQuestionBookName.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvQuestionBookName.setText(mContext.getString(R.string.strbook));
 
-            holder.tvQuestionCategory.append(Utility.getSpannableString(" " + arrListQuestions.get(position).getSubjectName(),
+            holder.tvQuestionBookName.append(Utility.getSpannableString(" " + arrListQuestions.get(position).getBookName(),
                     mContext.getResources().getColor(R.color.color_green)));
 
             holder.tvQuestionCreatedby.setTypeface(myTypeFace.getRalewayRegular());
@@ -78,7 +77,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
-            if (arrListQuestions.get(position).getQuestionCreatorId().equals(WebConstants.TEST_USER_ID)) {
+            if (arrListQuestions.get(position).getQuestionCreatorId().equals("52")) {
                 holder.imgQuestionEdit.setVisibility(View.VISIBLE);
             } else {
                 holder.imgQuestionEdit.setVisibility(View.GONE);
@@ -260,7 +259,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvQuestionNo, tvQuestionCategory, tvQuestionCreatedby, tvQuestion, tvQuestionAns;
+        TextView tvQuestionNo, tvQuestionBookName, tvQuestionCreatedby, tvQuestion, tvQuestionAns;
         LinearLayout llQuestionAnswers;
         ImageView imgDropdownViewAnswer, imgQuestionEdit, imgQuestionCopy, imgQuestionAddtofavourite;
         CheckBox chkSelectQuestion;
@@ -269,7 +268,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             super(itemView);
 
             tvQuestionNo = (TextView) itemView.findViewById(R.id.tv_question_no);
-            tvQuestionCategory = (TextView) itemView.findViewById(R.id.tv_question_category);
+            tvQuestionBookName = (TextView) itemView.findViewById(R.id.tv_question_book_name);
             tvQuestionCreatedby = (TextView) itemView.findViewById(R.id.tv_question_createdby);
             tvQuestion = (TextView) itemView.findViewById(R.id.tv_question);
             tvQuestionAns = (TextView) itemView.findViewById(R.id.tv_question_ans);

@@ -135,16 +135,21 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     }
 
 
+    CreateAssignmentFragment createAssignmentFragment;
+    CreateExamFragment createExamFragment;
+
     //these is for the load fragment in right container.
     private void loadFragmentInContainer(int fragment) {
 
         try {
             switch (fragment) {
                 case FRAGMENT_TRIAL_ACTIVITY:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateAssignmentFragment.newInstance(getArguments())).commit();
+                    createAssignmentFragment = CreateAssignmentFragment.newInstance(getArguments());
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, createAssignmentFragment).commit();
                     break;
                 case FRAGMENT_TRIAL_EXAM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateExamFragment.newInstance(getArguments(), getActivity())).commit();
+                    createExamFragment = CreateExamFragment.newInstance(getArguments(), getActivity());
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, createExamFragment).commit();
                     break;
             }
 

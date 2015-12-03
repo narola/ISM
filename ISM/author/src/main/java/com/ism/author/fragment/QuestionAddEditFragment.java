@@ -171,12 +171,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         spAddquestionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 /*here i checked that if question is of related exam type then only add to preview otherwise not*/
                 if (position == 1 || position == 2) {
-
                     llAddMcqanswer.setVisibility(View.GONE);
                     etAddquestionAnswer.setVisibility(View.VISIBLE);
-
                     if (getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(true);
@@ -184,12 +183,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         chkAddquestionPreview.setEnabled(false);
                         chkAddquestionPreview.setChecked(false);
                     }
-
                 } else if (position == 3) {
-
                     llAddMcqanswer.setVisibility(View.VISIBLE);
                     etAddquestionAnswer.setVisibility(View.GONE);
-
                     if (getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(false);
@@ -318,7 +314,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         for (int i = 0; i <= 1; i++) {
             llAddMcqanswer.addView(getMcqAnswerView(i));
         }
+        chkAddquestionPreview.setEnabled(true);
         chkAddquestionPreview.setChecked(false);
+
         spAddquestionType.setSelection(1);
         spAddquestionType.setEnabled(true);
 
@@ -453,13 +451,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         clearViewsData();
         try {
 
+
+            if (questions.getIsQuestionAddedInPreview()) {
+                chkAddquestionPreview.setChecked(true);
+                chkAddquestionPreview.setEnabled(false);
+            }
             /*check that if user edit question then disable the formatting of question type.*/
             if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
                 spAddquestionType.setEnabled(false);
             } else {
                 spAddquestionType.setEnabled(true);
             }
-
             setSpinnerData(questions.getQuestionFormat());
             if (questions.getQuestionText() != null) {
                 etAddquestionTitle.setText(Utils.formatHtml(questions.getQuestionText()));
@@ -672,15 +674,13 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
-                Debug.e(TAG, "The user id is::" + WebConstants.TEST_USER_ID);
+                Debug.e(TAG, "The user id is::" + "52");
                 Debug.e(TAG, "The question text is::" + etAddquestionTitle.getText().toString());
-//                Debug.e(TAG, "The subject id is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID));
                 Debug.e(TAG, "The subject id is::" + "0");
                 Debug.e(TAG, "The question score is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_QUESTION_SCORE));
                 Debug.e(TAG, "The question format is::" + getQuestionFormat());
                 Debug.e(TAG, "The evaluation notes is::" + etEvaluationNote1.getText().toString());
                 Debug.e(TAG, "The solution  is::" + etEvaluationNote2.getText().toString());
-//                Debug.e(TAG, "The topic id  is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_TOPIC_ID));
                 Debug.e(TAG, "The topic id  is::" + "0");
                 Debug.e(TAG, "The classroom id  is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID));
                 Debug.e(TAG, "The book id  is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
@@ -689,7 +689,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 add question you have to pass question id 0 */
 
                 Attribute attribute = new Attribute();
-                attribute.setUserId(WebConstants.TEST_USER_ID);
+                attribute.setUserId("52");
                 if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
                     /*for edit question*/
                     Debug.e(TAG, "The question id is::" + getFragment().getQuestionData().getQuestionId());
@@ -698,7 +698,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 } else {
                     /*for add question*/
                     Debug.e(TAG, "The question id is::" + "0");
-                    attribute.setQuestionid("149");
+                    attribute.setQuestionid("0");
 
                 }
 
@@ -847,8 +847,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         Questions question = new Questions();
         try {
             question.setQuestionId(questionId);
-            question.setQuestionCreatorName(WebConstants.TEST_USER_NAME);
-            question.setQuestionCreatorId(WebConstants.TEST_USER_ID);
+            question.setQuestionCreatorName("Janna  Beasley");
+            question.setQuestionCreatorId("52");
             question.setQuestionFormat(getQuestionFormat());
             question.setQuestionText(etAddquestionTitle.getText().toString());
             question.setQuestionAssetsLink("");
@@ -942,6 +942,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         } catch (Exception e) {
             Debug.e(TAG, "onResponseGetAllHashTags Exception : " + e.toString());
         }
+    }
+
+
+    public void updateAddToPreviewCheckBoxStatus() {
+        chkAddquestionPreview.setEnabled(true);
+        chkAddquestionPreview.setChecked(false);
     }
 
     private void onResponseSetHashTag(Object object, Exception error) {
