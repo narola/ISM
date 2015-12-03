@@ -42,6 +42,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This fragment displays the list of all questions of question bank.
+ * We can filter these questions based on subjective,objective filter type
+ * Filter questions based on subject type and do sorting on the latest list after filter.
+ */
 
 public class QuestionListFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
@@ -186,7 +191,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 if (arrListSubject != null && position > 1) {
 
                     /*this is to check that question are of this exam*/
-                    if (arrListSubject.get(position - 1).getId().equals(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID))) {
+                    if (arrListSubject.get(position - 2).getId().equals(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID))) {
                         questionBankListAdapter.canAddToPreview = true;
                     } else {
                         questionBankListAdapter.canAddToPreview = false;
@@ -242,7 +247,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
                 switch (position) {
                     case 1:
-                        clearFilters();
+                        clearSubjectBasedFilters();
                         break;
                     case 2:
                         filterResultsForExamType(DESCRIPTIVE_FORMAT);
@@ -265,6 +270,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
         callApiGetQuestionBank();
         callApiGetSubjects();
+    }
+
+    private void clearSubjectBasedFilters() {
+        latestlistOfQuestionBank.clear();
+        questionBankListAdapter.addAll(copylistOfQuestionBank);
     }
 
     private void clearFilters() {
@@ -597,26 +607,58 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
     }
 
+    /**
+     * Perform sorting always on latestlistOfQuestionBank to sort the latest list after filter.
+     *
+     * @param typeOfSort=SORT_UP or SORT_DOWN
+     */
+
     private void performSorting(int typeOfSort) {
 
+        //handling for sorting questions based on subjective and objective
         if (latestlistOfQuestionBank.size() > 0) {
-
             if (typeOfSort == SORT_UP) {
-                // Debug.e("SOrt_up====================", "sort up");
+                // Debug.e("Sort_up====================", "sort up");
                 Collections.sort(latestlistOfQuestionBank);
 
             } else {
-//                Debug.e("SOrt_down====================", "sort down");
+//                Debug.e("Sort_down====================", "sort down");
                 Collections.sort(latestlistOfQuestionBank, Collections.reverseOrder());
             }
-//            for (Questions element : arrListQuestions) {
-//                System.out.println(element.getQuestionId());
-//            }
             questionBankListAdapter.addAll(latestlistOfQuestionBank);
             questionBankListAdapter.notifyDataSetChanged();
         }
 
+        //sorting for all question based on subjects
+        else {
+            if (copylistOfQuestionBank.size() > 0) {
+                if (typeOfSort == SORT_UP) {
+                    // Debug.e("Sort_all_questions_up====================", "sort up");
+                    Collections.sort(copylistOfQuestionBank);
+
+                } else {
+//                Debug.e("Sort_all_questions down====================", "sort down");
+                    Collections.sort(copylistOfQuestionBank, Collections.reverseOrder());
+                }
+                questionBankListAdapter.addAll(copylistOfQuestionBank);
+                questionBankListAdapter.notifyDataSetChanged();
+            }
+        }
+
     }
+
+    /**
+     * This method handles two types of filter.
+     * 1.Based on only subject id 2.Based on subject id and topic id
+     * <p/>
+     * 1 A.first in only subjectid based filter ,we reach from edit exam(assignment exam and automatically we see the question bank
+     * filtered based on the subjectid passed from param.
+     * Now we copied the result into copylist and latestQuestionbank list to handle further filter based on that current list.
+     * <p/>
+     * Assumption: We already got subject based all questions in question bank(because of edit assignment.
+     * case 1: If user sort the data without filtering subjective/objective from spinner then latestQuestion arraylist will be used to perform operation.
+     * case 2: If user performs subjective/objective filter,then new list copied into latest and sort perform on latestlistOfQuestionBank.
+     */
 
     private void filterResults(int subjectId, String topicId) {
         copylistOfQuestionBank.clear();
@@ -657,25 +699,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void filterResultsForExamType(String examtype) {
         Debug.e(TAG, "examtype is:" + examtype);
-//        copylistOfQuestionBank.clear();
-//
-//        if (arrListQuestions.size() > 0) {
-//            for (Questions wp : arrListQuestions) {
-//                //filter based on only exam type
-//                if (wp.getQuestionFormat().equalsIgnoreCase(examtype)) {
-//                    copylistOfQuestionBank.add(wp);
-//                }
-//
-//            }
-//            if (copylistOfQuestionBank.size() > 0) {
-//                Debug.e(TAG + "results after filter:", "" + copylistOfQuestionBank.size());
-//                questionBankListAdapter.addAll(copylistOfQuestionBank);
-//            } else {
-//                questionBankListAdapter.addAll(copylistOfQuestionBank);
-//                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
-//            }
-//
-//        }
 
         latestlistOfQuestionBank.clear();
 

@@ -66,6 +66,7 @@
 
     <!-- Assignment Exam -->
 
+    <string name="strassignmentinformation">Assignment Information</string>
     <string name="strpersonalinformation">Personal Information</string>
     <string name="strexamname">Exam Name</string>
     <string name="strsubjectname">Subject Name</string>
