@@ -142,7 +142,7 @@ class Book extends ADMIN_Controller {
 	 	$config['last_tag_close'] = '</li>';
 
 	 	// paginate the books as per the conditions and configurations
-	 	$this->data['books'] = select(TBL_AUTHOR_BOOK,TBL_BOOKS.'.id,'. TBL_BOOKS.'.book_name,'.TBL_BOOKS.'.image_link',
+	 	$this->data['books'] = select(TBL_AUTHOR_BOOK,TBL_BOOKS.'.id,'. TBL_BOOKS.'.book_name,'.TBL_BOOKS.'.front_cover_image',
 										array('where'=>$where),
 										array(
 											'limit'=>$config['per_page'],
@@ -209,13 +209,18 @@ class Book extends ADMIN_Controller {
 	public function add(){
 
 		if(isset($_POST['btn_save'])){
-			/*$data = array(
-					'book_name'=>$notice_title,
-					'notice'=>$this->input->post('notice'),
-					'posted_by'=>$posted_by,
-					'status'=>$this->input->post('status'),
-					'is_template'=>$this->input->post('is_template')
-				);*/
+			$data = array(
+					'book_name'=>$this->input->post('book_name'),
+					'book_description'=>$this->input->post('book_desc'),
+					'ebook_link'=>$posted_by,
+					'front_cover_image'=>$this->input->post('status'),
+					'back_cover_image'=>$this->input->post('status'),
+					'publication_date'=>$this->input->post('publication_date'),
+					'price'=>$this->input->post('price'),
+					'publisher_name'=>$this->input->post('publisher_name'),
+					'isbn_no'=>$this->input->post('isbn_no')
+				);
+			
 
 			p($_FILES);
 

@@ -20,7 +20,7 @@
                    		<div class="col-sm-12">
                         	<h3 class="txt_blue"><?php echo $book_detail['book_name']; ?></h3>
                         </div>
-                        <div class="col-sm-3"><img src="assets/<?php echo $book_detail['image_link']; ?>" class="img-responsive" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'"></div>
+                        <div class="col-sm-3"><img src="assets/<?php echo $book_detail['front_cover_image']; ?>" class="img-responsive" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'"></div>
                         <div class="col-sm-9 topic_description">
                         	<p><?php echo $book_detail['book_description']; ?></p>
                         </div>

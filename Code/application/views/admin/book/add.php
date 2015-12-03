@@ -69,7 +69,7 @@
                     </li>
                     <li>
                     	<label>Publication Date</label>
-                        <input name="publication_date" type="text" placeholder="Publisher Date" class="form-control ">
+                        <input name="publication_date" id="publication_date" type="text" class="form-control datepicker">
                     </li>
                     <li>
                     	<label>Books Description</label>
@@ -115,8 +115,13 @@
     </div>
 </div>
 <script type="text/javascript">
-    
-  $(document).ready(function() {
-      $(".js-example-basic-single").select2();
+    $(document).ready(function() {
+        $(".js-example-basic-single").select2();
+
+        $("#publication_date").datepicker({
+            format: " yyyy",
+            viewMode: "years", 
+            minViewMode: "years"
+        });
     });
-    </script>
+</script>

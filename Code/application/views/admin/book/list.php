@@ -78,7 +78,7 @@
                   <div class="thumbnail">
                     <a href="admin/book/book_detail/<?php echo $books['id']; ?>">
                       <div class="book_img_holder">
-                        <img class="img-responsive" src="assets/<?php echo $books['image_link']; ?>" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'" alt="Image" style="max-width:100%;">
+                        <img class="img-responsive" src="assets/<?php echo $books['front_cover_image']; ?>" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'" alt="Image" style="max-width:100%;">
                       </div>
                     </a>
 

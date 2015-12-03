@@ -48,7 +48,7 @@ class Author extends ADMIN_Controller {
 											)
 										);
 			$array['author'] = $author;
-			$books = select(TBL_AUTHOR_BOOK,TBL_BOOKS.'.id,'.TBL_BOOKS.'.book_name,'.TBL_BOOKS.'.image_link',
+			$books = select(TBL_AUTHOR_BOOK,TBL_BOOKS.'.id,'.TBL_BOOKS.'.book_name,'.TBL_BOOKS.'.front_cover_image',
 										array('where'=>array(
 											TBL_AUTHOR_BOOK.'.user_id'=> $author_id,
 											)

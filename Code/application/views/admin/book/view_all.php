@@ -47,7 +47,7 @@
                 	<div class="col-sm-12 col-md-6 col-lg-3">
                      <div class="box bookview">
                       <div class="book_img_holder">
-                        <img src="assets/<?php echo $book['image_link']; ?>" class="img-responsive" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'">
+                        <img src="assets/<?php echo $book['front_cover_image']; ?>" class="img-responsive" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'">
                       </div>
                       <!-- <h4><?php echo character_limiter($book['book_name'], 20); ?></h4> -->
                       <a href="admin/book/book_detail/<?php echo $book['id']; ?>"><h4><?php echo word_limiter($book['book_name'], 3); ?></h4></a>

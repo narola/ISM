@@ -80,7 +80,7 @@
                                                      
                                                 <li>
                                                 <div class="book_holder">
-                                                    <a href="admin/book/book_detail/<?php echo $book['id']; ?>"><img class="img-responsive" data-toggle="tooltip" data-placement="bottom" title="<?php echo $book['book_name']; ?>" src="assets/<?php echo $book['image_link']; ?>" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'"></a>
+                                                    <a href="admin/book/book_detail/<?php echo $book['id']; ?>"><img class="img-responsive" data-toggle="tooltip" data-placement="bottom" title="<?php echo $book['book_name']; ?>" src="assets/<?php echo $book['front_cover_image']; ?>" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'"></a>
                                                 </div>
                                                 </li>
                                                 
