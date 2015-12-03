@@ -32,6 +32,7 @@
     <dimen name="d10dp">10dp</dimen>
     <dimen name="d12dp">12dp</dimen>
     <dimen name="d15dp">15dp</dimen>
+    <dimen name="d17dp">17dp</dimen>
     <dimen name="d18dp">18dp</dimen>
 
     <dimen name="d20dp">20dp</dimen>

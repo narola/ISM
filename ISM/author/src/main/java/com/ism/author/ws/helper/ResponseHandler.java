@@ -4,6 +4,7 @@ package com.ism.author.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.author.ws.model.AuthorBook;
 import com.ism.author.ws.model.Badges;
 import com.ism.author.ws.model.Books;
 import com.ism.author.ws.model.Cities;
@@ -98,6 +99,7 @@ public class ResponseHandler {
     private ArrayList<Questions> questionBank;
     private ArrayList<Question> question;
     private ArrayList<HashTags> tags;
+    private ArrayList<AuthorBook> authorBook;
 
     @JsonProperty("feeds")
     public ArrayList<Feeds> getFeeds() {
@@ -332,6 +334,15 @@ public class ResponseHandler {
 
     public void setBooks(ArrayList<Books> books) {
         this.books = books;
+    }
+
+    @JsonProperty("author_book")
+    public ArrayList<AuthorBook> getAuthorBook() {
+        return this.authorBook;
+    }
+
+    public void setAuthorBook(ArrayList<AuthorBook> authorBook) {
+        this.authorBook = authorBook;
     }
 }
 

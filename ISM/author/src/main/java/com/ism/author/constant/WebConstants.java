@@ -49,6 +49,7 @@ public class WebConstants {
     public static final int GETALLHASHTAG = 31;
     public static final int SETHASHTAG = 32;
     public static final int TEMPCREATEQUESTION = 33;
+    public static final int GETBOOKSFORAUTHOR = 34;
     //user settings preferences
 
     public static final int GENERAL_SETTING_PREFERENCES = 51;
@@ -85,6 +86,7 @@ public class WebConstants {
     public static final String URL_CREATEASSIGNMENT = URL_KINJAL_HOST + "CreateAssignment";
     public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
     public static final String URL_GETCOURSES = URL_KINJAL_HOST + "GetCourses";
+    public static final String URL_GETBOOKSFORAUTHOR = URL_KINJAL_HOST + "GetBooksForAuthor";
 
     public static final String URL_CREATEEXAM = URL_KINJAL_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
@@ -132,6 +134,7 @@ public class WebConstants {
     public static final String TEST_USER_NAME = "Admin";
     public static final String TEST_GETSTUDYMATES = "167";
     public static final String TEST_BOOK_ID = "2";
+    public static final String TEST_BOOK_NAME = "Microsoft Visual Basic 2005";
     public static final String TEST_TOPIC_ID = "5";
     public static final String TEST_SUBJECT_ID = "3";
     /**

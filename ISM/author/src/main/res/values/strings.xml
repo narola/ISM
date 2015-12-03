@@ -239,6 +239,7 @@
     <string name="strPublisher">Publisher :</string>
     <string name="strAuthor">Author :</string>
     <string name="strEbookLink">Ebook link :</string>
+    <string name="strfilters">Filters</string>
 
 
     <!--string array-->
@@ -296,6 +297,20 @@
         <item>WASSCE</item>
         <item>EndOfTerm</item>
         <item>Tutorial</item>
+    </string-array>
+
+    <string-array name="questionsfilter">
+        <item>Filters</item>
+        <item>All</item>
+        <item>Subjective</item>
+        <item>Objective</item>
+        <item>Favourite</item>
+    </string-array>
+
+    <string-array name="questionsSorting">
+        <item>Sorting</item>
+        <item>Ascending</item>
+        <item>Descending</item>
     </string-array>
 
     <integer-array name="accordion_notice_visibility">

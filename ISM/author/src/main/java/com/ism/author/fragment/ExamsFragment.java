@@ -28,9 +28,10 @@ import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.AuthorBook;
 import com.ism.author.ws.model.Classrooms;
 import com.ism.author.ws.model.Exams;
-import com.ism.author.ws.model.Subjects;
+import com.ism.author.ws.model.Questions;
 import com.ism.commonsource.view.ActionProcessButton;
 
 import java.util.ArrayList;
@@ -49,10 +50,10 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private ArrayList<Exams> arrListExams = new ArrayList<Exams>();
     private MyTypeFace myTypeFace;
     private FragmentListener fragListener;
-    private Spinner spExamSubject, spExamClass, spExamAssessementType;
-    private ActionProcessButton progExamSubject, progExamClass, progExamAssessed;
+    private Spinner spExamAuthorBooks, spExamClass, spExamAssessementType;
+    private ActionProcessButton progExamAuthorBook, progExamClass, progExamAssessed;
     private ImageView imgToggleList;
-    private ArrayList<Subjects> arrListSubject;
+    private ArrayList<AuthorBook> arrListAuthorBooks;
     private ArrayList<Classrooms> arrListClassRooms;
     private List<String> arrListAssessment;
 
@@ -87,11 +88,11 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         rvExamsList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rvExamsList.setAdapter(examsAdapter);
 
-        spExamSubject = (Spinner) view.findViewById(R.id.sp_exam_subject);
+        spExamAuthorBooks = (Spinner) view.findViewById(R.id.sp_exam_authorbooks);
         spExamClass = (Spinner) view.findViewById(R.id.sp_exam_class);
         spExamAssessementType = (Spinner) view.findViewById(R.id.sp_exam_assessed);
 
-        progExamSubject = (ActionProcessButton) view.findViewById(R.id.prog_exam_subject);
+        progExamAuthorBook = (ActionProcessButton) view.findViewById(R.id.prog_exam_authorbook);
         progExamClass = (ActionProcessButton) view.findViewById(R.id.prog_exam_class);
         progExamAssessed = (ActionProcessButton) view.findViewById(R.id.prog_exam_assessed);
 
@@ -127,7 +128,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             }
         });
 
-        callApiGetSubjects();
+        callApiGetAuthorBooks();
         callApiGetClassrooms();
         callApiGetAllAssignments();
 
@@ -138,7 +139,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setUserId(WebConstants.TEST_USER_ID);
+                request.setUserId("52");
                 request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLASSIGNMENTS);
@@ -167,13 +168,15 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
     }
 
-    private void callApiGetSubjects() {
+    private void callApiGetAuthorBooks() {
 
         if (Utility.isConnected(getActivity())) {
             try {
-                Utility.showSpinnerProgress(progExamSubject);
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETSUBJECT);
+                Utility.showSpinnerProgress(progExamAuthorBook);
+                Attribute attribute = new Attribute();
+                attribute.setUserId("52");
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.GETBOOKSFORAUTHOR);
             } catch (Exception e) {
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -196,8 +199,8 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                     onResponseGetClassrooms(object, error);
                     break;
 
-                case WebConstants.GETSUBJECT:
-                    onResponseGetSubjects(object, error);
+                case WebConstants.GETBOOKSFORAUTHOR:
+                    onResponseGetAuthorBooks(object, error);
                     break;
             }
 
@@ -255,31 +258,38 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         }
     }
 
-    private void onResponseGetSubjects(Object object, Exception error) {
+    private void onResponseGetAuthorBooks(Object object, Exception error) {
         try {
-            Utility.hideSpinnerProgress(progExamSubject);
+            Utility.hideSpinnerProgress(progExamAuthorBook);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListSubject = new ArrayList<Subjects>();
-                    arrListSubject.addAll(responseHandler.getSubjects());
-                    List<String> subjects = new ArrayList<String>();
-                    subjects.add(getString(R.string.strsubjectname));
-                    for (Subjects subject : arrListSubject) {
-                        subjects.add(subject.getSubjectName());
+                    arrListAuthorBooks = new ArrayList<AuthorBook>();
+                    arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
+                    List<String> authorBooks = new ArrayList<String>();
+                    authorBooks.add(getString(R.string.strbookname));
+                    for (AuthorBook authorBook : arrListAuthorBooks) {
+                        authorBooks.add(authorBook.getBookName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spExamSubject, subjects, Adapters.ADAPTER_SMALL);
+                    Adapters.setUpSpinner(getActivity(), spExamAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
-                Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseGetAuthorBooks api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Debug.e(TAG, "onResponseGetSubjects Exception : " + e.toString());
+            Debug.e(TAG, "onResponseGetAuthorBooks Exception : " + e.toString());
         }
+    }
+
+
+    public ArrayList<Questions> copylistOfQuestionBank = new ArrayList<Questions>();
+
+    private void filterExams() {
+
     }
 
 
