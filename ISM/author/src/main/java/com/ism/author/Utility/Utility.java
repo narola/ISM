@@ -265,7 +265,7 @@ public class Utility {
      * @param message
      */
     public static AlertDialog alert(Context context, String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (title != null) {
             builder.setTitle(title);
         }

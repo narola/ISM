@@ -15,9 +15,7 @@ public class WebConstants {
     public static final String USER_IMAGES_TEST = "http://192.168.1.147/WS_ISM/Images/users_images/";
     public static final String HOST_202 = "http://192.168.1.202/pg/ISM/";      // pg
     public static final String URL_HOST_202 = HOST_202 + "WS_ISM/ISMServices.php?Service=";
-
     //	webservice constants for apiCode.
-
     public static final int LOGIN = 1;
     public static final int FORGOTPASSWORD = 2;
     public static final int REQUESTCREDENTIALS = 3;
@@ -51,8 +49,7 @@ public class WebConstants {
     public static final int GETALLHASHTAG = 31;
     public static final int SETHASHTAG = 32;
     public static final int TEMPCREATEQUESTION = 33;
-
-
+    public static final int GETBOOKSFORAUTHOR = 34;
     //user settings preferences
 
     public static final int GENERAL_SETTING_PREFERENCES = 51;
@@ -67,9 +64,7 @@ public class WebConstants {
     public static final int GET_BOOKS_FOR_USER = 60;
     public static final int MANAGE_FAVOURITES = 61;
     public static final int MANAGE_BOOK_LIBRARY = 62;
-
     /*webservice url*/
-
     public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
     public static final String URL_FORGOTPASSWORD = URL_KINJAL_HOST + "ForgotPassword";
     public static final String URL_REQUESTCREDENTIALS = URL_KINJAL_HOST + "RequestForCredentials";
@@ -90,6 +85,8 @@ public class WebConstants {
     public static final String URL_CREATEASSIGNMENT = URL_KINJAL_HOST + "CreateAssignment";
     public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
     public static final String URL_GETCOURSES = URL_KINJAL_HOST + "GetCourses";
+    public static final String URL_GETBOOKSFORAUTHOR = URL_KINJAL_HOST + "GetBooksForAuthor";
+
     public static final String URL_CREATEEXAM = URL_KINJAL_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
     public static final String URL_GETALLEXAM = URL_KINJAL_HOST + "GetAllExams";
@@ -131,18 +128,16 @@ public class WebConstants {
     public static final String FAILED = "failed";
 
     /*these are the temparory questionData for testing*/
-
     public static final String TEST_USER_ID = "370";
     public static final String TEST_USER_NAME = "Admin";
     public static final String TEST_GETSTUDYMATES = "167";
     public static final String TEST_BOOK_ID = "2";
+    public static final String TEST_BOOK_NAME = "Microsoft Visual Basic 2005";
     public static final String TEST_TOPIC_ID = "5";
     public static final String TEST_SUBJECT_ID = "3";
-
     /**
      * Parameter values
      */
-
     public static final String STUDYMATE_REQUEST = "studymate_request";
     public static final String MESSAGES = "messages";
     public static final String NOTIFICATION = "notification";

@@ -217,8 +217,12 @@ public class WebserviceWrapper {
                             break;
                         case WebConstants.MANAGE_FAVOURITES:
                             responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_FAVOURITES).execute(ResponseHandler.class, attribute);
-                            break; case WebConstants.MANAGE_BOOK_LIBRARY:
+                            break;
+                        case WebConstants.MANAGE_BOOK_LIBRARY:
                             responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_BOOK_LIBRARY).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GETBOOKSFORAUTHOR:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GETBOOKSFORAUTHOR).execute(ResponseHandler.class, attribute);
                             break;
 
                     }

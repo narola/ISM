@@ -25,7 +25,10 @@ public class Exams {
     private String examCategory;
     private String totalStudentAttempted;
     private String totalStudent;
-
+    private String bookId;
+    private String bookName;
+    private String totalAssessed;
+    private String totalUnAssessed;
 
     @JsonProperty("total_question")
     public String getTotalQuestion() {
@@ -169,6 +172,46 @@ public class Exams {
 
     public void setTotalStudent(String totalStudent) {
         this.totalStudent = totalStudent;
+    }
+
+    @JsonProperty("book_name")
+    public String getBookName() {
+        return bookName;
+    }
+
+    public Exams setBookName(String bookName) {
+        this.bookName = bookName;
+        return this;
+    }
+
+    @JsonProperty("book_id")
+    public String getBookId() {
+        return bookId;
+    }
+
+    public Exams setBookId(String bookId) {
+        this.bookId = bookId;
+        return this;
+    }
+
+    @JsonProperty("total_unassessed")
+    public String getTotalUnAssessed() {
+        return totalUnAssessed;
+    }
+
+    public Exams setTotalUnAssessed(String totalUnAssessed) {
+        this.totalUnAssessed = totalUnAssessed;
+        return this;
+    }
+
+    @JsonProperty("total_assessed")
+    public String getTotalAssessed() {
+        return totalAssessed;
+    }
+
+    public Exams setTotalAssessed(String totalAssessed) {
+        this.totalAssessed = totalAssessed;
+        return this;
     }
 
 

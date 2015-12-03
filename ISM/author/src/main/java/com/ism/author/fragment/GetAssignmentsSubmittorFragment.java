@@ -76,7 +76,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rvAssignmentSubmittorList.setAdapter(assignmentSubmittorAdapter);
         tvSubmittorTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvSubmittorTitle.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME));
+        tvSubmittorTitle.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
 
         callApiGetExamSubmission();
 

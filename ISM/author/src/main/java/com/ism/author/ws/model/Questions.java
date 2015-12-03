@@ -24,6 +24,7 @@ public class Questions implements Parcelable {
     private String classroomId;
     private String subjectId;
     private String bookId;
+    private String bookName;
     private String solution;
     private String questionId;
     private String questionText;
@@ -54,6 +55,7 @@ public class Questions implements Parcelable {
         this.questionCreatorId = parcelQuestions.readString();
         this.questionCreatorName = parcelQuestions.readString();
         this.subjectName = parcelQuestions.readString();
+        this.bookName = parcelQuestions.readString();
         parcelQuestions.readTypedList(answers, Answers.CREATOR);
         parcelQuestions.readTypedList(tags, Tags.CREATOR);
 
@@ -204,6 +206,16 @@ public class Questions implements Parcelable {
         this.subjectName = subjectName;
     }
 
+    @JsonProperty("book_name")
+    public String getBookName() {
+        return bookName;
+    }
+
+    public Questions setBookName(String bookName) {
+        this.bookName = bookName;
+        return this;
+    }
+
 
     public Boolean getIsQuestionAddedInPreview() {
         return isQuestionAddedInPreview;
@@ -246,6 +258,7 @@ public class Questions implements Parcelable {
         dest.writeString(getQuestionCreatorId());
         dest.writeString(getQuestionCreatorName());
         dest.writeString(getSubjectName());
+        dest.writeString(getBookName());
         dest.writeTypedList(tags);
     }
 
