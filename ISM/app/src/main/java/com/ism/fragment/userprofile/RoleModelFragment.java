@@ -3,12 +3,12 @@ package com.ism.fragment.userprofile;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +17,7 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.FavoriteRoleModelsAdapter;
 import com.ism.adapter.SuggestedRoleModelsAdapter;
+import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 09/11/15.
  */
-public class RoleModelFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener, HostActivity.AddToFavouriteListner {
+public class RoleModelFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, HostActivity.ManageResourcesListner {
 
     private static final String TAG = RoleModelFragment.class.getSimpleName();
     ImageLoader imageLoader;
@@ -49,12 +50,13 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
     private ArrayList<RolemodelData> arrayListSuggested;
     public static TextView txtSuggestedEmpty;
     public static TextView txtFavEmpty;
-    private ImageView imgNxtFav;
-    private ImageView imgPrevFav;
     private TextView txtFavRoleModels;
     private TextView txtSuggestedRoleModels;
     private ImageView imgFavSearch, imgSuggestedSearch;
     private EditText etFavSearch, etSuggestedSearch;
+    private ArrayList<String> arrayListFavItems = new ArrayList<>();
+    private ArrayList<String> arrayListUnFavItems = new ArrayList<>();
+    private String strSearch = "";
 
     public static RoleModelFragment newInstance() {
         RoleModelFragment fragment = new RoleModelFragment();
@@ -99,8 +101,8 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
         listViewFav = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
         listViewSuggested = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);
 
-        imgNxtFav = (ImageView) view.findViewById(R.id.img_next_fav);
-        imgPrevFav = (ImageView) view.findViewById(R.id.img_prev_fav);
+        //imgNxtFav = (ImageView) view.findViewById(R.id.img_next_fav);
+        //imgPrevFav = (ImageView) view.findViewById(R.id.img_prev_fav);
 
         callApiGetRoleModelsForUser();
 
@@ -145,36 +147,70 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
                 }
             }
         });
-        etFavSearch
-                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId,
-                                                  KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                            favRoleModelsAdapter.getFilter()
-                                    .filter(etFavSearch.getText().toString()
-                                            .trim());
-                            Utility.hideKeyboard(getActivity(), getView());
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-        etSuggestedSearch
-                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId,
-                                                  KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                            suggestedRoleModelsAdapter.getFilter()
-                                    .filter(etSuggestedSearch.getText().toString()
-                                            .trim());
-                            Utility.hideKeyboard(getActivity(), getView());
-                            return true;
-                        }
-                        return false;
-                    }
-                });
+//        etFavSearch
+//                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//                    @Override
+//                    public boolean onEditorAction(TextView v, int actionId,
+//                                                  KeyEvent event) {
+//                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                            favRoleModelsAdapter.getFilter()
+//                                    .filter(etFavSearch.getText().toString()
+//                                            .trim());
+//                            Utility.hideKeyboard(getActivity(), getView());
+//                            return true;
+//                        }
+//                        return false;
+//                    }
+//                });
+//        etSuggestedSearch
+//                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//                    @Override
+//                    public boolean onEditorAction(TextView v, int actionId,
+//                                                  KeyEvent event) {
+//                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                            suggestedRoleModelsAdapter.getFilter()
+//                                    .filter(etSuggestedSearch.getText().toString()
+//                                            .trim());
+//                            Utility.hideKeyboard(getActivity(), getView());
+//                            return true;
+//                        }
+//                        return false;
+//                    }
+//                });
+        etFavSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                strSearch = "";
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                strSearch = strSearch + s;
+                setUpFavList(onSearch(arrayListFav, strSearch));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etSuggestedSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                strSearch = "";
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                strSearch = strSearch + s;
+                setUpSuggestedList(onSearch(arrayListSuggested, strSearch));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void callApiGetRoleModelsForUser() {
@@ -201,12 +237,33 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
                 case WebConstants.GET_ROLEMODEL_FOR_USER:
                     onResponseUserRoleModels(object, error);
                     break;
-
+                case WebConstants.MANAGE_FAVOURITES:
+                    onResponseAddResourceToFavorite(object, error);
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());
         }
 
+    }
+
+    private void onResponseAddResourceToFavorite(Object object, Exception error) {
+        try {
+            activityHost.hideProgress();
+            if (object != null) {
+                Debug.i(TAG, "Response object :" + object);
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                    Debug.i(TAG, "onResponseAddResourceToFavorite success");
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
+                }
+            } else if (error != null) {
+                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
+        }
     }
 
     private void onResponseUserRoleModels(Object object, Exception error) {
@@ -234,16 +291,9 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
     private void setUpFavList(ArrayList<RolemodelData> arrayListFav) {
         try {
             Debug.i(TAG, "setUpFavList :arrayListFav=" + arrayListFav.size());
-            if (!arrayListFav.isEmpty()) {
-                txtFavEmpty.setVisibility(View.GONE);
-                listViewFav.setVisibility(View.VISIBLE);
-                favRoleModelsAdapter = new FavoriteRoleModelsAdapter(getActivity(), arrayListFav);
-                listViewFav.setAdapter(favRoleModelsAdapter);
-
-            } else {
-                txtFavEmpty.setVisibility(View.VISIBLE);
-                listViewFav.setVisibility(View.GONE);
-            }
+            favRoleModelsAdapter = new FavoriteRoleModelsAdapter(getActivity(), arrayListFav, this);
+            listViewFav.setAdapter(favRoleModelsAdapter);
+            setVisibilityFavItems(arrayListFav.size());
 
         } catch (Exception e) {
             Debug.e(TAG, "setUpFavList Exceptions :" + e.getLocalizedMessage());
@@ -253,38 +303,68 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
     private void setUpSuggestedList(ArrayList<RolemodelData> arrayListSuggested) {
         try {
             Debug.i(TAG, "setUpSuggestedList :arrayListSuggested=" + arrayListSuggested.size());
+            suggestedRoleModelsAdapter = new SuggestedRoleModelsAdapter(getActivity(), arrayListSuggested, this);
+            listViewSuggested.setAdapter(suggestedRoleModelsAdapter);
+            setVisibilitySuggestedItems(arrayListSuggested.size());
 
-            if (!arrayListSuggested.isEmpty()) {
-                txtSuggestedEmpty.setVisibility(View.GONE);
-                listViewSuggested.setVisibility(View.VISIBLE);
-                suggestedRoleModelsAdapter = new SuggestedRoleModelsAdapter(getActivity(), arrayListSuggested, this);
-                listViewSuggested.setAdapter(suggestedRoleModelsAdapter);
-            } else {
-                txtSuggestedEmpty.setVisibility(View.VISIBLE);
-                listViewSuggested.setVisibility(View.GONE);
-            }
         } catch (Exception e) {
             Debug.e(TAG, "setUpSuggestedList Exceptions :" + e.getLocalizedMessage());
         }
     }
 
-    @Override
-    public void onClick(View v) {
+    public ArrayList<RolemodelData> onSearch(ArrayList<RolemodelData> arrayList, String s) {
+        ArrayList<RolemodelData> list = new ArrayList<>();
         try {
-            switch (v.getId()) {
-                case R.id.img_next_fav:
-                    //onNextFavorite();
-                    break;
+            for (int i = 0; i < arrayList.size(); i++) {
+                if (arrayList.get(i).getModelName().toString().toLowerCase().contains(s.toString().toLowerCase())) {
+                    list.add(arrayList.get(i));
+                    Debug.i(TAG, "i :" + i + " String : " + s);
+                }
             }
-
-
         } catch (Exception e) {
-            Debug.e(TAG, "onClick Exception :" + e.getLocalizedMessage());
+            Debug.i(TAG, "onSearch: " + e.getLocalizedMessage());
         }
+        return list;
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            if (arrayListFavItems.size() != 0 || arrayListUnFavItems.size() != 0)
+                callApiAddResourceToFav();
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onPause Exception : " + e.toString());
+        }
 
     }
 
+    private void callApiAddResourceToFav() {
+        try {
+            if (Utility.isConnected(getActivity())) {
+                activityHost.showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setUserId(Global.strUserId);
+                if (arrayListFavItems == null)
+                    attribute.setFavResourceId(new ArrayList<String>());
+                else {
+                    attribute.setFavResourceId(arrayListFavItems);// get all resource ids from suggested list to add resource ids in user favourites
+                }
+                if (arrayListUnFavItems == null)
+                    attribute.setUnfavoriteResourceId(new ArrayList<String>());// get All the resource ids from favourite list to add resource id in user unfavourites
+                else {
+                    attribute.setUnfavoriteResourceId(arrayListUnFavItems);// get All the resource ids from favourite list to add resource id in user unfavourites
+                }
+                attribute.setResourceName(AppConstant.RESOURCE_ROLEMODEL);
+                Debug.i(TAG, "Attributes object :" + attribute);
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
+            } else {
+                Utility.alertOffline(getActivity());
+            }
+        } catch (Exception e) {
+            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
+        }
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -308,11 +388,66 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
 
     @Override
     public void onAddToFav(int position) {
-        callApiGetRoleModelsForUser();
+        Debug.i(TAG, "OnAddToFav" + position);
+        try {
+            arrayListFavItems.add(arrayListSuggested.get(position).getRolemodelId());
+            arrayListFav.add(arrayListSuggested.get(position));
+            arrayListSuggested.remove(position);
+            setVisibilityFavItems(arrayListFav.size());
+            setVisibilitySuggestedItems(arrayListSuggested.size());
+            favRoleModelsAdapter.notifyDataSetChanged();
+            suggestedRoleModelsAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            Debug.e(TAG, "onAddToFav Exception : " + e.getLocalizedMessage());
+        }
     }
 
     @Override
     public void onRemoveFromFav(int position) {
+        Debug.i(TAG, "onRemoveFromFav" + position);
+        try {
+            arrayListUnFavItems.add(arrayListFav.get(position).getRolemodelId());
+            // arrayListSuggested.add(arrayListFav.get(position));
+            arrayListFav.remove(position);
+            setVisibilityFavItems(arrayListFav.size());
+            setVisibilitySuggestedItems(arrayListSuggested.size());
+            favRoleModelsAdapter.notifyDataSetChanged();
+            suggestedRoleModelsAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            Debug.e(TAG, "onRemoveFromFav Exception : " + e.getLocalizedMessage());
+        }
 
     }
+
+    @Override
+    public void onSearchFav(Object o) {
+        setUpFavList((ArrayList<RolemodelData>) o);
+    }
+
+    @Override
+    public void onSearchSuggested(Object o) {
+        setUpSuggestedList((ArrayList<RolemodelData>) o);
+    }
+
+    public void setVisibilityFavItems(int size) {
+
+        if (size == 0) {
+            txtFavEmpty.setVisibility(View.VISIBLE);
+            listViewFav.setVisibility(View.GONE);
+        } else {
+            txtFavEmpty.setVisibility(View.GONE);
+            listViewFav.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void setVisibilitySuggestedItems(int size) {
+        if (size == 0) {
+            txtSuggestedEmpty.setVisibility(View.VISIBLE);
+            listViewSuggested.setVisibility(View.GONE);
+        } else {
+            txtSuggestedEmpty.setVisibility(View.GONE);
+            listViewSuggested.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

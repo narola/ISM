@@ -49,13 +49,12 @@ public class WebserviceWrapper {
             try {
 
 //			    Check if we can get access from the network.
-                URL url = new URL(WebConstants.HOST);
+                URL url = new URL(WebConstants.HOST_202);
                 HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
                 urlc.setRequestProperty("Connection", "close");
                 urlc.setConnectTimeout(2000); // Timeout 2 seconds.
                 urlc.connect();
                 isNetworkConnected = urlc.getResponseCode() == 200; //Successful response.
-
                 if (isNetworkConnected) {
                     switch (currentApiCode) {
                         case WebConstants.LOGIN:
@@ -168,6 +167,9 @@ public class WebserviceWrapper {
                             break;
                         case WebConstants.BLOCK_USER:
                             responseObject = new WebserviceConnector(WebConstants.URL_BLOCK_USER).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.BLOCKED_USER:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_BLOCKED_USER).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_MY_FEEDS:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_FEEDS).execute(ResponseHandler.class, attribute);

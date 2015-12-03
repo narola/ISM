@@ -13,7 +13,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/d140dp">
+            android:layout_height="@dimen/d150dp">
 
             <RelativeLayout
                 android:id="@+id/rl_top_exam"
@@ -22,20 +22,22 @@
                 android:background="@drawable/bg_subject_yellow"
                 android:orientation="vertical">
 
+
                 <!--<ImageView-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="match_parent"-->
                 <!--android:background="@color/color_assignment_top_yellow" />-->
 
                 <TextView
-                    android:id="@+id/tv_exam_subject_name"
+                    android:id="@+id/tv_exam_book_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d10dp"
+                    android:singleLine="true"
                     android:text="@string/strtest"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d18dp"
+                    android:textSize="@dimen/d17dp"
                     android:textStyle="bold" />
 
                 <TextView

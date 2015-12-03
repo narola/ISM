@@ -101,7 +101,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
             @Override
             public void onClick(View v) {
 
-                getFragment().updateQuestionListviewAfterRemoveInPreview(arrListQuestions.get(position));
+                getFragment().updateQuestionListviewAfterDeleteQuestionInPreview(arrListQuestions.get(position));
                 arrListQuestions.remove(arrListQuestions.get(position));
                 notifyDataSetChanged();
 

@@ -32,8 +32,8 @@ import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.AuthorBook;
 import com.ism.author.ws.model.Classrooms;
-import com.ism.author.ws.model.Subjects;
 import com.ism.author.ws.model.Topics;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
@@ -52,12 +52,22 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private static final String TAG = CreateExamFragment.class.getSimpleName();
     private View view;
     private Context mContext;
+    private Fragment fragment;
+    public static String ARG_IS_CREATE_EXAM = "isCreateExam";
 
     //    private FragmentListener fragListener;
-    public static CreateExamFragment newInstance(Bundle bundleArgument, Context context) {
+    public static CreateExamFragment newInstance(Bundle bundleArgument, Context mContext) {
         CreateExamFragment createExamFragment = new CreateExamFragment();
-        createExamFragment.setArguments(bundleArgument);
-        createExamFragment.mContext = context;
+        if (bundleArgument != null) {
+            createExamFragment.setArguments(bundleArgument);
+            createExamFragment.getArguments().putBoolean(ARG_IS_CREATE_EXAM, false);
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(ARG_IS_CREATE_EXAM, true);
+            createExamFragment.setArguments(bundle);
+        }
+
+        createExamFragment.mContext = mContext;
         return createExamFragment;
     }
 
@@ -65,13 +75,13 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         // Required empty public constructor
     }
 
-    private TextView tvExamTitle, tvExamExamfor, tvExamExamschedule, tvExamExaminstruction, tvExamDeclareresult,
+    private TextView tvExamTitle, tvExamExamschedule, tvExamExaminstruction, tvExamDeclareresult,
             tvExamNegativemarking, tvExamRandomquestion, tvExamUsescore, tvExamQuestionscorevalue, tvExamAddnegativemark;
-    private Spinner spExamClassroom, spExamSubjectname, spExamSubjecttopic, spExamPassingpercent, spExamExamCategory, spExamExammode,
+    private Spinner spExamClassroom, spExamBookname, spExamSubjecttopic, spExamPassingpercent, spExamExamCategory, spExamExammode,
             spExamExamduration;
     private ArrayList<Topics> arrListTopic;
     private ArrayList<Classrooms> arrListClassRooms;
-    private ArrayList<Subjects> arrListSubject;
+    private ArrayList<AuthorBook> arrListAuthorBooks;
     private List<String> arrListDefalt, arrListPassingPercent, arrListExamDuration, arrListExamMode, arrListExamCategory;
     private ToggleButton tbExamSelectexamfor;
     private EditText etExamName, etExamStartdate, etExamEnddate, etExamQuestionscorevalue, etExamAttemptcount, etExamAddnegativemark;
@@ -106,7 +116,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
         tvExamTitle = (TextView) view.findViewById(R.id.tv_exam_title);
 
-        tvExamExamfor = (TextView) view.findViewById(R.id.tv_exam_examfor);
         tvExamExamschedule = (TextView) view.findViewById(R.id.tv_exam_examschedule);
         tvExamExaminstruction = (TextView) view.findViewById(R.id.tv_exam_examinstruction);
         tvExamDeclareresult = (TextView) view.findViewById(R.id.tv_exam_declareresult);
@@ -117,7 +126,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         tvExamAddnegativemark = (TextView) view.findViewById(R.id.tv_exam_addnegativemark);
 
         tvExamTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamExamfor.setTypeface(myTypeFace.getRalewayRegular());
         tvExamExamschedule.setTypeface(myTypeFace.getRalewayRegular());
         tvExamExaminstruction.setTypeface(myTypeFace.getRalewayRegular());
         tvExamDeclareresult.setTypeface(myTypeFace.getRalewayRegular());
@@ -129,7 +137,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
 
         spExamClassroom = (Spinner) view.findViewById(R.id.sp_exam_classroom);
-        spExamSubjectname = (Spinner) view.findViewById(R.id.sp_exam_subjectname);
+        spExamBookname = (Spinner) view.findViewById(R.id.sp_exam_bookname);
         spExamSubjecttopic = (Spinner) view.findViewById(R.id.sp_exam_subjecttopic);
         spExamPassingpercent = (Spinner) view.findViewById(R.id.sp_exam_passingpercent);
         spExamExamCategory = (Spinner) view.findViewById(R.id.sp_exam_examcategory);
@@ -267,10 +275,10 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             }
         });
 
-        if (getArguments() != null) {
+        if (!getArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
             setExamDetails();
             btnExamSetquestion.setVisibility(View.VISIBLE);
-            spExamSubjectname.setEnabled(false);
+            spExamBookname.setEnabled(false);
             spExamExammode.setEnabled(false);
 
             /*we cant change the exam mode and subject for that particular exam if it once created*/
@@ -279,7 +287,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
         }
         callApiGetClassrooms();
-        callApiGetSubjects();
+        callApiGetAuthorBooks();
 
 
     }
@@ -313,29 +321,30 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         }
     }
 
-    private void callApiGetSubjects() {
-        if (Utility.isConnected(mContext)) {
-            try {
-                ((AuthorHostActivity) getActivity()).showProgress();
-                new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETSUBJECT);
-            } catch (Exception e) {
-                Debug.e(TAG + Utility.getString(R.string.strerrormessage, mContext), e.getLocalizedMessage());
-            }
-        } else {
-            Utility.toastOffline(mContext);
-        }
-    }
+//    private void callApiGetSubjects() {
+//        if (Utility.isConnected(mContext)) {
+//            try {
+//                ((AuthorHostActivity) getActivity()).showProgress();
+//                new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+//                        .execute(WebConstants.GETSUBJECT);
+//            } catch (Exception e) {
+//                Debug.e(TAG + Utility.getString(R.string.strerrormessage, mContext), e.getLocalizedMessage());
+//            }
+//        } else {
+//            Utility.toastOffline(mContext);
+//        }
+//    }
 
+    private void callApiGetAuthorBooks() {
 
-    private void callApiGetTopics(int subject_id) {
         if (Utility.isConnected(mContext)) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setSubjectId(String.valueOf(subject_id));
+                attribute.setUserId("52");
+
                 new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETTOPICS);
+                        .execute(WebConstants.GETBOOKSFORAUTHOR);
             } catch (Exception e) {
                 Debug.e(TAG + Utility.getString(R.string.strerrormessage, mContext), e.getLocalizedMessage());
             }
@@ -355,10 +364,9 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 attribute.setExamName(etExamName.getText().toString());
                 attribute.setClassroomId(String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
-                attribute.setSubjectId(String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
-                        get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
+                attribute.setSubjectId("0");
                 attribute.setAttemptCount(String.valueOf(Integer.valueOf(etExamAttemptcount.getText().toString())));
-                attribute.setExamType(getExamType());
+                attribute.setExamType("topic");
                 attribute.setExamCategory(arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
                 attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
                 attribute.setPassingPercent(arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
@@ -369,9 +377,10 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 attribute.setRandomQuestion(getRadioGropuSelection(radioExamRandomQuestion));
                 attribute.setExamStartDate(Utils.getDateInApiFormat(etExamStartdate.getText().toString()));
                 attribute.setExamStartTime("5:00:00");
-                attribute.setUserId("370");
+                attribute.setUserId("52");
                 attribute.setNegativeMarkValue(etExamAddnegativemark.getText().toString());
-                attribute.setBookId(String.valueOf(0));
+                attribute.setBookId(String.valueOf(spExamBookname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListAuthorBooks.
+                        get(spExamBookname.getSelectedItemPosition() - 1).getBookId()) : 0));
 
                 new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.CREATEEXAM);
@@ -509,7 +518,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private boolean isSubjectSet() {
-        if (arrListSubject != null && arrListSubject.size() == 0 || spExamSubjectname.getSelectedItemPosition() > 0) {
+        if (arrListAuthorBooks != null && arrListAuthorBooks.size() == 0 || spExamBookname.getSelectedItemPosition() > 0) {
             return true;
         } else {
             strValidationMsg += Utility.getString(R.string.msg_validation_set_subject, mContext);
@@ -556,11 +565,9 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 case WebConstants.GETCLASSROOMS:
                     onResponseGetClassrooms(object, error);
                     break;
-                case WebConstants.GETSUBJECT:
-                    onResponseGetSubjects(object, error);
-                    break;
-                case WebConstants.GETTOPICS:
-                    onResponseGetTopics(object, error);
+                case WebConstants.GETBOOKSFORAUTHOR:
+//                    onResponseGetSubjects(object, error);
+                    onResponseGetBooksForAuthor(object, error);
                     break;
                 case WebConstants.CREATEEXAM:
                     onResponseCreateExam(object, error);
@@ -605,24 +612,54 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
 
-    private void onResponseGetSubjects(Object object, Exception error) {
+//    private void onResponseGetSubjects(Object object, Exception error) {
+//        try {
+//            ((AuthorHostActivity) getActivity()).hideProgress();
+//            if (object != null) {
+//                ResponseHandler responseHandler = (ResponseHandler) object;
+//                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+//
+//                    arrListAuthorBooks = new ArrayList<Subjects>();
+//                    arrListAuthorBooks.addAll(responseHandler.getSubjects());
+//                    List<String> subjects = new ArrayList<String>();
+//                    subjects.add(Utility.getString(R.string.strsubjectname, mContext));
+//                    for (Subjects subject : arrListAuthorBooks) {
+//                        subjects.add(subject.getSubjectName());
+//                    }
+//                    Adapters.setUpSpinner(mContext, spExamBookname, subjects, Adapters.ADAPTER_NORMAL);
+//
+//                    if (getArguments() != null) {
+//                        spExamBookname.setSelection(subjects.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME)));
+//                    }
+//                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+//                    Utils.showToast(responseHandler.getMessage(), mContext);
+//                }
+//            } else if (error != null) {
+//                Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
+//            }
+//        } catch (Exception e) {
+//            Debug.e(TAG, "onResponseGetSubjects Exception : " + e.toString());
+//        }
+//    }
+
+    private void onResponseGetBooksForAuthor(Object object, Exception error) {
         try {
             ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListSubject = new ArrayList<Subjects>();
-                    arrListSubject.addAll(responseHandler.getSubjects());
-                    List<String> subjects = new ArrayList<String>();
-                    subjects.add(Utility.getString(R.string.strsubjectname, mContext));
-                    for (Subjects subject : arrListSubject) {
-                        subjects.add(subject.getSubjectName());
+                    arrListAuthorBooks = new ArrayList<AuthorBook>();
+                    arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
+                    List<String> authorBooks = new ArrayList<String>();
+                    authorBooks.add(Utility.getString(R.string.strbookname, mContext));
+                    for (AuthorBook authorBook : arrListAuthorBooks) {
+                        authorBooks.add(authorBook.getBookName());
                     }
-                    Adapters.setUpSpinner(mContext, spExamSubjectname, subjects, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(mContext, spExamBookname, authorBooks, Adapters.ADAPTER_NORMAL);
 
                     if (getArguments() != null) {
-                        spExamSubjectname.setSelection(subjects.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME)));
+                        spExamBookname.setSelection(authorBooks.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
                     }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), mContext);
@@ -632,32 +669,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseGetSubjects Exception : " + e.toString());
-        }
-    }
-
-    private void onResponseGetTopics(Object object, Exception error) {
-        try {
-            ((AuthorHostActivity) getActivity()).hideProgress();
-            if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListTopic = new ArrayList<Topics>();
-                    arrListTopic.addAll(responseHandler.getTopics());
-                    List<String> topics = new ArrayList<String>();
-                    topics.add(Utility.getString(R.string.strtopic, mContext));
-                    for (Topics topic : arrListTopic) {
-                        topics.add(topic.getTopicName());
-                    }
-                    Adapters.setUpSpinner(mContext, spExamSubjecttopic, topics, Adapters.ADAPTER_NORMAL);
-                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Adapters.setUpSpinner(mContext, spExamSubjecttopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
-                    Utils.showToast(responseHandler.getMessage(), mContext);
-                }
-            } else if (error != null) {
-                Debug.e(TAG, "onResponseGetTopics api Exception : " + error.toString());
-            }
-        } catch (Exception e) {
-            Debug.e(TAG, "onResponseGetTopics Exception : " + e.toString());
         }
     }
 
@@ -673,14 +684,15 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
                     Debug.e(TAG, "The Created ExamId is::" + responseHandler.getCreateExam().get(0).getExamId());
 
-                    if (getArguments() != null) {
-                        getArguments().putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
-                    } else {
-                        Bundle bundleExamDetails = new Bundle();
-                        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
-                        setArguments(bundleExamDetails);
-                    }
 
+                    getArguments().putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+//                    if (getArguments() != null) {
+//                        getArguments().putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+//                    } else {
+//                        Bundle bundleExamDetails = new Bundle();
+//                        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+//                        this.setArguments(bundleExamDetails);
+//                    }
                     setBundleArguments();
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -729,6 +741,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     public void onClick(View v) {
         if (v == btnExamSave) {
             if (isInputsValid()) {
+
                 callApiCreateExam();
             } else {
                 svCreateExam.fullScroll(ScrollView.FOCUS_UP);
@@ -754,14 +767,14 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     Integer.parseInt(arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
             getArguments().putString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
                     arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getClassName() : 0));
-            getArguments().putString(ExamsAdapter.ARG_EXAM_SUBJECT_ID, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
-                    Integer.parseInt(arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
-            getArguments().putString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
-                    arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName() : 0));
-            getArguments().putString(ExamsAdapter.ARG_EXAM_TOPIC_ID, WebConstants.TEST_TOPIC_ID);
-            getArguments().putString(ExamsAdapter.ARG_EXAM_TOPIC_NAME, "");
-            getArguments().putString(ExamsAdapter.ARG_EXAM_BOOK_ID, WebConstants.TEST_BOOK_ID);
-            getArguments().putString(ExamsAdapter.ARG_EXAM_BOOK_NAME, "");
+//            getArguments().putString(ExamsAdapter.ARG_EXAM_SUBJECT_ID, "0");
+//            getArguments().putString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME, "");
+//            getArguments().putString(ExamsAdapter.ARG_EXAM_TOPIC_ID, WebConstants.TEST_TOPIC_ID);
+//            getArguments().putString(ExamsAdapter.ARG_EXAM_TOPIC_NAME, "");
+            getArguments().putString(ExamsAdapter.ARG_EXAM_BOOK_ID, String.valueOf(spExamBookname.getSelectedItemPosition() > 0 ?
+                    Integer.parseInt(arrListAuthorBooks.get(spExamBookname.getSelectedItemPosition() - 1).getBookId()) : 0));
+            getArguments().putString(ExamsAdapter.ARG_EXAM_BOOK_NAME, String.valueOf(spExamBookname.getSelectedItemPosition() > 0 ?
+                    arrListAuthorBooks.get(spExamBookname.getSelectedItemPosition() - 1).getBookName() : 0));
             getArguments().putString(ExamsAdapter.ARG_EXAM_CATEGORY, arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
             getArguments().putString(ExamsAdapter.ARG_EXAM_TYPE, getExamType());
             getArguments().putString(ExamsAdapter.ARG_EXAM_MODE,
@@ -776,6 +789,11 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         } catch (Exception e) {
             Debug.e(TAG, "SetBundleArgumentsException : " + e.toString());
         }
+    }
+
+
+    private CreateExamAssignmentContainerFragment getBaseFragment() {
+        return (CreateExamAssignmentContainerFragment) fragment;
     }
 
 }

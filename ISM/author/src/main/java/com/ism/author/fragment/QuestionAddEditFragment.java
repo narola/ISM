@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,7 +36,6 @@ import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.autocomplete.ContactsCompletionView;
 import com.ism.author.autocomplete.FilteredArrayAdapter;
 import com.ism.author.autocomplete.TokenCompleteTextView;
-import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.model.HashTagsModel;
 import com.ism.author.object.MyTypeFace;
@@ -172,31 +172,22 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                if (position == 1) {
+                /*here i checked that if question is of related exam type then only add to preview otherwise not*/
+                if (position == 1 || position == 2) {
                     llAddMcqanswer.setVisibility(View.GONE);
                     etAddquestionAnswer.setVisibility(View.VISIBLE);
-                    if (!getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
-                        chkAddquestionPreview.setEnabled(false);
-                        chkAddquestionPreview.setChecked(false);
-                    } else {
+                    if (getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(true);
-                    }
-                } else if (position == 2) {
-                    llAddMcqanswer.setVisibility(View.GONE);
-                    etAddquestionAnswer.setVisibility(View.VISIBLE);
-                    if (!getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
+                    } else {
                         chkAddquestionPreview.setEnabled(false);
                         chkAddquestionPreview.setChecked(false);
-                    } else {
-                        chkAddquestionPreview.setEnabled(true);
-                        chkAddquestionPreview.setChecked(true);
                     }
                 } else if (position == 3) {
                     llAddMcqanswer.setVisibility(View.VISIBLE);
                     etAddquestionAnswer.setVisibility(View.GONE);
-                    if (!getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
-                        chkAddquestionPreview.setEnabled(false);
+                    if (getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
+                        chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(false);
                     } else {
                         chkAddquestionPreview.setEnabled(true);
@@ -210,6 +201,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        spAddquestionType.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+                    Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
+                }
+                return false;
             }
         });
 
@@ -290,11 +292,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     public void setViewForAddEditQuestion() {
         if (getFragment().getIsSetQuestionData()) {
             setQuestionData(getFragment().getQuestionData());
-
-            Debug.e(TAG, "INSIDE SET DATA");
         } else {
-
-            Debug.e(TAG, "INSIDE CLEAR DATA");
             clearViewsData();
         }
     }
@@ -302,7 +300,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private void clearViewsData() {
 
         etAddquestionTitle.setText("");
-        spAddquestionType.setSelection(1);
         etAddquestionAnswer.setText("");
         llAddMcqanswer.removeAllViews();
         if (tagsView.getObjects().size() > 0) {
@@ -317,7 +314,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         for (int i = 0; i <= 1; i++) {
             llAddMcqanswer.addView(getMcqAnswerView(i));
         }
+        chkAddquestionPreview.setEnabled(true);
         chkAddquestionPreview.setChecked(false);
+
+        spAddquestionType.setSelection(1);
+        spAddquestionType.setEnabled(true);
 
     }
 
@@ -432,7 +433,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private void removeRow(int viewPositionToRemove) {
         llAddMcqanswer.removeViewAt(viewPositionToRemove);
         refreshViewPositions();
-
     }
 
     /*this is to refresh view positions after remove row in inflater view*/
@@ -441,37 +441,44 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             ImageView imgRemoveMcqRow = (ImageView) llAddMcqanswer.getChildAt(i).findViewById(R.id.img_remove_mcq_row);
             imgRemoveMcqRow.setTag(i);
         }
-
     }
 
 
     /*these is for set question questionData for copy and edit question.*/
     private ImageLoader imageLoader;
 
-
     public void setQuestionData(Questions questions) {
         clearViewsData();
         try {
+
+
+            if (questions.getIsQuestionAddedInPreview()) {
+                chkAddquestionPreview.setChecked(true);
+                chkAddquestionPreview.setEnabled(false);
+            }
+            /*check that if user edit question then disable the formatting of question type.*/
+            if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+                spAddquestionType.setEnabled(false);
+            } else {
+                spAddquestionType.setEnabled(true);
+            }
+            setSpinnerData(questions.getQuestionFormat());
             if (questions.getQuestionText() != null) {
                 etAddquestionTitle.setText(Utils.formatHtml(questions.getQuestionText()));
             }
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
-                    imgSelectImage, ISMAuthor.options);
-            setSpinnerData(questions.getQuestionFormat());
-            setMcqAnswers(questions);
 
             if (questions.getEvaluationNotes() != null) {
                 etEvaluationNote1.setText(questions.getEvaluationNotes());
                 etEvaluationNote2.setText(questions.getEvaluationNotes());
             }
 
-            if (questions.getTags() != null) {
-                if (questions.getTags().size() > 0) {
-                    for (int i = 0; i < questions.getTags().size(); i++) {
-                        tagsView.addObject(new HashTagsModel(questions.getTags().get(i).getTagName(), questions.getTags().get(i).getTagId()));
-                    }
-                }
-            }
+            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
+                    imgSelectImage, ISMAuthor.options);
+
+
+            setMcqAnswers(questions);
+            setTags(questions);
+
 
         } catch (Exception e) {
             Debug.e(TAG, "isSetQuestionData Exception : " + e.toString());
@@ -480,15 +487,15 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
 
     private void setSpinnerData(String questionType) {
-        if (questionType.equalsIgnoreCase("MCQ")) {
+        if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
             spAddquestionType.setSelection(3);
             llAddMcqanswer.setVisibility(View.VISIBLE);
             etAddquestionAnswer.setVisibility(View.GONE);
-        } else if (questionType.equalsIgnoreCase("descriptive")) {
+        } else if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatdescriptive))) {
             spAddquestionType.setSelection(1);
             llAddMcqanswer.setVisibility(View.GONE);
             etAddquestionAnswer.setVisibility(View.VISIBLE);
-        } else if (questionType.equalsIgnoreCase("'Fill ups'")) {
+        } else if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatfillups))) {
             spAddquestionType.setSelection(2);
             llAddMcqanswer.setVisibility(View.GONE);
             etAddquestionAnswer.setVisibility(View.VISIBLE);
@@ -502,13 +509,20 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 llAddMcqanswer.removeAllViews();
             }
         }
-
         for (int i = 0; i < questions.getAnswers().size(); i++) {
             llAddMcqanswer.addView(setMCQ(i, questions.getAnswers().get(i).getChoiceText(),
                     questions.getAnswers().get(i).getIsRight().equals("1") ? true : false, questions.getAnswers().size()));
         }
+    }
 
-
+    private void setTags(Questions questions) {
+        if (questions.getTags() != null) {
+            if (questions.getTags().size() > 0) {
+                for (int i = 0; i < questions.getTags().size(); i++) {
+                    tagsView.addObject(new HashTagsModel(questions.getTags().get(i).getTagName(), questions.getTags().get(i).getTagId()));
+                }
+            }
+        }
     }
 
 
@@ -555,14 +569,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             Utility.alert(getActivity(), null, getActivity().getString(R.string.msg_validation_select_answer));
         }
         return isAnswerSelect;
-
     }
 
 
     @Override
     public void onClick(View v) {
         if (v == tvAddquestionSave) {
-
             isAddMore = false;
 //            if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
 //                Debug.e(TAG, "QUESTION EDIT CALLED");
@@ -580,7 +592,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
 
         } else if (v == tvAddquestionSaveAddmore) {
-
             isAddMore = true;
 //            if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
 //                Debug.e(TAG, "QUESTION EDIT CALLED");
@@ -605,7 +616,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
         } else if (v == tvAddquestionGotoquestionbank) {
             getFragment().flipCard();
-
         }
 
     }
@@ -625,39 +635,37 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             Utility.toastOffline(getActivity());
         }
     }
-
-
-    private void callApiSetHashTag(String questionId) {
-        if (Utility.isConnected(getActivity())) {
-            ((AuthorHostActivity) getActivity()).showProgress();
-            try {
-                Attribute attribute = new Attribute();
-
-                StringBuilder sb = new StringBuilder();
-                List<HashTagsModel> list = tagsView.getObjects();
-                for (int i = 0; i < list.size(); i++) {
-                    sb.append(list.get(i).getTagName() + ":" + list.get(i).getTagId());
-                    if (i < list.size() - 1) {
-                        sb.append(",");
-                    }
-
-                }
-
-                Utils.showToast("The tokens are::" + sb.toString(), getActivity());
-                attribute.setHashtagData(sb.toString());
-                attribute.setResourceId("135");
-                attribute.setResourceType(AppConstant.RESOURCE_TYPE_QUESTION);
-
-                ((AuthorHostActivity) getActivity()).showProgress();
-                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.SETHASHTAG);
-            } catch (Exception e) {
-                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-            }
-        } else {
-            Utility.toastOffline(getActivity());
-        }
-    }
+//    private void callApiSetHashTag(String questionId) {
+//        if (Utility.isConnected(getActivity())) {
+//            ((AuthorHostActivity) getActivity()).showProgress();
+//            try {
+//                Attribute attribute = new Attribute();
+//
+//                StringBuilder sb = new StringBuilder();
+//                List<HashTagsModel> list = tagsView.getObjects();
+//                for (int i = 0; i < list.size(); i++) {
+//                    sb.append(list.get(i).getTagName() + ":" + list.get(i).getTagId());
+//                    if (i < list.size() - 1) {
+//                        sb.append(",");
+//                    }
+//
+//                }
+//
+//                Utils.showToast("The tokens are::" + sb.toString(), getActivity());
+//                attribute.setHashtagData(sb.toString());
+//                attribute.setResourceId("135");
+//                attribute.setResourceType(AppConstant.RESOURCE_TYPE_QUESTION);
+//
+//                ((AuthorHostActivity) getActivity()).showProgress();
+//                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+//                        .execute(WebConstants.SETHASHTAG);
+//            } catch (Exception e) {
+//                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+//            }
+//        } else {
+//            Utility.toastOffline(getActivity());
+//        }
+//    }
 
     ArrayList<AnswerChoices> arrListAnswerChioces = new ArrayList<AnswerChoices>();
 
@@ -666,14 +674,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
-                Debug.e(TAG, "The user id is::" + WebConstants.TEST_USER_ID);
+                Debug.e(TAG, "The user id is::" + "52");
                 Debug.e(TAG, "The question text is::" + etAddquestionTitle.getText().toString());
-                Debug.e(TAG, "The subject id is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID));
+                Debug.e(TAG, "The subject id is::" + "0");
                 Debug.e(TAG, "The question score is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_QUESTION_SCORE));
                 Debug.e(TAG, "The question format is::" + getQuestionFormat());
                 Debug.e(TAG, "The evaluation notes is::" + etEvaluationNote1.getText().toString());
                 Debug.e(TAG, "The solution  is::" + etEvaluationNote2.getText().toString());
-                Debug.e(TAG, "The topic id  is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_TOPIC_ID));
+                Debug.e(TAG, "The topic id  is::" + "0");
                 Debug.e(TAG, "The classroom id  is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID));
                 Debug.e(TAG, "The book id  is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
 
@@ -681,7 +689,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 add question you have to pass question id 0 */
 
                 Attribute attribute = new Attribute();
-                attribute.setUserId(WebConstants.TEST_USER_ID);
+                attribute.setUserId("52");
                 if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
                     /*for edit question*/
                     Debug.e(TAG, "The question id is::" + getFragment().getQuestionData().getQuestionId());
@@ -690,12 +698,15 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 } else {
                     /*for add question*/
                     Debug.e(TAG, "The question id is::" + "0");
-                    attribute.setQuestionid("149");
+                    attribute.setQuestionid("0");
 
                 }
-//                attribute.setSubjectId(WebConstants.TEST_SUBJECT_ID);
-                attribute.setSubjectId(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID));
-                attribute.setTopicId(getArguments().getString(ExamsAdapter.ARG_EXAM_TOPIC_ID));
+
+//                attribute.setSubjectId(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID));
+//                attribute.setTopicId(getArguments().getString(ExamsAdapter.ARG_EXAM_TOPIC_ID));
+
+                attribute.setSubjectId("0");
+                attribute.setTopicId("0");
                 attribute.setBookId(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
                 attribute.setClassroomId(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID));
                 attribute.setQuestionText(etAddquestionTitle.getText().toString());
@@ -724,7 +735,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     if (i < list.size() - 1) {
                         sb.append(",");
                     }
-
                 }
                 Debug.e(TAG, "The HashTags Are:::" + sb.toString());
                 attribute.setHashtagData(sb.toString());
@@ -743,7 +753,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
 
     private String getQuestionFormat() {
-
         String questionFormat = "";
         int spPosition = spAddquestionType.getSelectedItemPosition();
         switch (spPosition) {
@@ -757,12 +766,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 questionFormat = getString(R.string.strquestionformatmcq).toUpperCase();
                 break;
         }
-
         return questionFormat;
     }
 
     private String getIsSelected(ImageView imageView) {
-
         if (imageView.isActivated()) {
             return "1";
         } else {
@@ -801,16 +808,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void onReponseCreateQuestion(Object object, Exception error) {
 
-        Debug.e(TAG, "ONREPONSE CALLED");
         try {
             ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 //                    callApiSetHashTag(responseHandler.getQuestion().get(0).getQuestionId());
-                    Debug.e(TAG, "The Question Id Is" + responseHandler.getQuestion().get(0).getQuestionId());
-                    Debug.e(TAG, "The Question Tag Add Response" + responseHandler.getQuestion().get(0).getHashtag());
-
                     if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
 
                         Utils.showToast(getString(R.string.question_edit_success), getActivity());
@@ -825,8 +828,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                                 chkAddquestionPreview.isChecked());
 
                     }
-
-
                     if (isAddMore) {
                         clearViewsData();
                     }
@@ -843,12 +844,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
     private Questions makeQuestionData(String questionId) {
-
         Questions question = new Questions();
         try {
             question.setQuestionId(questionId);
-            question.setQuestionCreatorName(WebConstants.TEST_USER_NAME);
-            question.setQuestionCreatorId(WebConstants.TEST_USER_ID);
+            question.setQuestionCreatorName("Janna  Beasley");
+            question.setQuestionCreatorId("52");
             question.setQuestionFormat(getQuestionFormat());
             question.setQuestionText(etAddquestionTitle.getText().toString());
             question.setQuestionAssetsLink("");
@@ -858,15 +858,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             question.setSolution(etEvaluationNote2.getText().toString());
 
             if (getArguments() != null) {
-                question.setTopicId(getArguments().getString(ExamsAdapter.ARG_EXAM_TOPIC_ID));
-                question.setSubjectId(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID));
-                question.setSubjectName(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME));
+//                question.setTopicId(getArguments().getString(ExamsAdapter.ARG_EXAM_TOPIC_ID));
+//                question.setSubjectId(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID));
+//                question.setSubjectName(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME));
+                question.setTopicId("0");
+                question.setSubjectId("0");
+                question.setSubjectName("0");
                 question.setClassroomId(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID));
                 question.setBookId(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
+                question.setBookName(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
             }
-
             ArrayList<Tags> arrListTags = new ArrayList<Tags>();
-
             List<HashTagsModel> list = tagsView.getObjects();
             for (int i = 0; i < list.size(); i++) {
                 Tags tag = new Tags();
@@ -874,7 +876,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 tag.setTagName(list.get(i).getTagName());
                 arrListTags.add(tag);
             }
-
             ArrayList<Answers> arrListAnswers = new ArrayList<Answers>();
             if (getQuestionFormat().equalsIgnoreCase("mcq")) {
                 arrListAnswers.clear();
@@ -886,11 +887,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     arrListAnswers.add(answers);
                 }
             }
-
             question.setAnswers(arrListAnswers);
             question.setTags(arrListTags);
-
-
         } catch (Exception error) {
             Debug.e(TAG, "Customely Make Question Object Exception : " + error.toString());
         }
@@ -946,6 +944,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         }
     }
 
+
+    public void updateAddToPreviewCheckBoxStatus() {
+        chkAddquestionPreview.setEnabled(true);
+        chkAddquestionPreview.setChecked(false);
+    }
 
     private void onResponseSetHashTag(Object object, Exception error) {
         try {

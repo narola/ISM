@@ -332,6 +332,8 @@
 	<string name="school">School</string>
 	<string name="area">Area</string>
 	<string name="course">Course</string>
+	<string name="strAccessKey">PLF25jEXMPXkKwavzk2mmKMj/j1br7vn8zv3IRID4js</string>
+	<string name="strSecretKey">juPC8Mos1bMZTbjKm/gFiCUqcI7+H8zr2UdlLfnCwo4=</string>
 	<string name="topic">"Topic - "</string>
 	<string name="suggested_studymates">Suggested Studymates</string>
 	<string name="no_notification_available">No notification available!</string>

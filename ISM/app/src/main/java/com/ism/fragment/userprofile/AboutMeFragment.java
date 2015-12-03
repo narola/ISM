@@ -188,7 +188,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         imgProfileEdit.setOnClickListener(this);
 
 
-
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         setEditableFalse(etDob);
@@ -246,14 +245,13 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void callApiGetAboutMe() {
         try {
-            if(Utility.isConnected(getActivity())) {
+            if (Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 attribute.setRoleId(Global.roleID);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
-            }
-            else{
+            } else {
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
@@ -263,7 +261,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void callApiEditAboutMe() {
         try {
-            if(Utility.isConnected(getActivity())) {
+            if (Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
@@ -278,8 +276,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 //            requestObject.setAboutMeText("I am a graduate from NIFT specializing in Apparel Production. I have a holistic experience of the Apparel Industry and has worked for domestic as well as the exports market. In the Indian retail industry I have worked with Lifestyle International Pvt. Ltd. on sourcing, vendor management and product development for private labels. I then moved to Madura Fashion & Lifestyle where I worked as a buyer. Product and Margin management, optimum allocation of merchandise, meeting sales targets along with competition, market and trend analysis were some of her responsibilities. I joined ISB to fast track my career and pursue opportunities in Category & Brand Management.I am President of the Retail Club. I  proud myself.");
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
-            }
-            else{
+            } else {
                 Utility.alertOffline(getActivity());
             }
 
@@ -296,13 +293,13 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-            try {
+        try {
+            if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
+                Uri uri = data.getData();
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                 // imgDp.setImageBitmap(bitmap);
 //                imageURI = uri;
@@ -313,24 +310,26 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 //                else{
 //                    Debug.e(TAG, "Source File exist");
 //                }
-                Log.e(TAG, "uri :"+uri+" Uri path :" + uri.getPath());
+                Log.e(TAG, "uri :" + uri + " Uri path :" + uri.getPath());
                 imgProfilePic.setImageBitmap(bitmap);
-                File file=new File(Utility.getImagePath(uri, getActivity()));// fileName = file;
-                  Log.e(TAG, "uri :" + uri + " file :" + file);
+                File file = new File(Utility.getImagePath(uri, getActivity()));// fileName = file;
+                Log.e(TAG, "uri :" + uri + " file :" + file);
                 if (!file.isFile()) {
                     Debug.e(TAG, "Source File Does not exist");
-                }
-                else{
+                } else {
                     new EditProfileImageAsync(file).execute();
                 }
-
-
                 // hostListenerAboutMe.onSelectImage(bitmap);
                 // strDpBase64 = Utility.getBase64ForImage(bitmap);
-            } catch (IOException e) {
-                // strDpBase64 = "";
-                Debug.e(TAG, "onActivityResult convert Image Exception : " + e.toString());
+
+            } else if (requestCode == AboutMeFragment.ABOUT_ME) {
+                onAboutMe();
+            } else if (requestCode == AboutMeFragment.YOUR_AMBITION) {
+                onAmbition();
             }
+        } catch (IOException e) {
+            // strDpBase64 = "";
+            Debug.e(TAG, "onActivityResult convert Image Exception : " + e.toString());
         }
     }
 
@@ -420,7 +419,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             } else {
                 Debug.i(TAG, "Details are not available!");
                 txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
-                imgEditAmbition.setVisibility(View.VISIBLE);
+                imgEditAmbition.setVisibility(View.GONE);
             }
 
             txtTotalAssignment.setText(data.getTotalAssignment());
@@ -436,7 +435,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 //            imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMStudent.options);
             imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic(), imgProfilePic, ISMStudent.options);
         } catch (Exception e) {
-            Debug.i(TAG,"SetupData :" +e.getLocalizedMessage());
+            Debug.i(TAG, "SetupData :" + e.getLocalizedMessage());
         }
     }
 
@@ -494,12 +493,12 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             openGallary();
             //callApiEditAboutMe();
         } else if (v == txtClickAddAboutMe) {
-            if (strDetailAboutMe==null) {
+            if (strDetailAboutMe == null) {
                 editDetails(ABOUT_ME);
             }
 
         } else if (v == txtClickAddAmbitions) {
-            if (strAmbition==null) {
+            if (strAmbition == null) {
                 editDetails(YOUR_AMBITION);
             }
 
@@ -522,7 +521,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         intent.putExtra(AMBITION, strAmbition);
         intent.putExtra(ABOUT_ME_DETAILS, strDetailAboutMe);
         intent.putExtra(EDIT_TYPE, type);
-        startActivity(intent);
+        startActivityForResult(intent, type);
 
     }
 
@@ -537,13 +536,11 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     };
 
 
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
             activityHost = (HostActivity) activity;
-            //   activityHost.setListenerHostAboutMe(this);
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
         }
@@ -561,7 +558,33 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     @Override
     public void onResume() {
         super.onResume();
-       // callApiGetAboutMe();
+        // callApiGetAboutMe();
     }
 
+    public void onAmbition() {
+
+        if (strAmbition != null) {
+            txtClickAddAmbitions.setText(strAmbition);
+            imgEditAmbition.setVisibility(View.VISIBLE);
+            txtClickAddAmbitions.setCompoundDrawables(null, null, null, null);
+            Debug.i(TAG, "Details are available!");
+        } else {
+            Debug.i(TAG, "Details are not available!");
+            txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
+            imgEditAmbition.setVisibility(View.GONE);
+        }
+    }
+
+    public void onAboutMe() {
+        if (strDetailAboutMe.length() != 0) {
+            txtClickAddAboutMe.setText(strDetailAboutMe);
+            txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
+            imgEditAboutMe.setVisibility(View.VISIBLE);
+            Debug.i(TAG, "Details are available!");
+        } else {
+            txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
+            imgEditAboutMe.setVisibility(View.GONE);
+            Debug.i(TAG, "Details are not available!");
+        }
+    }
 }

@@ -40,7 +40,6 @@ import com.ism.ws.model.Message;
 import com.ism.ws.model.Notification;
 import com.ism.ws.model.StudymateRequest;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -114,10 +113,8 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         arrTxtLabel = new TextView[]{txtGeneralSettings, txtMyFeeds, txtStudyMates, txtMyActivity, txtWallet};
         arrImgNotificationIcon = new ImageView[]{imgNotification, imgMessage, imgFriendRequest};
 
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-        imageLoader.displayImage(Global.strProfilePic, imgDp, ISMStudent.options);
-
+        txtUserName.setText(Global.strFullName);
+        Global.imageLoader.displayImage(Global.strProfilePic, imgDp, ISMStudent.options);
         showBadges();
 
         View.OnClickListener onClickLabel = new View.OnClickListener() {

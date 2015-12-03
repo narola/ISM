@@ -16,61 +16,61 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Attribute {
 
-	//	AcceptTutorialGroupRequest
-	private String userId;
-	private String joiningStatus;
-	private String groupId;
+    //	AcceptTutorialGroupRequest
+    private String userId;
+    private String joiningStatus;
+    private String groupId;
 
-	//	CredentialsRequest
-	private String schoolName;
-	private String homeAddress;
-	private int cityId;
-	private String lastname;
-	private String firstname;
-	private int stateId;
-	private String countryId;
-	private String contactNumber;
-	private String emailAddress;
+    //	CredentialsRequest
+    private String schoolName;
+    private String homeAddress;
+    private int cityId;
+    private String lastname;
+    private String firstname;
+    private int stateId;
+    private String countryId;
+    private String contactNumber;
+    private String emailAddress;
 
-//	ForgotPasswordRequest
-	private String emailId;
+    //	ForgotPasswordRequest
+    private String emailId;
 
-//	LoginRequest
-	private String username;
-	private String password;
+    //	LoginRequest
+    private String username;
+    private String password;
 
-//	RegisterRequest
-	private String profileImage;
-	private int courseId;
-	private int schoolId;
-	private String deviceToken;
-	private String academicYear;
-	private String profileImageName;
-	private String birthdate;
-	private String gender;
-	private String deviceType;
-	private int classroomId;
-	private String roleId;
+    //	RegisterRequest
+    private String profileImage;
+    private int courseId;
+    private int schoolId;
+    private String deviceToken;
+    private String academicYear;
+    private String profileImageName;
+    private String birthdate;
+    private String gender;
+    private String deviceType;
+    private int classroomId;
+    private String roleId;
 
-//	SchoolInfoRequest
-	private String name;
-	private String message;
+    //	SchoolInfoRequest
+    private String name;
+    private String message;
 
-	private String feedId;
-	private String commentBy;
-	private String comment;
-	private String taggedBy;
-	private String keyId;
-	private String settingValue;
-//	private String studymateId;
-	private String readCategory;
-	private ArrayList<String> recordIds;
+    private String feedId;
+    private String commentBy;
+    private String comment;
+    private String taggedBy;
+    private String keyId;
+    private String settingValue;
+    //private String studymateId;
+    private String readCategory;
+    private ArrayList<String> recordIds;
 
-	private String[] taggedUserIds;
-	private ArrayList<Attribute> preferences;
-	private File file;
-	private String aboutMeText;
-	private String ambitionInLife;
+    private String[] taggedUserIds;
+    private ArrayList<Attribute> preferences;
+    private File file;
+    private String aboutMeText;
+    private String ambitionInLife;
 
 	private String fileName;
 	private String resourceName;
@@ -81,10 +81,11 @@ public class Attribute {
 	private String secretKey;
 	private String accessKey;
 
-	private ArrayList<String> unfavoriteResourceId;
-	private ArrayList<String> favResourceId;
-	private ArrayList<String> removeBookId;
-	private ArrayList<String> addBookId;
+    private ArrayList<String> unfavoriteResourceId;
+    private ArrayList<String> favResourceId;
+    private ArrayList<String> removeBookId;
+    private ArrayList<String> addBookId;
+    private String studymateId;
 
 	public Attribute() {
 		setSecretKey(WebConstants.SECRET_KEY);

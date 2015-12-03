@@ -208,7 +208,6 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
             if (object != null) {
                 responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-
                     Debug.i(TAG, "onResponseManageLibrary success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseManageLibrary Failed");
@@ -312,7 +311,7 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
         Debug.i(TAG, "onRemoveFromFav" + position);
         try {
             arrayListUnFav.add(arrayListFavBooks.get(position).getBookId());
-            arrayListSuggestedBooks.add(arrayListFavBooks.get(position));
+           // arrayListSuggestedBooks.add(arrayListFavBooks.get(position));
             arrayListFavBooks.remove(position);
             favoriteBooksAdapter.notifyDataSetChanged();
             suggestedBooksAdapter.notifyDataSetChanged();

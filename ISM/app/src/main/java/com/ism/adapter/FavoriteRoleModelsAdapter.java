@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.RoleModelsDetailsDialog;
-import com.ism.fragment.userprofile.RoleModelFragment;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -29,17 +29,19 @@ import java.util.ArrayList;
 public class FavoriteRoleModelsAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = FavoriteRoleModelsAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
+    private final HostActivity.ManageResourcesListner manageResourcesListner;
     Context context;
     ArrayList<RolemodelData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
     RoleModelsFilter roleModelsFilter;
     ArrayList<RolemodelData> arrayListFilter = new ArrayList<>();
-    public FavoriteRoleModelsAdapter(Context context, ArrayList<RolemodelData> arrayList) {
+    public FavoriteRoleModelsAdapter(Context context, ArrayList<RolemodelData> arrayList,HostActivity.ManageResourcesListner manageResourcesListner) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter = arrayList;
         imageLoader = ImageLoader.getInstance();
+        this.manageResourcesListner=manageResourcesListner;
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         inflater = LayoutInflater.from(context);
         myTypeFace = new MyTypeFace(context);
@@ -70,12 +72,12 @@ public class FavoriteRoleModelsAdapter extends BaseAdapter implements Filterable
 
             holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
-            holder.imgAddToFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
+            holder.imgRemoveFromFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
             holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
             holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.txtOrganization = (TextView) convertView.findViewById(R.id.txt_author);
-            holder.imgAddToFav.setVisibility(View.VISIBLE);
-            holder.imgAddToFav.setBackgroundResource(R.drawable.img_like_red);
+            holder.imgRemoveFromFav.setVisibility(View.VISIBLE);
+            holder.imgRemoveFromFav.setBackgroundResource(R.drawable.img_like_red);
             holder.imgInfo.setVisibility(View.VISIBLE);
             convertView.setTag(holder);
         } else {
@@ -94,6 +96,14 @@ public class FavoriteRoleModelsAdapter extends BaseAdapter implements Filterable
                 public void onClick(View v) {
                     RoleModelsDetailsDialog roleModelsDetailsDialog = new RoleModelsDetailsDialog(context, arrayList, position, imageLoader);
                     roleModelsDetailsDialog.show();
+                }
+            });
+            holder.imgRemoveFromFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    manageResourcesListner.onRemoveFromFav(position);
+                    Debug.i(TAG, "onClickAddToFav : " + position);
+
                 }
             });
         } catch (Exception e) {
@@ -162,13 +172,7 @@ public class FavoriteRoleModelsAdapter extends BaseAdapter implements Filterable
             try {
 
                 arrayList = (ArrayList<RolemodelData>) results.values;
-                if (arrayList.size() == 0) {
-                    RoleModelFragment.txtFavEmpty.setVisibility(View.VISIBLE);
-                    RoleModelFragment.listViewFav.setVisibility(View.GONE);
-                } else {
-                    RoleModelFragment.txtFavEmpty.setVisibility(View.GONE);
-                    RoleModelFragment.listViewFav.setVisibility(View.VISIBLE);
-                }
+                manageResourcesListner.onSearchFav(arrayList);
                 notifyDataSetChanged();
             } catch (Exception e) {
                 Debug.i(TAG, "publishResults on Exception :  " + e.getLocalizedMessage());
@@ -181,7 +185,7 @@ public class FavoriteRoleModelsAdapter extends BaseAdapter implements Filterable
 
         private ImageView imgBook;
         private ImageView imgInfo;
-        private ImageView imgAddToFav;
+        private ImageView imgRemoveFromFav;
         private ImageView imgBookAdd;
         private TextView txtOrganization;
         private TextView txtBookName;

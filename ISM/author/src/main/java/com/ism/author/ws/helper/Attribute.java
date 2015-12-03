@@ -91,7 +91,7 @@ public class Attribute {
     private String questionScore;
     private ArrayList<Answers> answers;
     private ArrayList<AnswerChoices> answerChoices;
-    private ArrayList<String> questionId;
+    private ArrayList<String> questionIdList;
     private ArrayList<Tags> tags;
     private String[] taggedUserIds;
     private String[] likedId;
@@ -112,17 +112,21 @@ public class Attribute {
     public ArrayList<String> getUnfavoriteResourceId() {
         return this.unfavoriteResourceId;
     }
+
     @JsonProperty("unfavorite_resource_id")
     public void setUnfavoriteResourceId(ArrayList<String> unfavoriteResourceId) {
         this.unfavoriteResourceId = unfavoriteResourceId;
     }
+
     public ArrayList<String> getFavResourceId() {
         return this.favResourceId;
     }
+
     @JsonProperty("fav_resource_id")
     public void setFavResourceId(ArrayList<String> favResourceId) {
         this.favResourceId = favResourceId;
     }
+
     public String getQuestionid() {
         return questionid;
     }
@@ -136,10 +140,10 @@ public class Attribute {
     private String questionid;
 
 
-
     public String getResourceName() {
         return resourceName;
     }
+
     @JsonProperty("resource_name")
     public void setResourceName(String resourceName) {
         this.resourceName = resourceName;
@@ -920,13 +924,16 @@ public class Attribute {
     public void setResourceType(String resourceType) {
         this.resourceType = resourceType;
     }
+
     public void setRemoveBookId(ArrayList<String> removeBookId) {
         this.removeBookId = removeBookId;
     }
+
     @JsonProperty("remove_book_id")
     public ArrayList<String> getRemoveBookId() {
         return removeBookId;
     }
+
     @JsonProperty("add_book_id")
     public ArrayList<String> getAddBookId() {
         return addBookId;
@@ -936,4 +943,16 @@ public class Attribute {
 
         this.addBookId = addBookId;
     }
+
+
+    public ArrayList<String> getQuestionIdList() {
+        return questionIdList;
+    }
+
+    @JsonProperty("question_id_list")
+    public Attribute setQuestionIdList(ArrayList<String> questionIdList) {
+        this.questionIdList = questionIdList;
+        return this;
+    }
 }
+

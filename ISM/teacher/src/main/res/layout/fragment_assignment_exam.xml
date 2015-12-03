@@ -38,7 +38,7 @@
                     android:drawableLeft="@drawable/btn_personal_info"
                     android:drawablePadding="@dimen/d15dp"
                     android:gravity="center_vertical"
-                    android:text="@string/strpersonalinformation"
+                    android:text="@string/strassignmentinformation"
                     android:textAllCaps="true"
                     android:textSize="@dimen/d18dp" />
 

@@ -1,6 +1,5 @@
 package com.ism.adapter;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,35 +8,34 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.object.MyTypeFace;
+import com.ism.object.Global;
 import com.ism.utility.Utility;
+import com.ism.ws.model.BlockedUsers;
+
+import java.util.ArrayList;
 
 /**
  * Created by c162 on 09/11/15.
  */
 public class BlockedUserAdapter extends BaseAdapter {
+	private final ArrayList<BlockedUsers> arrayList;
 	Context context;
 	LayoutInflater inflater;
-	Fragment fragment;
-	MyTypeFace myTypeFace;
 
-	public BlockedUserAdapter(Context context, Fragment fragment) {
+	public BlockedUserAdapter(Context context, ArrayList<BlockedUsers> arrayList) {
 		this.context = context;
-		this.fragment = fragment;
+		this.arrayList = arrayList;
 		inflater = LayoutInflater.from(context);
-		myTypeFace = new MyTypeFace(context);
 	}
 
 	@Override
 	public int getCount() {
-		//   return responseObject.getData().get(0).getBlockedList().size();
-		return 3;
+		  return arrayList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-//		return responseObject.getData().get(0).getBlockedList().get(position);
-		return null;
+		return arrayList.get(position);
 	}
 
 	@Override
@@ -56,12 +54,14 @@ public class BlockedUserAdapter extends BaseAdapter {
 			viewHolder.txtUnblock = (TextView) convertView.findViewById(R.id.txt_unblock);
 			viewHolder.txtName = (TextView) convertView.findViewById(R.id.txt_name);
 
-			viewHolder.txtEmailAddress.setTypeface(myTypeFace.getRalewayRegular());
-			viewHolder.txtName.setTypeface(myTypeFace.getRalewayRegular());
-			viewHolder.txtUnblock.setTypeface(myTypeFace.getRalewayRegular());
+			viewHolder.txtEmailAddress.setTypeface(Global.myTypeFace.getRalewayRegular());
+			viewHolder.txtName.setTypeface(Global.myTypeFace.getRalewayRegular());
+			viewHolder.txtUnblock.setTypeface(Global.myTypeFace.getRalewayRegular());
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
+		viewHolder.txtEmailAddress.setText(arrayList.get(position).getEmailId());
+		viewHolder.txtName.setText(arrayList.get(position).getFullName());
 		viewHolder.txtUnblock.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
