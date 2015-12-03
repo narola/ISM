@@ -15,19 +15,43 @@
         <div class="box_header">
             <h3><span class="icon icon_info"></span>Add book detail</h3>
         </div>
-        <form name="book_frm" method="post">
+        <form name="book_frm" method="post" enctype='multipart/form-data'>
             <div class="box_body">	
                 <div class="form-group col-sm-12 col-md-6 col-lg-12 padding_r15_">
                 	<label>Book Name</label>
                     <input type="text" class="form-control" name="book_name" placeholder="Book Name">
                 </div>                     
                
-                <div class="form-group  col-sm-12 col-md-6 col-lg-8 padding_r15_">
+                <!-- <div class="form-group  col-sm-12 col-md-6 col-lg-8 padding_r15_">
                 	<label>Author Name</label>
                     <input type="text" placeholder="Author Name"  class="form-control smallinput">
                     <a class="icon icon_add_small" href="#"></a>
-                </div>
+                </div> -->
 
+            <div class="form-group authors col-sm-12 col-md-6 col-lg-8 padding_r15_" >
+                <label> Select Author </label>
+
+                <select name="authors[]" class="js-example-basic-single form-control" multiple="multiple" id="authors">
+
+                    <?php
+                       if(!empty($authors)){
+                            foreach($authors as $author) {
+                     ?>
+                                <option value="<?php echo $author['id'] ?>" 
+                                <?php echo set_select('authors', $author['id']); ?> 
+                                <?php 
+                                    if(isset($post_authors) && !empty($post_authors)){ 
+                                        if(in_array($author['id'],$post_authors)){ echo "selected='selected'"; } 
+                                    } 
+                                ?>                                                       
+                                > <!-- close of option start tag -->
+                                <?php echo ucfirst($author['full_name']); ?>
+                            </option> 
+                            <?php } ?>
+                    <?php } ?>
+                 </select>
+                <a class="icon icon_add_small" href="#"></a>
+            </div>
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 padding_r15_ ">
                 	<label>Price</label>
@@ -90,3 +114,9 @@
         </form>
     </div>
 </div>
+<script type="text/javascript">
+    
+  $(document).ready(function() {
+      $(".js-example-basic-single").select2();
+    });
+    </script>

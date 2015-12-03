@@ -97,7 +97,7 @@
                  <a data-slide="prev" href="#Carousel_<?php echo $i; ?>" class="left carousel-control">‹</a>
                   <a data-slide="next" href="#Carousel_<?php echo $i; ?>" class="right carousel-control">›</a>
                 </div><!--.Carousel-->
-                <a href="admin/book/view_all/<?php echo $authorbook['author']['id']; ?>" class="view_books pull-right">View All</a>
+                <a href="admin/book/view_all/<?php echo $authorbook['author']['id']; ?>" class="view_books pull-right btn btn-xs">View All</a>
              <?php } ?>
                  
 		      </div>

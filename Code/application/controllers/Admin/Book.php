@@ -209,17 +209,33 @@ class Book extends ADMIN_Controller {
 	public function add(){
 
 		if(isset($_POST['btn_save'])){
-			$data = array(
-					'notice_title'=>$notice_title,
+			/*$data = array(
+					'book_name'=>$notice_title,
 					'notice'=>$this->input->post('notice'),
 					'posted_by'=>$posted_by,
 					'status'=>$this->input->post('status'),
 					'is_template'=>$this->input->post('is_template')
-				);
+				);*/
+
+			p($_FILES);
 
 			// $notice_id = insert(TBL_NOTICEBOARD,replace_invalid_chars($data));
 			p($_POST, true);
 		}
+		$this->data['authors'] = select(TBL_USERS,TBL_USERS.'.id,'.TBL_USERS.'.full_name',
+										array('where'=>array(
+											TBL_ROLES.'.role_name'=>'author',
+											TBL_USERS.'.is_delete'=>0
+											)),
+										array(
+											'join'=> array(
+													array(
+								    				'table' => TBL_ROLES,
+								    				'condition' => TBL_ROLES.".id = ".TBL_USERS.".role_id",
+								    				),
+												)
+											)
+								);
 		$this->data['page_title'] = 'Add New Book';
 		$this->template->load('admin/default','admin/book/add',$this->data);
 	}
