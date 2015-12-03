@@ -228,7 +228,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 			attribute.setUserId(Global.strUserId);
 
 			new WebserviceWrapper(context, attribute, this).new WebserviceCaller()
-					.execute(WebConstants.GET_ALL_STUDY_MATES);
+					.execute(WebConstants.GET_ALL_STUDYMATES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetStudyMates Exception : " + e.toString());
 		}
@@ -264,7 +264,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 					case WebConstants.GET_ALL_COMMENTS:
 						onResponseGetAllComments(object);
 						break;
-					case WebConstants.GET_ALL_STUDY_MATES:
+					case WebConstants.GET_ALL_STUDYMATES:
 						onResponseGetAllStudyMates(object);
 						break;
 					case WebConstants.TAG_STUDY_MATES:

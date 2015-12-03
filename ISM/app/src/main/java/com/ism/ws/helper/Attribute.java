@@ -3,6 +3,7 @@ package com.ism.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.constant.WebConstants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -77,23 +78,50 @@ public class Attribute {
 	private String blockUser;
 	private String mateOf;
 	private String mateId;
+	private String secretKey;
+	private String accessKey;
 
 	private ArrayList<String> unfavoriteResourceId;
 	private ArrayList<String> favResourceId;
 	private ArrayList<String> removeBookId;
 	private ArrayList<String> addBookId;
 
+	public Attribute() {
+		setSecretKey(WebConstants.SECRET_KEY);
+		setAccessKey(WebConstants.ACCESS_KEY);
+	}
+
+	@JsonProperty("secret_key")
+	public String getSecretKey() {
+		return secretKey;
+	}
+
+	public void setSecretKey(String secretKey) {
+		this.secretKey = secretKey;
+	}
+
+	@JsonProperty("access_key")
+	public String getAccessKey() {
+		return accessKey;
+	}
+
+	public void setAccessKey(String accessKey) {
+		this.accessKey = accessKey;
+	}
 
 	public ArrayList<String> getUnfavoriteResourceId() {
 		return this.unfavoriteResourceId;
 	}
+
 	@JsonProperty("unfavorite_resource_id")
 	public void setUnfavoriteResourceId(ArrayList<String> unfavoriteResourceId) {
 		this.unfavoriteResourceId = unfavoriteResourceId;
 	}
+
 	public ArrayList<String> getFavResourceId() {
 		return this.favResourceId;
 	}
+
 	@JsonProperty("fav_resource_id")
 	public void setFavResourceId(ArrayList<String> favResourceId) {
 		this.favResourceId = favResourceId;
@@ -102,13 +130,16 @@ public class Attribute {
 	public String getBlockUser() {
 		return blockUser;
 	}
+
 	@JsonProperty("block_user")
 	public void setBlockUser(String blockUser) {
 		this.blockUser = blockUser;
 	}
+
 	public String getResourceName() {
 		return resourceName;
 	}
+
 	@JsonProperty("resource_name")
 	public void setResourceName(String resourceName) {
 		this.resourceName = resourceName;
@@ -117,6 +148,7 @@ public class Attribute {
 	public String getAmbitionInLife() {
 		return ambitionInLife;
 	}
+
 	@JsonProperty("ambitionInLife")
 	public void setAmbitionInLife(String ambitionInLife) {
 		this.ambitionInLife = ambitionInLife;
@@ -125,6 +157,7 @@ public class Attribute {
 	public String getAboutMeText() {
 		return aboutMeText;
 	}
+
 	@JsonProperty("aboutMeText")
 	public void setAboutMeText(String aboutMeText) {
 		this.aboutMeText = aboutMeText;
@@ -134,6 +167,7 @@ public class Attribute {
 	public String getKeyId() {
 		return keyId;
 	}
+
 	@JsonProperty("key_id")
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
@@ -142,6 +176,7 @@ public class Attribute {
 	public String getSettingValue() {
 		return settingValue;
 	}
+
 	@JsonProperty("preference_value")
 	public void setSettingValue(String settingValue) {
 		this.settingValue = settingValue;
@@ -505,7 +540,6 @@ public class Attribute {
 	public void setVoucherAmount(String voucherAmount) {
 		this.voucherAmount = voucherAmount;
 	}
-
 
 	public void setRemoveBookId(ArrayList<String> removeBookId) {
 		this.removeBookId = removeBookId;

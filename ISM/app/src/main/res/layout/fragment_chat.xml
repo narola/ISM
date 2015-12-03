@@ -6,10 +6,6 @@
     android:background="@color/color_white"
     tools:context="com.ism.fragment.ChatFragment">
 
-    <!--<ScrollView-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="fill_parent" >-->
-
     <com.ism.views.AccordionView
         android:id="@+id/accordion_view_chat"
         android:layout_width="fill_parent"
@@ -22,33 +18,48 @@
         accordion:section_bottom="@layout/accordion_footer"
         accordion:section_container="@layout/accordion_section"
         accordion:section_container_parent="@id/rl_section_content"
-        accordion:section_headers="@array/accordion_notice"
+        accordion:section_headers="@array/chat"
         accordion:section_visibility="@array/accordion_notice_visibility">
 
-
         <LinearLayout
-            android:id="@+id/ll_notice"
-            android:layout_width="fill_parent"
+            android:id="@+id/ll_studymates"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ListView
-                android:id="@+id/lv_notice"
+                android:id="@+id/lv_studymates"
                 android:layout_width="match_parent"
-                android:layout_height="350sp"
-                android:padding="@dimen/d5dp" />
+                android:layout_height="400dp"
+                android:divider="@color/border_gray"
+                android:dividerHeight="1dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginBottom="@dimen/margin_chat" />
 
-            <TextView
-                android:id="@+id/txt_viewAll_notice"
+            <Button
+                android:id="@+id/btn_suggested_studymates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/d10dp"
-                android:text="View all"
-                android:textColor="@color/color_green"
-                android:textSize="@dimen/d20dp"
-                android:visibility="gone" />
+                android:layout_marginLeft="@dimen/margin_chat"
+                android:layout_marginRight="@dimen/margin_chat"
+                android:layout_marginBottom="@dimen/margin_chat"
+                android:text="@string/suggested_studymates"
+                android:textColor="@android:color/white"
+                android:background="@drawable/bg_btn_pink"
+                android:textSize="18sp" />
 
+            <Button
+                android:id="@+id/btn_find_more_studymates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_chat"
+                android:layout_marginRight="@dimen/margin_chat"
+                android:layout_marginBottom="@dimen/margin_chat"
+                android:text="@string/find_more_studymates"
+                android:textColor="@android:color/white"
+                android:background="@drawable/bg_btn_blue"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <ListView
@@ -56,16 +67,5 @@
             android:layout_width="match_parent"
             android:layout_height="450sp"
             android:background="@drawable/bg_highscore_subjectlist" />
-
-
-        <!--<ListView-->
-        <!--android:id="@+id/lv_events"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="480sp"-->
-        <!--android:padding="@dimen/d5dp" />-->
-
-
     </com.ism.views.AccordionView>
-
-
 </RelativeLayout>

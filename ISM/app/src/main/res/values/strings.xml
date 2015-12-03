@@ -13,7 +13,11 @@
 	<string-array name="accordion_notice">
 		<item>NOTICE</item>
 		<item>HIGH SCORE</item>
-		<!--<item>EVENTS</item>-->
+	</string-array>
+
+	<string-array name="chat">
+		<item>STUDYMATES</item>
+		<item>MY TEACHER</item>
 	</string-array>
 
 	<integer-array name="accordion_notice_visibility">
@@ -329,4 +333,5 @@
 	<string name="area">Area</string>
 	<string name="course">Course</string>
 	<string name="topic">"Topic - "</string>
+	<string name="suggested_studymates">Suggested Studymates</string>
 </resources>

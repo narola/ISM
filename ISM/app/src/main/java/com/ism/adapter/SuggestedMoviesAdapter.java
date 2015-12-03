@@ -103,7 +103,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
             holder.txtMovieYear.setGravity(Gravity.LEFT);
             holder.txtMovieName.setText(arrayList.get(position).getMovieName());
             holder.txtMovieYear.setText(arrayList.get(position).getMovieGenre());
-            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getMovieImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getMovieImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.imgMovieToFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
