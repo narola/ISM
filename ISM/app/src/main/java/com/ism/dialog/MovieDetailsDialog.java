@@ -94,7 +94,7 @@ public class MovieDetailsDialog extends Dialog implements View.OnClickListener {
         txtBookName.setText(arrayList.get(position).getMovieName());
         txtEbook.setText(R.string.strMovieGenre);
         txtEbookLink.setText(arrayList.get(position).getMovieGenre());
-        imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getMovieImage(), imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+        imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getMovieImage(), imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
         txtDone.setOnClickListener(this);
 
     }

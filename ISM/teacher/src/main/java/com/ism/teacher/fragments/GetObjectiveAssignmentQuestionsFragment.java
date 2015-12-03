@@ -117,8 +117,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
         if (responseObjGetAllExamQuestions != null) {
             getArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
-            //getArguments().putString(AppConstant.ARG_EXAM_TYPE, getString(R.string.strobjective));
-            getArguments().putString(ARG_EXAM_TYPE,"Objective");
+            getArguments().putString(ARG_EXAM_TYPE, getString(R.string.strobjective));
 
 //            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
 //                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);

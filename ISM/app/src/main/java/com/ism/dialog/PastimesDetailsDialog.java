@@ -60,7 +60,7 @@ public class PastimesDetailsDialog extends Dialog implements View.OnClickListene
         txtPastimesName.setTypeface(myTypeFace.getRalewayRegular());
         txtDone.setTypeface(myTypeFace.getRalewayRegular());
         txtPastimesName.setText(arrayList.get(position).getPastimeName());
-        imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getPastimeImage(), imgPastimes, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+        imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getPastimeImage(), imgPastimes, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
         txtDone.setOnClickListener(this);
 
     }

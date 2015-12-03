@@ -27,13 +27,13 @@
                 android:orientation="vertical">
 
                 <Spinner
-                    android:id="@+id/sp_exam_subject"
+                    android:id="@+id/sp_exam_authorbooks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shadow_grey_small_size" />
 
                 <com.ism.commonsource.view.ActionProcessButton
-                    android:id="@+id/prog_exam_subject"
+                    android:id="@+id/prog_exam_authorbook"
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
                     android:visibility="invisible" />

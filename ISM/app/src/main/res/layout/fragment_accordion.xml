@@ -17,7 +17,7 @@
         accordion:section_bottom="@layout/accordion_footer"
         accordion:section_container="@layout/accordion_section"
         accordion:section_container_parent="@id/rl_section_content"
-        accordion:section_headers="@array/accordion_notice"
+        accordion:section_headers="@array/chat"
         accordion:section_visibility="@array/accordion_notice_visibility">
 
         <LinearLayout
@@ -30,7 +30,7 @@
                 android:id="@+id/lv_notice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/d5dp" />
+                android:padding="5dp"/>
 
             <TextView
                 android:id="@+id/txt_viewAll_notice"

@@ -1,6 +1,5 @@
 package com.ism.teacher.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,9 +37,9 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import java.util.ArrayList;
 
 /**
- * Created by c75 on 10/11/15.
+ * List of subjective questions
  */
-public class GetSubjectiveQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class GetSubjectiveQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
     private static final String TAG = GetSubjectiveQuestionsFragment.class.getSimpleName();
 
@@ -51,9 +51,9 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     public GetSubjectiveQuestionsFragment() {
     }
 
-    @SuppressLint("ValidFragment")
-    public GetSubjectiveQuestionsFragment(Fragment fragment) {
+    public GetSubjectiveQuestionsFragment(Fragment fragment, Bundle bundleArguments) {
         this.mFragment = fragment;
+        setArguments(bundleArguments);
     }
 
     @Override
@@ -74,12 +74,16 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     private LinearLayoutManager mLayoutManager;
     private LinearLayout llPrevStudent, llNextStudent;
     private RelativeLayout rlBottomEvaluationTab;
+    private ImageView imgEditExam, imgCopyExam;
 
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+
+        imgEditExam = (ImageView) view.findViewById(R.id.img_edit_exam);
+        imgCopyExam = (ImageView) view.findViewById(R.id.img_copy_exam);
 
         imgStudentProfilePic = (CircleImageView) view.findViewById(R.id.img_student_profile_pic);
 
@@ -110,21 +114,6 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         tvStudentEvalutionNo.setTypeface(myTypeFace.getRalewayRegular());
 
 
-        llPrevStudent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadPreviousStudentData();
-            }
-        });
-
-        llNextStudent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadNextStudentData();
-
-            }
-        });
-
         rvSubjectiveQuestionsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -150,6 +139,11 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         });
 
         callApiGetExamQuestions();
+
+        llPrevStudent.setOnClickListener(this);
+        llNextStudent.setOnClickListener(this);
+        imgCopyExam.setOnClickListener(this);
+        imgEditExam.setOnClickListener(this);
     }
 
 
@@ -228,12 +222,12 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
                     if (getBaseFragment().getArguments().getBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                         loadStudentEvaluationData();
-                        getBaseFragment().showGetStudentsandPalleteFragment();
+                        // getBaseFragment().showGetStudentsandPalleteFragment();
                         rlBottomEvaluationTab.setVisibility(View.VISIBLE);
                     } else {
                         setQuestions();
                         scrollToSpecificQuestion(0);
-                        getBaseFragment().hideGetStudentsandPalleteFragment();
+                        //getBaseFragment().hideGetStudentsandPalleteFragment();
                         rlBottomEvaluationTab.setVisibility(View.GONE);
 
                     }
@@ -358,6 +352,40 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     private GetSubjectiveAssignmentQuestionsFragment getBaseFragment() {
         return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == llPrevStudent) {
+
+            loadPreviousStudentData();
+
+        } else if (v == llNextStudent) {
+            loadNextStudentData();
+
+        } else if (v == imgEditExam || v == imgCopyExam) {
+            setExamQuestions();
+        }
+    }
+
+    private void setExamQuestions() {
+
+        if (responseObjGetAllExamQuestions != null) {
+
+            getArguments().putParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS, arrListQuestions);
+            getArguments().putString(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE, getString(R.string.strsubjective));
+
+//            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
+//                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getArguments());
+//
+//            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
+//                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
+
+            mFragment.getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
+                    CreateExamAssignmentContainerFragment.newInstance(getArguments())).commit();
+
+        }
 
     }
 }

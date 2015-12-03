@@ -90,8 +90,8 @@ public class BookDetailsDialog extends Dialog implements View.OnClickListener {
         txtDescDetails.setText(arrayList.get(position).getDescription());
         txtBookName.setText(arrayList.get(position).getBookName());
         txtEbookLink.setText(arrayList.get(position).getEbookLink());
-        imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getBookImage(), imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available,R.drawable.img_no_cover_available));
-        imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getAuthorImage(), imgAuthor, ISMStudent.options);
+        imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getBookImage(), imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available,R.drawable.img_no_cover_available));
+        imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getAuthorImage(), imgAuthor, ISMStudent.options);
         txtDone.setOnClickListener(this);
 
     }

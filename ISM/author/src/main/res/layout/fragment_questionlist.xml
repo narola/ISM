@@ -17,7 +17,7 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/sp_questionlist_course"
+                android:id="@+id/sp_questionlist_filter"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -27,7 +27,7 @@
                 android:spinnerMode="dropdown" />
 
             <Spinner
-                android:id="@+id/sp_questionlist_subject"
+                android:id="@+id/sp_questionlist_author_books"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -38,7 +38,7 @@
 
 
             <Spinner
-                android:id="@+id/sp_questionlist_topic"
+                android:id="@+id/sp_questionlist_sorting"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -97,7 +97,7 @@ public class RoleModelsDetailsDialog extends Dialog implements View.OnClickListe
         txtAchiveValue.setText(arrayList.get(position).getAchievements());
         txtActivitiesValue.setText(arrayList.get(position).getActivities());
         txtQuotesValue.setText(arrayList.get(position).getQuotes());
-        imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getModelImage(), imgRoleModel, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+        imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getModelImage(), imgRoleModel, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
         txtDone.setOnClickListener(this);
 
     }
