@@ -132,19 +132,20 @@ class SocialFunctions
             $query = "SELECT ".$getFields."  FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feed_id ." AND f.is_delete=0 AND p.is_delete=0 AND u.is_delete=0";
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
             //echo $query;
-            if (mysqli_num_rows($result)) {
+            if (mysqli_num_rows($result) >0) {
                 while ($comments = mysqli_fetch_assoc($result)) {
                     $data[] = $comments;
                 }
                 $message = "";
-                $status="success";
+                $status=SUCCESS;
             } else {
                 $message = DEFAULT_NO_RECORDS;
+                $status=SUCCESS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
 
@@ -216,12 +217,12 @@ class SocialFunctions
                     }
                 }
             }
-            $status = "success";
+            $status = SUCCESS;
             $message = "Successfully";
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['like_feed']=$data;
@@ -267,16 +268,16 @@ class SocialFunctions
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
             //echo $query;
             if ($result) {
-                $status = "success";
+                $status = SUCCESS;
                 $message = SUCCESSFULLY_ADDED;
             } else {
-                $status = "failed";
+                $status = FAILED;
                 $message = "";
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['comment']=$data;
@@ -322,14 +323,14 @@ class SocialFunctions
                 $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
                 // echo $query;
                 if ($result) {
-                    $status = "success";
+                    $status = SUCCESS;
                     $message = "Tagged successfully";
                 }
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['tag_friend']=$data;
@@ -392,7 +393,7 @@ class SocialFunctions
                 $feed_thumb = "Thumb-" . date("Ymd-his") . ".png";
                 $feed_thumb_link = $feed_media_dir . $feed_thumb;
                 if (!file_put_contents(FEEDS_MEDIA . $feed_thumb_link, base64_decode($video_thumbnail))) {
-                    $feed_thumb_link = "Failed";
+                    $feed_thumb_link = FAILED;
                 }
 
             }
@@ -422,14 +423,14 @@ class SocialFunctions
                 }
                 $data[] = $post;
                 $message="";//"Post successfully submitted";
-                $status = "success";
+                $status = SUCCESS;
             } else {
-                $status = "failed";
+                $status = FAILED;
             }
         }
 
         else{
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['status']=$status;
@@ -490,10 +491,10 @@ class SocialFunctions
                         $link = $feed_media_dir . $mediaName;
                         $procedure_insert_set = "CALL UPDATE_VIDEO_LINK ('" . $link . "','" . $feed_id . "' )";
                         $result_procedure = mysqli_query($GLOBALS['con'], $procedure_insert_set) or $message = mysqli_error($GLOBALS['con']);
-                        $status = "success";
+                        $status = SUCCESS;
                         $message = "Successfully uploaded!.";
                     } else {
-                        $status = "failed";
+                        $status = FAILED;
                         $message = FAILED_TO_UPLOAD_MEDIA;
                     }
                 }
@@ -512,10 +513,10 @@ class SocialFunctions
                         $link = $feed_media_dir . $mediaName;
                         $procedure_insert_set = "CALL UPDATE_AUDIO_LINK ('" . $link . "','" . $feed_id . "' )";
                         $result_procedure = mysqli_query($GLOBALS['con'], $procedure_insert_set) or $message = mysqli_error($GLOBALS['con']);
-                        $status = "success";
+                        $status = SUCCESS;
                         $message = "Successfully uploaded!.";
                     } else {
-                        $status = "failed";
+                        $status = FAILED;
                         $message = FAILED_TO_UPLOAD_MEDIA;
                     }
                 }
@@ -525,7 +526,7 @@ class SocialFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $data['status']=$status;
@@ -580,7 +581,7 @@ class SocialFunctions
         }
         else
         {
-            $final_feeds['status']="failed";
+            $final_feeds['status']=FAILED;
             $final_feeds['message'] = MALICIOUS_SOURCE;
         }
         $response['feeds']=$final_feeds['data'];
@@ -828,7 +829,7 @@ class SocialFunctions
 //                    }
             }
         }
-        $status = "success";
+        $status = SUCCESS;
 
         $errorMsg="";
         $data['message'] = $errorMsg;
@@ -1002,10 +1003,10 @@ class SocialFunctions
 
                     $data[] = $feeds;
                 }
-                $status = "success";
+                $status = SUCCESS;
                 $message = "";
             } else {
-                $status = "failed";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
                 $data = "";
             }
@@ -1013,7 +1014,7 @@ class SocialFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
 		$response['feeds']=$data;
@@ -1064,16 +1065,16 @@ class SocialFunctions
 
                         if ($result)
                         {
-                            $status = "success";
+                            $status = SUCCESS;
                             $message = "favorite synced";
                         } else
                         {
-                            $status = "failed";
+                            $status = FAILED;
                             $message = "";
                         }
                     } else
                     {
-                        $status = "failed";
+                        $status = SUCCESS;
                         $message = DEFAULT_NO_RECORDS;
                     }
                 }
@@ -1081,7 +1082,7 @@ class SocialFunctions
             }
         }
         else {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
 
@@ -1167,19 +1168,19 @@ class SocialFunctions
 			
                 $data[]=$feeds;
             }
-             $status="success";
+             $status=SUCCESS;
        		 $message="";
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = DEFAULT_NO_RECORDS;
             $data="";
         }
 	}
 	else
 	{
- 			$status="failed";
+ 			$status=FAILED;
             $message = MALICIOUS_SOURCE;
             $data="";
 	}
@@ -1200,13 +1201,11 @@ class SocialFunctions
         $data=array();
         $response=array();
         
-       
-  
- /* foreach (getallheaders() as $name => $value) {
+
+/* foreach (getallheaders() as $name => $value) {
 	  
 	  echo "$name :$value\n";
-     
-  
+
 }*/
         $data['agent']=$_SERVER ['HTTP_USER_AGENT'];
     	$response['security']=$data;
@@ -1234,10 +1233,10 @@ class SocialFunctions
              while($row=mysqli_fetch_assoc($result))
             {
                     $data[]=$row;
-            } 
-            $stats="success";
+            }
+            $status=SUCCESS;
         }
-       
+
      	//$token= $this->getToken(10);
      	
      
@@ -1278,17 +1277,14 @@ class SocialFunctions
 	$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
 
 
-	//$crypted = $this->fnEncrypt($_POST['username'], $aes256Key);
-	//$crypted = fnEncrypt($username, $aes256Key);
         $security=new SecurityFunctions();
-        echo $crypted = $security->fnEncrypt($username, $aes256Key);
+        $crypted = $security->fnEncrypt($username, $aes256Key);
 
 
         $data['encrypted']=$crypted;
 	//$newClear = $this->fnDecrypt($crypted, $aes256Key);
 
 
-	
     	$response['data']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
@@ -1426,13 +1422,13 @@ class SocialFunctions
 
                         if($result)
                         {
-                            $status = "success";
+                            $status = SUCCESS;
                             $message = "resource hash tagged";
                         }
                         else
                         {
-                            $status = "failed";
-                            $message = DEFAULT_NO_RECORDS;
+                            $status = FAILED;
+                            $message = "";
                         }
                         //}
                     }
@@ -1451,18 +1447,18 @@ class SocialFunctions
 
                             if($result)
                             {
-                                $status = "success";
+                                $status = SUCCESS;
                                 $message = "resource hash tagged";
                             }
                             else
                             {
-                                $status = "failed";
-                                $message = DEFAULT_NO_RECORDS;
+                                $status = FAILED;
+                                $message = "";
                             }
                         }
                         else
                         {
-                            $status = "failed";
+                            $status = SUCCESS;
                             $message = RECORD_ALREADY_EXIST;
                         }
                     }
@@ -1483,18 +1479,18 @@ class SocialFunctions
 
                         if($result)
                         {
-                            $status = "success";
+                            $status = SUCCESS;
                             $message = "resource hash tagged";
                         }
                         else
                         {
-                            $status = "failed";
-                            $message = DEFAULT_NO_RECORDS;
+                            $status = FAILED;
+                            $message = "";
                         }
                     }
                     else
                     {
-                        $status = "failed";
+                        $status = SUCCESS;
                         $message = RECORD_ALREADY_EXIST;
                     }
                 }
@@ -1503,7 +1499,7 @@ class SocialFunctions
 
         }
         else{
-            $status="failed";
+            $status=FAILED;
             $message=DEFAULT_NO_RECORDS;
         }
         $response['data']=$data;
@@ -1530,11 +1526,11 @@ class SocialFunctions
                     $data[] = $rowGetTags;
                 }
             }
-            $status="success";
+            $status=SUCCESS;
             $message="";
         }
         else{
-            $status="failed";
+            $status=SUCCESS;
             $message=DEFAULT_NO_RECORDS;
         }
 

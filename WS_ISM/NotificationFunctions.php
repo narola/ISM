@@ -116,17 +116,17 @@ class NotificationFunctions
                     $post['posted_on'] = $val['created_date'];
                     $data[] = $post;
 
-                    $status = "success";
+                    $status = SUCCESS;
                     $message = "Request accepted";
                 }
             } else {
-                $status = "failed";
+                $status =  SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
 
@@ -181,12 +181,12 @@ class NotificationFunctions
             $notificationCount = mysqli_fetch_row($resultNotification);
             $data['notification_count'] = $notificationCount[0];
 
-            $status="success";
+            $status= SUCCESS;
             $message = "";
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
 
@@ -246,17 +246,17 @@ class NotificationFunctions
                     $post['notification_date'] = $val['created_date'];
                     $data[] = $post;
 
-                    $status = "success";
+                    $status =  SUCCESS;
                     $message = "";
                 }
             } else {
-                $status = "failed";
+                $status =  SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['notification']=$data;
@@ -310,13 +310,13 @@ class NotificationFunctions
                     $message = REQUEST_ACCEPTED;
                 }
             } else {
-                $status = "failed";
+                $status =  SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['messages']=$data;
@@ -351,7 +351,6 @@ class NotificationFunctions
         if($isSecure==yes) {
             $query = "SELECT * FROM ".TABLE_STUDYMATES."  WHERE mate_of = ".$user_id ." and mate_id= ". $studymate_id." and is_delete=0";
 
-
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
             if (mysqli_num_rows($result) > 0) {
@@ -360,17 +359,17 @@ class NotificationFunctions
                 //echo $queryToUpdateStatus;
                 $resultToUpdateStatus = mysqli_query($GLOBALS['con'], $queryToUpdateStatus) or $message = mysqli_error($GLOBALS['con']);
 
-                $status = "success";
+                $status =  SUCCESS;
                 $message = REQUEST_ACCEPTED;
 
             } else {
-                $status = "failed";
+                $status =  SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['wallet_info']=$data;
@@ -437,23 +436,23 @@ class NotificationFunctions
                         $resultUpdate = mysqli_query($GLOBALS['con'], $queryUpdate) or $message = mysqli_error($GLOBALS['con']);
                         //echo $queryUpdate;
 
-                        $status = "success";
+                        $status =  SUCCESS;
                         $message = REQUEST_ACCEPTED;
                     } else {
-                        $status = "failed";
+                        $status =  SUCCESS;
                         $message = DEFAULT_NO_RECORDS;
                     }
                 }
 
             } else {
-                $status = "failed";
+                $status =  SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
 
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['read_status']=$data;
@@ -502,10 +501,10 @@ class NotificationFunctions
                             //echo $queryUpdate;
 
                             if ($resultQuery) {
-                                $status = "success";
+                                $status =  SUCCESS;
                                 $message = SUCCESSFULLY_UPDATED;
                             } else {
-                                $status = "failed";
+                                $status = FAILED;
                                 $message = "";
                             }
                         } else {
@@ -516,24 +515,24 @@ class NotificationFunctions
                             $resultInsert = mysqli_query($GLOBALS['con'], $queryInsert) or $message = mysqli_error($GLOBALS['con']);
 
                             if ($resultQuery) {
-                                $status = "success";
+                                $status =  SUCCESS;
                                 $message = SUCCESSFULLY_ADDED;
                             } else {
-                                $status = "failed";
+                                $status =FAILED;
                                 $message = "";
                             }
                         }
                     }
                 }
             } else {
-                $status = "failed";
+                $status =  SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
 
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['general_settings']=$data;
@@ -624,7 +623,7 @@ class NotificationFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
 
@@ -671,17 +670,17 @@ class NotificationFunctions
                     $post[] = $val;
                 }
 
-                $status = "success";
+                $status = SUCCESS;
                 $message =REQUEST_ACCEPTED;
             } else {
-                $status = "failed";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
 
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['user_preference']=$post;

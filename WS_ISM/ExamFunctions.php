@@ -264,13 +264,13 @@ class ExamFunctions
                 $status = SUCCESS;
             } else {
 
-                $status = "failed";
+                $status = FAILED;
                 $message = "";
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
 
@@ -356,14 +356,14 @@ class ExamFunctions
                 $status = SUCCESS;
             } else {
 
-                $status = "failed";
+                $status = FAILED;
                 //$message="";
             }
 
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['exam_submission']=$data;
@@ -473,14 +473,14 @@ class ExamFunctions
                         $status = SUCCESS;
                         //  $message="Exam created and scheduled";
                     } else {
-                        $status = "failed";
+                        $status = FAILED;
                         // $message="Exam is created but not scheduled";
                     }
                 }
                 // $message="";
             } else {
                 $post['exam_id'] = "";
-                $status = "failed";
+                $status = FAILED;
                 // $message="Exam is not created and scheduled";
             }
 
@@ -489,7 +489,7 @@ class ExamFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['exam']=$data;
@@ -510,11 +510,12 @@ class ExamFunctions
         $post=array();
         $response=array();
 
+
         $exam_id = validateObject ($postData , 'exam_id', "");
         $exam_id = addslashes($exam_id);
 
-        $question_id = validateObject ($postData , 'question_id', "");
-        $question_id = addslashes($question_id);
+        $question_id_list = validateObject ($postData , 'question_id_list', "");
+        //$question_id_list = addslashes($question_id_list);
 
         $secret_key = validateObject($postData, 'secret_key', "");
         $secret_key = addslashes($secret_key);
@@ -527,8 +528,9 @@ class ExamFunctions
 
         if($isSecure==yes) {
 
-            if ($question_id != null) {
-                foreach ($question_id as $ques_id) {
+            if ($question_id_list != null) {
+
+                foreach ($question_id_list as $ques_id) {
 
                     $queryCheckFeed = "SELECT * FROM " . TABLE_EXAM_QUESTION . " WHERE question_id =" . $ques_id . " and exam_id=" . $exam_id . " and is_delete=0";
                     //echo $queryCheckFeed."\n";
@@ -537,7 +539,7 @@ class ExamFunctions
                     if (mysqli_num_rows($resultCheckFeed) == 0) {
 
                         $insertFields = "`exam_id`, `question_id`";
-                        $insertValues = $exam_id . "," . $question_id;
+                        $insertValues = $exam_id . "," . $ques_id;
 
                         $query = "INSERT INTO " . TABLE_EXAM_QUESTION . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
                         $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
@@ -546,19 +548,24 @@ class ExamFunctions
                             $status = SUCCESS;
                             $message = "";
                         } else {
-                            $status = "failed";
+                            $status = FAILED;
                             // $message="";
                         }
                     } else {
-                        $status = "failed";
+                        $status = SUCCESS;
                         $message = RECORD_ALREADY_EXIST;
                     }
                 }
             }
+            else
+            {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['question']=$data;
@@ -608,18 +615,26 @@ class ExamFunctions
 
             $querySubjectId = "SELECT ".$getField." FROM ".$table." WHERE `user_id`=".$user_id ." and is_delete=0";
             $resultSubjectId = mysqli_query($GLOBALS['con'], $querySubjectId) or $message = mysqli_error($GLOBALS['con']);
-            //echo $query;
+           // echo $querySubjectId; exit;
             if (mysqli_num_rows($resultSubjectId)) {
                 while ($row = mysqli_fetch_assoc($resultSubjectId)) {
                     //$post['subject_id']=$row;
                     //$data[]=$row;
-                    $queryQuestion = "SELECT question.*,users.full_name,subject.subject_name FROM ".TABLE_QUESTIONS." question
-                Inner join ".TABLE_USERS." users
-                inner join ".TABLE_SUBJECTS." subject on question.subject_id=subject.id and question.question_creator_id=users.id
-                WHERE ".$getField."=".$row[$rowParameter]." AND question.is_delete=0 AND users.is_delete=0 AND subject.is_delete=0";
+                    if ($role == 3) {
+                        $queryQuestion = "SELECT question.*,users.full_name,subject.subject_name FROM " . TABLE_QUESTIONS . " question
+                Inner join " . TABLE_USERS . " users on question.question_creator_id=users.id
+                inner join " . TABLE_SUBJECTS . " subject on question.subject_id=subject.id
+                WHERE " . $getField . "=" . $row[$rowParameter] . " AND question.is_delete=0 AND users.is_delete=0 AND subject.is_delete=0";
 
+                    }
+                    elseif($role == 4) {
+                        $queryQuestion = "SELECT question.*,users.full_name,book.book_name FROM " . TABLE_QUESTIONS . " question
+                Inner join " . TABLE_USERS . " users on question.question_creator_id=users.id
+                Inner join " . TABLE_BOOKS . " book on question.book_id=book.id
+                WHERE " . $getField . "=" . $row[$rowParameter] . " AND question.is_delete=0 AND users.is_delete=0 AND book.is_delete=0";
+                    }
                     $resultQuestion = mysqli_query($GLOBALS['con'], $queryQuestion) or $message = mysqli_error($GLOBALS['con']);
-                    // echo $query;
+                   // echo $queryQuestion; exit;
                     if (mysqli_num_rows($resultQuestion)) {
                         while ($rowQuestion = mysqli_fetch_assoc($resultQuestion)) {
                             $post['question_id'] = $rowQuestion['id'];
@@ -634,10 +649,20 @@ class ExamFunctions
                             $post['evaluation_notes'] = $rowQuestion['evaluation_notes'];
                             $post['solution'] = $rowQuestion['solution'];
                             $post['topic_id'] = $rowQuestion['topic_id'];
-                            $post['subject_id'] = $rowQuestion['subject_id'];
-                            $post['subject_name'] = $rowQuestion['subject_name'];
+
                             $post['classroom_id'] = $rowQuestion['classroom_id'];
-                            $post['book_id'] = $rowQuestion['book_id'];
+
+                            if($role==3)
+                            {
+                                $post['subject_id'] = $rowQuestion['subject_id'];
+                                $post['subject_name'] = $rowQuestion['subject_name'];
+                            }
+                            if($role==4)
+                            {
+                                $post['book_id'] = $rowQuestion['book_id'];
+                                $post['book_name'] = $rowQuestion['book_name'];
+                            }
+
 
 
                             $tags = array();
@@ -676,19 +701,19 @@ class ExamFunctions
                         $status = SUCCESS;
                         $message = "";
                     } /*else {
-                        $status = "failed";
+                        $status = FAILED;
                         $message = DEFAULT_NO_RECORDS."jjj";
                     }*/
                 }
 
             } else {
-                $status = "failed";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
 
@@ -732,13 +757,13 @@ class ExamFunctions
                 $status = SUCCESS;
 
             } else {
-                $status = "failed";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['courses']=$data;
@@ -783,13 +808,13 @@ class ExamFunctions
                 $status = SUCCESS;
 
             } else {
-                $status = "failed";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['subjects']=$data;
@@ -837,13 +862,13 @@ class ExamFunctions
                 $status = SUCCESS;
 
             } else {
-                $status = "failed";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['topics']=$data;
@@ -887,13 +912,13 @@ class ExamFunctions
                 $status = SUCCESS;
 
             } else {
-                $status = "failed";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['classrooms']=$data;
@@ -975,13 +1000,13 @@ class ExamFunctions
             $status = SUCCESS;
             $message = "";
             if ($data == null) {
-                $status = "failed";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['exams']=$data;
@@ -1129,12 +1154,14 @@ class ExamFunctions
                     while ($row = mysqli_fetch_assoc($resultExamQuestion)) {
                         //$post['subject_id']=$row;
                         //$data[]=$row;
-                        $queryQuestion = "SELECT question.*,users.full_name,subject.subject_name FROM ".TABLE_QUESTIONS." question
-                inner join ".TABLE_USERS." users
-                inner join ".TABLE_SUBJECTS." subject on question.subject_id=subject.id and question.question_creator_id=users.id
+
+                        //left join ".TABLE_SUBJECTS." subject on question.subject_id=subject.id  ,subject.subject_name
+                        $queryQuestion = "SELECT DISTINCT question.*,users.full_name,subject.subject_name FROM ".TABLE_QUESTIONS." question
+                inner join ".TABLE_USERS." users on users.id=question.question_creator_id
+                left join ".TABLE_SUBJECTS." subject on subject.id=question.subject_id
                 WHERE question.id=".$row['question_id'] ." AND question.is_delete=0 ";
                         $resultQuestion = mysqli_query($GLOBALS['con'], $queryQuestion) or $message = mysqli_error($GLOBALS['con']);
-                        // echo $query;
+                        //echo $queryQuestion ; exit;
                         if (mysqli_num_rows($resultQuestion)) {
                             while ($rowQuestion = mysqli_fetch_assoc($resultQuestion)) {
                                 $questions['question_id']=$rowQuestion['id'];
@@ -1192,24 +1219,24 @@ class ExamFunctions
                             $status = SUCCESS;
                             $message = "";
                         } else {
-                            $status = "failed";
+                            $status = SUCCESS;
                             $message = DEFAULT_NO_RECORDS;
                         }
                     }
 
                 } else {
-                    $status = "failed";
+                    $status = SUCCESS;
                     $message = DEFAULT_NO_RECORDS;
                 }
             } else {
-                $status = "failed";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
 
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $examData['questions'] = $post;
@@ -1304,7 +1331,7 @@ class ExamFunctions
                             $message = SUCCESSFULLY_UPDATED;
                             $post['question_id'] = $question_id;
                         } else {
-                            $status = "failed";
+                            $status = FAILED;
                             $message = "";
                             $post['question_id'] = "";
                         }
@@ -1325,7 +1352,7 @@ class ExamFunctions
                         $message = SUCCESSFULLY_ADDED;
                         $post['question_id'] = $questionID;
                     } else {
-                        $status = "failed";
+                        $status = FAILED;
                         $message = "";
                         $post['question_id'] = "";
                     }
@@ -1352,7 +1379,7 @@ class ExamFunctions
                                             $status = SUCCESS;
                                             $message = SUCCESSFULLY_UPDATED;
                                         } else {
-                                            $status = "failed";
+                                            $status = FAILED;
                                             $message = "";
                                         }
                                     }
@@ -1370,7 +1397,7 @@ class ExamFunctions
                                         $status = SUCCESS;
                                         $message = SUCCESSFULLY_ADDED;
                                     } else {
-                                        $status = "failed";
+                                        $status = FAILED;
                                         $message = "";
                                     }
                                 }
@@ -1380,7 +1407,7 @@ class ExamFunctions
                 }
 
             } else {
-                $status = "failed";
+                $status = FAILED;
                 $message = "question format is not correct";
                 $data = array();
             }
@@ -1390,7 +1417,7 @@ class ExamFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['question']=$data;
@@ -1461,13 +1488,13 @@ class ExamFunctions
                         $status = SUCCESS;
                         $message = "Successfully uploaded!.";
                     } else {
-                        $status = "failed";
+                        $status = FAILED;
                         $message = "failed to uploaded.";
                     }
 
 
                 } else {
-                    $status = "failed";
+                    $status = FAILED;
                     $message = FAILED_TO_UPLOAD_MEDIA;
                 }
 
@@ -1475,7 +1502,7 @@ class ExamFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $data['question_id']=$question_id;
@@ -1558,13 +1585,13 @@ class ExamFunctions
                     $message = "";
                 }
             } else {
-                $status = "failed";
+                $status = FAILED;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=SUCCESS;
             $message = MALICIOUS_SOURCE;
         }
         $response['result']=$data;
@@ -1645,13 +1672,13 @@ class ExamFunctions
                     $message = "";
                 }
             } else {
-                $status = "failed";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['student_result']=$data;
@@ -1720,14 +1747,15 @@ class ExamFunctions
                         $status = SUCCESS;
                     }
                 } else {
-                    $status = "failed";
+                    $status = SUCCESS;
+                    $message=DEFAULT_NO_RECORDS;
                 }
 
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['high_scorers']=$data;
@@ -1813,7 +1841,7 @@ class ExamFunctions
                     }
                     else
                     {
-                        $status="failed";
+                        $status=FAILED;
                         $message="";
                         $post['question_id']="";
                     }
@@ -1839,7 +1867,7 @@ class ExamFunctions
                 }
                 else
                 {
-                    $status="failed";
+                    $status=FAILED;
                     $message="";
                     $post['question_id']="";
                 }
@@ -1892,7 +1920,7 @@ class ExamFunctions
                                     }
                                     else
                                     {
-                                        $status="failed";
+                                        $status=FAILED;
                                         $message="";
                                     }
                                 }
@@ -1914,7 +1942,7 @@ class ExamFunctions
                                 }
                                 else
                                 {
-                                    $status="failed";
+                                    $status=FAILED;
                                     $message="";
                                 }
                             }
@@ -1928,7 +1956,7 @@ class ExamFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message="question format is not correct";
             $data=array();
         }
@@ -1977,13 +2005,13 @@ class ExamFunctions
                 $status = SUCCESS;
 
             } else {
-                $status = "failed";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['books']=$data;

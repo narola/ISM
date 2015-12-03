@@ -204,14 +204,14 @@ class ProfileFunctions
                 $status = SUCCESS;
                 //$message="";
             } else {
-                $status = "failed";
-                //$message=DEFAULT_NO_RECORDS;
+                $status = SUCCESS;
+                $message=DEFAULT_NO_RECORDS;
 
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['student_info']=$data;
@@ -261,14 +261,14 @@ class ProfileFunctions
                 $response = $sendEmail->sendemail("ism.educare@gmail.com", $randomString, "Forgot Password", $email_id);
             } else {
                 $message = "Email id is not valid!";
-                $status = "failed";
+                $status = FAILED;
             }
             // return "Request sent successfully'";
 
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['message']=$message;
@@ -325,13 +325,13 @@ class ProfileFunctions
                     $message = "username is available.";
                 }
             } else {
-                $status = "failed";
+                $status = FAILED;
                 $message = "Invalid data.";
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['user']=$data;
@@ -443,7 +443,7 @@ class ProfileFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['status'] =$status;
@@ -488,7 +488,7 @@ class ProfileFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['status'] = $status;
@@ -556,7 +556,7 @@ class ProfileFunctions
                         }
 
                     } else {
-                        $status = "failed";
+                        $status = FAILED;
                         $message = CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
                     }
                 }
@@ -606,14 +606,14 @@ class ProfileFunctions
                             }
                         } else {
                             // $post="";
-                            $status = "failed";
+                            $status = FAILED;
                             $message = CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
                         }
 
                     }
                 } else {
                     // $post="";
-                    $status = "failed";
+                    $status = FAILED;
                     $message = CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
                 }
 
@@ -621,7 +621,7 @@ class ProfileFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         // AND password='".$encryptedPassword."'
@@ -837,7 +837,7 @@ class ProfileFunctions
                 }
                 else
                 {
-                    $status="failed";
+                    $status=FAILED;
                 }
 
 
@@ -855,18 +855,18 @@ class ProfileFunctions
 
                 }
                 ELSE{
-                    $status="failed";
+                    $status=FAILED;
                 }
                 //}
             }
             else {
-                $status = "failed";
+                $status = FAILED;
 
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['user']=$data;
@@ -931,14 +931,14 @@ class ProfileFunctions
                 $status = SUCCESS;
                 $message = "";
             } else {
-                $status = "failed";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
                 $data = "";
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
 
@@ -1032,20 +1032,21 @@ class ProfileFunctions
                         $data1['voucher_details']=$data;
                         $status=SUCCESS;
                     } else {
-                        $status = "failed";
+                        $status = FAILED;
                     }
                 } else {
                     $message = "You cannot create coupon greater then " . $percent_value;
-                    $status = "failed";
+                    $status = FAILED;
 
                 }
             } else {
-                $status = "failed";
+                $status = SUCCESS;
+                $message=DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['wallet_summary'][]=$data1;
@@ -1146,12 +1147,13 @@ class ProfileFunctions
                 $message = REQUEST_ACCEPTED;
                 $status = SUCCESS;
             } else {
-                $status = "failed";
+                $status = SUCCESS;
+                $message=DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['user']=$data;
@@ -1237,9 +1239,9 @@ class ProfileFunctions
 
             if(mysqli_num_rows($resultToChk)>0) {
 
-                $updateFeild = "full_name='" . $username . "', profile_pic='" . $profile_image . "', contact_number='" . $contact_number . "', birthdate='" . $birthdate . "', about_me='" . $aboutMeText . "'";
+                $updateField = "full_name='" . $username . "', profile_pic='" . $profile_image . "', contact_number='" . $contact_number . "', birthdate='" . $birthdate . "', about_me='" . $aboutMeText . "'";
 
-                $queryUpdate = "UPDATE " . TABLE_USERS . " SET " . $updateFeild . " WHERE id=" . $user_id;
+                $queryUpdate = "UPDATE " . TABLE_USERS . " SET " . $updateField . " WHERE id=" . $user_id;
                 $resultQuery = mysqli_query($GLOBALS['con'], $queryUpdate) or $message = mysqli_error($GLOBALS['con']);
 
                 if ($resultQuery) {
@@ -1257,18 +1259,18 @@ class ProfileFunctions
                     }
 
                 } else {
-                    $status = "failed";
+                    $status = FAILED;
                 }
             }
             else
             {
-                $status = "failed";
+                $status = SUCCESS;
                 $message=DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['user']=$data;
@@ -1309,7 +1311,7 @@ class ProfileFunctions
 
             $selectQuery="SELECT user_activity.user_id,users.full_name,users.profile_pic,user_activity.display_content,user_activity.resource_id,user_activity.activity_type FROM ".TABLE_USER_ACTIVITY. " user_activity
         INNER JOIN ".TABLE_USERS." users ON user_activity.user_id=users.id WHERE user_activity.user_id=".$user_id." AND user_activity.is_delete=0 and users.is_delete=0";
-            // echo $selectQuery;
+          // echo $selectQuery; exit;
             $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
 
 
@@ -1318,38 +1320,60 @@ class ProfileFunctions
                    // $post['user_id'] = $val['user_id'];
                   //  $post['full_name'] = $val['full_name'];
                    // $post['profile_pic'] = $val['profile_pic'];
-                    $post['display_content'] = $val['display_content'];
-                    $post['resource_id'] = $val['resource_id'];
-                    $post['activity_type'] = $val['activity_type'];
+                    //$post['display_content'] = $val['display_content'];
+                    //$post['resource_id'] = $val['resource_id'];
 
-                    if($val['activity_type'] = 'topicAllocated')
+
+                    if($val['activity_type'] == 'topicAllocated')
                     {
+                        $post['activity_type'] = $val['activity_type'];
 
-                        $getFields="tutorial_group_member_score.topic_id,tutorial_group_member_score.score,tutorial_group_member_score.total_comments,tutorial_groups.group_name";
+                        /*$getFields="tutorial_group_member_score.topic_id,tutorial_group_member_score.score,tutorial_group_member_score.total_comments,tutorial_groups.group_name";
 
                         $queryToGetTopic="SELECT DISTINCT ".$getFields." FROM ". TABLE_TUTORIAL_GROUP_MEMBER_SCORE." tutorial_group_member_score
                         INNER JOIN(SELECT tutorial_group_topic_allocation.topic_id,tutorial_group_topic_allocation.group_id,tutorial_group_member.user_id,tutorial_group_member.id  FROM ". TABLE_TUTORIAL_GROUP_MEMBER ." tutorial_group_member
                         INNER JOIN  ". TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION ." tutorial_group_topic_allocation ON tutorial_group_member.group_id=tutorial_group_topic_allocation.group_id WHERE tutorial_group_member.user_id=".$user_id.")s1
                         ON s1.topic_id=tutorial_group_member_score.topic_id and tutorial_group_member_score.member_id =s1.id JOIN ". TABLE_TUTORIAL_GROUPS." tutorial_groups ON tutorial_groups.id=s1.group_id WHERE tutorial_group_member_score.topic_id=".$val['resource_id'];
-                       // echo $queryToGetTopic; exit;
+                       // echo $queryToGetTopic; exit;*/
+
+
+
+                        $getFields="tutorial_group_member_score.topic_id,tutorial_group_member_score.score,tutorial_group_member_score.total_comments,,tutorial_topics.topic_name";
+
+                        $queryToGetTopic="SELECT DISTINCT ".$getFields." FROM ". TABLE_TUTORIAL_GROUP_MEMBER_SCORE." tutorial_group_member_score
+                        INNER JOIN(SELECT tutorial_group_topic_allocation.topic_id,tutorial_group_topic_allocation.group_id,tutorial_group_member.user_id,tutorial_group_member.id  FROM ". TABLE_TUTORIAL_GROUP_MEMBER ." tutorial_group_member
+                        INNER JOIN  ". TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION ." tutorial_group_topic_allocation ON tutorial_group_member.group_id=tutorial_group_topic_allocation.group_id WHERE tutorial_group_member.user_id=".$user_id.")s1
+                        ON s1.topic_id=tutorial_group_member_score.topic_id and tutorial_group_member_score.member_id =s1.id JOIN ". TABLE_TUTORIAL_TOPIC." tutorial_topics ON tutorial_topics.id=s1.topic_id WHERE tutorial_group_member_score.topic_id".$val['resource_id'];
+                        // echo $queryToGetTopic; exit;
                         $resultToGetTopic=mysqli_query($GLOBALS['con'], $queryToGetTopic);
 
                         $topic_array=array();
                         if(mysqli_num_rows($resultToGetTopic)) {
                             while ($topicRow = mysqli_fetch_assoc($resultToGetTopic)) {
-                                $topic_array[]=$topicRow;
+                                //$topic_array[]=$topicRow;
+
+                                $topic_array['topic_id']=$topicRow['topic_id'];
+                                $topic_array['topic_name']=$topicRow['topic_name'];
+                                $topic_array['score']=$topicRow['score'];
+                                $topic_array['discussion_comment']=$topicRow['total_comments'];
+                                $post['topic_allocated']=$topic_array;
+
                             }
-                            $post['topic_allocated']=$topic_array;
+
+                            $post['topic_allocated'][]=$topic_array;
                         }
+
                         /*else
                         {
                             $post['topic_allocated']=array();
                         }*/
                     }
 
-                   if($val['activity_type'] = 'assignmentSubmitted')
+                   if($val['activity_type'] == 'assignmentSubmitted')
                     {
-                        $selectAssignment="SELECT assignment.assignment_name,assignment.submission_date,subjects.subject_name from ".TABLE_ASSIGNMENT_SUBMISSION." assignment_submission
+                        $post['activity_type'] = $val['activity_type'];
+
+                        $selectAssignment="SELECT assignment_submission.assignment_id,assignment.assignment_name,assignment.submission_date,subjects.subject_name from ".TABLE_ASSIGNMENT_SUBMISSION." assignment_submission
                         INNER JOIN ".TABLE_ASSIGNMENTS." assignment ON assignment_submission.assignment_id=assignment.id
                         INNER JOIN ". TABLE_SUBJECTS." subjects ON subjects.id=assignment.subject_id
                         WHERE assignment_submission.assignment_id=".$val['resource_id']." AND assignment_submission.user_id=".$user_id." assignment.is_delete=0";
@@ -1360,17 +1384,22 @@ class ProfileFunctions
                         {
                             while($assignmentRow=mysqli_fetch_assoc($resultAssignment))
                             {
-                                $assignment[]=$assignmentRow;
+                                //$assignment[]=$assignmentRow;
+                                $assignment['assignment_id']=$assignmentRow['assignment_id'];
+                                $assignment['assignment_name']=$assignmentRow['assignment_name'];
+                                $assignment['submission_date']=$assignmentRow['submission_date'];
+                                $assignment['subject_name']=$assignmentRow['subject_name'];
+                                $post['assignmentSubmitted']=$assignment;
                             }
-                            $post['assignmentSubmitted']=$assignment;
+                            //$post['assignmentSubmitted'][]=$assignment;
                         }
                        /* else{
                             $post['assignmentSubmitted']=array();
                         }*/
                     }
-                    if($val['activity_type'] = 'exam_attempted')
+                    if($val['activity_type'] == 'exam_attempted')
                     {
-                        $selectExam="SELECT exam.id,exam.exam_name,student_exam_score.marks_obtained,subjects.subject_name from ".TABLE_STUDENT_EXAM_SCORE." student_exam_score
+                        $selectExam="SELECT exam.id as 'exam_id',exam.exam_name,student_exam_score.marks_obtained as 'exam_score',subjects.subject_name from ".TABLE_STUDENT_EXAM_SCORE." student_exam_score
                         INNER JOIN ". TABLE_EXAMS ." exams ON exam.id=student_exam_score.exam_id
                         INNER JOIN ". TABLE_SUBJECTS." subjects ON subjects.id=exam.subject_id WHERE student_exam_score.exam_id=".$val['resource_id']." AND student_exam_score.user_id=".$user_id." AND student_exam_score.is_delete=0";
                         $resultExam=mysqli_query($GLOBALS['con'], $selectExam);
@@ -1381,16 +1410,18 @@ class ProfileFunctions
                             while($examRow=mysqli_fetch_assoc($resultExam))
                             {
                                 $exams[]=$examRow;
+                                $post['exam_attempted']=$exams;
                             }
-                            $post['exam_attempted']=$exams;
+                            //$post['exam_attempted'][]=$exams;
                         }
                        /* else{
                             $post['exam_attempted']=array();
                         }*/
                     }
-                    if($val['activity_type'] = 'feedLiked')
+                    if($val['activity_type'] == 'liked')
                     {
 
+                        $post['activity_type'] = $val['activity_type'];
                         $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEED_LIKE." feed_like
                          inner join ". TABLE_FEEDS ." feed
                         INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
@@ -1405,14 +1436,14 @@ class ProfileFunctions
                             {
                                 $feeds['feed_id']=$feed['id'];
                                 $feeds['feed_text']=$feed['feed_text'];
-                                $feeds['video_link']=$feed['video_link'];
-                                $feeds['user_id']=$feed['UserId'];
+                                $feeds['feed_posted_on']=$feed['posted_on'];
+                                $feeds['feed_user_id']=$feed['feed_by'];
                                 $feeds['full_name']=$feed['full_name'];
-                                $feeds['profile_pic']=$feed['Profile_pic'];
-                                $feeds['total_like']=$feed['total_like'];
-                                $feeds['total_comment']=$feed['total_comment'];
+                                $feeds['feed_user_pic']=$feed['Profile_pic'];
+                                $feeds['feed_total_like']=$feed['total_like'];
+                                $feeds['feed_total_comment']=$feed['total_comment'];
                                 //Get Comments
-                                $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
+                               /* $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
             ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 LIMIT 2";
                                 //echo $queryGetAllComments;
                                 $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg =  mysqli_error($GLOBALS['con']);
@@ -1425,32 +1456,51 @@ class ProfileFunctions
                                         $allcomment[]=$comments;
                                     }
                                 }
-                                $feeds['comment_list']=$allcomment;
-
+                                $feeds['comment_list']=$allcomment;*/
+                                $post['feedLiked']=$feeds;
                             }
-                            $post['feedLiked']=$feeds;
+                            //$post['feedLiked'][]=$feeds;
                         }
                         /*else{
                             $post['feedLiked']=array();
                         }*/
 
                     }
-                   if($val['activity_type'] = 'studymates')
+                   if($val['activity_type'] == 'studymate')
                     {
-                        $queryGetStudyMate="SELECT studymates.mate_id,users.full_name,users.profile_pic from studymates studymates INNER JOIN users users on studymates.mate_id=users.id where studymates.is_delete=0 and studymates.mate_of=".$user_id." and studymates.mate_id=".$val['resource_id'];
+
+                        $post['activity_type'] = $val['activity_type'];
+
+                         $queryGetStudyMate="SELECT studymates.mate_id,users.full_name,users.profile_pic,school.school_name from studymates studymates
+                        INNER JOIN users users on studymates.mate_id=users.id
+                        LEFT JOIN ".TABLE_STUDENT_PROFILE ." student_profile ON student_profile.user_id=studymates.mate_id
+                        LEFT JOIN ". TABLE_SCHOOLS." school ON  school.id=student_profile.school_id
+                        where studymates.is_delete=0 and studymates.mate_of=".$user_id." and studymates.mate_id=".$val['resource_id'];
                         //$queryGetStudyMate="SELECT studymates.mate_id,users.full_name,users.profile_pic from ".TABLE_STUDYMATES." studymates INNER JOIN ".TABLE_USERS." users on studymates.mate_id=users.id where is_delete=0 and id=".$val['resource_id']." AND mate_id=".$user_id;
                         $resultGetStudyMate=mysqli_query($GLOBALS['con'], $queryGetStudyMate) or $message= mysqli_error($GLOBALS['con']);
 
 
                         $studymate=array();
+
                         if(mysqli_num_rows($resultGetStudyMate))
                         {
                             while($studymateRow=mysqli_fetch_assoc($resultGetStudyMate))
                             {
-                                $studymate[]=$studymateRow;
+                                //$studymate[]=$studymateRow;
+
+                                $studymate['display_content'] = $val['display_content'];
+                                $studymate['studymate_id']=$studymateRow['mate_id'];
+                                $studymate['studymate_name']=$studymateRow['full_name'];
+                                $studymate['studymate_profile_pic']=$studymateRow['profile_pic'];
+                                $studymate['studymate_school_name']=$studymateRow['school_name'];
+                                $post['studymates']=$studymate;
+
                             }
-                            $post['studymates']=$studymate;
+
+
+                            //$post1[]=$studymate;
                         }
+
                         /*else
                         {
                             $post['studymates']=array();
@@ -1459,9 +1509,14 @@ class ProfileFunctions
 
                     }
 
-                    if($val['activity_type'] = 'comment added') {
+
+                    if($val['activity_type'] == 'commented') {
+
+                        $post['activity_type'] = $val['activity_type'];
+
+
                         $queryGetComment = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM " . TABLE_FEED_COMMENT . " f INNER JOIN " . TABLE_USERS . " u
-            ON f.comment_by=u.id INNER JOIN " . TABLE_USER_PROFILE_PICTURE . " p ON p.user_id=u.id WHERE f.id=" . $val['resource_id'] . " AND comment_by=" . $user_id . " AND f.is_delete=0
+            ON f.comment_by=u.id INNER JOIN " . TABLE_USER_PROFILE_PICTURE . " p ON p.user_id=u.id WHERE f.feed_id=" . $val['resource_id'] . " AND comment_by=" . $user_id . " AND f.is_delete=0
             AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC LIMIT 2";
                         //echo $queryGetAllComments;
                         $resultGetComment = mysqli_query($GLOBALS['con'], $queryGetComment) or $message =  mysqli_error($GLOBALS['con']);
@@ -1470,8 +1525,9 @@ class ProfileFunctions
                         if (mysqli_num_rows($resultGetComment)) {
                             while ($commentRow = mysqli_fetch_assoc($resultGetComment)) {
                                 $comment[] = $commentRow;
+                                $post['comment_added'] = $comment;
                             }
-                            $post['comment_added'] = $comment;
+
                         }
                       /*  else
                         {
@@ -1479,15 +1535,17 @@ class ProfileFunctions
                         }*/
 
                     }
-                   if($val['activity_type'] = 'feedPosted')
+                   if($val['activity_type'] == 'post')
                     {
+
+                        $post['activity_type'] = $val['activity_type'];
 
                         $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEEDS." feed
                         INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
                          where feed.feed_by=".$user_id." and feed.id= ". $val['resource_id']." and feed.is_delete=0 and user.is_delete=0";
                         $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $errorMsg= mysqli_error($GLOBALS['con']);
 
-
+//echo $queryFeedLike; exit;
                         $feeds=array();
                         if(mysqli_num_rows($resultFeedLike))
                         {
@@ -1495,14 +1553,13 @@ class ProfileFunctions
                             {
                                 $feeds['feed_id']=$feed['id'];
                                 $feeds['feed_text']=$feed['feed_text'];
-                                $feeds['video_link']=$feed['video_link'];
-                                $feeds['user_id']=$feed['UserId'];
+                                $feeds['feed_user_id']=$feed['feed_by'];
                                 $feeds['full_name']=$feed['full_name'];
-                                $feeds['profile_pic']=$feed['Profile_pic'];
-                                $feeds['total_like']=$feed['total_like'];
-                                $feeds['total_comment']=$feed['total_comment'];
+                                $feeds['feed_user_pic']=$feed['Profile_pic'];
+                                $feeds['feed_posted_on']=$feed['posted_on'];
+
                                 //Get Comments
-                                $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
+                               /* $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
             ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC LIMIT 2";
                                 //echo $queryGetAllComments;
                                 $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg =  mysqli_error($GLOBALS['con']);
@@ -1515,10 +1572,10 @@ class ProfileFunctions
                                         $allcomments[]=$comments;
                                     }
                                 }
-                                $feeds['comment_list']=$allcomments;
-
+                                $feeds['comment_list']=$allcomments;*/
+                                $post['feedPosted']=$feeds;
                             }
-                            $post['feedPosted']=$feeds;
+
                         }
                        /* else
                         {
@@ -1528,22 +1585,26 @@ class ProfileFunctions
                     }
 
 
-                    $data[]=$post;
+
                     //$data['resource']=$post;
+                    $data[]=$post;
 
                 }
+
+                //$data[]=$post;
                 $message = "";
                 $status = SUCCESS;
             } else {
-                $status = "failed";
+                $status = SUCCESS;
+                $message=DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
-    	$response['activity'][]=$data;
+    	$response['user_activities']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
 
@@ -1614,7 +1675,7 @@ class ProfileFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['block_user']=$data;
@@ -1663,6 +1724,8 @@ class ProfileFunctions
                     $suggested['book_name'] = $val['book_name'];
                     $suggested['book_image'] = $val['image_link'];
                     $suggested['ebook_link'] = $val['ebook_link'];
+                    $suggested['front_cover_image'] = $val['front_cover_image'];
+                    $suggested['back_cover_image'] = $val['back_cover_image'];
                     $suggested['publisher_name'] = $val['publisher_name'];
                     $suggested['description'] = $val['book_description'];
                     $suggested['author_name'] = $val['full_name'];
@@ -1705,7 +1768,8 @@ class ProfileFunctions
                 $status = SUCCESS;
             } else {
                 $data['suggested_book'] = array();
-                //$status="failed";
+                $status=SUCCESS;
+
             }
 
 
@@ -1723,6 +1787,8 @@ class ProfileFunctions
                     $favorite['book_name'] = $val['book_name'];
                     $favorite['book_image'] = $val['image_link'];
                     $favorite['ebook_link'] = $val['ebook_link'];
+                    $favorite['front_cover_image'] = $val['front_cover_image'];
+                    $favorite['back_cover_image'] = $val['back_cover_image'];
                     $favorite['publisher_name'] = $val['publisher_name'];
                     $favorite['description'] = $val['book_description'];
                     $favorite['author_name'] = $val['full_name'];
@@ -1764,13 +1830,14 @@ class ProfileFunctions
                 $status = SUCCESS;
             } else {
                 $data['favorite_book'] = array();
-                //$status="failed";
+                $status=SUCCESS;
+
             }
 
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['books'][]=$data;
@@ -1806,7 +1873,7 @@ class ProfileFunctions
 
         if ($isSecure == yes) {
 
-            $selectQuery = "select id as 'pastime_id',pastime_name,pastime_image from ".TABLE_PASTIMES." WHERE AND is_delete=0 AND id NOT IN(SELECT pastime_id from ".TABLE_USER_FAVORITE_PASTIME." WHERE user_id=".$user_id. " AND is_delete=0)  ORDER BY id DESC LIMIT 30";
+            $selectQuery = "select id as 'pastime_id',pastime_name,pastime_image from ".TABLE_PASTIMES." WHERE  is_delete=0 AND id NOT IN(SELECT pastime_id from ".TABLE_USER_FAVORITE_PASTIME." WHERE user_id=".$user_id. " AND is_delete=0)  ORDER BY id DESC LIMIT 30";
             $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
 
             if (mysqli_num_rows($resultQuery) > 0) {
@@ -1818,7 +1885,7 @@ class ProfileFunctions
                 $status = SUCCESS;
             } else {
                 $data['suggested_pastime'] = array();
-                //$status="failed";
+                //$status=FAILED;
             }
 
             /* $selectFavoriteQuery="select user_favorite_pastime.pastime_id,users.full_name as 'pastime_name',users.profile_pic as 'pastime_image' from " .TABLE_USER_FAVORITE_PASTIME." user_favorite_pastime
@@ -1839,13 +1906,13 @@ class ProfileFunctions
                 $status = SUCCESS;
             } else {
                 $data['favorite_pastime'] = array();
-                //$status="failed";
+                //$status=FAILED;
             }
 
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
     	$response['pastime'][]=$data;
@@ -1894,7 +1961,7 @@ class ProfileFunctions
                 $status = SUCCESS;
             } else {
                 $data['suggested_rolemodel'] = array();
-                //$status="failed";
+                //$status=FAILED;
             }
 
             $selectFavoriteQuery = "select user_rolemodel.role_model_id,roleModel.model_name,roleModel.model_image,roleModel.birthdate,roleModel.description,
@@ -1912,12 +1979,12 @@ class ProfileFunctions
                 $status = SUCCESS;
             } else {
                 $data['favorite_rolemodel'] = array();
-                //$status="failed";
+                //$status=FAILED;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
     	$response['role_model'][]=$data;
@@ -1984,13 +2051,13 @@ class ProfileFunctions
                 $status = SUCCESS;
             } else {
                 $data['favorite_movies'] = array();
-                //$status="failed";
+                //$status=FAILED;
             }
 
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
     	$response['movies'][]=$data;
@@ -2064,8 +2131,8 @@ class ProfileFunctions
                             $message = "favorite synced";
                         }
                         else{
-                            $status = "failed";
-                            $message = DEFAULT_NO_RECORDS;
+                            $status = FAILED;
+                            $message = "";
                         }
                     }
                     else
@@ -2080,8 +2147,8 @@ class ProfileFunctions
                             $message = "favorite synced";
                         }
                         else{
-                            $status = "failed";
-                            $message = DEFAULT_NO_RECORDS;
+                            $status = FAILED;
+                            $message = "";
                         }
                     }
                 }
@@ -2111,8 +2178,8 @@ class ProfileFunctions
                             $message = "favorite synced";
                         }
                         else{
-                            $status = "failed";
-                            $message = DEFAULT_NO_RECORDS;
+                            $status = FAILED;
+                            $message = "";
                         }
 
                     }
@@ -2129,7 +2196,7 @@ class ProfileFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['favorite_resource']=$data;
@@ -2200,12 +2267,12 @@ class ProfileFunctions
                 $status = SUCCESS;
                 $message = "Followship updated";
             } else {
-                $status = "failed";
+                $status = FAILED;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['user']=$data;
@@ -2338,7 +2405,7 @@ class ProfileFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
     	$response['student_profile']=$data;
@@ -2382,7 +2449,7 @@ class ProfileFunctions
                         $message = "library synced";
                     }
                     else{
-                        $status="failed";
+                        $status=FAILED;
                         $message="";
                     }
                 }
@@ -2416,7 +2483,7 @@ class ProfileFunctions
                         $message = "library synced";
                     }
                     else{
-                        $status="failed";
+                        $status=FAILED;
                         $message="";
                     }
                 }
@@ -2511,7 +2578,7 @@ class ProfileFunctions
                 while ($val = mysqli_fetch_assoc($resultQuery)) {
                     $suggested['book_id'] = $val['book_id'];
                     $suggested['book_name'] = $val['book_name'];
-                    $suggested['book_image'] = $val['image_link'];
+                    $suggested['book_image'] = $val['front_cover_image'];
 
                   //  $suggested['author_name'] = $val['full_name'];
                   //  $suggested['author_image'] = $val['profile_pic'];
@@ -2533,7 +2600,7 @@ class ProfileFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['author_book']=$data;
@@ -2542,6 +2609,300 @@ class ProfileFunctions
 
         return $response;
     }
+
+
+
+    /*
+    *getMyActivity
+    */
+    public function oldGetMyActivity($postData)
+    {
+        $message ='';
+        $status='';
+        $data=array();
+        $response=array();
+        $post=array();
+
+
+        $user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            $selectQuery="SELECT user_activity.user_id,users.full_name,users.profile_pic,user_activity.display_content,user_activity.resource_id,user_activity.activity_type FROM ".TABLE_USER_ACTIVITY. " user_activity
+        INNER JOIN ".TABLE_USERS." users ON user_activity.user_id=users.id WHERE user_activity.user_id=".$user_id." AND user_activity.is_delete=0 and users.is_delete=0";
+            // echo $selectQuery;
+            $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+
+            if (mysqli_num_rows($resultQuery) > 0) {
+                while ($val = mysqli_fetch_assoc($resultQuery)) {
+                    // $post['user_id'] = $val['user_id'];
+                    //  $post['full_name'] = $val['full_name'];
+                    // $post['profile_pic'] = $val['profile_pic'];
+                    $post['display_content'] = $val['display_content'];
+                    $post['resource_id'] = $val['resource_id'];
+                    $post['activity_type'] = $val['activity_type'];
+
+                    if($val['activity_type'] = 'topicAllocated')
+                    {
+
+                        $getFields="tutorial_group_member_score.topic_id,tutorial_group_member_score.score,tutorial_group_member_score.total_comments,tutorial_groups.group_name";
+
+                        $queryToGetTopic="SELECT DISTINCT ".$getFields." FROM ". TABLE_TUTORIAL_GROUP_MEMBER_SCORE." tutorial_group_member_score
+                        INNER JOIN(SELECT tutorial_group_topic_allocation.topic_id,tutorial_group_topic_allocation.group_id,tutorial_group_member.user_id,tutorial_group_member.id  FROM ". TABLE_TUTORIAL_GROUP_MEMBER ." tutorial_group_member
+                        INNER JOIN  ". TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION ." tutorial_group_topic_allocation ON tutorial_group_member.group_id=tutorial_group_topic_allocation.group_id WHERE tutorial_group_member.user_id=".$user_id.")s1
+                        ON s1.topic_id=tutorial_group_member_score.topic_id and tutorial_group_member_score.member_id =s1.id JOIN ". TABLE_TUTORIAL_GROUPS." tutorial_groups ON tutorial_groups.id=s1.group_id WHERE tutorial_group_member_score.topic_id=".$val['resource_id'];
+                        // echo $queryToGetTopic; exit;
+                        $resultToGetTopic=mysqli_query($GLOBALS['con'], $queryToGetTopic);
+
+                        $topic_array=array();
+                        if(mysqli_num_rows($resultToGetTopic)) {
+                            while ($topicRow = mysqli_fetch_assoc($resultToGetTopic)) {
+                                //$topic_array[]=$topicRow;
+
+                                $post['topic_id']=$topicRow['topic_id'];
+                                $post['group_name']=$topicRow['group_name'];
+                                $post['score']=$topicRow['score'];
+                                $post['total_comments']=$topicRow['total_comments'];
+
+
+                            }
+                            //$post['topic_allocated']=$topic_array;
+                        }
+                        /*else
+                        {
+                            $post['topic_allocated']=array();
+                        }*/
+                    }
+
+                    if($val['activity_type'] = 'assignmentSubmitted')
+                    {
+                        $selectAssignment="SELECT assignment_submission.assignment_id,assignment.assignment_name,assignment.submission_date,subjects.subject_name from ".TABLE_ASSIGNMENT_SUBMISSION." assignment_submission
+                        INNER JOIN ".TABLE_ASSIGNMENTS." assignment ON assignment_submission.assignment_id=assignment.id
+                        INNER JOIN ". TABLE_SUBJECTS." subjects ON subjects.id=assignment.subject_id
+                        WHERE assignment_submission.assignment_id=".$val['resource_id']." AND assignment_submission.user_id=".$user_id." assignment.is_delete=0";
+                        $resultAssignment=mysqli_query($GLOBALS['con'], $selectAssignment);
+
+                        $assignment=array();
+                        if(mysqli_num_rows($resultAssignment))
+                        {
+                            while($assignmentRow=mysqli_fetch_assoc($resultAssignment))
+                            {
+                                //$assignment[]=$assignmentRow;
+                                $post['assignment_id']=$assignmentRow['assignment_id'];
+                                $post['assignment_name']=$assignmentRow['assignment_name'];
+                                $post['submission_date']=$assignmentRow['submission_date'];
+                                $post['subject_name']=$assignmentRow['subject_name'];
+
+                            }
+                            // $post['assignmentSubmitted']=$assignment;
+                        }
+                        /* else{
+                             $post['assignmentSubmitted']=array();
+                         }*/
+                    }
+                    if($val['activity_type'] = 'exam_attempted')
+                    {
+                        $selectExam="SELECT exam.id,exam.exam_name,student_exam_score.marks_obtained,subjects.subject_name from ".TABLE_STUDENT_EXAM_SCORE." student_exam_score
+                        INNER JOIN ". TABLE_EXAMS ." exams ON exam.id=student_exam_score.exam_id
+                        INNER JOIN ". TABLE_SUBJECTS." subjects ON subjects.id=exam.subject_id WHERE student_exam_score.exam_id=".$val['resource_id']." AND student_exam_score.user_id=".$user_id." AND student_exam_score.is_delete=0";
+                        $resultExam=mysqli_query($GLOBALS['con'], $selectExam);
+
+                        $exams=array();
+                        if(mysqli_num_rows($resultExam))
+                        {
+                            while($examRow=mysqli_fetch_assoc($resultExam))
+                            {
+                                $exams[]=$examRow;
+                            }
+                            $post['exam_attempted']=$exams;
+                        }
+                        /* else{
+                             $post['exam_attempted']=array();
+                         }*/
+                    }
+                    if($val['activity_type'] = 'feedLiked')
+                    {
+
+                        $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEED_LIKE." feed_like
+                         inner join ". TABLE_FEEDS ." feed
+                        INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
+                         where feed_like.like_by=".$user_id." and feed_like.feed_id= ". $val['resource_id']." and feed_like.is_delete=0 and feed.is_delete=0 and user.is_delete=0";
+                        $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $errorMsg= mysqli_error($GLOBALS['con']);
+
+
+                        $feeds=array();
+                        if(mysqli_num_rows($resultFeedLike))
+                        {
+                            while($feed=mysqli_fetch_assoc($resultFeedLike))
+                            {
+                                $feeds['feed_id']=$feed['id'];
+                                $feeds['feed_text']=$feed['feed_text'];
+                                $feeds['video_link']=$feed['video_link'];
+                                $feeds['user_id']=$feed['UserId'];
+                                $feeds['full_name']=$feed['full_name'];
+                                $feeds['profile_pic']=$feed['Profile_pic'];
+                                $feeds['total_like']=$feed['total_like'];
+                                $feeds['total_comment']=$feed['total_comment'];
+                                //Get Comments
+                                $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
+            ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 LIMIT 2";
+                                //echo $queryGetAllComments;
+                                $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg =  mysqli_error($GLOBALS['con']);
+                                $allcomment=array();
+
+                                if(mysqli_num_rows($resultGetAlComments))
+                                {
+                                    while($comments=mysqli_fetch_assoc($resultGetAlComments))
+                                    {
+                                        $allcomment[]=$comments;
+                                    }
+                                }
+                                $feeds['comment_list']=$allcomment;
+
+                            }
+                            $post['feedLiked']=$feeds;
+                        }
+                        /*else{
+                            $post['feedLiked']=array();
+                        }*/
+
+                    }
+                    if($val['activity_type'] = 'studymates')
+                    {
+                        $queryGetStudyMate="SELECT studymates.mate_id,users.full_name,users.profile_pic,school.school_name from studymates studymates
+                        INNER JOIN users users on studymates.mate_id=users.id
+                        INNER JOIN ".TABLE_STUDENT_PROFILE ." student_profile ON student_profile.user_id=studymates.mate_id
+                        INNER JOIN ". TABLE_SCHOOLS." school ON  school.id=student_profile.school_id
+                        where studymates.is_delete=0 and studymates.mate_of=".$user_id." and studymates.mate_id=".$val['resource_id'];
+                        //$queryGetStudyMate="SELECT studymates.mate_id,users.full_name,users.profile_pic from ".TABLE_STUDYMATES." studymates INNER JOIN ".TABLE_USERS." users on studymates.mate_id=users.id where is_delete=0 and id=".$val['resource_id']." AND mate_id=".$user_id;
+                        $resultGetStudyMate=mysqli_query($GLOBALS['con'], $queryGetStudyMate) or $message= mysqli_error($GLOBALS['con']);
+
+
+                        $studymate=array();
+                        if(mysqli_num_rows($resultGetStudyMate))
+                        {
+                            while($studymateRow=mysqli_fetch_assoc($resultGetStudyMate))
+                            {
+                                //$studymate[]=$studymateRow;
+
+                                $post['studymate_id']=$studymateRow['mate_id'];
+                                $post['studymate_name']=$studymateRow['full_name'];
+                                $post['studymate_profile_pic']=$studymateRow['profile_pic'];
+                                $post['studymate_school_name']=$studymateRow['school_name'];
+
+                            }
+                            //$post['studymates']=$studymate;
+                        }
+                        /*else
+                        {
+                            $post['studymates']=array();
+                        }*/
+
+
+                    }
+
+                    if($val['activity_type'] = 'comment added') {
+                        $queryGetComment = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM " . TABLE_FEED_COMMENT . " f INNER JOIN " . TABLE_USERS . " u
+            ON f.comment_by=u.id INNER JOIN " . TABLE_USER_PROFILE_PICTURE . " p ON p.user_id=u.id WHERE f.id=" . $val['resource_id'] . " AND comment_by=" . $user_id . " AND f.is_delete=0
+            AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC LIMIT 2";
+                        //echo $queryGetAllComments;
+                        $resultGetComment = mysqli_query($GLOBALS['con'], $queryGetComment) or $message =  mysqli_error($GLOBALS['con']);
+
+                        $comment = array();
+                        if (mysqli_num_rows($resultGetComment)) {
+                            while ($commentRow = mysqli_fetch_assoc($resultGetComment)) {
+                                $comment[] = $commentRow;
+                            }
+                            $post['comment_added'] = $comment;
+                        }
+                        /*  else
+                          {
+                              $post['comment_added']=array();
+                          }*/
+
+                    }
+                    if($val['activity_type'] = 'feedPosted')
+                    {
+
+                        $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEEDS." feed
+                        INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
+                         where feed.feed_by=".$user_id." and feed.id= ". $val['resource_id']." and feed.is_delete=0 and user.is_delete=0";
+                        $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $errorMsg= mysqli_error($GLOBALS['con']);
+
+
+                        $feeds=array();
+                        if(mysqli_num_rows($resultFeedLike))
+                        {
+                            while($feed=mysqli_fetch_assoc($resultFeedLike))
+                            {
+                                $feeds['feed_id']=$feed['id'];
+                                $feeds['feed_text']=$feed['feed_text'];
+                                $feeds['video_link']=$feed['video_link'];
+                                $feeds['user_id']=$feed['UserId'];
+                                $feeds['full_name']=$feed['full_name'];
+                                $feeds['profile_pic']=$feed['Profile_pic'];
+                                $feeds['total_like']=$feed['total_like'];
+                                $feeds['total_comment']=$feed['total_comment'];
+                                //Get Comments
+                                $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
+            ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC LIMIT 2";
+                                //echo $queryGetAllComments;
+                                $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg =  mysqli_error($GLOBALS['con']);
+                                $allcomments=array();
+
+                                if(mysqli_num_rows($resultGetAlComments))
+                                {
+                                    while($comments=mysqli_fetch_assoc($resultGetAlComments))
+                                    {
+                                        $allcomments[]=$comments;
+                                    }
+                                }
+                                $feeds['comment_list']=$allcomments;
+
+                            }
+                            $post['feedPosted']=$feeds;
+                        }
+                        /* else
+                         {
+                             $post['feedPosted']=array();
+                         }*/
+
+                    }
+
+
+                    $data[]=$post;
+                    //$data['resource']=$post;
+
+                }
+                $message = "";
+                $status = SUCCESS;
+            } else {
+                $status = FAILED;
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['user_activities'][]=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
+
 
 }
 ?>

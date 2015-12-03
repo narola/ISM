@@ -71,7 +71,7 @@ define("TABLE_STUDENT_EXAM_SCORE",   "student_exam_score");
 define("TABLE_STUDENT_PROFILE",   "student_profile");
 define("TABLE_STUDENT_SUBJECTIVE_EVALUATION",   "student_subjective_evaluation");
 define("TABLE_STUDYMATES",   "studymates");
-define("TABLE_STUDYMATES_REQUEST",   "studymates_request");
+
 define("TABLE_SUBJECTS",   "subjects");
 define("TABLE_SURVEY_ANSWER_CHOICE",   "survey_answer_choice");
 define("TABLE_SURVEY_AUDIENCE",   "survey_audience");

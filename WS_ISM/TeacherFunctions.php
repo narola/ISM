@@ -101,16 +101,16 @@ class TeacherFunctions
             $query = "INSERT INTO " . TABLE_CLASSWALL . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
             $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
             if ($result) {
-                $status = "success";
+                $status = SUCCESS;
                 $message = "Post successfully submitted";
             } else {
-                $status = "failed";
+                $status = FAILED;
                 $message = "";
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['classwall']=$data;
@@ -176,21 +176,21 @@ class TeacherFunctions
 
                             $data[] = $post;
                         }
-                        $status = "success";
+                        $status = SUCCESS;
                         $message = "Successfully";
                     } else {
-                        $status = "success";
+                        $status = SUCCESS;
                         $message = DEFAULT_NO_RECORDS;
                     }
                 }
             } else {
-                $status = "success";
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
 
@@ -258,16 +258,16 @@ class TeacherFunctions
 
 
                 }
-                $status = "success";
+                $status = SUCCESS;
                 // $message="";
             } else {
-                $status = "success";
+                $status = SUCCESS;
                 //  $message=DEFAULT_NO_RECORDS;
             }
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['students']=$data;
@@ -327,17 +327,18 @@ class TeacherFunctions
                             $data[] = $val;
                         }
                         $message = "";
-                        $status = "success";
+                        $status = SUCCESS;
                     }
                 }
             } else {
                 $message = DEFAULT_NO_RECORDS;
+                $status = SUCCESS;
             }
 
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['class_subjects']=$data;
@@ -418,10 +419,10 @@ class TeacherFunctions
             } else {
                 $message = DEFAULT_NO_RECORDS;
             }
-            $status = "success";
+            $status = SUCCESS;
         }
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['notes']=$data;
@@ -510,16 +511,16 @@ class TeacherFunctions
             $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
             if ($result) {
                 $note_id = mysqli_insert_id($GLOBALS['con']);
-                $status = "success";
+                $status = SUCCESS;
                 $message = SUCCESSFULLY_ADDED;
             } else {
-                $status = "failed";
+                $status = FAILED;
                 $message = "";
             }
         }
         else
             {
-                $status="failed";
+                $status=FAILED;
                 $message = MALICIOUS_SOURCE;
             }
         $response['status'] = $status;
@@ -574,10 +575,10 @@ class TeacherFunctions
                         $queryUpdate = "Update " . TABLE_NOTES . " set video_link= '" . $link . "' where id=" . $note_id." and is_delete=0";
                         $resultUpdate = mysqli_query($GLOBALS['con'],$queryUpdate) or $message = mysqli_error($GLOBALS['con']);
                         //echo $queryUpdate;
-                        $status = "success";
+                        $status = SUCCESS;
                         $message = "Successfully uploaded!.";
                     } else {
-                        $status = "failed";
+                        $status = FAILED;
                         $message = FAILED_TO_UPLOAD_MEDIA;
                     }
                 }
@@ -596,10 +597,10 @@ class TeacherFunctions
                         $link = $media_dir . $mediaName;
                         $queryUpdate = "Update " . TABLE_NOTES . " set audio_link= '" . $link . "' where id=" . $note_id." and is_delete=0";
                         $resultUpdate = mysqli_query($GLOBALS['con'],$queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
-                        $status = "success";
+                        $status = SUCCESS;
                         $message = "Successfully uploaded!.";
                     } else {
-                        $status = "failed";
+                        $status = FAILED;
                         $message = FAILED_TO_UPLOAD_MEDIA;
                     }
                 }
@@ -608,7 +609,7 @@ class TeacherFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $data['status']=$status;
@@ -672,11 +673,11 @@ class TeacherFunctions
             //echo $query;
             if ($result) {
                 $post['assignment_id'] = mysqli_insert_id($GLOBALS['con']);
-                $status = "success";
+                $status = SUCCESS;
                 $message = "Assignment created";
             } else {
                 $post['assignment_id'] = "";
-                $status = "failed";
+                $status = FAILED;
                 $message = "";
             }
 
@@ -684,7 +685,7 @@ class TeacherFunctions
         }
         else
         {
-            $status="failed";
+            $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
         $response['message']=$message;
