@@ -10,9 +10,11 @@ class Author extends ADMIN_Controller {
         parent::__construct();
 	}
 
+	// function to list down the authors 
 	public function index(){
 		$this->data['page_title'] = 'Authors';
 
+		// get the authors 
 		$authors = select(TBL_USERS,TBL_USERS.'.id',
 										array('where'=>array(
 											TBL_ROLES.'.role_name'=>'author',
@@ -30,6 +32,7 @@ class Author extends ADMIN_Controller {
 		
 		$authors_ids = array_column($authors, 'id');
 		
+		// get the books under each author
 		$author_books = array();
 		foreach ($authors_ids as $author_id) {
 			$author = select(TBL_USERS, TBL_USERS.'.id,'.TBL_USERS.'.full_name,'.TBL_USERS.'.profile_pic,'.TBL_USERS.'.user_status,'.TBL_AUTHOR_PROFILE.'.education',
