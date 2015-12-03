@@ -13,9 +13,11 @@
 		android:padding="17dp"/>
 
 	<View
+		android:id="@+id/view_highlighter_triangle"
 		android:layout_width="20dp"
 		android:layout_height="30dp"
 		android:layout_alignParentRight="true"
 		android:layout_marginTop="408dp"
+		android:visibility="gone"
 		android:background="@drawable/shape_triangle_profile_controller"/>
 </RelativeLayout>

@@ -90,6 +90,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private HostListenerAllNotification listenerHostAllNotification;
     private HostListenerAllMessage listenerHostAllMessage;
     private HostListenerProfileController listenerHostProfileController;
+	private ProfileControllerPresenceListener listenerProfileControllerPresence;
+	private HostListenerStudymates listenerHostStudymates;
     private HostListenerAboutMe hostListenerAboutMe;
     private AddToFavouriteListner addToFavouriteListner;
     private AddToLibraryListner addToLibraryListner;
@@ -146,11 +148,18 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     public interface HostListenerProfileController {
         public void onBadgesFetched();
-
         public void onSubFragmentAttached(int fragmentId);
-
         public void onSubFragmentDetached(int fragmentId);
     }
+
+	public interface HostListenerStudymates {
+		public void setNewFragmentArguments(Bundle fragmentArguments);
+	}
+
+	public interface ProfileControllerPresenceListener {
+		public void onProfileControllerAttached();
+		public void onProfileControllerDetached();
+	}
 
     public interface AddToFavouriteListner {
         public void onAddToFav(int position);
@@ -167,7 +176,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     }
 
     private void initGlobal() {
-        Global.myTypeFace = new MyTypeFace(getApplicationContext());
+        Global.myTypeFace = new MyTypeFace(HostActivity.this);
         llControllerLeft = (LinearLayout) findViewById(R.id.ll_controller_left);
         flFragmentContainerMain = (FrameLayout) findViewById(R.id.fl_fragment_container_main);
         flFragmentContainerRight = (FrameLayout) findViewById(R.id.fl_fragment_container_right);
@@ -200,8 +209,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         progressGenerator = new ProgressGenerator();
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, HostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, HostActivity.this);
-//	    Global.strProfilePic = PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
-        Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
+	    Global.strProfilePic = WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
+//        Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
         if (Utility.isConnected(HostActivity.this)) {
@@ -414,7 +423,11 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyFeedsFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_STUDYMATES:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, StudymatesFragment.newInstance()).commit();
+	                if (currentMainFragment == FRAGMENT_STUDYMATES) {
+			            listenerHostStudymates.setNewFragmentArguments(fragmentArguments);
+	                } else {
+		                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, StudymatesFragment.newInstance(fragmentArguments)).commit();
+	                }
                     break;
                 case FRAGMENT_MY_ACTIVITY:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyActivityFragment.newInstance()).commit();
@@ -498,6 +511,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                 case FRAGMENT_PROFILE_CONTROLLER:
                     currentRightFragment = fragment;
                     imgStudyMates.setActivated(true);
+	                if (listenerProfileControllerPresence != null) {
+		                listenerProfileControllerPresence.onProfileControllerAttached();
+	                }
                     break;
                 case FRAGMENT_CHAT:
                     currentRightFragment = fragment;
@@ -508,28 +524,15 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     txtTitle.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentAttached(fragment);
-                    break;
                 case FRAGMENT_MY_FEEDS:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentAttached(fragment);
-                    break;
                 case FRAGMENT_STUDYMATES:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentAttached(fragment);
-                    break;
                 case FRAGMENT_MY_ACTIVITY:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentAttached(fragment);
-                    break;
                 case FRAGMENT_MY_WALLET:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentAttached(fragment);
-                    break;
                 case FRAGMENT_EDIT_PROFILE:
                     currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentAttached(fragment);
+	                if (listenerHostProfileController != null) {
+		                listenerHostProfileController.onSubFragmentAttached(currentMainFragment);
+	                }
                     break;
                 case FRAGMENT_ALL_NOTIFICATION:
                     currentMainFragment = fragment;
@@ -549,7 +552,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         }
     }
 
-    @Override
+	@Override
     public void onFragmentDetached(int fragment) {
         try {
             switch (fragment) {
@@ -582,27 +585,22 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     break;
                 case FRAGMENT_PROFILE_CONTROLLER:
                     imgStudyMates.setActivated(false);
+	                if (listenerProfileControllerPresence != null) {
+		                listenerProfileControllerPresence.onProfileControllerDetached();
+	                }
                     break;
                 case FRAGMENT_CHAT:
                     imgChat.setActivated(false);
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
                 case FRAGMENT_MY_FEEDS:
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
                 case FRAGMENT_STUDYMATES:
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
                 case FRAGMENT_MY_ACTIVITY:
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
                 case FRAGMENT_MY_WALLET:
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
                 case FRAGMENT_EDIT_PROFILE:
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
+	                if (listenerHostProfileController != null) {
+		                listenerHostProfileController.onSubFragmentDetached(fragment);
+	                }
                     break;
                 case FRAGMENT_ALL_NOTIFICATION:
                     hideControllerTopBackButton();
@@ -662,7 +660,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                  * Controller top back button click
                  */
 
-                hideControllerTopControls();
+	            hideControllerTopControls();
 
                 if (currentControllerTopMenu != null) {
                     for (int i = 0; i < currentControllerTopMenu.size(); i++) {
@@ -774,13 +772,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     private void hideControllerTopAction() {
         startSlideAnimation(txtAction, 0, rlControllerTopMenu.getWidth(), 0, 0);
-        txtAction.setText("");
+	    txtAction.setText("");
         txtAction.setVisibility(View.GONE);
     }
 
     private void hideControllerTopSpinner() {
-        spSubmenu.setAdapter(null);
-        startSlideAnimation(spSubmenu, 0, -1000, 0, 0);
+	    spSubmenu.setAdapter(null);
+	    startSlideAnimation(spSubmenu, 0, -1000, 0, 0);
         spSubmenu.setVisibility(View.GONE);
     }
 
@@ -802,9 +800,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
             }
         });
-        slideOutAnimation.setDuration(500);
+	    slideOutAnimation.setDuration(500);
         slideOutAnimation.setFillAfter(true);
-        view.startAnimation(slideOutAnimation);
+	    view.startAnimation(slideOutAnimation);
     }
 
     public int getCurrentMainFragment() {
@@ -831,8 +829,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     public void hideProgress() {
         try {
             if (progHost != null && progHost.getVisibility() == View.VISIBLE && --Global.intApiCounter == 0) {
-                progHost.setProgress(100);
-                progHost.setVisibility(View.INVISIBLE);
+	            progHost.setProgress(100);
+	            progHost.setVisibility(View.INVISIBLE);
             }
         } catch (Exception e) {
             Log.e(TAG, "hideProgress Exception : " + e.getLocalizedMessage());
@@ -885,13 +883,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     Log.e(TAG, "Failed to load general setting preferences");
                 }
             } else if (error != null) {
-                Log.e(TAG, "onResponseGetAllPreference api Exceptiion : " + error.toString());
+	            Log.e(TAG, "onResponseGetAllPreference api Exceptiion : " + error.toString());
             }
 
 
         } catch (Exception e) {
 
-            Debug.i(TAG, "onResponseGetAllPreference :" + e.getLocalizedMessage());
+	        Debug.i(TAG, "onResponseGetAllPreference :" + e.getLocalizedMessage());
 
         }
     }
@@ -956,11 +954,20 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     public void setListenerHostProfileController(HostListenerProfileController listenerHostProfileController) {
         this.listenerHostProfileController = listenerHostProfileController;
     }
-    public interface AddToLibraryListner {
-        public void onAddToLibrary(String id);
 
+	public void setListenerProfileControllerPresence(ProfileControllerPresenceListener listenerProfileControllerPresence) {
+		this.listenerProfileControllerPresence = listenerProfileControllerPresence;
+	}
+
+	public void setListenerHostStudymates(HostListenerStudymates listenerHostStudymates) {
+		this.listenerHostStudymates = listenerHostStudymates;
+	}
+
+	public interface AddToLibraryListner {
+        public void onAddToLibrary(String id);
         public void onRemoveFromLibrary(String id );
     }
+
     public void setListenerAddToLibrary(AddToLibraryListner addToLibraryListner) {
         this.addToLibraryListner = addToLibraryListner;
     }

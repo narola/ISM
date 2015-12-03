@@ -34,11 +34,11 @@ import java.util.ArrayList;
 /**
  * Created by c161 on 06/11/15.
  */
-public class MyWalletFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class MyWalletFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, HostActivity.ProfileControllerPresenceListener {
 
 	private static final String TAG = MyWalletFragment.class.getSimpleName();
 
-	private View view;
+	private View view, viewHighlighterTriangle;
 	private TextView txtBalance;
 	private EditText etVoucherAmount;
 	private ListView lvVoucher;
@@ -70,10 +70,13 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 	}
 
 	private void initGlobal() {
+		viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
 		txtBalance = (TextView) view.findViewById(R.id.txt_wallet_balance);
 		etVoucherAmount = (EditText) view.findViewById(R.id.edit_voucher_amount);
 		lvVoucher = (ListView) view.findViewById(R.id.lv_voucher);
 		btnGenerate = (ProcessButton) view.findViewById(R.id.btn_generate);
+
+		viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
 		progressGenerator = new ProgressGenerator();
 
@@ -147,6 +150,7 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 		try {
 			activityHost = (HostActivity) activity;
 			fragListener = (FragmentListener) activity;
+			activityHost.setListenerProfileControllerPresence(this);
 			if (fragListener != null) {
 				fragListener.onFragmentAttached(HostActivity.FRAGMENT_MY_WALLET);
 			}
@@ -251,4 +255,15 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 			Log.e(TAG, "fillVoucherList Exception : " + e.toString());
 		}
 	}
+
+	@Override
+	public void onProfileControllerAttached() {
+		viewHighlighterTriangle.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onProfileControllerDetached() {
+		viewHighlighterTriangle.setVisibility(View.GONE);
+	}
+
 }

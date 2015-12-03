@@ -10,6 +10,14 @@
 		android:background="@drawable/bg_popup_message"
 		android:layout_marginTop="12dp">
 
+		<TextView
+			android:id="@+id/txt_emptylist_message"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/no_notification_available"
+			android:textSize="@dimen/text_size_emptylist_message_small"
+			android:layout_centerInParent="true"/>
+
 		<ListView
 			android:id="@+id/lv_notification"
 			android:layout_width="match_parent"
@@ -31,8 +39,9 @@
 			android:paddingLeft="40dp"
 			android:paddingRight="40dp"
 			android:text="@string/view_all"
-			android:textColor="@color/bg_app_dark"
-			android:textSize="18sp"/>
+			android:textColor="@color/color_white"
+			android:textSize="18sp"
+			android:visibility="gone"/>
 	</RelativeLayout>
 
 	<View

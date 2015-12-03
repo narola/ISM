@@ -7,6 +7,15 @@
 	<include android:id="@+id/rl_new_post"
 	         layout="@layout/layout_new_post"/>
 
+	<TextView
+		android:id="@+id/txt_emptylist_message"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/no_feeds_available"
+		android:textSize="@dimen/text_size_emptylist_message_large"
+		android:visibility="gone"
+		android:layout_centerInParent="true"/>
+
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/recycler_post"
 		android:layout_width="match_parent"
@@ -15,9 +24,11 @@
 	</android.support.v7.widget.RecyclerView>
 
 	<View
+		android:id="@+id/view_highlighter_triangle"
 		android:layout_width="20dp"
 		android:layout_height="30dp"
 		android:layout_marginTop="266dp"
 		android:layout_alignParentRight="true"
+		android:visibility="gone"
 		android:background="@drawable/shape_triangle_profile_controller" />
 </RelativeLayout>

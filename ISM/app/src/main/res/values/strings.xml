@@ -334,4 +334,8 @@
 	<string name="course">Course</string>
 	<string name="topic">"Topic - "</string>
 	<string name="suggested_studymates">Suggested Studymates</string>
+	<string name="no_notification_available">No notification available!</string>
+	<string name="no_message_available">No message available!</string>
+	<string name="no_request_available">No studymate request available!</string>
+	<string name="no_feeds_available">No feeds available!</string>
 </resources>

@@ -55,7 +55,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 
     private CircleImageView imgDp;
     private TextView txtUserName, txtNotificationNo, txtMessageNo, txtRequestNo,
-            txtGeneralSettings, txtMyFeeds, txtStudyMates, txtMyActivity, txtWallet, txtEditProfile;
+            txtGeneralSettings, txtMyFeeds, txtStudyMates, txtMyActivity, txtWallet, txtEditProfile, txtEmptyListMessage;
     private ImageView imgNotification, imgMessage, imgFriendRequest;
     private ListView lvNotifications, lvMessages, lvStudymates;
     private Button btnViewAll;
@@ -107,6 +107,8 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         imgMessage = (ImageView) view.findViewById(R.id.img_message);
         imgFriendRequest = (ImageView) view.findViewById(R.id.img_friend_request);
 
+	    highlightLabel(activityHost.getCurrentMainFragment(), true);
+
 	    txtUserName.setText(Global.strFullName);
 
         arrTxtLabel = new TextView[]{txtGeneralSettings, txtMyFeeds, txtStudyMates, txtMyActivity, txtWallet};
@@ -115,6 +117,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         imageLoader.displayImage(Global.strProfilePic, imgDp, ISMStudent.options);
+
         showBadges();
 
         View.OnClickListener onClickLabel = new View.OnClickListener() {
@@ -199,8 +202,12 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_notification, null);
 
         lvNotifications = (ListView) view.findViewById(R.id.lv_notification);
+	    txtEmptyListMessage = (TextView) view.findViewById(R.id.txt_emptylist_message);
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
         btnViewAll.setTypeface(Global.myTypeFace.getRalewayRegular());
+	    txtEmptyListMessage.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+	    lvNotifications.setEmptyView(txtEmptyListMessage);
 
 	    if (Utility.isConnected(activityHost)) {
 		    callApiGetNotifications();
@@ -270,10 +277,14 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_message, null);
 
         lvMessages = (ListView) view.findViewById(R.id.lv_message);
+	    txtEmptyListMessage = (TextView) view.findViewById(R.id.txt_emptylist_message);
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
         btnViewAll.setTypeface(Global.myTypeFace.getRalewayRegular());
+	    txtEmptyListMessage.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-		if (Utility.isConnected(activityHost)) {
+	    lvMessages.setEmptyView(txtEmptyListMessage);
+
+	    if (Utility.isConnected(activityHost)) {
 			callApiGetMessages();
 		} else {
 			Utility.alertOffline(activityHost);
@@ -341,10 +352,14 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_studymates, null);
 
         lvStudymates = (ListView) view.findViewById(R.id.lv_studymates);
+	    txtEmptyListMessage = (TextView) view.findViewById(R.id.txt_emptylist_message);
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
         btnViewAll.setTypeface(Global.myTypeFace.getRalewayRegular());
+	    txtEmptyListMessage.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-		if (Utility.isConnected(activityHost)) {
+	    lvStudymates.setEmptyView(txtEmptyListMessage);
+
+	    if (Utility.isConnected(activityHost)) {
 			callApiGetStudymateRequests();
 		} else {
 			Utility.alertOffline(activityHost);
@@ -509,7 +524,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrListStudyMateRequest = responseHandler.getStudymateRequest();
                     fillListStudymate();
-                    btnViewAll.setVisibility(View.VISIBLE);
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetStudymateRequest Failed");
                 }
@@ -522,8 +536,8 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
     }
 
 	private void fillListStudymate() {
-        Log.e(TAG, "userId : " + Global.strUserId);
 		if (arrListStudyMateRequest != null) {
+			btnViewAll.setVisibility(arrListStudyMateRequest.size() > 0 ? View.VISIBLE : View.GONE);
 			adpStudymate = new StudymateRequestAdapter(getActivity(), this, arrListStudyMateRequest, 4);
 			lvStudymates.setAdapter(adpStudymate);
 			ArrayList<String> recordIds = new ArrayList<>();
@@ -560,7 +574,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrListMessage = responseHandler.getMessages();
                     fillListMessage();
-                    btnViewAll.setVisibility(View.VISIBLE);
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetMessages Failed");
                 }
@@ -574,9 +587,10 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 
 	private void fillListMessage() {
 		if (arrListMessage != null) {
+			btnViewAll.setVisibility(arrListMessage.size() > 0 ? View.VISIBLE : View.GONE);
 			adpMessage = new MessageAdapter(getActivity(), arrListMessage, 4);
 			lvMessages.setAdapter(adpMessage);
-			ArrayList<String> recordIds = new ArrayList<String>();
+			ArrayList<String> recordIds = new ArrayList<>();
 			for (int i = 0; i < (arrListMessage.size() >= 4 ? 4 : arrListMessage.size()); i++) {
 				recordIds.add(arrListMessage.get(i).getRecordId());
 			}
@@ -596,7 +610,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrListNotification = responseHandler.getNotification();
                     fillListNotification();
-                    btnViewAll.setVisibility(View.VISIBLE);
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetNotification Failed");
                 }
@@ -610,9 +623,10 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 
 	private void fillListNotification() {
 		if (arrListNotification != null) {
+			btnViewAll.setVisibility(arrListNotification.size() > 0 ? View.VISIBLE : View.GONE);
 			adpNotification = new NotificationAdapter(getActivity(), arrListNotification, 4);
 			lvNotifications.setAdapter(adpNotification);
-			ArrayList<String> recordIds = new ArrayList<String>();
+			ArrayList<String> recordIds = new ArrayList<>();
 			for (int i = 0; i < (arrListNotification.size() >= 4 ? 4 : arrListNotification.size()); i++) {
 				recordIds.add(arrListNotification.get(i).getRecordId());
 			}
