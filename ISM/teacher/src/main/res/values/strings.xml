@@ -66,6 +66,7 @@
 
     <!-- Assignment Exam -->
 
+    <string name="strassignmentinformation">Assignment Information</string>
     <string name="strpersonalinformation">Personal Information</string>
     <string name="strexamname">Exam Name</string>
     <string name="strsubjectname">Subject Name</string>
@@ -268,8 +269,8 @@
     <string name="msg_offline">You are offline!\nPlease check your internet connection.</string>
     <string name="msg_failed_comment">Failed to post comment!, please try again.</string>
 
-    <string-array name="examtype">
-        <item>Exam Type</item>
+    <string-array name="filtertype">
+        <item>Filter</item>
         <item>All</item>
         <item>Subjective</item>
         <item>Objective</item>

@@ -13,10 +13,10 @@ import io.realm.annotations.PrimaryKey;
 public class UserProfilePicture extends RealmObject {
 
     @PrimaryKey
-    private  int userProfilePictureId;
+    private int userProfilePictureId;
     private User user;
     private String profileLink;
-   private Date createdDate;
+    private Date createdDate;
     private Date modifiedDate;
 
     public int getUserProfilePictureId() {
