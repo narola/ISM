@@ -244,7 +244,6 @@ public class AddQuestionContainerFragment extends Fragment {
         flipCard();
     }
 
-
     /*this is to edit question data after edit.*/
     public void setQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData, Boolean isChecked) {
         questionListFragment.updateQuestionDataAfterEditQuestion(prevQuestionData, updatedQuestionData);
