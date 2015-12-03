@@ -187,7 +187,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setEmailId(etBlockUser.getText().toString().trim());
-                attribute.setBlockUser(Global.strUserId);
+                attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.BLOCK_USER);
             } else {
                 Utility.alertOffline(getActivity());

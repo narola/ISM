@@ -330,4 +330,5 @@
 	<string name="course">Course</string>
 	<string name="strAccessKey">PLF25jEXMPXkKwavzk2mmKMj/j1br7vn8zv3IRID4js</string>
 	<string name="strSecretKey">juPC8Mos1bMZTbjKm/gFiCUqcI7+H8zr2UdlLfnCwo4=</string>
+	<string name="topic">"Topic - "</string>
 </resources>

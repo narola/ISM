@@ -40,7 +40,7 @@
     <dimen name="post_feed_spacing">10dp</dimen>
     <dimen name="post_dp_size">120dp</dimen>
     <dimen name="post_dp_margin">17dp</dimen>
-    <dimen name="dp_size_list_comment">50dp</dimen>
+    <dimen name="dp_size_list_small">50dp</dimen>
     <dimen name="dp_margin_list">15dp</dimen>
     <dimen name="post_text_size">18sp</dimen>
     <dimen name="comment_padding">5dp</dimen>
@@ -83,4 +83,9 @@
     <dimen name="status_ring_size">16dp</dimen>
     <dimen name="button_small_corner_radius">3dp</dimen>
     <dimen name="find_studymate_tag_width">120dp</dimen>
+    <dimen name="chat_layout_width">650dp</dimen>
+    <dimen name="attachment_button_width">50dp</dimen>
+    <dimen name="attachment_button_height">40dp</dimen>
+    <dimen name="text_size_normal_chat">16sp</dimen>
+    <dimen name="text_size_small_chat">15sp</dimen>
 </resources>

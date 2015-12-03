@@ -3,12 +3,12 @@ package com.ism.fragment.userprofile;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,6 +55,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
     private EditText etFavSearch, etSuggestedSearch;
     private ArrayList<String> arrayListUnFavItems = new ArrayList<>();
     private ArrayList<String> arrayListFavItems = new ArrayList<>();
+    private String strSearch = "";
 
     public static PastTimeFragment newInstance() {
         PastTimeFragment fragment = new PastTimeFragment();
@@ -139,36 +140,71 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
                 }
             }
         });
-        etFavSearch
-                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId,
-                                                  KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                            favouritePastTimeAdapter.getFilter()
-                                    .filter(etFavSearch.getText().toString()
-                                            .trim());
-                            Utility.hideKeyboard(getActivity(), getView());
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-        etSuggestedSearch
-                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId,
-                                                  KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                            suggestedPastTimeAdapter.getFilter()
-                                    .filter(etSuggestedSearch.getText().toString()
-                                            .trim());
-                            Utility.hideKeyboard(getActivity(), getView());
-                            return true;
-                        }
-                        return false;
-                    }
-                });
+//        etFavSearch
+//                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//                    @Override
+//                    public boolean onEditorAction(TextView v, int actionId,
+//                                                  KeyEvent event) {
+//                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                            favouritePastTimeAdapter.getFilter()
+//                                    .filter(etFavSearch.getText().toString()
+//                                            .trim());
+//                            Utility.hideKeyboard(getActivity(), getView());
+//                            return true;
+//                        }
+//                        return false;
+//                    }
+//                });
+//        etSuggestedSearch
+//                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//                    @Override
+//                    public boolean onEditorAction(TextView v, int actionId,
+//                                                  KeyEvent event) {
+//                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                            suggestedPastTimeAdapter.getFilter()
+//                                    .filter(etSuggestedSearch.getText().toString()
+//                                            .trim());
+//                            Utility.hideKeyboard(getActivity(), getView());
+//                            return true;
+//                        }
+//                        return false;
+//                    }
+//                });
+
+        etFavSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                strSearch = "";
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                strSearch = strSearch + s;
+                setUpFavList(onSearch(arrayListFav, strSearch));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etSuggestedSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                strSearch = "";
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                strSearch = strSearch + s;
+                setUpSuggestedList(onSearch(arrayListSuggested, strSearch));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 
@@ -186,7 +222,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
     private void setUpFavList(ArrayList<PastimeData> arrayListFav) {
         try {
 
-            favouritePastTimeAdapter = new FavouritePastTimeAdapter(getActivity(), arrayListFav,this);
+            favouritePastTimeAdapter = new FavouritePastTimeAdapter(getActivity(), arrayListFav, this);
             listViewFav.setAdapter(favouritePastTimeAdapter);
             setVisibilityFavItems(arrayListFav.size());
         } catch (Exception e) {
@@ -228,6 +264,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
         }
 
     }
+
     private void onResponseAddResourceToFavorite(Object object, Exception error) {
         try {
             activityHost.hideProgress();
@@ -299,13 +336,28 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
     public void onPause() {
         super.onPause();
         try {
-            if (arrayListFavItems .size()!=0 || arrayListUnFavItems.size()!=0)
+            if (arrayListFavItems.size() != 0 || arrayListUnFavItems.size() != 0)
                 callApiAddResourceToFav();
         } catch (ClassCastException e) {
             Log.e(TAG, "onPause Exception : " + e.toString());
         }
 
 
+    }
+
+    public ArrayList<PastimeData> onSearch(ArrayList<PastimeData> arrayList, String s) {
+        ArrayList<PastimeData> list = new ArrayList<>();
+        try {
+            for (int i = 0; i < arrayList.size(); i++) {
+                if (arrayList.get(i).getPastimeName().toString().toLowerCase().contains(s.toString().toLowerCase())) {
+                    list.add(arrayList.get(i));
+                    Debug.i(TAG, "i :" + i + " String : " + s);
+                }
+            }
+        } catch (Exception e) {
+            Debug.i(TAG, "onSearch: " + e.getLocalizedMessage());
+        }
+        return list;
     }
 
     private void callApiAddResourceToFav() {

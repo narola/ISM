@@ -96,7 +96,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
 
     /*this is to set the question status data in question palette*/
     public void setQuestionStatusData(ArrayList<Evaluation> evaluations) {
-        //   questionPaletteFragment.setQuestionStatusData(evaluations);
+        questionPaletteFragment.setQuestionStatusData(evaluations);
     }
 
     /*this is to scroll to specific question content on the click of question palette*/

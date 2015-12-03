@@ -17,6 +17,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.AddQuestionContainerFragment;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.Answers;
@@ -77,6 +78,11 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
+            if (arrListQuestions.get(position).getQuestionCreatorId().equals(WebConstants.TEST_USER_ID)) {
+                holder.imgQuestionEdit.setVisibility(View.VISIBLE);
+            } else {
+                holder.imgQuestionEdit.setVisibility(View.GONE);
+            }
 
             if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
                 holder.tvQuestionAns.setTypeface(myTypeFace.getRalewayRegular());

@@ -27,26 +27,24 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
 
     private static final String TAG = PreviewQuestionListAdapter.class.getSimpleName();
-
-    Context mContext;
-    ArrayList<Questions> arrayListPreviewQuestions = new ArrayList<>();
-    MyTypeFace myTypeFace;
+    private Context mContext;
+    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
+    private MyTypeFace myTypeFace;
     Fragment mFragment;
+    private LayoutInflater inflater;
 
 
     public PreviewQuestionListAdapter(Context context, Fragment fragment) {
         this.mContext = context;
         this.mFragment = fragment;
+        myTypeFace = new MyTypeFace(context);
+        inflater = LayoutInflater.from(mContext);
 
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-
-        myTypeFace = new MyTypeFace(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.row_preview_question, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
@@ -61,12 +59,12 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
 
         holder.tvPreviewQuestion.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvPreviewQuestion.setText(arrayListPreviewQuestions.get(position).getQuestionText());
+        holder.tvPreviewQuestion.setText(Utility.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
-        if (!arrayListPreviewQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
+        if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
 
             holder.tvPreviewQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvPreviewQuestionAns.setText(arrayListPreviewQuestions.get(position).getSolution());
+            holder.tvPreviewQuestionAns.setText(arrListQuestions.get(position).getSolution());
 
 
             holder.llPreviewQuestionAnswers.setVisibility(View.GONE);
@@ -77,9 +75,12 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
             holder.llPreviewQuestionAnswers.removeAllViews();
             if (holder.llPreviewQuestionAnswers.getChildCount() == 0) {
-                for (int i = 0; i < arrayListPreviewQuestions.get(position).getAnswers().size(); i++) {
-                    View ansView = getAnsInflaterView(arrayListPreviewQuestions.get(position).getAnswers().get(i), i);
-                    holder.llPreviewQuestionAnswers.addView(ansView);
+
+                if (arrListQuestions.get(position).getAnswers() != null) {
+                    for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
+                        View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
+                        holder.llPreviewQuestionAnswers.addView(ansView);
+                    }
                 }
             }
 
@@ -92,26 +93,24 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
             @Override
             public void onClick(View v) {
 
-
-                getFragment().updateQuestionListviewAfterRemoveInPreview(arrayListPreviewQuestions.get(position));
-                arrayListPreviewQuestions.remove(arrayListPreviewQuestions.get(position));
+                getFragment().updateQuestionListviewAfterRemoveInPreview(arrListQuestions.get(position));
+                arrListQuestions.remove(arrListQuestions.get(position));
                 notifyDataSetChanged();
 
             }
         });
 
-
         holder.imgPreviewQuestionEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddEditQuestionFragment(position,false);
+                openAddEditQuestionFragment(position, false);
             }
         });
 
         holder.imgPreviewQuestionCopy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddEditQuestionFragment(position,true);
+                openAddEditQuestionFragment(position, true);
             }
         });
 
@@ -119,13 +118,14 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
     }
 
     private void openAddEditQuestionFragment(int position, Boolean isCopy) {
-        getFragment().setDataOnFragmentFlip(arrayListPreviewQuestions.get(position), true, isCopy);
+        getFragment().setDataOnFragmentFlip(arrListQuestions.get(position), true, isCopy);
     }
+
 
     public void addAll(ArrayList<Questions> data) {
         try {
-            this.arrayListPreviewQuestions.clear();
-            this.arrayListPreviewQuestions.addAll(data);
+            this.arrListQuestions.clear();
+            this.arrListQuestions.addAll(data);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,7 +136,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
     @Override
     public int getItemCount() {
-        return arrayListPreviewQuestions.size();
+        return arrListQuestions.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -170,14 +170,14 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         v = layoutInflater.inflate(R.layout.row_mcq_question_answer, null, false);
         TextView tvMcqQuestionAns = (TextView) v.findViewById(R.id.tv_mcq_question_ans);
         tvMcqQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
-        tvMcqQuestionAns.setText(Utility.getCharForNumber(position + 1) + ": " + answer.getChoiceText());
+        tvMcqQuestionAns.setText(Utility.formatHtml(Utility.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
 
         return v;
     }
 
-
     private AddQuestionContainerFragment getFragment() {
         return (AddQuestionContainerFragment) mFragment;
     }
+
 
 }

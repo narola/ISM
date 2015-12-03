@@ -100,7 +100,7 @@ public class HighScoreAdapter extends BaseAdapter {
 		txtSchool.setTypeface(myTypeFace.getRalewayThin());
 		txtScore.setTypeface(myTypeFace.getRalewayBold());
 
-		imageLoader.displayImage(WebConstants.URL_USERS_IMAGE_PATH + student.getProfilePic(), imgDp, ISMStudent.options);
+		imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + student.getProfilePic(), imgDp, ISMStudent.options);
 		txtName.setText(student.getFullName());
 		txtSchool.setText(student.getSchoolName());
 		txtScore.setText(student.getExamScore());

@@ -48,7 +48,7 @@ public class UploadFileToServer
 //
 //
 //        String responseString = null;
-//        URLConnection connection = new URL(url).openConnection();
+//        URLConnection connection = new URL_HOST_202(url).openConnection();
 //        connection.setDoOutput(true);
 ////        HttpClient httpclient = new DefaultHttpClient();
 ////

@@ -3,12 +3,12 @@ package com.ism.fragment.userprofile;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,6 +51,7 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
     private EditText etFavSearch, etSuggestedSearch;
     private ArrayList<String> arrayListFavItems = new ArrayList<>();
     private ArrayList<String> arrayListUnFavItems = new ArrayList<>();
+    private String strSearch="";
 
     public static MoviesFragment newInstance() {
         MoviesFragment fragment = new MoviesFragment();
@@ -134,38 +135,87 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
                 }
             }
         });
-        etFavSearch
-                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId,
-                                                  KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                            favMovieAdapter.getFilter()
-                                    .filter(etFavSearch.getText().toString()
-                                            .trim());
-                            Utility.hideKeyboard(getActivity(), getView());
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-        etSuggestedSearch
-                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId,
-                                                  KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                            suggestedMovieAdapter.getFilter()
-                                    .filter(etSuggestedSearch.getText().toString()
-                                            .trim());
-                            Utility.hideKeyboard(getActivity(), getView());
-                            return true;
-                        }
-                        return false;
-                    }
-                });
+//        etFavSearch
+//                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//                    @Override
+//                    public boolean onEditorAction(TextView v, int actionId,
+//                                                  KeyEvent event) {
+//                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                            favMovieAdapter.getFilter()
+//                                    .filter(etFavSearch.getText().toString()
+//                                            .trim());
+//                            Utility.hideKeyboard(getActivity(), getView());
+//                            return true;
+//                        }
+//                        return false;
+//                    }
+//                });
+//        etSuggestedSearch
+//                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//                    @Override
+//                    public boolean onEditorAction(TextView v, int actionId,
+//                                                  KeyEvent event) {
+//                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                            suggestedMovieAdapter.getFilter()
+//                                    .filter(etSuggestedSearch.getText().toString()
+//                                            .trim());
+//                            Utility.hideKeyboard(getActivity(), getView());
+//                            return true;
+//                        }
+//                        return false;
+//                    }
+//                });
 
+        etFavSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                strSearch = "";
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                strSearch=strSearch+s;
+                setUpFavList(onSearch(arrayListFav, strSearch));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etSuggestedSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                strSearch="";
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                strSearch=strSearch+s;
+                setUpSuggestedList(onSearch(arrayListSuggested, strSearch));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private ArrayList<MovieData> onSearch(ArrayList<MovieData> arrayList, String s) {
+        ArrayList<MovieData> list=new ArrayList<>();
+        try {
+            for (int i = 0; i < arrayList.size(); i++) {
+                if (arrayList.get(i).getMovieName().toString().toLowerCase().contains(s.toString().toLowerCase())|| arrayList.get(i).getMovieName().toString().toLowerCase().contains(s.toString().toLowerCase())) {
+                    list.add(arrayList.get(i));
+                    Debug.i(TAG, "i :" + i + " String : " + s);
+                }
+            }
+        }
+        catch (Exception e){
+            Debug.i(TAG,"onSearch: "+ e.getLocalizedMessage());
+        }
+        return  list;
     }
 
     private void setUpFavList(ArrayList<MovieData> arrayList) {

@@ -18,7 +18,6 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.GetObjectiveAssignmentQuestionsAdapter;
 import com.ism.teacher.adapters.StudentAttemptedAdapter;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.ws.helper.Attribute;
@@ -28,9 +27,6 @@ import com.ism.teacher.ws.helper.WebserviceWrapper;
 import java.util.List;
 
 
-/**
- * Created by c162 on 04/11/15.
- */
 
 public class StudentAttemptedFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
     private static final String TAG = StudentAttemptedFragment.class.getSimpleName();
@@ -45,10 +41,6 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     //Test
     Context context;
-    public String examid_from_param = "";
-    public String studentid_from_param = "";
-    public boolean callEvaluationApiFlag = false;
-    ResponseHandler responseObjectEval;
 
     public static StudentAttemptedFragment newInstance(Bundle bundleArguments) {
         StudentAttemptedFragment studentAttemptedFragment = new StudentAttemptedFragment();
@@ -73,18 +65,6 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
         rvList = (RecyclerView) view.findViewById(R.id.rv_list);
         rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        if (getArguments() != null) {
-
-            this.callEvaluationApiFlag = getArguments().getBoolean(AppConstant.ARG_CALL_EVALUATION_API_FLAG);
-            this.examid_from_param = getArguments().getString(AppConstant.ARG_EXAM_ID);
-            ;
-            this.studentid_from_param = getArguments().getString(AppConstant.ARG_STUDENT_ID);
-
-
-        } else {
-            this.callEvaluationApiFlag = false;
-        }
-
         Attribute attribute = new Attribute();
         attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
         attribute.setUserId(WebConstants.USER_ID_340);
@@ -101,7 +81,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
         if (Utility.isInternetConnected(getActivity())) {
             try {
-//                 ((TeacherHostActivity) getActivity()).startProgress();
+//                 ((TeacherHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
             } catch (Exception e) {
@@ -123,7 +103,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
         if (Utility.isInternetConnected(getActivity())) {
             try {
-                // ((AuthorHostActivity) getActivity()).startProgress();
+                // ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_QUESTIONS);
             } catch (Exception e) {
@@ -142,8 +122,8 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     private void callAPIStudentEvaluations(String studentId, String examId) {
         try {
-            if (Utility.isOnline(getActivity())) {
-                //    ((TeacherHostActivity) context).startProgress();
+            if (Utility.isConnected(getActivity())) {
+                //    ((TeacherHostActivity) context).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setStudentId(studentId);
                 attribute.setExamId(examId);
@@ -161,7 +141,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        ((TeacherHostActivity) getActivity()).stopProgress();
+        ((TeacherHostActivity) getActivity()).hideProgress();
         try {
 
             switch (API_METHOD) {
@@ -169,10 +149,10 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                     onResponseGetAllStudentAttempted(object);
                     break;
                 case WebConstants.GET_EXAM_QUESTIONS:
-                 //   onResponseGetExamQuestions(object);
+                    //   onResponseGetExamQuestions(object);
                     break;
                 case WebConstants.GET_EXAM_EVALUATIONS:
-               //     onResponseGetEvaluation(object);
+                    //     onResponseGetEvaluation(object);
                     break;
             }
 
@@ -186,7 +166,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     private void onResponseGetAllStudentAttempted(Object object) {
         ResponseHandler responseHandler = (ResponseHandler) object;
         if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-            // ((AuthorHostActivity)getActivity()).stopProgress();
+            // ((AuthorHostActivity)getActivity()).hideProgress();
             if (responseHandler.getExamSubmission().size() != 0) {
 
                 Debug.i(TAG, "Arraylist of student attempted  ::" + responseHandler);
@@ -198,7 +178,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                 attribute.setExamId(WebConstants.EXAM_ID_3_OBJECTIVE);
                 //requestObject.setStudentId("202");
 
-                // ((AuthorHostActivity) getActivity()).startProgress();
+                // ((AuthorHostActivity) getActivity()).showProgress();
                 callapigetexamquestions(attribute);
 
             }

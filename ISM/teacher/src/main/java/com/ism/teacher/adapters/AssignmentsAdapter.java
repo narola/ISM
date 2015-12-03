@@ -13,10 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.constants.WebConstants;
+import com.ism.teacher.fragments.GetAssignmentsSubmitterFragment;
 import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
-import com.ism.teacher.fragments.GetAssignmentsSubmitterFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Exams;
 
@@ -37,6 +37,27 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
     Fragment mFragment;
     MyTypeFace myTypeFace;
 
+
+    /*this bundle arguments are use for both in edit exam and create exam we have to set it both the places*/
+    public static String ARG_EXAM_ID = "examId";
+    public static String ARG_EXAM_NAME = "examName";
+    public static String ARG_EXAM_CLASSROOM_ID = "examClassRoomId";
+    public static String ARG_EXAM_CLASSROOM_NAME = "examClassRoomName";
+    public static String ARG_EXAM_SUBJECT_ID = "examSubjectId";
+    public static String ARG_EXAM_SUBJECT_NAME = "examSubjectName";
+    public static String ARG_EXAM_TOPIC_ID = "examTopicId";
+    public static String ARG_EXAM_TOPIC_NAME = "examTopicName";
+    public static String ARG_EXAM_BOOK_ID = "examBookId";
+    public static String ARG_EXAM_BOOK_NAME = "examBookName";
+    public static String ARG_EXAM_CATEGORY = "examCategory";
+    public static String ARG_EXAM_TYPE = "examType";
+    public static String ARG_EXAM_MODE = "examMode";
+    public static String ARG_EXAM_DURATION = "examDuration";
+    public static String ARG_ASSIGNMENT_NO = "examNo";
+    public static String ARG_EXAM_PASS_PERCENTAGE = "examPassPercentage";
+    public static String ARG_EXAM_QUESTION_SCORE = "examQuestionScore";
+    public static String ARG_EXAM_CREATED_DATE = "examCreatedDate";
+    public static String ARG_ISLOAD_FRAGMENTFOREVALUATION = "examIsLoadFragmentForEvaluation";
 
     public AssignmentsAdapter(Context context, Fragment fragment) {
         this.mContext = context;
@@ -122,25 +143,31 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
 
         final Bundle bundleAssignmentDetails = new Bundle();
-        bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_ID, arrayListAssignments.get(position).getExamId());
-        //bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_ID, "9");
-        bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_NAME, arrayListAssignments.get(position).getExamName());
-        bundleAssignmentDetails.putString(AppConstant.ARG_CLASSROOM_ID, arrayListAssignments.get(position).getClassroomId());
-        bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_CATEGORY, arrayListAssignments.get(position).getExamCategory());
-        bundleAssignmentDetails.putString(AppConstant.ARG_SUBJECT_NAME, arrayListAssignments.get(position).getSubjectName());
-        bundleAssignmentDetails.putString(AppConstant.ARG_PASS_PERCENTAGE, arrayListAssignments.get(position).getPassPercentage());
-        bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_TYPE, arrayListAssignments.get(position).getExamType());
-        bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_MODE, arrayListAssignments.get(position).getExamMode());
-        bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_DURATION, arrayListAssignments.get(position).getDuration());
-        bundleAssignmentDetails.putString(AppConstant.ARG_CLASSROOM_NAME, arrayListAssignments.get(position).getClassroomName());
-        bundleAssignmentDetails.putInt(AppConstant.ARG_ASSIGNMENT_NO, position);
-
+        //bundleAssignmentDetails.putString(ARG_EXAM_ID, "9");
+        bundleAssignmentDetails.putString(ARG_EXAM_ID, arrayListAssignments.get(position).getExamId());
+        bundleAssignmentDetails.putString(ARG_EXAM_NAME, arrayListAssignments.get(position).getExamName());
+        bundleAssignmentDetails.putString(ARG_EXAM_CLASSROOM_ID, arrayListAssignments.get(position).getClassroomId());
+        bundleAssignmentDetails.putString(ARG_EXAM_CLASSROOM_NAME, arrayListAssignments.get(position).getClassroomName());
+        bundleAssignmentDetails.putString(ARG_EXAM_SUBJECT_ID, arrayListAssignments.get(position).getSubjectId());
+        bundleAssignmentDetails.putString(ARG_EXAM_SUBJECT_NAME, arrayListAssignments.get(position).getSubjectName());
+        bundleAssignmentDetails.putString(ARG_EXAM_TOPIC_ID, WebConstants.TOPIC_ID_5);
+        bundleAssignmentDetails.putString(ARG_EXAM_TOPIC_NAME, "");
+        bundleAssignmentDetails.putString(ARG_EXAM_BOOK_ID, WebConstants.BOOK_ID_2);
+        bundleAssignmentDetails.putString(ARG_EXAM_BOOK_NAME, "");
+        bundleAssignmentDetails.putString(ARG_EXAM_CATEGORY, arrayListAssignments.get(position).getExamCategory());
+        bundleAssignmentDetails.putString(ARG_EXAM_TYPE, arrayListAssignments.get(position).getExamType());
+        bundleAssignmentDetails.putString(ARG_EXAM_MODE, arrayListAssignments.get(position).getExamMode());
+        bundleAssignmentDetails.putString(ARG_EXAM_DURATION, arrayListAssignments.get(position).getDuration());
+        bundleAssignmentDetails.putInt(ARG_ASSIGNMENT_NO, position);
+        bundleAssignmentDetails.putString(ARG_EXAM_PASS_PERCENTAGE, arrayListAssignments.get(position).getPassPercentage());
+        bundleAssignmentDetails.putString(ARG_EXAM_QUESTION_SCORE, "0");
+        bundleAssignmentDetails.putString(ARG_EXAM_CREATED_DATE, "");
 
         holder.llParentAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                bundleAssignmentDetails.putBoolean(AppConstant.ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
+                bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
                 mFragment.getFragmentManager().beginTransaction().
                         replace(R.id.fl_teacher_office_home, GetAssignmentsSubmitterFragment.newInstance(bundleAssignmentDetails)).commit();
             }
@@ -152,14 +179,14 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
                 if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_OBJECTIVE)) {
 
-                    bundleAssignmentDetails.putBoolean(AppConstant.ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
+                    bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
                     mFragment.getFragmentManager().beginTransaction().
                             replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
 
 
                 } else if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_SUBJECTIVE)) {
 
-                    bundleAssignmentDetails.putBoolean(AppConstant.ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
+                    bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
                     mFragment.getFragmentManager().beginTransaction().
                             replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
 

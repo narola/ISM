@@ -115,7 +115,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
     }
 
     public void onClickLogin(View view) {
-        if (Utility.isOnline(TeacherLoginActivity.this)) {
+        if (Utility.isConnected(TeacherLoginActivity.this)) {
 
 			/*if (strValidationMsg == null || strValidationMsg.equals("")) {
                 strValidationMsg = "1";
@@ -213,7 +213,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
         progState = (ActionProcessButton) dialogView.findViewById(R.id.prog_state);
         progCity = (ActionProcessButton) dialogView.findViewById(R.id.prog_city);
 
-        if (Utility.isOnline(TeacherLoginActivity.this)) {
+        if (Utility.isConnected(TeacherLoginActivity.this)) {
             callApiGetCountries();
         } else {
             Utility.toastOffline(TeacherLoginActivity.this);
@@ -223,7 +223,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (arrListCountries != null && position > 0) {
-                    if (Utility.isOnline(TeacherLoginActivity.this)) {
+                    if (Utility.isConnected(TeacherLoginActivity.this)) {
                         callApiGetStates(Integer.parseInt(arrListCountries.get(position - 1).getId()));
                     } else {
                         Utility.toastOffline(TeacherLoginActivity.this);
@@ -243,7 +243,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (arrListStates != null && position > 0) {
-                    if (Utility.isOnline(TeacherLoginActivity.this)) {
+                    if (Utility.isConnected(TeacherLoginActivity.this)) {
                         callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
                     } else {
                         Utility.toastOffline(TeacherLoginActivity.this);
@@ -280,7 +280,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
         btnCredentialsSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utility.isOnline(TeacherLoginActivity.this)) {
+                if (Utility.isConnected(TeacherLoginActivity.this)) {
                     if (isInputsValid()) {
                         Attribute attribute = new Attribute();
                         attribute.setFirstname(etFirstName.getText().toString().trim());

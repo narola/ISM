@@ -250,14 +250,14 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, arrListDefalt, myTypeFace.getRalewayRegular());
         Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
         Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
-        etAge.setText("1");
-        etConfirmPwd.setText("123123123");
-        etNewPwd.setText("123123123");
-        etCurrentPwd.setText("narola21");
-        etContactNo.setText("9874123650");
-        etEmailAddress.setText("arp@gmail.com");
-        etLastName.setText("Patel");
-        etFirstName.setText("Arp");
+//        etAge.setText("1");
+//        etConfirmPwd.setText("123123123");
+//        etNewPwd.setText("123123123");
+//        etCurrentPwd.setText("narola21");
+//        etContactNo.setText("9874123650");
+//        etEmailAddress.setText("arp@gmail.com");
+//        etLastName.setText("Patel");
+//        etFirstName.setText("Arp");
 
        // spCity.setSelection(1);
        // spCountry.setSelection(2);

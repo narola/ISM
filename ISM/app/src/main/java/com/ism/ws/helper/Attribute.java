@@ -61,7 +61,7 @@ public class Attribute {
     private String taggedBy;
     private String keyId;
     private String settingValue;
-    private String studymateId;
+    //private String studymateId;
     private String readCategory;
     private ArrayList<String> recordIds;
 
@@ -71,16 +71,20 @@ public class Attribute {
     private String aboutMeText;
     private String ambitionInLife;
 
+    private String secret_key;
+    private String access_key;
     private String fileName;
     private String resourceName;
     private String voucherAmount;
-    private String secret_key;
-    private String access_key;
     private String blockUser;
+    private String mateOf;
+    private String mateId;
+
     private ArrayList<String> unfavoriteResourceId;
     private ArrayList<String> favResourceId;
     private ArrayList<String> removeBookId;
     private ArrayList<String> addBookId;
+    private String studymateId;
 
 
     public ArrayList<String> getUnfavoriteResourceId() {
@@ -417,6 +421,32 @@ public class Attribute {
         this.name = name;
     }
 
+//    @JsonProperty("preferences")
+//    public void setPreferences(ArrayList<Attribute> preferences) {
+//        this.preferences = preferences;
+//    }
+//
+//    @JsonProperty("file")
+//    public void setFile(File file) {
+//        this.file = file;
+//    }
+//
+
+
+//    public File getFile() {
+//        return file;
+//    }
+
+	/*public String getStudymateId() {
+        return studymateId;
+	}
+
+
+	@JsonProperty("studymate_id")
+	public void setStudymateId(String studymateId) {
+		this.studymateId = studymateId;
+	}*/
+
     public String getMessage() {
         return this.message;
     }
@@ -470,6 +500,20 @@ public class Attribute {
     public void setTaggedBy(String taggedBy) {
         this.taggedBy = taggedBy;
     }
+
+//    public void setRemoveBookId(ArrayList<String> removeBookId) {
+//        this.removeBookId = removeBookId;
+//    }
+//
+//    @JsonProperty("remove_book_id")
+//    public ArrayList<String> getRemoveBookId() {
+//        return removeBookId;
+//    }
+//
+//    @JsonProperty("add_book_id")
+//    public ArrayList<String> getAddBookId() {
+//        return addBookId;
+//    }
 
     public ArrayList<Attribute> getPreferences() {
         return preferences;
@@ -533,7 +577,6 @@ public class Attribute {
         this.voucherAmount = voucherAmount;
     }
 
-
     public void setRemoveBookId(ArrayList<String> removeBookId) {
         this.removeBookId = removeBookId;
     }
@@ -549,7 +592,25 @@ public class Attribute {
     }
 
     public void setAddBookId(ArrayList<String> addBookId) {
-
         this.addBookId = addBookId;
     }
+
+    @JsonProperty("mate_of")
+    public String getMateOf() {
+        return mateOf;
+    }
+
+    public void setMateOf(String mateOf) {
+        this.mateOf = mateOf;
+    }
+
+    @JsonProperty("mate_id")
+    public String getMateId() {
+        return mateId;
+    }
+
+    public void setMateId(String mateId) {
+        this.mateId = mateId;
+    }
+
 }

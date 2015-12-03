@@ -17,7 +17,6 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.helper.MyTypeFace;
@@ -127,7 +126,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
             imageLoader.displayImage(WebConstants.USER_IMAGES + arrayListStudents.get(position).getStudentProfilePic(), holder.imgStudentPic, ISMTeacher.options);
 
-            if (getBundleArgument().getString(AppConstant.ARG_STUDENT_ID).equals(arrayListStudents.get(position).getStudentId())) {
+            if (getBundleArgument().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID).equals(arrayListStudents.get(position).getStudentId())) {
                 holder.txtStudentName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
             } else {
                 holder.txtStudentName.setTextColor(mContext.getResources().getColor(R.color.color_gray));
@@ -178,7 +177,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
         try {
             if (Utility.isInternetConnected(mContext)) {
-                ((TeacherHostActivity) mContext).startProgress();
+                ((TeacherHostActivity) mContext).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setStudentId(student_id);
                 attribute.setExamId(exam_id);
@@ -206,12 +205,12 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
     public void setBundleArgument(int position) {
 
-        getBundleArgument().putInt(AppConstant.ARG_STUDENT_POSITION, position);
-        getBundleArgument().putString(AppConstant.ARG_STUDENT_PROFILE_PIC,
+        getBundleArgument().putInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION, position);
+        getBundleArgument().putString(AssignmentSubmitterAdapter.ARG_STUDENT_PROFILE_PIC,
                 arrayListStudents.get(position).getStudentProfilePic());
-        getBundleArgument().putString(AppConstant.ARG_STUDENT_NAME,
+        getBundleArgument().putString(AssignmentSubmitterAdapter.ARG_STUDENT_NAME,
                 arrayListStudents.get(position).getStudentName());
-        getBundleArgument().putString(AppConstant.ARG_STUDENT_ID,
+        getBundleArgument().putString(AssignmentSubmitterAdapter.ARG_STUDENT_ID,
                 arrayListStudents.get(position).getStudentId());
 
         notifyDataSetChanged();

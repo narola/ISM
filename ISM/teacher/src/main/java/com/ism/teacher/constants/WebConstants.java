@@ -24,6 +24,9 @@ public class WebConstants {
     public static final String TEACHER_ROLE_ID = "3";
     public static final String STUDENT_ID_1 = "1";
 
+    public static final String BOOK_ID_2="2";
+    public static final String TOPIC_ID_5="5";
+
     /**
      * Api IDs
      */
@@ -66,7 +69,6 @@ public class WebConstants {
     public static final String TEST_USER_ID = "370";
     public static final String TEST_USER_NAME = "Admin";
 
-
     /**
      * URLs
      */
@@ -74,6 +76,9 @@ public class WebConstants {
     private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";  // KRUNAL
     private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
     private static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
+
+    private static final String URL_PG_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";
+
 
     public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
     public static final String URL_GET_ALL_FEEDS = URL_KINJAL_HOST + "GetAllFeeds";
@@ -97,11 +102,12 @@ public class WebConstants {
 
     //used for assignment
     public static final String URL_GET_ALL_ASSIGNMENTS = URL_KINJAL_HOST + "GetAllExams";
-    public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_HOST_162 + "GetExamSubmission";
     public static final String URL_GET_EXAM_QUESTIONS = URL_KINJAL_HOST + "GetExamQuestions";
     public static final String URL_GET_EXAM_EVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
     public static final String URL_GET_MY_STUDENTS = URL_KINJAL_HOST + "GetMyStudents";
 
+
+    public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_HOST_162 + "GetExamSubmission";
 
     public static final String URL_GET_CITIES = URL_KINJAL_HOST + "GetCities";
     public static final String URL_GET_STATES = URL_KINJAL_HOST + "GetStates";
