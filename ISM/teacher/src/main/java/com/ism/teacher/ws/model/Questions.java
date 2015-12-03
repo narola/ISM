@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Questions implements Parcelable {
+public class Questions implements Parcelable, Comparable<Questions> {
 
     private String questionFormat;
     private String questionAssetsLink;
@@ -260,4 +260,12 @@ public class Questions implements Parcelable {
     public void setTags(ArrayList<Tags> tags) {
         this.tags = tags;
     }
+
+    @Override
+    public int compareTo(Questions question1) {
+
+        return this.questionId.compareTo(question1.questionId);
+    }
+
+
 }
