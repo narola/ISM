@@ -90,7 +90,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 	@Override
 	public void onBindViewHolder(final ViewHolder holder, final int position) {
 		try {
-//			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
+//			imageLoader.displayImage(AppConstant.HOST_IMAGE_USER + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
 			imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgDp, ISMStudent.options);
 			holder.txtName.setText(arrListFeeds.get(position).getFullName());
 			holder.txtPost.setText(arrListFeeds.get(position).getFeedText());
@@ -181,7 +181,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 			LayoutInflater layoutInflater = LayoutInflater.from(context);
 			view = layoutInflater.inflate(R.layout.item_comment_post, null);
 
-		/*imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + comment.getProfilePic(),
+		/*imageLoader.displayImage(AppConstant.HOST_IMAGE_USER + comment.getProfilePic(),
 				(CircleImageView) view.findViewById(R.id.img_dp), ISMStudent.options);*/
 			imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
 					(CircleImageView) view.findViewById(R.id.img_dp), ISMStudent.options);
@@ -228,7 +228,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 			attribute.setUserId(Global.strUserId);
 
 			new WebserviceWrapper(context, attribute, this).new WebserviceCaller()
-					.execute(WebConstants.GET_ALL_STUDY_MATES);
+					.execute(WebConstants.GET_ALL_STUDYMATES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetStudyMates Exception : " + e.toString());
 		}
@@ -264,7 +264,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 					case WebConstants.GET_ALL_COMMENTS:
 						onResponseGetAllComments(object);
 						break;
-					case WebConstants.GET_ALL_STUDY_MATES:
+					case WebConstants.GET_ALL_STUDYMATES:
 						onResponseGetAllStudyMates(object);
 						break;
 					case WebConstants.TAG_STUDY_MATES:

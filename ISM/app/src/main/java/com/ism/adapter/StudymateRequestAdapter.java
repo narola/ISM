@@ -61,7 +61,6 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		myTypeFace = new MyTypeFace(context);
 		progressGenerator = new ProgressGenerator();
-
 	}
 
 	public StudymateRequestAdapter(Context context, ProfileControllerFragment profileControllerFragment, ArrayList<StudymateRequest> arrListStudymate, int listItemLimit) {
@@ -89,15 +88,19 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
-			convertView = inflater.inflate(listItemLimit >= 0 ? R.layout.list_item_studymate_request_popup : R.layout.list_item_studymate_request,
+			convertView = inflater.inflate(listItemLimit > 0 ? R.layout.list_item_studymate_request_popup : R.layout.list_item_studymate_request,
 					parent, false);
 			holder = new ViewHolder();
 			holder.imgDp = (CircleImageView) convertView.findViewById(R.id.img_dp);
-			holder.txtNameRequest = (TextView) convertView.findViewById(R.id.txt_name_message);
+			holder.txtUserName = (TextView) convertView.findViewById(R.id.txt_user_name);
+			holder.txtSchool = (TextView) convertView.findViewById(R.id.txt_school);
+			holder.txtCourse = (TextView) convertView.findViewById(R.id.txt_course);
 			holder.txtTime = (TextView) convertView.findViewById(R.id.txt_time);
 			holder.btnRespond = (Button) convertView.findViewById(R.id.btn_respond);
 
-			holder.txtNameRequest.setTypeface(myTypeFace.getRalewayRegular());
+			holder.txtUserName.setTypeface(myTypeFace.getRalewayRegular());
+			holder.txtSchool.setTypeface(myTypeFace.getRalewayRegular());
+			holder.txtCourse.setTypeface(myTypeFace.getRalewayRegular());
 			holder.txtTime.setTypeface(myTypeFace.getRalewayRegular());
 			holder.btnRespond.setTypeface(myTypeFace.getRalewayRegular());
 			convertView.setTag(holder);
@@ -106,9 +109,11 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 		}
 
 		try {
-			imageLoader.displayImage(Global.strProfilePic, holder.imgDp, ISMStudent.options);
-			holder.txtNameRequest.setText(Html.fromHtml("<font color='#1BC4A2'>" + arrListStudymate.get(position).getRequestFromName()
-					+ "</font><font color='#323941'> " + context.getString(R.string.msg_studymate_request) + "</font>"));
+			imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrListStudymate.get(position).getRequesterProfile(), holder.imgDp, ISMStudent.options);
+//			holder.txtUserName.setText(Html.fromHtml("<font color='#1BC4A2'>" + arrListStudymate.get(position).getRequestFromName() + "</font><font color='#323941'> " + context.getString(R.string.msg_studymate_request) + "</font>"));
+			holder.txtUserName.setText(arrListStudymate.get(position).getRequestFromName());
+			holder.txtSchool.setText(arrListStudymate.get(position).getRequesterSchoolName());
+			holder.txtCourse.setText(arrListStudymate.get(position).getRequesterCourseName());
 			holder.txtTime.setText(Utility.getTimeDuration(arrListStudymate.get(position).getRequestDate()));
 
 			if (arrListStudymate.get(position).getIsSeen().equals("1")) {
@@ -147,7 +152,7 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 
 	class ViewHolder {
 		CircleImageView imgDp;
-		TextView txtNameRequest, txtTime;
+		TextView txtUserName, txtSchool, txtCourse, txtTime;
 		Button btnRespond;
 	}
 
@@ -202,8 +207,8 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 		try {
 			disableDialogButtons();
 			Attribute attribute = new Attribute();
-			attribute.setUserId(studymateId);
-			attribute.setStudymateId(Global.strUserId);
+			attribute.setMateOf(studymateId);
+			attribute.setMateId(Global.strUserId);
 
 			new WebserviceWrapper(context, attribute, this).new WebserviceCaller().
 					execute(WebConstants.RESPOND_TO_REQUEST);

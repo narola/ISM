@@ -3,7 +3,6 @@ package com.ism.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -28,23 +27,23 @@ import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
 import com.ism.fragment.AccordionFragment;
-import com.ism.fragment.userprofile.AllMessageFragment;
-import com.ism.fragment.userprofile.AllNoticeFragment;
-import com.ism.fragment.userprofile.AllNotificationFragment;
 import com.ism.fragment.AllStudymateRequestFragment;
 import com.ism.fragment.AssessmentFragment;
 import com.ism.fragment.ChatFragment;
 import com.ism.fragment.ClassroomFragment;
 import com.ism.fragment.DeskFragment;
+import com.ism.fragment.ReportCardFragment;
+import com.ism.fragment.TutorialFragment;
+import com.ism.fragment.userprofile.AllMessageFragment;
+import com.ism.fragment.userprofile.AllNoticeFragment;
+import com.ism.fragment.userprofile.AllNotificationFragment;
+import com.ism.fragment.userprofile.EditProfileFragment;
+import com.ism.fragment.userprofile.GeneralSettingsFragment;
 import com.ism.fragment.userprofile.MyActivityFragment;
 import com.ism.fragment.userprofile.MyFeedsFragment;
 import com.ism.fragment.userprofile.MyWalletFragment;
 import com.ism.fragment.userprofile.ProfileControllerFragment;
-import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.userprofile.StudymatesFragment;
-import com.ism.fragment.TutorialFragment;
-import com.ism.fragment.userprofile.EditProfileFragment;
-import com.ism.fragment.userprofile.GeneralSettingsFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.ControllerTopMenuItem;
 import com.ism.object.Global;
@@ -55,6 +54,7 @@ import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.BookData;
 import com.ism.ws.model.NotificationSetting;
 import com.ism.ws.model.PrivacySetting;
 import com.ism.ws.model.SMSAlert;
@@ -90,9 +90,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private HostListenerAllNotification listenerHostAllNotification;
     private HostListenerAllMessage listenerHostAllMessage;
     private HostListenerProfileController listenerHostProfileController;
-    private HostListenerAboutMe hostListenerAboutMe;
-    private AddToFavouriteListner addToFavouriteListner;
-    private AddToLibraryListner addToLibraryListner;
+    private BooksListner booksListner;
+    private HostListenerEditAboutMe listenerEditAboutMe;
 
     private TextView arrTxtMenu[];
     private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
@@ -128,9 +127,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private ArrayList<PrivacySetting> arrayListPrivacySetting = new ArrayList<>();
     private InputMethodManager inputMethod;
 
-    public interface HostListenerAboutMe {
-        public void onSelectImage(Bitmap bitmap);
-    }
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -138,6 +134,12 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     public interface HostListenerAllNotification {
         public void onControllerTopBackClick();
+    }
+
+    public interface HostListenerEditAboutMe {
+        public void onAmbition();
+
+        public void onAboutMe();
     }
 
     public interface HostListenerAllMessage {
@@ -152,9 +154,28 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         public void onSubFragmentDetached(int fragmentId);
     }
 
-    public interface AddToFavouriteListner {
+    public interface BooksListner {
         public void onAddToFav(int position);
+
         public void onRemoveFromFav(int position);
+
+        public void onAddToLibrary(String id);
+
+        public void onRemoveFromLibrary(String id);
+
+        public void onSearchFav(ArrayList<BookData> arrayList);
+
+        public void onSearchSuggested(ArrayList<BookData> arrayList);
+    }
+
+    public interface ManageResourcesListner {
+        public void onAddToFav(int position);
+
+        public void onRemoveFromFav(int position);
+
+        public void onSearchFav(Object o);
+
+        public void onSearchSuggested(Object o);
     }
 
     @Override
@@ -336,12 +357,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         txtFive.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
 
-    }
-    public void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 
     private void callApiGetGeneralSettingPreferences() {
@@ -901,7 +916,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
             if (object != null) {
                 ResponseHandler responseObject = (ResponseHandler) object;
                 if (responseObject.getStatus().toString().equals(WebConstants.SUCCESS)) {
-                    if (responseObject.getPreference().size() > 0) {
+                    if (responseObject.getPreference() != null) {
                         ArrayList<UserPreferences> arrayListUserPreferences = new ArrayList<>();
                         arrayListUserPreferences = responseObject.getUserPreference();
                         for (int j = 0; j < arrayListUserPreferences.size(); j++) {
@@ -941,8 +956,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     }
 
-    public void setListenerHostAboutMe(HostListenerAboutMe hostListenerAboutMe) {
-        this.hostListenerAboutMe = hostListenerAboutMe;
+    public void setListenerHostEditAboutMe(HostListenerEditAboutMe listenerHostEditAboutMe) {
+        this.listenerEditAboutMe = listenerHostEditAboutMe;
     }
 
     public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
@@ -955,14 +970,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     public void setListenerHostProfileController(HostListenerProfileController listenerHostProfileController) {
         this.listenerHostProfileController = listenerHostProfileController;
-    }
-    public interface AddToLibraryListner {
-        public void onAddToLibrary(String id);
-
-        public void onRemoveFromLibrary(String id );
-    }
-    public void setListenerAddToLibrary(AddToLibraryListner addToLibraryListner) {
-        this.addToLibraryListner = addToLibraryListner;
     }
 
     private void onResponseGetAllBadges(Object object, Exception error) {

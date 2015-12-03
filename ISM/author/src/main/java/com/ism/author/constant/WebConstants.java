@@ -14,8 +14,10 @@ public class WebConstants {
     public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
     public static final String USER_IMAGES_TEST = "http://192.168.1.147/WS_ISM/Images/users_images/";
     public static final String HOST_202 = "http://192.168.1.202/pg/ISM/";      // pg
-    public static final String URL = HOST_202 + "WS_ISM/ISMServices.php?Service=";
+    public static final String URL_HOST_202 = HOST_202 + "WS_ISM/ISMServices.php?Service=";
+
     //	webservice constants for apiCode.
+
     public static final int LOGIN = 1;
     public static final int FORGOTPASSWORD = 2;
     public static final int REQUESTCREDENTIALS = 3;
@@ -49,6 +51,8 @@ public class WebConstants {
     public static final int GETALLHASHTAG = 31;
     public static final int SETHASHTAG = 32;
     public static final int TEMPCREATEQUESTION = 33;
+
+
     //user settings preferences
 
     public static final int GENERAL_SETTING_PREFERENCES = 51;
@@ -58,13 +62,14 @@ public class WebConstants {
     public static final int GET_STUDYMATE_REQUEST = 55;
     public static final int RESPOND_TO_REQUEST = 56;
     public static final int UPDATE_READ_STATUS = 57;
-
-    public static final int GET_MY_FEEDS = 58;
+    public static final int GET_MY_FEEDS =58 ;
     public static final int GET_ABOUT_ME = 59;
     public static final int GET_BOOKS_FOR_USER = 60;
     public static final int MANAGE_FAVOURITES = 61;
     public static final int MANAGE_BOOK_LIBRARY = 62;
+
     /*webservice url*/
+
     public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
     public static final String URL_FORGOTPASSWORD = URL_KINJAL_HOST + "ForgotPassword";
     public static final String URL_REQUESTCREDENTIALS = URL_KINJAL_HOST + "RequestForCredentials";
@@ -85,12 +90,10 @@ public class WebConstants {
     public static final String URL_CREATEASSIGNMENT = URL_KINJAL_HOST + "CreateAssignment";
     public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
     public static final String URL_GETCOURSES = URL_KINJAL_HOST + "GetCourses";
-
     public static final String URL_CREATEEXAM = URL_KINJAL_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
     public static final String URL_GETALLEXAM = URL_KINJAL_HOST + "GetAllExams";
     public static final String URL_HASHTAG = URL_KINJAL_HOST + "Hashtag";
-
     public static final String URL_GETEXAMSUBMISSION = URL_ARTI_HOST + "GetExamSubmission";
     public static final String URL_GETEXAMEVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
     public static final String URL_GETEXAMQUESTIONS = URL_ARTI_HOST + "GetExamQuestions";
@@ -115,30 +118,33 @@ public class WebConstants {
     /*status for apisuccess ans apifailed*/
     public static final String URL_GET_WALLET_SUMMARY = URL_KINJAL_HOST + "GetWalletSummary";
     public static final String URL_GET_MY_FEEDS = URL_KINJAL_HOST + "GetMyFeeds";
+    public static final String URL_GET_BLOCKED_USER =  URL_KINJAL_HOST + "GetBlockedUser";
+
     public static final String URL_GET_ABOUT_ME = URL_KINJAL_HOST + "GetAboutMe";
     public static final String URL_GET_BOOKS_FOR_USER = URL_KINJAL_HOST + "GetBooksForUser";
+    public static final String URL_MANAGE_FAVOURITES = URL_KINJAL_HOST + "ManageFavorite";
+    public static final String URL_MANAGE_BOOK_LIBRARY = URL_KINJAL_HOST + "ManageBookLibrary";
 
     /*status for apisuccess ans apifailed*/
+
     public static final String SUCCESS = "success";
-
-
     public static final String FAILED = "failed";
-    public static final String STATUS_SUCCESS = "success";
-    public static final String STATUS_FAILED = "failed";
+
     /*these are the temparory questionData for testing*/
+
     public static final String TEST_USER_ID = "370";
     public static final String TEST_USER_NAME = "Admin";
     public static final String TEST_GETSTUDYMATES = "167";
     public static final String TEST_BOOK_ID = "2";
     public static final String TEST_TOPIC_ID = "5";
     public static final String TEST_SUBJECT_ID = "3";
+
     /**
      * Parameter values
      */
+
     public static final String STUDYMATE_REQUEST = "studymate_request";
     public static final String MESSAGES = "messages";
-
-
     public static final String NOTIFICATION = "notification";
     public static final String ROLE_ALL = "all";
     public static final String ROLE_STUDENT = "student";

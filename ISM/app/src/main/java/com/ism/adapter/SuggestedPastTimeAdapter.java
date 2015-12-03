@@ -1,7 +1,6 @@
 package com.ism.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +12,12 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.PastimesDetailsDialog;
 import com.ism.fragment.userprofile.PastTimeFragment;
-import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
-import com.ism.ws.helper.Attribute;
-import com.ism.ws.helper.ResponseHandler;
-import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.PastimeData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -33,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class SuggestedPastTimeAdapter extends BaseAdapter implements WebserviceWrapper.WebserviceResponse ,Filterable{
+public class SuggestedPastTimeAdapter extends BaseAdapter implements Filterable{
     private static final String TAG = SuggestedPastTimeAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
@@ -41,14 +35,14 @@ public class SuggestedPastTimeAdapter extends BaseAdapter implements WebserviceW
     ArrayList<PastimeData> arrayListFilter = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
-    HostActivity.AddToFavouriteListner addToFavouriteListner;
+    HostActivity.ManageResourcesListner manageResourcesListner;
     private int addToFavItem;
     PastimesFilter pastimesFilter;
-    public SuggestedPastTimeAdapter(Context context, ArrayList<PastimeData> arrayList, HostActivity.AddToFavouriteListner addToFavouriteListner) {
+    public SuggestedPastTimeAdapter(Context context, ArrayList<PastimeData> arrayList, HostActivity.ManageResourcesListner manageResourcesListner) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter = arrayList;
-        this.addToFavouriteListner = addToFavouriteListner;
+        this.manageResourcesListner = manageResourcesListner;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         inflater = LayoutInflater.from(context);
@@ -91,15 +85,15 @@ public class SuggestedPastTimeAdapter extends BaseAdapter implements WebserviceW
 
         try {
             holder.txtPastimeName.setTypeface(myTypeFace.getRalewayRegular());
-            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getPastimeImage(), holder.imgPastime, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getPastimeImage(), holder.imgPastime, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtPastimeName.setText(arrayList.get(position).getPastimeName());
             holder.txtName.setText("");
             holder.imgAddToFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addToFavItem = position;
+                    manageResourcesListner.onAddToFav(position);
                     Debug.i(TAG, "onClickAddToFav : " + position);
-                    callApiAddResourceToFav(position);
+
                 }
             });
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
@@ -119,57 +113,7 @@ public class SuggestedPastTimeAdapter extends BaseAdapter implements WebserviceW
         return convertView;
     }
 
-    private void callApiAddResourceToFav(int position) {
-        try {
-            if (Utility.isConnected(context)) {
-                ((HostActivity) context).showProgress();
-                Attribute attribute = new Attribute();
 
-                attribute.setUserId(Global.strUserId);
-               // attribute.setResourceId(arrayList.get(position).getPastimeId());
-                attribute.setResourceName(AppConstant.RESOURCE_PASTTIMES);
-
-                new WebserviceWrapper(context, attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
-            } else {
-                Utility.alertOffline(context);
-            }
-        } catch (Exception e) {
-            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
-        }
-    }
-
-    private void onResponseAddResourceToFavorite(Object object, Exception error) {
-        try {
-            ((HostActivity) context).hideProgress();
-            if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite success");
-                    addToFavouriteListner.onAddToFav(addToFavItem);
-                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
-                }
-            } else if (error != null) {
-                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
-            }
-        } catch (Exception e) {
-            Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
-        }
-    }
-
-    @Override
-    public void onResponse(Object object, Exception error, int apiCode) {
-        try {
-            switch (apiCode) {
-                case WebConstants.MANAGE_FAVOURITES:
-                    onResponseAddResourceToFavorite(object, error);
-                    break;
-
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "onResponse Exception : " + e.toString());
-        }
-    }
     @Override
     public Filter getFilter() {
         if (pastimesFilter == null) {

@@ -504,6 +504,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         questionBankListAdapter.addAll(arrListQuestions);
         questionBankListAdapter.notifyDataSetChanged();
 
+        etSearchQuestions.setText("");
+        filterResults(spQuestionlistSubject.getSelectedItemPosition() > 0 ?
+                Integer.parseInt(arrListSubject.get(spQuestionlistSubject.getSelectedItemPosition() - 1).getId()) : 0, null);
+
 
     }
 
@@ -512,6 +516,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         arrListQuestions.add(0, question);
         questionBankListAdapter.addAll(arrListQuestions);
         questionBankListAdapter.notifyDataSetChanged();
+        etSearchQuestions.setText("");
+
+        filterResults(spQuestionlistSubject.getSelectedItemPosition() > 0 ?
+                Integer.parseInt(arrListSubject.get(spQuestionlistSubject.getSelectedItemPosition() - 1).getId()) : 0, null);
+
     }
 
     private AddQuestionContainerFragment getFragment() {

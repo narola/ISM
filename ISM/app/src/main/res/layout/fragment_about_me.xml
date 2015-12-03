@@ -69,9 +69,9 @@
             android:layout_height="wrap_content"
             android:background="@color/studymate_tab_bg"
             android:gravity="left|center_vertical"
-            android:padding="@dimen/d15dp"
+            android:padding="@dimen/d10dp"
             android:textColor="@color/bg_app_dark"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:background="@color/studymate_tab_bg"
             android:gravity="left|center_vertical"
-            android:padding="@dimen/d15dp"
+            android:padding="@dimen/d10dp"
             android:textColor="@color/bg_app_dark"
             android:textSize="20sp" />
 

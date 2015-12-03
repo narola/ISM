@@ -64,6 +64,10 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		WebConstants.SECRET_KEY = "juPC8Mos1bMZTbjKm/gFiCUqcI7+H8zr2UdlLfnCwo4=";
+		WebConstants.ACCESS_KEY = "PLF25jEXMPXkKwavzk2mmKMj/j1br7vn8zv3IRID4js";
+
 		if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this)) {
 			if (PreferenceData.getBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this)) {
 				if (PreferenceData.getBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this)) {

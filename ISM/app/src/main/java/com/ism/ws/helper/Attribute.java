@@ -3,6 +3,7 @@ package com.ism.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.constant.WebConstants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,82 +16,113 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Attribute {
 
-	//	AcceptTutorialGroupRequest
-	private String userId;
-	private String joiningStatus;
-	private String groupId;
+    //	AcceptTutorialGroupRequest
+    private String userId;
+    private String joiningStatus;
+    private String groupId;
 
-	//	CredentialsRequest
-	private String schoolName;
-	private String homeAddress;
-	private int cityId;
-	private String lastname;
-	private String firstname;
-	private int stateId;
-	private String countryId;
-	private String contactNumber;
-	private String emailAddress;
+    //	CredentialsRequest
+    private String schoolName;
+    private String homeAddress;
+    private int cityId;
+    private String lastname;
+    private String firstname;
+    private int stateId;
+    private String countryId;
+    private String contactNumber;
+    private String emailAddress;
 
-//	ForgotPasswordRequest
-	private String emailId;
+    //	ForgotPasswordRequest
+    private String emailId;
 
-//	LoginRequest
-	private String username;
-	private String password;
+    //	LoginRequest
+    private String username;
+    private String password;
 
-//	RegisterRequest
-	private String profileImage;
-	private int courseId;
-	private int schoolId;
-	private String deviceToken;
-	private String academicYear;
-	private String profileImageName;
-	private String birthdate;
-	private String gender;
-	private String deviceType;
-	private int classroomId;
-	private String roleId;
+    //	RegisterRequest
+    private String profileImage;
+    private int courseId;
+    private int schoolId;
+    private String deviceToken;
+    private String academicYear;
+    private String profileImageName;
+    private String birthdate;
+    private String gender;
+    private String deviceType;
+    private int classroomId;
+    private String roleId;
 
-//	SchoolInfoRequest
-	private String name;
-	private String message;
+    //	SchoolInfoRequest
+    private String name;
+    private String message;
 
-	private String feedId;
-	private String commentBy;
-	private String comment;
-	private String taggedBy;
-	private String keyId;
-	private String settingValue;
-	private String studymateId;
-	private String readCategory;
-	private ArrayList<String> recordIds;
+    private String feedId;
+    private String commentBy;
+    private String comment;
+    private String taggedBy;
+    private String keyId;
+    private String settingValue;
+    //private String studymateId;
+    private String readCategory;
+    private ArrayList<String> recordIds;
 
-	private String[] taggedUserIds;
-	private ArrayList<Attribute> preferences;
-	private File file;
-	private String aboutMeText;
-	private String ambitionInLife;
+    private String[] taggedUserIds;
+    private ArrayList<Attribute> preferences;
+    private File file;
+    private String aboutMeText;
+    private String ambitionInLife;
 
 	private String fileName;
 	private String resourceName;
 	private String voucherAmount;
 	private String blockUser;
-	private ArrayList<String> unfavoriteResourceId;
-	private ArrayList<String> favResourceId;
-	private ArrayList<String> removeBookId;
-	private ArrayList<String> addBookId;
+	private String mateOf;
+	private String mateId;
+	private String secretKey;
+	private String accessKey;
 
+    private ArrayList<String> unfavoriteResourceId;
+    private ArrayList<String> favResourceId;
+    private ArrayList<String> removeBookId;
+    private ArrayList<String> addBookId;
+    private String studymateId;
+
+	public Attribute() {
+		setSecretKey(WebConstants.SECRET_KEY);
+		setAccessKey(WebConstants.ACCESS_KEY);
+	}
+
+	@JsonProperty("secret_key")
+	public String getSecretKey() {
+		return secretKey;
+	}
+
+	public void setSecretKey(String secretKey) {
+		this.secretKey = secretKey;
+	}
+
+	@JsonProperty("access_key")
+	public String getAccessKey() {
+		return accessKey;
+	}
+
+	public void setAccessKey(String accessKey) {
+		this.accessKey = accessKey;
+	}
 
 	public ArrayList<String> getUnfavoriteResourceId() {
 		return this.unfavoriteResourceId;
 	}
+
 	@JsonProperty("unfavorite_resource_id")
 	public void setUnfavoriteResourceId(ArrayList<String> unfavoriteResourceId) {
 		this.unfavoriteResourceId = unfavoriteResourceId;
 	}
+
 	public ArrayList<String> getFavResourceId() {
 		return this.favResourceId;
 	}
+
 	@JsonProperty("fav_resource_id")
 	public void setFavResourceId(ArrayList<String> favResourceId) {
 		this.favResourceId = favResourceId;
@@ -99,13 +131,16 @@ public class Attribute {
 	public String getBlockUser() {
 		return blockUser;
 	}
+
 	@JsonProperty("block_user")
 	public void setBlockUser(String blockUser) {
 		this.blockUser = blockUser;
 	}
+
 	public String getResourceName() {
 		return resourceName;
 	}
+
 	@JsonProperty("resource_name")
 	public void setResourceName(String resourceName) {
 		this.resourceName = resourceName;
@@ -114,6 +149,7 @@ public class Attribute {
 	public String getAmbitionInLife() {
 		return ambitionInLife;
 	}
+
 	@JsonProperty("ambitionInLife")
 	public void setAmbitionInLife(String ambitionInLife) {
 		this.ambitionInLife = ambitionInLife;
@@ -122,6 +158,7 @@ public class Attribute {
 	public String getAboutMeText() {
 		return aboutMeText;
 	}
+
 	@JsonProperty("aboutMeText")
 	public void setAboutMeText(String aboutMeText) {
 		this.aboutMeText = aboutMeText;
@@ -131,6 +168,7 @@ public class Attribute {
 	public String getKeyId() {
 		return keyId;
 	}
+
 	@JsonProperty("key_id")
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
@@ -139,6 +177,7 @@ public class Attribute {
 	public String getSettingValue() {
 		return settingValue;
 	}
+
 	@JsonProperty("preference_value")
 	public void setSettingValue(String settingValue) {
 		this.settingValue = settingValue;
@@ -449,6 +488,7 @@ public class Attribute {
 	public void setPreferences(ArrayList<Attribute> preferences) {
 		this.preferences = preferences;
 	}
+
 	@JsonProperty("file")
 	public void setFile(File file) {
 		this.file = file;
@@ -457,14 +497,15 @@ public class Attribute {
 	public File getFile() {
 		return file;
 	}
-	public String getStudymateId() {
+
+	/*public String getStudymateId() {
 		return studymateId;
 	}
 
 	@JsonProperty("studymate_id")
 	public void setStudymateId(String studymateId) {
 		this.studymateId = studymateId;
-	}
+	}*/
 
 	public String getReadCategory() {
 		return readCategory;
@@ -501,21 +542,40 @@ public class Attribute {
 		this.voucherAmount = voucherAmount;
 	}
 
-
 	public void setRemoveBookId(ArrayList<String> removeBookId) {
 		this.removeBookId = removeBookId;
 	}
+
 	@JsonProperty("remove_book_id")
 	public ArrayList<String> getRemoveBookId() {
 		return removeBookId;
 	}
+
 	@JsonProperty("add_book_id")
 	public ArrayList<String> getAddBookId() {
 		return addBookId;
 	}
 
 	public void setAddBookId(ArrayList<String> addBookId) {
-
 		this.addBookId = addBookId;
 	}
+
+	@JsonProperty("mate_of")
+	public String getMateOf() {
+		return mateOf;
+	}
+
+	public void setMateOf(String mateOf) {
+		this.mateOf = mateOf;
+	}
+
+	@JsonProperty("mate_id")
+	public String getMateId() {
+		return mateId;
+	}
+
+	public void setMateId(String mateId) {
+		this.mateId = mateId;
+	}
+
 }

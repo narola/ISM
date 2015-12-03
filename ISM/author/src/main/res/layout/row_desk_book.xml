@@ -51,7 +51,7 @@
                     android:layout_height="@dimen/d30dp"
                     android:layout_alignParentTop="true"
                     android:layout_margin="@dimen/d5dp"
-                    android:src="@drawable/selecor_library"
+                    android:src="@drawable/selector_library"
                     android:visibility="gone" />
 
                 <ImageView

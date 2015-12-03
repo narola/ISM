@@ -24,6 +24,9 @@ import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.BlockedUsers;
+
+import java.util.ArrayList;
 
 /**
  * Created by c162 on 09/11/15.
@@ -38,6 +41,8 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
     InputValidator inputValidator;
     private static String TAG = BlockUserFragment.class.getSimpleName();
     private HostActivity activityHost;
+    ArrayList<BlockedUsers> arrayListBlockedUser = new ArrayList<>();
+    private TextView txtEmpty;
 
     public static BlockUserFragment newInstance() {
         BlockUserFragment fragment = new BlockUserFragment();
@@ -61,6 +66,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
         myTypeFace = new MyTypeFace(getActivity());
         inputValidator = new InputValidator(getActivity());
         txtBlockAssign = (TextView) view.findViewById(R.id.txt_block_studymates);
+        txtEmpty = (TextView) view.findViewById(R.id.txt_empty);
         txtManageBlockUser = (TextView) view.findViewById(R.id.txt_manage_block_user);
         txtContactISMAdmin = (TextView) view.findViewById(R.id.txt_contact_ism_admin);
 
@@ -79,6 +85,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
         listView = (ListView) view.findViewById(R.id.listview);
 
         //set typeface
+        txtEmpty.setTypeface(myTypeFace.getRalewayRegular());
         txtBlockAssign.setTypeface(myTypeFace.getRalewayRegular());
         txtContactISMAdmin.setTypeface(myTypeFace.getRalewayRegular());
         txtManageBlockUser.setTypeface(myTypeFace.getRalewayRegular());
@@ -89,7 +96,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
         txtNotification.setTypeface(myTypeFace.getRalewayRegular());
         txtBlock.setTypeface(myTypeFace.getRalewayRegular());
         //etEmailAddress.setTypeface(myTypeFace.getRalewayRegular());
-        setUpList();
+        callApiForBlockedUser();
 
 
         txtBlock.setOnClickListener(this);
@@ -98,9 +105,19 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
     }
 
     private void setUpList() {
-        blockedUserAdapter = new BlockedUserAdapter(getActivity(), this);
-        listView.setAdapter(blockedUserAdapter);
-        ListViewDynamicHight();
+        if (arrayListBlockedUser != null) {
+            blockedUserAdapter = new BlockedUserAdapter(getActivity(), arrayListBlockedUser);
+            listView.setAdapter(blockedUserAdapter);
+            txtEmpty.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            ListViewDynamicHight();
+            blockedUserAdapter.notifyDataSetChanged();
+        }
+        else{
+            txtEmpty.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -170,8 +187,24 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setEmailId(etBlockUser.getText().toString().trim());
-                attribute.setBlockUser(Global.strUserId);
+                attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.BLOCK_USER);
+            } else {
+                Utility.alertOffline(getActivity());
+            }
+
+        } catch (Exception e) {
+            Debug.i(TAG, "callApiForBlockUser Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void callApiForBlockedUser() {
+        try {
+            if (Utility.isConnected(getActivity())) {
+                activityHost.showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setUserId(Global.strUserId);
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.BLOCKED_USER);
             } else {
                 Utility.alertOffline(getActivity());
             }
@@ -183,11 +216,35 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
-        switch (apiCode){
+        switch (apiCode) {
             case WebConstants.BLOCK_USER:
-                    onResponseBlockUser(object,error);
+                onResponseBlockUser(object, error);
+                break;
+            case WebConstants.BLOCKED_USER:
+                onResponseBlockedUser(object, error);
                 break;
         }
+    }
+
+    private void onResponseBlockedUser(Object object, Exception error) {
+        try {
+            activityHost.hideProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                    arrayListBlockedUser.addAll(responseHandler.getBlockedUsers());
+                    setUpList();
+                    Debug.i(TAG, "onResponseBlockedUser success");
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Log.i(TAG, "onResponseBlockedUser Failed");
+                }
+            } else if (error != null) {
+                Log.i(TAG, "onResponseBlockedUser api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onResponseBlockedUser Exception : " + e.toString());
+        }
+
     }
 
     private void onResponseBlockUser(Object object, Exception error) {
@@ -197,6 +254,8 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     etBlockUser.setText("");
+                    callApiForBlockedUser();
+                    arrayListBlockedUser=new ArrayList<>();
                     // add block user in list
                     Debug.i(TAG, "onResponseBlockUser success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {

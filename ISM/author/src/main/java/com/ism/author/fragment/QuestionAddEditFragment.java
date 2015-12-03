@@ -46,6 +46,7 @@ import com.ism.author.ws.model.AnswerChoices;
 import com.ism.author.ws.model.Answers;
 import com.ism.author.ws.model.HashTags;
 import com.ism.author.ws.model.Questions;
+import com.ism.author.ws.model.Tags;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -174,21 +175,43 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 if (position == 1) {
                     llAddMcqanswer.setVisibility(View.GONE);
                     etAddquestionAnswer.setVisibility(View.VISIBLE);
+                    if (!getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
+                        chkAddquestionPreview.setEnabled(false);
+                        chkAddquestionPreview.setChecked(false);
+                    } else {
+                        chkAddquestionPreview.setEnabled(true);
+                        chkAddquestionPreview.setChecked(true);
+                    }
                 } else if (position == 2) {
                     llAddMcqanswer.setVisibility(View.GONE);
                     etAddquestionAnswer.setVisibility(View.VISIBLE);
+                    if (!getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
+                        chkAddquestionPreview.setEnabled(false);
+                        chkAddquestionPreview.setChecked(false);
+                    } else {
+                        chkAddquestionPreview.setEnabled(true);
+                        chkAddquestionPreview.setChecked(true);
+                    }
                 } else if (position == 3) {
                     llAddMcqanswer.setVisibility(View.VISIBLE);
                     etAddquestionAnswer.setVisibility(View.GONE);
+                    if (!getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
+                        chkAddquestionPreview.setEnabled(false);
+                        chkAddquestionPreview.setChecked(false);
+                    } else {
+                        chkAddquestionPreview.setEnabled(true);
+                        chkAddquestionPreview.setChecked(true);
+                    }
                 }
+
             }
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-
 
         imgSelectImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -277,11 +300,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
     private void clearViewsData() {
+
         etAddquestionTitle.setText("");
         spAddquestionType.setSelection(1);
         etAddquestionAnswer.setText("");
         llAddMcqanswer.removeAllViews();
-
         if (tagsView.getObjects().size() > 0) {
             tagsView.clear();
         }
@@ -294,6 +317,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         for (int i = 0; i <= 1; i++) {
             llAddMcqanswer.addView(getMcqAnswerView(i));
         }
+        chkAddquestionPreview.setChecked(false);
 
     }
 
@@ -458,8 +482,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private void setSpinnerData(String questionType) {
         if (questionType.equalsIgnoreCase("MCQ")) {
             spAddquestionType.setSelection(3);
-//            arrListAnswers.clear();
-            llAddMcqanswer.removeAllViews();
             llAddMcqanswer.setVisibility(View.VISIBLE);
             etAddquestionAnswer.setVisibility(View.GONE);
         } else if (questionType.equalsIgnoreCase("descriptive")) {
@@ -475,15 +497,15 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
 
     private void setMcqAnswers(Questions questions) {
-        if (questions.getAnswers().size() > 0) {
-            for (int i = 0; i < questions.getAnswers().size(); i++) {
-                llAddMcqanswer.addView(setMCQ(i, questions.getAnswers().get(i).getChoiceText(),
-                        questions.getAnswers().get(i).getIsRight().equals("1") ? true : false, questions.getAnswers().size()));
+        if (questions.getAnswers() != null) {
+            if (questions.getAnswers().size() > 0) {
+                llAddMcqanswer.removeAllViews();
             }
-        } else {
-            for (int i = 0; i <= 1; i++) {
-                llAddMcqanswer.addView(getMcqAnswerView(i));
-            }
+        }
+
+        for (int i = 0; i < questions.getAnswers().size(); i++) {
+            llAddMcqanswer.addView(setMCQ(i, questions.getAnswers().get(i).getChoiceText(),
+                    questions.getAnswers().get(i).getIsRight().equals("1") ? true : false, questions.getAnswers().size()));
         }
 
 
@@ -671,8 +693,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     attribute.setQuestionid("149");
 
                 }
-                attribute.setSubjectId(WebConstants.TEST_SUBJECT_ID);
-//                attribute.setSubjectId(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID));
+//                attribute.setSubjectId(WebConstants.TEST_SUBJECT_ID);
+                attribute.setSubjectId(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID));
                 attribute.setTopicId(getArguments().getString(ExamsAdapter.ARG_EXAM_TOPIC_ID));
                 attribute.setBookId(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
                 attribute.setClassroomId(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID));
@@ -683,7 +705,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 attribute.setSolution(etEvaluationNote2.getText().toString());
 
 
-                if (getQuestionFormat().equalsIgnoreCase("mcq")) {
+                if (getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
                     arrListAnswerChioces.clear();
                     for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
                         View v = llAddMcqanswer.getChildAt(i);
@@ -821,6 +843,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
     private Questions makeQuestionData(String questionId) {
+
         Questions question = new Questions();
         try {
             question.setQuestionId(questionId);
@@ -842,15 +865,15 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 question.setBookId(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
             }
 
+            ArrayList<Tags> arrListTags = new ArrayList<Tags>();
 
-//                     question.setTags(arrListTags);
-
-//        for (int i = 0; i < arrListAnswerChioces.size(); i++) {
-//            Answers answers = new Answers();
-//            answers.setChoiceText(arrListAnswerChioces.get(i).getChoiceText());
-//            answers.setIsRight((arrListAnswerChioces.get(i).getIsRight()));
-//            arrListAnswers.add(answers);
-//        }
+            List<HashTagsModel> list = tagsView.getObjects();
+            for (int i = 0; i < list.size(); i++) {
+                Tags tag = new Tags();
+                tag.setTagId(list.get(i).getTagId());
+                tag.setTagName(list.get(i).getTagName());
+                arrListTags.add(tag);
+            }
 
             ArrayList<Answers> arrListAnswers = new ArrayList<Answers>();
             if (getQuestionFormat().equalsIgnoreCase("mcq")) {
@@ -865,6 +888,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
 
             question.setAnswers(arrListAnswers);
+            question.setTags(arrListTags);
 
 
         } catch (Exception error) {
