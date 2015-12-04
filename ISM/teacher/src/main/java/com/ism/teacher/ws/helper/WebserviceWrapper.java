@@ -152,6 +152,14 @@ public class WebserviceWrapper {
                     case WebConstants.GET_ALL_HASHTAG:
                         responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_HASHTAG).execute(ResponseHandler.class, attribute);
                         break;
+
+                    case WebConstants.SETHASHTAG:
+                        responseObject = new WebserviceConnector(WebConstants.URL_HASHTAG).execute(ResponseHandler.class, attribute);
+                        break;
+                    case WebConstants.TEMPCREATEQUESTION:
+                        responseObject = new WebserviceConnector(WebConstants.URL_TEMPCREATEQUESTION).execute(ResponseHandler.class, attribute);
+                        break;
+
                 }
             } catch (Exception e) {
                 Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
