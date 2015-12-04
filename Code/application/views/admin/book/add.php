@@ -1,4 +1,4 @@
-<div class="col-sm-7 main main2 general_cred">
+<div class="col-sm-7 main main2 add_book_page general_cred mCustomScrollbar">
 	<!--breadcrumb-->
 	<div class="row page_header">
     	<div class="col-sm-12">
@@ -21,13 +21,7 @@
                 	<label>Book Name</label>
                     <input type="text" class="form-control" name="book_name" placeholder="Book Name">
                 </div>                     
-               
-                <!-- <div class="form-group  col-sm-12 col-md-6 col-lg-8 padding_r15_">
-                	<label>Author Name</label>
-                    <input type="text" placeholder="Author Name"  class="form-control smallinput">
-                    <a class="icon icon_add_small" href="#"></a>
-                </div> -->
-
+              
             <div class="form-group authors col-sm-12 col-md-6 col-lg-8 padding_r15_" >
                 <label> Select Author </label>
 
@@ -73,31 +67,35 @@
                     </li>
                     <li>
                     	<label>Books Description</label>
-                        <textarea name="book_desc" class="form-control"></textarea>
+                        <textarea name="book_desc" class="form-control book_desc"></textarea>
                     </li>
                 </ul>
                </div>
                    
-                <div class="form-group col-sm-12 col-md-6 col-lg-2 padding_r15_ ">
-                	<div class="upload_ques_img ">
-                    	<input name="book_images[]" type="file">
+                <div class="form-group col-sm-12 col-md-6 col-lg-2 padding_r15_">
+                        <label class="control-label">Front Cover</label>
+                    <div class="upload_ques_img ">
+                    	<input name="front_cover" type="file">
                     </div>
                 </div>  
                 <div class="form-group col-sm-12 col-md-6 col-lg-2 padding_r15_ ">
-                	<div class="upload_ques_img">
-                    	<input name="book_images[]" type="file">
+                        <label class="control-label">Back Cover</label>
+                    <div class="upload_ques_img">
+                    	<input name="back_cover" type="file">
                     </div>
                     <div class="clearfix"></div>
                 </div>
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-2 padding_r15_ ">
-                	<div class="upload_ques_img pdf">
+                        <label class="control-label">pdf File</label>
+                    <div class="upload_ques_img pdf">
                     	<input name="book_pdf" type="file">
                     </div>
                 </div>
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-2 padding_r15_ ">
-                	<div class="upload_ques_img epub">
+                        <label class="control-label">epub File</label>
+                    <div class="upload_ques_img epub">
                     	<input name="book_epub" type="file">
                     </div>
                 </div>

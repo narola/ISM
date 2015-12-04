@@ -2334,6 +2334,12 @@ td p.active {
     border: 1px solid rgba(0, 0, 0, 0.1);
     height: 155px;
 }
-input.form-control.smallinput {
-    width: 92% !important;
+input.form-control.smallinput,#s2id_authors{
+    width: 94% !important;
+}
+.add_book_page{
+	overflow-x: hidden;
+}
+.book_desc{
+	height: 124px !important;
 }
