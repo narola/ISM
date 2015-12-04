@@ -188,19 +188,19 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                if (arrListSubject != null && position > 1) {
+                if (arrListSubject != null && position > 0) {
 
                     /*this is to check that question are of this exam*/
-                    if (arrListSubject.get(position - 2).getId().equals(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID))) {
+                    if (arrListSubject.get(position - 1).getId().equals(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID))) {
                         questionBankListAdapter.canAddToPreview = true;
                     } else {
                         questionBankListAdapter.canAddToPreview = false;
                     }
                     if (arrListQuestions.size() > 0 && arrListSubject != null) {
-                        filterResults(Integer.parseInt(arrListSubject.get(position - 2).getId()), null);
+                        filterResults(Integer.parseInt(arrListSubject.get(position - 1).getId()), null);
                     }
                     if (Utility.isConnected(getActivity())) {
-                        callApiGetTopics(Integer.parseInt(arrListSubject.get(position - 2).getId()));
+                        callApiGetTopics(Integer.parseInt(arrListSubject.get(position - 1).getId()));
                     } else {
                         Utility.toastOffline(getActivity());
                     }
@@ -208,6 +208,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
                 } else {
                     Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, arrListDefalt, Adapters.ADAPTER_SMALL);
+//                    clearFilters();
                 }
             }
 
@@ -402,7 +403,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     arrListSubject.addAll(responseHandler.getSubjects());
                     List<String> subjects = new ArrayList<String>();
                     subjects.add(getString(R.string.strsubject));
-                    subjects.add(getString(R.string.strall));
                     for (Subjects subject : arrListSubject) {
                         subjects.add(subject.getSubjectName());
 
@@ -627,23 +627,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             questionBankListAdapter.addAll(latestlistOfQuestionBank);
             questionBankListAdapter.notifyDataSetChanged();
         }
-
-        //sorting for all question based on subjects
-        else {
-            if (copylistOfQuestionBank.size() > 0) {
-                if (typeOfSort == SORT_UP) {
-                    // Debug.e("Sort_all_questions_up====================", "sort up");
-                    Collections.sort(copylistOfQuestionBank);
-
-                } else {
-//                Debug.e("Sort_all_questions down====================", "sort down");
-                    Collections.sort(copylistOfQuestionBank, Collections.reverseOrder());
-                }
-                questionBankListAdapter.addAll(copylistOfQuestionBank);
-                questionBankListAdapter.notifyDataSetChanged();
-            }
-        }
-
     }
 
     /**
@@ -652,7 +635,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
      * <p/>
      * 1 A.first in only subjectid based filter ,we reach from edit exam(assignment exam and automatically we see the question bank
      * filtered based on the subjectid passed from param.
-     * Now we copied the result into copylist and latestQuestionbank list to handle further filter based on that current list.
+     * Now we copied the result into copylist .
+     * and at end copied whole copy list into latestQuestionbank list to handle further filter based on that current list.
      * <p/>
      * Assumption: We already got subject based all questions in question bank(because of edit assignment.
      * case 1: If user sort the data without filtering subjective/objective from spinner then latestQuestion arraylist will be used to perform operation.
@@ -661,18 +645,16 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void filterResults(int subjectId, String topicId) {
         copylistOfQuestionBank.clear();
-        //latestlistOfQuestionBank.clear();
+        latestlistOfQuestionBank.clear();
 
         if (arrListQuestions.size() > 0) {
+            int count = 0;
             for (Questions wp : arrListQuestions) {
-                int count = 0;
-
                 //filter based on subject id and topic id (based on subjects)
                 if (topicId != null && !topicId.equalsIgnoreCase("")) {
                     if (wp.getTopicId().equalsIgnoreCase(topicId) && wp.getSubjectId().equalsIgnoreCase(Integer.toString(subjectId))) {
                         Debug.e(TAG + "filter success", "" + count++);
                         copylistOfQuestionBank.add(wp);
-                        latestlistOfQuestionBank.addAll(copylistOfQuestionBank);
                     }
                 }
 
@@ -681,15 +663,15 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     if (wp.getSubjectId().equalsIgnoreCase(Integer.toString(subjectId))) {
                         Debug.e(TAG + "filter success", "" + count++);
                         copylistOfQuestionBank.add(wp);
-                        latestlistOfQuestionBank.addAll(copylistOfQuestionBank);
                     }
                 }
             }
+            latestlistOfQuestionBank.addAll(copylistOfQuestionBank);
 
-            if (copylistOfQuestionBank.size() > 0) {
-                questionBankListAdapter.addAll(copylistOfQuestionBank);
+            if (latestlistOfQuestionBank.size() > 0) {
+                questionBankListAdapter.addAll(latestlistOfQuestionBank);
             } else {
-                questionBankListAdapter.addAll(copylistOfQuestionBank);
+                questionBankListAdapter.addAll(latestlistOfQuestionBank);
                 Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
             }
 
@@ -700,7 +682,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         Debug.e(TAG, "examtype is:" + examtype);
 
         latestlistOfQuestionBank.clear();
-
         if (copylistOfQuestionBank.size() > 0) {
             for (Questions wp : copylistOfQuestionBank) {
                 //filter based on only exam type
@@ -710,7 +691,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
             }
             if (latestlistOfQuestionBank.size() > 0) {
-                Debug.e(TAG + "results after filter:", "" + copylistOfQuestionBank.size());
+                Debug.e(TAG + "results after filter for exam type:" + examtype, "" + latestlistOfQuestionBank.size());
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
             } else {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);

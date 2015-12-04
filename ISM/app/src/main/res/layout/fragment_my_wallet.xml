@@ -171,9 +171,11 @@
 	</LinearLayout>
 
 	<View
+		android:id="@+id/view_highlighter_triangle"
 		android:layout_width="20dp"
 		android:layout_height="30dp"
 		android:layout_marginTop="478dp"
 		android:layout_alignParentRight="true"
+		android:visibility="gone"
 		android:background="@drawable/shape_triangle_profile_controller" />
 </RelativeLayout>

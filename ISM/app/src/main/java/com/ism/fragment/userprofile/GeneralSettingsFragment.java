@@ -28,11 +28,11 @@ import java.util.ArrayList;
  * Created by c161 on 06/11/15.
  * updated by  c162
  */
-public class GeneralSettingsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class GeneralSettingsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, HostActivity.ProfileControllerPresenceListener {
 
     private static final String TAG = GeneralSettingsFragment.class.getSimpleName();
 
-    private View view;
+    private View view, viewHighlighterTriangle;
     //    private FrameLayout flFragmentContainerLeft;
 //    private FrameLayout flFragmentContainer;
     private static final int FRAGMENT_PRIVACY_SETTING = 0;
@@ -67,10 +67,13 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
 
     private void initGlobal() {
         preferencesList = new ArrayList<>();
+        viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
         txtPrivacySetting = (TextView) view.findViewById(R.id.txt_privacy_setting);
         txtSmsAlerts = (TextView) view.findViewById(R.id.txt_sms_alerts);
         txtBlockUsers = (TextView) view.findViewById(R.id.txt_block_users);
         txtNotifications = (TextView) view.findViewById(R.id.txt_notifications);
+
+        viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
         myTypeFace = new MyTypeFace(getActivity());
         txtBlockUsers.setTypeface(myTypeFace.getRalewayRegular());
@@ -182,6 +185,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         try {
             activityHost = (HostActivity) activity;
             fragListener = (FragmentListener) activity;
+	        activityHost.setListenerProfileControllerPresence(this);
             if (fragListener != null) {
                 fragListener.onFragmentAttached(HostActivity.FRAGMENT_GENERAL_SETTINGS);
             }
@@ -282,6 +286,16 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         PreferenceData.setStringPrefs(key, context, value);
         preferencesList.add(requestObject);
     }
+
+	@Override
+	public void onProfileControllerAttached() {
+		viewHighlighterTriangle.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onProfileControllerDetached() {
+		viewHighlighterTriangle.setVisibility(View.GONE);
+	}
 
 //    private String getKeyPereference(String keyPref) {
 //        String key = PreferenceData.getStringPrefs(keyPref, getActivity(), "");
