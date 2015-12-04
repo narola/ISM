@@ -34,9 +34,6 @@ public class AddQuestionContainerFragment extends Fragment {
     public QuestionAddEditFragment questionAddEditFragment;
     private Boolean isFrontVisible = false;
 
-    public static final int FRAGMENT_QUESTIONLIST = 0, FRAGMENT_PREVIEWQUESTION = 1;
-    private String exam_id_received_from_bundle = "";
-
     public AddQuestionContainerFragment() {
 
     }
@@ -44,11 +41,7 @@ public class AddQuestionContainerFragment extends Fragment {
 
     public static AddQuestionContainerFragment newInstance(Bundle bundleArgument) {
         AddQuestionContainerFragment addQuestionContainerFragment = new AddQuestionContainerFragment();
-        if (bundleArgument != null) {
-            //  Log.e(TAG, bundleArgument.getString(AppConstant.ARG_EXAM_ID));
-            addQuestionContainerFragment.setArguments(bundleArgument);
-
-        }
+        addQuestionContainerFragment.setArguments(bundleArgument);
         return addQuestionContainerFragment;
 
     }
@@ -81,19 +74,17 @@ public class AddQuestionContainerFragment extends Fragment {
         initGlobal();
 
         if (savedInstanceState == null) {
-
             getFragmentManager()
                     .beginTransaction()
                     .add(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
                     .commit();
 
+            showHideFragment(questionAddEditFragment);
+
             getFragmentManager()
                     .beginTransaction()
                     .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
                     .commit();
-
-            showHideFragment(questionAddEditFragment);
-
             isFrontVisible = true;
         }
 
@@ -127,6 +118,15 @@ public class AddQuestionContainerFragment extends Fragment {
         }
     }
 
+    private void loadFragmentInRightContainer() {
+        try {
+            getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, previewQuestionFragment).commit();
+        } catch (Exception e) {
+            Debug.e(TAG, "loadFragment Exception : " + e.toString());
+        }
+
+    }
+
     public void showHideFragment(final Fragment fragment) {
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -150,19 +150,11 @@ public class AddQuestionContainerFragment extends Fragment {
         ft.commit();
     }
 
-    private void loadFragmentInRightContainer() {
 
-        try {
-            getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, previewQuestionFragment).commit();
-        } catch (Exception e) {
-            Debug.e(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
-
-        }
-
-    }
+ /*from here methods start to communicate between three fragments*/
 
 
- /*thsese are the listof questions to add it in preview */
+    /*thsese are the listof questions to add it in preview */
 
     public ArrayList<Questions> listOfPreviewQuestionsToAdd = new ArrayList<Questions>();
 
@@ -175,10 +167,22 @@ public class AddQuestionContainerFragment extends Fragment {
         return previewQuestionFragment.arrListQuestions;
     }
 
+
+    public void setListOfExamQuestions(ArrayList<Questions> arrListExamQuestions) {
+        previewQuestionFragment.setExamQuestions(arrListExamQuestions);
+    }
+
+
     /*this is to add question to preview fragment*/
     public void addQuestionsToPreviewFragment() {
-        Debug.e(TAG, "The size of question list to add it in preview" + getListOfPreviewQuestionsToAdd().size());
         previewQuestionFragment.addQuestionsToPreviewFragment(getListOfPreviewQuestionsToAdd());
+    }
+
+    /*this is to update check box view in questionlist after delete it from preview questions*/
+    public void updateQuestionListviewAfterDeleteQuestionInPreview(Questions question) {
+        questionListFragment.updateViewAfterDeleteInPreviewQuestion(question.getQuestionId());
+        previewQuestionFragment.arrListQuestions.remove(question);
+        questionAddEditFragment.updateAddToPreviewCheckBoxStatus();
     }
 
 
@@ -220,10 +224,9 @@ public class AddQuestionContainerFragment extends Fragment {
         flipCard();
     }
 
-
     /*this is to edit question data after edit.*/
     public void setQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData, Boolean isChecked) {
-        questionListFragment.updateQuestionDataAfterEditQuestion(prevQuestionData, updatedQuestionData);
+        questionListFragment.updateQuestionDataAfterEditQuestion(prevQuestionData, updatedQuestionData, isChecked);
         previewQuestionFragment.updateQuestionDataAfterEditQuestion(prevQuestionData, updatedQuestionData, isChecked);
     }
 
@@ -234,15 +237,4 @@ public class AddQuestionContainerFragment extends Fragment {
             previewQuestionFragment.addQuestionDataAfterAddQuestion(question);
         }
     }
-
-    public void setListOfExamQuestions(ArrayList<Questions> arrListExamQuestions) {
-        previewQuestionFragment.setExamQuestions(arrListExamQuestions);
-    }
-
-    /*this is to update check box view in questionlist after delete it from preview questions*/
-    public void updateQuestionListviewAfterRemoveInPreview(Questions question) {
-        questionListFragment.updateViewAfterDeleteInPreviewQuestion(question.getQuestionId());
-        previewQuestionFragment.arrListQuestions.remove(question);
-    }
-
 }

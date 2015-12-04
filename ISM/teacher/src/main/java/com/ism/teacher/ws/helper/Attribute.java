@@ -99,6 +99,7 @@ public class Attribute {
     private String questionCreatorId;
     private String questionScore;
     private ArrayList<AnswerChoices> answerChoices;
+    private String hashtagData;
 
     public String getFeedId() {
         return this.feedId;
@@ -784,15 +785,6 @@ public class Attribute {
         this.questionCreatorId = questionCreatorId;
     }
 
-//    public String getBankQuestionId() {
-//        return this.bankQuestionId;
-//    }
-//
-//    @JsonProperty("question_id")
-//    public void setBankQuestionId(String bankQuestionId) {
-//        this.bankQuestionId = questionCreatorId;
-//    }
-
     public String getQuestionScore() {
         return questionScore;
     }
@@ -810,6 +802,15 @@ public class Attribute {
     @JsonProperty("answer_choices")
     public void setAnswerChoices(ArrayList<AnswerChoices> answerChoices) {
         this.answerChoices = answerChoices;
+    }
+
+    public String getHashtagData() {
+        return this.hashtagData;
+    }
+
+    @JsonProperty("hashtag_data")
+    public void setHashtagData(String hashtagData) {
+        this.hashtagData = hashtagData;
     }
 
 }
