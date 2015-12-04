@@ -34,7 +34,6 @@ import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.AuthorBook;
 import com.ism.author.ws.model.Classrooms;
-import com.ism.author.ws.model.Topics;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
 import java.util.ArrayList;
@@ -77,9 +76,8 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private TextView tvExamTitle, tvExamExamschedule, tvExamExaminstruction, tvExamDeclareresult,
             tvExamNegativemarking, tvExamRandomquestion, tvExamUsescore, tvExamQuestionscorevalue, tvExamAddnegativemark;
-    private Spinner spExamClassroom, spExamBookname, spExamSubjecttopic, spExamPassingpercent, spExamExamCategory, spExamExammode,
+    private Spinner spExamClassroom, spExamBookname, spExamPassingpercent, spExamExamCategory, spExamExammode,
             spExamExamduration;
-    private ArrayList<Topics> arrListTopic;
     private ArrayList<Classrooms> arrListClassRooms;
     private ArrayList<AuthorBook> arrListAuthorBooks;
     private List<String> arrListDefalt, arrListPassingPercent, arrListExamDuration, arrListExamMode, arrListExamCategory;
@@ -96,7 +94,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private MyTypeFace myTypeFace;
 
     private static int PASSINGPERCENT_INTERVAL = 5, PASSINGPERCENT_STARTVALUE = 30, PASSINGPERCENT_ENDVALUE = 99;
-    private static int EXAMDURATION_INTERVAL = 30, EXAMDURATION_STARTVALUE = 30, EXAMDURATION_ENDVALUE = 300;
+    private static int EXAMDURATION_INTERVAL = 5, EXAMDURATION_STARTVALUE = 30, EXAMDURATION_ENDVALUE = 300;
 
     String examStartDate = "", examEndDate = "", strAssignmenttext = "";
     private InputValidator inputValidator;
@@ -138,7 +136,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
         spExamClassroom = (Spinner) view.findViewById(R.id.sp_exam_classroom);
         spExamBookname = (Spinner) view.findViewById(R.id.sp_exam_bookname);
-        spExamSubjecttopic = (Spinner) view.findViewById(R.id.sp_exam_subjecttopic);
         spExamPassingpercent = (Spinner) view.findViewById(R.id.sp_exam_passingpercent);
         spExamExamCategory = (Spinner) view.findViewById(R.id.sp_exam_examcategory);
         spExamExammode = (Spinner) view.findViewById(R.id.sp_exam_exammode);
@@ -277,13 +274,13 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
         if (!getArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
             setExamDetails();
-            btnExamSetquestion.setVisibility(View.VISIBLE);
             spExamBookname.setEnabled(false);
             spExamExammode.setEnabled(false);
 
             /*we cant change the exam mode and subject for that particular exam if it once created*/
         } else {
             btnExamSetquestion.setVisibility(View.GONE);
+            btnExamSave.setVisibility(View.VISIBLE);
 
         }
         callApiGetClassrooms();
@@ -295,6 +292,17 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private void setExamDetails() {
 
+        if (getArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+
+            btnExamSetquestion.setVisibility(View.GONE);
+            btnExamSave.setVisibility(View.VISIBLE);
+
+        } else {
+
+            btnExamSetquestion.setVisibility(View.VISIBLE);
+            btnExamSave.setVisibility(View.GONE);
+
+        }
         etExamName.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
         spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE)));
         setExamType(getArguments().getString(ExamsAdapter.ARG_EXAM_TYPE));
@@ -307,7 +315,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private void callApiGetClassrooms() {
 
-
         if (Utility.isConnected(mContext)) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
@@ -319,21 +326,8 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         } else {
             Utility.toastOffline(mContext);
         }
-    }
 
-//    private void callApiGetSubjects() {
-//        if (Utility.isConnected(mContext)) {
-//            try {
-//                ((AuthorHostActivity) getActivity()).showProgress();
-//                new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-//                        .execute(WebConstants.GETSUBJECT);
-//            } catch (Exception e) {
-//                Debug.e(TAG + Utility.getString(R.string.strerrormessage, mContext), e.getLocalizedMessage());
-//            }
-//        } else {
-//            Utility.toastOffline(mContext);
-//        }
-//    }
+    }
 
     private void callApiGetAuthorBooks() {
 
@@ -342,7 +336,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId("52");
-
                 new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETBOOKSFORAUTHOR);
             } catch (Exception e) {
@@ -680,21 +673,12 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utils.showToast(Utility.getString(R.string.msg_success_createexam, mContext), mContext);
+                    svCreateExam.fullScroll(ScrollView.FOCUS_UP);
                     btnExamSetquestion.setVisibility(View.VISIBLE);
-
+                    btnExamSave.setVisibility(View.GONE);
                     Debug.e(TAG, "The Created ExamId is::" + responseHandler.getCreateExam().get(0).getExamId());
-
-
                     getArguments().putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
-//                    if (getArguments() != null) {
-//                        getArguments().putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
-//                    } else {
-//                        Bundle bundleExamDetails = new Bundle();
-//                        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
-//                        this.setArguments(bundleExamDetails);
-//                    }
                     setBundleArguments();
-
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), mContext);
                 }
@@ -741,10 +725,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     public void onClick(View v) {
         if (v == btnExamSave) {
             if (isInputsValid()) {
-
                 callApiCreateExam();
-            } else {
-                svCreateExam.fullScroll(ScrollView.FOCUS_UP);
             }
         } else if (v == btnExamSetquestion) {
 

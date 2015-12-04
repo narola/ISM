@@ -425,7 +425,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             imgRemoveMcqRow.setVisibility(View.VISIBLE);
             llAddMcqanswer.addView(getMcqAnswerView(viewPositionToAdd + 1));
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.msg_mcq_ans_limit), getActivity());
+//            Utils.showToast(getActivity().getResources().getString(R.string.msg_mcq_ans_limit), getActivity());
+            Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.msg_mcq_ans_limit));
         }
     }
 
@@ -817,12 +818,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
 
                         Utils.showToast(getString(R.string.question_edit_success), getActivity());
+//                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_edit_success));
                         getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
                                 makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
                                 chkAddquestionPreview.isChecked());
                     } else {
 
                         Utils.showToast(getString(R.string.question_add_success), getActivity());
+//                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_add_success));
                         /*this is for add question data*/
                         getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
                                 chkAddquestionPreview.isChecked());
@@ -834,6 +837,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
+
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseCreateQuestions api Exception : " + error.toString());

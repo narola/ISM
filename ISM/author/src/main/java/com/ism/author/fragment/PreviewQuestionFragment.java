@@ -140,7 +140,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                     Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
                 }
             } else {
-                Utils.showToast(getString(R.string.strnopreviewquestions), getActivity());
+                Utility.alert(getActivity(), null, getString(R.string.strnopreviewquestions));
+//                Utils.showToast(getString(R.string.strnopreviewquestions), getActivity());
             }
         } else {
             Utility.toastOffline(getActivity());
@@ -188,6 +189,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 ResponseHandler responseObj = (ResponseHandler) object;
                 if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utils.showToast(getActivity().getString(R.string.str_success_setexamquestions), getActivity());
+//                    Utility.alert(getActivity(), null, getActivity().getString(R.string.str_success_setexamquestions));
                 } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
