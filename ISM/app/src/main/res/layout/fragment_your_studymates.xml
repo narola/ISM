@@ -42,15 +42,19 @@
 			android:layout_width="40dp"
 			android:layout_height="match_parent"
 			android:layout_below="@id/txt_header_recommended"
-			android:background="@color/color_gray_light"/>
+			android:src="@drawable/ic_previous_studymate"
+			android:scaleType="centerInside"
+			android:background="@color/color_white"/>
 
 		<ImageView
 			android:id="@+id/img_next"
 			android:layout_width="40dp"
 			android:layout_height="match_parent"
-			android:background="@color/color_gray_light"
 			android:layout_below="@id/txt_header_recommended"
-			android:layout_alignParentRight="true"/>
+			android:layout_alignParentRight="true"
+			android:src="@drawable/ic_next_studymate"
+			android:scaleType="centerInside"
+			android:background="@color/color_white"/>
 
 		<android.support.v7.widget.RecyclerView
 			android:id="@+id/recycler_recommended_studymates"
