@@ -108,7 +108,7 @@
     <string name="strsubject">Subject</string>
     <string name="strtopic">Topic</string>
     <string name="strsubmissiondate">Submission Date:</string>
-    <string name="strpersonalinformation">Personal Information</string>
+    <string name="strpersonalinformation">Exam Information</string>
     <string name="strexamname">Exam Name</string>
     <string name="strsubjectname">Subject Name</string>
     <string name="strpassingpercent">Passing Percent</string>

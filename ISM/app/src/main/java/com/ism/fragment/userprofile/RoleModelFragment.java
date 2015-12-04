@@ -3,6 +3,8 @@ package com.ism.fragment.userprofile;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -23,7 +25,6 @@ import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
-import com.ism.views.HorizontalListView;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
@@ -42,10 +43,10 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
     private View view;
     private MyTypeFace myTypeFace;
     private HostActivity activityHost;
-    public static HorizontalListView listViewFav;
+    public static RecyclerView listViewFav;
     FavoriteRoleModelsAdapter favRoleModelsAdapter;
     private ArrayList<RolemodelData> arrayListFav;
-    public static HorizontalListView listViewSuggested;
+    public static RecyclerView listViewSuggested;
     SuggestedRoleModelsAdapter suggestedRoleModelsAdapter;
     private ArrayList<RolemodelData> arrayListSuggested;
     public static TextView txtSuggestedEmpty;
@@ -57,6 +58,9 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
     private ArrayList<String> arrayListFavItems = new ArrayList<>();
     private ArrayList<String> arrayListUnFavItems = new ArrayList<>();
     private String strSearch = "";
+    private LinearLayoutManager layoutManagerFav, layoutManagerSuggested;
+    private ImageView imgNextFav, imgPrevFav;
+    private ImageView imgNextSuggested, imgPrevSuggested;
 
     public static RoleModelFragment newInstance() {
         RoleModelFragment fragment = new RoleModelFragment();
@@ -70,7 +74,6 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_profile_books, container, false);
-
         initGlobal();
 
         return view;
@@ -97,120 +100,134 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
         txtSuggestedRoleModels.setText(R.string.strSuggestedRoleModels);
         txtFavRoleModels.setText(R.string.strFavRolemodels);
 
+        txtFavEmpty.setText(R.string.no_rolemodels_available);
+        txtSuggestedEmpty.setText(R.string.no_rolemodels_available);
 
-        listViewFav = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
-        listViewSuggested = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);
+        listViewFav = (RecyclerView) view.findViewById(R.id.lv_fav_books);
+        listViewSuggested = (RecyclerView) view.findViewById(R.id.lv_suggested_books);
 
-        //imgNxtFav = (ImageView) view.findViewById(R.id.img_next_fav);
-        //imgPrevFav = (ImageView) view.findViewById(R.id.img_prev_fav);
+        layoutManagerFav = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        listViewFav.setLayoutManager(layoutManagerFav);
+
+        layoutManagerSuggested = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        listViewSuggested.setLayoutManager(layoutManagerSuggested);
+
+        imgNextFav = (ImageView) view.findViewById(R.id.img_next_fav);
+        imgPrevFav = (ImageView) view.findViewById(R.id.img_prev_fav);
+        imgNextSuggested = (ImageView) view.findViewById(R.id.img_next_suggested);
+        imgPrevSuggested = (ImageView) view.findViewById(R.id.img_prev_suggested);
 
         callApiGetRoleModelsForUser();
+        onClicks();
+    }
 
-        imgFavSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (etFavSearch.getVisibility() == View.VISIBLE) {
-//		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
-//		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
-                    etFavSearch.setVisibility(View.GONE);
-                    View view = getActivity().getCurrentFocus();
-                    Utility.hideKeyboard(getActivity(), getView());
-                    setUpFavList(arrayListFav);
-                    etFavSearch.setText("");
-
-                } else {
-                    Utility.startSlideAnimation(etFavSearch, etFavSearch.getWidth(), 0, 0, 0);
-                    Utility.startSlideAnimation(imgFavSearch, etFavSearch.getWidth(), 0, 0, 0);
-                    etFavSearch.setVisibility(View.VISIBLE);
-                    Utility.showSoftKeyboard(etFavSearch, getActivity());
+    private void onClicks() {
+        try {
+            imgNextFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utility.showToast(getActivity(), "Next");
+                    listViewFav.getLayoutManager().smoothScrollToPosition(listViewFav, null, layoutManagerFav.findLastCompletelyVisibleItemPosition() + 1);
                 }
 
-            }
-        });
-        imgSuggestedSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            });
 
-                if (etSuggestedSearch.getVisibility() == View.VISIBLE) {
-//		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
-//		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
-                    etSuggestedSearch.setVisibility(View.GONE);
-                    View view = getActivity().getCurrentFocus();
-                    Utility.hideKeyboard(getActivity(), getView());
-                    setUpSuggestedList(arrayListSuggested);
-                    etSuggestedSearch.setText("");
-                } else {
-                    Utility.startSlideAnimation(etSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
-                    Utility.startSlideAnimation(imgSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
-                    etSuggestedSearch.setVisibility(View.VISIBLE);
-                    Utility.showSoftKeyboard(etSuggestedSearch, getActivity());
+            imgPrevFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utility.showToast(getActivity(), "Previous");
+                    listViewFav.getLayoutManager().smoothScrollToPosition(listViewFav, null, layoutManagerFav.findFirstCompletelyVisibleItemPosition() > 0? layoutManagerFav.findFirstCompletelyVisibleItemPosition() - 1:0);
                 }
-            }
-        });
-//        etFavSearch
-//                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//                    @Override
-//                    public boolean onEditorAction(TextView v, int actionId,
-//                                                  KeyEvent event) {
-//                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                            favRoleModelsAdapter.getFilter()
-//                                    .filter(etFavSearch.getText().toString()
-//                                            .trim());
-//                            Utility.hideKeyboard(getActivity(), getView());
-//                            return true;
-//                        }
-//                        return false;
-//                    }
-//                });
-//        etSuggestedSearch
-//                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//                    @Override
-//                    public boolean onEditorAction(TextView v, int actionId,
-//                                                  KeyEvent event) {
-//                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                            suggestedRoleModelsAdapter.getFilter()
-//                                    .filter(etSuggestedSearch.getText().toString()
-//                                            .trim());
-//                            Utility.hideKeyboard(getActivity(), getView());
-//                            return true;
-//                        }
-//                        return false;
-//                    }
-//                });
-        etFavSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                strSearch = "";
-            }
+            });
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                strSearch = strSearch + s;
-                setUpFavList(onSearch(arrayListFav, strSearch));
-            }
+            imgNextSuggested.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utility.showToast(getActivity(), "Next");
+                    listViewSuggested.getLayoutManager().smoothScrollToPosition(listViewSuggested, null, layoutManagerSuggested.findLastCompletelyVisibleItemPosition() + 1);
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                }
+            });
 
-            }
-        });
-        etSuggestedSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                strSearch = "";
-            }
+            imgPrevSuggested.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utility.showToast(getActivity(), "Previous");
+                    listViewSuggested.getLayoutManager().smoothScrollToPosition(listViewSuggested, null, layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() - 1:0);
+                }
+            });
+            imgFavSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (etFavSearch.getVisibility() == View.VISIBLE) {
+                        etFavSearch.setVisibility(View.GONE);
+                        Utility.hideKeyboard(getActivity(), getView());
+                        setUpFavList(arrayListFav);
+                        etFavSearch.setText("");
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                strSearch = strSearch + s;
-                setUpSuggestedList(onSearch(arrayListSuggested, strSearch));
-            }
+                    } else {
+                        Utility.startSlideAnimation(etFavSearch, etFavSearch.getWidth(), 0, 0, 0);
+                        Utility.startSlideAnimation(imgFavSearch, etFavSearch.getWidth(), 0, 0, 0);
+                        etFavSearch.setVisibility(View.VISIBLE);
+                        Utility.showSoftKeyboard(etFavSearch, getActivity());
+                    }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                }
+            });
+            imgSuggestedSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                    if (etSuggestedSearch.getVisibility() == View.VISIBLE) {
+                        etSuggestedSearch.setVisibility(View.GONE);
+                        Utility.hideKeyboard(getActivity(), getView());
+                        setUpSuggestedList(arrayListSuggested);
+                        etSuggestedSearch.setText("");
+                    } else {
+                        Utility.startSlideAnimation(etSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
+                        Utility.startSlideAnimation(imgSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
+                        etSuggestedSearch.setVisibility(View.VISIBLE);
+                        Utility.showSoftKeyboard(etSuggestedSearch, getActivity());
+                    }
+                }
+            });
+            etFavSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    strSearch = "";
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    strSearch = strSearch + s;
+                    setUpFavList(onSearch(arrayListFav, strSearch));
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            etSuggestedSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    strSearch = "";
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    strSearch = strSearch + s;
+                    setUpSuggestedList(onSearch(arrayListSuggested, strSearch));
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        } catch (Exception e) {
+            Debug.i(TAG, "onClicks Exception : " + e.getLocalizedMessage());
+        }
     }
 
     private void callApiGetRoleModelsForUser() {

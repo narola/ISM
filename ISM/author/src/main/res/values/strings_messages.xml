@@ -59,6 +59,7 @@
     <string name="msg_success_addquestion">Question added successfully.</string>
     <string name="msg_success_editquestion">Question edited successfully.</string>
     <string name="msg_success_sethashtag">HashTags Added Successfully.</string>
+    <string name="msg_success_imgupload_question">Image Successfully added to Question.</string>
     <string name="msg_validation_addsubjective_question">You cant add Objective Question in Subjective Exam.</string>
     <string name="msg_validation_addobjective_question">You cant add Subjective Question in Objective Exam.</string>
     <string name="msg_validation_add_question">You cant add another subject question in this Exam.</string>

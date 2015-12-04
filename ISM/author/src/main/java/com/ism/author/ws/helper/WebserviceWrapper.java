@@ -224,7 +224,10 @@ public class WebserviceWrapper {
                         case WebConstants.GETBOOKSFORAUTHOR:
                             responseObject = new WebserviceConnector(WebConstants.URL_GETBOOKSFORAUTHOR).execute(ResponseHandler.class, attribute);
                             break;
-
+                        case WebConstants.UPLOADMEDIAFORQUESTION:
+                            responseObject = new WebserviceConnector(WebConstants.URL_UPLOADMEDIAFORQUESTION).uploadMedia(ResponseHandler.class,
+                                    (Attribute) attribute);
+                            break;
                     }
                 }
             } catch (Exception e) {
@@ -243,7 +246,6 @@ public class WebserviceWrapper {
 
             webserviceResponse.onResponse(currentApiCode, responseObject, null);
             super.onPostExecute(responseObject);
-
 
         }
     }

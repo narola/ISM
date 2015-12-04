@@ -72,7 +72,7 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 
 	    Global.strProfilePic = WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AcceptTutorialGroupActivity.this);
 
-	    Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
+//	    Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
 
 	    imageLoader.displayImage(Global.strProfilePic, imgUserDp, ISMStudent.options);
 	    txtUserName.setText(PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AcceptTutorialGroupActivity.this));

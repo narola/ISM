@@ -319,7 +319,7 @@ public class Utility {
         try {
             return new DisplayImageOptions.Builder()
                     .cacheInMemory(true)
-                    .showImageOnLoading(R.drawable.ic_classmates_active)
+                    .showImageOnLoading(R.drawable.img_loading)
                     .showImageForEmptyUri(placeholder)
                     .showImageOnFail(failed)
                     .cacheOnDisk(true)

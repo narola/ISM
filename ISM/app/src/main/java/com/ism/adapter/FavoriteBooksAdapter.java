@@ -1,10 +1,10 @@
 package com.ism.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,65 +22,33 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class FavoriteBooksAdapter extends BaseAdapter {
+public class FavoriteBooksAdapter extends RecyclerView.Adapter<FavoriteBooksAdapter.ViewHolder> {
+
     private static final String TAG = FavoriteBooksAdapter.class.getSimpleName();
     private final HostActivity.BooksListner booksListner;
-    private HostActivity.ScrollListener scrollListener;
     Context context;
     ArrayList<BookData> arrayList = new ArrayList<>();
-    LayoutInflater inflater;
     int total = 0;
 
-    public FavoriteBooksAdapter(Context context, ArrayList<BookData> arrayList, HostActivity.BooksListner booksListner, HostActivity.ScrollListener scrollListener) {
+    public FavoriteBooksAdapter(Context context, ArrayList<BookData> arrayList, HostActivity.BooksListner booksListner) {
         this.context = context;
         this.arrayList = arrayList;
-        this.scrollListener = scrollListener;
-        inflater = LayoutInflater.from(context);
         this.booksListner = booksListner;
     }
 
     @Override
-    public int getCount() {
-        return arrayList.size();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View view = LayoutInflater.from(context).inflate(R.layout.row_user_books, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        return viewHolder;
     }
 
     @Override
-    public Object getItem(int position) {
-        return arrayList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.row_user_books, null);
-            holder = new ViewHolder();
-
-            holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
-            holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
-            holder.imgAddToUnFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
-            holder.imgLibraryBook = (ImageView) convertView.findViewById(R.id.img_book_add);
-            holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
-            holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
-            holder.imgInfo.setVisibility(View.VISIBLE);
-            holder.imgAddToUnFav.setVisibility((View.VISIBLE));
-            holder.imgLibraryBook.setVisibility((View.VISIBLE));
-
-            holder.imgAddToUnFav.setBackgroundResource(R.drawable.img_like_red);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         try {
             holder.txtBookAuthor.setTypeface(Global.myTypeFace.getRalewayRegular());
             holder.txtBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
-            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getFrontCoverImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
             if (arrayList.get(position).getIsInLibrary().equals("1")) {
                 holder.imgLibraryBook.setActivated(true);
@@ -89,12 +57,6 @@ public class FavoriteBooksAdapter extends BaseAdapter {
 
             }
             Debug.i(TAG, "view called : " + position + "Total position : " + total++);
-            if (position == 0) {
-                scrollListener.isFirstPosition();
-            }
-            if (arrayList.size() - 1 == position) {
-                scrollListener.isLastPosition();
-            }
             holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,14 +91,23 @@ public class FavoriteBooksAdapter extends BaseAdapter {
             });
 
         } catch (Exception e) {
-            Debug.i(TAG, "getView Exception : " + e.getLocalizedMessage());
+            Debug.i(TAG,"onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
 
-        return convertView;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public int getItemCount() {
+        return arrayList.size();
     }
 
 
-    class ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imgBook;
         private ImageView imgInfo;
@@ -145,6 +116,18 @@ public class FavoriteBooksAdapter extends BaseAdapter {
         private TextView txtBookAuthor;
         private TextView txtBookName;
 
-
+        public ViewHolder(View itemView) {
+            super(itemView);
+            imgBook = (ImageView) itemView.findViewById(R.id.img_pic);
+            imgInfo = (ImageView) itemView.findViewById(R.id.img_book_info);
+            imgAddToUnFav = (ImageView) itemView.findViewById(R.id.img_add_fav);
+            imgLibraryBook = (ImageView) itemView.findViewById(R.id.img_book_add);
+            txtBookName = (TextView) itemView.findViewById(R.id.txt_name);
+            txtBookAuthor = (TextView) itemView.findViewById(R.id.txt_author);
+            imgInfo.setVisibility(View.VISIBLE);
+            imgAddToUnFav.setVisibility((View.VISIBLE));
+            imgLibraryBook.setVisibility((View.VISIBLE));
+            imgAddToUnFav.setBackgroundResource(R.drawable.img_like_red);
+        }
     }
 }
