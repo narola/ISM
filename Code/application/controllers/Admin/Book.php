@@ -60,7 +60,6 @@ class Book extends ADMIN_Controller {
 		$this->data['author_books'] = $author_books;
 		$this->data['page_title'] = 'Books';
 		$this->template->load('admin/default','admin/book/list',$this->data);
-	
 	}
 
 	// function to view all books of a particular author
@@ -209,6 +208,8 @@ class Book extends ADMIN_Controller {
 	public function add(){
 
 		if(isset($_POST['btn_save'])){
+
+			/*
 			$data = array(
 					'book_name'=>$this->input->post('book_name'),
 					'book_description'=>$this->input->post('book_desc'),
@@ -224,7 +225,18 @@ class Book extends ADMIN_Controller {
 
 			p($_FILES);
 
-			// $notice_id = insert(TBL_NOTICEBOARD,replace_invalid_chars($data));
+			$book_id = insert(TBL_BOOKS,replace_invalid_chars($data));
+
+			$authors = $this->input->post('authors');
+			foreach ($authors as $author) {
+				$author_book = array(
+					'book_id'=>$book_id,
+					'role_id'=>$this->input->post('role_id'),
+				);
+
+				insert(TBL_AUTHOR_BOOK,replace_invalid_chars($author_book));
+			}
+			*/
 			p($_POST, true);
 		}
 		$this->data['authors'] = select(TBL_USERS,TBL_USERS.'.id,'.TBL_USERS.'.full_name',
