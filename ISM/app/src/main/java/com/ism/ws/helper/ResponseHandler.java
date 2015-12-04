@@ -21,6 +21,7 @@ import com.ism.ws.model.State;
 import com.ism.ws.model.StudymateRequest;
 import com.ism.ws.model.TutorialGroup;
 import com.ism.ws.model.User;
+import com.ism.ws.model.UserActivitiy;
 import com.ism.ws.model.UserPreferences;
 import com.ism.ws.model.Wallet;
 
@@ -41,6 +42,7 @@ public class ResponseHandler {
     private ArrayList<User> user;
     private ArrayList<User> highScorers;
     private ArrayList<User> studymates;
+    private ArrayList<User> recommendedStudymates;
     private ArrayList<TutorialGroup> tutorialGroup;
     private ArrayList<Comment> comments;
     private ArrayList<Notice> notices;
@@ -57,6 +59,7 @@ public class ResponseHandler {
     private ArrayList<Feeds> feeds;
     private ArrayList<Wallet> wallet;
     private ArrayList<BlockedUsers> blockedUsers;
+    private ArrayList<UserActivitiy> userActivities;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -272,6 +275,24 @@ public class ResponseHandler {
 
     public void setBlockedUsers(ArrayList<BlockedUsers> blockedUsers) {
         this.blockedUsers = blockedUsers;
+    }
+
+    @JsonProperty("suggested_studymates")
+    public ArrayList<User> getRecommendedStudymates() {
+        return recommendedStudymates;
+    }
+
+    public void setRecommendedStudymates(ArrayList<User> recommendedStudymates) {
+        this.recommendedStudymates = recommendedStudymates;
+    }
+
+    @JsonProperty("user_activities")
+    public ArrayList<UserActivitiy> getUserActivities() {
+        return this.userActivities;
+    }
+
+    public void setUserActivities(ArrayList<UserActivitiy> userActivities) {
+        this.userActivities = userActivities;
     }
 
 }

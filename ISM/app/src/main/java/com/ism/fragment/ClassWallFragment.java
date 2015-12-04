@@ -55,7 +55,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     private void initGlobal() {
         recyclerPostFeeds = (RecyclerView) view.findViewById(R.id.recycler_post);
         rlNewPost = (RelativeLayout) view.findViewById(R.id.rl_new_post);
-        recyclerPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
             @Override
