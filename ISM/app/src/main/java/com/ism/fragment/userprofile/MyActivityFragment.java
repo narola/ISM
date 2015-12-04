@@ -10,12 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.MyActivityAdapter;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.TestActivity;
+import com.ism.object.Global;
 import com.ism.utility.Debug;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class MyActivityFragment extends Fragment implements HostActivity.Profile
 
 	private View view, viewHighlighterTriangle;
 	private RecyclerView recyclerMyActivity;
+	private TextView txtEmptyListMessage;
 
 	private HostActivity activityHost;
 	private FragmentListener fragListener;
@@ -55,7 +58,9 @@ public class MyActivityFragment extends Fragment implements HostActivity.Profile
 	private void initGlobal() {
 		viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
 		recyclerMyActivity = (RecyclerView) view.findViewById(R.id.recycler_my_activity);
+		txtEmptyListMessage = (TextView) view.findViewById(R.id.txt_emptylist_message);
 
+		txtEmptyListMessage.setTypeface(Global.myTypeFace.getRalewayRegular());
 		viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
 		final ArrayList<TestActivity> arrayListActivities = new ArrayList<>();
@@ -91,6 +96,7 @@ public class MyActivityFragment extends Fragment implements HostActivity.Profile
 		recyclerMyActivity.addItemDecoration(itemDecoration);
 
 		adpMyActivity = new MyActivityAdapter(activityHost, arrayListActivities);
+		txtEmptyListMessage.setVisibility(arrayListActivities != null && arrayListActivities.size() > 0 ? View.GONE : View.VISIBLE);
 		recyclerMyActivity.setAdapter(adpMyActivity);
 
 	}

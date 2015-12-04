@@ -107,11 +107,10 @@
 			android:layout_height="match_parent"
 			android:background="@color/border_my_wallet"/>
 
-		<LinearLayout
+		<RelativeLayout
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
-			android:layout_weight="1"
-			android:orientation="vertical">
+			android:layout_weight="1">
 
 			<TextView
 				android:id="@+id/txt_generate_voucher2"
@@ -125,10 +124,12 @@
 				android:padding="10dp"/>
 
 			<LinearLayout
+				android:id="@+id/ll_labels"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="horizontal"
 				android:background="@color/bg_wallet_head"
+				android:layout_below="@id/txt_generate_voucher2"
 				android:padding="5dp">
 
 				<TextView
@@ -166,8 +167,18 @@
 				android:id="@+id/lv_voucher"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
+				android:layout_below="@id/ll_labels"
 				android:background="@android:color/white"></ListView>
-		</LinearLayout>
+
+			<TextView
+				android:id="@+id/txt_emptylist_message"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_below="@id/ll_labels"
+				android:gravity="center"
+				android:text="@string/no_coupons_available"
+				android:textSize="@dimen/text_size_emptylist_message_small"/>
+		</RelativeLayout>
 	</LinearLayout>
 
 	<View

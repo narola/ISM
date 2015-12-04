@@ -147,7 +147,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     public interface HostListenerEditAboutMe {
         public void onAmbition();
-
         public void onAboutMe();
     }
 
@@ -172,25 +171,17 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     public interface BooksListner {
         public void onAddToFav(int position);
-
         public void onRemoveFromFav(int position);
-
         public void onAddToLibrary(String id);
-
         public void onRemoveFromLibrary(String id);
-
         public void onSearchFav(ArrayList<BookData> arrayList);
-
         public void onSearchSuggested(ArrayList<BookData> arrayList);
     }
 
     public interface ManageResourcesListner {
         public void onAddToFav(int position);
-
         public void onRemoveFromFav(int position);
-
         public void onSearchFav(Object o);
-
         public void onSearchSuggested(Object o);
     }
 
