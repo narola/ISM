@@ -3,6 +3,7 @@ package com.ism.adapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
+import android.view.ViewGroup;
 
 import com.ism.fragment.userprofile.FindStudymatesFragment;
 import com.ism.fragment.userprofile.YourStudymatesFragment;

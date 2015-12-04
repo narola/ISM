@@ -74,6 +74,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     String examStartDate = "", examEndDate = "", strAssignmenttext = "";
     private InputValidator inputValidator;
+    Bundle bundleExamDetails = new Bundle();
 
     /**
      * Fragment Args
@@ -84,6 +85,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     public static String ARG_EXAM_TOPIC_ID = "examTopicId";
     public static String ARG_EXAM_QUESTION_SCORE = "examQuestionScore";
     public static String ARG_EXAM_BOOK_ID = "examBookId";
+    public static String ARG_IS_CREATE_EXAM = "isCreateExam";
 
 
     public AssignmentExamFragment() {
@@ -92,7 +94,16 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     public static AssignmentExamFragment newInstance(Fragment fragment, Context mContext, Bundle bundleArgument) {
         AssignmentExamFragment assignmentExamFragment = new AssignmentExamFragment();
-        assignmentExamFragment.setArguments(bundleArgument);
+
+        if (bundleArgument != null) {
+            assignmentExamFragment.setArguments(bundleArgument);
+            assignmentExamFragment.getArguments().putBoolean(ARG_IS_CREATE_EXAM, false);
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(ARG_IS_CREATE_EXAM, true);
+            assignmentExamFragment.setArguments(bundle);
+        }
+
         assignmentExamFragment.mContext = mContext;
         assignmentExamFragment.fragmentContext = fragment;
         return assignmentExamFragment;
@@ -286,7 +297,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
          *  so disable exam mode and subject selection spinner
          */
 
-        if (getArguments() != null) {
+        if (!getArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
             setExamDetails();
             btnExamSetquestion.setVisibility(View.VISIBLE);
             spExamExammode.setEnabled(false);
@@ -685,14 +696,14 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                     Utility.showToast(Utility.getString(R.string.msg_success_createexam, mContext), mContext);
                     btnExamSetquestion.setVisibility(View.VISIBLE);
 
-                    if (getArguments() != null) {
-                        getArguments().putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
-                    } else {
-                        Bundle bundleExamDetails = new Bundle();
-                        bundleExamDetails.putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
-                        setArguments(bundleExamDetails);
-                    }
-
+//                    if (getArguments() != null) {
+//                        getArguments().putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+//                    } else {
+//
+//                        bundleExamDetails.putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+//                        setArguments(bundleExamDetails);
+//                    }
+                    getArguments().putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
                     setBundleArguments();
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -738,9 +749,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             }
         } else if (v == btnExamSetquestion) {
 
-            if (getArguments() != null) {
-                setBundleArguments();
-            }
+//            if (getArguments() != null) {
+//                setBundleArguments();
+//            }
             ((CreateExamAssignmentContainerFragment) fragmentContext).hideTopBar();
             getFragmentManager().beginTransaction().
                     replace(R.id.fl_fragment_assignment_container, AddQuestionContainerFragment.newInstance(getArguments()))

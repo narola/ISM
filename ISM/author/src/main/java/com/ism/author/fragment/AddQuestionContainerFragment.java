@@ -200,9 +200,10 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
     /*this is to update check box view in questionlist after delete it from preview questions*/
-    public void updateQuestionListviewAfterRemoveInPreview(Questions question) {
+    public void updateQuestionListviewAfterDeleteQuestionInPreview(Questions question) {
         questionListFragment.updateViewAfterDeleteInPreviewQuestion(question.getQuestionId());
         previewQuestionFragment.arrListQuestions.remove(question);
+        questionAddEditFragment.updateAddToPreviewCheckBoxStatus();
     }
 
 
@@ -246,7 +247,7 @@ public class AddQuestionContainerFragment extends Fragment {
 
     /*this is to edit question data after edit.*/
     public void setQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData, Boolean isChecked) {
-        questionListFragment.updateQuestionDataAfterEditQuestion(prevQuestionData, updatedQuestionData);
+        questionListFragment.updateQuestionDataAfterEditQuestion(prevQuestionData, updatedQuestionData, isChecked);
         previewQuestionFragment.updateQuestionDataAfterEditQuestion(prevQuestionData, updatedQuestionData, isChecked);
     }
 

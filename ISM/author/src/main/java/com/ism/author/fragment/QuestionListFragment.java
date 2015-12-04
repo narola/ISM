@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
@@ -33,13 +31,13 @@ import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.AuthorBook;
 import com.ism.author.ws.model.Courses;
 import com.ism.author.ws.model.Questions;
-import com.ism.author.ws.model.Subjects;
-import com.ism.author.ws.model.Topics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -61,11 +59,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         this.setArguments(bundleArguments);
     }
 
-    private Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistTopic;
-    private List<String> arrListExamType, arrListDefalt;
-    private List<Subjects> arrListSubject;
+    private Spinner spQuestionlistFilter, spQuestionlistAuthorBooks, spQuestionlistSort;
+    private List<String> arrListFilter, arrListDefalt, arrListSort;
+    private List<AuthorBook> arrListAuthorBooks;
     private List<Courses> arrListCourses;
-    private List<Topics> arrListTopic;
     private EditText etSearchQuestions;
     private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview;
     private RecyclerView rvQuestionlist;
@@ -87,12 +84,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
-
         imgSearchQuestions = (ImageView) view.findViewById(R.id.img_search_questions);
 
-        spQuestionlistCourse = (Spinner) view.findViewById(R.id.sp_questionlist_course);
-        spQuestionlistSubject = (Spinner) view.findViewById(R.id.sp_questionlist_subject);
-        spQuestionlistTopic = (Spinner) view.findViewById(R.id.sp_questionlist_topic);
+        spQuestionlistFilter = (Spinner) view.findViewById(R.id.sp_questionlist_filter);
+        spQuestionlistAuthorBooks = (Spinner) view.findViewById(R.id.sp_questionlist_author_books);
+        spQuestionlistSort = (Spinner) view.findViewById(R.id.sp_questionlist_sorting);
 
         etSearchQuestions = (EditText) view.findViewById(R.id.et_search_questions);
 
@@ -114,15 +110,18 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         tvQuestionlistAddPreview.setOnClickListener(this);
 
 
-        arrListExamType = new ArrayList<String>();
-        arrListExamType.add(getString(R.string.strexamtype));
-        arrListExamType = Arrays.asList(getResources().getStringArray(R.array.examtype));
-        Adapters.setUpSpinner(getActivity(), spQuestionlistCourse, arrListExamType, Adapters.ADAPTER_SMALL);
+        arrListFilter = new ArrayList<String>();
+        arrListFilter.add(getString(R.string.strfilters));
+        arrListFilter = Arrays.asList(getResources().getStringArray(R.array.questionsfilter));
+        Adapters.setUpSpinner(getActivity(), spQuestionlistFilter, arrListFilter, Adapters.ADAPTER_SMALL);
+        spQuestionlistFilter.setSelection(1);
 
 
-        arrListDefalt = new ArrayList<String>();
-        arrListDefalt.add(getString(R.string.strtopic));
-        Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, arrListDefalt, Adapters.ADAPTER_SMALL);
+        arrListSort = new ArrayList<String>();
+        arrListSort = Arrays.asList(getResources().getStringArray(R.array.questionsSorting));
+        Adapters.setUpSpinner(getActivity(), spQuestionlistSort, arrListSort, Adapters.ADAPTER_SMALL);
+        spQuestionlistSort.setSelection(1);
+
 
         imgSearchQuestions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,32 +160,20 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             }
         });
 
-
-        spQuestionlistSubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spQuestionlistAuthorBooks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-
-                if (arrListSubject != null && position > 0) {
-
-                    /*this is to check that question are of this exam*/
-                    if (arrListSubject.get(position - 1).getId().equals(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID))) {
+                if (position >= 1) {
+                    if (arrListAuthorBooks.get(position - 1).getBookId().equalsIgnoreCase(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID))) {
                         questionBankListAdapter.canAddToPreview = true;
                     } else {
                         questionBankListAdapter.canAddToPreview = false;
                     }
-                    if (arrListQuestions.size() > 0 && arrListSubject != null) {
-                        filterResults(Integer.parseInt(arrListSubject.get(position - 1).getId()), null);
-                    }
-                    if (Utility.isConnected(getActivity())) {
-                        callApiGetTopics(Integer.parseInt(arrListSubject.get(position - 1).getId()));
-                    } else {
-                        Utility.toastOffline(getActivity());
-                    }
-
-
+                    spQuestionlistFilter.setSelection(1);
+                    spQuestionlistSort.setSelection(1);
+                    filterBooks(arrListAuthorBooks.get(position - 1).getBookId());
                 } else {
-                    Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, arrListDefalt, Adapters.ADAPTER_SMALL);
+                    clearFilters();
                 }
             }
 
@@ -195,21 +182,24 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
             }
         });
-
-        spQuestionlistTopic.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spQuestionlistFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position >= 1) {
+                    filterQuestions(position);
+                }
+            }
 
-                if (arrListQuestions.size() > 0 && arrListTopic != null && position > 0) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-                    if (position == 1) {
-                        filterResults(spQuestionlistSubject.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
-                                get(spQuestionlistSubject.getSelectedItemPosition() - 1).getId()) : 0, null);
-                    } else {
-                        filterResults(spQuestionlistSubject.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
-                                get(spQuestionlistSubject.getSelectedItemPosition() - 1).getId()) : 0, arrListTopic.get(position - 2).getId());
-                    }
-
+            }
+        });
+        spQuestionlistSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position >= 1) {
+                    sortQuestions(position);
                 }
             }
 
@@ -221,7 +211,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
 
         callApiGetQuestionBank();
-        callApiGetSubjects();
+        callApiGetAuthorBooks();
     }
 
     private void startSlideAnimation(final View view, int fromX, int toX, int fromY, int toY) {
@@ -247,42 +237,14 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         view.startAnimation(slideOutAnimation);
     }
 
-    private void callApiGetSubjects() {
-        if (Utility.isConnected(getActivity())) {
-            try {
-                ((AuthorHostActivity) getActivity()).showProgress();
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETSUBJECT);
-            } catch (Exception e) {
-                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-            }
-        } else {
-            Utility.toastOffline(getActivity());
-        }
-    }
-
-    private void callApiGetTopics(int subject_id) {
+    private void callApiGetAuthorBooks() {
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setSubjectId(String.valueOf(subject_id));
+                attribute.setUserId("52");
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETTOPICS);
-            } catch (Exception e) {
-                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-            }
-        } else {
-            Utility.toastOffline(getActivity());
-        }
-    }
-
-
-    private void callApiGetCourses() {
-        if (Utility.isConnected(getActivity())) {
-            try {
-                ((AuthorHostActivity) getActivity()).showProgress();
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller().execute(WebConstants.GETCOURSES);
+                        .execute(WebConstants.GETBOOKSFORAUTHOR);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -297,8 +259,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId("370");
-                attribute.setRole("3");
+//                attribute.setUserId("52");
+//                attribute.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
+                attribute.setUserId("52");
+                attribute.setRole("4");
 
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETQUESTIONBANK);
@@ -317,15 +281,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     public void onResponse(int apiCode, Object object, Exception error) {
         try {
             switch (apiCode) {
-                case WebConstants.GETSUBJECT:
-                    onResponseGetSubjects(object, error);
+                case WebConstants.GETBOOKSFORAUTHOR:
+                    onResponseGetBooksForAuthor(object, error);
                     break;
-                case WebConstants.GETCOURSES:
-                    onResponseGetCourses(object, error);
-                    break;
-                case WebConstants.GETTOPICS:
-                    onResponseGetTopics(object, error);
-                    break;
+
                 case WebConstants.GETQUESTIONBANK:
                     onResponseGetQuestionBank(object, error);
                     break;
@@ -335,25 +294,26 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
     }
 
-    private void onResponseGetSubjects(Object object, Exception error) {
+    private void onResponseGetBooksForAuthor(Object object, Exception error) {
         try {
             ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListSubject = new ArrayList<Subjects>();
-                    arrListSubject.addAll(responseHandler.getSubjects());
-                    List<String> subjects = new ArrayList<String>();
-                    subjects.add(getString(R.string.strsubject));
-                    for (Subjects subject : arrListSubject) {
-                        subjects.add(subject.getSubjectName());
+                    arrListAuthorBooks = new ArrayList<AuthorBook>();
+                    arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
+                    List<String> authorBooks = new ArrayList<String>();
+                    authorBooks.add(getString(R.string.strbookname));
+//                    authorBooks.add(getString(R.string.strall));
+                    for (AuthorBook authorbook : arrListAuthorBooks) {
+                        authorBooks.add(authorbook.getBookName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spQuestionlistSubject, subjects, Adapters.ADAPTER_SMALL);
+                    Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL);
 
                     if (getArguments() != null) {
-                        Debug.e(TAG, "THE SUBJECT NAME IS" + getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME));
-                        spQuestionlistSubject.setSelection(subjects.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME)));
+                        Debug.e(TAG, "THE BOOK NAME IS" + getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
+                        spQuestionlistAuthorBooks.setSelection(authorBooks.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
                     }
 
 
@@ -361,70 +321,12 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
-                Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseGetBooksForAuthor api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Debug.e(TAG, "onResponseGetSubjects Exception : " + e.toString());
+            Debug.e(TAG, "onResponseGetBooksForAuthor Exception : " + e.toString());
         }
     }
-
-    private void onResponseGetCourses(Object object, Exception error) {
-        try {
-            ((AuthorHostActivity) getActivity()).hideProgress();
-            if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-
-                    arrListCourses = new ArrayList<Courses>();
-                    arrListCourses.addAll(responseHandler.getCourses());
-                    List<String> courses = new ArrayList<String>();
-                    courses.add(getString(R.string.strcourse));
-                    for (Courses course : arrListCourses) {
-                        courses.add(course.getCourseName());
-
-                    }
-                    Adapters.setUpSpinner(getActivity(), spQuestionlistCourse, courses, Adapters.ADAPTER_SMALL);
-
-                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
-                }
-            } else if (error != null) {
-                Debug.e(TAG, "onResponseGetCourses api Exception : " + error.toString());
-            }
-        } catch (Exception e) {
-            Debug.e(TAG, "onResponseGetCourses Exception : " + e.toString());
-        }
-    }
-
-
-    private void onResponseGetTopics(Object object, Exception error) {
-        try {
-            ((AuthorHostActivity) getActivity()).hideProgress();
-            if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListTopic = new ArrayList<Topics>();
-                    arrListTopic.addAll(responseHandler.getTopics());
-                    List<String> topics = new ArrayList<String>();
-                    topics.add(getString(R.string.select));
-                    topics.add(getString(R.string.strall));
-                    for (Topics topic : arrListTopic) {
-                        topics.add(topic.getTopicName());
-
-                    }
-                    Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, topics, Adapters.ADAPTER_SMALL);
-                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, arrListDefalt, Adapters.ADAPTER_SMALL);
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
-                }
-            } else if (error != null) {
-                Debug.e(TAG, "onResponseGetTopics api Exception : " + error.toString());
-            }
-        } catch (Exception e) {
-            Debug.e(TAG, "onResponseGetTopics Exception : " + e.toString());
-        }
-    }
-
 
     private void onResponseGetQuestionBank(Object object, Exception error) {
         try {
@@ -450,12 +352,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void setQuestionData(ArrayList<Questions> questions) {
         questionBankListAdapter.addAll(questions);
         Debug.e(TAG, "The no of questions are::" + questions.size());
-        filterResults(Integer.valueOf(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID)), null);
+//        filterBooks(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
         if (getArguments() != null) {
             if (getArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
                 ArrayList<Questions> arrListExamQuestions = getArguments().
                         getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
-
                 Debug.e(TAG, "THE NO OF QUESTION IS QUESTION BANK ARE::" + questions.size());
                 Debug.e(TAG, "THE NO OF QUESTIONS OF EXAM ARE::" + arrListExamQuestions.size());
                 updateQuestionStatusAfterSetDataOfExam(arrListExamQuestions);
@@ -475,7 +376,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 getFragment().addQuestionsToPreviewFragment();
                 getFragment().getListOfPreviewQuestionsToAdd().clear();
             } else {
-                Utils.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
+//                Utils.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
+                Utility.alert(getActivity(), null, getResources().getString(R.string.msg_select_question_to_add_to_preview));
             }
         } else if (v == tvQuestionlistAddNewQuestion) {
             getFragment().setDataOnFragmentFlip(null, false, true);
@@ -491,12 +393,17 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
         questionBankListAdapter.addAll(arrListQuestions);
         questionBankListAdapter.notifyDataSetChanged();
+
+        filterResultsAfterAddEditDelete();
     }
 
-    public void updateQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData) {
+    /*this method is for edit question data after it successfully edited */
+    public void updateQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData, Boolean isChecked) {
         for (Questions questions : arrListQuestions) {
             if (questions.getQuestionId().equals(prevQuestionData.getQuestionId())) {
-                updatedQuestionData.setIsQuestionAddedInPreview(true);
+                if (isChecked) {
+                    updatedQuestionData.setIsQuestionAddedInPreview(true);
+                }
                 arrListQuestions.set(arrListQuestions.indexOf(questions), updatedQuestionData);
                 break;
             }
@@ -504,22 +411,29 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         questionBankListAdapter.addAll(arrListQuestions);
         questionBankListAdapter.notifyDataSetChanged();
 
-        etSearchQuestions.setText("");
-        filterResults(spQuestionlistSubject.getSelectedItemPosition() > 0 ?
-                Integer.parseInt(arrListSubject.get(spQuestionlistSubject.getSelectedItemPosition() - 1).getId()) : 0, null);
-
-
+        filterResultsAfterAddEditDelete();
     }
 
     public void addQuestionDataAfterAddQuestion(Questions question) {
         question.setIsQuestionAddedInPreview(true);
-        arrListQuestions.add(0, question);
+//        arrListQuestions.add(0, question);
+        arrListQuestions.add(question);
         questionBankListAdapter.addAll(arrListQuestions);
         questionBankListAdapter.notifyDataSetChanged();
-        etSearchQuestions.setText("");
 
-        filterResults(spQuestionlistSubject.getSelectedItemPosition() > 0 ?
-                Integer.parseInt(arrListSubject.get(spQuestionlistSubject.getSelectedItemPosition() - 1).getId()) : 0, null);
+        filterResultsAfterAddEditDelete();
+    }
+
+
+    /*this method is to retain the filter status after question added,deleted and updated*/
+    private void filterResultsAfterAddEditDelete() {
+
+
+        /*this is to retain the status of filter after add edit*/
+        filterBooks(spQuestionlistAuthorBooks.getSelectedItemPosition() > 0 ?
+                arrListAuthorBooks.get(spQuestionlistAuthorBooks.getSelectedItemPosition() - 1).getBookId() : "0");
+        filterQuestions(spQuestionlistFilter.getSelectedItemPosition());
+        sortQuestions(spQuestionlistSort.getSelectedItemPosition());
 
     }
 
@@ -551,37 +465,155 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
 
     public ArrayList<Questions> copylistOfQuestionBank = new ArrayList<Questions>();
+    public ArrayList<Questions> filterlistOfQuestionBank = new ArrayList<Questions>();
 
-    private void filterResults(int subjectId, String topicId) {
+    private void filterBooks(String bookId) {
+
         copylistOfQuestionBank.clear();
-
         if (arrListQuestions.size() > 0) {
             for (Questions wp : arrListQuestions) {
-                int count = 0;
-                //filter based on subject id and topic id based on subjects
-                if (topicId != null && !topicId.equalsIgnoreCase("")) {
-                    if (wp.getTopicId().equalsIgnoreCase(topicId) && wp.getSubjectId().equalsIgnoreCase(Integer.toString(subjectId))) {
-                        Debug.e(TAG + "filter success", "" + count++);
-                        copylistOfQuestionBank.add(wp);
-                    }
-                }
-                //filter based on only subject id (after args passed from assignment exam subject id
-                else {
-                    if (wp.getSubjectId().equalsIgnoreCase(Integer.toString(subjectId))) {
-                        Debug.e(TAG + "filter success", "" + count++);
-                        copylistOfQuestionBank.add(wp);
-                    }
+                if (wp.getBookId().equalsIgnoreCase(bookId)) {
+                    copylistOfQuestionBank.add(wp);
                 }
             }
-            if (copylistOfQuestionBank.size() > 0) {
-                questionBankListAdapter.addAll(copylistOfQuestionBank);
-            } else {
-                questionBankListAdapter.addAll(copylistOfQuestionBank);
-                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+            questionBankListAdapter.addAll(copylistOfQuestionBank);
+
+            if (!(copylistOfQuestionBank.size() > 0)) {
+//                Utils.showToast(getString(R.string.msg_validation_no_exams_filter), getActivity());
+                Utility.alert(getActivity(), null, getString(R.string.msg_validation_no_exams_filter));
             }
-
-
         }
     }
+
+    private void clearFilters() {
+        questionBankListAdapter.addAll(arrListQuestions);
+    }
+
+
+    private void filterQuestions(int filterType) {
+        try {
+            switch (filterType) {
+                case 1:
+//                    questionBankListAdapter.addAll(arrListQuestions);
+//                    questionBankListAdapter.notifyDataSetChanged();
+                    questionBankListAdapter.addAll(copylistOfQuestionBank);
+                    questionBankListAdapter.notifyDataSetChanged();
+                    break;
+                case 2:
+//                    copylistOfQuestionBank.clear();
+//                    if (arrListQuestions.size() > 0) {
+//                        for (Questions wp : arrListQuestions) {
+//                            if (wp.getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatdescriptive))) {
+//                                copylistOfQuestionBank.add(wp);
+//                            }
+//                        }
+//                        questionBankListAdapter.addAll(copylistOfQuestionBank);
+//                    }
+                    filterlistOfQuestionBank.clear();
+                    if (copylistOfQuestionBank.size() > 0) {
+                        for (Questions wp : copylistOfQuestionBank) {
+                            if (wp.getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatdescriptive))) {
+                                filterlistOfQuestionBank.add(wp);
+                            }
+                        }
+                        questionBankListAdapter.addAll(filterlistOfQuestionBank);
+                    }
+
+                    if (!(filterlistOfQuestionBank.size() > 0)) {
+//                        Utils.showToast(getString(R.string.msg_validation_no_questions_filter), getActivity());
+                        Utility.alert(getActivity(), null, getString(R.string.msg_validation_no_questions_filter));
+                    }
+                    break;
+                case 3:
+                    filterlistOfQuestionBank.clear();
+                    if (copylistOfQuestionBank.size() > 0) {
+                        for (Questions wp : copylistOfQuestionBank) {
+                            if (wp.getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
+                                filterlistOfQuestionBank.add(wp);
+                            }
+                        }
+                        questionBankListAdapter.addAll(filterlistOfQuestionBank);
+                    }
+
+                    if (!(filterlistOfQuestionBank.size() > 0)) {
+//                        Utils.showToast(getString(R.string.msg_validation_no_questions_filter), getActivity());
+                        Utility.alert(getActivity(), null, getString(R.string.msg_validation_no_questions_filter));
+                    }
+                    break;
+                case 4:
+                    break;
+            }
+
+            /*whenever you change the data filteration get it in ascending oredr*/
+            spQuestionlistSort.setSelection(1);
+        } catch (Exception e) {
+            Debug.e(TAG, "onFilterQuestions Exception : " + e.toString());
+        }
+    }
+
+
+    /**
+     * Perform sorting always on latestlistOfQuestionBank to sort the latest list after filter.
+     *
+     * @param typeOfSort=SORT_UP or SORT_DOWN
+     */
+    public static final int SORT_UP = 1, SORT_DOWN = 2;
+
+    private void sortQuestions(int typeOfSort) {
+
+        if (spQuestionlistFilter.getSelectedItemPosition() == 2 || spQuestionlistFilter.getSelectedItemPosition() == 3) {
+            if (typeOfSort == SORT_UP) {
+                // Debug.e("Sort_up====================", "sort up");
+                Collections.sort(filterlistOfQuestionBank);
+            } else {
+//                Debug.e("Sort_down====================", "sort down");
+                Collections.sort(filterlistOfQuestionBank, Collections.reverseOrder());
+            }
+            questionBankListAdapter.addAll(filterlistOfQuestionBank);
+            questionBankListAdapter.notifyDataSetChanged();
+        } else if (spQuestionlistFilter.getSelectedItemPosition() == 1) {
+            if (copylistOfQuestionBank.size() > 0) {
+                if (typeOfSort == SORT_UP) {
+                    // Debug.e("Sort_all_questions_up====================", "sort up");
+                    Collections.sort(copylistOfQuestionBank);
+
+                } else {
+//                Debug.e("Sort_all_questions down====================", "sort down");
+                    Collections.sort(copylistOfQuestionBank, Collections.reverseOrder());
+                }
+                questionBankListAdapter.addAll(copylistOfQuestionBank);
+                questionBankListAdapter.notifyDataSetChanged();
+            }
+        }
+//        //handling for sorting questions based on subjective and objective
+//        if (filterlistOfQuestionBank.size() > 0) {
+//            if (typeOfSort == SORT_UP) {
+//                // Debug.e("Sort_up====================", "sort up");
+//                Collections.sort(filterlistOfQuestionBank);
+//            } else {
+////                Debug.e("Sort_down====================", "sort down");
+//                Collections.sort(filterlistOfQuestionBank, Collections.reverseOrder());
+//            }
+//            questionBankListAdapter.addAll(filterlistOfQuestionBank);
+//            questionBankListAdapter.notifyDataSetChanged();
+//        }
+//        //sorting for all question based on subjects
+//        else {
+//            if (copylistOfQuestionBank.size() > 0) {
+//                if (typeOfSort == SORT_UP) {
+//                    // Debug.e("Sort_all_questions_up====================", "sort up");
+//                    Collections.sort(copylistOfQuestionBank);
+//
+//                } else {
+////                Debug.e("Sort_all_questions down====================", "sort down");
+//                    Collections.sort(copylistOfQuestionBank, Collections.reverseOrder());
+//                }
+//                questionBankListAdapter.addAll(copylistOfQuestionBank);
+//                questionBankListAdapter.notifyDataSetChanged();
+//            }
+//        }
+
+    }
+
 
 }

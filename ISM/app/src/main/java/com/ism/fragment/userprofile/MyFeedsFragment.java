@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
@@ -23,17 +24,21 @@ import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.Feeds;
+
+import java.util.ArrayList;
 
 /**
  * Created by c161 on 06/11/15.
  */
-public class MyFeedsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class MyFeedsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, HostActivity.ProfileControllerPresenceListener {
 
 	private static final String TAG = MyFeedsFragment.class.getSimpleName();
 
-	private View view;
+	private View view, viewHighlighterTriangle;
 	private RecyclerView recyclerPostFeeds;
 	private RelativeLayout rlNewPost;
+	private TextView txtEmptyListMessage;
 
 	private PostFeedsAdapter adpPostFeeds;
 	private HostActivity activityHost;
@@ -58,8 +63,13 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
 	}
 
 	private void initGlobal() {
+		viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
 		recyclerPostFeeds = (RecyclerView) view.findViewById(R.id.recycler_post);
 		rlNewPost = (RelativeLayout) view.findViewById(R.id.rl_new_post);
+		txtEmptyListMessage = (TextView) view.findViewById(R.id.txt_emptylist_message);
+
+		txtEmptyListMessage.setTypeface(Global.myTypeFace.getRalewayRegular());
+		viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
 		recyclerPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
 		RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
@@ -122,7 +132,9 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-					adpPostFeeds = new PostFeedsAdapter(getActivity(), responseHandler.getFeeds());
+					ArrayList<Feeds> feeds = responseHandler.getFeeds();
+					adpPostFeeds = new PostFeedsAdapter(getActivity(), feeds);
+					txtEmptyListMessage.setVisibility(feeds != null && feeds.size() > 0 ? View.GONE : View.VISIBLE);
 					recyclerPostFeeds.setAdapter(adpPostFeeds);
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetMyFeeds Failed : " + responseHandler.getMessage());
@@ -141,6 +153,7 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
 		try {
 			activityHost = (HostActivity) activity;
 			fragListener = (FragmentListener) activity;
+			activityHost.setListenerProfileControllerPresence(this);
 			if (fragListener != null) {
 				fragListener.onFragmentAttached(HostActivity.FRAGMENT_MY_FEEDS);
 			}
@@ -160,6 +173,16 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
 			Debug.e(TAG, "onDetach Exception : " + e.toString());
 		}
 		fragListener = null;
+	}
+
+	@Override
+	public void onProfileControllerAttached() {
+		viewHighlighterTriangle.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onProfileControllerDetached() {
+		viewHighlighterTriangle.setVisibility(View.GONE);
 	}
 
 }

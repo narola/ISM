@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.teacher.R;
@@ -34,7 +36,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by c161 on --/10/15.
+ * This class used to display the list of assignments.
+ * We have the option to filter those results.
  */
 public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
@@ -43,26 +46,25 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     //Views
     private View view;
     private RecyclerView recyclerAssignmentSubjects;
-    EditText etAssignmentStartdate, etAssignmentEnddate;
-    Spinner spAssignmentSubject, spAssignmentClasswise, spAssignentAssessed;
-    ImageView imgToggleList;
+    private EditText etAssignmentStartdate, etAssignmentEnddate;
+    private Spinner spAssignmentSubject, spAssignmentClasswise, spAssignentAssessed;
+    private ImageView imgToggleList;
     private ActionProcessButton progAssignmentSubject, progAssignmentClass, progAssignmentAssessed;
 
 
     //Array list
-    List<String> arrayListSubjects, arrayListClasses, arrayListSubmissionDate, arrayListAssessed;
-    ArrayList<Exams> arrayListAssignments = new ArrayList<>();
-    private ArrayList<Classrooms> arrListClassRooms;
-    private ArrayList<Subjects> arrListSubject;
 
+    private ArrayList<Exams> arrayListAssignments = new ArrayList<>();
+    private ArrayList<Exams> copyListAssignments = new ArrayList<>();
+    private ArrayList<Classrooms> arrListClassRooms = new ArrayList<>();
+    private ArrayList<Subjects> arrListSubject = new ArrayList<>();
+    private List<String> arrListAssessment = new ArrayList<>();
 
     //Objects
     Fragment mFragment;
     AssignmentsAdapter assignmentsAdapter;
 
-
     private String examStartDate = "", examEndDate = "";
-
 
     @SuppressLint("ValidFragment")
     public TeacherQuizHomeFragment(Fragment fragment) {
@@ -72,6 +74,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     public TeacherQuizHomeFragment() {
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,20 +105,10 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         etAssignmentStartdate = (EditText) view.findViewById(R.id.et_assignment_startdate);
         etAssignmentEnddate = (EditText) view.findViewById(R.id.et_assignment_enddate);
 
-        arrayListSubjects = new ArrayList<String>();
-        arrayListClasses = new ArrayList<String>();
-        arrayListSubmissionDate = new ArrayList<String>();
 
+        arrListAssessment = Arrays.asList(getResources().getStringArray(R.array.assignment_status));
 
-        arrayListSubjects.add(getString(R.string.strsubject));
-        arrayListClasses.add(getString(R.string.classwise));
-        arrayListSubmissionDate.add(getString(R.string.submission_date));
-
-        arrayListAssessed = Arrays.asList(getResources().getStringArray(R.array.assignment_status));
-
-        Adapters.setUpSpinner(getActivity(), spAssignmentSubject, arrayListSubjects, Adapters.ADAPTER_SMALL);
-        Adapters.setUpSpinner(getActivity(), spAssignmentClasswise, arrayListClasses, Adapters.ADAPTER_SMALL);
-        Adapters.setUpSpinner(getActivity(), spAssignentAssessed, arrayListAssessed, Adapters.ADAPTER_SMALL);
+        Adapters.setUpSpinner(getActivity(), spAssignentAssessed, arrListAssessment, Adapters.ADAPTER_SMALL);
 
         etAssignmentStartdate.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -141,7 +134,149 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         callApiGetClassrooms();
         callApiGetAllAssignments();
 
+        /**
+         * ItemselectedListener to handle filter based on particular spinner
+         */
 
+        AdapterView.OnItemSelectedListener spinnerListenerforFilters = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                filterAssignmentResults(adapterView, position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        };
+
+
+        spAssignmentSubject.setOnItemSelectedListener(spinnerListenerforFilters);
+        spAssignmentClasswise.setOnItemSelectedListener(spinnerListenerforFilters);
+        spAssignentAssessed.setOnItemSelectedListener(spinnerListenerforFilters);
+
+    }
+
+    private void filterAssignmentResults(View view, int position) {
+
+        if (view == spAssignmentSubject) {
+            if (arrListSubject != null && position > 0) {
+                if (position > 1) {
+
+                    /**
+                     * Position-2 because two static elements are added in the spinner in beginning
+                     * so to fetch the first element from arraylist at index zero we are doing position-2
+                     */
+                    Debug.e(TAG, "subject is:" + arrListSubject.get(position - 2).getSubjectName());
+                    filterSubjectIdWiseAssignments(arrListSubject.get(position - 2).getId());
+                    spAssignentAssessed.setSelection(0);
+                    spAssignmentClasswise.setSelection(0);
+
+                } else {
+
+                    clearFilters();
+                    spAssignentAssessed.setSelection(0);
+                    spAssignmentClasswise.setSelection(0);
+                }
+            }
+        } else if (view == spAssignmentClasswise) {
+            if (arrListClassRooms != null && position > 0) {
+                if (position > 1) {
+                    filterClassroomIdWiseAssignments(arrListClassRooms.get(position - 2).getId());
+                    spAssignentAssessed.setSelection(0);
+                    spAssignmentSubject.setSelection(0);
+
+                } else {
+                    clearFilters();
+                    spAssignentAssessed.setSelection(0);
+                    spAssignmentClasswise.setSelection(0);
+                }
+            }
+        } else if (view == spAssignentAssessed) {
+            if (position > 1) {
+                filterAssessedNotAssessedAssignments(arrListAssessment.get(position));
+                spAssignmentClasswise.setSelection(0);
+                spAssignmentSubject.setSelection(0);
+
+            } else {
+                clearFilters();
+                spAssignentAssessed.setSelection(0);
+                spAssignmentClasswise.setSelection(0);
+            }
+        }
+
+    }
+
+    private void clearFilters() {
+        assignmentsAdapter.addAll(arrayListAssignments);
+    }
+
+    private void filterSubjectIdWiseAssignments(String subjectId) {
+
+        copyListAssignments.clear();
+
+        if (arrayListAssignments.size() > 0) {
+            for (Exams wp : arrayListAssignments) {
+                if (wp.getSubjectId().equalsIgnoreCase(subjectId)) {
+
+                    copyListAssignments.add(wp);
+                }
+            }
+            if (copyListAssignments.size() > 0) {
+                Debug.e(TAG + "results after filter:", "" + copyListAssignments.size());
+                assignmentsAdapter.addAll(copyListAssignments);
+            } else {
+                //assignmentsAdapter.addAll(copyListAssignments);
+                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+    }
+
+    private void filterClassroomIdWiseAssignments(String classroom_id) {
+
+        copyListAssignments.clear();
+
+        if (arrayListAssignments.size() > 0) {
+            for (Exams wp : arrayListAssignments) {
+                if (wp.getClassroomId().equalsIgnoreCase(classroom_id)) {
+
+                    copyListAssignments.add(wp);
+                }
+            }
+            if (copyListAssignments.size() > 0) {
+                Debug.e(TAG + "results after filter:", "" + copyListAssignments.size());
+                assignmentsAdapter.addAll(copyListAssignments);
+            } else {
+                //  assignmentsAdapter.addAll(copyListAssignments);
+                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+    }
+
+    private void filterAssessedNotAssessedAssignments(String evaluation_status) {
+
+        copyListAssignments.clear();
+
+        if (arrayListAssignments.size() > 0) {
+            for (Exams wp : arrayListAssignments) {
+                if (!wp.getEvaluationStatus().equals("") && wp.getEvaluationStatus().equalsIgnoreCase(evaluation_status)) {
+
+                    copyListAssignments.add(wp);
+                }
+            }
+            if (copyListAssignments.size() > 0) {
+                Debug.e(TAG + "results after filter:", "" + copyListAssignments.size());
+                assignmentsAdapter.addAll(copyListAssignments);
+            } else {
+                // assignmentsAdapter.addAll(copyListAssignments);
+                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 
     private void callApiGetClassrooms() {
@@ -225,10 +360,10 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListClassRooms = new ArrayList<>();
                     arrListClassRooms.addAll(responseHandler.getClassrooms());
                     List<String> classrooms = new ArrayList<String>();
                     classrooms.add(getString(R.string.strclass));
+                    classrooms.add(getString(R.string.strall));
                     for (Classrooms classrooms1 : arrListClassRooms) {
                         classrooms.add(classrooms1.getClassName());
 
@@ -253,10 +388,10 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListSubject = new ArrayList<>();
                     arrListSubject.addAll(responseHandler.getSubjects());
                     List<String> subjects = new ArrayList<String>();
                     subjects.add(getString(R.string.strsubjectname));
+                    subjects.add(getString(R.string.strall));
                     for (Subjects subject : arrListSubject) {
                         subjects.add(subject.getSubjectName());
 

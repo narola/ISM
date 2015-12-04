@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Questions implements Parcelable {
+public class Questions implements Parcelable, Comparable<Questions> {
 
     private String questionFormat;
     private String questionAssetsLink;
@@ -24,6 +24,7 @@ public class Questions implements Parcelable {
     private String classroomId;
     private String subjectId;
     private String bookId;
+    private String bookName;
     private String solution;
     private String questionId;
     private String questionText;
@@ -54,6 +55,7 @@ public class Questions implements Parcelable {
         this.questionCreatorId = parcelQuestions.readString();
         this.questionCreatorName = parcelQuestions.readString();
         this.subjectName = parcelQuestions.readString();
+        this.bookName = parcelQuestions.readString();
         parcelQuestions.readTypedList(answers, Answers.CREATOR);
         parcelQuestions.readTypedList(tags, Tags.CREATOR);
 
@@ -204,6 +206,16 @@ public class Questions implements Parcelable {
         this.subjectName = subjectName;
     }
 
+    @JsonProperty("book_name")
+    public String getBookName() {
+        return bookName;
+    }
+
+    public Questions setBookName(String bookName) {
+        this.bookName = bookName;
+        return this;
+    }
+
 
     public Boolean getIsQuestionAddedInPreview() {
         return isQuestionAddedInPreview;
@@ -246,6 +258,7 @@ public class Questions implements Parcelable {
         dest.writeString(getQuestionCreatorId());
         dest.writeString(getQuestionCreatorName());
         dest.writeString(getSubjectName());
+        dest.writeString(getBookName());
         dest.writeTypedList(tags);
     }
 
@@ -269,5 +282,25 @@ public class Questions implements Parcelable {
 
     public void setTags(ArrayList<Tags> tags) {
         this.tags = tags;
+    }
+
+    @Override
+    public int compareTo(Questions question) {
+        //for string based
+        int first_value = Integer.parseInt(this.questionId);
+        int second_value = Integer.parseInt(question.questionId);
+
+        /**
+         * for string based filtering on question id
+         * return this.questionId.compareTo(question1.questionId);
+         */
+
+
+        /**
+         * For converting questionid to integer and then perform sort on the list
+         */
+        //return Integer.parseInt(this.questionId)>Integer.parseInt(question1.questionId)?1: (Integer.parseInt(this.questionId)>Integer.parseInt(question1.questionId)?-1:0);
+        return first_value > second_value ? 1 : (first_value < second_value ? -1 : 0);
+
     }
 }

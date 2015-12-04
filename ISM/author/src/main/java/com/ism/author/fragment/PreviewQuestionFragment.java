@@ -16,6 +16,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.PreviewQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
@@ -130,8 +131,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 try {
                     ((AuthorHostActivity) getActivity()).showProgress();
                     Attribute attribute = new Attribute();
-                    attribute.setExamId("61");
-//                    attribute.setQuestionId(getArrListQuestionId());
+                    attribute.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                    attribute.setQuestionIdList(getArrListQuestionId());
 
                     new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                             .execute(WebConstants.SETQUESTIONSFOREXAM);
@@ -139,7 +140,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                     Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
                 }
             } else {
-                Utils.showToast(getString(R.string.strnopreviewquestions), getActivity());
+                Utility.alert(getActivity(), null, getString(R.string.strnopreviewquestions));
+//                Utils.showToast(getString(R.string.strnopreviewquestions), getActivity());
             }
         } else {
             Utility.toastOffline(getActivity());
@@ -187,6 +189,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 ResponseHandler responseObj = (ResponseHandler) object;
                 if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utils.showToast(getActivity().getString(R.string.str_success_setexamquestions), getActivity());
+//                    Utility.alert(getActivity(), null, getActivity().getString(R.string.str_success_setexamquestions));
                 } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
@@ -232,7 +235,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
     public void addQuestionDataAfterAddQuestion(Questions question) {
-        arrListQuestions.add(0, question);
+//        arrListQuestions.add(0, question);
+        arrListQuestions.add(question);
         previewQuestionListAdapter.addAll(arrListQuestions);
         previewQuestionListAdapter.notifyDataSetChanged();
     }

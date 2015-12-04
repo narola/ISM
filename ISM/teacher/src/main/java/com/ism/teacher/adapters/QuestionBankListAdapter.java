@@ -47,8 +47,10 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     public void addAll(ArrayList<Questions> data) {
         try {
+            this.copyListOfQuestions = data;
             this.arrListQuestions.clear();
             this.arrListQuestions.addAll(data);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -260,7 +262,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     }
 
     public void filter(CharSequence charText) {
-
         arrListQuestions.clear();
         if (charText.length() == 0) {
             arrListQuestions.addAll(copyListOfQuestions);

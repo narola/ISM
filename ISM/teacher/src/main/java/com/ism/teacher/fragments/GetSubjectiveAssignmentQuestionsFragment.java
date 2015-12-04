@@ -17,7 +17,10 @@ import java.util.ArrayList;
 
 
 /**
- * Created by c162 on 06/11/15.
+ * This fragment is a container of three frags
+ * GetStudents=retrieve list of students attempted
+ * GetSubjectiveQuestionsFragment show list of all subjective questions
+ * QuestionPaletteFragment shows list of all question evaluation status.
  */
 public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
     private static final String TAG = GetSubjectiveAssignmentQuestionsFragment.class.getSimpleName();
@@ -65,7 +68,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
     private void initGlobal(View view) {
 
         getStudentsFragment = new GetStudentsFragment(this);
-        getSubjectiveQuestionsFragment = new GetSubjectiveQuestionsFragment(this);
+        getSubjectiveQuestionsFragment = new GetSubjectiveQuestionsFragment(this, getArguments());
         questionPaletteFragment = new QuestionPaletteFragment(this);
 
 
@@ -78,7 +81,6 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
         getChildFragmentManager().beginTransaction().replace(R.id.fl_getsubjective_assignment_container_left, getStudentsFragment).commit();
         getChildFragmentManager().beginTransaction().replace(R.id.fl_getsubjective_assignment_container_middle, getSubjectiveQuestionsFragment).commit();
         getChildFragmentManager().beginTransaction().replace(R.id.fl_getsubjective_assignment_container_right, questionPaletteFragment).commit();
-
 
     }
 

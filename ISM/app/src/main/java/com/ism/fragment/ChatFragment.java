@@ -14,6 +14,7 @@ import com.ism.activity.HostActivity;
 import com.ism.R;
 import com.ism.adapter.StudymateChatAdapter;
 import com.ism.constant.WebConstants;
+import com.ism.fragment.userprofile.StudymatesFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.utility.Utility;
@@ -35,6 +36,7 @@ public class ChatFragment extends Fragment implements WebserviceWrapper.Webservi
 	private ListView lvStudymates;
 	private Button btnSuggestedStudymates, btnFindMoreStudymates;
 
+	private HostActivity activityHost;
     private FragmentListener fragListener;
 	private ArrayList<User> arrListStudymate;
 	private StudymateChatAdapter adpStudymateChat;
@@ -67,6 +69,24 @@ public class ChatFragment extends Fragment implements WebserviceWrapper.Webservi
 			Utility.alertOffline(getActivity());
 		}
 
+	    btnSuggestedStudymates.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+			    Bundle fragmentArguments = new Bundle();
+			    fragmentArguments.putInt(StudymatesFragment.CURRENT_FRAGMENT, StudymatesFragment.FRAGMENT_SUGGESTED_STUDYMATES);
+			    activityHost.loadFragment(HostActivity.FRAGMENT_STUDYMATES, fragmentArguments);
+		    }
+	    });
+
+	    btnFindMoreStudymates.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+			    Bundle fragmentArguments = new Bundle();
+			    fragmentArguments.putInt(StudymatesFragment.CURRENT_FRAGMENT, StudymatesFragment.FRAGMENT_FIND_MORE_STUDYMATES);
+			    activityHost.loadFragment(HostActivity.FRAGMENT_STUDYMATES, fragmentArguments);
+		    }
+	    });
+
     }
 
 	private void callApiGetStudymates() {
@@ -86,6 +106,7 @@ public class ChatFragment extends Fragment implements WebserviceWrapper.Webservi
         super.onAttach(activity);
         try {
             fragListener = (FragmentListener) activity;
+	        activityHost = (HostActivity) activity;
             if (fragListener != null) {
                 fragListener.onFragmentAttached(HostActivity.FRAGMENT_CHAT);
             }

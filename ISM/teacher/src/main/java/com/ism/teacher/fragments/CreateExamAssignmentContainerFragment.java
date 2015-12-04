@@ -87,8 +87,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
                                                public void onClick(View v) {
 
                                                    initTab(0);
-
-
                                                }
                                            }
         );
@@ -99,8 +97,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
                                            public void onClick(View v) {
 
                                                initTab(1);
-
-
                                            }
                                        }
         );
@@ -114,10 +110,8 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
         if (getArguments() != null) {
             initTab(1);
-            loadFragmentInContainer(FRAGMENT_ASSIGNMENT_EXAM);
         } else {
             initTab(0);
-            loadFragmentInContainer(FRAGMENT_ASSIGNMENT_ACTIVITY);
         }
 
     }

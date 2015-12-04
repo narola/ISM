@@ -76,7 +76,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rvAssignmentSubmittorList.setAdapter(assignmentSubmittorAdapter);
         tvSubmittorTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvSubmittorTitle.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME));
+        tvSubmittorTitle.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
 
         callApiGetExamSubmission();
 
@@ -88,9 +88,8 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-//                request.setExamId(fragmentArgument.getRequestObject().getExamId());
-                request.setExamId("9");
-                request.setUserId("340");
+                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setUserId("52");
                 request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
 
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()

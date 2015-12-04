@@ -48,6 +48,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     public static String ARG_ARR_LIST_QUESTIONS = "arrListQuestions";
     public static String ARG_EXAM_TYPE = "examType";
+    public static String ARG_EXAM_ISCOPY = "examIsCopy";
 
 
     public static GetObjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArgument) {
@@ -104,6 +105,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         imgEditExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getArguments().putBoolean(ARG_EXAM_ISCOPY, false);
                 setExamQuestions();
             }
         });
@@ -111,6 +113,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         imgCopyExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getArguments().putBoolean(ARG_EXAM_ISCOPY, true);
                 setExamQuestions();
             }
         });
@@ -140,8 +143,8 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-//                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setExamId("9");
+                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+//                request.setExamId("9");
                 new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
@@ -161,8 +164,10 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                 Attribute request = new Attribute();
 //                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
 //                request.setStudentId(getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
-                request.setExamId("9");
-                request.setStudentId("202");
+//                request.setExamId("9");
+//                request.setStudentId("202");
+                request.setExamId("4");
+                request.setStudentId("139");
                 new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {
@@ -266,7 +271,6 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     }
 
     private void setAssignmentDetails() {
-
         if (getArguments() != null) {
 
             tvObjectiveAssignmentSubject.setText(getResources().getString(R.string.strbookname) + ": ");
@@ -277,10 +281,10 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
             if (getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME) != null) {
                 tvObjectiveAssignmentClass.append(Utility.getSpannableString(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME), getResources().getColor(R.color.bg_assessment)));
             }
-            tvObjectiveAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + ": " + getArguments().getString(ExamsAdapter.ARG_EXAM_NO));
+//            tvObjectiveAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + ": " + getArguments().getString(ExamsAdapter.ARG_EXAM_NO));
             tvObjectiveAssignmentTitle.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
-            tvObjectiveAssignmentDate.setText(getActivity().getResources().getString(R.string.strassignmentdatecolon) + " " +
-                    Utility.getFormattedDate("dd-MMM-yyyy", getArguments().getString(ExamsAdapter.ARG_EXAM_CREATED_DATE)));
+//            tvObjectiveAssignmentDate.setText(getActivity().getResources().getString(R.string.strassignmentdatecolon) + " " +
+//                    Utility.getFormattedDate("dd-MMM-yyyy", getArguments().getString(ExamsAdapter.ARG_EXAM_CREATED_DATE)));
 
         }
 

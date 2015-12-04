@@ -24,11 +24,11 @@ import java.util.Random;
 /**
  * Created by c161 on 06/11/15.
  */
-public class MyActivityFragment extends Fragment {
+public class MyActivityFragment extends Fragment implements HostActivity.ProfileControllerPresenceListener {
 
 	private static final String TAG = MyActivityFragment.class.getSimpleName();
 
-	private View view;
+	private View view, viewHighlighterTriangle;
 	private RecyclerView recyclerMyActivity;
 
 	private HostActivity activityHost;
@@ -53,7 +53,10 @@ public class MyActivityFragment extends Fragment {
 	}
 
 	private void initGlobal() {
+		viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
 		recyclerMyActivity = (RecyclerView) view.findViewById(R.id.recycler_my_activity);
+
+		viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
 		final ArrayList<TestActivity> arrayListActivities = new ArrayList<>();
 		String[] months = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
@@ -98,6 +101,7 @@ public class MyActivityFragment extends Fragment {
 		try {
 			activityHost = (HostActivity) activity;
 			fragListener = (FragmentListener) activity;
+			activityHost.setListenerProfileControllerPresence(this);
 			if (fragListener != null) {
 				fragListener.onFragmentAttached(HostActivity.FRAGMENT_MY_ACTIVITY);
 			}
@@ -117,6 +121,16 @@ public class MyActivityFragment extends Fragment {
 			Debug.e(TAG, "onDetach Exception : " + e.toString());
 		}
 		fragListener = null;
+	}
+
+	@Override
+	public void onProfileControllerAttached() {
+		viewHighlighterTriangle.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onProfileControllerDetached() {
+		viewHighlighterTriangle.setVisibility(View.GONE);
 	}
 
 }

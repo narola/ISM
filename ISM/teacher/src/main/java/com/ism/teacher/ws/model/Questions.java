@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Questions implements Parcelable {
+public class Questions implements Parcelable, Comparable<Questions> {
 
     private String questionFormat;
     private String questionAssetsLink;
@@ -260,4 +260,26 @@ public class Questions implements Parcelable {
     public void setTags(ArrayList<Tags> tags) {
         this.tags = tags;
     }
+
+    @Override
+    public int compareTo(Questions question1) {
+        //for string based
+        int first_value = Integer.parseInt(this.questionId);
+        int second_value = Integer.parseInt(question1.questionId);
+
+        /**
+         * for string based filtering on question id
+         * return this.questionId.compareTo(question1.questionId);
+         */
+
+
+        /**
+         * For converting questionid to integer and then perform sort on the list
+         */
+        //return Integer.parseInt(this.questionId)>Integer.parseInt(question1.questionId)?1: (Integer.parseInt(this.questionId)>Integer.parseInt(question1.questionId)?-1:0);
+        return first_value > second_value ? 1 : (first_value < second_value ? -1 : 0);
+
+    }
+
+
 }

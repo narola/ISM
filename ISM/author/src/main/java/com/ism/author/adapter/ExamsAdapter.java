@@ -37,10 +37,10 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     public static String ARG_EXAM_NAME = "examName";
     public static String ARG_EXAM_CLASSROOM_ID = "examClassRoomId";
     public static String ARG_EXAM_CLASSROOM_NAME = "examClassRoomName";
-    public static String ARG_EXAM_SUBJECT_ID = "examSubjectId";
-    public static String ARG_EXAM_SUBJECT_NAME = "examSubjectName";
-    public static String ARG_EXAM_TOPIC_ID = "examTopicId";
-    public static String ARG_EXAM_TOPIC_NAME = "examTopicName";
+    //    public static String ARG_EXAM_SUBJECT_ID = "examSubjectId";
+//    public static String ARG_EXAM_SUBJECT_NAME = "examSubjectName";
+//    public static String ARG_EXAM_TOPIC_ID = "examTopicId";
+//    public static String ARG_EXAM_TOPIC_NAME = "examTopicName";
     public static String ARG_EXAM_BOOK_ID = "examBookId";
     public static String ARG_EXAM_BOOK_NAME = "examBookName";
     public static String ARG_EXAM_CATEGORY = "examCategory";
@@ -72,7 +72,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         try {
-            holder.tvExamSubjectName.setTypeface(myTypeFace.getRalewayBold());
+            holder.tvExamBookName.setTypeface(myTypeFace.getRalewayBold());
             holder.tvExamCourseName.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvExamDate.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvExamClassName.setTypeface(myTypeFace.getRalewayRegular());
@@ -85,15 +85,20 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             holder.tvExamType.setTypeface(myTypeFace.getRalewayRegular());
 
 
-            holder.tvExamSubjectName.setText(arrListExams.get(position).getSubjectName());
+            holder.tvExamBookName.setText(arrListExams.get(position).getBookName());
             holder.tvExamCourseName.setText(arrListExams.get(position).getClassroomName());
             holder.tvExamClassName.setText(arrListExams.get(position).getClassroomName());
             holder.tvExamDate.setText(mContext.getString(R.string.strassignmentdatecolon));
             holder.tvExamDate.append(Utility.getSpannableString(" " + arrListExams.get(position).getPassPercentage(),
                     mContext.getResources().getColor(R.color.color_black)));
 
-            holder.tvExamNoofAssessed.setText(arrListExams.get(position).getTotalStudent());
-            holder.tvExamNoofAssessed.setText("1");
+
+            if (arrListExams.get(position).getTotalAssessed() == null || arrListExams.get(position).getTotalAssessed().equals("")) {
+                holder.tvExamNoofAssessed.setText("0");
+            } else {
+                holder.tvExamNoofAssessed.setText(arrListExams.get(position).getTotalAssessed());
+            }
+
 
             if (arrListExams.get(position).getTotalQuestion() == null || arrListExams.get(position).getTotalQuestion().equals("")) {
                 holder.tvExamNoofQuestion.setText("0");
@@ -104,15 +109,20 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 
             if (arrListExams.get(position).getExamMode().equalsIgnoreCase("subjective")) {
                 holder.tvExamUnassessed.setText(mContext.getString(R.string.strunasssessed));
-                holder.tvExamNoofUnassessed.setText(arrListExams.get(position).getTotalStudent());
-                holder.tvExamNoofUnassessed.setText("1");
-
+                if (arrListExams.get(position).getTotalUnAssessed() == null || arrListExams.get(position).getTotalUnAssessed().equals("")) {
+                    holder.tvExamNoofUnassessed.setText("0");
+                } else {
+                    holder.tvExamNoofUnassessed.setText(arrListExams.get(position).getTotalUnAssessed());
+                }
             } else if (arrListExams.get(position).getExamMode().equalsIgnoreCase("objective")) {
                 holder.tvExamUnassessed.setText(mContext.getString(R.string.stravgscore));
-                holder.tvExamNoofUnassessed.setText(arrListExams.get(position).getTotalStudent() + mContext.getString(R.string.strpercent));
-                holder.tvExamNoofUnassessed.setText("1" + mContext.getString(R.string.strpercent));
-            }
 
+                if (arrListExams.get(position).getAverageScore() == null || arrListExams.get(position).getAverageScore().equals("")) {
+                    holder.tvExamNoofUnassessed.setText("0" + " %");
+                } else {
+                    holder.tvExamNoofUnassessed.setText(arrListExams.get(position).getAverageScore() + mContext.getString(R.string.strpercent));
+                }
+            }
 
             holder.tvExamType.setText(mContext.getString(R.string.strassignmenttype) + " " + arrListExams.get(position).getExamMode());
 
@@ -127,12 +137,12 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             bundleExamDetails.putString(ARG_EXAM_NAME, arrListExams.get(position).getExamName());
             bundleExamDetails.putString(ARG_EXAM_CLASSROOM_ID, arrListExams.get(position).getClassroomId());
             bundleExamDetails.putString(ARG_EXAM_CLASSROOM_NAME, arrListExams.get(position).getClassroomName());
-            bundleExamDetails.putString(ARG_EXAM_SUBJECT_ID, arrListExams.get(position).getSubjectId());
-            bundleExamDetails.putString(ARG_EXAM_SUBJECT_NAME, arrListExams.get(position).getSubjectName());
-            bundleExamDetails.putString(ARG_EXAM_TOPIC_ID, WebConstants.TEST_TOPIC_ID);
-            bundleExamDetails.putString(ARG_EXAM_TOPIC_NAME, "");
+//            bundleExamDetails.putString(ARG_EXAM_SUBJECT_ID, arrListExams.get(position).getSubjectId());
+//            bundleExamDetails.putString(ARG_EXAM_SUBJECT_NAME, arrListExams.get(position).getSubjectName());
+//            bundleExamDetails.putString(ARG_EXAM_TOPIC_ID, WebConstants.TEST_TOPIC_ID);
+//            bundleExamDetails.putString(ARG_EXAM_TOPIC_NAME, "");
             bundleExamDetails.putString(ARG_EXAM_BOOK_ID, WebConstants.TEST_BOOK_ID);
-            bundleExamDetails.putString(ARG_EXAM_BOOK_NAME, "");
+            bundleExamDetails.putString(ARG_EXAM_BOOK_NAME, WebConstants.TEST_BOOK_NAME);
             bundleExamDetails.putString(ARG_EXAM_CATEGORY, arrListExams.get(position).getExamCategory());
             bundleExamDetails.putString(ARG_EXAM_TYPE, arrListExams.get(position).getExamType());
             bundleExamDetails.putString(ARG_EXAM_MODE, arrListExams.get(position).getExamMode());
@@ -190,7 +200,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         RelativeLayout rlTopExam;
-        TextView tvExamSubjectName, tvExamCourseName, tvExamDate, tvExamClassName, tvExamNoofAssessed,
+        TextView tvExamBookName, tvExamCourseName, tvExamDate, tvExamClassName, tvExamNoofAssessed,
                 tvExamAssessed, tvExamNoofUnassessed, tvExamUnassessed, tvExamNoofQuestion, tvExamQuestion,
                 tvExamType;
         LinearLayout llExamContainer, llViewExamQuestions;
@@ -199,7 +209,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             super(itemView);
 
             rlTopExam = (RelativeLayout) itemView.findViewById(R.id.rl_top_exam);
-            tvExamSubjectName = (TextView) itemView.findViewById(R.id.tv_exam_subject_name);
+            tvExamBookName = (TextView) itemView.findViewById(R.id.tv_exam_book_name);
             tvExamCourseName = (TextView) itemView.findViewById(R.id.tv_exam_course_name);
             tvExamDate = (TextView) itemView.findViewById(R.id.tv_exam_date);
             tvExamClassName = (TextView) itemView.findViewById(R.id.tv_exam_class_name);
