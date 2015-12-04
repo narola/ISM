@@ -620,7 +620,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             if (typeOfSort == SORT_UP) {
                 // Debug.e("Sort_up====================", "sort up");
                 Collections.sort(latestlistOfQuestionBank);
-
             } else {
 //                Debug.e("Sort_down====================", "sort down");
                 Collections.sort(latestlistOfQuestionBank, Collections.reverseOrder());

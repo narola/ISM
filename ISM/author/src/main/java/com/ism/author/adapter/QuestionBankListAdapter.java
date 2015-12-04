@@ -155,7 +155,8 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                                     (mContext.getString(R.string.strobjective))) {
                                 isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                             } else {
-                                Utils.showToast(mContext.getString(R.string.msg_validation_addsubjective_question), mContext);
+//                                Utils.showToast(mContext.getString(R.string.msg_validation_addsubjective_question), mContext);
+                                Utility.alert(mContext, null, mContext.getString(R.string.msg_validation_addsubjective_question));
                             }
 
                         } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
@@ -165,7 +166,8 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                                     (mContext.getString(R.string.strsubjective))) {
                                 isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                             } else {
-                                Utils.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
+//                                Utils.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
+                                Utility.alert(mContext, null, mContext.getString(R.string.msg_validation_addobjective_question));
                             }
 
 
@@ -175,13 +177,15 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                                     (mContext.getString(R.string.strsubjective))) {
                                 isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                             } else {
-                                Utils.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
+//                                Utils.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
+                                Utility.alert(mContext, null, mContext.getString(R.string.msg_validation_addobjective_question));
                             }
                         }
                         notifyDataSetChanged();
                     } else {
                         holder.chkSelectQuestion.setChecked(arrListQuestions.get(position).getIsQuestionAddedInPreview());
-                        Utils.showToast(mContext.getString(R.string.msg_validation_add_question), mContext);
+//                        Utils.showToast(mContext.getString(R.string.msg_validation_add_question), mContext);
+                        Utility.alert(mContext, null, mContext.getString(R.string.msg_validation_add_question));
                     }
 
                 }
