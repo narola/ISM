@@ -1181,6 +1181,29 @@ class ExamFunctions
                                 $questions['classroom_id']=$rowQuestion['classroom_id'];
                                 $questions['book_id']=$rowQuestion['book_id'];
 
+
+
+
+                                $choice = array();
+                                if ($rowQuestion['question_format'] == 'MCQ') {
+                                   $queryGetChoice = "SELECT `id`, `question_id`, `choice_text`, `is_right`, `image_link`, `audio_link`, `video_link` FROM ".TABLE_ANSWER_CHOICES." WHERE `question_id`=".$rowQuestion['id'] ." AND is_delete=0 ";
+                                    $resultGetChoice = mysqli_query($GLOBALS['con'], $queryGetChoice) or $message = mysqli_error($GLOBALS['con']);
+                                    // echo $resultGetChoice;
+                                    if (mysqli_num_rows($resultGetChoice)) {
+                                        while ($rowGetChoice = mysqli_fetch_assoc($resultGetChoice)) {
+                                            $choice[] = $rowGetChoice;
+
+                                        }
+                                        $questions['answers'] = $choice;
+                                    }
+                                } else {
+                                    $questions['answers'] = $choice;
+                                }
+
+                                $post[] = $questions;
+
+
+
                                 $tags=array();
                                 $tagQuery="SELECT tags.id as 'tag_id',tags.tag_name FROM ".TABLE_TAGS_QUESTION." tag_question JOIN ".TABLE_TAGS." tags ON tags.id=tag_question.tag_id WHERE tag_question.question_id=".$rowQuestion['id'] ." and tags.is_delete=0 and tag_question.is_delete=0";
                                 $tagResult=mysqli_query($GLOBALS['con'],$tagQuery) or  $message=mysqli_error($GLOBALS['con']);
@@ -1196,25 +1219,6 @@ class ExamFunctions
                                 else{
                                     $questions['tags']=$tags;
                                 }
-
-
-                                $choice = array();
-                                if ($rowQuestion['question_format'] == 'MCQ') {
-                                    $queryGetChoice = "SELECT `id`, `question_id`, `choice_text`, `is_right`, `image_link`, `audio_link`, `video_link` FROM ".TABLE_ANSWER_CHOICES." WHERE `question_id`=".$rowQuestion['id'] ." AND question.is_delete=0 ";
-                                    $resultGetChoice = mysqli_query($GLOBALS['con'], $queryGetChoice) or $message = mysqli_error($GLOBALS['con']);
-                                    // echo $resultGetChoice;
-                                    if (mysqli_num_rows($resultGetChoice)) {
-                                        while ($rowGetChoice = mysqli_fetch_assoc($resultGetChoice)) {
-                                            $choice[] = $rowGetChoice;
-
-                                        }
-                                        $questions['answers'] = $choice;
-                                    }
-                                } else {
-                                    $questions['answers'] = $choice;
-                                }
-
-                                $post[] = $questions;
                             }
                             $status = SUCCESS;
                             $message = "";

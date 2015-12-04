@@ -50,6 +50,7 @@ switch ($_REQUEST['Service'])
     case "ManageBookLibrary":
     case "GetBlockedUser":
     case "GetBooksForAuthor":
+    case "RefreshToken":
     {
         include_once 'ProfileFunctions.php';
         $profile = new ProfileFunctions();

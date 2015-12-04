@@ -159,6 +159,13 @@ class ProfileFunctions
                 return $this->getBooksForAuthor($postData);
             }
                 break;
+
+            case "RefreshToken":
+            {
+                return $this->refreshToken($postData);
+            }
+                break;
+
         }
     }
     /*
@@ -741,9 +748,12 @@ class ProfileFunctions
                     $school_id = validateObject($postData, 'school_id', "");
                     $school_id = addslashes($school_id);
 
+                    $school_classroom_id = validateObject($postData, 'school_classroom_id', "");
+                    $school_classroom_id = addslashes($school_classroom_id);
 
-                    $insertAcademicField = "`user_id`, `school_id`, `classroom_id`, `academic_year`, `joining_year`, `joining_class`, `course_id`";
-                    $insertAcademicValue = "'" . $user_id . "', '" . $school_id . "','" . $classroom_id . "','" . $academic_year . "','" . date('M,Y') . "','" . $classroom_id . "','" . $course_id . "'";
+
+                    $insertAcademicField = "`user_id`, `school_id`, `classroom_id`, `school_classroom_id`, `academic_year`, `joining_year`, `joining_class`, `course_id`";
+                    $insertAcademicValue = "'" . $user_id . "', '" . $school_id . "','" . $classroom_id . "','".$school_classroom_id."','" . $academic_year . "','" . date('M,Y') . "','" . $classroom_id . "','" . $course_id . "'";
 
                     $queryAcademic = "INSERT INTO " . TABLE_STUDENT_PROFILE . "(" . $insertAcademicField . ") values (" . $insertAcademicValue . ")";
                     $resultAcademic = mysqli_query($GLOBALS['con'], $queryAcademic) or $message = mysqli_error($GLOBALS['con']);
@@ -825,13 +835,13 @@ class ProfileFunctions
                 //===================================================================
                 //===================Call AES Encrypt Function=======================
 
-                $secrect_key = $security->functionToEncrypt($generateToken, $aes256Key);
+                $secret_key = $security->functionToEncrypt($generateToken, $aes256Key);
 
                 //**************************End Encryption***************************
 
                 if($resultAddToken)
                 {
-                    $post['token']=$secrect_key;
+                    $post['token']=$secret_key;
                     $status=SUCCESS;
                     $message="Token key generated.";
                 }
@@ -1293,6 +1303,13 @@ class ProfileFunctions
         $data=array();
         $response=array();
         $post=array();
+        $post1=array();
+        $post2=array();
+        $post3=array();
+        $post4=array();
+        $post5=array();
+        $post6=array();
+        $post7=array();
 
 
     	$user_id = validateObject($postData, 'user_id', "");
@@ -1310,8 +1327,8 @@ class ProfileFunctions
         if ($isSecure == yes) {
 
             $selectQuery="SELECT user_activity.user_id,users.full_name,users.profile_pic,user_activity.display_content,user_activity.resource_id,user_activity.activity_type FROM ".TABLE_USER_ACTIVITY. " user_activity
-        INNER JOIN ".TABLE_USERS." users ON user_activity.user_id=users.id WHERE user_activity.user_id=".$user_id." AND user_activity.is_delete=0 and users.is_delete=0";
-          // echo $selectQuery; exit;
+        INNER JOIN ".TABLE_USERS." users ON user_activity.user_id=users.id WHERE user_activity.user_id=".$user_id." AND user_activity.is_delete=0 and users.is_delete=0 order by user_activity.activity_type";
+          //echo $selectQuery; exit;
             $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
 
 
@@ -1323,7 +1340,7 @@ class ProfileFunctions
                     //$post['display_content'] = $val['display_content'];
                     //$post['resource_id'] = $val['resource_id'];
 
-
+//print_r($val);
                     if($val['activity_type'] == 'topicAllocated')
                     {
                         $post['activity_type'] = $val['activity_type'];
@@ -1356,11 +1373,12 @@ class ProfileFunctions
                                 $topic_array['topic_name']=$topicRow['topic_name'];
                                 $topic_array['score']=$topicRow['score'];
                                 $topic_array['discussion_comment']=$topicRow['total_comments'];
-                                $post['topic_allocated']=$topic_array;
+                               // $post['topic_allocated']=$topic_array;
 
                             }
 
-                            $post['topic_allocated'][]=$topic_array;
+                            $post1['topic_allocated']=$topic_array;
+                            $data[]=$post1;
                         }
 
                         /*else
@@ -1369,7 +1387,7 @@ class ProfileFunctions
                         }*/
                     }
 
-                   if($val['activity_type'] == 'assignmentSubmitted')
+                   elseif($val['activity_type'] == 'assignmentSubmitted')
                     {
                         $post['activity_type'] = $val['activity_type'];
 
@@ -1389,15 +1407,17 @@ class ProfileFunctions
                                 $assignment['assignment_name']=$assignmentRow['assignment_name'];
                                 $assignment['submission_date']=$assignmentRow['submission_date'];
                                 $assignment['subject_name']=$assignmentRow['subject_name'];
-                                $post['assignmentSubmitted']=$assignment;
+
                             }
+                            $post2['assignmentSubmitted']=$assignment;
+                            $data[]=$post2;
                             //$post['assignmentSubmitted'][]=$assignment;
                         }
                        /* else{
                             $post['assignmentSubmitted']=array();
                         }*/
                     }
-                    if($val['activity_type'] == 'exam_attempted')
+                    elseif($val['activity_type'] == 'exam_attempted')
                     {
                         $selectExam="SELECT exam.id as 'exam_id',exam.exam_name,student_exam_score.marks_obtained as 'exam_score',subjects.subject_name from ".TABLE_STUDENT_EXAM_SCORE." student_exam_score
                         INNER JOIN ". TABLE_EXAMS ." exams ON exam.id=student_exam_score.exam_id
@@ -1410,38 +1430,39 @@ class ProfileFunctions
                             while($examRow=mysqli_fetch_assoc($resultExam))
                             {
                                 $exams[]=$examRow;
-                                $post['exam_attempted']=$exams;
+                                //$post['exam_attempted']=$exams;
                             }
-                            //$post['exam_attempted'][]=$exams;
+                            $post3['exam_attempted']=$exams;
+                            $data[]=$post3;
                         }
                        /* else{
                             $post['exam_attempted']=array();
                         }*/
                     }
-                    if($val['activity_type'] == 'liked')
+                    elseif($val['activity_type'] == 'liked')
                     {
-
-                        $post['activity_type'] = $val['activity_type'];
-                        $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEED_LIKE." feed_like
-                         inner join ". TABLE_FEEDS ." feed
+                        $feedsLiked=array();
+                        $post4['activity_type'] = $val['activity_type'];
+                        $queryFeedLike="select feed.*,user.full_name,user.profile_pic  from ".TABLE_FEED_LIKE." feed_like
+                         INNER JOIN ". TABLE_FEEDS ." feed ON feed.id=feed_like.feed_id
                         INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
                          where feed_like.like_by=".$user_id." and feed_like.feed_id= ". $val['resource_id']." and feed_like.is_delete=0 and feed.is_delete=0 and user.is_delete=0";
                         $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $errorMsg= mysqli_error($GLOBALS['con']);
 
+//echo $queryFeedLike; exit;
 
-                        $feeds=array();
                         if(mysqli_num_rows($resultFeedLike))
                         {
                             while($feed=mysqli_fetch_assoc($resultFeedLike))
                             {
-                                $feeds['feed_id']=$feed['id'];
-                                $feeds['feed_text']=$feed['feed_text'];
-                                $feeds['feed_posted_on']=$feed['posted_on'];
-                                $feeds['feed_user_id']=$feed['feed_by'];
-                                $feeds['full_name']=$feed['full_name'];
-                                $feeds['feed_user_pic']=$feed['Profile_pic'];
-                                $feeds['feed_total_like']=$feed['total_like'];
-                                $feeds['feed_total_comment']=$feed['total_comment'];
+                                $feedsLiked['feed_id']=$feed['id'];
+                                $feedsLiked['feed_text']=$feed['feed_text'];
+                                $feedsLiked['feed_posted_on']=$feed['posted_on'];
+                                $feedsLiked['feed_user_id']=$feed['feed_by'];
+                                $feedsLiked['full_name']=$feed['full_name'];
+                                $feedsLiked['feed_user_pic']=$feed['profile_pic'];
+                                $feedsLiked['feed_total_like']=$feed['total_like'];
+                                $feedsLiked['feed_total_comment']=$feed['total_comment'];
                                 //Get Comments
                                /* $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
             ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 LIMIT 2";
@@ -1457,8 +1478,10 @@ class ProfileFunctions
                                     }
                                 }
                                 $feeds['comment_list']=$allcomment;*/
-                                $post['feedLiked']=$feeds;
+
                             }
+                            $post4['feed_liked']=$feedsLiked;
+                            $data[]=$post4;
                             //$post['feedLiked'][]=$feeds;
                         }
                         /*else{
@@ -1466,10 +1489,10 @@ class ProfileFunctions
                         }*/
 
                     }
-                   if($val['activity_type'] == 'studymate')
+                   elseif($val['activity_type'] == 'studymate')
                     {
-
-                        $post['activity_type'] = $val['activity_type'];
+                        $studymate=array();
+                        $post5['activity_type'] = $val['activity_type'];
 
                          $queryGetStudyMate="SELECT studymates.mate_id,users.full_name,users.profile_pic,school.school_name from studymates studymates
                         INNER JOIN users users on studymates.mate_id=users.id
@@ -1480,7 +1503,7 @@ class ProfileFunctions
                         $resultGetStudyMate=mysqli_query($GLOBALS['con'], $queryGetStudyMate) or $message= mysqli_error($GLOBALS['con']);
 
 
-                        $studymate=array();
+
 
                         if(mysqli_num_rows($resultGetStudyMate))
                         {
@@ -1493,12 +1516,14 @@ class ProfileFunctions
                                 $studymate['studymate_name']=$studymateRow['full_name'];
                                 $studymate['studymate_profile_pic']=$studymateRow['profile_pic'];
                                 $studymate['studymate_school_name']=$studymateRow['school_name'];
-                                $post['studymates']=$studymate;
+
 
                             }
 
-
+                            $post5['studymates']=$studymate;
+                            $data[]=$post5;
                             //$post1[]=$studymate;
+
                         }
 
                         /*else
@@ -1510,25 +1535,37 @@ class ProfileFunctions
                     }
 
 
-                    if($val['activity_type'] == 'commented') {
+                    elseif($val['activity_type'] == 'commented') {
 
-                        $post['activity_type'] = $val['activity_type'];
+                        $post6['activity_type'] = $val['activity_type'];
 
 
-                        $queryGetComment = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM " . TABLE_FEED_COMMENT . " f INNER JOIN " . TABLE_USERS . " u
-            ON f.comment_by=u.id INNER JOIN " . TABLE_USER_PROFILE_PICTURE . " p ON p.user_id=u.id WHERE f.feed_id=" . $val['resource_id'] . " AND comment_by=" . $user_id . " AND f.is_delete=0
-            AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC LIMIT 2";
+                        $queryGetComment = "SELECT feed.*,f.feed_id,f.comment,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM " . TABLE_FEED_COMMENT . " f
+                        INNER JOIN " . TABLE_USERS . " u ON f.comment_by=u.id
+                        INNER JOIN " . TABLE_USER_PROFILE_PICTURE . " p ON p.user_id=u.id
+                        INNER JOIN ". TABLE_FEEDS ." feed ON feed.id=f.feed_id
+                        WHERE f.feed_id=" . $val['resource_id'] . " AND comment_by=" . $user_id . " AND f.is_delete=0
+                        AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC LIMIT 2";
                         //echo $queryGetAllComments;
                         $resultGetComment = mysqli_query($GLOBALS['con'], $queryGetComment) or $message =  mysqli_error($GLOBALS['con']);
 
                         $comment = array();
                         if (mysqli_num_rows($resultGetComment)) {
                             while ($commentRow = mysqli_fetch_assoc($resultGetComment)) {
-                                $comment[] = $commentRow;
-                                $post['comment_added'] = $comment;
+                                $comment['feed_id'] = $commentRow['feed_id'];
+                                $comment['comment_text'] = $commentRow['comment'];
+                                $comment['comment_by'] = $commentRow['comment_by'];
+                                $comment['feed_user_name'] = $commentRow['full_name'];
+                                $comment['feed_user_pic'] = $commentRow['profile_pic'];
+                                $comment['feed_total_like']=$commentRow['total_like'];
+                                $comment['feed_comment_posted'] = $commentRow['created_date'];
+
                             }
 
+                            $post6['comment_added'] = $comment;
+                            $data[]=$post6;
                         }
+
                       /*  else
                         {
                             $post['comment_added']=array();
@@ -1538,7 +1575,7 @@ class ProfileFunctions
                    if($val['activity_type'] == 'post')
                     {
 
-                        $post['activity_type'] = $val['activity_type'];
+                        $post7['activity_type'] = $val['activity_type'];
 
                         $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEEDS." feed
                         INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
@@ -1546,17 +1583,17 @@ class ProfileFunctions
                         $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $errorMsg= mysqli_error($GLOBALS['con']);
 
 //echo $queryFeedLike; exit;
-                        $feeds=array();
+                        $feedPosted=array();
                         if(mysqli_num_rows($resultFeedLike))
                         {
                             while($feed=mysqli_fetch_assoc($resultFeedLike))
                             {
-                                $feeds['feed_id']=$feed['id'];
-                                $feeds['feed_text']=$feed['feed_text'];
-                                $feeds['feed_user_id']=$feed['feed_by'];
-                                $feeds['full_name']=$feed['full_name'];
-                                $feeds['feed_user_pic']=$feed['Profile_pic'];
-                                $feeds['feed_posted_on']=$feed['posted_on'];
+                                $feedPosted['feed_id']=$feed['id'];
+                                $feedPosted['feed_text']=$feed['feed_text'];
+                                $feedPosted['feed_user_id']=$feed['feed_by'];
+                                $feedPosted['feed_user_name']=$feed['full_name'];
+                                $feedPosted['feed_user_pic']=$feed['Profile_pic'];
+                                $feedPosted['feed_posted_on']=$feed['posted_on'];
 
                                 //Get Comments
                                /* $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
@@ -1573,10 +1610,12 @@ class ProfileFunctions
                                     }
                                 }
                                 $feeds['comment_list']=$allcomments;*/
-                                $post['feedPosted']=$feeds;
-                            }
 
+                            }
+                            $post7['feed_posted']=$feedPosted;
+                            $data[]=$post7;
                         }
+
                        /* else
                         {
                             $post['feedPosted']=array();
@@ -1587,7 +1626,8 @@ class ProfileFunctions
 
 
                     //$data['resource']=$post;
-                    $data[]=$post;
+
+
 
                 }
 
@@ -1726,6 +1766,7 @@ class ProfileFunctions
                     $suggested['ebook_link'] = $val['ebook_link'];
                     $suggested['front_cover_image'] = $val['front_cover_image'];
                     $suggested['back_cover_image'] = $val['back_cover_image'];
+                    $suggested['pdf_link'] = $val['pdf_link'];
                     $suggested['publisher_name'] = $val['publisher_name'];
                     $suggested['description'] = $val['book_description'];
                     $suggested['author_name'] = $val['full_name'];
@@ -1789,6 +1830,7 @@ class ProfileFunctions
                     $favorite['ebook_link'] = $val['ebook_link'];
                     $favorite['front_cover_image'] = $val['front_cover_image'];
                     $favorite['back_cover_image'] = $val['back_cover_image'];
+                    $favorite['pdf_link'] = $val['pdf_link'];
                     $favorite['publisher_name'] = $val['publisher_name'];
                     $favorite['description'] = $val['book_description'];
                     $favorite['author_name'] = $val['full_name'];
@@ -2639,7 +2681,7 @@ class ProfileFunctions
         if ($isSecure == yes) {
 
             $selectQuery="SELECT user_activity.user_id,users.full_name,users.profile_pic,user_activity.display_content,user_activity.resource_id,user_activity.activity_type FROM ".TABLE_USER_ACTIVITY. " user_activity
-        INNER JOIN ".TABLE_USERS." users ON user_activity.user_id=users.id WHERE user_activity.user_id=".$user_id." AND user_activity.is_delete=0 and users.is_delete=0";
+        INNER JOIN ".TABLE_USERS." users ON user_activity.user_id=users.id WHERE user_activity.user_id=".$user_id." AND user_activity.is_delete=0 and users.is_delete=0 order by user_activity.activity_type";
             // echo $selectQuery;
             $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
 
@@ -2900,6 +2942,104 @@ class ProfileFunctions
         $response['message'] = $message;
         $response['status'] = $status;
 
+        return $response;
+    }
+
+
+    public function refreshToken($postData)
+    {
+        $message ='';
+        $data=array();
+        $response=array();
+
+        $username = validateObject ($postData , 'username', "");
+        $username = addslashes($username);
+
+        $security=new SecurityFunctions();
+      /*  $query = "SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='globalPassword' AND is_delete=0";
+        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+        $masterKey = mysqli_fetch_row($result);
+
+
+        // 32 byte binary blob
+        $aes256Key = hash("SHA256", $masterKey[0], true);
+
+        // for good entropy (for MCRYPT_RAND)
+        srand((double)microtime() * 1000000);
+
+        // generate random iv
+        $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
+
+        $decrypted_access_key = $security->functionToDecrypt($username, $aes256Key);*/
+
+        $decrypted_username = $security-> decryptUsername($username);
+
+
+        $queryToGetUserId="SELECT id FROM ". TABLE_USERS." WHERE username='".$decrypted_username."' AND is_delete=0";
+        $resultToGetUserId=mysqli_query($GLOBALS['con'], $queryToGetUserId) or $errorMsg =  mysqli_error($GLOBALS['con']);
+
+        if(mysqli_num_rows($resultToGetUserId)>0) {
+            $user_id = mysqli_fetch_row($resultToGetUserId);
+
+            //Generate Token
+
+            $generateToken=$security->generateToken(8);
+
+
+            $insertTokenField = "`user_id`, `token`";
+            $insertTokenValue = "" . $user_id[0] . ",'" . $generateToken . "'";
+
+            $queryToCheckRecordExist="SELECT * FROM ". TABLE_TOKENS." WHERE user_id=".$user_id[0]." AND is_delete=0";
+            $resultToCheckRecordExist=mysqli_query($GLOBALS['con'], $queryToCheckRecordExist) or $errorMsg =  mysqli_error($GLOBALS['con']);
+
+
+            if(mysqli_num_rows($resultToCheckRecordExist)==0) {
+                $queryAddToken = "INSERT INTO " . TABLE_TOKENS . "(" . $insertTokenField . ") values (" . $insertTokenValue . ")";
+                $resultAddToken = mysqli_query($GLOBALS['con'], $queryAddToken) or $message = mysqli_error($GLOBALS['con']);
+
+                //**************************For Encryption***************************
+                //===================================================================
+                //=============Use username as Key For Encrypt=======================
+                $aes256Key = hash("SHA256", $decrypted_username, true);
+
+                // for good entropy (for MCRYPT_RAND)
+
+                srand((double)microtime() * 1000000);
+                // generate random iv
+
+                $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
+
+
+                //===================================================================
+                //===================Call AES Encrypt Function=======================
+
+                $secret_key = $security->functionToEncrypt($generateToken, $aes256Key);
+
+                //**************************End Encryption***************************
+
+                if ($resultAddToken) {
+                    $data['token_name'] = $secret_key;
+                    $data['username'] = $username;
+                    $status = SUCCESS;
+                    $message = "Token key generated.";
+                } else {
+                    $status = FAILED;
+                    $message = "Failed to generate token.";
+                }
+            }
+            else{
+                $status = SUCCESS;
+                $message = RECORD_ALREADY_EXIST;
+            }
+        }
+        else{
+            $status = SUCCESS;
+            $message = DEFAULT_NO_RECORDS;
+        }
+
+        $response['token']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
         return $response;
     }
 

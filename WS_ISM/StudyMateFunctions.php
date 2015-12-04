@@ -177,6 +177,7 @@ class StudyMateFunctions
         $data=array();
         $response=array();
 
+
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
 
@@ -203,39 +204,43 @@ class StudyMateFunctions
                 $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
                 if (mysqli_num_rows($resultSchool)) {
                     while ($row = mysqli_fetch_assoc($resultSchool)) {
-                        $suggested_studymate_id = $row['user_id'];
+                        $school_studymate_id[] = $row['user_id'];
+                        $suggested_studymate_id[] = $row['user_id'];
                         if (!in_array($suggested_studymate_id, $users)) {
-                            $post['user_id_'] = $suggested_studymate_id;
+                            //$post['user_id_'] = $suggested_studymate_id;
 
-                            $data[] = $post;
-print_r($suggested_studymate_id);
+                           // $data[] = $post;
                         }
                     }
+                    //echo "school_studymate_id(user_id)=> "; print_r($school_studymate_id);
                 }
                 $querySchool = "SELECT * FROM ".TABLE_STUDENT_PROFILE." WHERE classroom_id=".$classroom_id." AND is_delete=0";
                 $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
-                 echo $querySchool;
+                 //echo $querySchool;
                 if (mysqli_num_rows($resultSchool)) {
                     while ($row = mysqli_fetch_assoc($resultSchool)) {
-                        $suggested_studymate_id = $row['user_id'];
+                        $classroom_studymate_id []= $row['user_id'];
                         if (!in_array($suggested_studymate_id, $users)) {
-                            $post['user_id'] = $suggested_studymate_id;
-                            $data[] = $post;
-
+                           // $post['user_id'] = $suggested_studymate_id;
+                           // $data[] = $post;
                         }
                     }
+                    //echo "classroom_studymate_id(user_id)=> "; print_r($classroom_studymate_id);
                 }
                 $querySchool = "SELECT * FROM ".TABLE_STUDENT_PROFILE." WHERE course_id=".$course_id." AND is_delete=0";
                 $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
                 //echo $querySchool;
                 if (mysqli_num_rows($resultSchool)) {
                     while ($row = mysqli_fetch_assoc($resultSchool)) {
-                        $suggested_studymate_id = $row['user_id'];
+                        $course_studymate_id[] = $row['user_id'];
+
                         if (!in_array($suggested_studymate_id, $users)) {
-                            $post['user_id'] = $suggested_studymate_id;
-                            $data[] = $post;
+                           // $post['user_id'] = $suggested_studymate_id;
+                           // $data[] = $post;
                         }
+
                     }
+                   // echo "course_studymate_id(user_id)=> "; print_r($course_studymate_id);
                 }
 
                 //favorite author
@@ -247,11 +252,13 @@ print_r($suggested_studymate_id);
                 if (mysqli_num_rows($resultSchool)) {
                     while ($row = mysqli_fetch_assoc($resultSchool)) {
                         $fav_author_id = $row['author_id'];
+
                         if (!in_array($fav_author_id, $users)) {
-                            $post['author_id'] = $fav_author_id;
-                            $data[] = $post;
+                          //  $post['author_id'] = $fav_author_id;
+                           // $data[] = $post;
                         }
                     }
+                   // echo "fav_author_id=> "; print_r($fav_author_id);
                 }
 
                 //echo "auth=".$fav_author_id = $author_id[0];
@@ -269,10 +276,11 @@ print_r($suggested_studymate_id);
                        // print_r($fav_book_id);
                         if (!in_array($fav_book_id, $users)) {
 
-                            $post['book_id'] = $fav_book_id;
-                            $data[] = $post;
+                           // $post['book_id'] = $fav_book_id;
+                           // $data[] = $post;
                         }
                     }
+                  //  echo "fav_book_id=> "; print_r($fav_book_id);
                 }
 
                 //echo "book=".$fav_book_id = $book_id[0];
@@ -281,17 +289,18 @@ print_r($suggested_studymate_id);
                 $querySchool = "SELECT pastime_id FROM `user_favorite_pastime` WHERE user_id=" . $user_id." AND is_delete=0";
                 $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
                 //$fav_pastime_id = mysqli_fetch_row($resultSchool);
-                $fav_pastime_id=array();
+
                 if (mysqli_num_rows($resultSchool)) {
                     while ($row = mysqli_fetch_assoc($resultSchool)) {
                         $fav_pastime_id[] = $row['pastime_id'];
                         // print_r($fav_book_id);
                         if (!in_array($fav_pastime_id, $users)) {
 
-                            $post['pastime_id'] = $fav_pastime_id;
-                            $data[] = $post;
+                            ///$post['pastime_id'] = $fav_pastime_id;
+                           // $data[] = $post;
                         }
                     }
+                   // echo "fav_pastime_id=> "; print_r($fav_pastime_id);
                 }
                 //echo "past=".$fav_pastime_id = $pastime_id[0];
 
@@ -307,82 +316,139 @@ print_r($suggested_studymate_id);
                         // print_r($fav_book_id);
                         if (!in_array($fav_movie_id, $users)) {
 
-                            $post['movie_id'] = $fav_movie_id;
-                            $data[] = $post;
+                          //  $post['movie_id'] = $fav_movie_id;
+                           // $data[] = $post;
                         }
                     }
+                  //  echo "fav_movie_id=> "; print_r($fav_movie_id);
                 }
                 //echo "mov=".$fav_movie_id = $movie_id[0];
 
-                //favorite author + favorite book
-                if ($fav_book_id != NULL && $fav_author_id) {
-                    for($i=0;$i<count($fav_book_id);$i++) {
-                        $querySchool = "SELECT * FROM `user_favorite_author` author INNER JOIN  `user_favorite_book` book ON author.user_id=book.user_id, book.book_id=" . $fav_book_id[$i] . " , author.author_id=" . $fav_author_id[$i];
+
+                if ($fav_author_id != NULL ) {
+                    $fav_author_user_id=array();
+                    for($i=0;$i<count($fav_author_id);$i++) {
+                        $querySchool = "SELECT  * FROM  `user_favorite_author` WHERE author_id=" . $fav_author_id[$i]." AND is_delete=0";
                         $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
-                         echo $querySchool; exit;
-                        $suggested_studymate_id1 = array();
+                        //echo $querySchool;
+
                         if (mysqli_num_rows($resultSchool) > 0) {
 
                             while ($row = mysqli_fetch_assoc($resultSchool)) {
                                 //$suggested_studymate_id1 = $row['user_id'];
-                                if (!in_array($suggested_studymate_id, $users)) {
-                                    // $post['user_id'] = $suggested_studymate_id1;
-                                    // $data[] = $post;
-                                    $suggested_studymate_id1[] = $row['user_id'];
-                                }
+                                $fav_author_user_id[]=$row['user_id'];
                             }
+
                         }
+
                     }
+                    //  echo "fav_book_user_id=>"; print_r($fav_book_user_id);
+                    $resultAuthor = array_unique($fav_author_user_id);
+                     //echo "uniqu book user_id"; print_r($resultAuthor);
+                }
+                if ($fav_book_id != NULL ) {
+                    $fav_book_user_id=array();
+                    for($i=0;$i<count($fav_book_id);$i++) {
+                        $querySchool = "SELECT  * FROM  `user_favorite_book` WHERE book_id=" . $fav_book_id[$i]." AND is_delete=0";
+                        $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
+                       // echo $querySchool;
+
+                        if (mysqli_num_rows($resultSchool) > 0) {
+
+                            while ($row = mysqli_fetch_assoc($resultSchool)) {
+                                //$suggested_studymate_id1 = $row['user_id'];
+                                $fav_book_user_id[]=$row['user_id'];
+                            }
+
+                        }
+
+                    }
+                  //  echo "fav_book_user_id=>"; print_r($fav_book_user_id);
+                    $resultBook = array_unique($fav_book_user_id);
+                   //echo "uniqu book user_id"; print_r($resultBook);
                 }
 
-                //  movie INNER JOIN user_favorite_pastime passtime on passtime.user.id=movie.user_id
-
-                //favorite author + favorite book
-                if ($fav_movie_id != NULL && $fav_pastime_id != NULL) {
-
+                if ($fav_movie_id != NULL ) {
+                    $fav_movie_user_id=array();
                     for($i=0;$i<count($fav_movie_id);$i++) {
-                        $querySchool = "SELECT * FROM `user_favorite_movie` movie,user_favorite_pastime pastime WHERE movie.movie_id=" . $fav_movie_id[$i] . " and pastime.pastime_id=" . $fav_pastime_id[$i];
+                        $querySchool = "SELECT * FROM `user_favorite_movie`  WHERE movie_id=" . $fav_movie_id[$i] ." AND is_delete=0";
                         $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
-                        echo $querySchool; exit;
-                        $suggested_studymate_id2 = array();
+                        //echo $querySchool; exit;
+
                         if (mysqli_num_rows($resultSchool)) {
 
                             while ($row = mysqli_fetch_assoc($resultSchool)) {
                                 //$suggested_studymate_id2 = $row['user_id'];
-                                if (!in_array($suggested_studymate_id, $users)) {
-                                    //$post['user_id'] = $suggested_studymate_id2;
-                                    // $data[] = $post;
-                                    $suggested_studymate_id2[] = $row['user_id'];
+                                $fav_movie_user_id[]=$row['user_id'];
+                            }
+                        }
 
-                                }
+                    }
+                    //echo "fav_movie_user_id=>"; print_r($fav_movie_user_id);
+                    $resultMovie = array_unique($fav_movie_user_id);
+                    //echo "uniqu movie user_id=="; print_r($resultMovie);
+                }
+                if ($fav_pastime_id != NULL) {
+                    $fav_pastime_user_id=array();
+                    for($i=0;$i<count($fav_pastime_id);$i++) {
+                        $querySchool = "SELECT * FROM user_favorite_pastime WHERE pastime_id=" . $fav_pastime_id[$i]." AND is_delete=0";
+                        $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
+                        //echo $querySchool; exit;
+                        //$fav_pastime_user_id=array();
+                        if (mysqli_num_rows($resultSchool)) {
+
+                            while ($row = mysqli_fetch_assoc($resultSchool)) {
+                                //$suggested_studymate_id2 = $row['user_id'];
+                                $fav_pastime_user_id[]=$row['user_id'];
                             }
                         }
                     }
+                    //echo "fav_pastime_user_id=>"; print_r($fav_pastime_user_id);
+                    $resultPastime = array_unique($fav_pastime_user_id);
+                    //echo "uniqu pass user_id"; print_r($resultPastime);
                 }
 
-                print_r($suggested_studymate_id1);
-                print_r($suggested_studymate_id2);exit;
+
+
+                $mainArray=array_merge((array)$resultAuthor,(array)$resultBook,(array)$resultMovie,(array)$resultPastime,(array)$school_studymate_id,(array)$course_studymate_id,(array)$classroom_studymate_id);
+
+
+               //echo "final array => "; print_r($mainArray);
+
+                $mainArray1=array_unique($mainArray);
+                $the_array = array_values($mainArray1);
+                //echo "array=> "; print_r($the_array);
+
+
+
 
                 //Final step
-                if ($suggested_studymate_id1 != NULL || $suggested_studymate_id2 != NULL) {
-                    $querySchool =  "SELECT users.id,users.full_name,users.profile_pic,studymate.status FROM ".TABLE_STUDYMATES." studymate
-            JOIN ".TABLE_USERS." users ON users.id=mate_id
-            WHERE (studymate.mate_id=" . $suggested_studymate_id1." OR studymate.mate_id=" . $suggested_studymate_id2.
-                        ") AND studymate.mate_of=".$user_id." AND (studymate.status='pending' or studymate.status='request') AND studymate.is_delete=0 AND users.is_delete=0";
-                    $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
-                    //echo $querySchool; exit;
-                    if (mysqli_num_rows($resultSchool)) {
 
-                        while ($row = mysqli_fetch_assoc($resultSchool)) {
-                            $suggested_studymate_id = $row['user_id'];
-                            if (!in_array($suggested_studymate_id, $users)) {
-                                $post['user_id'] = $suggested_studymate_id;
+                if($mainArray!=NULL) {
+
+                    for($i = 0; $i < count($the_array); $i++) {
+
+                         $querySchool = "SELECT users.id,users.full_name,users.profile_pic,studymate.status,schools.school_name,courses.course_name FROM " . TABLE_STUDYMATES . " studymate LEFT JOIN " . TABLE_USERS . " users ON users.id=studymate.mate_id INNER JOIN ".TABLE_STUDENT_PROFILE ." studentProfile ON studentProfile.user_id=studymate.mate_id INNER JOIN ". TABLE_SCHOOLS ." schools ON schools.id= studentProfile.school_id INNER JOIN ". TABLE_COURSES." courses ON courses.id= studentProfile.course_id WHERE studymate.mate_id = ". $the_array[$i] ." AND studymate.mate_of = " . $user_id . " AND (studymate.status='pending' OR studymate.status='request') AND studymate.is_delete=0 AND users.is_delete=0";
+                         $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
+                        if (mysqli_num_rows($resultSchool)>0) {
+
+                            while ($row = mysqli_fetch_assoc($resultSchool)) {
+
+
+                                $post['user_id'] = $row['id'];
+                                $post['full_name'] = $row['full_name'];
+                                $post['profile_pic'] = $row['profile_pic'];
+                                $post['school_name'] = $row['school_name'];
+                                $post['course_name'] = $row['course_name'];
+                                $post['request_status'] = $row['status'];
                                 $data[] = $post;
 
                             }
                         }
                     }
                 }
+
+
 
             }
 

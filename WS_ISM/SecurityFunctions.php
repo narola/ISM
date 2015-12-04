@@ -132,6 +132,27 @@ class SecurityFunctions {
              //return no;
          return yes;
      }
+
+    public function decryptUsername($username)
+    {
+        $query = "SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='globalPassword' AND is_delete=0";
+        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+        $masterKey = mysqli_fetch_row($result);
+
+
+        // 32 byte binary blob
+        $aes256Key = hash("SHA256", $masterKey[0], true);
+
+        // for good entropy (for MCRYPT_RAND)
+        srand((double)microtime() * 1000000);
+
+        // generate random iv
+        $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
+
+        $decrypted_access_key = $this->functionToDecrypt($username, $aes256Key);
+
+        return$decrypted_access_key;
+    }
 }
 
 
