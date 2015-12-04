@@ -78,7 +78,7 @@ public class WebConstants {
 	public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
 
 //	private static final String DIR_PATH = "pg/ISM/WS_ISM/";    //  SERVER
-	private static final String DIR_PATH = "WS_ISM/";    //  KINJAL
+	private static final String DIR_PATH = "WS_ISM/";           //  KINJAL
 
 	private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
 //	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_Images/";

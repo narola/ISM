@@ -1,10 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:accordion="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_white"
-    tools:context="com.ism.fragment.ChatFragment">
+			    xmlns:accordion="http://schemas.android.com/apk/res-auto"
+			    xmlns:tools="http://schemas.android.com/tools"
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent"
+			    android:background="@drawable/bg_white_border_gray_left"
+                android:paddingLeft="1dp"
+			    tools:context="com.ism.fragment.ChatFragment">
 
     <com.ism.views.AccordionView
         android:id="@+id/accordion_view_chat"

@@ -2,6 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@color/bg_app_dark"
                 tools:context=".fragment.userprofile.ProfileControllerFragment">
 
@@ -12,12 +13,14 @@
 
 		<com.ism.views.CircleImageView
 			android:id="@+id/img_dp"
-			android:layout_width="80dp"
-			android:layout_height="80dp"
+			android:layout_width="83dp"
+			android:layout_height="83dp"
 			android:layout_marginBottom="10dp"
 			android:layout_marginLeft="10dp"
-			android:layout_marginTop="20dp"
-			android:src="@drawable/userdp"/>
+			android:layout_marginTop="15dp"
+			android:src="@drawable/userdp"
+			app:civ_border_width="3dp"
+			app:civ_border_color="#3C4A4D"/>
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -31,8 +34,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:gravity="center"
-				android:layout_marginTop="20dp"
-				android:textAllCaps="true"
+				android:layout_marginTop="5dp"
 				android:textColor="@android:color/white"
 				android:textSize="22sp"/>
 
