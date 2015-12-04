@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.adapter.RecommendedStudymatesAdapter;
@@ -18,18 +19,18 @@ import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.User;
 
 import java.util.ArrayList;
-
-import io.realm.internal.Util;
 
 public class YourStudymatesFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 	public static final String TAG = YourStudymatesFragment.class.getSimpleName();
 
 	private View view;
+	private TextView txtEmptyViewStudymates, txtEmptyViewRecommended;
 	private RecyclerView recyclerYourStudymates, recyclerRecommendedStudymates;
 	private ImageView imgPrevious, imgNext;
 
@@ -57,14 +58,19 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 	}
 
 	private void initGlobal() {
+		txtEmptyViewStudymates = (TextView) view.findViewById(R.id.txt_empty_view_studymates);
+		txtEmptyViewRecommended = (TextView) view.findViewById(R.id.txt_empty_view_recommended);
 		recyclerYourStudymates = (RecyclerView) view.findViewById(R.id.recycler_your_studymates);
 		recyclerRecommendedStudymates = (RecyclerView) view.findViewById(R.id.recycler_recommended_studymates);
 		imgPrevious = (ImageView) view.findViewById(R.id.img_previous);
 		imgNext = (ImageView) view.findViewById(R.id.img_next);
 
+		txtEmptyViewStudymates.setTypeface(Global.myTypeFace.getRalewayRegular());
+		txtEmptyViewRecommended.setTypeface(Global.myTypeFace.getRalewayRegular());
+
 		if (Utility.isConnected(getActivity())) {
 			callApiGetStudymates();
-			callApiGetRecommentedStudymates();
+//			callApiGetRecommentedStudymates();
 		} else {
 			Utility.alertOffline(getActivity());
 		}
@@ -79,14 +85,14 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 		recyclerYourStudymates.addItemDecoration(decoration);
 		recyclerYourStudymates.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-		arrListYourStudymates = new ArrayList<>();
+		/*arrListYourStudymates = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
 			User user = new User();
 			user.setUsername("User " + i);
 			arrListYourStudymates.add(user);
 		}
 		adpYourStudymates = new YourStudymatesAdapter(getActivity(), arrListYourStudymates);
-		recyclerYourStudymates.setAdapter(adpYourStudymates);
+		recyclerYourStudymates.setAdapter(adpYourStudymates);*/
 
 
 
@@ -125,7 +131,7 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 			attribute.setUserId(Global.strUserId);
 
 			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-					.execute(WebConstants.GET_NOTIFICATION);
+					.execute(WebConstants.GET_ALL_RECOMMENDED_STUDYMATES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetRecommentedStudymates Exception : " + e.toString());
 		}
@@ -137,7 +143,7 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 			attribute.setUserId(Global.strUserId);
 
 			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-					.execute(WebConstants.GET_NOTIFICATION);
+					.execute(WebConstants.GET_ALL_STUDYMATES_WITH_DETAILS);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetStudymates Exception : " + e.toString());
 		}
@@ -145,6 +151,57 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 
 	@Override
 	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.GET_ALL_STUDYMATES_WITH_DETAILS:
+					onResponseGetStudyamtes(object, error);
+					break;
+				case WebConstants.GET_ALL_RECOMMENDED_STUDYMATES:
+					onResponseGetAllRecommendedStudyamtes(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
 
+	private void onResponseGetAllRecommendedStudyamtes(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					arrListRecommendedStudymates = responseHandler.getStudymates();
+					txtEmptyViewRecommended.setVisibility(arrListYourStudymates != null && arrListRecommendedStudymates.size() > 0 ? View.GONE : View.VISIBLE);
+					adpRecommendedStudymates = new RecommendedStudymatesAdapter(getActivity(), arrListRecommendedStudymates);
+					recyclerRecommendedStudymates.setAdapter(adpRecommendedStudymates);
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "onResponseGetAllRecommendedStudyamtes Failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseGetAllRecommendedStudyamtes api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseGetAllRecommendedStudyamtes Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseGetStudyamtes(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					arrListYourStudymates = responseHandler.getStudymates();
+					txtEmptyViewStudymates.setVisibility(arrListYourStudymates != null && arrListYourStudymates.size() > 0 ? View.GONE : View.VISIBLE);
+					adpYourStudymates = new YourStudymatesAdapter(getActivity(), arrListYourStudymates);
+					recyclerYourStudymates.setAdapter(adpYourStudymates);
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "onResponseGetStudyamtes Failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseGetStudyamtes api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseGetStudyamtes Exception : " + e.toString());
+		}
 	}
 }

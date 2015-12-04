@@ -19,12 +19,13 @@ public class BookData {
     private String price;
     private String bookId;
     private String authorName;
-    private String bookImage;
+    private String frontCoverImage;
     private String publisherName;
     private String description;
     private String bookName;
     private ArrayList<Tags> tags;
     private String isInLibrary;
+    private String backCoverImage;
 
     @JsonProperty("is_in_library")
     public String getIsInLibrary() {
@@ -80,13 +81,22 @@ public class BookData {
         this.authorName = authorName;
     }
 
-    @JsonProperty("book_image")
-    public String getBookImage() {
-        return this.bookImage;
+    @JsonProperty("front_cover_image")
+    public String getFrontCoverImage() {
+        return this.frontCoverImage;
     }
 
-    public void setBookImage(String bookImage) {
-        this.bookImage = bookImage;
+    public void setFrontCoverImage(String frontCoverImage) {
+        this.frontCoverImage = frontCoverImage;
+    }
+
+    @JsonProperty("back_cover_image")
+    public String getBackCoverImage() {
+        return this.backCoverImage;
+    }
+
+    public void setBackCoverImage(String backCoverImage) {
+        this.backCoverImage = backCoverImage;
     }
 
     @JsonProperty("publisher_name")

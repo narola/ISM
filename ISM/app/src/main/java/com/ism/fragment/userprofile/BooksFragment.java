@@ -102,7 +102,8 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         setUpSuggestedList(arrayList);
     }
 
-    public BooksFragment() {    }
+    public BooksFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,6 +132,8 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         txtFavBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtSuggestedBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
 
+        txtFavEmpty.setText(R.string.no_books_available);
+        txtSuggestedEmpty.setText(R.string.no_books_available);
         listViewFavBooks = (RecyclerView) view.findViewById(R.id.lv_fav_books);
         layoutManagerFav = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         listViewFavBooks.setLayoutManager(layoutManagerFav);
@@ -158,7 +161,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 @Override
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Previous");
-                    listViewFavBooks.getLayoutManager().smoothScrollToPosition(listViewFavBooks, null, layoutManagerFav.findFirstCompletelyVisibleItemPosition() > 0? layoutManagerFav.findFirstCompletelyVisibleItemPosition() - 1:0);
+                    listViewFavBooks.getLayoutManager().smoothScrollToPosition(listViewFavBooks, null, layoutManagerFav.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerFav.findFirstCompletelyVisibleItemPosition() - 1 : 0);
                 }
             });
 
@@ -175,7 +178,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 @Override
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Previous");
-                    listViewSuggestedBooks.getLayoutManager().smoothScrollToPosition(listViewSuggestedBooks, null, layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() - 1:0);
+                    listViewSuggestedBooks.getLayoutManager().smoothScrollToPosition(listViewSuggestedBooks, null, layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() - 1 : 0);
                 }
             });
 
@@ -190,7 +193,6 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 @Override
                 public void onClick(View v) {
                     onClickImgSuggetedSearch();
-
                 }
             });
 
@@ -385,13 +387,13 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
     public void setUpFavList(ArrayList<BookData> arrayListFavBooks) {
         try {
-                favoriteBooksAdapter = new FavoriteBooksAdapter(getActivity(), arrayListFavBooks, this);
-                listViewFavBooks.setAdapter(favoriteBooksAdapter);
-                favoriteBooksAdapter.notifyDataSetChanged();
-                setVisibilityFavItems(arrayListFavBooks.size());
-            } catch (Exception e) {
-                Debug.e(TAG, "setUpFavList Exceptions :" + e.getLocalizedMessage());
-             }
+            favoriteBooksAdapter = new FavoriteBooksAdapter(getActivity(), arrayListFavBooks, this);
+            listViewFavBooks.setAdapter(favoriteBooksAdapter);
+            favoriteBooksAdapter.notifyDataSetChanged();
+            setVisibilityFavItems(arrayListFavBooks.size());
+        } catch (Exception e) {
+            Debug.e(TAG, "setUpFavList Exceptions :" + e.getLocalizedMessage());
+        }
     }
 
 

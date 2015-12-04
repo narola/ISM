@@ -46,6 +46,10 @@ public class ResponseHandler {
     private String message;
     private String status;
 
+    private String questionId;
+    private String mediaType;
+    private String imageLink;
+
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
     public static final String DUPLICATE_ENTRY = "Duplicate entry";
@@ -343,6 +347,38 @@ public class ResponseHandler {
 
     public void setAuthorBook(ArrayList<AuthorBook> authorBook) {
         this.authorBook = authorBook;
+    }
+
+
+    /*add image for question param*/
+    @JsonProperty("image_link")
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public ResponseHandler setImageLink(String imageLink) {
+        this.imageLink = imageLink;
+        return this;
+    }
+
+    @JsonProperty("mediaType")
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public ResponseHandler setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+        return this;
+    }
+
+    @JsonProperty("question_id")
+    public String getQuestionId() {
+        return questionId;
+    }
+
+    public ResponseHandler setQuestionId(String questionId) {
+        this.questionId = questionId;
+        return this;
     }
 }
 

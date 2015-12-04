@@ -49,7 +49,7 @@ public class WebserviceWrapper {
             try {
 
 //			    Check if we can get access from the network.
-                URL url = new URL(WebConstants.HOST_202);
+                URL url = new URL(WebConstants.HOST);
                 HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
                 urlc.setRequestProperty("Connection", "close");
                 urlc.setConnectTimeout(2000); // Timeout 2 seconds.
@@ -179,6 +179,12 @@ public class WebserviceWrapper {
                             break;
                         case WebConstants.GET_ALL_STUDYMATES_WITH_DETAILS:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_STUDYMATES_WITH_DETAILS).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_ALL_RECOMMENDED_STUDYMATES:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_RECOMMENDED_STUDYMATES).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_MY_ACTIVITY:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_ACTIVITY).execute(ResponseHandler.class, attribute);
                             break;
                     }
                 }
