@@ -118,7 +118,7 @@
                 android:layout_toRightOf="@+id/img_prev_suggested"
                 android:background="@color/color_white"
                 android:gravity="center"
-                android:text="No record found"
+                android:textSize="@dimen/text_size_emptylist_message_medium"
                 android:visibility="gone" />
 
             <ImageView
@@ -250,7 +250,7 @@
                 android:layout_toRightOf="@+id/img_prev_fav"
                 android:background="@color/color_white"
                 android:gravity="center"
-                android:text="No record found"
+                android:textSize="@dimen/text_size_emptylist_message_medium"
                 android:visibility="gone" />
 
             <ImageView
@@ -260,7 +260,6 @@
                 android:layout_alignParentEnd="true"
                 android:padding="@dimen/d5dp"
                 android:src="@drawable/right_arrow" />
-
 
         </RelativeLayout>
     </LinearLayout>

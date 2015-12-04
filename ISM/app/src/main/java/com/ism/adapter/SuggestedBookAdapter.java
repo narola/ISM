@@ -27,13 +27,10 @@ public class SuggestedBookAdapter extends RecyclerView.Adapter<SuggestedBookAdap
     private final HostActivity.BooksListner booksListner;
     Context context;
     ArrayList<BookData> arrayList = new ArrayList<>();
-    LayoutInflater inflater;
-
 
     public SuggestedBookAdapter(Context context, ArrayList<BookData> arrayList, HostActivity.BooksListner booksListner) {
         this.context = context;
         this.arrayList = arrayList;
-        inflater = LayoutInflater.from(context);
         this.booksListner = booksListner;
     }
 
@@ -50,11 +47,10 @@ public class SuggestedBookAdapter extends RecyclerView.Adapter<SuggestedBookAdap
         try {
 
             holder.txtBookAuthor.setTypeface(Global.myTypeFace.getRalewayRegular());
-
             holder.txtBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
-
+            Debug.i(TAG, "Image path : " + WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getFrontCoverImage());
 //			imageLoader.displayImage(AppConstant.HOST_IMAGE_USER_OLD + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getFrontCoverImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
             holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
 
@@ -96,7 +92,7 @@ public class SuggestedBookAdapter extends RecyclerView.Adapter<SuggestedBookAdap
             });
 
         } catch (Exception e) {
-            Debug.i(TAG, "getView Exception : " + e.getLocalizedMessage());
+            Debug.i(TAG,"onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
     }
 

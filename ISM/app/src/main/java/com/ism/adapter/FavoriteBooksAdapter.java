@@ -48,7 +48,7 @@ public class FavoriteBooksAdapter extends RecyclerView.Adapter<FavoriteBooksAdap
         try {
             holder.txtBookAuthor.setTypeface(Global.myTypeFace.getRalewayRegular());
             holder.txtBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
-            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getFrontCoverImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
             if (arrayList.get(position).getIsInLibrary().equals("1")) {
                 holder.imgLibraryBook.setActivated(true);
@@ -91,7 +91,7 @@ public class FavoriteBooksAdapter extends RecyclerView.Adapter<FavoriteBooksAdap
             });
 
         } catch (Exception e) {
-            Debug.i(TAG, "getView Exception : " + e.getLocalizedMessage());
+            Debug.i(TAG,"onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
 
     }
