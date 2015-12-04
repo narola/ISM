@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,22 +22,21 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
+public class FavoriteBooksAdapter extends BaseAdapter {
     private static final String TAG = FavoriteBooksAdapter.class.getSimpleName();
     private final HostActivity.BooksListner booksListner;
+    private HostActivity.ScrollListener scrollListener;
     Context context;
     ArrayList<BookData> arrayList = new ArrayList<>();
-    ArrayList<BookData> arrayListFilter = new ArrayList<>();
-    private ArrayList<String> arrayUnFavResourceIds = new ArrayList<String>();
     LayoutInflater inflater;
-    FavBookFilter favBookFilter;
+    int total = 0;
 
-    public FavoriteBooksAdapter(Context context, ArrayList<BookData> arrayList, HostActivity.BooksListner booksListner) {
+    public FavoriteBooksAdapter(Context context, ArrayList<BookData> arrayList, HostActivity.BooksListner booksListner, HostActivity.ScrollListener scrollListener) {
         this.context = context;
         this.arrayList = arrayList;
-        this.arrayListFilter = arrayList;
+        this.scrollListener = scrollListener;
         inflater = LayoutInflater.from(context);
-        this.booksListner=booksListner;
+        this.booksListner = booksListner;
     }
 
     @Override
@@ -85,11 +82,18 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
             holder.txtBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
             Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
-             if (arrayList.get(position).getIsInLibrary().equals("1")) {
+            if (arrayList.get(position).getIsInLibrary().equals("1")) {
                 holder.imgLibraryBook.setActivated(true);
-            }else {
+            } else {
                 holder.imgLibraryBook.setActivated(false);
 
+            }
+            Debug.i(TAG, "view called : " + position + "Total position : " + total++);
+            if (position == 0) {
+                scrollListener.isFirstPosition();
+            }
+            if (arrayList.size() - 1 == position) {
+                scrollListener.isLastPosition();
             }
             holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
@@ -131,80 +135,6 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
-    @Override
-    public Filter getFilter() {
-        if (favBookFilter == null) {
-            favBookFilter = new FavBookFilter();
-        }
-        return favBookFilter;
-    }
-
-    class FavBookFilter extends Filter {
-
-        // Invoked in a worker thread to filter the data according to the
-        // constraint.
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults results = new FilterResults();
-            try {
-
-                Debug.i(TAG, "Search string : " + constraint);
-
-                if (constraint != null) {
-                    Debug.i(TAG, "Search string : " + constraint);
-                    ArrayList<BookData> filterList = new ArrayList<BookData>();
-                    for (int i = 0; i < arrayListFilter.size(); i++) {
-                        Debug.i(TAG, "arrayListFilter.get(i).getAuthorName() : " + arrayListFilter.get(i).getBookName());
-                        if (arrayListFilter.get(i).getBookName().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getPublisherName().toLowerCase().contains(constraint.toString().toLowerCase())) {
-//                            if (arrayListFilter.get(i).getAuthorName().contains(constraint) || arrayListFilter.get(i).getBookName().contains(constraint) || arrayListFilter.get(i).getPublisherName().contains(constraint)) {
-                            Debug.i(TAG, "i : " + i);
-                            BookData book = new BookData();
-                            book.setDescription(arrayListFilter.get(i).getDescription());
-                            book.setAuthorImage(arrayListFilter.get(i).getAuthorImage());
-                            book.setAuthorName(arrayListFilter.get(i).getAuthorName());
-                            book.setBookId(arrayListFilter.get(i).getBookId());
-                            book.setBookImage(arrayListFilter.get(i).getBookImage());
-                            book.setBookName(arrayListFilter.get(i).getBookName());
-                            book.setEbookLink(arrayListFilter.get(i).getEbookLink());
-                            book.setPrice(arrayListFilter.get(i).getPrice());
-                            book.setPublisherName(arrayListFilter.get(i).getPublisherName());
-                            filterList.add(book);
-                            Debug.i(TAG, "FilterList size :" + filterList.size());
-
-                        }
-                    }
-                    results.count = filterList.size();
-                    results.values = filterList;
-                    Debug.i(TAG, "FilterList size :" + filterList.size());
-                } else {
-                    results.count = arrayListFilter.size();
-                    results.values = arrayListFilter;
-                    Debug.i(TAG, "Else FilterList size :" + arrayListFilter.size());
-                }
-                return results;
-            } catch (Exception e) {
-                Debug.i(TAG, "FilterResults Exceptions : " + e.getLocalizedMessage());
-                return null;
-
-            }
-
-
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            try {
-
-                arrayList = (ArrayList<BookData>) results.values;
-                booksListner.onSearchFav(arrayList);
-                Debug.i(TAG, "publishResults arrayList :  " + arrayList.size());
-                notifyDataSetChanged();
-            } catch (Exception e) {
-                Debug.i(TAG, "publishResults on Exception :  " + e.getLocalizedMessage());
-            }
-        }
-
-    }
 
     class ViewHolder {
 

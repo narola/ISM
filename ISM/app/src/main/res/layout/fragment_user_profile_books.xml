@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -219,7 +220,18 @@
                 android:padding="@dimen/d5dp"
                 android:src="@drawable/left_arrow" />
 
-            <com.ism.views.HorizontalListView
+            <!--<com.ism.views.HorizontalListView-->
+            <!--android:id="@+id/lv_fav_books"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_marginLeft="@dimen/d5dp"-->
+            <!--android:layout_marginRight="@dimen/d5dp"-->
+            <!--android:layout_toLeftOf="@+id/img_next_fav"-->
+            <!--android:layout_toRightOf="@+id/img_prev_fav"-->
+            <!--android:background="@color/color_white" />-->
+            <org.lucasr.twowayview.widget.TwoWayView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/lv_fav_books"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -228,7 +240,8 @@
                 android:layout_marginRight="@dimen/d5dp"
                 android:layout_toLeftOf="@+id/img_next_fav"
                 android:layout_toRightOf="@+id/img_prev_fav"
-                android:background="@color/color_white" />
+                android:background="@color/color_white"
+             />
 
             <TextView
                 android:id="@+id/txt_fav_empty"

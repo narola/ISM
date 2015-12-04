@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
@@ -29,17 +30,19 @@ import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.BookData;
 
+import org.lucasr.twowayview.TwoWayView;
+
 import java.util.ArrayList;
 
 /**
  * Created by c162 on 09/11/15.
  */
-public class BooksFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, HostActivity.BooksListner {
+public class BooksFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, HostActivity.BooksListner, HostActivity.ScrollListener {
 
     private static final String TAG = BooksFragment.class.getSimpleName();
     private View view;
     private HostActivity activityHost;
-    public static HorizontalListView listViewFavBooks;
+    public TwoWayView listViewFavBooks;
     FavoriteBooksAdapter favoriteBooksAdapter;
     private ArrayList<BookData> arrayListFavBooks;
     public static HorizontalListView listViewSuggestedBooks;
@@ -70,7 +73,33 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     private int prevItemFav;
     private int nxtItemFav;
     private int favNavigation = 0;
-    private int suggestedNavigation=0;
+    private int suggestedNavigation = 0;
+    private int selected_item_Position = 0;
+    private boolean next = false;
+    private boolean previous = false;
+    private float lastScroll = 0;
+    private int first=0;
+
+    @Override
+    public void isLastPosition() {
+        next = false;
+        if (arrayListFavBooks.size() > 4)
+            previous = true;
+        else {
+            previous = false;
+        }
+    }
+
+    @Override
+    public void isFirstPosition() {
+        previous = false;
+        if (arrayListFavBooks.size() > 4)
+            next = true;
+        else {
+            next = false;
+        }
+    }
+
 
     public static BooksFragment newInstance() {
         BooksFragment fragment = new BooksFragment();
@@ -128,7 +157,6 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
 
     private void initGlobal() {
-
         txtFavEmpty = (TextView) view.findViewById(R.id.txt_fav_empty);
         txtSuggestedEmpty = (TextView) view.findViewById(R.id.txt_suggested_empty);
         txtSuggestedBooks = (TextView) view.findViewById(R.id.txt_read_books);
@@ -147,11 +175,16 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         txtFavBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtSuggestedBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-        listViewFavBooks = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
+        listViewFavBooks = (TwoWayView) view.findViewById(R.id.lv_fav_books);
+       // listViewFavBooks.setHasFixedSize(true);
+        listViewFavBooks.setLongClickable(true);
+        // final Drawable divider = getResources().getDrawable(R.drawable.divider);
+        // mRecyclerView.addItemDecoration(new DividerItemDecoration(divider));
+
+        //  mRecyclerView.setAdapter(new LayoutAdapter(activity, mRecyclerView, mLayoutId))
         listViewSuggestedBooks = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);
         prevItemFav = 0;
         nxtItemFav = 0;
-        listViewFavBooks.setSelection(0);
         callApiGetBooksForUser();
         onClicks();
 
@@ -160,65 +193,55 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     private void onClicks() {
         try {
 
-//            imgNextFav.setOnTouchListener(new View.OnTouchListener() {
-//
-//
-//
-//                @Override
-//                public boolean onTouch(View v, MotionEvent event) {
-//                    Utility.showToast(getActivity(),"Next");
-//                    switch (event.getAction()) {
-//                        case MotionEvent.ACTION_DOWN:
-//                            if (mHandler != null)
-//                                return true;
-//                            mHandler = new Handler();
-//                            mHandler.postDelayed(mAction, mInitialDelay);
-//                            break;
-//                        case MotionEvent.ACTION_UP:
-//                            if (mHandler == null)
-//                                return true;
-//                            mHandler.removeCallbacks(mAction);
-//                            mHandler = null;
-//                            break;
-//                    }
-//                    return false;
-//                }
-//
-//                Runnable mAction = new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        listViewFavBooks.scrollTo((int) listViewFavBooks.getScrollX() + 1, (int) listViewFavBooks.getScrollY());
-//                        mHandler.postDelayed(mAction, mRepeatDelay);
-//                    }
-//                };
-//            });
+
             imgNextFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Next");
-                    Debug.i(TAG, "Next-> favNavigation : " + favNavigation);
-//                    if (favNavigation > 0) {
-//                        --favNavigation;
-//                        listViewFavBooks.scrollTo((int) listViewFavBooks.getScrollX() + 150, (int) listViewFavBooks.getScrollY());
+                    first= listViewFavBooks.getLastVisiblePosition();
+                    Log.e("next : ", first + "");
+                    if (first >= 0 && first<100) {
+                        //mRecyclerView.scrollBy(120, (int) mRecyclerView.getScrollY());
+                        first=first+1;
+                        Toast.makeText(getActivity(), "Next :" + first, Toast.LENGTH_SHORT).show();
+                        listViewFavBooks.smoothScrollToPosition(first);
+                    }
+                    //if (listViewFavBooks.getLastVisiblePosition() != arrayListFavBooks.size() - 1) {
+//                    if (next) {
+//                        previous = true;
+//                        if(favNavigation>=selected_item_Position && selected_item_Position>0) {
+//                            listViewFavBooks.scrollBy(120, (int) listViewFavBooks.getScrollY());
+//                            selected_item_Position--;
+//                        }
 //                    } else {
-//                        Debug.i(TAG, "else item : " + listViewFavBooks.getSelectedItemPosition());
+//                        previous = false;
 //                    }
-                    listViewFavBooks.setScrollX(80);
-
+                    // }
                 }
+
             });
             imgPrevFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Previous");
-                    Debug.i(TAG, "Prev-> favNavigation : " + favNavigation);
-//                    if (favNavigation <-1) {
-//                        ++favNavigation;
-//                        listViewFavBooks.scrollTo((int) listViewFavBooks.getScrollX() - 150, (int) listViewFavBooks.getScrollY());
+                    first= listViewFavBooks.getFirstVisiblePosition();
+                    Log.e("Prev : ", first + "");
+                    if(first > 0 && first<100){
+                        first=first-1;
+                        Toast.makeText(getActivity(), "Prev :" + first,Toast.LENGTH_SHORT).show();
+                        //mRecyclerView.scrollBy(120, (int) mRecyclerView.getScrollY());
+                        listViewFavBooks.smoothScrollToPosition(first);
+
+                    }
+//                    if (previous) {
+//                        next = true;
+//                        if(favNavigation>=selected_item_Position && selected_item_Position<favNavigation){
+//                            listViewFavBooks.scrollBy(-120, (int) listViewFavBooks.getScrollY());
+//                            selected_item_Position++;
+//                        }
 //                    } else {
-//                        Debug.i(TAG, "else item : " + listViewFavBooks.getSelectedItemPosition());
+//                        next = false;
 //                    }
-                    listViewFavBooks.setScrollX(-80);
                 }
             });
 
@@ -229,9 +252,9 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                     Debug.i(TAG, "Next-> favNavigation : " + favNavigation);
                     if (suggestedNavigation > 0) {
                         --suggestedNavigation;
-                        listViewSuggestedBooks.scrollTo((int) listViewSuggestedBooks.getScrollX() + 150, (int) listViewSuggestedBooks.getScrollY());
+                        listViewSuggestedBooks.scrollTo((int) listViewSuggestedBooks.getScrollX() + 50, (int) listViewSuggestedBooks.getScrollY());
                     } else {
-                        Debug.i(TAG, "else item : " + listViewFavBooks.getSelectedItemPosition());
+                        //   Debug.i(TAG, "else item : " + listViewFavBooks.getSelectedItemPosition());
                     }
 
                 }
@@ -240,11 +263,11 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 @Override
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Previous");
-                    if (suggestedNavigation <-1) {
+                    if (suggestedNavigation < -1) {
                         ++suggestedNavigation;
                         listViewSuggestedBooks.scrollTo((int) listViewSuggestedBooks.getScrollX() - 150, (int) listViewSuggestedBooks.getScrollY());
                     } else {
-                        Debug.i(TAG, "else item : " + listViewFavBooks.getSelectedItemPosition());
+                        // Debug.i(TAG, "else item : " + listViewFavBooks.getSelectedItemPosition());
                     }
                 }
             });
@@ -356,8 +379,8 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     private void onClickImgFavSearch() {
         try {
             if (etFavSearch.getVisibility() == View.VISIBLE) {
-//		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
-//		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
+//                startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
+//                startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
                 etFavSearch.setVisibility(View.GONE);
                 Utility.hideKeyboard(getActivity(), getView());
                 //setUpFavList(arrayListFavBooks);
@@ -383,9 +406,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 if (arrayList.get(i).getBookName().toString().toLowerCase().contains(charSequence.toString().toLowerCase())) {
 //            if (arrayList.get(i).getAuthorName().toString().toLowerCase().contains(charSequence.toString().toLowerCase())|| arrayList.get(i).getBookName().toString().toLowerCase().contains(charSequence.toString().toLowerCase())) {
                     bookDatas.add(arrayList.get(i));
-                    // Debug.i(TAG, "i :" + i + " String : " + charSequence);
                 }
-                // Debug.i(TAG, "i :" + i + " String : " + charSequence);
             }
         } catch (Exception e) {
             Debug.i(TAG, "onSearch: " + e.getLocalizedMessage());
@@ -458,6 +479,14 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                     arrayListSuggestedBooks = responseHandler.getBooks().get(0).getSuggested();
                     setUpSuggestedList(arrayListSuggestedBooks);
                     setUpFavList(arrayListFavBooks);
+
+                    if (arrayListFavBooks.size() > 4) {
+                        previous = false;
+                        next = true;
+                    } else {
+                        previous = false;
+                        next = false;
+                    }
                     Debug.i(TAG, "onResponseUserBooks success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseUserBooks Failed");
@@ -478,10 +507,11 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         } else {
             txtFavEmpty.setVisibility(View.GONE);
             listViewFavBooks.setVisibility(View.VISIBLE);
-            favNavigation = size % 4;
+            selected_item_Position=arrayListFavBooks.size()-4;
+            favNavigation = selected_item_Position;
             Debug.i(TAG, "favNavigation : " + favNavigation);
-            Debug.i(TAG, "favNavigation : " + Math.round(size/4));
-            Debug.i(TAG, "favNavigation : " + size/4);
+            Debug.i(TAG, "favNavigation : " + Math.round(size / 4));
+            Debug.i(TAG, "favNavigation : " + size / 4);
 
         }
     }
@@ -500,15 +530,17 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     public void setUpFavList(ArrayList<BookData> arrayListFavBooks) {
         try {
 
-            favoriteBooksAdapter = new FavoriteBooksAdapter(getActivity(), arrayListFavBooks, this);
-            listViewFavBooks.setAdapter(favoriteBooksAdapter);
+            favoriteBooksAdapter = new FavoriteBooksAdapter(getActivity(), arrayListFavBooks, this, this);
+          //  listViewFavBooks.setAdapter(new LayoutFavouriteBooksAdapter( getActivity(), arrayListFavBooks));
             favoriteBooksAdapter.notifyDataSetChanged();
             setVisibilityFavItems(arrayListFavBooks.size());
+
 
         } catch (Exception e) {
             Debug.e(TAG, "setUpFavList Exceptions :" + e.getLocalizedMessage());
         }
     }
+
 
     public void setUpSuggestedList(ArrayList<BookData> arrayListSuggestedBooks) {
         try {

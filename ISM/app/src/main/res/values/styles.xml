@@ -21,4 +21,11 @@
         <item name="android:windowEnterAnimation">@anim/popup_appear</item>
         <item name="android:windowExitAnimation">@anim/popup_disappear</item>
     </style>
+    <style name="TwoWayViewBase">
+        <item name="android:background">#999999</item>
+    </style>
+    <style name="TwoWayView" parent="TwoWayViewBase">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:scrollbars">horizontal</item>
+    </style>
 </resources>

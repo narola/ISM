@@ -126,7 +126,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private ArrayList<SMSAlert> arrayListSMSAlert = new ArrayList<>();
     private ArrayList<PrivacySetting> arrayListPrivacySetting = new ArrayList<>();
     private InputMethodManager inputMethod;
+    private ScrollListener scrollListener;
 
+    public interface ScrollListener {
+        public void isLastPosition();
+
+        public void isFirstPosition();
+    }
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -958,6 +964,10 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     public void setListenerHostEditAboutMe(HostListenerEditAboutMe listenerHostEditAboutMe) {
         this.listenerEditAboutMe = listenerHostEditAboutMe;
+    }
+
+    public void setListenerHostScroll(ScrollListener scrollListner) {
+        this.scrollListener = scrollListner;
     }
 
     public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
