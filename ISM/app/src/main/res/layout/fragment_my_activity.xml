@@ -12,6 +12,15 @@
 		android:background="@drawable/bg_my_activity"
 		android:padding="17dp"/>
 
+	<TextView
+		android:id="@+id/txt_emptylist_message"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/no_activity_available"
+		android:textSize="@dimen/text_size_emptylist_message_large"
+		android:visibility="gone"
+		android:layout_centerInParent="true"/>
+
 	<View
 		android:id="@+id/view_highlighter_triangle"
 		android:layout_width="20dp"

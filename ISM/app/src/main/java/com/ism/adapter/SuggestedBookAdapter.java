@@ -1,12 +1,10 @@
 package com.ism.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,69 +22,31 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class SuggestedBookAdapter extends BaseAdapter implements Filterable{
+public class SuggestedBookAdapter extends RecyclerView.Adapter<SuggestedBookAdapter.ViewHolder> {
     private static final String TAG = SuggestedBookAdapter.class.getSimpleName();
     private final HostActivity.BooksListner booksListner;
     Context context;
     ArrayList<BookData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
-    SuggestedBookFilter suggestedBookFilter;
-    ArrayList<BookData> arrayListFilter = new ArrayList<>();
-    private ArrayList<String> arrayFavResourceIds=new ArrayList<String>();
 
 
-    public SuggestedBookAdapter(Context context, ArrayList<BookData> arrayList,HostActivity.BooksListner booksListner) {
+    public SuggestedBookAdapter(Context context, ArrayList<BookData> arrayList, HostActivity.BooksListner booksListner) {
         this.context = context;
         this.arrayList = arrayList;
-        this.arrayListFilter=arrayList;
         inflater = LayoutInflater.from(context);
         this.booksListner = booksListner;
     }
-   // public ArrayList<String> getUnFavResourceIds(){
-  //      return arrayFavResourceIds;
-  //  }
-//    public void setFavResourceIds( ArrayList<String> arrayFavResourceIds){
-//        this.arrayFavResourceIds=arrayFavResourceIds;
-//    }
+
 
     @Override
-    public int getCount() {
-        return arrayList.size();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View view = LayoutInflater.from(context).inflate(R.layout.row_user_books, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        return viewHolder;
     }
 
     @Override
-    public Object getItem(int position) {
-        return arrayList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(final int position, View convertView, final ViewGroup parent) {
-        final ViewHolder holder;
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.row_user_books, null);
-            holder = new ViewHolder();
-
-            holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
-            holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
-            holder.imgAddToFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
-            holder.imgLibraryBook = (ImageView) convertView.findViewById(R.id.img_book_add);
-            holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
-            holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
-
-            holder.imgLibraryBook.setVisibility(View.VISIBLE);
-            holder.imgAddToFav.setVisibility(View.VISIBLE);
-            holder.imgInfo.setVisibility(View.VISIBLE);
-
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         try {
 
             holder.txtBookAuthor.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -100,7 +60,7 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable{
 
             if (arrayList.get(position).getIsInLibrary().equals("1")) {
                 holder.imgLibraryBook.setActivated(true);
-            }else {
+            } else {
                 holder.imgLibraryBook.setActivated(false);
 
             }
@@ -108,17 +68,13 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable{
                 @Override
                 public void onClick(View v) {
                     Debug.i(TAG, "onClickAddToFav : " + position);
-                   // arrayFavResourceIds.add(arrayList.get(position).getBookId());
                     booksListner.onAddToFav(position);
-
-                   // callApiAddResourceToFav();
                 }
             });
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    myPopup(position);
-                    BookDetailsDialog  bookDetailsDialog=new BookDetailsDialog(context,arrayList,position,Global.imageLoader);
+                    BookDetailsDialog bookDetailsDialog = new BookDetailsDialog(context, arrayList, position, Global.imageLoader);
                     bookDetailsDialog.show();
                 }
             });
@@ -136,89 +92,25 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable{
                         arrayList.get(position).setIsInLibrary("1");
                         booksListner.onAddToLibrary(arrayList.get(position).getBookId());
                     }
-//                    notifyDataSetChanged();
                 }
             });
 
         } catch (Exception e) {
             Debug.i(TAG, "getView Exception : " + e.getLocalizedMessage());
         }
-
-        return convertView;
     }
-
 
     @Override
-    public Filter getFilter() {
-        if (suggestedBookFilter == null) {
-            suggestedBookFilter = new SuggestedBookFilter();
-        }
-        return suggestedBookFilter;
+    public long getItemId(int position) {
+        return 0;
     }
 
-    class SuggestedBookFilter extends Filter {
-
-        // Invoked in a worker thread to filter the data according to the
-        // constraint.
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults results = new FilterResults();
-            try {
-
-                Debug.i(TAG, "Search string : " + constraint);
-
-                if (constraint!= null) {
-                    Debug.i(TAG, "Search string : " + constraint);
-                    ArrayList<BookData> filterList = new ArrayList<BookData>();
-                    for (int i = 0; i < arrayListFilter.size(); i++) {
-                        if (arrayListFilter.get(i).getBookName().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getPublisherName().toLowerCase().contains(constraint.toString().toLowerCase()) ) {
-
-//                            if (arrayListFilter.get(i).getAuthorName().contains(constraint) || arrayListFilter.get(i).getBookName().contains(constraint) || arrayListFilter.get(i).getPublisherName().contains(constraint)) {
-                            Debug.i(TAG, "i : " + i);
-                            BookData book = new BookData();
-                            book.setDescription(arrayListFilter.get(i).getDescription());
-                            book.setAuthorImage(arrayListFilter.get(i).getAuthorImage());
-                            book.setAuthorName(arrayListFilter.get(i).getAuthorName());
-                            book.setBookId(arrayListFilter.get(i).getBookId());
-                            book.setBookImage(arrayListFilter.get(i).getBookImage());
-                            book.setBookName(arrayListFilter.get(i).getBookName());
-                            book.setEbookLink(arrayListFilter.get(i).getEbookLink());
-                            book.setPrice(arrayListFilter.get(i).getPrice());
-                            book.setPublisherName(arrayListFilter.get(i).getPublisherName());
-                            filterList.add(book);
-
-                        }
-                    }
-                    results.count = filterList.size();
-                    results.values = filterList;
-                } else {
-                    results.count = arrayListFilter.size();
-                    results.values = arrayListFilter;
-                }
-                return results;
-            } catch (Exception e) {
-                Debug.i(TAG, "FilterResults Exceptions : " + e.getLocalizedMessage());
-                return null;
-
-            }
-
-
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            try {
-
-                arrayList = (ArrayList<BookData>) results.values;
-                booksListner.onSearchSuggested(arrayList);
-                notifyDataSetChanged();
-            } catch (Exception e) {
-                Debug.i(TAG, "publishResults on Exception :  " + e.getLocalizedMessage());
-            }
-        }
-
+    @Override
+    public int getItemCount() {
+        return arrayList.size();
     }
-    public class ViewHolder {
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imgBook;
         private ImageView imgInfo;
@@ -227,6 +119,17 @@ public class SuggestedBookAdapter extends BaseAdapter implements Filterable{
         private TextView txtBookAuthor;
         private TextView txtBookName;
 
-
+        public ViewHolder(View convertView) {
+            super(convertView);
+            imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
+            imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
+            imgAddToFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
+            imgLibraryBook = (ImageView) convertView.findViewById(R.id.img_book_add);
+            txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
+            txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
+            imgLibraryBook.setVisibility(View.VISIBLE);
+            imgAddToFav.setVisibility(View.VISIBLE);
+            imgInfo.setVisibility(View.VISIBLE);
+        }
     }
 }

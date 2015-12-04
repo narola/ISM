@@ -105,7 +105,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
     }
 
     private void setUpList() {
-        if (arrayListBlockedUser != null) {
+        if (arrayListBlockedUser .size()>0) {
             blockedUserAdapter = new BlockedUserAdapter(getActivity(), arrayListBlockedUser);
             listView.setAdapter(blockedUserAdapter);
             txtEmpty.setVisibility(View.GONE);
@@ -232,7 +232,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    arrayListBlockedUser.addAll(responseHandler.getBlockedUsers());
+                    arrayListBlockedUser=responseHandler.getBlockedUsers();
                     setUpList();
                     Debug.i(TAG, "onResponseBlockedUser success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {

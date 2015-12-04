@@ -11,8 +11,8 @@
 			<corners android:radius="@dimen/button_small_corner_radius"/>
 		</shape>
 	</item>
-	<item android:right="10dp">
-		<bitmap android:src="@drawable/dropdownarrow"
+	<item android:right="5dp">
+		<bitmap android:src="@drawable/ic_spinner_down_arrow"
 		        android:gravity="center_vertical|right"/>
 	</item>
 </layer-list>
