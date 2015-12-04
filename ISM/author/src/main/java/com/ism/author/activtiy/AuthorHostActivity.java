@@ -500,10 +500,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 case FRAGMENT_ADDQUESTION_CONTAINER:
                     imgHome.setActivated(false);
                     flFragmentContainerRight.setVisibility(View.GONE);
-
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_office;
-
                     rlControllerTopMenu.setVisibility(View.VISIBLE);
                     txtAction.setVisibility(View.GONE);
                     txtAction.setText(getString(R.string.straddnew));

@@ -36,10 +36,12 @@ import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.autocomplete.ContactsCompletionView;
 import com.ism.author.autocomplete.FilteredArrayAdapter;
 import com.ism.author.autocomplete.TokenCompleteTextView;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.model.HashTagsModel;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
+import com.ism.author.ws.helper.MediaUploadAttribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.AnswerChoices;
@@ -139,7 +141,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         imgDeleteQuestion = (ImageView) view.findViewById(R.id.img_delete_question);
         imgSelectImage = (ImageView) view.findViewById(R.id.img_select_image);
         imgPlay = (ImageView) view.findViewById(R.id.img_play);
-        imgSelectImage.setOnClickListener(this);
 
 
         etAddquestionTitle = (EditText) view.findViewById(R.id.et_addquestion_title);
@@ -215,14 +216,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
         });
 
-        imgSelectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-
         callAPiGetAllHashTag();
     }
 
@@ -237,6 +230,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
         if (data != null) {
             selectedUri = data.getData();
+
             String[] columns = {MediaStore.Images.Media.DATA,
                     MediaStore.Images.Media.MIME_TYPE};
 
@@ -572,26 +566,27 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         return isAnswerSelect;
     }
 
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
 
     @Override
     public void onClick(View v) {
         if (v == tvAddquestionSave) {
             isAddMore = false;
-//            if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-//                Debug.e(TAG, "QUESTION EDIT CALLED");
-//                getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
-//                        makeQuestionData(getFragment().getQuestionData().getQuestionId()), chkAddquestionPreview.isChecked());
-//            } else {
-//                /*pass 0 value if you are creating new question otherwise pass question id in edit*/
-//                Debug.e(TAG, "QUESTION ADD CALLED");
-//                if (isInputsValid()) {
-//                    callApiCreateQuestion();
-//                }
-//            }
             if (isInputsValid()) {
                 callApiCreateQuestion();
             }
-
         } else if (v == tvAddquestionSaveAddmore) {
             isAddMore = true;
 //            if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
@@ -752,6 +747,39 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     }
 
+    private void callApiUploadMediaForQuestion(String questionId, String mediaType, String fileName) {
+//        new MediaUploader(getActivity()).new MediaUploaderCaller().execute(fileName);
+        if (Utility.isConnected(getActivity())) {
+            ((AuthorHostActivity) getActivity()).showProgress();
+            try {
+                Attribute attribute = new Attribute();
+                MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
+                questionIdParam.setParamName("question_id");
+                questionIdParam.setParamValue(questionId);
+                attribute.getArrListParam().add(questionIdParam);
+
+
+                MediaUploadAttribute mediaTypeParam = new MediaUploadAttribute();
+                mediaTypeParam.setParamName("mediaType");
+                mediaTypeParam.setParamValue(mediaType);
+                attribute.getArrListParam().add(mediaTypeParam);
+
+
+                MediaUploadAttribute mediaFileParam = new MediaUploadAttribute();
+                mediaFileParam.setParamName("mediaFile");
+                mediaFileParam.setFileName(fileName);
+                attribute.getArrListFile().add(mediaFileParam);
+
+
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.UPLOADMEDIAFORQUESTION);
+            } catch (Exception e) {
+                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(getActivity());
+        }
+    }
 
     private String getQuestionFormat() {
         String questionFormat = "";
@@ -798,6 +826,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 case WebConstants.SETHASHTAG:
                     onResponseSetHashTag(object, error);
                     break;
+
+                case WebConstants.UPLOADMEDIAFORQUESTION:
+                    onResponseUploadMediaForQuestion(object, error);
+                    break;
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponse Exception : " + e.toString());
@@ -815,8 +847,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 //                    callApiSetHashTag(responseHandler.getQuestion().get(0).getQuestionId());
-                    if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
 
+                    Debug.e(TAG, "The Question Id Is::" + responseHandler.getQuestion().get(0).getQuestionId());
+                    if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
                         Utils.showToast(getString(R.string.question_edit_success), getActivity());
 //                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_edit_success));
                         getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
@@ -835,6 +868,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         clearViewsData();
                     }
 
+                    if (selectedUri != null) {
+                        Debug.e(TAG, "Thefile path is:" + getRealPathFromURI(selectedUri));
+                        callApiUploadMediaForQuestion(responseHandler.getQuestion().get(0).getQuestionId(), AppConstant.MEDIATYPE_IMAGE,
+                                getRealPathFromURI(selectedUri));
+                    }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
 
@@ -859,8 +897,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             question.setQuestionImageLink("");
             question.setEvaluationNotes(etEvaluationNote1.getText().toString());
             question.setSolution(etEvaluationNote2.getText().toString());
-            question.setSolution(etEvaluationNote2.getText().toString());
-
             if (getArguments() != null) {
 //                question.setTopicId(getArguments().getString(ExamsAdapter.ARG_EXAM_TOPIC_ID));
 //                question.setSubjectId(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID));
@@ -970,6 +1006,25 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseSetHashTags Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseUploadMediaForQuestion(Object object, Exception error) {
+        try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    Debug.e(TAG, "The Image Link IS::" + responseHandler.getImageLink());
+                    Utils.showToast(getString(R.string.msg_success_imgupload_question), getActivity());
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseUploadMediaForQuestion api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseUploadMediaForQuestion Exception : " + e.toString());
         }
     }
 

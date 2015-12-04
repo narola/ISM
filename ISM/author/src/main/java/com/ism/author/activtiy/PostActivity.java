@@ -388,6 +388,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         byte[] buffer;
         int maxBufferSize = 1 * 1024 * 1024;
         String responseFromServer = "", fileName = null;
+
         // String urlString = "http://your_website.com/upload_audio_test/upload_audio.php";
         try {
             //------------------ CLIENT REQUEST
