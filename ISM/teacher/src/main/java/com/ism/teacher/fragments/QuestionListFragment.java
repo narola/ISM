@@ -564,6 +564,28 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void filterResultsAfterAddEditDelete() {
         if (spQuestionlistSubject.getSelectedItemPosition() > 0) {
             filterResultsBasedOnSubjects(Integer.valueOf(arrListSubject.get(spQuestionlistSubject.getSelectedItemPosition() - 1).getId()));
+
+            int position = spQuestionlistFiltertype.getSelectedItemPosition();
+
+            //  Debug.e(TAG+"============================","filter spinner item after we are coming from add/edit question"+spQuestionlistFiltertype.getSelectedItem().toString());
+            if (position > 0) {
+                switch (position) {
+                    case 1:
+                        clearSubjectBasedFilters();
+                        break;
+                    case 2:
+                        filterResultsForExamType(DESCRIPTIVE_FORMAT);
+                        break;
+
+                    case 3:
+                        filterResultsForExamType(MCQ_FORMAT);
+                        break;
+                    case 4:
+                        //for favorites
+                        break;
+                }
+            }
+
         }
 
     }

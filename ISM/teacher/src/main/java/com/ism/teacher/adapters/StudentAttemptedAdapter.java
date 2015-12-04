@@ -74,39 +74,6 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                 viewholder.lLMain.setBackgroundResource(R.drawable.bg_student_attempted_unselected);
             }
             imageLoader.displayImage(WebConstants.USER_IMAGES + arrayList.get(position).getStudentProfilePic(), viewholder.imgUserPic, ISMTeacher.options);
-//            viewholder.lLMain.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Utility.showToast("Click " + position, context);
-//                    if (lastSelected == -1) {
-//                        arrayList.get(position).setIsFlagged(true);
-//                        lastSelected = position;
-//                    } else if (position == lastSelected) {
-//                        arrayList.get(position).setIsFlagged(false);
-//                        lastSelected = -1;
-//                    } else if (position != lastSelected) {
-//                        arrayList.get(position).setIsFlagged(true);
-//                        arrayList.get(lastSelected).setIsFlagged(false);
-//                        lastSelected = position;
-//                    }
-//                    if (arrayList.get(position).isFlagged()) {
-//                        ((TeacherHostActivity) context).showProgress();
-//
-//                        //static call
-//                        callAPIStudentEvaluations();
-////                        callAPIStudentEvaluations(arrayList.get(position).getStudentId(), resObjStudentAttempted.getExamSubmission().get(0).getExamId(), studentName);
-//                    } else {
-//                        ((TeacherHostActivity) context).showProgress();
-//                        GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, null);
-//                        GetObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
-//                        getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
-//                        ((TeacherHostActivity) context).hideProgress();
-//                    }
-//                    notifyDataSetChanged();
-//
-//
-//                }
-//            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,7 +129,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 
             if (API_METHOD == WebConstants.GET_EXAM_EVALUATIONS) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
                         responseObjectEval = responseHandler;
 //                        GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseObjectEval);
