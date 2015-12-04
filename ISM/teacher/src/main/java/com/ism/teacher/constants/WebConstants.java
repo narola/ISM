@@ -107,7 +107,7 @@ public class WebConstants {
     public static final String URL_GET_MY_STUDENTS = URL_KINJAL_HOST + "GetMyStudents";
 
 
-    public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_HOST_162 + "GetExamSubmission";
+    public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_KINJAL_HOST + "GetExamSubmission";
 
     public static final String URL_GET_CITIES = URL_KINJAL_HOST + "GetCities";
     public static final String URL_GET_STATES = URL_KINJAL_HOST + "GetStates";
@@ -119,5 +119,12 @@ public class WebConstants {
     public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
 
     public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
+
+
+
+    public static final int SETHASHTAG = 32;
+    public static final int TEMPCREATEQUESTION = 33;
+    public static final String URL_HASHTAG = URL_KINJAL_HOST + "Hashtag";
+    public static final String URL_TEMPCREATEQUESTION = URL_KINJAL_HOST + "TempCreateQuestion";
 
 }

@@ -19,8 +19,8 @@ import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Scroller;
@@ -36,7 +36,7 @@ import java.util.Queue;
 /**
  * Created by c162 on 13/10/15.
  */
-public class HorizontalListView extends AdapterView<ListAdapter> {
+public class HorizontalListView extends AdapterView<Adapter> {
     /** Defines where to insert items into the ViewGroup, as defined in {@code ViewGroup #addViewInLayout(View, int, LayoutParams, boolean)} */
     private static final int INSERT_AT_END_OF_LIST = -1;
     private static final int INSERT_AT_START_OF_LIST = 0;
@@ -66,7 +66,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     private int mDisplayOffset;
 
     /** Holds a reference to the adapter bound to this view */
-    protected ListAdapter mAdapter;
+    protected Adapter mAdapter;
 
     /** Holds a cache of recycled views to be reused as needed */
     private List<Queue<View>> mRemovedViewsCache = new ArrayList<Queue<View>>();
@@ -170,6 +170,11 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             HoneycombPlus.setFriction(mFlingTracker, FLING_FRICTION);
         }
+    }
+
+    @Override
+    public Adapter getAdapter() {
+        return mAdapter;
     }
 
     /** Registers the gesture detector to receive gesture notifications for this view */
@@ -351,8 +356,31 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         return getChild(mCurrentlySelectedAdapterIndex);
     }
 
+//    @Override
+//    public void setAdapter(ListAdapter adapter) {
+//        if (mAdapter != null) {
+//            mAdapter.unregisterDataSetObserver(mAdapterDataObserver);
+//        }
+//
+//        if (adapter != null) {
+//            // Clear so we can notify again as we run out of data
+//            mHasNotifiedRunningLowOnData = false;
+//
+//            mAdapter = adapter;
+//            mAdapter.registerDataSetObserver(mAdapterDataObserver);
+//        }
+//
+//        initializeRecycledViewCache(mAdapter.getViewTypeCount());
+//        reset();
+//    }
+
+//    @Override
+//    public ListAdapter getAdapter() {
+//        return mAdapter;
+//    }
+
     @Override
-    public void setAdapter(ListAdapter adapter) {
+    public void setAdapter(Adapter adapter) {
         if (mAdapter != null) {
             mAdapter.unregisterDataSetObserver(mAdapterDataObserver);
         }
@@ -367,11 +395,6 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
         initializeRecycledViewCache(mAdapter.getViewTypeCount());
         reset();
-    }
-
-    @Override
-    public ListAdapter getAdapter() {
-        return mAdapter;
     }
 
     /**

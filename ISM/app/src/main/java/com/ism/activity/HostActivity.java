@@ -129,7 +129,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private ArrayList<SMSAlert> arrayListSMSAlert = new ArrayList<>();
     private ArrayList<PrivacySetting> arrayListPrivacySetting = new ArrayList<>();
     private InputMethodManager inputMethod;
+    private ScrollListener scrollListener;
 
+    public interface ScrollListener {
+        public void isLastPosition();
+
+        public void isFirstPosition();
+    }
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -141,7 +147,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     public interface HostListenerEditAboutMe {
         public void onAmbition();
-
         public void onAboutMe();
     }
 
@@ -166,25 +171,17 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     public interface BooksListner {
         public void onAddToFav(int position);
-
         public void onRemoveFromFav(int position);
-
         public void onAddToLibrary(String id);
-
         public void onRemoveFromLibrary(String id);
-
         public void onSearchFav(ArrayList<BookData> arrayList);
-
         public void onSearchSuggested(ArrayList<BookData> arrayList);
     }
 
     public interface ManageResourcesListner {
         public void onAddToFav(int position);
-
         public void onRemoveFromFav(int position);
-
         public void onSearchFav(Object o);
-
         public void onSearchSuggested(Object o);
     }
 
@@ -957,6 +954,10 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     public void setListenerHostEditAboutMe(HostListenerEditAboutMe listenerHostEditAboutMe) {
         this.listenerEditAboutMe = listenerHostEditAboutMe;
+    }
+
+    public void setListenerHostScroll(ScrollListener scrollListner) {
+        this.scrollListener = scrollListner;
     }
 
     public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {

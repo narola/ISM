@@ -39,7 +39,7 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 	private static final String TAG = MyWalletFragment.class.getSimpleName();
 
 	private View view, viewHighlighterTriangle;
-	private TextView txtBalance;
+	private TextView txtBalance, txtEmptyListMessage;
 	private EditText etVoucherAmount;
 	private ListView lvVoucher;
 	private ProcessButton btnGenerate;
@@ -72,10 +72,13 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 	private void initGlobal() {
 		viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
 		txtBalance = (TextView) view.findViewById(R.id.txt_wallet_balance);
+		txtEmptyListMessage = (TextView) view.findViewById(R.id.txt_emptylist_message);
 		etVoucherAmount = (EditText) view.findViewById(R.id.edit_voucher_amount);
 		lvVoucher = (ListView) view.findViewById(R.id.lv_voucher);
 		btnGenerate = (ProcessButton) view.findViewById(R.id.btn_generate);
 
+		txtEmptyListMessage.setTypeface(Global.myTypeFace.getRalewayRegular());
+		lvVoucher.setEmptyView(txtEmptyListMessage);
 		viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
 		progressGenerator = new ProgressGenerator();
@@ -242,7 +245,7 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 
 	private void showBalance(String balance) {
 		txtBalance.setText(Html.fromHtml("<font color='#323941'>Your wallet Balance is</font>" +
-				"<br><font color='#DA534F'>" + balance + "</font>"));
+				"<br><font color='#DA534F'>" + (balance != null ? balance : 0) + "</font>"));
 	}
 
 	private void fillVoucherList() {
