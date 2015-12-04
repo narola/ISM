@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.MessageAdapter;
@@ -141,6 +142,7 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
             rlMessageDetails.setVisibility(View.VISIBLE);
         }
 
+		imageLoader.displayImage(WebConstants.HOST_IMAGE_USER+arrListMessage.get(position).getSenderProfilePic(), imgDp, ISMStudent.options);
 //		imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", imgDp, ISMStudent.options);
         txtName.setText(arrListMessage.get(position).getSenderName());
         txtMessage.setText(arrListMessage.get(position).getMessageText());
