@@ -420,8 +420,6 @@ class StudyMateFunctions
                 //echo "array=> "; print_r($the_array);
 
 
-
-
                 //Final step
 
                 if($mainArray!=NULL) {
@@ -433,7 +431,6 @@ class StudyMateFunctions
                         if (mysqli_num_rows($resultSchool)>0) {
 
                             while ($row = mysqli_fetch_assoc($resultSchool)) {
-
 
                                 $post['user_id'] = $row['id'];
                                 $post['full_name'] = $row['full_name'];
@@ -522,7 +519,7 @@ class StudyMateFunctions
             } else {
                 $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
-                $data = "";
+                $data = array();
             }
         }
         else
@@ -565,7 +562,7 @@ class StudyMateFunctions
             $queryInnerJoin = TABLE_STUDYMATES . " studymates INNER JOIN " . TABLE_USERS . " users INNER JOIN " . TABLE_STUDENT_PROFILE . " studentAcademicInfo INNER JOIN " . TABLE_SCHOOLS . " schools";
             $queryOn = "studymates.mate_id=users.id=studentAcademicInfo.user_id and schools.id=studentAcademicInfo.school_id";
 
-            $queryGetStudyMateAllDetail = "SELECT * from ".$queryInnerJoin." on ".$queryOn."  where  (mate_of=".$user_id." or mate_id=".$user_id.") and studymates.is_delete=0";
+            $queryGetStudyMateAllDetail = "SELECT * from ".$queryInnerJoin." on ".$queryOn."  where  (studymates.mate_of=".$user_id." or studymates.mate_id=".$user_id.") and studymates.is_delete=0";
             //echo $queryGetStudyMateAllDetail;
             $resultGetStudyMateAllDetail = mysqli_query($GLOBALS['con'], $queryGetStudyMateAllDetail) or $message = mysqli_error($GLOBALS['con']);
             if (mysqli_num_rows($resultGetStudyMateAllDetail)) {
@@ -586,6 +583,7 @@ class StudyMateFunctions
                         $post['profile_pic'] = $val['profile_pic'];
                         $post['is_online'] = $val['is_online'];
                         $post['school_name'] = $val['school_name'];
+                        $post['total_authors_followed'] = $val['total_authors_followed'];
                         array_push($data, $post);
                     }
 
@@ -596,7 +594,7 @@ class StudyMateFunctions
             } else {
                 $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
-                $data = "";
+                $data = array();
             }
         }
         else
@@ -684,7 +682,7 @@ class StudyMateFunctions
             } else {
                 $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
-                $data = "";
+                $data = array();
             }
         }
         else

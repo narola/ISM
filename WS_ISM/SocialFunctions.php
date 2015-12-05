@@ -72,9 +72,9 @@ class SocialFunctions
             }
                 break;
                 
-            case "GetConfigData":
+            case "GetAdminConfig":
             {
-                return $this->getConfigData($postData);
+                return $this->getAdminConfig($postData);
             }
                 break;
 
@@ -102,6 +102,11 @@ class SocialFunctions
             }
                 break;
 
+            case "GetUserFavoriteQuestion";
+            {
+                return $this->getUserFavoriteQuestion($postData);
+            }
+                break;
         }
     }
 
@@ -1051,28 +1056,36 @@ class SocialFunctions
             if ($question_id != null) {
                 foreach ($question_id as $record_id) {
 
-                    $queryCheckFeed = "SELECT * FROM ".TABLE_USER_FAVORITE_QUESTION." WHERE user_id=".$user_id." AND question_id =". $record_id." AND f.is_delete=0";
-                    // echo $queryCheckFeed."\n";
-                    $resultCheckFeed = mysqli_query($GLOBALS['con'], $queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
+                     $queryCheckInQuestion="SELECT * FROM ". TABLE_QUESTIONS." WHERE id=".$record_id;
+                    $resultCheckInQuestion=mysqli_query($GLOBALS['con'], $queryCheckInQuestion) or $message = mysqli_error($GLOBALS['con']);
 
-                    if (mysqli_num_rows($resultCheckFeed) == 0) {
-                        $insertFields = "`user_id`,`question_id`";
-                        $insertValues = $user_id . "," . $record_id;
+                    if(mysqli_num_rows($resultCheckInQuestion) > 0) {
 
-                        $query = "INSERT INTO " . TABLE_USER_FAVORITE_QUESTION . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                        //echo $query;
-                        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+                        $queryCheckFeed = "SELECT * FROM " . TABLE_USER_FAVORITE_QUESTION . " WHERE user_id=" . $user_id . " AND question_id =" . $record_id . " AND is_delete=0";
+                        //echo $queryCheckFeed."\n"; exit;
+                        $resultCheckFeed = mysqli_query($GLOBALS['con'], $queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
 
-                        if ($result)
-                        {
+                        if (mysqli_num_rows($resultCheckFeed) == 0) {
+                            $insertFields = "`user_id`,`question_id`";
+                            $insertValues = $user_id . "," . $record_id;
+
+                            $query = "INSERT INTO " . TABLE_USER_FAVORITE_QUESTION . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                            //echo $query;
+                            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                            if ($result) {
+                                $status = SUCCESS;
+                                $message = "favorite synced";
+                            } else {
+                                $status = FAILED;
+                                $message = "";
+                            }
+                        } else {
                             $status = SUCCESS;
-                            $message = "favorite synced";
-                        } else
-                        {
-                            $status = FAILED;
-                            $message = "";
+                            $message = RECORD_ALREADY_EXIST;
                         }
-                    } else
+                    }
+                    else
                     {
                         $status = SUCCESS;
                         $message = DEFAULT_NO_RECORDS;
@@ -1218,36 +1231,86 @@ class SocialFunctions
     /*
     * getConfigData
      */
-    public function getConfigData($postData)
+    public function getAdminConfig($postData)
     {
      	$status='';
      	$message='';
         $data=array();
         $response=array();
-        
-     	$query = "SELECT config_key,config_value,value_unit FROM ".TABLE_ADMIN_CONFIG." WHERE is_delete=0";
-        $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
-             
-        if(mysqli_num_rows($result))
+
+        $last_sync_date = validateObject($postData, 'last_sync_date', "");
+        $last_sync_date = addslashes($last_sync_date);
+
+        $role = validateObject($postData, 'role', "");
+        $role = addslashes($role);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($role=='Student')
         {
-             while($row=mysqli_fetch_assoc($result))
-            {
-                    $data[]=$row;
-            }
-            $status=SUCCESS;
+            $scope='Student';
+        }
+        elseif($role=='Author')
+        {
+            $scope='Author';
+        }
+        elseif($role=='Admin')
+        {
+            $scope='Admin';
+        }
+        elseif($role=='Teacher')
+        {
+            $scope='Teacher';
+        }
+        elseif($role=='All')
+        {
+            $scope='All';
+        }
+
+        if($isSecure==yes) {
+
+          //  if ($last_sync_date < date("Y-m-d")) {
+               // $last_sync_date=date("Y-m-d");
+                //$condition=" and date(created_date,'Y-M-d') < '".$last_sync_date."'";
+                //$condition=" and DATE_FORMAT(created_date, 'Y-m-d') < '".$last_sync_date."'";
+                $query = "SELECT config_key,config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE  scope='" . $scope . "' and is_delete=0";// . $condition;
+                //echo $query;
+                $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                if (mysqli_num_rows($result)) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $post['config_key'] = $row['config_key'];
+                        $post['config_value'] = $row['config_value'];
+
+                        $data[]=$post;
+                    }
+
+
+                    $status = SUCCESS;
+                }
+           // }
+        }
+        else{
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+            $data="";
         }
 
      	//$token= $this->getToken(10);
-     	
-     
+        $response['last_sync_date'] = $last_sync_date;
     	$response['admin_config']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
 
         return $response;
     }
-    
-   
 
 
 	public function encryptionData($postData)
@@ -1305,7 +1368,7 @@ class SocialFunctions
 	
 	$query = "SELECT config_value FROM ".TABLE_ADMIN_CONFIG. " WHERE config_key='globalPassword'";
     $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
-    echo $secerectkey=mysqli_fetch_row($result);
+        $secerectkey=mysqli_fetch_row($result);
  
 	// 32 byte binary blob
 	$aes256Key = hash("SHA256", $secerectkey[0], true);
@@ -1349,158 +1412,147 @@ class SocialFunctions
         $resource_type = validateObject($postData, "resource_type", "");
         $resource_type = addslashes($resource_type);
 
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-        if($resource_type=="book")
-        {
-            $resource_name="book_id";
-            $table=TABLE_TAGS_BOOK;
-        }
-        elseif($resource_type=="forum")
-        {
-            $resource_name="forum_question_id";
-            $table=TABLE_TAGS_FORUM_QUESTION;
-        }
-        elseif($resource_type=="lecture")
-        {
-            $resource_name="lecture_id";
-            $table=TABLE_TAGS_LECTURE;
-        }
-        elseif($resource_type=="question")
-        {
-            $resource_name="question_id";
-            $table=TABLE_TAGS_QUESTION;
-        }
-        elseif($resource_type=="assignment")
-        {
-            $resource_name="book_assignment_id	";
-            $table=TABLE_TAG_BOOK_ASSIGNMENT;
-        }
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
 
-        $arrayForTags = explode(',', $hashtag_data);
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
-        $arrayTagsID = array();
-        $arrayTagsName = array();
-        foreach ($arrayForTags as $tag) {
+        if($isSecure==yes) {
 
-            $arraySeparateKeyValue = explode(':', $tag);
-            $arrayTagsID[] = $arraySeparateKeyValue[1];
-            $arrayTagsName[] = $arraySeparateKeyValue[0];
-        }
+            if ($resource_type == "book") {
+                $resource_name = "book_id";
+                $table = TABLE_TAGS_BOOK;
+            } elseif ($resource_type == "forum") {
+                $resource_name = "forum_question_id";
+                $table = TABLE_TAGS_FORUM_QUESTION;
+            } elseif ($resource_type == "lecture") {
+                $resource_name = "lecture_id";
+                $table = TABLE_TAGS_LECTURE;
+            } elseif ($resource_type == "question") {
+                $resource_name = "question_id";
+                $table = TABLE_TAGS_QUESTION;
+            } elseif ($resource_type == "assignment") {
+                $resource_name = "book_assignment_id	";
+                $table = TABLE_TAG_BOOK_ASSIGNMENT;
+            }
 
-        if($hashtag_data !=null) {
+            $arrayForTags = explode(',', $hashtag_data);
 
+            $arrayTagsID = array();
+            $arrayTagsName = array();
+            foreach ($arrayForTags as $tag) {
 
-            for($i=0;$i<count($arrayTagsName);$i++)
-            {
-                if($arrayTagsID[$i] == 0) {
+                $arraySeparateKeyValue = explode(':', $tag);
+                $arrayTagsID[] = $arraySeparateKeyValue[1];
+                $arrayTagsName[] = $arraySeparateKeyValue[0];
+            }
 
-                    $selectQueryFotTagName = "SELECT id FROM " . TABLE_TAGS . " WHERE  LOWER(`tag_name`) = LOWER('$arrayTagsName[$i]') AND is_delete=0";
-                    $resultQueryFotTagName = mysqli_query($GLOBALS['con'],$selectQueryFotTagName) or $message = mysqli_error($GLOBALS['con']);
-                    $getTagID = mysqli_fetch_row($resultQueryFotTagName);
-
-                    if (mysqli_num_rows($resultQueryFotTagName) == 0) {
-                        // while ($rowGetTags = mysqli_fetch_assoc($resultQueryFotTagName)) {
-
-                        //$found=in_array($rowGetTags['tag_name'],$arrayTagsName,true);
-                        //echo $rowGetTags['tag_name'];
-
-                        $insertFields = "`tag_name`";
-                        $insertValues = "'" . $arrayTagsName[$i] . "'";
+            if ($hashtag_data != null) {
 
 
-                        $queryToInsertNewTag = "INSERT INTO " . TABLE_TAGS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                        $resultToInsertNewTag = mysqli_query($GLOBALS['con'],$queryToInsertNewTag) or $message = mysqli_error($GLOBALS['con']);
+                for ($i = 0; $i < count($arrayTagsName); $i++) {
+                    if ($arrayTagsID[$i] == 0) {
 
-                        $latest_tag_id = mysqli_insert_id($GLOBALS['con']);
+                        $selectQueryFotTagName = "SELECT id FROM " . TABLE_TAGS . " WHERE  LOWER(`tag_name`) = LOWER('$arrayTagsName[$i]') AND is_delete=0";
+                        $resultQueryFotTagName = mysqli_query($GLOBALS['con'], $selectQueryFotTagName) or $message = mysqli_error($GLOBALS['con']);
+                        $getTagID = mysqli_fetch_row($resultQueryFotTagName);
 
-                        $insertFields = "`tag_id`,`" . $resource_name . "`";
-                        $insertValues = $latest_tag_id . "," . $resource_id;
+                        if (mysqli_num_rows($resultQueryFotTagName) == 0) {
+                            // while ($rowGetTags = mysqli_fetch_assoc($resultQueryFotTagName)) {
+
+                            //$found=in_array($rowGetTags['tag_name'],$arrayTagsName,true);
+                            //echo $rowGetTags['tag_name'];
+
+                            $insertFields = "`tag_name`";
+                            $insertValues = "'" . $arrayTagsName[$i] . "'";
 
 
-                        $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                        $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
+                            $queryToInsertNewTag = "INSERT INTO " . TABLE_TAGS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                            $resultToInsertNewTag = mysqli_query($GLOBALS['con'], $queryToInsertNewTag) or $message = mysqli_error($GLOBALS['con']);
 
-                        if($result)
-                        {
-                            $status = SUCCESS;
-                            $message = "resource hash tagged";
-                        }
-                        else
-                        {
-                            $status = FAILED;
-                            $message = "";
-                        }
-                        //}
-                    }
+                            $latest_tag_id = mysqli_insert_id($GLOBALS['con']);
 
-                    else {
-
-                        $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i] ." AND is_delete=0";
-                        $resultQuery = mysqli_query($GLOBALS['con'],$selectQuery) or $message = mysqli_error($GLOBALS['con']);
-
-                        if (mysqli_num_rows($resultQuery) == 0) {
                             $insertFields = "`tag_id`,`" . $resource_name . "`";
-                            $insertValues = $getTagID[0] . "," . $resource_id;
+                            $insertValues = $latest_tag_id . "," . $resource_id;
+
 
                             $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                            $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
+                            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
-                            if($result)
-                            {
+                            if ($result) {
                                 $status = SUCCESS;
                                 $message = "resource hash tagged";
-                            }
-                            else
-                            {
+                            } else {
                                 $status = FAILED;
                                 $message = "";
                             }
+                            //}
+                        } else {
+
+                            $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i] . " AND is_delete=0";
+                            $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                            if (mysqli_num_rows($resultQuery) == 0) {
+                                $insertFields = "`tag_id`,`" . $resource_name . "`";
+                                $insertValues = $getTagID[0] . "," . $resource_id;
+
+                                $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                                $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                                if ($result) {
+                                    $status = SUCCESS;
+                                    $message = "resource hash tagged";
+                                } else {
+                                    $status = FAILED;
+                                    $message = "";
+                                }
+                            } else {
+                                $status = SUCCESS;
+                                $message = RECORD_ALREADY_EXIST;
+                            }
                         }
-                        else
-                        {
+
+                    } else {
+
+                        $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i] . " AND is_delete=0";
+                        $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                        if (mysqli_num_rows($resultQuery) == 0) {
+
+                            $insertFields = "`tag_id`,`" . $resource_name . "`";
+                            $insertValues = $arrayTagsID[$i] . "," . $resource_id;
+
+                            $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                            if ($result) {
+                                $status = SUCCESS;
+                                $message = "resource hash tagged";
+                            } else {
+                                $status = FAILED;
+                                $message = "";
+                            }
+                        } else {
                             $status = SUCCESS;
                             $message = RECORD_ALREADY_EXIST;
                         }
                     }
 
                 }
-                else {
 
-                    $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i]." AND is_delete=0";
-                    $resultQuery = mysqli_query($GLOBALS['con'],$selectQuery) or $message = mysqli_error($GLOBALS['con']);
-
-                    if (mysqli_num_rows($resultQuery) == 0) {
-
-                        $insertFields = "`tag_id`,`" . $resource_name . "`";
-                        $insertValues = $arrayTagsID[$i] . "," . $resource_id;
-
-                        $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                        $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
-
-                        if($result)
-                        {
-                            $status = SUCCESS;
-                            $message = "resource hash tagged";
-                        }
-                        else
-                        {
-                            $status = FAILED;
-                            $message = "";
-                        }
-                    }
-                    else
-                    {
-                        $status = SUCCESS;
-                        $message = RECORD_ALREADY_EXIST;
-                    }
-                }
-
+            } else {
+                $status = FAILED;
+                $message = DEFAULT_NO_RECORDS;
             }
-
         }
-        else{
-            $status=FAILED;
-            $message=DEFAULT_NO_RECORDS;
+        else {
+
+            $status = FAILED;
+            $message = MALICIOUS_SOURCE;
         }
         $response['data']=$data;
         $response['message'] = $message;
@@ -1517,24 +1569,116 @@ class SocialFunctions
         $data=array();
         $response=array();
 
-        $tagQuery="SELECT id as 'tag_id',tag_name as 'tag' FROM ".TABLE_TAGS." WHERE is_delete=0 ORDER BY id";
-        $tagResult=mysqli_query($GLOBALS['con'],$tagQuery) or  $message=mysqli_error($GLOBALS['con']);
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-        if($tagResult) {
-            if (mysqli_num_rows($tagResult)) {
-                while ($rowGetTags = mysqli_fetch_assoc($tagResult)) {
-                    $data[] = $rowGetTags;
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $tagQuery = "SELECT id as 'tag_id',tag_name as 'tag' FROM " . TABLE_TAGS . " WHERE is_delete=0 ORDER BY id";
+            $tagResult = mysqli_query($GLOBALS['con'], $tagQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            if ($tagResult) {
+                if (mysqli_num_rows($tagResult)) {
+                    while ($rowGetTags = mysqli_fetch_assoc($tagResult)) {
+                        $data[] = $rowGetTags;
+                    }
                 }
+                $status = SUCCESS;
+                $message = "";
+            } else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
             }
-            $status=SUCCESS;
-            $message="";
         }
-        else{
-            $status=SUCCESS;
-            $message=DEFAULT_NO_RECORDS;
-        }
+        else {
 
+            $status = FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
         $response['tags']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
+
+    public function getUserFavoriteQuestion($postData)
+    {
+
+        $data=array();
+        $response=array();
+        $post=array();
+
+        $user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $selQuery="SELECT DISTINCT questions.*,subjects.subject_name FROM ".TABLE_USER_FAVORITE_QUESTION." user_favorite_question
+            INNER JOIN ".TABLE_QUESTIONS." questions ON questions.id=user_favorite_question.question_id
+            INNER JOIN ".TABLE_SUBJECTS." subjects ON subjects.id=questions.subject_id
+            WHERE user_favorite_question.user_id=".$user_id." and user_favorite_question.is_delete=0 ";
+            $selResult=mysqli_query($GLOBALS['con'], $selQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            $questions=array();
+            if (mysqli_num_rows($selResult) > 0) {
+                while ($rowQuestion = mysqli_fetch_assoc($selResult)) {
+
+                    $questions['question_id'] = $rowQuestion['id'];
+                    $questions['question_text'] = $rowQuestion['question_text'];
+                    $questions['question_format']=$rowQuestion['question_format'];
+                    $questions['question_hint']=$rowQuestion['question_hint'];
+                    $questions['subject_id']=$rowQuestion['subject_id'];
+                    $questions['subject_name']=$rowQuestion['subject_name'];
+                    $questions['solution'] = $rowQuestion['solution'];
+
+                    $choice = array();
+                    if ($rowQuestion['question_format'] == 'MCQ') {
+                        $queryGetChoice = "SELECT `id`, `question_id`, `choice_text`, `is_right`, `image_link`, `audio_link`, `video_link` FROM ".TABLE_ANSWER_CHOICES." WHERE `question_id`=".$rowQuestion['id'] ." AND is_delete=0 ";
+                        $resultGetChoice = mysqli_query($GLOBALS['con'], $queryGetChoice) or $message = mysqli_error($GLOBALS['con']);
+                        // echo $resultGetChoice;
+                        if (mysqli_num_rows($resultGetChoice)) {
+                            while ($rowGetChoice = mysqli_fetch_assoc($resultGetChoice)) {
+                                $choice[] = $rowGetChoice;
+
+                            }
+                            $questions['answers'] = $choice;
+                        }
+                    } else {
+                        $questions['answers'] = $choice;
+                    }
+                    $post[] = $questions;
+                }
+                $data[]=$post;
+                $status = SUCCESS;
+                $message = REQUEST_ACCEPTED;
+            }
+            else{
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+        }
+        else {
+
+            $status = FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['user_favorite_questions']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
 

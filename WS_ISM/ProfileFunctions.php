@@ -1656,11 +1656,12 @@ class ProfileFunctions
      */
     public function blockUser($postData)
     {
+
     	$message ='';
         $status='';
         $data=array();
         $response=array();
-        
+
         $user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
         
@@ -1678,6 +1679,7 @@ class ProfileFunctions
 
         $security=new SecurityFunctions();
         $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
 
         if ($isSecure == yes) {
 
@@ -1697,15 +1699,19 @@ class ProfileFunctions
             if ($user_id != NULL || $block_user != NULL || $email_id != NULL) {
 
                 //Find UserId and Block User from StudyMate table
-                $queryFindStudyMate = "SELECT * FROM ".TABLE_STUDYMATES." WHERE mate_id=".$block_user_id." AND mate_of=".$user_id." AND ( status='request' OR status='friend') AND is_delete=0";
+                $queryFindStudyMate = "SELECT * FROM ".TABLE_STUDYMATES." WHERE mate_id=".$block_user_id." AND mate_of=".$user_id." AND (status='request' OR status='friend') AND is_delete=0";
                 //echo $queryFindStudyMate;
                 $resultFindStudyMate = mysqli_query($GLOBALS['con'], $queryFindStudyMate) or $message = mysqli_error($GLOBALS['con']);
 
                 if (mysqli_num_rows($resultFindStudyMate) > 0) {
                     $updateQuery = "UPDATE " . TABLE_STUDYMATES . " SET status='block' WHERE mate_id=" . $block_user_id . " and mate_of=" . $user_id;
-                    //$updateResult = mysqli_query($GLOBALS['con'], $updateQuery) or $message = mysqli_error($GLOBALS['con']);
+                    $updateResult = mysqli_query($GLOBALS['con'], $updateQuery) or $message = mysqli_error($GLOBALS['con']);
                     $message = "user blocked";
                     $status = SUCCESS;
+                }
+                else{
+                    $status = SUCCESS;
+                    $message = DEFAULT_NO_RECORDS;
                 }
 
             } else {
@@ -2470,76 +2476,82 @@ class ProfileFunctions
 
         $remove_book_id = validateObject($postData, 'remove_book_id', "");
 
-        if($add_book_id!=null)
-        {
-            foreach($add_book_id as $book_id) {
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-                $queryCheckFeed = "SELECT * FROM " . TABLE_USER_LIBRARY . " WHERE user_id=" . $user_id . " AND book_id=" . $book_id ." AND is_delete=0";
-                //echo $queryCheckFeed."\n";
-                $resultCheckFeed =mysqli_query($GLOBALS['con'],$queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
 
-                if (mysqli_num_rows($resultCheckFeed) == 0) {
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
-                    $insertFields = "`user_id`,`book_id`,`is_delete`";
-                    $insertValues = $user_id . "," . $book_id.", 0";
+        if ($isSecure == yes) {
+            if ($add_book_id != null) {
+                foreach ($add_book_id as $book_id) {
 
-                    $query = "INSERT INTO " . TABLE_USER_LIBRARY . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                    $result =mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
+                    $queryCheckFeed = "SELECT * FROM " . TABLE_USER_LIBRARY . " WHERE user_id=" . $user_id . " AND book_id=" . $book_id . " AND is_delete=0";
+                    //echo $queryCheckFeed."\n";
+                    $resultCheckFeed = mysqli_query($GLOBALS['con'], $queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
 
-                    if($result) {
+                    if (mysqli_num_rows($resultCheckFeed) == 0) {
+
+                        $insertFields = "`user_id`,`book_id`,`is_delete`";
+                        $insertValues = $user_id . "," . $book_id . ", 0";
+
+                        $query = "INSERT INTO " . TABLE_USER_LIBRARY . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                        if ($result) {
+                            $status = SUCCESS;
+                            $message = "library synced";
+                        } else {
+                            $status = FAILED;
+                            $message = "";
+                        }
+                    } else {
                         $status = SUCCESS;
-                        $message = "library synced";
-                    }
-                    else{
-                        $status=FAILED;
-                        $message="";
+                        $message = RECORD_ALREADY_EXIST;
                     }
                 }
-                else
-                {
-                    $status=SUCCESS;
-                    $message=RECORD_ALREADY_EXIST;
-                }
+
             }
 
-        }
 
+            if ($remove_book_id != null) {
+                foreach ($remove_book_id as $book_id) {
 
+                    $queryCheckFeed = "SELECT * FROM " . TABLE_USER_LIBRARY . " WHERE user_id=" . $user_id . " AND book_id=" . $book_id . " AND is_delete=0";
+                    //echo $queryCheckFeed."\n";
+                    $resultCheckFeed = mysqli_query($GLOBALS['con'], $queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
 
-        if($remove_book_id!=null)
-        {
-            foreach($remove_book_id as $book_id) {
+                    if (mysqli_num_rows($resultCheckFeed) > 0) {
 
-                $queryCheckFeed = "SELECT * FROM " . TABLE_USER_LIBRARY . " WHERE user_id=" . $user_id . " AND book_id="  . $book_id." AND is_delete=0";
-                //echo $queryCheckFeed."\n";
-                $resultCheckFeed =mysqli_query($GLOBALS['con'],$queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
+                        $queryUpdate = "UPDATE " . TABLE_USER_LIBRARY . " SET is_delete = 1 WHERE user_id=" . $user_id . " AND book_id=" . $book_id . " AND is_delete=0";
+                        $resultUpdate = mysqli_query($GLOBALS['con'], $queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
+                        // echo $queryUpdate;
 
-                if (mysqli_num_rows($resultCheckFeed) > 0) {
-
-                    $queryUpdate="UPDATE " .TABLE_USER_LIBRARY ." SET is_delete = 1 WHERE user_id=".$user_id." AND book_id="  . $book_id." AND is_delete=0";
-                    $resultUpdate =mysqli_query($GLOBALS['con'],$queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
-                    // echo $queryUpdate;
-
-                    if($resultUpdate) {
+                        if ($resultUpdate) {
+                            $status = SUCCESS;
+                            $message = "library synced";
+                        } else {
+                            $status = FAILED;
+                            $message = "";
+                        }
+                    } else {
                         $status = SUCCESS;
-                        $message = "library synced";
-                    }
-                    else{
-                        $status=FAILED;
-                        $message="";
+                        $message = RECORD_ALREADY_EXIST;
                     }
                 }
-                else
-                {
-                    $status=SUCCESS;
-                    $message=RECORD_ALREADY_EXIST;
-                }
+
             }
 
+
         }
-
-
-
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
 
         $response['student_profile']=$data;
         $response['status']=$status;
@@ -2556,28 +2568,36 @@ class ProfileFunctions
         $user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
 
-        //studymate_request.request_to_mate_id,studymates.mate_of,
-        $getField="studymates.mate_id,users.full_name,users.profile_pic,users.email_id";
 
-        $queryGetBlockedUser="SELECT ".$getField." FROM ".TABLE_STUDYMATES." studymates
-        JOIN ". TABLE_USERS." users ON users.id=studymates.mate_of
-        WHERE  studymates.mate_of=".$user_id." AND studymates.status='block' AND studymates.is_delete=0";
-        $resultGetBlockedUser=mysqli_query($GLOBALS['con'],$queryGetBlockedUser) or $message=mysqli_error($GLOBALS['con']);
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-        if(mysqli_num_rows($resultGetBlockedUser) > 0)
-        {
-            while($row=mysqli_fetch_assoc($resultGetBlockedUser))
-            {
-                $data[]=$row;
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
 
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+            //studymate_request.request_to_mate_id,studymates.mate_of,
+            $getField = "studymates.mate_id,users.full_name,users.profile_pic,users.email_id";
+
+            $queryGetBlockedUser = "SELECT " . $getField . " FROM " . TABLE_STUDYMATES . " studymates
+        JOIN " . TABLE_USERS . " users ON users.id=studymates.mate_id
+        WHERE  studymates.mate_of=" . $user_id . " AND studymates.status='block' AND studymates.is_delete=0";
+            $resultGetBlockedUser = mysqli_query($GLOBALS['con'], $queryGetBlockedUser) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultGetBlockedUser) > 0) {
+                while ($row = mysqli_fetch_assoc($resultGetBlockedUser)) {
+                    $data[] = $row;
+
+                }
+                $status = SUCCESS;
+                $message = REQUEST_ACCEPTED;
+            } else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
             }
-            $status=SUCCESS;
-            $message=REQUEST_ACCEPTED;
-        }
-        else
-        {
-            $status=SUCCESS;
-            $message=DEFAULT_NO_RECORDS;
         }
         $response['blocked_users']=$data;
         $response['status']=$status;
@@ -2956,21 +2976,6 @@ class ProfileFunctions
         $username = addslashes($username);
 
         $security=new SecurityFunctions();
-      /*  $query = "SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='globalPassword' AND is_delete=0";
-        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
-        $masterKey = mysqli_fetch_row($result);
-
-
-        // 32 byte binary blob
-        $aes256Key = hash("SHA256", $masterKey[0], true);
-
-        // for good entropy (for MCRYPT_RAND)
-        srand((double)microtime() * 1000000);
-
-        // generate random iv
-        $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
-
-        $decrypted_access_key = $security->functionToDecrypt($username, $aes256Key);*/
 
         $decrypted_username = $security-> decryptUsername($username);
 

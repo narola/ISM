@@ -123,6 +123,12 @@ class ExamFunctions
                 return $this->getBooks($postData);//in progress
             }
                 break;
+
+            case "GetExamsByUser":
+            {
+                return $this->getExamsByUser($postData);//in progress
+            }
+                break;
         }
     }
 
@@ -1437,9 +1443,10 @@ class ExamFunctions
     */
     public function uploadMediaForQuestion($postData)
     {
+        $status='';
         $mediaName = '';
         $created_date = date("Ymd-His");
-        
+        $reponse=array();
         //Create Random String.
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         
@@ -1511,10 +1518,12 @@ class ExamFunctions
         }
         $data['question_id']=$question_id;
         $data['mediaType']=$mediaType;
-    	$data['status']=$status;
         $data['image_link']=$link;
-        $data['message']=$message;
-        return $data;
+
+        $response['upload_question']=$data;
+        $response['status']=$status;;
+        $response['message']=$message;
+        return $response;
     }
     
      /*
@@ -1985,7 +1994,6 @@ class ExamFunctions
         $post=array();
         $response=array();
 
-
         $secret_key = validateObject($postData, 'secret_key', "");
         $secret_key = addslashes($secret_key);
 
@@ -2019,6 +2027,70 @@ class ExamFunctions
             $message = MALICIOUS_SOURCE;
         }
         $response['books']=$data;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+
+    public function getExamsByUser($postData)
+    {
+        $message = '';
+        $status = '';
+        $data = array();
+        $post = array();
+        $exams = array();
+        $response = array();
+
+
+        $user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security = new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key, $secret_key);
+
+        if ($isSecure == yes) {
+
+             $queryExam = "SELECT * FROM " . TABLE_EXAMS . " WHERE id IN (SELECT exam_id FROM " . TABLE_STUDENT_EXAM_SCORE . " WHERE user_id=" . $user_id . " and is_delete=0)";
+            $resultExam = mysqli_query($GLOBALS['con'], $queryExam) or $message = mysqli_error($GLOBALS['con']);
+            //echo $queryExam."\n".mysqli_num_rows($resultExam);
+
+            if (mysqli_num_rows($resultExam) > 0) {
+                while ($rowExam = mysqli_fetch_assoc($resultExam)) {
+
+                    $data['exam'][] = $this->getExamData($rowExam);
+
+                    $postParam=new stdClass();
+
+                    $postParam->exam_id=$rowExam['id'];
+                    $post[]= $this->getExamQuestions($postParam);
+                    $post[]=$post['0'];
+
+
+
+                }
+                $data[] = $post;
+                $status = SUCCESS;
+                $message = REQUEST_ACCEPTED;
+            }
+            else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['user_exams']=$data;
         $response['message']=$message;
         $response['status']=$status;
 

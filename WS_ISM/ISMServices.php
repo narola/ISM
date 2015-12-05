@@ -110,6 +110,7 @@ switch ($_REQUEST['Service'])
     case "GetHighScorers":
     case "TempCreateQuestion":
     case "GetBooks":
+    case "GetExamsByUser":
     {
         include_once 'ExamFunctions.php';
         $exam = new ExamFunctions();
@@ -128,11 +129,12 @@ switch ($_REQUEST['Service'])
     case "AddQuestionToFavorite":
     case "TempGetMyFeeds":
     case "GetSecurirty":
-    case "GetConfigData":
+    case "GetAdminConfig":
     case "EncryptionData":
     case "DecryptionData":
     case "Hashtag":
     case "GetAllHashtag":
+    case "GetUserFavoriteQuestion";
     {
         include_once 'SocialFunctions.php';
         $profile = new SocialFunctions();
