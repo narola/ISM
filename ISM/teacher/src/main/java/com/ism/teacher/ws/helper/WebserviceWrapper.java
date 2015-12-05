@@ -153,11 +153,11 @@ public class WebserviceWrapper {
                         responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_HASHTAG).execute(ResponseHandler.class, attribute);
                         break;
 
-                    case WebConstants.SETHASHTAG:
+                    case WebConstants.SET_HASHTAG:
                         responseObject = new WebserviceConnector(WebConstants.URL_HASHTAG).execute(ResponseHandler.class, attribute);
                         break;
-                    case WebConstants.TEMPCREATEQUESTION:
-                        responseObject = new WebserviceConnector(WebConstants.URL_TEMPCREATEQUESTION).execute(ResponseHandler.class, attribute);
+                    case WebConstants.TEMP_CREATE_QUESTION:
+                        responseObject = new WebserviceConnector(WebConstants.URL_TEMP_CREATE_QUESTION).execute(ResponseHandler.class, attribute);
                         break;
 
                 }

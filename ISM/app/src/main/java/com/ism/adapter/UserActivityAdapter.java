@@ -12,29 +12,33 @@ import android.widget.TextView;
 
 import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.constant.WebConstants;
 import com.ism.model.TestActivity;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
+import com.ism.ws.model.UserActivitiy;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
+import model.UserActivity;
+
 /**
  * Created by c161 on 25/11/15.
  */
-public class MyActivityAdapter extends RecyclerView.Adapter<MyActivityAdapter.ViewHolder> {
+public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapter.ViewHolder> {
 
-	private static final String TAG = MyActivityAdapter.class.getSimpleName();
+	private static final String TAG = UserActivityAdapter.class.getSimpleName();
 
 	private Context context;
-	private ArrayList<TestActivity> arrListActivity;
+	private ArrayList<UserActivitiy> arrListActivity;
 	private ImageLoader imageLoader;
 	private MyTypeFace myTypeFace;
 	private LayoutInflater inflater;
 
-	public MyActivityAdapter(Context context, ArrayList<TestActivity> arrListActivity) {
+	public UserActivityAdapter(Context context, ArrayList<UserActivitiy> arrListActivity) {
 		this.context = context;
 		this.arrListActivity = arrListActivity;
 		imageLoader = ImageLoader.getInstance();
@@ -75,37 +79,29 @@ public class MyActivityAdapter extends RecyclerView.Adapter<MyActivityAdapter.Vi
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		try {
 
-			if (position == 0 || !arrListActivity.get(position).getTime().equals(arrListActivity.get(position - 1).getTime())) {
+			/*if (position == 0 || !arrListActivity.get(position).getTime().equals(arrListActivity.get(position - 1).getTime())) {
 				holder.llHeader.setVisibility(View.VISIBLE);
 				holder.txtTime.setText(arrListActivity.get(position).getTime());
 			} else {
 				holder.llHeader.setVisibility(View.GONE);
-			}
+			}*/
 
 			holder.llHeader.setPadding(0, position == 0 ? 0 : 15, 0, 0);
 
-			switch (arrListActivity.get(position).getActivityType()) {
-				case 0:
-					showFeedPost(holder, arrListActivity.get(position));
-					break;
-				case 1:
-					showTopic(holder, arrListActivity.get(position));
-					break;
-				case 2:
-					showStudymate(holder, arrListActivity.get(position));
-					break;
-				case 3:
-					showFeedLike(holder, arrListActivity.get(position));
-					break;
-				case 4:
-					showExam(holder, arrListActivity.get(position));
-					break;
-				case 5:
-					showAssignment(holder, arrListActivity.get(position));
-					break;
-				case 6:
-					showComment(holder, arrListActivity.get(position));
-					break;
+			if (arrListActivity.get(position).getActivityType().equals(UserActivitiy.ACTIVITY_STUDYMATE)) {
+				showStudymate(holder, arrListActivity.get(position));
+			} else if (arrListActivity.get(position).getActivityType().equals(UserActivitiy.ACTIVITY_FEED_POSTED)) {
+				showFeedPost(holder, arrListActivity.get(position));
+			} else if (arrListActivity.get(position).getActivityType().equals(UserActivitiy.ACTIVITY_FEED_COMMENTED)) {
+				showComment(holder, arrListActivity.get(position));
+			} else if (arrListActivity.get(position).getActivityType().equals(UserActivitiy.ACTIVITY_FEED_LIKED)) {
+				showFeedLike(holder, arrListActivity.get(position));
+			} else if (arrListActivity.get(position).getActivityType().equals(UserActivitiy.ACTIVITY_TOPIC_ALLOCATED)) {
+				showTopic(holder, arrListActivity.get(position));
+			} else if (arrListActivity.get(position).getActivityType().equals(UserActivitiy.ACTIVITY_ASSIGNMENT_SUBMITTED)) {
+				showAssignment(holder, arrListActivity.get(position));
+			} else if (arrListActivity.get(position).getActivityType().equals(UserActivitiy.ACTIVITY_EXAM_ATTEMPTED)) {
+				showExam(holder, arrListActivity.get(position));
 			}
 
 		} catch (Exception e) {
@@ -113,7 +109,7 @@ public class MyActivityAdapter extends RecyclerView.Adapter<MyActivityAdapter.Vi
 		}
 	}
 
-	private void showComment(ViewHolder holder, TestActivity testActivity) {
+	private void showComment(ViewHolder holder, UserActivitiy userActivity) {
 		holder.txtActivityTitle.setText(R.string.commented_on);
 		View viewComment = setMyActivityLayout(holder, R.layout.layout_timeline_comment);
 
@@ -138,22 +134,22 @@ public class MyActivityAdapter extends RecyclerView.Adapter<MyActivityAdapter.Vi
 		txtFollowing.setText("Following 39 Authors");
 	}
 
-	private void showAssignment(ViewHolder holder, TestActivity testActivity) {
+	private void showAssignment(ViewHolder holder, UserActivitiy userActivity) {
 		holder.txtActivityTitle.setText(R.string.assignment_submitted);
 		View viewAssignment = setMyActivityLayout(holder, R.layout.layout_timeline_assignment);
 	}
 
-	private void showExam(ViewHolder holder, TestActivity testActivity) {
+	private void showExam(ViewHolder holder, UserActivitiy userActivity) {
 		holder.txtActivityTitle.setText(R.string.exam_attempted);
 		View viewExam = setMyActivityLayout(holder, R.layout.layout_timeline_table);
 	}
 
-	private void showFeedLike(ViewHolder holder, TestActivity testActivity) {
+	private void showFeedLike(ViewHolder holder, UserActivitiy userActivity) {
 		holder.txtActivityTitle.setText(R.string.feed_liked);
 		View viewFeedLike = setMyActivityLayout(holder, R.layout.layout_timeline_feed_like);
 	}
 
-	private void showStudymate(ViewHolder holder, TestActivity testActivity) {
+	private void showStudymate(ViewHolder holder, UserActivitiy userActivity) {
 		holder.txtActivityTitle.setText(R.string.became_studymate_with);
 		View viewStudymate = setMyActivityLayout(holder, R.layout.layout_timeline_studymate);
 
@@ -166,13 +162,13 @@ public class MyActivityAdapter extends RecyclerView.Adapter<MyActivityAdapter.Vi
 		txtSchool.setTypeface(myTypeFace.getRalewayRegular());
 		txtFollowing.setTypeface(myTypeFace.getRalewayRegular());
 
-		imageLoader.displayImage(Global.strProfilePic, imgDp, ISMStudent.options);
-		txtName.setText("Albert Crowley");
-		txtSchool.setText("St. Mary");
+		imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + userActivity.getStudymates().getStudymateProfilePic(), imgDp, ISMStudent.options);
+		txtName.setText(userActivity.getStudymates().getStudymateName());
+		txtSchool.setText(userActivity.getStudymates().getStudymateSchoolName());
 		txtFollowing.setText("Following 39 Authors");
 	}
 
-	private void showTopic(ViewHolder holder, TestActivity testActivity) {
+	private void showTopic(ViewHolder holder, UserActivitiy userActivity) {
 		holder.txtActivityTitle.setText(R.string.topics_allocated);
 		View viewTopic = setMyActivityLayout(holder, R.layout.layout_timeline_table);
 
@@ -189,7 +185,7 @@ public class MyActivityAdapter extends RecyclerView.Adapter<MyActivityAdapter.Vi
 		txtScore.setTypeface(myTypeFace.getRalewayRegular());
 	}
 
-	private void showFeedPost(ViewHolder holder, TestActivity testActivity) {
+	private void showFeedPost(ViewHolder holder, UserActivitiy userActivity) {
 		holder.txtActivityTitle.setText(R.string.feed_posted);
 		View viewFeedPost = setMyActivityLayout(holder, R.layout.layout_timeline_feed_post);
 	}

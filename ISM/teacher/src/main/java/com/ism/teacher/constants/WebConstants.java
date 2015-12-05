@@ -1,17 +1,15 @@
 package com.ism.teacher.constants;
 
 /**
- * Created by c161 on 05/11/15.
+ * Hold static constants required when dealing with web services
  */
 public class WebConstants {
-
-
-    public static final String API_STATUS_SUCCESS = "success";
-    public static final String API_STATUS_FAIL = "fail";
 
     public static final String FEED_MEDIA = "http://192.168.1.162/ISM/WS_ISM/Feeds/";
     public static final String USER_IMAGES = "http://192.168.1.162/ISM/WS_ISM/Images/";
 
+
+    //static parameters
     public static final String EXAM_ID_11_SUBJECTIVE = "11";
     public static final String EXAM_ID_3_OBJECTIVE = "3";
     public static final String EXAM_ID_9_OBJECTIVE = "9";
@@ -23,9 +21,11 @@ public class WebConstants {
 
     public static final String TEACHER_ROLE_ID = "3";
     public static final String STUDENT_ID_1 = "1";
+    public static final String BOOK_ID_2 = "2";
+    public static final String TOPIC_ID_5 = "5";
+    public static final String TEST_USER_ID = "370";
+    public static final String TEST_USER_NAME = "Admin";
 
-    public static final String BOOK_ID_2="2";
-    public static final String TOPIC_ID_5="5";
 
     /**
      * Api IDs
@@ -65,9 +65,9 @@ public class WebConstants {
     public static final int CREATEQUESTION = 26;
     public static final int GET_ALL_HASHTAG = 27;
     public static final int GET_ALL_BADGES_COUNT = 28;
+    public static final int SET_HASHTAG = 29;
+    public static final int TEMP_CREATE_QUESTION = 30;
 
-    public static final String TEST_USER_ID = "370";
-    public static final String TEST_USER_NAME = "Admin";
 
     /**
      * URLs
@@ -115,16 +115,17 @@ public class WebConstants {
 
     //Add Question Functionality
 
-    public static final String URL_GET_ALL_HASHTAG= URL_KINJAL_HOST + "GetAllHashtag";
+    public static final String URL_GET_ALL_HASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
     public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
 
     public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
 
-
-
-    public static final int SETHASHTAG = 32;
-    public static final int TEMPCREATEQUESTION = 33;
+    //Question Add/Edit Functionality
     public static final String URL_HASHTAG = URL_KINJAL_HOST + "Hashtag";
-    public static final String URL_TEMPCREATEQUESTION = URL_KINJAL_HOST + "TempCreateQuestion";
+    public static final String URL_TEMP_CREATE_QUESTION = URL_KINJAL_HOST + "TempCreateQuestion";
+
+    //Upload Media url
+
+    public static final String URL_UPLOADMEDIAFORQUESTION = URL_KINJAL_HOST + "UploadMediaForQuestion";
 
 }

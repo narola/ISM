@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.ism.teacher.ISMTeacher;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
+import com.ism.teacher.Utility.MediaUploader;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
@@ -135,8 +136,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         imgDeleteQuestion = (ImageView) view.findViewById(R.id.img_delete_question);
         imgSelectImage = (ImageView) view.findViewById(R.id.img_select_image);
         imgPlay = (ImageView) view.findViewById(R.id.img_play);
-        // imgSelectImage.setOnClickListener(this);
-
 
         etAddquestionTitle = (EditText) view.findViewById(R.id.et_addquestion_title);
         etAddquestionAnswer = (EditText) view.findViewById(R.id.et_addquestion_answer);
@@ -208,14 +207,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 return false;
             }
         });
-
-
-//        imgSelectImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
 
 
         callAPiGetAllHashTag();
@@ -573,35 +564,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         if (v == tvAddquestionSave) {
 
             isAddMore = false;
-//            if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-//                Debug.e(TAG, "QUESTION EDIT CALLED");
-//                getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
-//                        makeQuestionData(getFragment().getQuestionData().getQuestionId()), chkAddquestionPreview.isChecked());
-//            } else {
-//                Debug.e(TAG, "QUESTION ADD CALLED");
-//                if (isInputsValid()) {
-//                    callApiCreateQuestion();
-//                }
-//            }
             if (isInputsValid()) {
                 callApiCreateQuestion();
             }
-
+            //callApiUploadMediaForQuestion("4", "image", getRealPathFromURI(selectedUri));
 
         } else if (v == tvAddquestionSaveAddmore) {
 
             isAddMore = true;
-//            if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-//                Debug.e(TAG, "QUESTION EDIT CALLED");
-//                getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
-//                        makeQuestionData(getFragment().getQuestionData().getQuestionId()), chkAddquestionPreview.isChecked());
-//                clearViewsData();
-//            } else {
-//                Debug.e(TAG, "QUESTION ADD CALLED");
-//                if (isInputsValid()) {
-//                    callApiCreateQuestion();
-//                }
-//            }
             if (isInputsValid()) {
                 callApiCreateQuestion();
             }
@@ -617,6 +587,25 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
         }
 
+    }
+
+    private void callApiUploadMediaForQuestion(String question_id, String mediaType, String realPathFromURI) {
+
+        new MediaUploader(getActivity(), question_id).new MediaUploaderCaller().execute(realPathFromURI);
+    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 
 
@@ -656,6 +645,16 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
                 Attribute attribute = new Attribute();
                 attribute.setUserId(WebConstants.TEST_USER_ID);
+                if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+                    /*for edit question*/
+                    Debug.e(TAG, "The question id is::" + getFragment().getQuestionData().getQuestionId());
+                    attribute.setQuestionid(getFragment().getQuestionData().getQuestionId());
+
+                } else {
+                    /*for add question*/
+                    Debug.e(TAG, "The question id is::" + "0");
+                    attribute.setQuestionid("0");
+                }
                 attribute.setQuestionText(etAddquestionTitle.getText().toString());
                 attribute.setSubjectId(getArguments().getString(AssignmentExamFragment.ARG_EXAM_SUBJECT_ID));
                 attribute.setQuestionScore(getArguments().getString(AssignmentExamFragment.ARG_EXAM_QUESTION_SCORE));
@@ -691,7 +690,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 Debug.e(TAG, "The HashTags Are:::" + sb.toString());
                 attribute.setHashtagData(sb.toString());
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.TEMPCREATEQUESTION);
+                        .execute(WebConstants.TEMP_CREATE_QUESTION);
 
             } catch (Exception e) {
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -737,7 +736,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     public void onResponse(int apiCode, Object object, Exception error) {
         try {
             switch (apiCode) {
-                case WebConstants.TEMPCREATEQUESTION:
+                case WebConstants.TEMP_CREATE_QUESTION:
                     onReponseCreateQuestion(object, error);
                     break;
 
@@ -745,7 +744,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     onResponseGetAllHashTag(object, error);
                     break;
 
-                case WebConstants.SETHASHTAG:
+                case WebConstants.SET_HASHTAG:
                     onResponseSetHashTag(object, error);
                     break;
             }
@@ -779,6 +778,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         /*this is for add question data*/
                         getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
                                 chkAddquestionPreview.isChecked());
+
+                    }
+
+                    //upload image to question
+                    if (selectedUri != null) {
+                        callApiUploadMediaForQuestion(responseHandler.getQuestion().get(0).getQuestionId(), "image", getRealPathFromURI(selectedUri));
 
                     }
                     if (isAddMore) {

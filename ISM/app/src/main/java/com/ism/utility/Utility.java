@@ -102,7 +102,7 @@ public class Utility {
 //      Check if we can get access from the network.
         URL url = null;
         try {
-            url = new URL(WebConstants.HOST_202);
+            url = new URL(WebConstants.HOST);
             HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
             urlc.setRequestProperty("Connection", "close");
             urlc.setConnectTimeout(2000); // Timeout 2 seconds.

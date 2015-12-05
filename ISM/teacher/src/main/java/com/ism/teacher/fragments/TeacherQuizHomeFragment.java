@@ -411,7 +411,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     private void onResponseGetAllAssignments(Object object) {
 
         ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
             arrayListAssignments.addAll(responseHandler.getExams());
             assignmentsAdapter.addAll(arrayListAssignments);

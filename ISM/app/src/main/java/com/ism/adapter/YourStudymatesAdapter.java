@@ -8,7 +8,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
 import com.ism.ws.model.User;
@@ -64,9 +67,10 @@ public class YourStudymatesAdapter extends RecyclerView.Adapter<YourStudymatesAd
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		holder.viewStatus.setBackgroundResource(position % 2 == 0 ? R.drawable.bg_online : R.drawable.bg_offline);
-		holder.txtUserName.setText("Daniel Golman");
-		holder.txtSchool.setText("Student from Lordes Convents");
+		Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrayListUser.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
+		holder.viewStatus.setBackgroundResource(arrayListUser.get(position).getIsOnline().equals("1") ? R.drawable.bg_online : R.drawable.bg_offline);
+		holder.txtUserName.setText(arrayListUser.get(position).getFullName());
+		holder.txtSchool.setText(arrayListUser.get(position).getSchoolName());
 		holder.txtLocation.setText("Live in Ghana");
 		holder.txtFollowing.setText("Following 34 Authors");
 	}

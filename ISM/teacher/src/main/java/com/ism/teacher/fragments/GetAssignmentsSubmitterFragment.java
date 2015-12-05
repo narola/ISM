@@ -43,11 +43,7 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
 
     List<String> arrayListSubjects, arrayListClasses, arrayListSubmissionDate, arrayListAssessed;
 
-    //    ArrayList<Data> arrayListAssignments = new ArrayList<>();
     ArrayList<Examsubmittor> arrayListAssignments = new ArrayList<>();
-
-    Fragment mFragment;
-    String examid = "", exam_mode = "";
 
     public GetAssignmentsSubmitterFragment() {
     }
@@ -57,13 +53,6 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
         getAssignmentsSubmitterFragment.setArguments(bundleArguments);
         return getAssignmentsSubmitterFragment;
     }
-
-//    public GetAssignmentsSubmitterFragment(Fragment fragment, String examid, String exammode) {
-//        // Required empty public constructor
-//        this.mFragment = fragment;
-//        this.examid = examid;
-//        this.exam_mode = exammode;
-//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -147,9 +136,8 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
     private void onResponseGetAllExamSubmission(Object object) {
 
         ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-//            assignmentSubmitterAdapter = new AssignmentSubmitterAdapter(responseHandler.getExamSubmission().get(0).getExamId(), getActivity(), this, exam_mode);
             arrayListAssignments.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
             assignmentSubmitterAdapter.addAll(arrayListAssignments);
         } else {

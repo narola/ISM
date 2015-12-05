@@ -212,7 +212,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         holder.imgQuestionCopy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddEditQuestionFragment(position, false);
+                openAddEditQuestionFragment(position, true);
 
             }
         });
@@ -221,7 +221,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             @Override
             public void onClick(View v) {
 
-                openAddEditQuestionFragment(position, true);
+                openAddEditQuestionFragment(position, false);
 
             }
         });

@@ -24,15 +24,12 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
-import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.User;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,14 +55,12 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     // public static final int RESULT_OK = 300;
     private View view;
     private TextView txtUserName, txtSchool, txtClass, txtSocial, txtTotalPost, txtTotalStudymates, txtTotalAuthorFollowed, txtPost, txtAssignment, txtAuthorFollowed, txtAcademic, txtStudymates, txtIsmScore, txtTotalIsmScore, txtIsmRank, txtTotalIsmRank, txtTotalAssignment, txtExam, txtTotalExam, txtExcellence, txtFavQuestions, txtBadgesEarned, txtQueAsked, txtTotalBadgesEarned, txtTotalQueAsked, txtTotalFavQuestions, txtYourAmbition, txtAboutMe, txtClickAddAboutMe, txtClickAddAmbitions;
-    MyTypeFace myTypeFace;
     private static String TAG = AboutMeFragment.class.getSimpleName();
     private HostActivity activityHost;
     EditProfileFragment editProfileFragment;
     private TextView txtEdit;
     private EditText etCno, etDob;
     public static ImageView imgProfilePic, imgProfileEdit;
-    ImageLoader imageLoader;
     private boolean editable = false;
     private Calendar calDob;
     private DatePickerDialog datePickerDob;
@@ -97,8 +92,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void initGlobal() {
         editProfileFragment = EditProfileFragment.newInstance();
-
-        myTypeFace = new MyTypeFace(getActivity());
 
         txtUserName = (TextView) view.findViewById(R.id.txt_user_name);
         txtEdit = (TextView) view.findViewById(R.id.txt_edit);
@@ -135,7 +128,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         txtTotalBadgesEarned = (TextView) view.findViewById(R.id.txt_total_badges_earned);
         txtTotalQueAsked = (TextView) view.findViewById(R.id.txt_total_que_asked);
         txtTotalFavQuestions = (TextView) view.findViewById(R.id.txt_total_fav_questions);
-
         txtYourAmbition = (TextView) view.findViewById(R.id.txt_your_ambition);
         txtAboutMe = (TextView) view.findViewById(R.id.txt_about_me);
         txtClickAddAboutMe = (TextView) view.findViewById(R.id.txt_clickAddAboutMe);
@@ -143,42 +135,42 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
 
         //set typeface
-        txtClass.setTypeface(myTypeFace.getRalewayRegular());
-        txtSchool.setTypeface(myTypeFace.getRalewayRegular());
-        txtUserName.setTypeface(myTypeFace.getRalewayRegular());
-        txtEdit.setTypeface(myTypeFace.getRalewayRegular());
-        etCno.setTypeface(myTypeFace.getRalewayRegular());
-        etDob.setTypeface(myTypeFace.getRalewayRegular());
+        txtClass.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtSchool.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtUserName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtEdit.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etCno.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etDob.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-        txtSocial.setTypeface(myTypeFace.getRalewayRegular());
-        txtTotalPost.setTypeface(myTypeFace.getRalewayBold());
-        txtTotalStudymates.setTypeface(myTypeFace.getRalewayBold());
-        txtTotalAuthorFollowed.setTypeface(myTypeFace.getRalewayBold());
-        txtPost.setTypeface(myTypeFace.getRalewayRegular());
-        txtAssignment.setTypeface(myTypeFace.getRalewayRegular());
-        txtAuthorFollowed.setTypeface(myTypeFace.getRalewayRegular());
-        txtAcademic.setTypeface(myTypeFace.getRalewayRegular());
-        txtStudymates.setTypeface(myTypeFace.getRalewayRegular());
-        txtIsmScore.setTypeface(myTypeFace.getRalewayRegular());
-        txtTotalIsmScore.setTypeface(myTypeFace.getRalewayBold());
-        txtIsmRank.setTypeface(myTypeFace.getRalewayRegular());
-        txtTotalIsmRank.setTypeface(myTypeFace.getRalewayBold());
-        txtTotalAssignment.setTypeface(myTypeFace.getRalewayBold());
-        txtExam.setTypeface(myTypeFace.getRalewayRegular());
-        txtTotalExam.setTypeface(myTypeFace.getRalewayBold());
+        txtSocial.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtTotalPost.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtTotalStudymates.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtTotalAuthorFollowed.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtPost.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAssignment.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAuthorFollowed.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAcademic.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtStudymates.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtIsmScore.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtTotalIsmScore.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtIsmRank.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtTotalIsmRank.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtTotalAssignment.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtExam.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtTotalExam.setTypeface(Global.myTypeFace.getRalewayBold());
 
-        txtExcellence.setTypeface(myTypeFace.getRalewayRegular());
-        txtFavQuestions.setTypeface(myTypeFace.getRalewayRegular());
-        txtBadgesEarned.setTypeface(myTypeFace.getRalewayRegular());
-        txtQueAsked.setTypeface(myTypeFace.getRalewayRegular());
-        txtTotalBadgesEarned.setTypeface(myTypeFace.getRalewayBold());
-        txtTotalQueAsked.setTypeface(myTypeFace.getRalewayBold());
-        txtTotalFavQuestions.setTypeface(myTypeFace.getRalewayBold());
+        txtExcellence.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtFavQuestions.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtBadgesEarned.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtQueAsked.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtTotalBadgesEarned.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtTotalQueAsked.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtTotalFavQuestions.setTypeface(Global.myTypeFace.getRalewayBold());
 
-        txtYourAmbition.setTypeface(myTypeFace.getRalewayBold());
-        txtAboutMe.setTypeface(myTypeFace.getRalewayBold());
-        txtClickAddAboutMe.setTypeface(myTypeFace.getRalewayRegular());
-        txtClickAddAmbitions.setTypeface(myTypeFace.getRalewayRegular());
+        txtYourAmbition.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtAboutMe.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtClickAddAboutMe.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtClickAddAmbitions.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtEdit.setText(R.string.strEdit);
         txtEdit.setOnClickListener(this);
         txtClickAddAboutMe.setOnClickListener(this);
@@ -187,9 +179,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         imgEditAmbition.setOnClickListener(this);
         imgProfileEdit.setOnClickListener(this);
 
-
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         setEditableFalse(etDob);
         setEditableFalse(etCno);
         callApiGetAboutMe();
@@ -202,7 +191,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 return true;
             }
         });
-
 
     }
 
@@ -400,7 +388,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             etCno.setText(data.getContactNumber());
             // imgProfilePic.setBackgroundColor(Color.BLACK);
             Debug.i(TAG, "WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic() :" + WebConstants.HOST_IMAGE_USER + data.getProfilePic());
-            imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + data.getProfilePic(), imgProfilePic, ISMStudent.options);
+            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + data.getProfilePic(), imgProfilePic, ISMStudent.options);
             txtTotalAssignment.setText(data.getTotalAssignment());
             txtTotalAuthorFollowed.setText(data.getTotalAuthorsFollowed());
             txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());

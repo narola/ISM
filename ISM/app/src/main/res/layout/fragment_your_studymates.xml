@@ -1,25 +1,35 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-              android:orientation="vertical"
-             tools:context="com.ism.fragment.userprofile.YourStudymatesFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="com.ism.fragment.userprofile.YourStudymatesFragment">
 
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/recycler_your_studymates"
+		android:layout_height="match_parent"
 		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="7"></android.support.v7.widget.RecyclerView>
+		android:layout_above="@+id/rl_recommended_studymates"></android.support.v7.widget.RecyclerView>
+
+	<TextView
+		android:id="@+id/txt_empty_view_studymates"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_above="@+id/rl_recommended_studymates"
+		android:text="@string/no_studymates_found"
+		android:textSize="@dimen/text_size_emptylist_message_large"
+		android:gravity="center"/>
 
 	<View
 		android:layout_width="match_parent"
 		android:layout_height="1dp"
+		android:layout_above="@+id/rl_recommended_studymates"
 	    android:background="@color/border_table"/>
 
 	<RelativeLayout
+		android:id="@+id/rl_recommended_studymates"
 		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="4"
+		android:layout_height="225dp"
+		android:layout_alignParentBottom="true"
 		android:background="@color/border_table"
 		android:layout_margin="10dp"
 		android:padding="1dp">
@@ -64,5 +74,14 @@
 			android:layout_toRightOf="@id/img_previous"
 			android:layout_toLeftOf="@id/img_next"
 			android:background="@color/color_white"></android.support.v7.widget.RecyclerView>
+
+		<TextView
+			android:id="@+id/txt_empty_view_recommended"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:text="@string/no_studymates_found"
+			android:textSize="@dimen/text_size_emptylist_message_large"
+			android:visibility="gone"
+			android:gravity="center"/>
 	</RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

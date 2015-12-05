@@ -15,6 +15,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
+import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.PreviewQuestionListAdapter;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.MyTypeFace;
@@ -91,8 +92,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
             if (arrListQuestions.size() > 0) {
                 try {
                     Attribute attribute = new Attribute();
-                    attribute.setExamId("61");
-                    attribute.setQuestionId(getQuestionIdList());
+                    attribute.setExamId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
+                    attribute.setQuestionIdList(getQuestionIdList());
 
                     new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                             .execute(WebConstants.SET_QUESTIONS_FOR_EXAM);
