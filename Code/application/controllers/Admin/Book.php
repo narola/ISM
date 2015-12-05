@@ -8,6 +8,7 @@ class Book extends ADMIN_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->load->library('upload','form_validation');
 	}
 
 	// function to list down the books author wise.
@@ -209,12 +210,10 @@ class Book extends ADMIN_Controller {
 
 		if(isset($_POST['btn_save'])){
 
-			/*
+			
 			$data = array(
 					'book_name'=>$this->input->post('book_name'),
 					'book_description'=>$this->input->post('book_desc'),
-					'ebook_link'=>$posted_by,
-					'front_cover_image'=>$this->input->post('status'),
 					'back_cover_image'=>$this->input->post('status'),
 					'publication_date'=>$this->input->post('publication_date'),
 					'price'=>$this->input->post('price'),
@@ -223,20 +222,20 @@ class Book extends ADMIN_Controller {
 				);
 			
 
-			p($_FILES);
 
 			$book_id = insert(TBL_BOOKS,replace_invalid_chars($data));
-
+			$this->set_links($book_id);
 			$authors = $this->input->post('authors');
 			foreach ($authors as $author) {
 				$author_book = array(
 					'book_id'=>$book_id,
-					'role_id'=>$this->input->post('role_id'),
+					'user_id'=>$author
 				);
 
 				insert(TBL_AUTHOR_BOOK,replace_invalid_chars($author_book));
 			}
-			*/
+			
+			p($_FILES);
 			p($_POST, true);
 		}
 		$this->data['authors'] = select(TBL_USERS,TBL_USERS.'.id,'.TBL_USERS.'.full_name',
@@ -256,4 +255,169 @@ class Book extends ADMIN_Controller {
 		$this->data['page_title'] = 'Add New Book';
 		$this->template->load('admin/default','admin/book/add',$this->data);
 	}
+
+	 public function set_links($bid){
+		$path = "uploads/book_".$bid;
+
+		if(!empty($_FILES)){
+		    if(!is_dir($path)){
+		      	mkdir($path,0755,TRUE);
+		    }
+		// upload front cover
+		$ext 	= pathinfo($_FILES['front_cover']['name'], PATHINFO_EXTENSION);
+		$name 	= str_replace('.'.$ext, '', $_FILES['front_cover']['name'].'_'.time()).'.'.$ext;
+		$config['upload_path']	 	= $path;
+		$config['allowed_types'] 	= 'gif|jpg|png|jpeg';
+		$config['max_size']  		= '1000000000';	
+		$config['file_name'] 		= $name;
+		$error_count = 0;
+		$this->upload->initialize($config);
+		
+			if (!$this->upload->do_upload('front_cover')){
+				$file_upload_error = strip_tags($this->upload->display_errors(),'');
+				$file_required_error = "You did not select a file to upload.";
+				if($file_upload_error !== $file_required_error){
+					$error_count++;
+					$this->session->set_flashdata('error_front_cover', $file_upload_error);
+				}
+				else{
+					$front_cover_link = '';
+				}
+			}
+			else{
+				$data = array('upload_data' => $this->upload->data());
+				$front_cover_link = "book_".$bid.'/'.$data['upload_data']['file_name'];
+			}
+
+			if(!empty($front_cover_link)){
+			
+				$data_front_cover = array(
+					'front_cover_image'=>$front_cover_link,
+					"created_date"=>date('Y-m-d H:i:s',time()),
+				 	"modified_date"=>date('Y-m-d H:i:s',time())
+				);
+				update(TBL_BOOKS,array('id'=>$bid),$data_front_cover);
+			
+			}
+
+		// upload back cover
+		$ext 	= pathinfo($_FILES['back_cover']['name'], PATHINFO_EXTENSION);
+		$name 	= str_replace('.'.$ext, '', $_FILES['back_cover']['name'].'_'.time()).'.'.$ext;
+		$config['upload_path']	 	= $path;
+		$config['allowed_types'] 	= 'gif|jpg|png|jpeg';
+		$config['max_size']  		= '1000000000';	
+		$config['file_name'] 		= $name;
+		$error_count = 0;
+		$this->upload->initialize($config);
+		
+			if (!$this->upload->do_upload('back_cover')){
+				$file_upload_error = strip_tags($this->upload->display_errors(),'');
+				$file_required_error = "You did not select a file to upload.";
+				if($file_upload_error !== $file_required_error){
+					$error_count++;
+					$this->session->set_flashdata('error_back_cover', $file_upload_error);
+				}
+				else{
+					$back_cover_link = '';
+				}
+			}
+			else{
+				$data = array('upload_data' => $this->upload->data());
+				$back_cover_link = "book_".$bid.'/'.$data['upload_data']['file_name'];
+			}
+
+			if(!empty($back_cover_link)){
+			
+				$data_back_cover = array(
+					'back_cover_image'=>$back_cover_link,
+					"created_date"=>date('Y-m-d H:i:s',time()),
+				 	"modified_date"=>date('Y-m-d H:i:s',time())
+				);
+				update(TBL_BOOKS,array('id'=>$bid),$data_back_cover);
+			
+			}
+
+			// upload pdf file
+			$ext 	= pathinfo($_FILES['book_pdf']['name'], PATHINFO_EXTENSION);
+			$name 	= str_replace('.'.$ext, '', $_FILES['book_pdf']['name'].'_'.time()).'.'.$ext;
+			$config['upload_path']	 	= $path;
+			$config['allowed_types'] 	= 'pdf';
+			$config['max_size']  		= '1000000000';	
+			$config['file_name'] 		= $name;
+			$error_count = 0;
+			$this->upload->initialize($config);
+			
+			if (!$this->upload->do_upload('book_pdf')){
+				$file_upload_error = strip_tags($this->upload->display_errors(),'');
+				$file_required_error = "You did not select a file to upload.";
+				if($file_upload_error !== $file_required_error){
+					$error_count++;
+					$this->session->set_flashdata('error_book_pdf', $file_upload_error);
+				}
+				else{
+					$book_pdf_link = '';
+				}
+			}
+			else{
+				$data = array('upload_data' => $this->upload->data());
+				$book_pdf_link = "book_".$bid.'/'.$data['upload_data']['file_name'];
+			}
+
+			if(!empty($book_pdf_link)){
+			
+				$data_pdf_link = array(
+					'pdf_link'=>$book_pdf_link,
+					"created_date"=>date('Y-m-d H:i:s',time()),
+				 	"modified_date"=>date('Y-m-d H:i:s',time())
+				);
+				update(TBL_BOOKS,array('id'=>$bid),$data_pdf_link);
+			
+			}
+
+			// upload epub file
+			$ext 	= pathinfo($_FILES['book_epub']['name'], PATHINFO_EXTENSION);
+			$name 	= str_replace('.'.$ext, '', $_FILES['book_epub']['name'].'_'.time()).'.'.$ext;
+			$config['upload_path']	 	= $path;
+			$config['allowed_types'] 	= $_FILES['book_epub']['type'];
+			$config['max_size']  		= '1000000000';	
+			$config['file_name'] 		= $name;
+			$error_count = 0;
+			$this->upload->initialize($config);
+			
+				if (!$this->upload->do_upload('book_epub')){
+					$file_upload_error = strip_tags($this->upload->display_errors(),'');
+					// var_dump($file_upload_error);
+					// exit;
+					$file_required_error = "You did not select a file to upload.";
+					if($file_upload_error !== $file_required_error){
+						$error_count++;
+						$this->session->set_flashdata('error_book_epub', $file_upload_error);
+					}
+					else{
+						$book_epub_link = '';
+					}
+				}
+				else{
+					$data = array('upload_data' => $this->upload->data());
+					$book_epub_link = "book_".$bid.'/'.$data['upload_data']['file_name'];
+				}
+
+				if(!empty($book_epub_link)){
+				
+					$data_book_epub = array(
+						'ebook_link'=>$book_epub_link,
+						"created_date"=>date('Y-m-d H:i:s',time()),
+					 	"modified_date"=>date('Y-m-d H:i:s',time())
+					);
+					update(TBL_BOOKS,array('id'=>$bid),$data_book_epub);
+				
+				}
+			}
+		// crop(UPLOAD_URL.'/'.$student_profile,200,200);
+
+
+		
+
+		
+    }
 }
