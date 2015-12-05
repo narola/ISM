@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.ISMStudent;
@@ -72,6 +73,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 	private MessageAdapter adpMessage;
 	private StudymateRequestAdapter adpStudymate;
 	private PopupWindow popupFriendRequest;
+    private RelativeLayout rlUser;
 
     public static ProfileControllerFragment newInstance() {
         ProfileControllerFragment fragStudyMates = new ProfileControllerFragment();
@@ -105,6 +107,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         imgNotification = (ImageView) view.findViewById(R.id.img_notification);
         imgMessage = (ImageView) view.findViewById(R.id.img_message);
         imgFriendRequest = (ImageView) view.findViewById(R.id.img_friend_request);
+        rlUser = (RelativeLayout) view.findViewById(R.id.rl_user);
 
 	    highlightLabel(activityHost.getCurrentMainFragment(), true);
 
@@ -136,7 +139,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
                     case R.id.txt_my_wallet:
                         activityHost.loadFragment(HostActivity.FRAGMENT_MY_WALLET, null);
                         break;
-                    case R.id.txt_edit_profile:
+                    case R.id.rl_user:
                         activityHost.loadFragment(HostActivity.FRAGMENT_EDIT_PROFILE, null);
                         break;
                 }
@@ -166,7 +169,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         txtStudyMates.setOnClickListener(onClickLabel);
         txtMyActivity.setOnClickListener(onClickLabel);
         txtWallet.setOnClickListener(onClickLabel);
-        txtEditProfile.setOnClickListener(onClickLabel);
+        rlUser.setOnClickListener(onClickLabel);
 
         imgNotification.setOnClickListener(onClickNotificationIcon);
         imgMessage.setOnClickListener(onClickNotificationIcon);
@@ -441,7 +444,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			    break;
 		    case HostActivity.FRAGMENT_EDIT_PROFILE:
 			    txtEditProfile.setText(attached ? Html.fromHtml("<u>" + activityHost.getString(R.string.edit_profile) + "</u>") : activityHost.getString(R.string.edit_profile));
-			    txtEditProfile.setEnabled(!attached);
+			    rlUser.setEnabled(!attached);
 			    break;
 	    }
     }
