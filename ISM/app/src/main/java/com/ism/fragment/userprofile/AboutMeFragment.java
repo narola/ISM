@@ -72,8 +72,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private long lngMaxDob;
     private String strDob;
     private Date convertedDate;
-    public static String strDetailAboutMe = null;
-    public static String strAmbition = null;
+    public static String strDetailAboutMe = "";
+    public static String strAmbition = "";
     private ImageView imgEditAmbition, imgEditAboutMe;
 
     public static AboutMeFragment newInstance() {
@@ -399,29 +399,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             etDob.setText(dateFormat(data.getBirthdate()));
             etCno.setText(data.getContactNumber());
             // imgProfilePic.setBackgroundColor(Color.BLACK);
-            strDetailAboutMe = data.getAboutMeText();
-            strAmbition = data.getAmbitionInLife();
-            if (strDetailAboutMe.length() != 0) {
-                txtClickAddAboutMe.setText(data.getAboutMeText());
-                txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
-                imgEditAboutMe.setVisibility(View.VISIBLE);
-                Debug.i(TAG, "Details are available!");
-            } else {
-                txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
-                imgEditAboutMe.setVisibility(View.GONE);
-                Debug.i(TAG, "Details are not available!");
-            }
-            if (strAmbition != null) {
-                txtClickAddAmbitions.setText(data.getAmbitionInLife());
-                imgEditAmbition.setVisibility(View.VISIBLE);
-                txtClickAddAmbitions.setCompoundDrawables(null, null, null, null);
-                Debug.i(TAG, "Details are available!");
-            } else {
-                Debug.i(TAG, "Details are not available!");
-                txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
-                imgEditAmbition.setVisibility(View.GONE);
-            }
-
+            Debug.i(TAG, "WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic() :" + WebConstants.HOST_IMAGE_USER + data.getProfilePic());
+            imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + data.getProfilePic(), imgProfilePic, ISMStudent.options);
             txtTotalAssignment.setText(data.getTotalAssignment());
             txtTotalAuthorFollowed.setText(data.getTotalAuthorsFollowed());
             txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
@@ -433,7 +412,29 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtTotalQueAsked.setText(data.getTotalQuestionAsked());
             txtTotalStudymates.setText(data.getTotalStudymates());
 //            imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMStudent.options);
-            imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic(), imgProfilePic, ISMStudent.options);
+            strDetailAboutMe = data.getAboutMeText();
+            strAmbition = data.getAmbitionInLife();
+            if (strDetailAboutMe!=null && strDetailAboutMe.length() != 0 ) {
+                txtClickAddAboutMe.setText(data.getAboutMeText());
+                txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
+                imgEditAboutMe.setVisibility(View.VISIBLE);
+                Debug.i(TAG, "Details are available!");
+            } else {
+                txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
+                imgEditAboutMe.setVisibility(View.GONE);
+                Debug.i(TAG, "Details are not available!");
+            }
+            if (strAmbition!=null && strAmbition .length()!=0) {
+                txtClickAddAmbitions.setText(data.getAmbitionInLife());
+                imgEditAmbition.setVisibility(View.VISIBLE);
+                txtClickAddAmbitions.setCompoundDrawables(null, null, null, null);
+                Debug.i(TAG, "Details are available!");
+            } else {
+                Debug.i(TAG, "Details are not available!");
+                txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
+                imgEditAmbition.setVisibility(View.GONE);
+            }
+
         } catch (Exception e) {
             Debug.i(TAG, "SetupData :" + e.getLocalizedMessage());
         }
