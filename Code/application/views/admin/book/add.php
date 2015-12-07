@@ -1,4 +1,4 @@
-<div class="col-sm-7 main main2 add_book_page general_cred mCustomScrollbar">
+<div class="col-sm-7 main main2 add_book_page general_cred mCustomScrollbar" data-mcs-theme="minimal-dark">
 	<!--breadcrumb-->
 	<div class="row page_header">
     	<div class="col-sm-12">
@@ -61,9 +61,12 @@
                     	<label>Publisher Name</label>
                         <input name="publisher_name" type="text" placeholder="Publisher Name" class="form-control ">
                     </li>
-                    <li>
+                    <li class="">
+
                     	<label>Publication Date</label>
+                  
                         <input name="publication_date" id="publication_date" type="text" class="form-control datepicker">
+                  
                     </li>
                     <li>
                     	<label>Books Description</label>
@@ -121,5 +124,15 @@
             viewMode: "years", 
             minViewMode: "years"
         });
+
+           $(".add_book_page").mCustomScrollbar({
+                callbacks:{
+                    whileScrolling:function(){
+                        console.log('here');
+                        var inp = $('input#publication_date');
+                        $('.datepicker').css('top', inp.offset().top + inp.outerHeight());
+                    }
+                }
+            }); 
     });
 </script>

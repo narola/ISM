@@ -2343,3 +2343,6 @@ input.form-control.smallinput,#s2id_authors{
 .book_desc{
 	height: 124px !important;
 }
+body{
+	  overflow: hidden;
+}

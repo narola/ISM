@@ -1,5 +1,5 @@
 <!--main-->
-<div class="col-sm-7 main main2 general_cred mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="col-sm-7 main main2 exam_form general_cred mCustomScrollbar" data-mcs-theme="minimal-dark">
 	<!--breadcrumb-->
 		<div class="page_header">
     	<div class="col-sm-12">
@@ -256,6 +256,7 @@
             showMeridian:false    
          });
 
+
         $("[name='exam_type']").bootstrapSwitch();
         $('.bootstrap-switch-handle-on').text('Subject');
         $('.bootstrap-switch-handle-off').text('Topic');
@@ -348,6 +349,16 @@
         $('#start_date').on('changeDate', function(ev){
             $(this).datepicker('hide');
         });
+
+        $(".exam_form").mCustomScrollbar({
+                callbacks:{
+                    whileScrolling:function(){
+                        console.log('here');
+                        var inp = $('input#start_date');
+                        $('.datepicker').css('top', inp.offset().top + inp.outerHeight());
+                    }
+                }
+            }); 
 
     });
     

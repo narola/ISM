@@ -235,8 +235,8 @@ class Book extends ADMIN_Controller {
 				insert(TBL_AUTHOR_BOOK,replace_invalid_chars($author_book));
 			}
 			
-			p($_FILES);
-			p($_POST, true);
+			// p($_FILES);
+			// p($_POST, true);
 		}
 		$this->data['authors'] = select(TBL_USERS,TBL_USERS.'.id,'.TBL_USERS.'.full_name',
 										array('where'=>array(
@@ -378,7 +378,7 @@ class Book extends ADMIN_Controller {
 			$ext 	= pathinfo($_FILES['book_epub']['name'], PATHINFO_EXTENSION);
 			$name 	= str_replace('.'.$ext, '', $_FILES['book_epub']['name'].'_'.time()).'.'.$ext;
 			$config['upload_path']	 	= $path;
-			$config['allowed_types'] 	= $_FILES['book_epub']['type'];
+			$config['allowed_types'] 	= '*';
 			$config['max_size']  		= '1000000000';	
 			$config['file_name'] 		= $name;
 			$error_count = 0;
