@@ -826,4 +826,37 @@ public class Attribute {
         this.questionid = questionid;
         return this;
     }
+
+
+    /*these are the upload media params*/
+    private ArrayList<MediaUploadAttribute> arrListFile = new ArrayList<MediaUploadAttribute>();
+    private ArrayList<MediaUploadAttribute> arrListParam = new ArrayList<MediaUploadAttribute>();
+    private String mediaType;
+
+    public ArrayList<MediaUploadAttribute> getArrListFile() {
+        return arrListFile;
+    }
+
+    public Attribute setArrListFile(ArrayList<MediaUploadAttribute> arrListFile) {
+        this.arrListFile = arrListFile;
+        return this;
+    }
+
+    public ArrayList<MediaUploadAttribute> getArrListParam() {
+        return arrListParam;
+    }
+
+    public Attribute setArrListParam(ArrayList<MediaUploadAttribute> arrListParam) {
+        this.arrListParam = arrListParam;
+        return this;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public Attribute setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+        return this;
+    }
 }

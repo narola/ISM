@@ -378,5 +378,6 @@
     <string name="question_add_success">Question Added Successfully.</string>
     <string name="question_edit_success">Question Edited Successfully.</string>
     <string name="msg_success_sethashtag">HashTags Added Successfully.</string>
+    <string name="msg_success_imgupload_question">Image Successfully added to Question.</string>
 
 </resources>

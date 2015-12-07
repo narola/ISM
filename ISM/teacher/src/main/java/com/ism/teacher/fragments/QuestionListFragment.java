@@ -685,7 +685,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 //filter based on subject id and topic id (based on subjects)
                 if (topicId != null && !topicId.equalsIgnoreCase("")) {
                     if (wp.getTopicId().equalsIgnoreCase(topicId) && wp.getSubjectId().equalsIgnoreCase(Integer.toString(subjectId))) {
-                        Debug.e(TAG + "filter success", "" + count++);
+                        //Debug.e(TAG + "filter success", "" + count++);
                         copylistOfQuestionBank.add(wp);
                     }
                 }
@@ -714,7 +714,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             int count = 0;
             for (Questions wp : arrListQuestions) {
                 if (wp.getSubjectId().equalsIgnoreCase(Integer.toString(subjectId))) {
-                    Debug.e(TAG + "filter success", "" + count++);
+                    //    Debug.e(TAG + "filter success", "" + count++);
                     copylistOfQuestionBank.add(wp);
                 }
 
@@ -732,7 +732,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     }
 
     private void filterResultsForExamType(String examtype) {
-        Debug.e(TAG, "examtype is:" + examtype);
+        // Debug.e(TAG, "examtype is:" + examtype);
 
         latestlistOfQuestionBank.clear();
         if (copylistOfQuestionBank.size() > 0) {
@@ -744,7 +744,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
             }
             if (latestlistOfQuestionBank.size() > 0) {
-                Debug.e(TAG + "results after filter for exam type:" + examtype, "" + latestlistOfQuestionBank.size());
+                //  Debug.e(TAG + "results after filter for exam type:" + examtype, "" + latestlistOfQuestionBank.size());
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
             } else {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);

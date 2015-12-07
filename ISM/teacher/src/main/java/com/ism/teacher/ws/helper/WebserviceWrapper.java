@@ -159,6 +159,10 @@ public class WebserviceWrapper {
                     case WebConstants.TEMP_CREATE_QUESTION:
                         responseObject = new WebserviceConnector(WebConstants.URL_TEMP_CREATE_QUESTION).execute(ResponseHandler.class, attribute);
                         break;
+                    case WebConstants.UPLOADMEDIAFORQUESTION:
+                        responseObject = new WebserviceConnector(WebConstants.URL_UPLOADMEDIAFORQUESTION).uploadMedia(ResponseHandler.class,
+                                (Attribute) attribute);
+                        break;
 
                 }
             } catch (Exception e) {

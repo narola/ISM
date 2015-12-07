@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.AddQuestionContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Answers;
@@ -60,6 +61,12 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
         holder.tvPreviewQuestion.setTypeface(myTypeFace.getRalewayRegular());
         holder.tvPreviewQuestion.setText(Utility.formatHtml(arrListQuestions.get(position).getQuestionText()));
+
+        if (arrListQuestions.get(position).getQuestionCreatorId().equals(WebConstants.TEST_USER_ID)) {
+            holder.imgPreviewQuestionEdit.setVisibility(View.VISIBLE);
+        } else {
+            holder.imgPreviewQuestionEdit.setVisibility(View.GONE);
+        }
 
         if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
 

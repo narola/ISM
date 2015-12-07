@@ -67,7 +67,9 @@ public class WebConstants {
     public static final int GET_ALL_BADGES_COUNT = 28;
     public static final int SET_HASHTAG = 29;
     public static final int TEMP_CREATE_QUESTION = 30;
+    public static final int UPLOADMEDIAFORQUESTION = 31;
 
+    public static final String Image_url = "http://192.168.1.147/WS_ISM/question_images/";
 
     /**
      * URLs

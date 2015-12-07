@@ -93,7 +93,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 try {
                     Attribute attribute = new Attribute();
                     attribute.setExamId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
-                    attribute.setQuestionIdList(getQuestionIdList());
+                    attribute.setQuestionIdList(getArrListQuestionId());
 
                     new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                             .execute(WebConstants.SET_QUESTIONS_FOR_EXAM);
@@ -114,14 +114,15 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         previewQuestionListAdapter.addAll(this.arrListQuestions);
     }
 
-    private ArrayList<String> questionIdList = new ArrayList<String>();
+    private ArrayList<String> arrListQuestionId = new ArrayList<String>();
 
-    private ArrayList<String> getQuestionIdList() {
+    private ArrayList<String> getArrListQuestionId() {
 
         for (int i = 0; i < arrListQuestions.size(); i++) {
-            questionIdList.add(arrListQuestions.get(i).getQuestionId());
+            arrListQuestionId.add(arrListQuestions.get(i).getQuestionId());
         }
-        return questionIdList;
+
+        return arrListQuestionId;
 
     }
 
@@ -129,10 +130,11 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     public void addQuestionsToPreviewFragment(ArrayList<Questions> arrListQuestionsToAdd) {
 
         if (arrListQuestionsToAdd.size() > 0) {
-
-            arrListQuestions.addAll(arrListQuestionsToAdd);
-            previewQuestionListAdapter.addAll(arrListQuestions);
-
+            for (int i = 0; i < arrListQuestionsToAdd.size(); i++) {
+                arrListQuestions.add(arrListQuestionsToAdd.get(i));
+            }
+            Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS" + arrListQuestions.size());
+            previewQuestionListAdapter.addAll(this.arrListQuestions);
         }
 
     }
@@ -205,14 +207,15 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
     public void addQuestionDataAfterAddQuestion(Questions question) {
-        arrListQuestions.add(0, question);
+//        arrListQuestions.add(0, question);
+        arrListQuestions.add(question);
         previewQuestionListAdapter.addAll(arrListQuestions);
         previewQuestionListAdapter.notifyDataSetChanged();
     }
 
+
     private AddQuestionContainerFragment getFragment() {
         return (AddQuestionContainerFragment) mFragment;
     }
-
 
 }

@@ -12,6 +12,11 @@ public class AppConstant {
     //Pick from Gallery
     public static final int REQUEST_CODE_PICK_FROM_GALLERY = 1;
     public static final int REQUEST_CODE_ADD_POST = 2;
+
+    //Constants for MediaType used in uploading
+    public static final String MEDIATYPE_IMAGE = "image";
+    public static final String MEDIATYPE_VIDEO = "video";
+    public static final String MEDIATYPE_AUDIO = "audio";
     //All fonts
 
     public static final String RalewayBlack = "Raleway-Black.ttf";

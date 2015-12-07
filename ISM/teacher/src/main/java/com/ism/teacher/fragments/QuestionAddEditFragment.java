@@ -27,7 +27,6 @@ import android.widget.TextView;
 import com.ism.teacher.ISMTeacher;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
-import com.ism.teacher.Utility.MediaUploader;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
@@ -41,6 +40,7 @@ import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.HashTagsModel;
 import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.MediaUploadAttribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.ism.teacher.ws.model.AnswerChoices;
@@ -461,8 +461,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 etEvaluationNote2.setText(questions.getEvaluationNotes());
             }
 
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
-                    imgSelectImage, ISMTeacher.options);
+            if (questions.getQuestionImageLink() != null && !questions.getQuestionImageLink().equals("")) {
+                imageLoader.displayImage(questions.getQuestionImageLink(), imgSelectImage, ISMTeacher.options);
+
+                Debug.e(TAG, "============from set data =======================" + questions.getQuestionImageLink());
+            }
 
             setMcqAnswers(questions);
             setTags(questions);
@@ -589,9 +592,38 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     }
 
-    private void callApiUploadMediaForQuestion(String question_id, String mediaType, String realPathFromURI) {
+    private void callApiUploadMediaForQuestion(String questionId, String mediaType, String fileName) {
+//        new MediaUploader(getActivity()).new MediaUploaderCaller().execute(fileName);
+        if (Utility.isConnected(getActivity())) {
+            ((TeacherHostActivity) getActivity()).showProgress();
+            try {
+                Attribute attribute = new Attribute();
+                MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
+                questionIdParam.setParamName("question_id");
+                questionIdParam.setParamValue(questionId);
+                attribute.getArrListParam().add(questionIdParam);
 
-        new MediaUploader(getActivity(), question_id).new MediaUploaderCaller().execute(realPathFromURI);
+
+                MediaUploadAttribute mediaTypeParam = new MediaUploadAttribute();
+                mediaTypeParam.setParamName("mediaType");
+                mediaTypeParam.setParamValue(mediaType);
+                attribute.getArrListParam().add(mediaTypeParam);
+
+
+                MediaUploadAttribute mediaFileParam = new MediaUploadAttribute();
+                mediaFileParam.setParamName("mediaFile");
+                mediaFileParam.setFileName(fileName);
+                attribute.getArrListFile().add(mediaFileParam);
+
+
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.UPLOADMEDIAFORQUESTION);
+            } catch (Exception e) {
+                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(getActivity());
+        }
     }
 
     private String getRealPathFromURI(Uri contentURI) {
@@ -747,12 +779,53 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 case WebConstants.SET_HASHTAG:
                     onResponseSetHashTag(object, error);
                     break;
+                case WebConstants.UPLOADMEDIAFORQUESTION:
+                    onResponseUploadMediaForQuestion(object, error);
+                    break;
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponse Exception : " + e.toString());
         }
     }
 
+    private void onResponseUploadMediaForQuestion(Object object, Exception error) {
+        try {
+            ((TeacherHostActivity) getActivity()).hideProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    Debug.e(TAG, "The Image url is::" + responseHandler.getFileUploadResponse().getImageLink() + " question id is: " + responseHandler.getFileUploadResponse().getQuestion_id());
+                    Utility.showToast(getString(R.string.msg_success_imgupload_question), getActivity());
+
+
+                    if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+
+                        //  Utility.showToast(getString(R.string.question_edit_success), getActivity());
+//                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_edit_success));
+                        getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
+                                makeQuestionData(responseHandler.getFileUploadResponse().getQuestion_id(), responseHandler.getFileUploadResponse().getImageLink()),
+                                chkAddquestionPreview.isChecked());
+                    } else {
+
+//                        Utility.showToast(getString(R.string.question_add_success), getActivity());
+//                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_add_success));
+                        /*this is for add question data*/
+                        getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getFileUploadResponse().getQuestion_id(), responseHandler.getFileUploadResponse().getImageLink()),
+                                chkAddquestionPreview.isChecked());
+
+                    }
+
+
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseUploadMediaForQuestion api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseUploadMediaForQuestion Exception : " + e.toString());
+        }
+    }
 
     private ArrayList<HashTags> arrListTags = new ArrayList<HashTags>();
 
@@ -769,21 +842,22 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         Utility.showToast(getString(R.string.question_edit_success), getActivity());
 //                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_edit_success));
                         getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
-                                makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
+                                makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId(), ""),
                                 chkAddquestionPreview.isChecked());
                     } else {
 
                         Utility.showToast(getString(R.string.question_add_success), getActivity());
 //                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_add_success));
                         /*this is for add question data*/
-                        getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
+                        getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId(), ""),
                                 chkAddquestionPreview.isChecked());
 
                     }
 
                     //upload image to question
                     if (selectedUri != null) {
-                        callApiUploadMediaForQuestion(responseHandler.getQuestion().get(0).getQuestionId(), "image", getRealPathFromURI(selectedUri));
+                        callApiUploadMediaForQuestion(responseHandler.getQuestion().get(0).getQuestionId(), AppConstant.MEDIATYPE_IMAGE,
+                                getRealPathFromURI(selectedUri));
 
                     }
                     if (isAddMore) {
@@ -803,7 +877,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
 
-    private Questions makeQuestionData(String questionId) {
+    private Questions makeQuestionData(String questionId, String imagelink) {
         Questions question = new Questions();
         try {
             question.setQuestionId(questionId);
@@ -812,7 +886,13 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             question.setQuestionFormat(getQuestionFormat());
             question.setQuestionText(etAddquestionTitle.getText().toString());
             question.setQuestionAssetsLink("");
-            question.setQuestionImageLink("");
+
+            if (imagelink != null && !imagelink.equals("")) {
+                question.setQuestionImageLink(WebConstants.Image_url + imagelink);
+            } else {
+                question.setQuestionImageLink("");
+
+            }
             question.setEvaluationNotes(etEvaluationNote1.getText().toString());
             question.setSolution(etEvaluationNote2.getText().toString());
 
