@@ -49,6 +49,7 @@ public class User {
     private String examScore;
     private String subjectName;
     private String isOnline;
+    private String totalAuthorsFollowing;
 	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 
     @JsonProperty("total_exams")
@@ -67,6 +68,7 @@ public class User {
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
+
     @JsonProperty("total_authors_followed")
     public String getTotalAuthorsFollowed() {
         return this.totalAuthorsFollowed;
@@ -75,6 +77,7 @@ public class User {
     public void setTotalAuthorsFollowed(String totalAuthorsFollowed) {
         this.totalAuthorsFollowed = totalAuthorsFollowed;
     }
+
     @JsonProperty("total_question_asked")
     public String getTotalQuestionAsked() {
         return this.totalQuestionAsked;
@@ -83,6 +86,7 @@ public class User {
     public void setTotalQuestionAsked(String totalQuestionAsked) {
         this.totalQuestionAsked = totalQuestionAsked;
     }
+
     @JsonProperty("total_Favorite_questions")
     public String getTotalFavoriteQuestions() {
         return this.totalFavoriteQuestions;
@@ -91,6 +95,7 @@ public class User {
     public void setTotalFavoriteQuestions(String totalFavoriteQuestions) {
         this.totalFavoriteQuestions = totalFavoriteQuestions;
     }
+
     @JsonProperty("user_id")
     public String getUserId() {
         return this.userId;
