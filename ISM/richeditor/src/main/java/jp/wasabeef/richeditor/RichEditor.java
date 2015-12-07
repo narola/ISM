@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -24,13 +23,13 @@ import java.util.concurrent.Executors;
 
 /**
  * Copyright (C) 2015 Wasabeef
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -77,6 +76,7 @@ public class RichEditor extends WebView {
     private OnTextChangeListener mTextChangeListener;
     private OnDecorationStateListener mDecorationStateListener;
     private AfterInitialLoadListener mLoadListener;
+    private boolean imgInserted, paragraphInserted, isFocused;
 
     private static ExecutorService sThreadPool = Executors.newSingleThreadExecutor();
 
@@ -146,6 +146,18 @@ public class RichEditor extends WebView {
     private void callback(String text) {
         mContents = text.replaceFirst(CALLBACK_SCHEME, "");
         if (mTextChangeListener != null) {
+            if (mContents.length() > 0) {
+                if (!paragraphInserted && !imgInserted) {
+                    exec("javascript:RE.addParagraph();");
+                    exec("javascript:RE.focus();");
+                    paragraphInserted = true;
+
+                } else {
+                    imgInserted = false;
+                    paragraphInserted = false;
+                }
+
+            }
             mTextChangeListener.onTextChange(mContents);
         }
     }
@@ -195,6 +207,10 @@ public class RichEditor extends WebView {
                 exec("javascript:RE.setTextAlign(\"center\")");
                 break;
         }
+
+        setEditorHeight(400);
+        setEditorWidth(600);
+
 
         ta.recycle();
     }
@@ -328,13 +344,38 @@ public class RichEditor extends WebView {
     }
 
     public void insertImage(String url, String alt) {
-        exec("javascript:RE.prepareInsert();");
+        imgInserted = true;
+        if (mContents.contains("<img")) {
+            exec("javascript:RE.prepareInsert();");
+        } else {
+            exec("javascript:RE.imageRange();");
+        }
         exec("javascript:RE.insertImage('" + url + "', '" + alt + "');");
+    }
+
+    public void insertVideo(String url) {
+        imgInserted = true;
+        if (mContents.contains("<iframe")) {
+            exec("javascript:RE.prepareInsert();");
+        } else {
+            exec("javascript:RE.imageRange();");
+        }
+        exec("javascript:RE.insertVideo('" + url + "');");
     }
 
     public void insertLink(String href, String title) {
         exec("javascript:RE.prepareInsert();");
         exec("javascript:RE.insertLink('" + href + "', '" + title + "');");
+    }
+
+    /**
+     * add symbol in <div></> using js  coming from parent class.
+     *
+     * @param symbol - symbol for equations
+     */
+    public void addSymbol(String symbol) {
+        exec("javascript:RE.prepareInsert();");
+        exec("javascript:RE.addSymbol('" + symbol + "');");
     }
 
     public void focusEditor() {

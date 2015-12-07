@@ -34,8 +34,6 @@ import com.narola.kpa.richtexteditor.view.RichTextEditor;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.wasabeef.richeditor.RichEditor;
-
 
 /**
  * Created by c166 on 28/10/15.
@@ -61,15 +59,16 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     private EditText etActivityAssignmentname, etActivityCoursename, etActivitySubmissionDate;
     private Button btnActivitySave, btnActivityCancel;
     private Spinner spActivityClass, spActivitySubject, spActivityTopic;
-    private RichTextEditor rteTrialActivity;
     private ArrayList<Classrooms> arrListClassRooms;
     private ArrayList<Subjects> arrListSubject;
     private ArrayList<Topics> arrListTopic;
     private List<String> arrListDefalt;
-    private String strSubmissionDate, strAssignmenttext = "";
+    private String strSubmissionDate;
 
     private MyTypeFace myTypeFace;
     private InputValidator inputValidator;
+
+    private RichTextEditor rteTrialActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -104,8 +103,6 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         spActivitySubject = (Spinner) view.findViewById(R.id.sp_activity_subject);
         spActivityTopic = (Spinner) view.findViewById(R.id.sp_activity_topic);
 
-        rteTrialActivity = (RichTextEditor) view.findViewById(R.id.rte_trial_activity);
-
 
         tvActivityTitle.setTypeface(myTypeFace.getRalewayRegular());
         tvActivityAssignmentname.setTypeface(myTypeFace.getRalewayRegular());
@@ -135,17 +132,10 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
             }
         });
 
+        rteTrialActivity = (RichTextEditor) view.findViewById(R.id.rte_trial_activity);
+        rteTrialActivity.getRichEditor().setEditorFontSize(20);
+        rteTrialActivity.hideMediaControls();
 
-        rteTrialActivity.getRichEditor().setEditorFontSize(25);
-
-        rteTrialActivity.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
-            @Override
-            public void onTextChange(String text) {
-
-                strAssignmenttext = text;
-//                Utils.showToast(strAssignmenttext, getActivity());
-            }
-        });
 
         spActivitySubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -246,7 +236,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                     attribute.setTopicId(String.valueOf(spActivityTopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
                             get(spActivityTopic.getSelectedItemPosition() - 1).getId()) : 0));
                 }
-                attribute.setAssignmentText(strAssignmenttext);
+                attribute.setAssignmentText(rteTrialActivity.getHtml());
 
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.CREATEASSIGNMENT);
@@ -306,7 +296,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private boolean isTextSetInRichTextEditor() {
 
-        if (strAssignmenttext.trim().length() > 0) {
+        if (rteTrialActivity.getHtml().trim().length() > 0) {
             return true;
         } else {
             strValidationMsg += getString(R.string.msg_validation_add_text_rich_editor);
