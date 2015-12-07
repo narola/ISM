@@ -75,10 +75,10 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="20dp"
                         android:hint="@string/hint_search"
-                        android:inputType="text"
-                        android:singleLine="true"
                         android:imeOptions="actionSearch"
+                        android:inputType="text"
                         android:padding="10dp"
+                        android:singleLine="true"
                         android:textColor="@color/colorPrimary"
                         android:textColorHint="@color/border_gray"
                         android:visibility="gone" />
@@ -249,8 +249,7 @@
                     android:layout_marginRight="@dimen/d5dp"
                     android:layout_toLeftOf="@+id/img_next_fav"
                     android:layout_toRightOf="@+id/img_prev_fav"
-                    android:background="@color/color_white"
-                    app:twowayview_layoutManager="ListLayoutManager" />
+                    android:background="@color/color_white" />
 
                 <TextView
                     android:id="@+id/txt_fav_empty"

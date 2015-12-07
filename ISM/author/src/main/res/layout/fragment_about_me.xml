@@ -19,9 +19,8 @@
             android:layout_width="180dp"
             android:layout_height="180dp"
             android:layout_gravity="center"
+            android:background="@drawable/bg_about_me_img"
             android:layout_margin="@dimen/d10dp"
-            android:background="@drawable/bg_white_border_gray"
-            android:scaleType="fitXY"
             android:src="@drawable/userdp" />
 
         <TextView

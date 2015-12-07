@@ -63,7 +63,6 @@ import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.BookData;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -92,9 +91,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
     private HostListenerProfileController listenerHostProfileController;
-    private AddToFavouriteListner addToFavouriteListner;
     private HostListenerAllNotification listenerHostAllNotification;
-
     private HostListenerAllMessage listenerHostAllMessage;
 
     private ArrayList<ControllerTopMenuItem> controllerTopMenuTrial, currentControllerTopMenu, controllerTopMenuAssessment, controlTopMenuMyDesk;
@@ -143,6 +140,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private int currentMainFragmentBg;
     private ActionProcessButton progress_bar;
     private ProgressGenerator progressGenerator;
+    private BooksListner booksListner;
 
     public interface HostListenerProfileController {
         public void onBadgesFetched();
@@ -152,7 +150,12 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         public void onSubFragmentDetached(int fragmentId);
         //  public void onControllerMenuItemClicked(int position);
     }
-
+    public interface BooksListner {
+        public void onAddToFav(int position);
+        public void onRemoveFromFav(int position);
+        public void onAddToLibrary(String id);
+        public void onRemoveFromLibrary(String id);
+    }
     public interface HostListenerAllNotification {
         public void onControllerTopBackClick();
     }
@@ -173,8 +176,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         this.listenerHostAllMessage = listenerHostAllMessage;
     }
 
-    public void setListenerFavourites(AddToFavouriteListner addToFavouriteListner) {
-        this.addToFavouriteListner = addToFavouriteListner;
+    public void setListenerBook(BooksListner booksListner) {
+        this.booksListner = booksListner;
     }
 
     @Override
@@ -466,9 +469,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     rlControllerTopMenu.setVisibility(View.VISIBLE);
                     txtAction.setVisibility(View.VISIBLE);
                     txtAction.setText(getString(R.string.stradd));
-                    txtAction.setTextColor(getResources().getColor(R.color.color_blue));
+                    txtAction.setTextColor(getResources().getColor(R.color.bg_books));
                     txtTitle.setVisibility(View.VISIBLE);
-                    txtTitle.setText(getString(R.string.strTrial));
+                    txtTitle.setText(getString(R.string.strBooks));
                     txtTitle.setTextColor(getResources().getColor(R.color.bg_books));
                     break;
 
@@ -1036,19 +1039,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         }
     }
 
-    public interface AddToFavouriteListner {
-        public void onAddToFav(int position);
-
-        public void onRemoveFromFav(int position);
-
-        public void onAddToLibrary(String id);
-
-        public void onRemoveFromLibrary(String id);
-
-        public void onSearchFav(ArrayList<BookData> arrayList);
-
-        public void onSearchSuggested(ArrayList<BookData> arrayList);
-    }
 
 
 }

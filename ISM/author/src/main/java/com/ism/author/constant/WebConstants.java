@@ -12,6 +12,7 @@ public class WebConstants {
 
     public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Images/feeds/";
     public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
+    public static final String HOST_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/";                                        // for books
     public static final String USER_IMAGES_TEST = "http://192.168.1.147/WS_ISM/Images/users_images/";
     public static final String HOST_202 = "http://192.168.1.202/pg/ISM/";      // pg
     public static final String URL_HOST_202 = HOST_202 + "WS_ISM/ISMServices.php?Service=";

@@ -84,6 +84,8 @@
     <dimen name="notification_digit_text_size">16sp</dimen>
     <dimen name="notification_digit_horizontal_padding">8dp</dimen>
     <dimen name="d75dp">75dp</dimen>
-
+    <dimen name="text_size_emptylist_message_small">18sp</dimen>
+    <dimen name="text_size_emptylist_message_medium">22sp</dimen>
+    <dimen name="text_size_emptylist_message_large">25sp</dimen>
 
 </resources>

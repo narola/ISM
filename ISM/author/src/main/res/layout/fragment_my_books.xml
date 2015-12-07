@@ -4,19 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.ism.author.fragment.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_post"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-    </android.support.v7.widget.RecyclerView>
+   <android.support.v7.widget.RecyclerView
+       android:layout_width="match_parent"
+       android:id="@+id/recycler_view"
 
-    <View
-        android:layout_width="20dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="285dp"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/shape_triangle_profile_controller" />
+       android:layout_margin="@dimen/d10dp"
+       android:layout_height="match_parent"/>
 
 </RelativeLayout>
