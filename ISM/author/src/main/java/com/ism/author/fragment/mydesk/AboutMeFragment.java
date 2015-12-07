@@ -134,9 +134,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         txtTotalBadgesEarned.setTypeface(Global.myTypeFace.getRalewayBold());
         txtQuestionAnswered.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtTotalFavQuestions.setTypeface(Global.myTypeFace.getRalewayBold());
-
         txtEducation.setTypeface(Global.myTypeFace.getRalewayRegular());
-
         callApiGetAboutMe();
 
     }
@@ -221,7 +219,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtEducationName.setText(data.getEducation());
             txtBirthdate.setText(dateFormat(data.getBirthdate()));
             txtTotalAssignment.setText(data.getTotalAssignment());
-            txtAboutAuthorDetails.setText(data.getAboutMeText());
+            txtAboutAuthorDetails.setText(data.getAboutAuthor());
             txtTotalExam.setText(data.getTotalExams());
             txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
             txtTotalQueAnswered.setText(data.getTotalQuestionsAnswered());

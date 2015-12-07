@@ -9,15 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,14 +51,11 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     public static TextView txtFavEmpty;
     private TextView txtSuggestedBooks;
     private TextView txtFavBooks;
-    private int addToFavItem;
     private ResponseHandler responseHandler;
     private ImageView imgFavSearch;
     private EditText etFavSearch;
     private ImageView imgSuggestedSearch;
     private EditText etSuggestedSearch;
-    private int resourceId;
-    private boolean favourite;
     ArrayList<String> arrayListFav = new ArrayList<String>();
     ArrayList<String> arrayListUnFav = new ArrayList<String>();
     ArrayList<String> arrayListAddBooksToLibrary = new ArrayList<String>();
@@ -72,9 +65,6 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     private ImageView imgNextSuggested, imgNextFav, imgPrevFav, imgPrevSuggested;
     private LinearLayoutManager layoutManagerFav;
     private LinearLayoutManager layoutManagerSuggested;
-    private RelativeLayout rrInvisibleLayout;
-    private LinearLayout llMain;
-    private boolean isOpenKeyboard;
 
     public static BooksFragment newInstance() {
         BooksFragment fragment = new BooksFragment();
@@ -136,7 +126,6 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         etFavSearch = (EditText) view.findViewById(R.id.et_search_fav);
         imgSuggestedSearch = (ImageView) view.findViewById(R.id.img_search_suggested);
         etSuggestedSearch = (EditText) view.findViewById(R.id.et_search_suggested);
-        llMain = (LinearLayout) view.findViewById(R.id.ll_main);
 //        rrInvisibleLayout = (RelativeLayout) view.findViewById(R.//id.rr_invisible_layout);
         //set typeface
         txtFavEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -152,38 +141,20 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         listViewSuggestedBooks = (RecyclerView) view.findViewById(R.id.lv_suggested_books);
         layoutManagerSuggested = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         listViewSuggestedBooks.setLayoutManager(layoutManagerSuggested);
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
-            @Override
-            public void onGlobalLayout() {
-
-                int heightDiff = view.getRootView().getHeight() - view.getHeight();
-                if (heightDiff > 200) {
-                    isOpenKeyboard = true;
-                  //  rrInvisibleLayout.setVisibility(View.GONE);
-                    return; //must exit now
-                }
-
-                if (isOpenKeyboard) {
-                    isOpenKeyboard = false;
-                    view.requestFocus();
-                   // rrInvisibleLayout.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        etSuggestedSearch.setFocusableInTouchMode(true);
-        etSuggestedSearch.requestFocus();
-        etSuggestedSearch.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    Debug.i(TAG, "back");
-                    return true;
-                }
-                Debug.i(TAG, "keyevents");
-                return false;
-            }
-        });
+//        etSuggestedSearch.setFocusableInTouchMode(true);
+//        etSuggestedSearch.requestFocus();
+//        etSuggestedSearch.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                    Debug.i(TAG, "back");
+//                    return true;
+//                }
+//                Debug.i(TAG, "keyevents");
+//                return false;
+//            }
+//        });
         callApiGetBooksForUser();
         onClicks();
 

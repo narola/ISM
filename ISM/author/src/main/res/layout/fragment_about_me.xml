@@ -19,9 +19,9 @@
             android:layout_width="180dp"
             android:layout_height="180dp"
             android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:background="@drawable/bg_about_me_img"
             android:layout_margin="@dimen/d10dp"
-            android:background="@drawable/bg_white_border_gray"
-            android:scaleType="fitXY"
             android:src="@drawable/userdp" />
 
         <TextView
@@ -31,8 +31,6 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="@dimen/d10dp"
             android:paddingBottom="@dimen/d10dp"
-            android:text="Roger S. Pressman"
-            android:textAllCaps="true"
             android:textColor="@color/color_green"
             android:textSize="20sp" />
 

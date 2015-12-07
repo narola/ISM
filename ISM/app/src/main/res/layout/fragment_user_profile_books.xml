@@ -75,10 +75,10 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="20dp"
                         android:hint="@string/hint_search"
-                        android:inputType="text"
-                        android:singleLine="true"
                         android:imeOptions="actionSearch"
+                        android:inputType="text"
                         android:padding="10dp"
+                        android:singleLine="true"
                         android:textColor="@color/colorPrimary"
                         android:textColorHint="@color/border_gray"
                         android:visibility="gone" />
@@ -96,7 +96,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="260dp"
-                android:background="@color/white"
+                android:background="@color/color_white"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -105,7 +105,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
                     android:padding="@dimen/d5dp"
-                    android:src="@drawable/ic_left_arrow_gray" />
+                    android:src="@drawable/left_arrow" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/lv_suggested_books"
@@ -116,7 +116,7 @@
                     android:layout_marginRight="@dimen/d5dp"
                     android:layout_toLeftOf="@+id/img_next_suggested"
                     android:layout_toRightOf="@+id/img_prev_suggested"
-                    android:background="@color/white" />
+                    android:background="@color/color_white" />
 
                 <TextView
                     android:id="@+id/txt_suggested_empty"
@@ -124,7 +124,7 @@
                     android:layout_height="match_parent"
                     android:layout_toLeftOf="@+id/img_next_suggested"
                     android:layout_toRightOf="@+id/img_prev_suggested"
-                    android:background="@color/white"
+                    android:background="@color/color_white"
                     android:gravity="center"
                     android:textSize="@dimen/text_size_emptylist_message_medium"
                     android:visibility="gone" />
@@ -135,7 +135,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:padding="@dimen/d5dp"
-                    android:src="@drawable/ic_right_arrow_gray" />
+                    android:src="@drawable/right_arrow" />
 
 
             </RelativeLayout>
@@ -219,7 +219,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="260dp"
                 android:layout_weight="1"
-                android:background="@color/white"
+                android:background="@color/color_white"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -228,7 +228,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
                     android:padding="@dimen/d5dp"
-                    android:src="@drawable/ic_left_arrow_gray" />
+                    android:src="@drawable/left_arrow" />
 
                 <!--<com.ism.views.HorizontalListView-->
                 <!--android:id="@+id/lv_fav_books"-->
@@ -249,8 +249,7 @@
                     android:layout_marginRight="@dimen/d5dp"
                     android:layout_toLeftOf="@+id/img_next_fav"
                     android:layout_toRightOf="@+id/img_prev_fav"
-                    android:background="@color/white"
-                    app:twowayview_layoutManager="ListLayoutManager" />
+                    android:background="@color/color_white" />
 
                 <TextView
                     android:id="@+id/txt_fav_empty"
@@ -258,7 +257,7 @@
                     android:layout_height="match_parent"
                     android:layout_toLeftOf="@+id/img_next_fav"
                     android:layout_toRightOf="@+id/img_prev_fav"
-                    android:background="@color/white"
+                    android:background="@color/color_white"
                     android:gravity="center"
                     android:textSize="@dimen/text_size_emptylist_message_medium"
                     android:visibility="gone" />
@@ -269,20 +268,20 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:padding="@dimen/d5dp"
-                    android:src="@drawable/ic_right_arrow_gray" />
+                    android:src="@drawable/right_arrow" />
 
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
-        android:id="@+id/rr_invisible_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/scrollView"
-        android:layout_weight="3"
-        android:visibility="gone" />
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/rr_invisible_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_below="@+id/scrollView"-->
+        <!--android:layout_weight="3"-->
+        <!--android:visibility="gone" />-->
 
 
 </LinearLayout>
