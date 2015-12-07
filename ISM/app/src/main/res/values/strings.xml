@@ -20,6 +20,12 @@
 		<item>MY TEACHER</item>
 	</string-array>
 
+	<string-array name="studymate_options">
+		<item>@string/options</item>
+		<item>@string/block_studymate</item>
+		<item>@string/remove_studymate</item>
+	</string-array>
+
 	<integer-array name="accordion_notice_visibility">
 		<item>0</item>
 		<item>0</item>
@@ -337,4 +343,11 @@
 	<string name="topic">"Topic - "</string>
 	<string name="suggested_studymates">Suggested Studymates</string>
 	<string name="no_studymates_found">No Studymates found!</string>
+	<string name="following">Following</string>
+	<string name="authors">Authors</string>
+	<string name="options">Options</string>
+	<string name="block_studymate">Block Studymate</string>
+	<string name="remove_studymate">Remove Studymate</string>
+	<string name="msg_block_studymate">"Are you sure to block "</string>
+	<string name="msg_remove_studymate">"Are you sure to remove "</string>
 </resources>
