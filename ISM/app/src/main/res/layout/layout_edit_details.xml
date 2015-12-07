@@ -31,7 +31,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="@string/strcancel"
-            android:textColor="@color/color_white"
+            android:textColor="@color/white"
             android:textSize="@dimen/d20sp" />
 
         <TextView
@@ -50,7 +50,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="@dimen/d20dp"
             android:text="@string/strEdit"
-            android:textColor="@color/color_green"
+            android:textColor="@color/green"
             android:textSize="@dimen/d20sp" />
 
     </LinearLayout>
@@ -59,14 +59,14 @@
         android:layout_width="match_parent"
         android:layout_height="670dp"
         android:layout_weight="1"
-        android:background="@color/color_white"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/et_enter_here"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_white"
+            android:background="@color/white"
             android:hint="Enter here"
             android:gravity="top"
             android:padding="10dp" />

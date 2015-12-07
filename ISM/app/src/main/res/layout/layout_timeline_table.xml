@@ -15,7 +15,7 @@
 		android:textAllCaps="true"
 		android:text="Inertia"
 		android:background="@drawable/bg_timeline_table_head"
-		android:textColor="@color/color_green"/>
+		android:textColor="@color/green"/>
 
 	<LinearLayout
 		android:id="@+id/ll_content1"

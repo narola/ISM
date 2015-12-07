@@ -45,7 +45,7 @@
 				android:background="@drawable/bg_wallet_head"
 				android:text="@string/generate_coupon"
 				android:textAllCaps="true"
-				android:textColor="@color/color_green"
+				android:textColor="@color/green"
 				android:textSize="20sp"
 				android:padding="10dp"/>
 
@@ -91,7 +91,7 @@
 				android:paddingLeft="@dimen/d90dp"
 				android:paddingRight="@dimen/d90dp"
 				android:text="@string/generate"
-				android:textColor="@color/color_white"
+				android:textColor="@color/white"
 				android:textSize="@dimen/d20dp"
 				app:pb_colorComplete="@color/blue"
 				app:pb_colorNormal="@color/blue"
@@ -119,7 +119,7 @@
 				android:background="@drawable/bg_wallet_head"
 				android:text="@string/generated_coupon"
 				android:textAllCaps="true"
-				android:textColor="@color/color_green"
+				android:textColor="@color/green"
 				android:textSize="20sp"
 				android:padding="10dp"/>
 

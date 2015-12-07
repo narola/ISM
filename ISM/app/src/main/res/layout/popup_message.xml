@@ -39,7 +39,7 @@
 			android:paddingLeft="40dp"
 			android:paddingRight="40dp"
 			android:text="@string/view_all"
-			android:textColor="@color/color_white"
+			android:textColor="@color/white"
 			android:textSize="18sp"
 			android:visibility="gone"/>
 	</RelativeLayout>

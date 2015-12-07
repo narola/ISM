@@ -38,6 +38,8 @@ public class WebConstants {
 	public static final int GET_ALL_STUDYMATES_WITH_DETAILS = 28;
 	public static final int GET_ALL_RECOMMENDED_STUDYMATES = 29;
 	public static final int GET_MY_ACTIVITY = 30;
+	public static final int GET_ADMIN_CONFIG = 31;
+	public static final int REFRESH_TOKEN = 32;
 
 
 	//general settings
@@ -116,6 +118,8 @@ public class WebConstants {
 	public static final String URL_GET_ALL_STUDYMATES_WITH_DETAILS = HOST_WS + "GetStudymatesWithDetails";
 	public static final String URL_GET_ALL_RECOMMENDED_STUDYMATES = HOST_WS + "GetSuggestedStudymates";
 	public static final String URL_GET_MY_ACTIVITY = HOST_WS + "GetMyActivity";
+	public static final String URL_REFRESH_TOKEN = HOST_WS + "RefreshToken";
+	public static final String URL_GET_ADMIN_CONFIG = HOST_WS + "GetAdminConfig";
 
 	/*
 	* edit profile

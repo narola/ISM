@@ -25,7 +25,7 @@
             android:id="@+id/et_comment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_white"
+            android:background="@color/white"
             android:gravity="top|left"
             android:hint="SAY IT"
             android:padding="10dp" />
@@ -44,7 +44,7 @@
                 android:background="#212A33"
                 android:gravity="center"
                 android:text="Keyboard"
-                android:textColor="@color/color_white" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/txt_link"
@@ -54,7 +54,7 @@
                 android:background="#212A33"
                 android:gravity="center"
                 android:text="Link"
-                android:textColor="@color/color_white" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/txt_image"
@@ -64,7 +64,7 @@
                 android:background="#212A33"
                 android:gravity="center"
                 android:text="Image"
-                android:textColor="@color/color_white" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/txt_video"
@@ -74,7 +74,7 @@
                 android:background="#212A33"
                 android:gravity="center"
                 android:text="Video"
-                android:textColor="@color/color_white" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/txt_audio"
@@ -84,7 +84,7 @@
                 android:background="#212A33"
                 android:gravity="center"
                 android:text="Audio"
-                android:textColor="@color/color_white" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/txt_tool"
@@ -94,7 +94,7 @@
                 android:background="#212A33"
                 android:gravity="center"
                 android:text="Tools"
-                android:textColor="@color/color_white" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/txt_emoticons"
@@ -104,7 +104,7 @@
                 android:background="#212A33"
                 android:gravity="center"
                 android:text="Emoticons"
-                android:textColor="@color/color_white" />
+                android:textColor="@color/white" />
 
 
         </LinearLayout>

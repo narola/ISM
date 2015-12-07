@@ -2,6 +2,7 @@ package com.ism.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,12 +28,14 @@ import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.AdminConfig;
 import com.ism.ws.model.City;
 import com.ism.ws.model.Country;
 import com.ism.ws.model.State;
 import com.realm.ismrealm.RealmAdaptor;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -58,8 +61,10 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private ProgressGenerator progressGenerator;
 	private AlertDialog dialogForgotPassword;
 	private MyTypeFace myTypeFace;
+	private ProgressDialog pd;
 
 	private String strValidationMsg;
+	private boolean isAdminConfigSet;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 		WebConstants.SECRET_KEY = "juPC8Mos1bMZTbjKm/gFiCUqcI7+H8zr2UdlLfnCwo4=";
 		WebConstants.ACCESS_KEY = "PLF25jEXMPXkKwavzk2mmKMj/j1br7vn8zv3IRID4js";
+
+		callApiGetAdminConfig();
 
 		if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this)) {
 			if (PreferenceData.getBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this)) {
@@ -427,10 +434,31 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		}
 	}
 
+	private void callApiGetAdminConfig() {
+		try {
+			pd = new ProgressDialog(LoginActivity.this);
+			pd.setMessage("Configuring app...");
+			pd.setCancelable(false);
+			pd.show();
+			Attribute attribute = new Attribute();
+			attribute.setRole("All");
+			attribute.setLastSyncDate("");
+//			attribute.setLastSyncDate(PreferenceData.getStringPrefs(PreferenceData.ADMIN_CONFIG_SYNC_DATE, LoginActivity.this, ""));
+
+			new WebserviceWrapper(LoginActivity.this, attribute, this).new WebserviceCaller()
+					.execute(WebConstants.GET_ADMIN_CONFIG);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiAuthenticateUser Exception : " + e.getLocalizedMessage());
+		}
+	}
+
 	@Override
 	public void onResponse(Object object, Exception error, int apiCode) {
 		try {
 			switch (apiCode) {
+				case WebConstants.GET_ADMIN_CONFIG:
+					onResponseGetAdminConfig(object, error);
+					break;
 				case WebConstants.LOGIN:
 					onResponseLogin(object, error);
 					break;
@@ -452,6 +480,34 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseGetAdminConfig(Object object, Exception error) {
+		try {
+			if (pd != null) {
+				pd.dismiss();
+			}
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					ArrayList<AdminConfig> arrListAdminConfig = responseHandler.getAdminConfig();
+					Log.e(TAG, "admin config size : " + arrListAdminConfig.size());
+
+					if (arrListAdminConfig != null && arrListAdminConfig.size() > 0) {
+						PreferenceData.setStringPrefs(PreferenceData.ADMIN_CONFIG_SYNC_DATE, LoginActivity.this,
+								Utility.formatDateMySql(Calendar.getInstance().getTime()));
+					}
+					isAdminConfigSet = true;
+
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "onResponseGetAdminConfig Failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseGetAdminConfig api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseGetAdminConfig Exception : " + e.toString());
 		}
 	}
 
