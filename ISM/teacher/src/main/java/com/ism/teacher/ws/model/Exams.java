@@ -24,10 +24,20 @@ public class Exams {
     private String examType;
     private String examCategory;
     private String examCreatedDate;
-
     private String totalAssessed;
     private String totalUnassessed;
+    private String bookId;
 
+
+    @JsonProperty("book_id")
+    public String getBookId() {
+        return bookId;
+    }
+
+    public Exams setBookId(String bookId) {
+        this.bookId = bookId;
+        return this;
+    }
 
     @JsonProperty("total_assessed")
     public String getTotalAssessed() {

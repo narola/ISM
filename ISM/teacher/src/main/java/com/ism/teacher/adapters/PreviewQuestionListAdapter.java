@@ -26,7 +26,6 @@ import java.util.ArrayList;
  */
 public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQuestionListAdapter.ViewHolder> {
 
-
     private static final String TAG = PreviewQuestionListAdapter.class.getSimpleName();
     private Context mContext;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
@@ -103,6 +102,17 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
                 getFragment().updateQuestionListviewAfterDeleteQuestionInPreview(arrListQuestions.get(position));
                 arrListQuestions.remove(arrListQuestions.get(position));
                 notifyDataSetChanged();
+                if(arrListQuestions.size()>0)
+                {
+                    ((AddQuestionContainerFragment)mFragment).hideText();
+                    ((AddQuestionContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
+
+                }
+                else
+                {
+                    ((AddQuestionContainerFragment)mFragment).showText();
+                    ((AddQuestionContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
+                }
             }
         });
 
@@ -119,6 +129,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
                 openAddEditQuestionFragment(position, true);
             }
         });
+
 
 
     }

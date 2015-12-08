@@ -72,7 +72,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View assignments_view = inflater.inflate(R.layout.assignment_subjects_row, parent, false);
+        View assignments_view = inflater.inflate(R.layout.row_assignment, parent, false);
         ViewHolder viewHolder = new ViewHolder(assignments_view);
         return viewHolder;
     }
@@ -153,7 +153,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         bundleAssignmentDetails.putString(ARG_EXAM_SUBJECT_NAME, arrayListAssignments.get(position).getSubjectName());
         bundleAssignmentDetails.putString(ARG_EXAM_TOPIC_ID, WebConstants.TOPIC_ID_5);
         bundleAssignmentDetails.putString(ARG_EXAM_TOPIC_NAME, "");
-        bundleAssignmentDetails.putString(ARG_EXAM_BOOK_ID, WebConstants.BOOK_ID_2);
+        bundleAssignmentDetails.putString(ARG_EXAM_BOOK_ID, arrayListAssignments.get(position).getBookId());
         bundleAssignmentDetails.putString(ARG_EXAM_BOOK_NAME, "");
         bundleAssignmentDetails.putString(ARG_EXAM_CATEGORY, arrayListAssignments.get(position).getExamCategory());
         bundleAssignmentDetails.putString(ARG_EXAM_TYPE, arrayListAssignments.get(position).getExamType());

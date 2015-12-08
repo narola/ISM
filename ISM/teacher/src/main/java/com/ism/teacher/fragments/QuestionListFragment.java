@@ -106,12 +106,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         rlSortQuestionBank = (RelativeLayout) view.findViewById(R.id.rl_sort_question_bank);
         rlSortQuestionBank.setOnClickListener(this);
 
-//        imgSortUp = (ImageView) view.findViewById(R.id.img_sort_up);
-//        imgSortDown = (ImageView) view.findViewById(R.id.img_sort_down);
-//
-//        imgSortUp.setOnClickListener(this);
-//        imgSortDown.setOnClickListener(this);
-
         imgSearchQuestions = (ImageView) view.findViewById(R.id.img_search_questions);
 
         spQuestionlistFiltertype = (Spinner) view.findViewById(R.id.sp_questionlist_filtertype);
@@ -683,12 +677,12 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     /**
      * This method handles two types of filter.
      * 1.Based on subject id and topic id
-     * <p>
+     * <p/>
      * 1 A.first in only subjectid based filter ,we reach from edit exam(assignment exam and automatically we see the question bank
      * filtered based on the subjectid passed from param.
      * Now we copied the result into copylist .
      * and at end copied whole copy list into latestQuestionbank list to handle further filter based on that current list.
-     * <p>
+     * <p/>
      */
 
     private void filterResults(int subjectId, String topicId) {

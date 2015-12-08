@@ -22,7 +22,7 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="140dp">
+            android:layout_height="150dp">
 
             <RelativeLayout
                 android:id="@+id/rl_top_assignment"
@@ -33,27 +33,28 @@
                     android:id="@+id/txt_assignment_subject"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_margin="@dimen/d20dp"
+                    android:padding="@dimen/d10dp"
+                    android:singleLine="true"
                     android:text=""
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/d16sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_exam_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/d170dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@drawable/btn_cancel_assignment"
-                    android:text="static"
+                    android:layout_alignParentBottom="false"
+                    android:layout_gravity="top"
+                    android:layout_marginBottom="@dimen/d10dp"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:layout_marginTop="@dimen/d40dp"
+                    android:background="@drawable/btn_dark_grey"
+                    android:singleLine="false"
+                    android:text=""
                     android:textColor="@color/color_white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp" />
             </RelativeLayout>
 
             <FrameLayout
@@ -70,11 +71,11 @@
                     android:layout_height="@dimen/d100dp"
                     android:background="@drawable/bg_circle_white"
                     android:gravity="center"
+                    android:padding="@dimen/d15dp"
                     android:singleLine="false"
                     android:text=""
                     android:textColor="@color/color_green"
-                    android:textSize="18sp"
-                    android:padding="@dimen/d15dp"/>
+                    android:textSize="18sp" />
 
             </FrameLayout>
 
@@ -141,7 +142,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="40"
+                            android:text=""
                             android:textColor="@color/color_violet_assignment"
                             android:textSize="@dimen/d18sp" />
 
@@ -151,7 +152,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
-                            android:text="Assessed" />
+                            android:text="@string/strassessed" />
 
                     </LinearLayout>
 
@@ -186,7 +187,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="40"
+                            android:text=""
                             android:textColor="@color/color_red_assignment"
                             android:textSize="@dimen/d18sp" />
 
@@ -196,7 +197,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
-                            android:text="" />
+                            android:text="@string/strunasssessed" />
                     </LinearLayout>
 
                     <View
@@ -231,7 +232,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="40"
+                            android:text=""
                             android:textColor="@color/color_blue_assignment"
                             android:textSize="@dimen/d18sp" />
 
@@ -241,7 +242,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
-                            android:text="Question" />
+                            android:text="@string/strquestion" />
                     </LinearLayout>
 
                     <View

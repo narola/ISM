@@ -442,6 +442,16 @@
                 android:layout_height="@dimen/d1dp"
                 android:background="@color/news_feed_post_box_color" />
 
+            <com.narola.kpa.richtexteditor.view.RichTextEditor
+                android:id="@+id/rte_trial_exam"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginLeft="@dimen/d20dp"
+                android:layout_marginRight="@dimen/d15dp"
+                android:layout_marginTop="@dimen/d15dp">
+
+            </com.narola.kpa.richtexteditor.view.RichTextEditor>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -734,17 +744,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
-                <com.narola.kpa.richtexteditor.view.RichTextEditor
-                    android:id="@+id/rte_trial_exam"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/rich_text_editor_height"
-                    android:layout_marginRight="@dimen/d15dp"
-                    android:layout_marginTop="@dimen/d15dp">
-
-                </com.narola.kpa.richtexteditor.view.RichTextEditor>
             </LinearLayout>
-
 
         </LinearLayout>
     </ScrollView>

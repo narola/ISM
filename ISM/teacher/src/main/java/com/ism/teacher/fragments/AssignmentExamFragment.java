@@ -320,6 +320,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE)));
         spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_DURATION)));
 
+
     }
 
     private void callApiGetClassrooms() {
@@ -397,6 +398,8 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 attribute.setUserId("370");
                 attribute.setNegativeMarkValue(etExamAddnegativemark.getText().toString());
                 attribute.setBookId(String.valueOf(0));
+
+                //latest add params
 
                 new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.CREATE_EXAM);
@@ -489,7 +492,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     }
 
     private boolean isTextSetInRichTextEditor() {
-        if (strAssignmenttext.trim().length() > 0) {
+        if (rteTrialExam.getHtml().trim().length() > 0) {
             return true;
         } else {
             strValidationMsg += Utility.getString(R.string.msg_validation_add_text_rich_editor, mContext);
