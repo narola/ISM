@@ -25,7 +25,8 @@ body {
   overflow: hidden;
   display: table;
   width: 100%;
-}
+
+ }
 
 #editor {
   display: table-cell;
@@ -33,6 +34,7 @@ body {
   -webkit-user-modify: read-write !important;
   outline: 0px solid transparent;
   width: 100%;
+
 }
 
 #editor[placeholder]:empty:not(:focus):before {

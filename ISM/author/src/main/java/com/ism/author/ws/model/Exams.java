@@ -29,6 +29,7 @@ public class Exams {
     private String bookName;
     private String totalAssessed;
     private String totalUnAssessed;
+    private String examCreatedDate;
 
     @JsonProperty("total_question")
     public String getTotalQuestion() {
@@ -211,6 +212,16 @@ public class Exams {
 
     public Exams setTotalAssessed(String totalAssessed) {
         this.totalAssessed = totalAssessed;
+        return this;
+    }
+
+    @JsonProperty("exam_created_date")
+    public String getExamCreatedDate() {
+        return examCreatedDate;
+    }
+
+    public Exams setExamCreatedDate(String examCreatedDate) {
+        this.examCreatedDate = examCreatedDate;
         return this;
     }
 

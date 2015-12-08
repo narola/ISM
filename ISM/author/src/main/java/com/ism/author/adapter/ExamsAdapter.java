@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
+import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
@@ -73,7 +73,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 
         try {
             holder.tvExamBookName.setTypeface(myTypeFace.getRalewayBold());
-            holder.tvExamCourseName.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvExamName.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvExamDate.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvExamClassName.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvExamNoofAssessed.setTypeface(myTypeFace.getRalewayBold());
@@ -86,11 +86,10 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 
 
             holder.tvExamBookName.setText(arrListExams.get(position).getBookName());
-            holder.tvExamCourseName.setText(arrListExams.get(position).getClassroomName());
+            holder.tvExamName.setText(arrListExams.get(position).getExamName());
             holder.tvExamClassName.setText(arrListExams.get(position).getClassroomName());
             holder.tvExamDate.setText(mContext.getString(R.string.strassignmentdatecolon));
-            holder.tvExamDate.append(Utility.getSpannableString(" " + arrListExams.get(position).getPassPercentage(),
-                    mContext.getResources().getColor(R.color.color_black)));
+            holder.tvExamDate.append(" : " + Utils.getDateInApiFormat(arrListExams.get(position).getExamCreatedDate()));
 
 
             if (arrListExams.get(position).getTotalAssessed() == null || arrListExams.get(position).getTotalAssessed().equals("")) {
@@ -178,8 +177,6 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
         } catch (Exception e) {
             Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());
         }
-
-
     }
 
     @Override
@@ -200,7 +197,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         RelativeLayout rlTopExam;
-        TextView tvExamBookName, tvExamCourseName, tvExamDate, tvExamClassName, tvExamNoofAssessed,
+        TextView tvExamBookName, tvExamName, tvExamDate, tvExamClassName, tvExamNoofAssessed,
                 tvExamAssessed, tvExamNoofUnassessed, tvExamUnassessed, tvExamNoofQuestion, tvExamQuestion,
                 tvExamType;
         LinearLayout llExamContainer, llViewExamQuestions;
@@ -210,7 +207,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 
             rlTopExam = (RelativeLayout) itemView.findViewById(R.id.rl_top_exam);
             tvExamBookName = (TextView) itemView.findViewById(R.id.tv_exam_book_name);
-            tvExamCourseName = (TextView) itemView.findViewById(R.id.tv_exam_course_name);
+            tvExamName = (TextView) itemView.findViewById(R.id.tv_exam_name);
             tvExamDate = (TextView) itemView.findViewById(R.id.tv_exam_date);
             tvExamClassName = (TextView) itemView.findViewById(R.id.tv_exam_class_name);
             tvExamNoofAssessed = (TextView) itemView.findViewById(R.id.tv_exam_noof_assessed);
