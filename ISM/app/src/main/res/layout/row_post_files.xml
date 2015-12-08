@@ -2,75 +2,75 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="130sp"
     android:layout_height="130sp"
-    android:padding="10dp"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <RelativeLayout
         android:id="@+id/rl_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_highscore_subjectlist">
+        android:background="@drawable/bg_postfeed_files">
 
         <ImageView
             android:id="@+id/img_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
             android:layout_centerInParent="true"
+            android:scaleType="fitXY"
             android:visibility="gone" />
+
         <ImageView
-            android:layout_width="wrap_content"
             android:id="@+id/img_play"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/audio_play"
             android:layout_centerInParent="true"
             android:visibility="gone" />
         <!--<VideoView-->
-            <!--android:id="@+id/video"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:visibility="gone" />-->
+        <!--android:id="@+id/video"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:visibility="gone" />-->
 
         <!--<ImageView-->
-            <!--android:id="@+id/img_audio"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:visibility="gone" />-->
+        <!--android:id="@+id/img_audio"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:visibility="gone" />-->
 
     </RelativeLayout>
+
     <TextView
         android:id="@+id/txt_video"
         android:layout_width="20sp"
-        android:visibility="gone"
-        android:textColor="@color/color_blue"
         android:layout_height="20sp"
-        android:layout_alignLeft="@+id/rl_image"
         android:layout_alignBottom="@+id/rl_image"
-        android:drawableLeft="@drawable/arrow" />
+        android:layout_alignLeft="@+id/rl_image"
+        android:textColor="@color/color_blue"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/img_cancel"
         android:layout_width="15sp"
         android:layout_height="15sp"
-        android:padding="10dp"
-        android:background="@drawable/img_cancel"
-        android:visibility="gone"
-        android:gravity="center"
         android:layout_alignRight="@+id/rl_image"
         android:layout_alignTop="@+id/rl_image"
-        />
+        android:background="@drawable/img_red_circle"
+        android:gravity="center"
+        android:src="@drawable/img_cancel"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/img_edit"
         android:layout_width="20sp"
         android:layout_height="20sp"
-        android:padding="5dp"
-        android:background="@drawable/img_edit"
-        android:visibility="gone"
-        android:gravity="center"
-        android:layout_alignRight="@+id/rl_image"
         android:layout_alignBottom="@+id/rl_image"
-        />
+        android:layout_alignRight="@+id/rl_image"
+        android:layout_margin="@dimen/d5dp"
+        android:background="@drawable/img_edit"
+        android:gravity="center"
+        android:padding="5dp"
+        android:visibility="gone" />
 </RelativeLayout>

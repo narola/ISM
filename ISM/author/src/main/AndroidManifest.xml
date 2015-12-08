@@ -37,7 +37,7 @@
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.ism.author.activtiy.PostActivity"
+            android:name=".activtiy.PostFeedActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape" />
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for

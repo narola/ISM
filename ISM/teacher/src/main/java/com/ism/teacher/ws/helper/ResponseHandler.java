@@ -43,6 +43,7 @@ public class ResponseHandler {
     public static final String FAILED = "failed";
     public static final String DUPLICATE_ENTRY = "Duplicate entry";
     private String TAG = ResponseHandler.class.getSimpleName();
+    private ArrayList<Feeds> feedImages;
 
     public String getMessage() {
         return this.message;
@@ -290,6 +291,13 @@ public class ResponseHandler {
         this.question = question;
     }
 
+    @JsonProperty("feed_images")
+    public ArrayList<Feeds> getFeedImages() {
+        return feedImages;
+    }
 
+    public void setFeedImages(ArrayList<Feeds> feedImages) {
+        this.feedImages = feedImages;
+    }
 }
 

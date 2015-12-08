@@ -78,7 +78,7 @@ public class PostFileAdapter extends BaseAdapter {
      if (arrayList.get(position).getStrFileType().equals("image")) {
             if (arrayList.get(position).getStrFilePath() != null) {
                 //  Uri uri = Uri.fromFile(new File(arrayList.get(position).getStrFilePath()));
-               // Global.imageLoader.displayImage(arrayList.get(position).getStrFilePath().getPath(), imageView, ISMStudent.options);
+               // Global.imageLoader.displayImage(arrayList.get(position).getStrFilePath().getPathImage(), imageView, ISMStudent.options);
                 Picasso.with(context)
                         .load(arrayList.get(position).getStrFilePath())
                         .error(R.drawable.ic_launcher)
@@ -111,7 +111,7 @@ public class PostFileAdapter extends BaseAdapter {
             imgClose.setVisibility(View.VISIBLE);
             videoIndicator.setText(mediaPlayer.getDuration() + "");
             videoIndicator.setVisibility(View.VISIBLE);
-            imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.audio_play));
+            imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.audioplay));
         }
 
         imageView.setOnClickListener(new View.OnClickListener() {

@@ -1,4 +1,4 @@
-package com.ism.author.ws.helper;
+package com.ism.teacher.ws.helper;
 
 /**
  * Created by c162 on 08/12/15.

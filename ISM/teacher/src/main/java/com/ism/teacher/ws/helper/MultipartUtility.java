@@ -1,4 +1,4 @@
-package com.ism.author.ws.helper;
+package com.ism.teacher.ws.helper;
 
 import java.io.BufferedReader;
 import java.io.File;
