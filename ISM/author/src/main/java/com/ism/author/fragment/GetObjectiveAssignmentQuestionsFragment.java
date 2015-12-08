@@ -17,6 +17,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.GetObjectiveAssignmentQuestionsAdapter;
 import com.ism.author.constant.WebConstants;
@@ -54,8 +55,10 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     public static GetObjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArgument) {
         GetObjectiveAssignmentQuestionsFragment getObjectiveAssignmentQuestionsFragment = new GetObjectiveAssignmentQuestionsFragment();
         if (bundleArgument != null) {
+
             getObjectiveAssignmentQuestionsFragment.setArguments(bundleArgument);
 //            getObjectiveAssignmentQuestionsFragment.fragmentArgument.setFragment(getObjectiveAssignmentQuestionsFragment);
+        } else {
         }
         return getObjectiveAssignmentQuestionsFragment;
     }
@@ -95,7 +98,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         tvObjectiveAssignmentDate.setTypeface(myTypeFace.getRalewayRegular());
 
         rvGetObjectiveAssignmentQuestionslist = (RecyclerView) view.findViewById(R.id.rv_getObjective_assignment_questionslist);
-        getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(getActivity());
+        getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(getActivity(), getArguments());
         rvGetObjectiveAssignmentQuestionslist.setAdapter(getObjectiveAssignmentQuestionsAdapter);
         rvGetObjectiveAssignmentQuestionslist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -162,12 +165,12 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-//                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-//                request.setStudentId(getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
+                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setStudentId(getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
 //                request.setExamId("9");
 //                request.setStudentId("202");
-                request.setExamId("4");
-                request.setStudentId("139");
+//                request.setExamId("4");
+//                request.setStudentId("139");
                 new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {
@@ -257,7 +260,12 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     rvGetObjectiveAssignmentQuestionslist.scrollToPosition(0);
-                    getObjectiveAssignmentQuestionsAdapter.setEvaluationData(responseHandler.getExamEvaluation().get(0).getEvaluation());
+
+                    if (responseHandler.getExamEvaluation().get(0).getEvaluation() != null) {
+                        if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() > 0) {
+                            getObjectiveAssignmentQuestionsAdapter.setEvaluationData(responseHandler.getExamEvaluation().get(0).getEvaluation());
+                        }
+                    }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());

@@ -52,11 +52,11 @@ RE.setBackgroundColor = function(color) {
 }
 
 RE.setWidth = function(size) {
-    RE.editor.style.minWidth = size;
+    RE.editor.style.maxWidth = size;
 }
 
 RE.setHeight = function(size) {
-    document.body.style.minHeight = size;
+    document.body.style.maxHeight = size;
 }
 
 RE.setTextAlign = function(align) {
@@ -129,6 +129,19 @@ RE.setOutdent = function() {
     document.execCommand('outdent', false, null);
 }
 
+RE.addParagraph = function() {
+    document.execCommand('formatBlock',false,'p');
+
+}
+
+RE.addSymbol = function(symbol) {
+//alert("hi"+symbol);
+    RE.insertHTML(symbol);
+   // alert("hi"+RE.innerHTML);
+
+}
+
+
 RE.setJustifyLeft = function() {
     document.execCommand('justifyLeft', false, null);
 }
@@ -145,10 +158,21 @@ RE.setBlockquote = function() {
     document.execCommand('formatBlock', false, '<blockquote>');
 }
 
+//RE.insertImage = function(url, alt) {
+//    var html = '<img src="' + url + '" alt="' + alt + '" align="left" onclick="RE.checkElement(this)"/>';
+//    RE.insertHTML(html);
+//}
+
 RE.insertImage = function(url, alt) {
-    var html = '<img src="' + url + '" alt="' + alt + '" />';
+    var html = '<img src="' + url + '" alt="' + alt + '" height ="200" width = "200"/>';
     RE.insertHTML(html);
 }
+
+RE.insertVideo = function(url) {
+    var html = '<iframe src="' + url + '" align="left" height ="200" width = "300"/>';
+    RE.insertHTML(html);
+}
+
 
 RE.insertHTML = function(html) {
     RE.restorerange();
@@ -175,12 +199,48 @@ RE.insertLink = function(url, title) {
 }
 
 RE.prepareInsert = function() {
+
     RE.backuprange();
+}
+
+RE.imageRange = function(){
+    var selection = window.getSelection();
+     //alert("selection **** "+selection);
+    if (selection.rangeCount > 0) {
+
+   // alert("range count  **** "+selection.rangeCount);
+      var range = selection.getRangeAt(0);
+      RE.currentSelection = {
+          "startContainer": range.startContainer,
+          "startOffset": 0,
+          "endContainer": range.endContainer,
+          "endOffset":0};
+    }
+
+   // alert("startContainer  **** "+range.startContainer+"  ***** startOffset  **** "+range.startOffset+"  ***** endContainer  **** "+range.endContainer+"  ***** endOffset  **** "+range.endOffset);
+
+
+}
+
+RE.checkElement = function(img){
+
+var alignment = img.getAttribute("align");
+
+if (alignment == "left"){
+img.setAttribute("align","right");
+}
+else{
+img.setAttribute("align","left");
+}
+
 }
 
 RE.backuprange = function(){
     var selection = window.getSelection();
+     //alert("selection **** "+selection);
     if (selection.rangeCount > 0) {
+
+   // alert("range count  **** "+selection.rangeCount);
       var range = selection.getRangeAt(0);
       RE.currentSelection = {
           "startContainer": range.startContainer,
@@ -188,6 +248,10 @@ RE.backuprange = function(){
           "endContainer": range.endContainer,
           "endOffset": range.endOffset};
     }
+
+   // alert("startContainer  **** "+range.startContainer+"  ***** startOffset  **** "+range.startOffset+"  ***** endContainer  **** "+range.endContainer+"  ***** endOffset  **** "+range.endOffset);
+
+
 }
 
 RE.restorerange = function(){

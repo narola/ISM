@@ -40,13 +40,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jp.wasabeef.richeditor.RichEditor;
-
 /**
  * Created by c166 on 28/10/15.
  */
 public class CreateExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
-
 
     private static final String TAG = CreateExamFragment.class.getSimpleName();
     private View view;
@@ -87,7 +84,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private RadioGroup radioDeclareresult, radioNegativemarking, radioExamRandomQuestion, radioExamUsescore;
     private LinearLayout llAddQuestionscore, llAddNegativeMark, llExamStartdate, llExamEnddate;
     private Button btnExamSave, btnExamSetquestion, btnExamCancel;
-    private RichTextEditor rteTrialExam;
     private ScrollView svCreateExam;
 
 
@@ -96,8 +92,13 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private static int PASSINGPERCENT_INTERVAL = 5, PASSINGPERCENT_STARTVALUE = 30, PASSINGPERCENT_ENDVALUE = 99;
     private static int EXAMDURATION_INTERVAL = 5, EXAMDURATION_STARTVALUE = 30, EXAMDURATION_ENDVALUE = 300;
 
-    String examStartDate = "", examEndDate = "", strAssignmenttext = "";
+    String examStartDate = "", examEndDate = "";
     private InputValidator inputValidator;
+
+    /*This is for the rich text editor*/
+
+    private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
+    private RichTextEditor rteTrialExam;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -263,14 +264,19 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         });
 
 
+//        rteTrialExam.getRichEditor().setEditorFontSize(25);
+//        rteTrialExam.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
+//            @Override
+//            public void onTextChange(String text) {
+//                strAssignmenttext = text;
+//            }
+//        });
+
+
         rteTrialExam = (RichTextEditor) view.findViewById(R.id.rte_trial_exam);
-        rteTrialExam.getRichEditor().setEditorFontSize(25);
-        rteTrialExam.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
-            @Override
-            public void onTextChange(String text) {
-                strAssignmenttext = text;
-            }
-        });
+        rteTrialExam.getRichEditor().setEditorFontSize(20);
+        rteTrialExam.hideMediaControls();
+
 
         if (!getArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
             setExamDetails();
@@ -364,7 +370,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
                 attribute.setPassingPercent(arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
                 attribute.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
-                attribute.setExamInstruction(strAssignmenttext);
+                attribute.setExamInstruction(rteTrialExam.getHtml());
                 attribute.setDeclareResults(getRadioGropuSelection(radioDeclareresult));
                 attribute.setNegativeMarking(getRadioGropuSelection(radioNegativemarking));
                 attribute.setRandomQuestion(getRadioGropuSelection(radioExamRandomQuestion));
@@ -466,7 +472,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private boolean isTextSetInRichTextEditor() {
-        if (strAssignmenttext.trim().length() > 0) {
+        if (rteTrialExam.getHtml().trim().length() > 0) {
             return true;
         } else {
             strValidationMsg += Utility.getString(R.string.msg_validation_add_text_rich_editor, mContext);
@@ -776,5 +782,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private CreateExamAssignmentContainerFragment getBaseFragment() {
         return (CreateExamAssignmentContainerFragment) fragment;
     }
+
 
 }

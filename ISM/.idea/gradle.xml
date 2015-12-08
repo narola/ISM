@@ -10,11 +10,13 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/AndroidAsync" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/author" />
             <option value="$PROJECT_DIR$/colorpicker" />
             <option value="$PROJECT_DIR$/commonsource" />
             <option value="$PROJECT_DIR$/ismrealm" />
+            <option value="$PROJECT_DIR$/ismsocket" />
             <option value="$PROJECT_DIR$/richeditor" />
             <option value="$PROJECT_DIR$/richtexteditor" />
             <option value="$PROJECT_DIR$/teacher" />
