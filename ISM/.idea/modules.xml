@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidAsync/AndroidAsync.iml" filepath="$PROJECT_DIR$/AndroidAsync/AndroidAsync.iml" />
       <module fileurl="file://$PROJECT_DIR$/ISM.iml" filepath="$PROJECT_DIR$/ISM.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/author/author.iml" filepath="$PROJECT_DIR$/author/author.iml" />
       <module fileurl="file://$PROJECT_DIR$/colorpicker/colorpicker.iml" filepath="$PROJECT_DIR$/colorpicker/colorpicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/commonsource/commonsource.iml" filepath="$PROJECT_DIR$/commonsource/commonsource.iml" />
       <module fileurl="file://$PROJECT_DIR$/ismrealm/ismrealm.iml" filepath="$PROJECT_DIR$/ismrealm/ismrealm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ismsocket/ismsocket.iml" filepath="$PROJECT_DIR$/ismsocket/ismsocket.iml" />
       <module fileurl="file://$PROJECT_DIR$/richeditor/richeditor.iml" filepath="$PROJECT_DIR$/richeditor/richeditor.iml" />
       <module fileurl="file://$PROJECT_DIR$/richtexteditor/richtexteditor.iml" filepath="$PROJECT_DIR$/richtexteditor/richtexteditor.iml" />
       <module fileurl="file://$PROJECT_DIR$/teacher/teacher.iml" filepath="$PROJECT_DIR$/teacher/teacher.iml" />
