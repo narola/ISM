@@ -196,6 +196,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
 
     private void inigGlobal() {
+//        IOSocketHandler.ConnectSocket();
 
         mFragmentManager = getFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();

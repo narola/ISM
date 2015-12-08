@@ -222,12 +222,12 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         txtAction = (TextView) findViewById(R.id.txt_action);
         etSearch = (EditText) findViewById(R.id.et_search);
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
-        progHost = (ActionProcessButton) findViewById(R.id.prog_host);
         inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         arrTxtMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
         progressGenerator = new ProgressGenerator();
 
+        progHost = (ActionProcessButton) findViewById(R.id.prog_host);
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, HostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, HostActivity.this);
 	    Global.strProfilePic = WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);

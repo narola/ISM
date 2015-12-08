@@ -24,7 +24,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,11 +34,11 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.PostFileAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.model.PostFileModel;
 import com.ism.author.object.Global;
 import com.ism.author.views.CircularSeekBar;
 import com.ism.author.views.HorizontalListView;
 import com.ism.author.ws.helper.Attribute;
-import com.ism.author.model.PostFileModel;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 
@@ -64,13 +63,9 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
     public static final String TAG = PostActivity.class.getSimpleName();
     private InputMethodManager inputMethod;
     private TextView txtPost, txtCaptue, txtChoose, txtCancel;
-    private PopupWindow popupWindow;
     private EditText etSayIt;
     private ImageView imgAudio, imgVideo, imgImage, imgTool, imgKeyboard, imgEmoticons, imgLink, imgStop, imgSave, imgCapture, imgCancel;
     private LinearLayout llContainer, llAudioRecoder;
-    public static final int FRAGMENT_IMAGE = 0;
-    public static final int FRAGMENT_VIDEO = 1;
-    public static final int FRAGMENT_AUDIO = 2;
     public static ArrayList<PostFileModel> arrayList = new ArrayList<PostFileModel>();
     public static PostFileAdapter adapter;
     public static PostFileModel model;
@@ -167,7 +162,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
     public void onClick(View v) {
         if (v == imgImage) {
             toolSelected(v);
-            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.imgcamera));
+            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.img_camera));
             Toast.makeText(getApplicationContext(), "Images", Toast.LENGTH_SHORT).show();
             hideKeyboard();
             llContainer.setVisibility(View.VISIBLE);
@@ -186,7 +181,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             //loadFragment(FRAGMENT_AUDIO);
         } else if (v == imgVideo) {
             toolSelected(v);
-            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.imgcamera));
+            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.img_camera));
             Toast.makeText(getApplicationContext(), "Video", Toast.LENGTH_SHORT).show();
             hideKeyboard();
             llContainer.setVisibility(View.VISIBLE);

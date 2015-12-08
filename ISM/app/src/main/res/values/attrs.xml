@@ -50,33 +50,31 @@
         <attr name="android:requiresFadingEdge" />
         <attr name="android:fadingEdgeLength" />
     </declare-styleable>
-    <declare-styleable name="twowayview_TwoWayView">
-        <attr name="twowayview_layoutManager" format="string"/>
+
+    <declare-styleable name="CircularSeekBar">
+        <attr name="progress" format="integer"></attr>
+        <attr name="max" format="integer"></attr>
+        <attr name="move_outside_circle" format="boolean"></attr>
+        <attr name="maintain_equal_circle" format="boolean"></attr>
+        <attr name="use_custom_radii" format="boolean"></attr>
+        <attr name="lock_enabled" format="boolean"></attr>
+        <attr name="circle_x_radius" format="dimension" />
+        <attr name="circle_y_radius" format="dimension" />
+        <attr name="circle_stroke_width" format="dimension" />
+        <attr name="pointer_radius" format="dimension" />
+        <attr name="pointer_halo_width" format="dimension" />
+        <attr name="pointer_halo_border_width" format="dimension"></attr>
+        <attr name="circle_color" format="color"></attr>
+        <attr name="circle_progress_color" format="color"></attr>
+        <attr name="pointer_color" format="color"></attr>
+        <attr name="pointer_halo_color" format="color"></attr>
+        <attr name="pointer_halo_color_ontouch" format="color"></attr>
+        <attr name="pointer_alpha_ontouch" format="integer"></attr>
+        <attr name="start_angle" format="float"></attr>
+        <attr name="end_angle" format="float"></attr>
+        <attr name="circle_fill" format="color"></attr>
+        <attr name="pointer_progress_start" format="color"></attr>
     </declare-styleable>
 
-    <declare-styleable name="twowayview_GridLayoutManager">
-        <attr name="twowayview_numColumns" format="integer"/>
-        <attr name="twowayview_numRows" format="integer"/>
-    </declare-styleable>
-
-    <declare-styleable name="twowayview_SpacingItemDecoration">
-        <attr name="android:verticalSpacing" tools:ignore="ResourceName"/>
-        <attr name="android:horizontalSpacing" tools:ignore="ResourceName"/>
-    </declare-styleable>
-
-    <declare-styleable name="twowayview_DividerItemDecoration">
-        <attr name="android:divider" tools:ignore="ResourceName"/>
-        <attr name="twowayview_verticalDivider" format="reference"/>
-        <attr name="twowayview_horizontalDivider" format="reference"/>
-    </declare-styleable>
-
-    <declare-styleable name="twowayview_StaggeredGridViewChild">
-        <attr name="twowayview_span" format="integer"/>
-    </declare-styleable>
-
-    <declare-styleable name="twowayview_SpannableGridViewChild">
-        <attr name="twowayview_colSpan" format="integer"/>
-        <attr name="twowayview_rowSpan" format="integer"/>
-    </declare-styleable>
 
 </resources>
