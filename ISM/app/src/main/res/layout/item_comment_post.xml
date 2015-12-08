@@ -33,7 +33,7 @@
 		android:layout_marginTop="@dimen/dp_margin_list"
 		android:paddingLeft="@dimen/comment_padding"
 		android:paddingRight="@dimen/comment_padding"
-		android:textColor="@color/color_green"
+		android:textColor="@color/green"
 		android:textSize="@dimen/post_text_size"/>
 
 	<TextView

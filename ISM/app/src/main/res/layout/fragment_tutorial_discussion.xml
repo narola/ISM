@@ -12,7 +12,7 @@
 		android:orientation="horizontal"
 		android:gravity="center"
 		android:padding="5dp"
-		android:background="@color/color_green">
+		android:background="@color/green">
 
 		<TextView
 			android:id="@+id/txt_topic"
@@ -55,7 +55,7 @@
 		android:layout_height="@dimen/attachment_button_height"
 		android:layout_alignParentBottom="true"
 		android:orientation="horizontal"
-		android:background="@color/color_green">
+		android:background="@color/green">
 
 		<ImageView
 			android:id="@+id/img_attach_file"

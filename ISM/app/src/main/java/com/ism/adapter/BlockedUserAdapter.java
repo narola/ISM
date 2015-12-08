@@ -57,12 +57,12 @@ public class BlockedUserAdapter extends BaseAdapter {
                 viewHolder.txtUnblock = (TextView) convertView.findViewById(R.id.txt_unblock);
                 viewHolder.txtName = (TextView) convertView.findViewById(R.id.txt_name);
 
-                viewHolder.txtEmailAddress.setTypeface(Global.myTypeFace.getRalewayRegular());
-                viewHolder.txtName.setTypeface(Global.myTypeFace.getRalewayRegular());
-                viewHolder.txtUnblock.setTypeface(Global.myTypeFace.getRalewayRegular());
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
+            viewHolder.txtEmailAddress.setTypeface(Global.myTypeFace.getRalewayRegular());
+            viewHolder.txtName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            viewHolder.txtUnblock.setTypeface(Global.myTypeFace.getRalewayRegular());
             viewHolder.txtEmailAddress.setText(arrayList.get(position).getEmailId());
             viewHolder.txtName.setText(arrayList.get(position).getFullName());
             viewHolder.txtUnblock.setOnClickListener(new View.OnClickListener() {

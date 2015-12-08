@@ -23,7 +23,7 @@
 		android:layout_marginLeft="@dimen/exam_padding"
 		android:layout_marginRight="@dimen/exam_padding"
 		android:layout_marginTop="@dimen/exam_padding"
-		android:background="@color/color_green"
+		android:background="@color/green"
 		android:orientation="horizontal"
 		android:padding="10dp">
 

@@ -11,7 +11,7 @@
         android:id="@+id/txt_gallery"
         android:gravity="center"
         android:padding="10sp"
-        android:textColor="@color/color_green" />
+        android:textColor="@color/green" />
 
     <TextView
         android:layout_width="match_parent"
@@ -20,5 +20,5 @@
         android:gravity="center"
         android:padding="10sp"
         android:id="@+id/txt_camera"
-        android:textColor="@color/color_green" />
+        android:textColor="@color/green" />
 </LinearLayout>

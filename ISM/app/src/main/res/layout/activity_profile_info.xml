@@ -28,19 +28,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/d10dp"
                 android:layout_marginTop="@dimen/d10dp"
-                android:background="@color/color_white"
+                android:background="@color/white"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_green"
+                    android:background="@color/green"
                     android:drawableLeft="@drawable/profileinfo"
                     android:drawablePadding="@dimen/d5dp"
                     android:gravity="center_vertical"
                     android:padding="@dimen/d10dp"
                     android:text="@string/strprofileinformation"
-                    android:textColor="@color/color_white"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/d20dp" />
 
                 <LinearLayout
@@ -187,7 +187,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="2.5"
-                            android:background="@color/color_white"
+                            android:background="@color/white"
                             android:onClick="onClickUploadImage"
                             android:orientation="vertical">
 
@@ -209,7 +209,7 @@
                                 android:gravity="center"
                                 android:padding="@dimen/d10dp"
                                 android:text="@string/struploadprofilepicture"
-                                android:textColor="@color/color_green"
+                                android:textColor="@color/green"
                                 android:textSize="@dimen/d18dp" />
                         </LinearLayout>
 
@@ -294,20 +294,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/d10dp"
                 android:layout_marginTop="@dimen/d10dp"
-                android:background="@color/color_white"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/d10dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_green"
+                    android:background="@color/green"
                     android:drawableLeft="@drawable/schoolinfo"
                     android:drawablePadding="@dimen/d5dp"
                     android:gravity="center_vertical"
                     android:padding="@dimen/d10dp"
                     android:text="@string/strschoolinformation"
-                    android:textColor="@color/color_white"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/d20dp" />
 
                 <LinearLayout
@@ -334,7 +334,7 @@
                             android:paddingRight="@dimen/d5dp"
                             android:paddingTop="@dimen/d10dp"
                             android:text="@string/stryouareregisteredforfollowingschool"
-                            android:textColor="@color/color_black"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/d18dp" />
 
                         <TextView
@@ -348,7 +348,7 @@
                             android:paddingTop="@dimen/d10dp"
                             android:text="@string/strclickhere"
                             android:onClick="onClickHere"
-                            android:textColor="@color/color_green"
+                            android:textColor="@color/green"
                             android:textSize="@dimen/d18dp" />
 
                         <TextView
@@ -361,7 +361,7 @@
                             android:paddingRight="@dimen/d5dp"
                             android:paddingTop="@dimen/d10dp"
                             android:text="@string/strifitisnotyourschool"
-                            android:textColor="@color/color_black"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/d18dp" />
                     </LinearLayout>
 
@@ -467,7 +467,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/d10dp"
                 android:layout_marginTop="@dimen/d10dp"
-                android:background="@color/color_white"
+                android:background="@color/white"
 
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/d10dp">
@@ -475,13 +475,13 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_green"
+                    android:background="@color/green"
                     android:drawableLeft="@drawable/manageaccount"
                     android:drawablePadding="@dimen/d5dp"
                     android:gravity="center_vertical"
                     android:padding="@dimen/d10dp"
                     android:text="@string/strmanageaccount"
-                    android:textColor="@color/color_white"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/d20dp" />
 
                 <LinearLayout
@@ -577,7 +577,7 @@
                     android:paddingTop="@dimen/d10dp"
                     android:text="@string/strcancel"
                     android:onClick="onClickCancel"
-                    android:textColor="@color/color_white"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/d20dp" />
 
                 <com.ism.commonsource.view.ActionProcessButton
@@ -592,11 +592,11 @@
                     android:paddingTop="@dimen/d10dp"
                     android:text="@string/strsubmit"
                     android:onClick="onClickSubmit"
-                    android:textColor="@color/color_white"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/d20dp"
-                    app:pb_colorComplete="@color/color_green"
-                    app:pb_colorNormal="@color/color_green"
-                    app:pb_colorPressed="@color/color_green"
+                    app:pb_colorComplete="@color/green"
+                    app:pb_colorNormal="@color/green"
+                    app:pb_colorPressed="@color/green"
                     app:pb_colorProgress="@color/purple_progress"
                     app:pb_cornerRadius="@dimen/app_button_corner_radius"
                     app:pb_textComplete="@string/strsubmit"

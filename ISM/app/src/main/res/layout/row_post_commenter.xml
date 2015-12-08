@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d5dp"
                     android:text="Adam Stanger"
-                    android:textColor="@color/color_green"
+                    android:textColor="@color/green"
                     android:textSize="@dimen/d18sp" />
 
                 <TextView

@@ -2,14 +2,58 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_white_border_gray"
+                android:background="@color/white"
                 android:orientation="vertical">
 
+	<com.ism.views.CircleImageView
+		android:id="@+id/img_dp"
+		android:layout_width="@dimen/dp_size_timeline"
+		android:layout_height="@dimen/dp_size_timeline"
+		android:layout_marginRight="10dp"
+		android:src="@drawable/userdp"/>
+
 	<TextView
+		android:id="@+id/txt_name"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:gravity="center"
-		android:padding="30dp"
-		android:text="Feed Post"
-		android:textSize="20sp"/>
+		android:layout_toRightOf="@id/img_dp"
+		android:textColor="@color/bg_app_dark"
+		android:textSize="18sp"/>
+
+	<TextView
+		android:id="@+id/txt_post"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/txt_name"
+		android:layout_toRightOf="@id/img_dp"
+		android:layout_marginTop="5dp"
+		android:textColor="@color/bg_app_dark"
+		android:textSize="18sp"/>
+
+	<TextView
+		android:id="@+id/txt_time"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:textColor="@color/text_gray"
+		android:textSize="16sp"/>
+
+	<ImageView
+		android:id="@+id/img_like"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/txt_post"
+		android:layout_toRightOf="@id/img_dp"
+		android:visibility="gone"
+		android:src="@drawable/ic_like_green_active"/>
+
+	<TextView
+		android:id="@+id/txt_likes"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/txt_post"
+		android:layout_toRightOf="@id/img_like"
+		android:textColor="@color/bg_app_dark"
+		android:visibility="gone"
+		android:textSize="@dimen/d18dp"/>
 </RelativeLayout>

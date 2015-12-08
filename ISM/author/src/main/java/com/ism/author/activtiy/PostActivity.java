@@ -35,6 +35,7 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.PostFileAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.object.Global;
 import com.ism.author.views.CircularSeekBar;
 import com.ism.author.views.HorizontalListView;
 import com.ism.author.ws.helper.Attribute;
@@ -300,7 +301,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 }
 
                 Attribute attribute = new Attribute();
-                attribute.setFeedBy("370");
+                attribute.setFeedBy(Global.strUserId);
 //                Log.e(TAG + "Images", "" + listImages);
                 attribute.setImages(listImages);
                 attribute.setVideoLink("");

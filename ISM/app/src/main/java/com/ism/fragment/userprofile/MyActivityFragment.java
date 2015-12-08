@@ -100,7 +100,7 @@ public class MyActivityFragment extends Fragment implements HostActivity.Profile
 					outRect.top = spacing;
 				}
 				if (parent.getChildLayoutPosition(view) == arrListUserActivity.size() - 1) {
-					outRect.bottom = spacing;
+					outRect.bottom = 20;
 				}
 			}
 		};
