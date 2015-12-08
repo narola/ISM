@@ -52,6 +52,7 @@
     <dimen name="d150dp">150dp</dimen>
     <dimen name="d170dp">170dp</dimen>
     <dimen name="d190dp">190dp</dimen>
+    <dimen name="d200dp">200dp</dimen>
     <dimen name="padding_header_white">20dp</dimen>
     <dimen name="text_size_header_white">20sp</dimen>
     <dimen name="padding_child_fragment_content">15dp</dimen>
@@ -84,6 +85,8 @@
     <dimen name="notification_digit_text_size">16sp</dimen>
     <dimen name="notification_digit_horizontal_padding">8dp</dimen>
     <dimen name="d75dp">75dp</dimen>
-
+    <dimen name="text_size_emptylist_message_small">18sp</dimen>
+    <dimen name="text_size_emptylist_message_medium">22sp</dimen>
+    <dimen name="text_size_emptylist_message_large">25sp</dimen>
 
 </resources>

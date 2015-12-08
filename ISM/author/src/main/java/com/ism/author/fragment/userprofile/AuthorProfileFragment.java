@@ -100,7 +100,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         txtMessageNo = (TextView) view.findViewById(R.id.txt_message);
         txtstudymatesRequest = (TextView) view.findViewById(R.id.txt_request);
         txtMyActivity = (TextView) view.findViewById(R.id.txt_myactivity);
-       // txtMyBooks = (TextView) view.findViewById(R.id.txt_mybooks);
+        // txtMyBooks = (TextView) view.findViewById(R.id.txt_mybooks);
         txtFollowers = (TextView) view.findViewById(R.id.txt_followers);
         txtMyFeeds = (TextView) view.findViewById(R.id.txt_myfeeds);
         imgNotification = (ImageView) view.findViewById(R.id.img_notification);
@@ -204,7 +204,8 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         btnViewAll.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtEmpty = (TextView) view.findViewById(R.id.txt_empty);
         txtEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
-
+        txtEmpty.setText(R.string.no_message_available);
+        lvMessages.setEmptyView(txtEmpty);
         callApiGetMessages();
 
         final PopupWindow popupMessage = new PopupWindow(view, 250, 350, true);
@@ -259,7 +260,8 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
         txtEmpty = (TextView) view.findViewById(R.id.txt_empty);
         txtEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
-
+        lvNotifications.setEmptyView(txtEmpty);
+        txtEmpty.setText(R.string.no_notification_available);
         btnViewAll.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         callApiGetNotifications();
@@ -351,7 +353,8 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         txtEmpty = (TextView) view.findViewById(R.id.txt_empty);
         txtEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
         btnViewAll.setTypeface(Global.myTypeFace.getRalewayRegular());
-
+        lvStudymates.setEmptyView(txtEmpty);
+        txtEmpty.setText(R.string.no_request_available);
         callApiGetStudymateRequests();
 
         popupFriendRequest = new PopupWindow(view, 250, 350, true);
@@ -403,7 +406,6 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
-
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GET_STUDYMATE_REQUEST);
             } else {
@@ -534,15 +536,6 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                     Log.e(TAG, "onResponseGetStudymateRequest success");
                     arrListStudyMateRequest = responseHandler.getStudymateRequest();
                     fillListStudymate();
-                    if (arrListStudyMateRequest.size() == 0) {
-                        txtEmpty.setVisibility(View.VISIBLE);
-                        btnViewAll.setVisibility(View.GONE);
-                        lvStudymates.setVisibility(View.GONE);
-                    } else {
-                        txtEmpty.setVisibility(View.GONE);
-                        btnViewAll.setVisibility(View.VISIBLE);
-                        lvStudymates.setVisibility(View.VISIBLE);
-                    }
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetStudymateRequest Failed");
                 }
@@ -564,6 +557,10 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             }
             callApiUpdateReadStatus(WebConstants.STUDYMATE_REQUEST, recordIds);
         }
+        if (arrListStudyMateRequest.size()==0)
+            btnViewAll.setVisibility(View.GONE);
+        else
+            btnViewAll.setVisibility(View.VISIBLE);
     }
 
     private void callApiUpdateReadStatus(String readCategory, ArrayList<String> recordId) {
@@ -593,15 +590,6 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                     Log.e(TAG, "onResponseGetNotification success");
                     arrListNotification = responseHandler.getNotification();
                     fillListNotification();
-                    if (arrListNotification.size() == 0) {
-                        txtEmpty.setVisibility(View.VISIBLE);
-                        btnViewAll.setVisibility(View.GONE);
-                        lvNotifications.setVisibility(View.GONE);
-                    } else {
-                        txtEmpty.setVisibility(View.GONE);
-                        btnViewAll.setVisibility(View.VISIBLE);
-                        lvNotifications.setVisibility(View.VISIBLE);
-                    }
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetNotification Failed");
                 }
@@ -621,8 +609,13 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             for (int i = 0; i < (arrListNotification.size() >= 4 ? 4 : arrListNotification.size()); i++) {
                 recordIds.add(arrListNotification.get(i).getRecordId());
             }
+
             callApiUpdateReadStatus(WebConstants.NOTIFICATION, recordIds);
         }
+        if (arrListNotification.size()==0)
+            btnViewAll.setVisibility(View.GONE);
+        else
+            btnViewAll.setVisibility(View.VISIBLE);
     }
 
     private void onResponseGetMessages(Object object, Exception error) {
@@ -634,16 +627,6 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                     Log.e(TAG, "onResponseGetMessages success");
                     arrListMessage = responseHandler.getMessages();
                     fillListMessage();
-                    if (arrListMessage.size() == 0) {
-                        txtEmpty.setVisibility(View.VISIBLE);
-                        btnViewAll.setVisibility(View.GONE);
-                        lvMessages.setVisibility(View.GONE);
-                    } else {
-                        txtEmpty.setVisibility(View.GONE);
-                        btnViewAll.setVisibility(View.VISIBLE);
-                        lvMessages.setVisibility(View.VISIBLE);
-
-                    }
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetMessages Failed");
                 }
@@ -663,8 +646,13 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             for (int i = 0; i < (arrListMessage.size() >= 4 ? 4 : arrListMessage.size()); i++) {
                 recordIds.add(arrListMessage.get(i).getRecordId());
             }
+
             callApiUpdateReadStatus(WebConstants.MESSAGES, recordIds);
         }
+        if (arrListMessage.size()==0)
+            btnViewAll.setVisibility(View.GONE);
+        else
+            btnViewAll.setVisibility(View.VISIBLE);
     }
 
 }

@@ -79,8 +79,6 @@ public class Attribute {
     private String taggedBy;
     private String[] likedId;
     private String[] unlikedId;
-    private ArrayList<String> questionId;
-    //    private String bankQuestionId;
     private String studentId;
 
 
@@ -473,14 +471,6 @@ public class Attribute {
         return studentId;
     }
 
-    public ArrayList<String> getQuestionId() {
-        return this.questionId;
-    }
-
-    @JsonProperty("question_id")
-    public void setQuestionId(ArrayList<String> questionId) {
-        this.questionId = questionId;
-    }
 
     @JsonProperty("email_id")
     public void setEmailId(String emailId) {
@@ -813,4 +803,27 @@ public class Attribute {
         this.hashtagData = hashtagData;
     }
 
+
+    //used in preview questions
+    private ArrayList<String> questionIdList;
+    public ArrayList<String> getQuestionIdList() {
+        return questionIdList;
+    }
+
+    @JsonProperty("question_id_list")
+    public Attribute setQuestionIdList(ArrayList<String> questionIdList) {
+        this.questionIdList = questionIdList;
+        return this;
+    }
+
+    private String questionid;
+    public String getQuestionid() {
+        return questionid;
+    }
+
+    @JsonProperty("question_id")
+    public Attribute setQuestionid(String questionid) {
+        this.questionid = questionid;
+        return this;
+    }
 }

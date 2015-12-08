@@ -2,6 +2,7 @@ package com.ism.fragment.userprofile;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
@@ -49,14 +51,11 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     public static TextView txtFavEmpty;
     private TextView txtSuggestedBooks;
     private TextView txtFavBooks;
-    private int addToFavItem;
     private ResponseHandler responseHandler;
     private ImageView imgFavSearch;
     private EditText etFavSearch;
     private ImageView imgSuggestedSearch;
     private EditText etSuggestedSearch;
-    private int resourceId;
-    private boolean favourite;
     ArrayList<String> arrayListFav = new ArrayList<String>();
     ArrayList<String> arrayListUnFav = new ArrayList<String>();
     ArrayList<String> arrayListAddBooksToLibrary = new ArrayList<String>();
@@ -114,6 +113,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     private void initGlobal() {
+
         txtFavEmpty = (TextView) view.findViewById(R.id.txt_fav_empty);
         txtSuggestedEmpty = (TextView) view.findViewById(R.id.txt_suggested_empty);
         txtSuggestedBooks = (TextView) view.findViewById(R.id.txt_read_books);
@@ -126,12 +126,13 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         etFavSearch = (EditText) view.findViewById(R.id.et_search_fav);
         imgSuggestedSearch = (ImageView) view.findViewById(R.id.img_search_suggested);
         etSuggestedSearch = (EditText) view.findViewById(R.id.et_search_suggested);
+//        rrInvisibleLayout = (RelativeLayout) view.findViewById(R.//id.rr_invisible_layout);
         //set typeface
         txtFavEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtSuggestedEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtFavBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtSuggestedBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
-
+//        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         txtFavEmpty.setText(R.string.no_books_available);
         txtSuggestedEmpty.setText(R.string.no_books_available);
         listViewFavBooks = (RecyclerView) view.findViewById(R.id.lv_fav_books);
@@ -140,14 +141,28 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         listViewSuggestedBooks = (RecyclerView) view.findViewById(R.id.lv_suggested_books);
         layoutManagerSuggested = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         listViewSuggestedBooks.setLayoutManager(layoutManagerSuggested);
+
+//        etSuggestedSearch.setFocusableInTouchMode(true);
+//        etSuggestedSearch.requestFocus();
+//        etSuggestedSearch.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                    Debug.i(TAG, "back");
+//                    return true;
+//                }
+//                Debug.i(TAG, "keyevents");
+//                return false;
+//            }
+//        });
         callApiGetBooksForUser();
         onClicks();
 
     }
 
+
     private void onClicks() {
         try {
-
             imgNextFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -195,7 +210,15 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                     onClickImgSuggetedSearch();
                 }
             });
-
+            etSuggestedSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        Utility.hideKeyboard(getActivity(), getView());
+                       // rrInvisibleLayout.setVisibility(View.GONE);
+                    }
+                }
+            });
             etSuggestedSearch.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -236,14 +259,32 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         }
     }
 
+    // from the link above
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+
+        // Checks whether a hardware keyboard is available
+        if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO) {
+            Toast.makeText(getActivity(), "keyboard visible", Toast.LENGTH_SHORT).show();
+            //rrInvisibleLayout.setVisibility(View.VISIBLE);
+        } else if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES) {
+            Toast.makeText(getActivity(), "keyboard hidden", Toast.LENGTH_SHORT).show();
+           // rrInvisibleLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void onClickImgSuggetedSearch() {
         try {
             if (etSuggestedSearch.getVisibility() == View.VISIBLE) {
                 etSuggestedSearch.setVisibility(View.GONE);
                 Utility.hideKeyboard(getActivity(), getView());
+               // rrInvisibleLayout.setVisibility(View.GONE);
                 // setUpSuggestedList(arrayListSuggestedBooks);
                 etSuggestedSearch.setText("");
             } else {
+                //rrInvisibleLayout.setVisibility(View.VISIBLE);
                 Utility.startSlideAnimation(etSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
                 Utility.startSlideAnimation(imgSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
                 etSuggestedSearch.setVisibility(View.VISIBLE);
@@ -253,6 +294,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
             Debug.i(TAG, "onClickImgSuggetedSearch : " + e.getLocalizedMessage());
         }
     }
+
 
     private void onClickImgFavSearch() {
         try {

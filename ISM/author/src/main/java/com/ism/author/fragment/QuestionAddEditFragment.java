@@ -873,6 +873,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             ((AuthorHostActivity) getActivity()).showProgress();
             try {
                 Attribute attribute = new Attribute();
+
                 MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
                 questionIdParam.setParamName("question_id");
                 questionIdParam.setParamValue(questionId);

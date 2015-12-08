@@ -13,34 +13,36 @@ import java.util.ArrayList;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BookData {
-	
+
     private String ebookLink;
     private String authorImage;
     private String price;
     private String bookId;
     private String authorName;
-    private String bookImage;
+    private String frontCoverImage;
     private String publisherName;
     private String description;
     private String bookName;
     private ArrayList<Tags> tags;
-    private String isLibrary;
+    private String isInLibrary;
+    private String backCoverImage;
 
-    public String getIsLibrary() {
-        return isLibrary;
+    @JsonProperty("is_in_library")
+    public String getIsInLibrary() {
+        return isInLibrary;
     }
 
-    public void setIsLibrary(String isLibrary) {
-        this.isLibrary = isLibrary;
+    public void setIsInLibrary(String isInLibrary) {
+        this.isInLibrary = isInLibrary;
+    }
+
+    public void setEbookLink(String ebookLink) {
+        this.ebookLink = ebookLink;
     }
 
     @JsonProperty("ebook_link")
     public String getEbookLink() {
         return this.ebookLink;
-    }
-
-    public void setEbookLink(String ebookLink) {
-        this.ebookLink = ebookLink;
     }
 
     @JsonProperty("author_image")
@@ -79,13 +81,22 @@ public class BookData {
         this.authorName = authorName;
     }
 
-    @JsonProperty("book_image")
-    public String getBookImage() {
-        return this.bookImage;
+    @JsonProperty("front_cover_image")
+    public String getFrontCoverImage() {
+        return this.frontCoverImage;
     }
 
-    public void setBookImage(String bookImage) {
-        this.bookImage = bookImage;
+    public void setFrontCoverImage(String frontCoverImage) {
+        this.frontCoverImage = frontCoverImage;
+    }
+
+    @JsonProperty("back_cover_image")
+    public String getBackCoverImage() {
+        return this.backCoverImage;
+    }
+
+    public void setBackCoverImage(String backCoverImage) {
+        this.backCoverImage = backCoverImage;
     }
 
     @JsonProperty("publisher_name")
@@ -114,6 +125,7 @@ public class BookData {
     public void setBookName(String bookName) {
         this.bookName = bookName;
     }
+
     @JsonProperty("tags")
     public ArrayList<Tags> getTags() {
         return this.tags;
@@ -123,5 +135,5 @@ public class BookData {
         this.tags = tags;
     }
 
-    
+
 }

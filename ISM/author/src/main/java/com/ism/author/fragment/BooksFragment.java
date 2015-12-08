@@ -3,13 +3,16 @@ package com.ism.author.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.BooksAdapter;
 import com.ism.author.interfaces.FragmentListener;
 
 /**
@@ -22,6 +25,9 @@ public class BooksFragment extends Fragment {
     private View view;
 
     private FragmentListener fragListener;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private BooksAdapter mAdapter;
 
     public static BooksFragment newInstance() {
         BooksFragment fragBooks = new BooksFragment();
@@ -42,7 +48,14 @@ public class BooksFragment extends Fragment {
     }
 
     private void initGlobal() {
+        mRecyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
+        mRecyclerView.setHasFixedSize(true);
 
+        // The number of Columns
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new BooksAdapter(getActivity(),null,null);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override

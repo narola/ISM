@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.constant.WebConstants;
+import com.ism.interfaces.ConfirmationListener;
 import com.ism.ws.model.Notice;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
@@ -102,7 +103,7 @@ public class Utility {
 //      Check if we can get access from the network.
         URL url = null;
         try {
-            url = new URL(WebConstants.HOST_202);
+            url = new URL(WebConstants.HOST);
             HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
             urlc.setRequestProperty("Connection", "close");
             urlc.setConnectTimeout(2000); // Timeout 2 seconds.
@@ -179,6 +180,39 @@ public class Utility {
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();
         return dialog;
+    }
+
+    /**
+     * Krunal Panchal
+     * Ask for confirmation and respond back.
+     *  @param context
+     * @param title
+     * @param message
+     * @param cancelable
+     */
+    public static void askConfirmation(Context context, final ConfirmationListener confirmationListener, final int requestId,
+                                       String title, String message, boolean cancelable) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppDialogTheme);
+        if (title != null) {
+            builder.setTitle(title);
+        }
+        if (message != null) {
+            builder.setMessage(message);
+        }
+        AlertDialog dialog = builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+	            confirmationListener.onConfirmationResponse(requestId, true);
+            }
+        }).setNegativeButton(R.string.strcancel, new DialogInterface.OnClickListener() {
+	        @Override
+	        public void onClick(DialogInterface dialog, int which) {
+		        confirmationListener.onConfirmationResponse(requestId, false);
+	        }
+        }).create();
+	    dialog.setCancelable(cancelable);
+//        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        dialog.show();
     }
 
     /**

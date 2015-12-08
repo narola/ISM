@@ -58,7 +58,7 @@ public class RecommendedStudymatesAdapter extends RecyclerView.Adapter<Recommend
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		holder.txtUserName.setText(arrayListUser.get(position).getUsername());
+		holder.txtUserName.setText("User " + position);
 		holder.txtFollowing.setText("Following 34 Authors");
 		holder.txtSchool.setText("Student from St. Xaviers");
 		holder.txtCourse.setText("F.Y. CS");
@@ -66,7 +66,7 @@ public class RecommendedStudymatesAdapter extends RecyclerView.Adapter<Recommend
 
 	@Override
 	public int getItemCount() {
-		return arrayListUser.size();
+		return 10;
 	}
 
 }
