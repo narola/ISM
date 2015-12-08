@@ -51,10 +51,11 @@ public class Utility {
     private static AlertDialog dialogOffline;
     private static AlertDialog dialogServerAlert;
 
-    public static final SimpleDateFormat DATE_FORMAT_PHP = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    public static final SimpleDateFormat DATE_FORMAT_MY_SQL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_DISPLAY = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-    public static final SimpleDateFormat DATE_FORMAT_DMY = new SimpleDateFormat("dd MMM yy", Locale.getDefault());
+    public static final SimpleDateFormat DATE_FORMAT_DDMMMYY = new SimpleDateFormat("dd MMM yy", Locale.getDefault());
+    public static final SimpleDateFormat DATE_FORMAT_MMMDDYYYY = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
     private static InputMethodManager inputMethod;
 
     /**
@@ -227,6 +228,17 @@ public class Utility {
         return DATE_FORMAT_API.format(date);
     }
 
+	/**
+	 * Krunal Panchal
+	 * Format date to pass in api with MySql format.
+	 *
+	 * @param date
+	 * @return
+	 */
+    public static String formatDateMySql(Date date) {
+        return DATE_FORMAT_MY_SQL.format(date);
+    }
+
     /**
      * Format date to display in app.
      *
@@ -245,9 +257,24 @@ public class Utility {
      */
     public static String formatPHPDateToDMY(String strDate) {
         try {
-            return DATE_FORMAT_DMY.format(DATE_FORMAT_PHP.parse(strDate));
+            return DATE_FORMAT_DDMMMYY.format(DATE_FORMAT_MY_SQL.parse(strDate));
         } catch (ParseException e) {
             Log.e(TAG, "formatPHPDateToDMY Exception : " + e.toString());
+            return null;
+        }
+    }
+
+    /**
+     * Krunal Panchal
+     *
+     * @param strDate
+     * @return String : fromatted date. eg. : 6 jul 15
+     */
+    public static String formatPHPDateToMMMDDYYYY(String strDate) {
+        try {
+            return DATE_FORMAT_MMMDDYYYY.format(DATE_FORMAT_MY_SQL.parse(strDate));
+        } catch (ParseException e) {
+            Log.e(TAG, "formatPHPDateToMMMDDYYYY Exception : " + e.toString());
             return null;
         }
     }

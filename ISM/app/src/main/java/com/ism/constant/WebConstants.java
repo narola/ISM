@@ -39,6 +39,8 @@ public class WebConstants {
 	public static final int GET_ALL_RECOMMENDED_STUDYMATES = 29;
 	public static final int GET_MY_ACTIVITY = 30;
 	public static final int UPLOAD_FEED_MEDIA = 31;
+	public static final int GET_ADMIN_CONFIG = 32;
+	public static final int REFRESH_TOKEN = 33;
 
 
 	//general settings
@@ -59,9 +61,6 @@ public class WebConstants {
 	public static final int GET_MOVIES_FOR_USER = 59;
 	public static final int MANAGE_FAVOURITES = 60;
 	public static final int MANAGE_BOOK_LIBRARY = 61;
-
-
-
 	public static final int POSTFEED = 62;
 
 	/**
@@ -81,7 +80,6 @@ public class WebConstants {
 	private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
 	//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_Images/";
 	public static final String HOST_IMAGE_USER = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_Images/";
-
 
 	public static final String HOST_IMAGE_FEED = HOST + DIR_PATH + "images/feeds/";
 	public static final String HOST_IMAGE_USER_OLD = "http://192.168.1.202/pg/ISM/WS_ISM/";
@@ -120,6 +118,9 @@ public class WebConstants {
 	public static final String URL_POSTFEED = HOST_WS + "PostFeed";
 	public static final String URL_GET_MY_ACTIVITY = HOST_WS + "GetMyActivity";
 	public static final String URL_UPLOAD_FEED_MEDIA = HOST_WS + "UploadMedia";
+	public static final String URL_REFRESH_TOKEN = HOST_WS + "RefreshToken";
+	public static final String URL_GET_ADMIN_CONFIG = HOST_WS + "GetAdminConfig";
+
 	/*
 	* edit profile
 	* */
@@ -132,8 +133,8 @@ public class WebConstants {
 	public static final String URL_MANAGE_FAVOURITES =  HOST_WS + "ManageFavorite";
 	public static final String URL_MANAGE_BOOK_LIBRARY =  HOST_WS + "ManageBookLibrary";
 	public static final String URL_EDIT_PROFILE_PIC = " ";
-
 	public static final String URL_GET_BLOCKED_USER =  HOST_WS + "GetBlockedUser";
+
 	/**
 	 * Parameter value Constants
 	 */

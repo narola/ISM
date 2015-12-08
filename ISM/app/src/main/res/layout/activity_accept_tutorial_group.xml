@@ -39,7 +39,7 @@
 				android:layout_height="wrap_content"
 				android:padding="0sp"
 				android:text="Welcome to ISM"
-				android:textColor="@color/color_white"
+				android:textColor="@color/white"
 				android:textSize="28sp"/>
 
 			<TextView
@@ -48,7 +48,7 @@
 				android:layout_height="wrap_content"
 				android:padding="0sp"
 				android:text="John Samuel"
-				android:textColor="@color/color_white"
+				android:textColor="@color/white"
 				android:textSize="@dimen/d25dp"/>
 
 			<TextView
@@ -79,7 +79,7 @@
 		android:gravity="center"
 		android:padding="10sp"
 		android:text="Your Tutorial group is as per below"
-		android:textColor="@color/color_green"
+		android:textColor="@color/green"
 		android:textSize="@dimen/d25dp"/>
 
 	<GridView
@@ -107,11 +107,11 @@
 		android:paddingTop="@dimen/d10dp"
 		android:text="@string/striacceptedgroup"
 		android:onClick="onClickAccept"
-		android:textColor="@color/color_white"
+		android:textColor="@color/white"
 		android:textSize="@dimen/d20dp"
-		app:pb_colorComplete="@color/color_green"
-		app:pb_colorNormal="@color/color_green"
-		app:pb_colorPressed="@color/color_green"
+		app:pb_colorComplete="@color/green"
+		app:pb_colorNormal="@color/green"
+		app:pb_colorPressed="@color/green"
 		app:pb_colorProgress="@color/purple_progress"
 		app:pb_cornerRadius="@dimen/app_button_corner_radius"
 		app:pb_textComplete="@string/striacceptedgroup"

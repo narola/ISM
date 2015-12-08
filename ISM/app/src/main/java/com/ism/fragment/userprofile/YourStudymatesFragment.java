@@ -34,6 +34,7 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 	private RecyclerView recyclerYourStudymates, recyclerRecommendedStudymates;
 	private ImageView imgPrevious, imgNext;
 
+	private LinearLayoutManager layoutManagerRecommended;
 	private YourStudymatesAdapter adpYourStudymates;
 	private RecommendedStudymatesAdapter adpRecommendedStudymates;
 	private ArrayList<User> arrListYourStudymates;
@@ -70,7 +71,7 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 
 		if (Utility.isConnected(getActivity())) {
 			callApiGetStudymates();
-//			callApiGetRecommentedStudymates();
+			callApiGetRecommendedStudymates();
 		} else {
 			Utility.alertOffline(getActivity());
 		}
@@ -96,21 +97,27 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 
 
 
-		final LinearLayoutManager layoutManagerRecommended = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+		layoutManagerRecommended = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
 		recyclerRecommendedStudymates.setLayoutManager(layoutManagerRecommended);
-		arrListRecommendedStudymates = new ArrayList<>();
+		/*arrListRecommendedStudymates = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
 			User user = new User();
 			user.setUsername("User " + i);
 			arrListRecommendedStudymates.add(user);
 		}
 		adpRecommendedStudymates = new RecommendedStudymatesAdapter(getActivity(), arrListRecommendedStudymates);
-		recyclerRecommendedStudymates.setAdapter(adpRecommendedStudymates);
+		recyclerRecommendedStudymates.setAdapter(adpRecommendedStudymates);*/
 
 		imgNext.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				recyclerRecommendedStudymates.getLayoutManager().smoothScrollToPosition(recyclerRecommendedStudymates, null, layoutManagerRecommended.findLastCompletelyVisibleItemPosition() + 1);
+				int lastVisiblePosition = layoutManagerRecommended.findLastCompletelyVisibleItemPosition();
+				imgPrevious.setEnabled(arrListRecommendedStudymates.size() > 4);
+				if (lastVisiblePosition == arrListRecommendedStudymates.size() - 2) {
+					imgNext.setEnabled(false);
+				}
+				recyclerRecommendedStudymates.getLayoutManager().smoothScrollToPosition(recyclerRecommendedStudymates, null,
+						lastVisiblePosition + 1);
 			}
 		});
 
@@ -118,6 +125,10 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 			@Override
 			public void onClick(View v) {
 				int firstVisiblePosition = layoutManagerRecommended.findFirstCompletelyVisibleItemPosition();
+				imgNext.setEnabled(arrListRecommendedStudymates.size() > 4);
+				if (firstVisiblePosition == 1) {
+					imgPrevious.setEnabled(false);
+				}
 				if (firstVisiblePosition > 0) {
 					recyclerRecommendedStudymates.getLayoutManager().smoothScrollToPosition(recyclerRecommendedStudymates, null, firstVisiblePosition - 1);
 				}
@@ -125,7 +136,7 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 		});
 	}
 
-	private void callApiGetRecommentedStudymates() {
+	private void callApiGetRecommendedStudymates() {
 		try {
 			Attribute attribute = new Attribute();
 			attribute.setUserId(Global.strUserId);
@@ -133,7 +144,7 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_ALL_RECOMMENDED_STUDYMATES);
 		} catch (Exception e) {
-			Log.e(TAG, "callApiGetRecommentedStudymates Exception : " + e.toString());
+			Log.e(TAG, "callApiGetRecommendedStudymates Exception : " + e.toString());
 		}
 	}
 
@@ -169,14 +180,27 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 		try {
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
-				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-					arrListRecommendedStudymates = responseHandler.getStudymates();
-					txtEmptyViewRecommended.setVisibility(arrListYourStudymates != null && arrListRecommendedStudymates.size() > 0 ? View.GONE : View.VISIBLE);
+//				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					arrListRecommendedStudymates = responseHandler.getRecommendedStudymates();
+
+					/*for (int i = 0; i < 9; i++) {
+						arrListRecommendedStudymates.add(arrListRecommendedStudymates.get(0));
+					}*/
+
+					if (arrListRecommendedStudymates != null && arrListRecommendedStudymates.size() > 0) {
+						txtEmptyViewRecommended.setVisibility(View.GONE);
+						imgPrevious.setEnabled(false);
+						imgNext.setEnabled(arrListRecommendedStudymates.size() > 4);
+					} else {
+						txtEmptyViewRecommended.setVisibility(View.VISIBLE);
+					}
+
 					adpRecommendedStudymates = new RecommendedStudymatesAdapter(getActivity(), arrListRecommendedStudymates);
 					recyclerRecommendedStudymates.setAdapter(adpRecommendedStudymates);
-				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-					Log.e(TAG, "onResponseGetAllRecommendedStudyamtes Failed");
-				}
+
+//				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+//					Log.e(TAG, "onResponseGetAllRecommendedStudyamtes Failed");
+//				}
 			} else if (error != null) {
 				Log.e(TAG, "onResponseGetAllRecommendedStudyamtes api Exception : " + error.toString());
 			}

@@ -105,7 +105,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
                     android:padding="@dimen/d5dp"
-                    android:src="@drawable/left_arrow" />
+                    android:src="@drawable/img_previous" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/lv_suggested_books"
@@ -135,7 +135,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:padding="@dimen/d5dp"
-                    android:src="@drawable/right_arrow" />
+                    android:src="@drawable/img_next" />
 
 
             </RelativeLayout>
@@ -228,7 +228,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
                     android:padding="@dimen/d5dp"
-                    android:src="@drawable/left_arrow" />
+                    android:src="@drawable/img_previous" />
 
                 <!--<com.ism.views.HorizontalListView-->
                 <!--android:id="@+id/lv_fav_books"-->
@@ -268,7 +268,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:padding="@dimen/d5dp"
-                    android:src="@drawable/right_arrow" />
+                    android:src="@drawable/img_next" />
 
             </RelativeLayout>
         </LinearLayout>

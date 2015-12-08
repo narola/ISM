@@ -56,7 +56,7 @@
 		android:layout_below="@id/txt_location"
 		android:layout_marginLeft="10dp"
 		android:layout_toRightOf="@id/img_dp"
-		android:textColor="@color/color_green"
+		android:textColor="@color/green"
 		android:textSize="15sp"/>
 
 	<Button

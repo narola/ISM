@@ -3,6 +3,7 @@ package com.ism.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.ws.model.AdminConfig;
 import com.ism.ws.model.Badges;
 import com.ism.ws.model.BlockedUsers;
 import com.ism.ws.model.Books;
@@ -61,6 +62,7 @@ public class ResponseHandler {
     private ArrayList<Wallet> wallet;
     private ArrayList<BlockedUsers> blockedUsers;
     private ArrayList<UserActivitiy> userActivities;
+    private ArrayList<AdminConfig> adminConfig;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -294,6 +296,15 @@ public class ResponseHandler {
 
     public void setUserActivities(ArrayList<UserActivitiy> userActivities) {
         this.userActivities = userActivities;
+    }
+
+    @JsonProperty("admin_config")
+    public ArrayList<AdminConfig> getAdminConfig() {
+        return this.adminConfig;
+    }
+
+    public void setAdminConfig(ArrayList<AdminConfig> adminConfig) {
+        this.adminConfig = adminConfig;
     }
 
     @JsonProperty("feed")

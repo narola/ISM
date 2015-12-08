@@ -193,6 +193,12 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_UPLOAD_FEED_MEDIA).uploadMedia(ResponseHandler.class,
                                     attribute);
                             break;
+                        case WebConstants.REFRESH_TOKEN:
+                            responseObject = new WebserviceConnector(WebConstants.URL_REFRESH_TOKEN).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_ADMIN_CONFIG:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ADMIN_CONFIG).execute(ResponseHandler.class, attribute);
+                            break;
                     }
                 }
             } catch (Exception e) {

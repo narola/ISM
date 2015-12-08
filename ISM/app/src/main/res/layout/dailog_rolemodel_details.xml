@@ -15,11 +15,11 @@
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:layout_marginTop="2dp"
-        android:background="@color/color_green"
+        android:background="@color/green"
         android:gravity="center"
         android:padding="@dimen/d10dp"
         android:text="@string/strRoleModelDetails"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/d25sp" />
 
     <ScrollView
@@ -255,6 +255,6 @@
         android:paddingRight="25dp"
         android:paddingTop="@dimen/d10dp"
         android:text="@string/strclose"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/d20sp" />
 </RelativeLayout>

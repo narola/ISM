@@ -54,5 +54,5 @@
 		android:layout_toRightOf="@id/img_dp"
 		android:layout_below="@id/txt_school"
 		android:textSize="15sp"
-		android:textColor="@color/color_green"/>
+		android:textColor="@color/green"/>
 </RelativeLayout>

@@ -44,6 +44,6 @@
 		android:paddingTop="@dimen/padding_voucher_item"
 		android:paddingBottom="@dimen/padding_voucher_item"
 		android:gravity="center"
-		android:textColor="@color/color_green"
+		android:textColor="@color/green"
 		android:textSize="18sp"/>
 </LinearLayout>

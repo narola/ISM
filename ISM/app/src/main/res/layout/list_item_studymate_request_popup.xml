@@ -22,7 +22,7 @@
         android:layout_marginTop="10dp"
         android:maxLines="3"
         android:ellipsize="end"
-        android:textColor="@color/color_green"
+        android:textColor="@color/green"
         android:textSize="17sp"/>
 
     <TextView
