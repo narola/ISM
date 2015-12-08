@@ -69,7 +69,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     /*these sre for the xml views*/
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
             tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank;
-    private ImageView imgEditQuestion, imgCopyQuestion, imgDeleteQuestion, imgSelectImage, imgPlay;
+    private ImageView imgEditQuestion, imgCopyQuestion, imgDeleteQuestion, imgSelectImage, imgPlay, img_cancel;
     private EditText etAddquestionTitle, etAddquestionAnswer, etEvaluationNote1, etEvaluationNote2;
     private Spinner spAddquestionType;
     private CheckBox chkAddquestionPreview;
@@ -80,7 +80,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     MyTypeFace myTypeFace;
     private InputValidator inputValidator;
     private Boolean isAddMore = false;
-
+    private Uri selectedUri = null;
 
     public QuestionAddEditFragment() {
     }
@@ -105,6 +105,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         inputValidator = new InputValidator(getActivity());
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+
+        img_cancel = (ImageView) view.findViewById(R.id.img_cancel);
+        img_cancel.setOnClickListener(this);
 
         tvAddquestionHeader = (TextView) view.findViewById(R.id.tv_addquestion_header);
         tvAddquestionTitle = (TextView) view.findViewById(R.id.tv_addquestion_title);
@@ -204,7 +207,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
                     Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
                 }
-                return false;
+                return true;
             }
         });
 
@@ -213,7 +216,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
     //intiGlobalEnds
 
-    Uri selectedUri = null;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -238,6 +240,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
                     imgSelectImage.setImageURI(selectedUri);
                     imgPlay.setVisibility(View.GONE);
+                    img_cancel.setVisibility(View.VISIBLE);
 
                 } else if (mimeType.startsWith("video")) {
 
@@ -246,6 +249,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
                     imgSelectImage.setImageBitmap(bitmap);
                     imgPlay.setVisibility(View.VISIBLE);
+                    img_cancel.setVisibility(View.VISIBLE);
 
                 }
 
@@ -462,9 +466,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
 
             if (questions.getQuestionImageLink() != null && !questions.getQuestionImageLink().equals("")) {
-                imageLoader.displayImage(questions.getQuestionImageLink(), imgSelectImage, ISMTeacher.options);
+                imageLoader.displayImage(WebConstants.Image_url + questions.getQuestionImageLink(), imgSelectImage, ISMTeacher.options);
 
                 Debug.e(TAG, "============from set data =======================" + questions.getQuestionImageLink());
+                img_cancel.setVisibility(View.VISIBLE);
             }
 
             setMcqAnswers(questions);
@@ -588,6 +593,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         } else if (v == tvAddquestionGotoquestionbank) {
             getFragment().flipCard();
 
+        } else if (v == img_cancel) {
+            if (selectedUri != null) {
+                imgSelectImage.setImageDrawable(null);
+                img_cancel.setVisibility(View.GONE);
+                selectedUri = null;
+            }
         }
 
     }
@@ -888,7 +899,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             question.setQuestionAssetsLink("");
 
             if (imagelink != null && !imagelink.equals("")) {
-                question.setQuestionImageLink(WebConstants.Image_url + imagelink);
+//                question.setQuestionImageLink(WebConstants.Image_url + imagelink);
+                question.setQuestionImageLink(imagelink);
             } else {
                 question.setQuestionImageLink("");
 

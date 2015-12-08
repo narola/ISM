@@ -57,7 +57,7 @@
         android:layout_height="15sp"
         android:padding="10dp"
         android:background="@drawable/img_cancel"
-        android:visibility="gone"
+        android:visibility="visible"
         android:gravity="center"
         android:layout_alignRight="@+id/rl_image"
         android:layout_alignTop="@+id/rl_image"

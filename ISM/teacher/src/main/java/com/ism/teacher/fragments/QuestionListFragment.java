@@ -16,6 +16,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,8 +85,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     public static final String MCQ_FORMAT = "MCQ";
     public static final String DESCRIPTIVE_FORMAT = "descriptive";
 
-    private ImageView imgSortUp, imgSortDown;
+    //private ImageView imgSortUp, imgSortDown;
     public static final int SORT_UP = 1, SORT_DOWN = 2;
+
+    private boolean isSort = false;
+    private RelativeLayout rlSortQuestionBank;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -99,12 +103,14 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
+        rlSortQuestionBank = (RelativeLayout) view.findViewById(R.id.rl_sort_question_bank);
+        rlSortQuestionBank.setOnClickListener(this);
 
-        imgSortUp = (ImageView) view.findViewById(R.id.img_sort_up);
-        imgSortDown = (ImageView) view.findViewById(R.id.img_sort_down);
-
-        imgSortUp.setOnClickListener(this);
-        imgSortDown.setOnClickListener(this);
+//        imgSortUp = (ImageView) view.findViewById(R.id.img_sort_up);
+//        imgSortDown = (ImageView) view.findViewById(R.id.img_sort_down);
+//
+//        imgSortUp.setOnClickListener(this);
+//        imgSortDown.setOnClickListener(this);
 
         imgSearchQuestions = (ImageView) view.findViewById(R.id.img_search_questions);
 
@@ -537,12 +543,22 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 getFragment().setDataOnFragmentFlip(null, false, true);
                 break;
 
-            case R.id.img_sort_up:
-                performSorting(SORT_UP);
-                break;
+//            case R.id.img_sort_up:
+//                performSorting(SORT_UP);
+//                break;
+//
+//            case R.id.img_sort_down:
+//                performSorting(SORT_DOWN);
+//                break;
 
-            case R.id.img_sort_down:
-                performSorting(SORT_DOWN);
+            case R.id.rl_sort_question_bank:
+                if (!isSort) {
+                    performSorting(SORT_DOWN);
+                    isSort = true;
+                } else {
+                    performSorting(SORT_UP);
+                    isSort = false;
+                }
                 break;
         }
     }
@@ -667,12 +683,12 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     /**
      * This method handles two types of filter.
      * 1.Based on subject id and topic id
-     * <p/>
+     * <p>
      * 1 A.first in only subjectid based filter ,we reach from edit exam(assignment exam and automatically we see the question bank
      * filtered based on the subjectid passed from param.
      * Now we copied the result into copylist .
      * and at end copied whole copy list into latestQuestionbank list to handle further filter based on that current list.
-     * <p/>
+     * <p>
      */
 
     private void filterResults(int subjectId, String topicId) {

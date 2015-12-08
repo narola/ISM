@@ -21,7 +21,7 @@ import com.ism.teacher.ws.model.Questions;
 import java.util.ArrayList;
 
 /**
- * Created by c162 on 05/11/15.
+ * This fragment is used to display the list of objective question
  */
 public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<GetObjectiveAssignmentQuestionsAdapter.ViewHolder> {
     private static final String TAG = GetObjectiveAssignmentQuestionsAdapter.class.getSimpleName();
@@ -124,7 +124,7 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
                 holder.etSolution.setText(Utility.formatHtml(arrListQuestions.get(position).getSolution()));
 
             } else {
-                holder.llQuestionsEvaluationContainer.setVisibility(View.GONE);
+                holder.llQuestionsEvaluationContainer.setVisibility(View.VISIBLE);
             }
 
         } catch (Exception e) {

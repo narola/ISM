@@ -86,9 +86,9 @@
                                     android:layout_weight="1"
                                     android:background="@drawable/edittext_shadow_selector"
                                     android:hint="@string/stremailaddress"
+                                    android:inputType="textEmailAddress"
                                     android:padding="15dp"
-                                    android:textColorHint="@color/color_text_hint"
-                                    android:inputType="textEmailAddress"/>
+                                    android:textColorHint="@color/color_text_hint" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -116,9 +116,9 @@
                                     android:layout_weight="1"
                                     android:background="@drawable/edittext_shadow_selector"
                                     android:hint="@string/strcontactnumber"
+                                    android:inputType="phone"
                                     android:padding="15dp"
-                                    android:textColorHint="@color/color_text_hint"
-                                    android:inputType="phone"/>
+                                    android:textColorHint="@color/color_text_hint" />
 
                             </LinearLayout>
 
@@ -231,7 +231,7 @@
                             android:paddingRight="@dimen/d5dp"
                             android:paddingTop="@dimen/d10dp"
                             android:text="@string/strclickhere"
-                            android:textColor="@color/color_green"
+                            android:textColor="@color/color_blue"
                             android:textSize="@dimen/d18sp" />
 
                         <TextView
@@ -364,9 +364,9 @@
                             android:layout_weight="1"
                             android:background="@drawable/edittext_shadow_selector"
                             android:hint="@string/strcurrentpwd"
+                            android:inputType="textPassword"
                             android:padding="15dp"
-                            android:textColorHint="@color/color_text_hint"
-                            android:inputType="textPassword"/>
+                            android:textColorHint="@color/color_text_hint" />
 
                     </LinearLayout>
 
@@ -384,9 +384,9 @@
                             android:layout_weight="1"
                             android:background="@drawable/edittext_shadow_selector"
                             android:hint="@string/strnewpwd"
+                            android:inputType="textPassword"
                             android:padding="15dp"
-                            android:textColorHint="@color/color_text_hint"
-                            android:inputType="textPassword"/>
+                            android:textColorHint="@color/color_text_hint" />
 
                         <EditText
                             android:id="@+id/et_confirmpwd"
@@ -396,9 +396,9 @@
                             android:layout_weight="1"
                             android:background="@drawable/edittext_shadow_selector"
                             android:hint="@string/strconfirmpwd"
+                            android:inputType="textPassword"
                             android:padding="15dp"
-                            android:textColorHint="@color/color_text_hint"
-                            android:inputType="textPassword"/>
+                            android:textColorHint="@color/color_text_hint" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
+import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.GetAssignmentsSubmitterFragment;
 import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
@@ -81,7 +82,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
         LinearLayout llParentAssignment, llViewQuestions, llAssessedQuestion, llUnassessedQuestion;
         RelativeLayout rlTopAssignment;
-        TextView txtAssignmentCourse, txtAssignmentClassName, txtAssignmentDate, txtNumberAssessedQuestion, txtNumberUnassessedQuestion, txtNumberTotalQuestions;
+        TextView txtExamName, txtAssignmentClassName, txtAssignmentDate, txtNumberAssessedQuestion, txtNumberUnassessedQuestion, txtNumberTotalQuestions;
         TextView txtAssignmentSubject, txtAssessedLabel, txtUnassessedLabel, txtQuestionLabel, txtAssignmentType;
 
         public ViewHolder(View itemView) {
@@ -96,7 +97,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_top_assignment);
             txtAssignmentSubject = (TextView) itemView.findViewById(R.id.txt_assignment_subject);
 
-            txtAssignmentCourse = (TextView) itemView.findViewById(R.id.txt_assignment_course);
+            txtExamName = (TextView) itemView.findViewById(R.id.txt_exam_name);
             txtAssignmentClassName = (TextView) itemView.findViewById(R.id.txt_assignment_class_name);
             txtAssignmentDate = (TextView) itemView.findViewById(R.id.txt_assignment_date);
 
@@ -119,13 +120,13 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         holder.txtAssignmentSubject.setText(arrayListAssignments.get(position).getSubjectName());
-        //holder.txtAssignmentCourse.setText(arrayListAssignments.get(position).getClass_name());
+        holder.txtExamName.setText(arrayListAssignments.get(position).getExamName());
         holder.txtAssignmentClassName.setText(arrayListAssignments.get(position).getClassroomName());
-//        holder.txtAssignmentDate.setText(arrayListAssignments.get(position).);
+        holder.txtAssignmentDate.setText((Utility.getFormattedDate("dd-MMM-yyyy", arrayListAssignments.get(position).getExamCreatedDate())));
 
-//        holder.txtNumberAssessedQuestion.setText(arrayListAssignments.get(position).);
-//        holder.txtNumberUnassessedQuestion.setText(arrayListAssignments.get(position).);
-//        holder.txtNumberTotalQuestions.setText(arrayListAssignments.get(position).);
+        holder.txtNumberAssessedQuestion.setText(arrayListAssignments.get(position).getTotalAssessed());
+        holder.txtNumberUnassessedQuestion.setText(arrayListAssignments.get(position).getTotalUnassessed());
+        holder.txtNumberTotalQuestions.setText(arrayListAssignments.get(position).getTotalQuestion());
         holder.txtAssignmentType.setText(Html.fromHtml("<font color='#77C2EA'>Assignment Type:" + arrayListAssignments.get(position).getExamMode() + "</font>"));
 
 

@@ -333,7 +333,7 @@
 
     <!-- Dummy strings-->
     <string name="question">For testing this question text..how this question will look like if its a very long question..will it wrap to next line? or it will behave in some unexpected way..</string>
-    <string name="stryouranswer">Your Answer:</string>
+    <string name="stryouranswer">Answer:</string>
     <string name="strexcellent">Excellent</string>
     <string name="strgood">Good</string>
     <string name="strfair">Fair</string>

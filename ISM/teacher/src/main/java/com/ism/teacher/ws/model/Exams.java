@@ -23,7 +23,40 @@ public class Exams {
     private String passPercentage;
     private String examType;
     private String examCategory;
+    private String examCreatedDate;
 
+    private String totalAssessed;
+    private String totalUnassessed;
+
+
+    @JsonProperty("total_assessed")
+    public String getTotalAssessed() {
+        return totalAssessed;
+    }
+
+    public Exams setTotalAssessed(String totalAssessed) {
+        this.totalAssessed = totalAssessed;
+        return this;
+    }
+
+    @JsonProperty("total_unassessed")
+    public String getTotalUnassessed() {
+        return totalUnassessed;
+    }
+
+    public Exams setTotalUnassessed(String totalUnassessed) {
+        this.totalUnassessed = totalUnassessed;
+        return this;
+    }
+
+    @JsonProperty("exam_created_date")
+    public String getExamCreatedDate() {
+        return examCreatedDate;
+    }
+
+    public void setExamCreatedDate(String examCreatedDate) {
+        this.examCreatedDate = examCreatedDate;
+    }
 
     @JsonProperty("total_question")
     public String getTotalQuestion() {
