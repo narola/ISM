@@ -35,6 +35,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -205,10 +206,10 @@ public class Utility {
 	            confirmationListener.onConfirmationResponse(requestId, true);
             }
         }).setNegativeButton(R.string.strcancel, new DialogInterface.OnClickListener() {
-	        @Override
-	        public void onClick(DialogInterface dialog, int which) {
-		        confirmationListener.onConfirmationResponse(requestId, false);
-	        }
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                confirmationListener.onConfirmationResponse(requestId, false);
+            }
         }).create();
 	    dialog.setCancelable(cancelable);
 //        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
@@ -444,6 +445,14 @@ public class Utility {
         }
         cursor.close();
         return filePath;
+    }
+    /*
+    * Arti Patel
+    * */
+    public static String getDate() {
+        SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        return curFormater.format(calendar.getTime());
     }
 
 }

@@ -52,6 +52,7 @@ public class WebConstants {
     public static final int TEMPCREATEQUESTION = 33;
     public static final int GETBOOKSFORAUTHOR = 34;
     public static final int UPLOADMEDIAFORQUESTION = 35;
+    public static final int UPLOADFEEDMEDIA = 36;
     //user settings preferences
 
     public static final int GENERAL_SETTING_PREFERENCES = 51;
@@ -89,6 +90,7 @@ public class WebConstants {
     public static final String URL_GETCOURSES = URL_KINJAL_HOST + "GetCourses";
     public static final String URL_GETBOOKSFORAUTHOR = URL_KINJAL_HOST + "GetBooksForAuthor";
     public static final String URL_UPLOADMEDIAFORQUESTION = URL_KINJAL_HOST + "UploadMediaForQuestion";
+    public static final String URL_UPLOAD_FEED_MEDIA = URL_KINJAL_HOST + "UploadMedia";
 
     public static final String URL_CREATEEXAM = URL_KINJAL_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
