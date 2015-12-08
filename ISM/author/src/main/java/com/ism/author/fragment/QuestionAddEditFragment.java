@@ -8,11 +8,13 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -32,6 +34,7 @@ import android.widget.TextView;
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.HtmlImageGetter;
 import com.ism.author.Utility.InputValidator;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
@@ -1175,7 +1178,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     @Override
     public void SetText(String text) {
-        etAddquestionTitle.setText(Utils.formatHtml(text));
+
+        etAddquestionTitle.setText(Html.fromHtml(text, new HtmlImageGetter(50,50),null));
+//        etAddquestionTitle.setText(Utils.formatHtml(text));
     }
+
+
 }
 
