@@ -9,7 +9,7 @@ include_once 'Encrypt.php';
 include_once 'ConstantValues.php';
 include_once 'SendEmail.php';
 include_once 'TutorialGroup.php';
-
+include_once 'ApiCrypter.php';
 
 error_reporting(0);
 class ProfileFunctions
@@ -163,6 +163,12 @@ class ProfileFunctions
             case "RefreshToken":
             {
                 return $this->refreshToken($postData);
+            }
+                break;
+
+            case "UnBlockUser":
+            {
+                return $this->unBlockUser($postData);
             }
                 break;
 
@@ -820,23 +826,9 @@ class ProfileFunctions
                 $resultAddToken=mysqli_query($GLOBALS['con'], $queryAddToken) or $message=mysqli_error($GLOBALS['con']);
 
                 //**************************For Encryption***************************
-                //===================================================================
-                //=============Use username as Key For Encrypt=======================
-                $aes256Key = hash("SHA256", $username, true);
 
-                // for good entropy (for MCRYPT_RAND)
-
-                srand((double) microtime() * 1000000);
-                // generate random iv
-
-                $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
-
-
-                //===================================================================
-                //===================Call AES Encrypt Function=======================
-
-                $secret_key = $security->functionToEncrypt($generateToken, $aes256Key);
-
+                $crypterSecurity=new Security();
+                $secret_key=$crypterSecurity->encrypt($generateToken,$username);
                 //**************************End Encryption***************************
 
                 if($resultAddToken)
@@ -1326,7 +1318,7 @@ class ProfileFunctions
 
         if ($isSecure == yes) {
 
-            $selectQuery="SELECT user_activity.user_id,users.full_name,users.profile_pic,user_activity.display_content,user_activity.resource_id,user_activity.activity_type FROM ".TABLE_USER_ACTIVITY. " user_activity
+            $selectQuery="SELECT user_activity.user_id,users.full_name,users.profile_pic,user_activity.display_content,user_activity.resource_id,user_activity.activity_type,user_activity.created_date FROM ".TABLE_USER_ACTIVITY. " user_activity
         INNER JOIN ".TABLE_USERS." users ON user_activity.user_id=users.id WHERE user_activity.user_id=".$user_id." AND user_activity.is_delete=0 and users.is_delete=0 order by user_activity.activity_type";
           //echo $selectQuery; exit;
             $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
@@ -1341,10 +1333,10 @@ class ProfileFunctions
                     //$post['resource_id'] = $val['resource_id'];
 
 //print_r($val);
-                    if($val['activity_type'] == 'topicAllocated')
+                    if($val['activity_type'] == 'topic')
                     {
-                        $post['activity_type'] = $val['activity_type'];
-
+                        $post1['activity_type'] = $val['activity_type'];
+                        $post1['activity_time'] = $val['created_date'];
                         /*$getFields="tutorial_group_member_score.topic_id,tutorial_group_member_score.score,tutorial_group_member_score.total_comments,tutorial_groups.group_name";
 
                         $queryToGetTopic="SELECT DISTINCT ".$getFields." FROM ". TABLE_TUTORIAL_GROUP_MEMBER_SCORE." tutorial_group_member_score
@@ -1387,9 +1379,10 @@ class ProfileFunctions
                         }*/
                     }
 
-                   elseif($val['activity_type'] == 'assignmentSubmitted')
+                   elseif($val['activity_type'] == 'assignment')
                     {
-                        $post['activity_type'] = $val['activity_type'];
+                        $post2['activity_type'] = $val['activity_type'];
+                        $post2['activity_time'] = $val['created_date'];
 
                         $selectAssignment="SELECT assignment_submission.assignment_id,assignment.assignment_name,assignment.submission_date,subjects.subject_name from ".TABLE_ASSIGNMENT_SUBMISSION." assignment_submission
                         INNER JOIN ".TABLE_ASSIGNMENTS." assignment ON assignment_submission.assignment_id=assignment.id
@@ -1417,8 +1410,12 @@ class ProfileFunctions
                             $post['assignmentSubmitted']=array();
                         }*/
                     }
-                    elseif($val['activity_type'] == 'exam_attempted')
+                    elseif($val['activity_type'] == 'exam')
                     {
+
+                        $post3['activity_type'] = $val['activity_type'];
+                        $post3['activity_time'] = $val['created_date'];
+
                         $selectExam="SELECT exam.id as 'exam_id',exam.exam_name,student_exam_score.marks_obtained as 'exam_score',subjects.subject_name from ".TABLE_STUDENT_EXAM_SCORE." student_exam_score
                         INNER JOIN ". TABLE_EXAMS ." exams ON exam.id=student_exam_score.exam_id
                         INNER JOIN ". TABLE_SUBJECTS." subjects ON subjects.id=exam.subject_id WHERE student_exam_score.exam_id=".$val['resource_id']." AND student_exam_score.user_id=".$user_id." AND student_exam_score.is_delete=0";
@@ -1441,8 +1438,12 @@ class ProfileFunctions
                     }
                     elseif($val['activity_type'] == 'liked')
                     {
+
+
                         $feedsLiked=array();
                         $post4['activity_type'] = $val['activity_type'];
+                        $post4['activity_time'] = $val['created_date'];
+
                         $queryFeedLike="select feed.*,user.full_name,user.profile_pic  from ".TABLE_FEED_LIKE." feed_like
                          INNER JOIN ". TABLE_FEEDS ." feed ON feed.id=feed_like.feed_id
                         INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
@@ -1493,15 +1494,15 @@ class ProfileFunctions
                     {
                         $studymate=array();
                         $post5['activity_type'] = $val['activity_type'];
+                        $post5['activity_time'] = $val['created_date'];
 
-                         $queryGetStudyMate="SELECT studymates.mate_id,users.full_name,users.profile_pic,school.school_name from studymates studymates
+                         $queryGetStudyMate="SELECT studymates.mate_id,users.full_name,users.profile_pic,school.school_name,student_profile.total_authors_followed from studymates studymates
                         INNER JOIN users users on studymates.mate_id=users.id
                         LEFT JOIN ".TABLE_STUDENT_PROFILE ." student_profile ON student_profile.user_id=studymates.mate_id
                         LEFT JOIN ". TABLE_SCHOOLS." school ON  school.id=student_profile.school_id
                         where studymates.is_delete=0 and studymates.mate_of=".$user_id." and studymates.mate_id=".$val['resource_id'];
                         //$queryGetStudyMate="SELECT studymates.mate_id,users.full_name,users.profile_pic from ".TABLE_STUDYMATES." studymates INNER JOIN ".TABLE_USERS." users on studymates.mate_id=users.id where is_delete=0 and id=".$val['resource_id']." AND mate_id=".$user_id;
                         $resultGetStudyMate=mysqli_query($GLOBALS['con'], $queryGetStudyMate) or $message= mysqli_error($GLOBALS['con']);
-
 
 
 
@@ -1516,6 +1517,7 @@ class ProfileFunctions
                                 $studymate['studymate_name']=$studymateRow['full_name'];
                                 $studymate['studymate_profile_pic']=$studymateRow['profile_pic'];
                                 $studymate['studymate_school_name']=$studymateRow['school_name'];
+                                $studymate['total_authors_followed']=$studymateRow['total_authors_followed'];
 
 
                             }
@@ -1538,7 +1540,7 @@ class ProfileFunctions
                     elseif($val['activity_type'] == 'commented') {
 
                         $post6['activity_type'] = $val['activity_type'];
-
+                        $post6['activity_time'] = $val['created_date'];
 
                         $queryGetComment = "SELECT feed.*,f.feed_id,f.comment,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM " . TABLE_FEED_COMMENT . " f
                         INNER JOIN " . TABLE_USERS . " u ON f.comment_by=u.id
@@ -1576,6 +1578,7 @@ class ProfileFunctions
                     {
 
                         $post7['activity_type'] = $val['activity_type'];
+                        $post7['activity_time'] = $val['created_date'];
 
                         $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEEDS." feed
                         INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
@@ -2793,7 +2796,7 @@ class ProfileFunctions
                              $post['exam_attempted']=array();
                          }*/
                     }
-                    if($val['activity_type'] = 'feedLiked')
+                    if($val['activity_type'] = 'liked')
                     {
 
                         $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEED_LIKE." feed_like
@@ -2833,16 +2836,16 @@ class ProfileFunctions
                                 $feeds['comment_list']=$allcomment;
 
                             }
-                            $post['feedLiked']=$feeds;
+                            $post['feed_liked']=$feeds;
                         }
                         /*else{
                             $post['feedLiked']=array();
                         }*/
 
                     }
-                    if($val['activity_type'] = 'studymates')
+                    if($val['activity_type'] = 'studymate')
                     {
-                        $queryGetStudyMate="SELECT studymates.mate_id,users.full_name,users.profile_pic,school.school_name from studymates studymates
+                       $queryGetStudyMate="SELECT studymates.mate_id,users.full_name,users.profile_pic,school.school_name,student_profile.total_authors_followed from studymates studymates
                         INNER JOIN users users on studymates.mate_id=users.id
                         INNER JOIN ".TABLE_STUDENT_PROFILE ." student_profile ON student_profile.user_id=studymates.mate_id
                         INNER JOIN ". TABLE_SCHOOLS." school ON  school.id=student_profile.school_id
@@ -2862,6 +2865,7 @@ class ProfileFunctions
                                 $post['studymate_name']=$studymateRow['full_name'];
                                 $post['studymate_profile_pic']=$studymateRow['profile_pic'];
                                 $post['studymate_school_name']=$studymateRow['school_name'];
+                                $post['total_authors_followed']=$studymateRow['total_authors_followed'];
 
                             }
                             //$post['studymates']=$studymate;
@@ -2874,7 +2878,7 @@ class ProfileFunctions
 
                     }
 
-                    if($val['activity_type'] = 'comment added') {
+                    if($val['activity_type'] = 'commented') {
                         $queryGetComment = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM " . TABLE_FEED_COMMENT . " f INNER JOIN " . TABLE_USERS . " u
             ON f.comment_by=u.id INNER JOIN " . TABLE_USER_PROFILE_PICTURE . " p ON p.user_id=u.id WHERE f.id=" . $val['resource_id'] . " AND comment_by=" . $user_id . " AND f.is_delete=0
             AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC LIMIT 2";
@@ -2894,7 +2898,7 @@ class ProfileFunctions
                           }*/
 
                     }
-                    if($val['activity_type'] = 'feedPosted')
+                    if($val['activity_type'] = 'post')
                     {
 
                         $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEEDS." feed
@@ -2977,7 +2981,13 @@ class ProfileFunctions
 
         $security=new SecurityFunctions();
 
-        $decrypted_username = $security-> decryptUsername($username);
+
+        $query = "SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='globalPassword' AND is_delete=0";
+        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+        $masterKey = mysqli_fetch_row($result);
+
+        $crypterSecurity=new Security();
+        $decrypted_username=$crypterSecurity->decrypt($username,$masterKey[0]);
 
 
         $queryToGetUserId="SELECT id FROM ". TABLE_USERS." WHERE username='".$decrypted_username."' AND is_delete=0";
@@ -3002,24 +3012,9 @@ class ProfileFunctions
                 $queryAddToken = "INSERT INTO " . TABLE_TOKENS . "(" . $insertTokenField . ") values (" . $insertTokenValue . ")";
                 $resultAddToken = mysqli_query($GLOBALS['con'], $queryAddToken) or $message = mysqli_error($GLOBALS['con']);
 
-                //**************************For Encryption***************************
-                //===================================================================
-                //=============Use username as Key For Encrypt=======================
-                $aes256Key = hash("SHA256", $decrypted_username, true);
-
-                // for good entropy (for MCRYPT_RAND)
-
-                srand((double)microtime() * 1000000);
-                // generate random iv
-
-                $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
-
-
-                //===================================================================
                 //===================Call AES Encrypt Function=======================
 
-                $secret_key = $security->functionToEncrypt($generateToken, $aes256Key);
-
+                $secret_key=$crypterSecurity->encrypt($generateToken,$decrypted_username);
                 //**************************End Encryption***************************
 
                 if ($resultAddToken) {
@@ -3048,6 +3043,81 @@ class ProfileFunctions
         return $response;
     }
 
+    public function unBlockUser($postData)
+    {
+        $message ='';
+        $status='';
+        $data=array();
+        $response=array();
+
+        $user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $email_id = validateObject($postData, 'email_id', "");
+        $email_id = addslashes($email_id);
+
+        $block_user = validateObject($postData, 'block_user', "");
+        $block_user = addslashes($block_user);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+
+        if ($isSecure == yes) {
+
+            //Check If UserID is not Present, then Find id from EmailID.
+            if ($block_user == NULL || $block_user == 0) {
+                $selectQuery = "SELECT id FROM ".TABLE_USERS." WHERE email_id='".$email_id."' AND is_delete=0";
+                $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+                $getUserId = mysqli_fetch_row($resultQuery);
+                $block_user_id = $getUserId[0];
+
+            }
+            else
+            {
+                $block_user_id=$block_user;
+            }
+
+            if ($user_id != NULL || $block_user != NULL || $email_id != NULL) {
+
+                //Find UserId and Block User from StudyMate table
+                $queryFindStudyMate = "SELECT * FROM ".TABLE_STUDYMATES." WHERE mate_id=".$block_user_id." AND mate_of=".$user_id." AND (status='block') AND is_delete=0";
+                //echo $queryFindStudyMate;
+                $resultFindStudyMate = mysqli_query($GLOBALS['con'], $queryFindStudyMate) or $message = mysqli_error($GLOBALS['con']);
+
+                if (mysqli_num_rows($resultFindStudyMate) > 0) {
+                    $updateQuery = "UPDATE " . TABLE_STUDYMATES . " SET status='friend' WHERE mate_id=" . $block_user_id . " and mate_of=" . $user_id;
+                    $updateResult = mysqli_query($GLOBALS['con'], $updateQuery) or $message = mysqli_error($GLOBALS['con']);
+                    $message = "user is unblocked";
+                    $status = SUCCESS;
+                }
+                else{
+                    $status = SUCCESS;
+                    $message = DEFAULT_NO_RECORDS;
+                }
+
+            } else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['unblock_user']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
 
 }
 ?>

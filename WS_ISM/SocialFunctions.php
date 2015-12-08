@@ -1,4 +1,5 @@
 <?php
+include_once 'ApiCrypter.php';
 
 
 error_reporting(0);
@@ -447,7 +448,7 @@ class SocialFunctions
     public function uploadMedia($postData)
     {
 
-
+        $response=array();
         $dir = '';
         $mediaName = '';
         $created_date = date("Ymd-His");
@@ -468,19 +469,22 @@ class SocialFunctions
 
         if($isSecure==yes) {
 
-            if (!is_dir(FEEDS_MEDIA)) {
-                mkdir(FEEDS_MEDIA, 0777, true);
-            }
 
-            $data['feed_id'] = $feed_id;
-            $data['mediaType'] = $mediaType;
 
-            $data['feed_by'] = $feed_by;
+            $post['feed_id'] = $feed_id;
+            $post['mediaType'] = $mediaType;
+            $post['feed_by'] = $feed_by;
+
             $feed_media_dir = "user_" . $feed_by . "/";
-            $dir = FEEDS_MEDIA . $feed_media_dir;
-            if (!is_dir($dir)) {
-                mkdir($dir, 0777);
+
+
+            if (!is_dir(FEEDS_MEDIA . $feed_media_dir)) {
+                mkdir(FEEDS_MEDIA . $feed_media_dir, 0777);
             }
+
+
+
+
             if ("video" == $mediaType) {
                 if ($_FILES["mediaFile"]["error"] > 0) {
                     $message = $_FILES["mediaFile"]["error"];
@@ -489,13 +493,15 @@ class SocialFunctions
                     // Image 5 = Video 6 = Audio 7
 
                     $mediaName = "VIDEO" . $created_date . "_test.mp4";
-                    $uploadDir = $dir;
+
                     $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
                     if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
                         //store image data.
                         $link = $feed_media_dir . $mediaName;
                         $procedure_insert_set = "CALL UPDATE_VIDEO_LINK ('" . $link . "','" . $feed_id . "' )";
                         $result_procedure = mysqli_query($GLOBALS['con'], $procedure_insert_set) or $message = mysqli_error($GLOBALS['con']);
+
+                        $post['link'] = $link;
                         $status = SUCCESS;
                         $message = "Successfully uploaded!.";
                     } else {
@@ -510,7 +516,7 @@ class SocialFunctions
                 } else {
                     $mediaName = "AUDIO" . $created_date . "_test.mp3";
 
-                    $uploadDir = $dir;
+
                     $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
                     if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
                         //store image data.
@@ -518,6 +524,8 @@ class SocialFunctions
                         $link = $feed_media_dir . $mediaName;
                         $procedure_insert_set = "CALL UPDATE_AUDIO_LINK ('" . $link . "','" . $feed_id . "' )";
                         $result_procedure = mysqli_query($GLOBALS['con'], $procedure_insert_set) or $message = mysqli_error($GLOBALS['con']);
+
+                        $post['link'] = $link;
                         $status = SUCCESS;
                         $message = "Successfully uploaded!.";
                     } else {
@@ -527,17 +535,48 @@ class SocialFunctions
                 }
 
             }
+            else if ("image" == $mediaType) {
+                if ($_FILES["mediaFile"]["error"] > 0) {
+                    $message = $_FILES["mediaFile"]["error"];
+                    $status = 2;
+                } else {
+                    $mediaName = "IMAGE" . $created_date . "_test.jpg";
 
+
+                    $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
+                    if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
+                        //store image data.
+
+                       $link = $feed_media_dir . $mediaName;
+
+                        $insertFields="`feed_id`,`image_link`";
+                        $insertValues="'" . $feed_id . "','" . $link . "'";
+
+                        $queryInsertImage = "INSERT INTO " . TABLE_FEED_IMAGE . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                        $resultInsertImage = mysqli_query($GLOBALS['con'], $queryInsertImage) or $message = mysqli_error($GLOBALS['con']);
+
+                        $post['link'] = $link;
+                        $status = SUCCESS;
+                        $message = "Successfully uploaded!.";
+                    } else {
+                        $status = FAILED;
+                        $message = FAILED_TO_UPLOAD_MEDIA;
+                    }
+                }
+
+            }
+             $data[]=$post;
         }
         else
         {
             $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
-        $data['status']=$status;
-        $data['link']=$link;
-        $data['message']=$message;
-        return $data;
+
+        $response['status']=$status;
+        $response['feed_images']=$data;
+        $response['message']=$message;
+        return $response;
 
     }
 
@@ -885,7 +924,7 @@ class SocialFunctions
             FROM feed_comment f
             INNER JOIN users u
             INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id
-            WHERE f.feed_id=".$feeds['id']." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 Limit 2";
+            WHERE f.feed_id=".$feeds['id']." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC Limit 2";
             $resultGetAlComments = mysqli_query($GLOBALS['con'],$queryGetAllComments) or $errorMsg = mysqli_error($GLOBALS['con']);
             $allcomment=array();
             //echo "\n".$queryGetAllComments;
@@ -980,7 +1019,7 @@ class SocialFunctions
 
                     //Get Comments
                     $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
-            ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 LIMIT 2";
+            ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC LIMIT 2";
                     //echo $queryGetAllComments;
                     $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg = mysqli_error($GLOBALS['con']);
                     $allcomment = array();
@@ -1273,15 +1312,20 @@ class SocialFunctions
         {
             $scope='All';
         }
+        elseif($role == NULL)
+        {
+            $scope='All';
+        }
 
         if($isSecure==yes) {
 
           //  if ($last_sync_date < date("Y-m-d")) {
                // $last_sync_date=date("Y-m-d");
                 //$condition=" and date(created_date,'Y-M-d') < '".$last_sync_date."'";
-                //$condition=" and DATE_FORMAT(created_date, 'Y-m-d') < '".$last_sync_date."'";
-                $query = "SELECT config_key,config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE  scope='" . $scope . "' and is_delete=0";// . $condition;
-                //echo $query;
+                //$condition=" and DATE_FORMAT(`modified_date`, 'Y-m-d') > '".$last_sync_date."'";
+                $condition=" and `modified_date` > '".$last_sync_date."'";
+                $query = "SELECT config_key,config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE  scope='" . $scope . "' and is_delete=0". $condition;
+               // echo $query;
                 $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
                 if (mysqli_num_rows($result)) {
@@ -1295,6 +1339,10 @@ class SocialFunctions
 
                     $status = SUCCESS;
                 }
+            else{
+                $status=SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
            // }
         }
         else{
@@ -1303,8 +1351,8 @@ class SocialFunctions
             $data="";
         }
 
-     	//$token= $this->getToken(10);
-        $response['last_sync_date'] = $last_sync_date;
+
+       // $response['last_sync_date'] = $last_sync_date;
     	$response['admin_config']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
@@ -1323,14 +1371,19 @@ class SocialFunctions
         
         $username = validateObject($postData, username, "");
         $username = addslashes($username);
+
+
         
 		$query = "SELECT config_value FROM ".TABLE_ADMIN_CONFIG. " WHERE config_key='globalPassword'";
         $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
         $secerectkey=mysqli_fetch_row($result);
-        
-		
 
-	// 32 byte binary blob
+        //$secerectkey="1234567891234567";
+        $sec=new Security();
+        echo $encrypted_username=$sec->encrypt($username,$secerectkey[0]);
+
+
+        // 32 byte binary blob
 	$aes256Key = hash("SHA256", $secerectkey[0], true);
 
 
@@ -1369,7 +1422,10 @@ class SocialFunctions
 	$query = "SELECT config_value FROM ".TABLE_ADMIN_CONFIG. " WHERE config_key='globalPassword'";
     $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
         $secerectkey=mysqli_fetch_row($result);
- 
+        //$secerectkey="1234567891234567";
+        $sec=new Security();
+        echo $encrypted_username=$sec->decrypt($username,$secerectkey[0]);
+
 	// 32 byte binary blob
 	$aes256Key = hash("SHA256", $secerectkey[0], true);
 
@@ -1613,7 +1669,7 @@ class SocialFunctions
 
         $data=array();
         $response=array();
-        $post=array();
+        $post1=array();
 
         $user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
@@ -1629,40 +1685,60 @@ class SocialFunctions
 
         if($isSecure==yes) {
 
-            $selQuery="SELECT DISTINCT questions.*,subjects.subject_name FROM ".TABLE_USER_FAVORITE_QUESTION." user_favorite_question
+            $selectToGetSubjectId="SELECT questions.*,subjects.subject_name FROM ".TABLE_USER_FAVORITE_QUESTION." user_favorite_question
             INNER JOIN ".TABLE_QUESTIONS." questions ON questions.id=user_favorite_question.question_id
-            INNER JOIN ".TABLE_SUBJECTS." subjects ON subjects.id=questions.subject_id
+            INNER JOIN " . TABLE_SUBJECTS . " subjects ON subjects.id=questions.subject_id
             WHERE user_favorite_question.user_id=".$user_id." and user_favorite_question.is_delete=0 ";
-            $selResult=mysqli_query($GLOBALS['con'], $selQuery) or $message = mysqli_error($GLOBALS['con']);
+            $resultToGetSubjectId=mysqli_query($GLOBALS['con'], $selectToGetSubjectId) or $message = mysqli_error($GLOBALS['con']);
 
-            $questions=array();
-            if (mysqli_num_rows($selResult) > 0) {
-                while ($rowQuestion = mysqli_fetch_assoc($selResult)) {
 
-                    $questions['question_id'] = $rowQuestion['id'];
-                    $questions['question_text'] = $rowQuestion['question_text'];
-                    $questions['question_format']=$rowQuestion['question_format'];
-                    $questions['question_hint']=$rowQuestion['question_hint'];
-                    $questions['subject_id']=$rowQuestion['subject_id'];
-                    $questions['subject_name']=$rowQuestion['subject_name'];
-                    $questions['solution'] = $rowQuestion['solution'];
+            if (mysqli_num_rows($resultToGetSubjectId) > 0) {
+                while ($rowQuestion1 = mysqli_fetch_assoc($resultToGetSubjectId)) {
 
-                    $choice = array();
-                    if ($rowQuestion['question_format'] == 'MCQ') {
-                        $queryGetChoice = "SELECT `id`, `question_id`, `choice_text`, `is_right`, `image_link`, `audio_link`, `video_link` FROM ".TABLE_ANSWER_CHOICES." WHERE `question_id`=".$rowQuestion['id'] ." AND is_delete=0 ";
-                        $resultGetChoice = mysqli_query($GLOBALS['con'], $queryGetChoice) or $message = mysqli_error($GLOBALS['con']);
-                        // echo $resultGetChoice;
-                        if (mysqli_num_rows($resultGetChoice)) {
-                            while ($rowGetChoice = mysqli_fetch_assoc($resultGetChoice)) {
-                                $choice[] = $rowGetChoice;
+                    $post=array();
 
-                            }
-                            $questions['answers'] = $choice;
+                    $selQuery = "SELECT questions.*,subjects.subject_name FROM " . TABLE_QUESTIONS . " questions
+                    INNER JOIN " . TABLE_SUBJECTS . " subjects ON subjects.id=questions.subject_id
+                    WHERE questions.subject_id=" . $rowQuestion1['subject_id'] . " and questions.id=".$rowQuestion1['id']." and questions.is_delete=0 group by questions.subject_id";
+                    $selResult = mysqli_query($GLOBALS['con'], $selQuery) or $message = mysqli_error($GLOBALS['con']);
+
+
+                    if (mysqli_num_rows($selResult) > 0) {
+                        $post1['subject_name']=$rowQuestion1['subject_name'];
+                        while ($rowQuestion = mysqli_fetch_assoc($selResult)) {
+                            $questions=array();
+
+                            $questions['question_id'] = $rowQuestion['id'];
+                            $questions['question_text'] = $rowQuestion['question_text'];
+                            $questions['question_format'] = $rowQuestion['question_format'];
+                            $questions['question_hint'] = $rowQuestion['question_hint'];
+                            $questions['subject_id'] = $rowQuestion['subject_id'];
+                            $questions['subject_name'] = $rowQuestion['subject_name'];
+                            $questions['solution'] = $rowQuestion['solution'];
+
+                           /* $choice = array();
+                            if ($rowQuestion['question_format'] == 'MCQ') {
+                                $queryGetChoice = "SELECT `id`, `question_id`, `choice_text`, `is_right`, `image_link`, `audio_link`, `video_link` FROM " . TABLE_ANSWER_CHOICES . " WHERE `question_id`=" . $rowQuestion['id'] . " AND is_delete=0 ";
+                                $resultGetChoice = mysqli_query($GLOBALS['con'], $queryGetChoice) or $message = mysqli_error($GLOBALS['con']);
+                                // echo $resultGetChoice;
+                                if (mysqli_num_rows($resultGetChoice)) {
+                                    while ($rowGetChoice = mysqli_fetch_assoc($resultGetChoice)) {
+                                        $choice[] = $rowGetChoice;
+
+                                    }
+                                    $questions['answers'] = $choice;
+                                }
+                            } else {
+                                $questions['answers'] = $choice;
+                            }*/
+
+
                         }
-                    } else {
-                        $questions['answers'] = $choice;
+                        $post1['subjects'][]=$questions;
+                        $post[]=$post1;
                     }
-                    $post[] = $questions;
+
+
                 }
                 $data[]=$post;
                 $status = SUCCESS;

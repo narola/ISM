@@ -425,8 +425,8 @@ class StudyMateFunctions
                 if($mainArray!=NULL) {
 
                     for($i = 0; $i < count($the_array); $i++) {
-
-                         $querySchool = "SELECT users.id,users.full_name,users.profile_pic,studymate.status,schools.school_name,courses.course_name FROM " . TABLE_STUDYMATES . " studymate LEFT JOIN " . TABLE_USERS . " users ON users.id=studymate.mate_id INNER JOIN ".TABLE_STUDENT_PROFILE ." studentProfile ON studentProfile.user_id=studymate.mate_id INNER JOIN ". TABLE_SCHOOLS ." schools ON schools.id= studentProfile.school_id INNER JOIN ". TABLE_COURSES." courses ON courses.id= studentProfile.course_id WHERE studymate.mate_id = ". $the_array[$i] ." AND studymate.mate_of = " . $user_id . " AND (studymate.status='pending' OR studymate.status='request') AND studymate.is_delete=0 AND users.is_delete=0";
+                        //(studymate.status='pending' OR studymate.status='request')
+                         $querySchool = "SELECT users.id,users.full_name,users.profile_pic,studymate.status,schools.school_name,courses.course_name,studentProfile.total_authors_followed FROM " . TABLE_STUDYMATES . " studymate LEFT JOIN " . TABLE_USERS . " users ON users.id=studymate.mate_id INNER JOIN ".TABLE_STUDENT_PROFILE ." studentProfile ON studentProfile.user_id=studymate.mate_id INNER JOIN ". TABLE_SCHOOLS ." schools ON schools.id= studentProfile.school_id INNER JOIN ". TABLE_COURSES." courses ON courses.id= studentProfile.course_id WHERE studymate.mate_id = ". $the_array[$i] ." AND studymate.mate_of = " . $user_id . " AND studymate.status='friend' AND studymate.is_delete=0 AND users.is_delete=0";
                          $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
                         if (mysqli_num_rows($resultSchool)>0) {
 
@@ -437,19 +437,34 @@ class StudyMateFunctions
                                 $post['profile_pic'] = $row['profile_pic'];
                                 $post['school_name'] = $row['school_name'];
                                 $post['course_name'] = $row['course_name'];
-                                $post['request_status'] = $row['status'];
+                                $post['course_name'] = $row['course_name'];
+                                $post['total_authors_followed']=$row['total_authors_followed'];
                                 $data[] = $post;
 
                             }
+                            $status=SUCCESS;
+                            $message = "";
+                        }
+                        else{
+                            $status=SUCCESS;
+                            //$message = DEFAULT_NO_RECORDS;
                         }
                     }
+
+                }
+                else{
+                    $status=SUCCESS;
+                    $message = DEFAULT_NO_RECORDS;
                 }
 
 
 
             }
-
-
+            else
+            {
+                $status=SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
 
         }
         else
@@ -489,30 +504,33 @@ class StudyMateFunctions
         if($isSecure==yes) {
 
             $users[] = null;
-            $queryGetStudyMate = "SELECT * from ".TABLE_STUDYMATES." studymates INNER JOIN ".TABLE_USERS." users on studymates.mate_id=users.id where studymates.is_delete=0 and (mate_of=".$user_id." or mate_id=".$user_id.")";
+            // (mate_of=".$user_id." or mate_id=".$user_id.");
+
+            $queryGetStudyMate = "SELECT * from ".TABLE_STUDYMATES." studymates INNER JOIN ".TABLE_USERS." users on studymates.mate_id=users.id where studymates.is_delete=0 and studymates.status='friend' and mate_of=".$user_id;
             $resultGetStudyMate = mysqli_query($GLOBALS['con'], $queryGetStudyMate) or $message = mysqli_error($GLOBALS['con']);
             if (mysqli_num_rows($resultGetStudyMate)) {
 
                 while ($val = mysqli_fetch_assoc($resultGetStudyMate)) {
                     $post = array();
-                    $studymate_id = null;
+                    /*$studymate_id = null;
                     if ($user_id != $val['mate_of']) {
                         $studymate_id = $val['mate_of'];
                     } else if ($user_id != $val['mate_id']) {
                         $studymate_id = $val['mate_id'];
-                    }
+                    }*/
                     //post['user_id']=$val['mate_id'];
-                    if (in_array($studymate_id, $users)) {
+                    //if (in_array($studymate_id, $users)) {
 
-                    } else {
-                        $post['user_id'] = $studymate_id;
-                        $users[] = $studymate_id;
+                    //} else {
+                      //  $post['user_id'] = $studymate_id;
+                        //$users[] = $studymate_id;
+                        $post['user_id'] =  $val['mate_id'];
                         $post['full_name'] = $val['full_name'];
                         $post['profile_pic'] = $val['profile_pic'];
                         $data[] = $post;
                     }
 
-                }
+
                 $status = SUCCESS;
                 $message = "";
 
@@ -562,30 +580,31 @@ class StudyMateFunctions
             $queryInnerJoin = TABLE_STUDYMATES . " studymates INNER JOIN " . TABLE_USERS . " users INNER JOIN " . TABLE_STUDENT_PROFILE . " studentAcademicInfo INNER JOIN " . TABLE_SCHOOLS . " schools";
             $queryOn = "studymates.mate_id=users.id=studentAcademicInfo.user_id and schools.id=studentAcademicInfo.school_id";
 
-            $queryGetStudyMateAllDetail = "SELECT * from ".$queryInnerJoin." on ".$queryOn."  where  (studymates.mate_of=".$user_id." or studymates.mate_id=".$user_id.") and studymates.is_delete=0";
+            //(studymates.mate_of=".$user_id." or studymates.mate_id=".$user_id.")
+            $queryGetStudyMateAllDetail = "SELECT * from ".$queryInnerJoin." on ".$queryOn."  where studymates.mate_of=".$user_id." and studymates.status='friend'and studymates.is_delete=0";
             //echo $queryGetStudyMateAllDetail;
             $resultGetStudyMateAllDetail = mysqli_query($GLOBALS['con'], $queryGetStudyMateAllDetail) or $message = mysqli_error($GLOBALS['con']);
             if (mysqli_num_rows($resultGetStudyMateAllDetail)) {
                 $users[] = null;
                 while ($val = mysqli_fetch_assoc($resultGetStudyMateAllDetail)) {
                     $post = array();
-                    $studymate_id = null;
+                  /*  $studymate_id = null;
                     if ($val['mate_id'] != $user_id)
                         $studymate_id = $val['mate_id'];
                     else if ($val['mate_of'] != $user_id)
                         $studymate_id = $val['mate_of'];
-                    if (in_array($studymate_id, $users)) {
+                    if (in_array($studymate_id, $users)) {*/
 
-                    } else {
-                        $post['user_id'] = $studymate_id;
-                        $users[] = $studymate_id;
+                  //  } else {
+                        $post['user_id'] = $val['mate_id'];
+                        //$users[] = $studymate_id;
                         $post['full_name'] = $val['full_name'];
                         $post['profile_pic'] = $val['profile_pic'];
                         $post['is_online'] = $val['is_online'];
                         $post['school_name'] = $val['school_name'];
                         $post['total_authors_followed'] = $val['total_authors_followed'];
                         array_push($data, $post);
-                    }
+                   // }
 
                 }
                 $status = SUCCESS;

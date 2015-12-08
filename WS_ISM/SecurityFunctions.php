@@ -6,7 +6,7 @@
  * Time: 05:13 PM
  * To manage security related functions.
  */
-
+include_once 'ApiCrypter.php';
 class SecurityFunctions {
 
  //============================================== Generate Random Unique Token Number =============================
@@ -60,7 +60,7 @@ class SecurityFunctions {
      
      
      //============================================== Check For Security ==========================================
-     public function checkForSecurity($accessvalue,$secretvalue)
+     public function checkForSecurity1($accessvalue,$secretvalue)
      {
 
              //For Decrpt Access Key=================================================================================
@@ -133,6 +133,63 @@ class SecurityFunctions {
          return yes;
      }
 
+
+
+    public function checkForSecurity($accessvalue,$secretvalue)
+    {
+
+        //For Decrpt Access Key=================================================================================
+
+        $query = "SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='globalPassword' AND is_delete=0";
+        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+        $masterKey = mysqli_fetch_row($result);
+
+        //For Decrpt Access Key=================================================================================
+        $security=new Security();
+        $decrypted_access_key=$security->decrypt($accessvalue,$masterKey[0]);
+
+
+        //For Decrpt Secret Key=================================================================================
+
+        $decrypted_secret_key = $security->decrypt($secretvalue, $decrypted_access_key);
+
+
+        //To Compare Decrypted Secret key in Token table=======================================================
+
+        $queryToken = "SELECT token FROM " . TABLE_TOKENS . " WHERE is_delete=0";
+        $resultToken = mysqli_query($GLOBALS['con'], $queryToken) or $message = mysqli_error($GLOBALS['con']);
+
+
+        if (mysqli_num_rows($resultToken)) {
+
+            while ($row = mysqli_fetch_assoc($resultToken)) {
+
+                $found = in_array($decrypted_secret_key, $row, true);
+
+                if ($found) {
+                    $query = "SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='userAgent' AND is_delete=0";
+                    $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+                    $user_agent = mysqli_fetch_row($result);
+                    $separateKey = (explode(',', $user_agent[0]));
+
+                    //echo $found1 = in_array($_SERVER ['HTTP_USER_AGENT'],$separateKey,true); exit;
+
+
+                    if ((strpos($_SERVER ['HTTP_USER_AGENT'], $separateKey[0]) !== false) || (strpos($_SERVER ['HTTP_USER_AGENT'], $separateKey[1]) !== false))
+                        //echo "found";
+                        return yes;
+                    else
+                        //echo "nt found";
+                        return yes;
+
+                }
+            }
+
+        }
+        //return no;
+        return yes;
+    }
+
     public function decryptUsername($username)
     {
         $query = "SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='globalPassword' AND is_delete=0";
@@ -140,14 +197,17 @@ class SecurityFunctions {
         $masterKey = mysqli_fetch_row($result);
 
 
-        // 32 byte binary blob
+        // 32 byte binary blob2
         $aes256Key = hash("SHA256", $masterKey[0], true);
+        //$aes256Key = hash("SHA1PRNG", $masterKey[0], true);
+
 
         // for good entropy (for MCRYPT_RAND)
         srand((double)microtime() * 1000000);
 
         // generate random iv
         $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
+
 
         $decrypted_access_key = $this->functionToDecrypt($username, $aes256Key);
 

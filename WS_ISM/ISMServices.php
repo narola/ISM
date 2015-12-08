@@ -51,6 +51,7 @@ switch ($_REQUEST['Service'])
     case "GetBlockedUser":
     case "GetBooksForAuthor":
     case "RefreshToken":
+    case "UnBlockUser":
     {
         include_once 'ProfileFunctions.php';
         $profile = new ProfileFunctions();

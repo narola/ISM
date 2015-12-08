@@ -190,10 +190,13 @@ class ExamFunctions
                 if (mysqli_num_rows($resultGetQuestionPalette)) {
 
                     while ($rowQuestion = mysqli_fetch_assoc($resultGetQuestionPalette)) {
-                        $insert_question_palette[] = "{'" . $rowQuestion['question_id'] . "','" . $rowQuestion['answer_status'] . "'}";
+                        //$insert_question_palette[] = "{'" . $rowQuestion['question_id'] . "','" . $rowQuestion['answer_status'] . "'}";
+                        $insert_question_palette['question_id']= $rowQuestion['question_id'];
+                        $insert_question_palette['value']= $rowQuestion['answer_status'];
+                        $post['question_palette'][] = $insert_question_palette;
                     }
                 }
-                $post['question_palette'] = $insert_question_palette;
+                //$post['question_palette'] = $insert_question_palette;
                 //=========================Finish ti Add Question Paallete =================
                 if ($rowExam['exam_mode'] == "subjective") {
 //                {
@@ -208,7 +211,6 @@ class ExamFunctions
                     $post['evaluator_id'] = $row['exam_assessor'];
                     $post['evaluator_name'] = $row['full_name'];
                     $post['evaluator_profile_pic'] = $row['profile_pic'];
-
 
                     $evaluation = array();
                     $queryEvaluation = "SELECT * FROM " . TABLE_EXAM_EVALUATION . " WHERE exam_id=" . $exam_id ." AND is_delete=0";
@@ -239,7 +241,6 @@ class ExamFunctions
                         }
 
                     }
-
 
                 } else if ($rowExam['exam_mode'] == "objective") {
 //                {
@@ -413,7 +414,6 @@ class ExamFunctions
 
         $book_id = validateObject ($postData , 'book_id', "");
         $book_id = addslashes($book_id);
-
 
         $exam_type = validateObject ($postData , 'exam_type', "");
         $exam_type = addslashes($exam_type);
@@ -1089,7 +1089,14 @@ class ExamFunctions
         if(mysqli_num_rows($result))
         {
             while($rowName=mysqli_fetch_assoc($result)) {
-                $post['total_question']=$rowName['total_question'];
+
+                if($rowName['total_question'] == NULL)
+                {
+                    $post['total_question']=0;
+                }
+                else {
+                    $post['total_question'] = $rowName['total_question'];
+                }
                 $post['evaluation_status']=$rowName['evaluation_status'];
                 $post['average_score']=$rowName['average_score'];
                 $post['total_assessed']=$rowName['total_assessed'];
@@ -1105,6 +1112,7 @@ class ExamFunctions
         }
 
 
+        $post['exam_created_date'] = $rowExam['created_date'];
 
         return $post;
     }
@@ -1179,6 +1187,7 @@ class ExamFunctions
                                 $questions['question_text']=$rowQuestion['question_text'];
                                 $questions['question_assets_link']=$rowQuestion['assets_link'];
                                 $questions['question_image_link']=$rowQuestion['question_image_link'];
+                                $questions['question_score']=$rowQuestion['question_score'];
                                 $questions['evaluation_notes']=$rowQuestion['evaluation_notes'];
                                 $questions['solution']=$rowQuestion['solution'];
                                 $questions['topic_id']=$rowQuestion['topic_id'];
@@ -1785,6 +1794,7 @@ class ExamFunctions
         $data = array();
         $post = array();
         $response = array();
+        $answer_ids=array();
 
         $user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
@@ -1831,147 +1841,169 @@ class ExamFunctions
         $hashtag_data = addslashes($hashtag_data);
 
 
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-        //Check for question_format
-        if($question_format=="MCQ" || $question_format=="descriptive" || $question_format=="Fill ups") {
-            if ($question_id != 0) {
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
 
-                $questionId=$question_id;
-                $queryToChkRecordExist = "SELECT * FROM " . TABLE_QUESTIONS . " WHERE id=" . $question_id . " AND is_delete=0";
-                $resultToChkRecordExist = mysqli_query($GLOBALS['con'],$queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
-                if (mysqli_num_rows($resultToChkRecordExist) > 0) {
-                    $updateFields = "`question_text` ='" . $question_text . "',`question_score`='" . $question_score . "', `question_format`='" . $question_format . "', `question_creator_id`=" . $user_id . ", `evaluation_notes`='" . $evaluation_notes . "', `solution`='" . $solution . "', `topic_id`=" . $topic_id . ", `subject_id`=" . $subject_id . ", `classroom_id`=" . $classroom_id . ",`book_id`=".$book_id;
+        if($isSecure==yes) {
+            //Check for question_format
+            if ($question_format == "MCQ" || $question_format == "descriptive" || $question_format == "Fill ups") {
+                if ($question_id != 0) {
 
-                    $query = "UPDATE " . TABLE_QUESTIONS . " SET " . $updateFields . " WHERE id=" . $question_id;
-                    $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
+                    $questionId = $question_id;
+                    $queryToChkRecordExist = "SELECT * FROM " . TABLE_QUESTIONS . " WHERE id=" . $question_id . " AND is_delete=0";
+                    $resultToChkRecordExist = mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
 
-                    if($result)
-                    {
-                        $status=SUCCESS;
-                        $message=SUCCESSFULLY_UPDATED;
-                        $post['question_id']=$question_id;
-                    }
-                    else
-                    {
-                        $status=FAILED;
-                        $message="";
-                        $post['question_id']="";
-                    }
-                }
-            }
-            else{
+                    if (mysqli_num_rows($resultToChkRecordExist) > 0) {
+                        $updateFields = "`question_text` ='" . $question_text . "',`question_score`='" . $question_score . "', `question_format`='" . $question_format . "', `question_creator_id`=" . $user_id . ", `evaluation_notes`='" . $evaluation_notes . "', `solution`='" . $solution . "', `topic_id`=" . $topic_id . ", `subject_id`=" . $subject_id . ", `classroom_id`=" . $classroom_id . ",`book_id`=" . $book_id;
 
-                $insertFields="`question_text`,`question_score`, `question_format`, `question_creator_id`, `evaluation_notes`, `solution`, `topic_id`, `subject_id`, `classroom_id`,`book_id`";
-                $insertValues="'".$question_text."',".$question_score.",'".$question_format."',".$user_id. ",'".$evaluation_notes."','".$solution ."',".$topic_id.",".$subject_id.",".$classroom_id.",".$book_id;
+                        $query = "UPDATE " . TABLE_QUESTIONS . " SET " . $updateFields . " WHERE id=" . $question_id;
+                        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
-                $query="INSERT INTO ".TABLE_QUESTIONS."(".$insertFields.") VALUES (".$insertValues.")";
-                $result=mysqli_query($GLOBALS['con'],$query) or  $message=mysqli_error($GLOBALS['con']);
-
-                $questionID=mysqli_insert_id($GLOBALS['con']);
-
-                $questionId=$questionID;
-
-                if($result)
-                {
-                    $status=SUCCESS;
-                    $message=SUCCESSFULLY_ADDED;
-                    $post['question_id']=$questionID;
-                }
-                else
-                {
-                    $status=FAILED;
-                    $message="";
-                    $post['question_id']="";
-                }
-            }
-
-            if($result)
-            {
-
-                $getSocialFunctionClass= new SocialFunctions();
-
-                $postParam=new stdClass();
-
-                $resource_type="question";
-                $resource_id=$questionId;
-
-                $postParam->hashtag_data=$hashtag_data;
-                $postParam->resource_id=$resource_id;
-                $postParam->resource_type=$resource_type;
-                //$hashTag= $getSocialFunctionClass->hashTag($postParam);
-
-
-                $hashTag = $getSocialFunctionClass -> call_service("Hashtag", $postParam);
-
-
-                $post['hasgtag']=$hashTag['message'];
-
-
-                if($question_format == "MCQ")
-                {
-                    if(is_array($answer_choices)){
-
-                        foreach($answer_choices as $row){
-
-                            if ($question_id != 0) {
-
-                                $queryToChkRecordExist = "SELECT * FROM " . TABLE_ANSWER_CHOICES . " WHERE question_id=" . $question_id . " AND is_delete=0";
-                                $resultToChkRecordExist = mysqli_query($GLOBALS['con'],$queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
-
-                                if(mysqli_num_rows($resultToChkRecordExist)>0)
-                                {
-                                    $updateFields = "`choice_text` ='" . $row->choice_text . "', `is_right`=".(int)$row->is_right;
-
-                                    $updateQuestionQuery = "UPDATE " . TABLE_ANSWER_CHOICES . " SET " . $updateFields . " WHERE question_id=" . $question_id;
-                                    $resultQuestionQuery = mysqli_query($GLOBALS['con'],$updateQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
-
-                                    if($resultQuestionQuery)
-                                    {
-                                        $status=SUCCESS;
-                                        $message=SUCCESSFULLY_UPDATED;
-                                    }
-                                    else
-                                    {
-                                        $status=FAILED;
-                                        $message="";
-                                    }
-                                }
-
-                            }
-                            else {
-
-                                $insertChoiceFields = "`question_id`,`choice_text`,`is_right`";
-                                $insertChoiceValues = "" . $questionID . ",'" . $row->choice_text . "'," . (int)$row->is_right;
-
-                                $insertQuestionQuery = "INSERT INTO " . TABLE_ANSWER_CHOICES . "(" . $insertChoiceFields . ") VALUES( " . $insertChoiceValues . ")";
-                                $resultQuestionQuery = mysqli_query($GLOBALS['con'],$insertQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
-
-
-                                if($resultQuestionQuery)
-                                {
-                                    $status=SUCCESS;
-                                    $message=SUCCESSFULLY_ADDED;
-                                }
-                                else
-                                {
-                                    $status=FAILED;
-                                    $message="";
-                                }
-                            }
+                        if ($result) {
+                            $status = SUCCESS;
+                            $message = SUCCESSFULLY_UPDATED;
+                            $post['question_id'] = $question_id;
+                        } else {
+                            $status = FAILED;
+                            $message = "";
+                            $post['question_id'] = "";
                         }
                     }
+
+                } else {
+
+                    $insertFields = "`question_text`,`question_score`, `question_format`, `question_creator_id`, `evaluation_notes`, `solution`, `topic_id`, `subject_id`, `classroom_id`,`book_id`";
+                    $insertValues = "'" . $question_text . "'," . $question_score . ",'" . $question_format . "'," . $user_id . ",'" . $evaluation_notes . "','" . $solution . "'," . $topic_id . "," . $subject_id . "," . $classroom_id . "," . $book_id;
+
+                    $query = "INSERT INTO " . TABLE_QUESTIONS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                    $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                    $questionID = mysqli_insert_id($GLOBALS['con']);
+
+                    $questionId = $questionID;
+
+                    if ($result) {
+                        $status = SUCCESS;
+                        $message = SUCCESSFULLY_ADDED;
+                        $post['question_id'] = $questionID;
+                    } else {
+                        $status = FAILED;
+                        $message = "";
+                        $post['question_id'] = "";
+                    }
                 }
 
+                if ($result) {
 
+                    $getSocialFunctionClass = new SocialFunctions();
+
+                    $postParam = new stdClass();
+
+                    $resource_type = "question";
+                    $resource_id = $questionId;
+
+                    $postParam->hashtag_data = $hashtag_data;
+                    $postParam->resource_id = $resource_id;
+                    $postParam->resource_type = $resource_type;
+                    //$hashTag= $getSocialFunctionClass->hashTag($postParam);
+
+
+                    $hashTag = $getSocialFunctionClass->call_service("Hashtag", $postParam);
+
+
+                    $post['hasgtag'] = $hashTag['message'];
+
+
+                    if ($question_format == "MCQ") {
+                        if (is_array($answer_choices)) {
+
+                            foreach ($answer_choices as $row) {
+
+                                if ($question_id != 0) {
+
+                                    $queryToChkRecordExist = "SELECT * FROM " . TABLE_ANSWER_CHOICES . " WHERE question_id=" . $questionId . " AND id= " . $row->id . " AND is_delete=0";
+                                    $resultToChkRecordExist = mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
+
+                                    if (mysqli_num_rows($resultToChkRecordExist) > 0) {
+                                        $updateFields = "`choice_text` ='" . $row->choice_text . "', `is_right`=" . (int)$row->is_right;
+
+                                        $updateQuestionQuery = "UPDATE " . TABLE_ANSWER_CHOICES . " SET " . $updateFields . " WHERE question_id=" . $questionId . " AND id= " . $row->id;
+                                        $resultQuestionQuery = mysqli_query($GLOBALS['con'], $updateQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                                        if ($resultQuestionQuery) {
+                                            $status = SUCCESS;
+                                            $message = SUCCESSFULLY_UPDATED;
+                                        } else {
+                                            $status = FAILED;
+                                            $message = "";
+                                        }
+                                    } else {
+
+                                        $insertChoiceFields = "`question_id`,`choice_text`,`is_right`";
+                                        $insertChoiceValues = "" . $questionId . ",'" . $row->choice_text . "'," . (int)$row->is_right;
+
+                                        $insertQuestionQuery = "INSERT INTO " . TABLE_ANSWER_CHOICES . "(" . $insertChoiceFields . ") VALUES( " . $insertChoiceValues . ")";
+                                        $resultQuestionQuery = mysqli_query($GLOBALS['con'], $insertQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
+
+
+                                        if ($resultQuestionQuery) {
+                                            $answer_ids[] = mysqli_insert_id($GLOBALS['con']);
+                                            $status = SUCCESS;
+                                            $message = SUCCESSFULLY_ADDED;
+                                        } else {
+                                            $status = FAILED;
+                                            $message = "";
+                                        }
+                                    }
+
+                                } else {
+
+                                    $queryToChkRecordExist = "SELECT * FROM " . TABLE_ANSWER_CHOICES . " WHERE question_id=" . $question_id . " AND is_delete=0";
+                                    $resultToChkRecordExist = mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
+
+                                    if (mysqli_num_rows($resultToChkRecordExist) == 0) {
+
+                                        $insertChoiceFields = "`question_id`,`choice_text`,`is_right`";
+                                        $insertChoiceValues = "" . $questionID . ",'" . $row->choice_text . "'," . (int)$row->is_right;
+
+                                        $insertQuestionQuery = "INSERT INTO " . TABLE_ANSWER_CHOICES . "(" . $insertChoiceFields . ") VALUES( " . $insertChoiceValues . ")";
+                                        $resultQuestionQuery = mysqli_query($GLOBALS['con'], $insertQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
+
+
+                                        if ($resultQuestionQuery) {
+                                            $answer_ids[] = mysqli_insert_id($GLOBALS['con']);
+                                            $status = SUCCESS;
+                                            $message = SUCCESSFULLY_ADDED;
+                                        } else {
+                                            $status = FAILED;
+                                            $message = "";
+                                        }
+                                    }
+                                }
+                            }
+                            $post['answer_choice_ids'] = $answer_ids;
+                        }
+                    }
+
+
+                }
+
+            } else {
+                $status = FAILED;
+                $message = "question format is not correct";
+                $data = array();
             }
-
         }
         else
         {
             $status=FAILED;
-            $message="question format is not correct";
-            $data=array();
+            $message = MALICIOUS_SOURCE;
         }
 
         $data[]=$post;
@@ -2042,7 +2074,6 @@ class ExamFunctions
         $exams = array();
         $response = array();
 
-
         $user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
 
@@ -2057,25 +2088,222 @@ class ExamFunctions
 
         if ($isSecure == yes) {
 
-             $queryExam = "SELECT * FROM " . TABLE_EXAMS . " WHERE id IN (SELECT exam_id FROM " . TABLE_STUDENT_EXAM_SCORE . " WHERE user_id=" . $user_id . " and is_delete=0)";
+            $queryExam = "SELECT exams.*,student_exam_score.marks_obtained,student_exam_score.percentage,classroom.class_name,books.book_name,subject.subject_name FROM " . TABLE_EXAMS . " exams INNER JOIN " . TABLE_STUDENT_EXAM_SCORE . " student_exam_score ON exams.id=student_exam_score.exam_id
+            LEFT JOIN ".TABLE_CLASSROOMS." classroom ON classroom.id=exams.classroom_id
+            LEFT JOIN ".TABLE_BOOKS." books ON books.id=exams.book_id
+            LEFT JOIN ".TABLE_SUBJECTS." subject ON subject.id=exams.subject_id
+            WHERE student_exam_score.user_id=" . $user_id . " and student_exam_score.is_delete=0 and exams.is_delete=0";
             $resultExam = mysqli_query($GLOBALS['con'], $queryExam) or $message = mysqli_error($GLOBALS['con']);
-            //echo $queryExam."\n".mysqli_num_rows($resultExam);
+           //echo $queryExam."\n".mysqli_num_rows($resultExam);
 
             if (mysqli_num_rows($resultExam) > 0) {
                 while ($rowExam = mysqli_fetch_assoc($resultExam)) {
+                   // $post[] = $this->getExamData($rowExam);
+                    $post['exam_id']=$rowExam['id'];
+                    $post['exam_type']=$rowExam['exam_type'];
+                    $post['exam_category']=$rowExam['exam_category'];
+                    $post['exam_mode']=$rowExam['exam_mode'];
+                    $post['pass_percentage']=$rowExam['pass_percentage'];
+                    $post['duration']=$rowExam['duration'];
+                    $post['exam_type']=$rowExam['exam_type'];
+                    $post['subject_id']=$rowExam['subject_id'];
+                    $post['subject_name']=$rowExam['subject_name'];
+                    $post['books_id']=$rowExam['books_id'];
+                    $post['book_name']=$rowExam['book_name'];
+                    $post['classroom_id']=$rowExam['classroom_id'];
+                    $post['class_name']=$rowExam['class_name'];
+                    $post['score_obtained'] = $rowExam['marks_obtained'];
+                    $post['percentage'] = $rowExam['percentage'];
+                    //total questions
+                    $query="SELECT `evaluation_status`, `total_questions`, `average_score`, `total_student_attempted`, `total_assessed` FROM `exam_evaluation` WHERE `exam_id`=".$rowExam['id'] ." AND is_delete=0 ";
+                    $result=mysqli_query($GLOBALS['con'],$query) or  $message=mysqli_error($GLOBALS['con']);
+                    // echo $query;
+                    if(mysqli_num_rows($result))
+                    {
+                        while($rowName=mysqli_fetch_assoc($result)) {
+                            $post['total_question']=$rowName['total_question'];
+                            $post['evaluation_status']=$rowName['evaluation_status'];
+                            $post['average_score']=$rowName['average_score'];
+                            $post['total_assessed']=$rowName['total_assessed'];
+                            $post['total_unassessed']= $rowName['total_student_attempted'] - $rowName['total_assessed'];
+                        }
+                    }
+                    else{
+                        $post['total_question']="";
+                        $post['evaluation_status']="";
+                        $post['average_score']="";
+                        $post['total_assessed']="";
+                        $post['total_unassessed']= "";
+                    }
 
-                    $data['exam'][] = $this->getExamData($rowExam);
-
-                    $postParam=new stdClass();
-
-                    $postParam->exam_id=$rowExam['id'];
-                    $post[]= $this->getExamQuestions($postParam);
-                    $post[]=$post['0'];
 
 
+                    //For get all exam questions
+                    $queryExamQuestion = "SELECT * FROM ".TABLE_EXAM_QUESTION." where exam_id=".$rowExam['id'] ." and is_delete=0 ";
+                    $resultExamQuestion = mysqli_query($GLOBALS['con'], $queryExamQuestion) or $message = mysqli_error($GLOBALS['con']);
+
+                    if (mysqli_num_rows($resultExamQuestion)) {
+                        while ($row = mysqli_fetch_assoc($resultExamQuestion)) {
+                            //$post['subject_id']=$row;
+                            //$data[]=$row;
+
+                            //left join ".TABLE_SUBJECTS." subject on question.subject_id=subject.id  ,subject.subject_name
+                            $queryQuestion = "SELECT DISTINCT question.*,users.full_name FROM " . TABLE_QUESTIONS . " question
+                inner join " . TABLE_USERS . " users on users.id=question.question_creator_id
+                WHERE question.id=" . $row['question_id'] . " AND question.is_delete=0 ";
+                            $resultQuestion = mysqli_query($GLOBALS['con'], $queryQuestion) or $message = mysqli_error($GLOBALS['con']);
+                            //echo $queryQuestion ; exit;
+                            if (mysqli_num_rows($resultQuestion)) {
+                                while ($rowQuestion = mysqli_fetch_assoc($resultQuestion)) {
+                                    $questions['question_id'] = $rowQuestion['id'];
+                                    // $post['question_title']=$rowQuestion['id'];
+                                    $questions['question_creator_id'] = $rowQuestion['question_creator_id'];
+                                    $questions['question_creator_name'] = $rowQuestion['full_name'];
+                                    $questions['question_format'] = $rowQuestion['question_format'];
+                                    $questions['question_hint'] = $rowQuestion['question_hint'];
+                                    $questions['question_text'] = $rowQuestion['question_text'];
+                                    $questions['question_assets_link'] = $rowQuestion['assets_link'];
+                                    $questions['question_image_link'] = $rowQuestion['question_image_link'];
+                                    $questions['evaluation_notes'] = $rowQuestion['evaluation_notes'];
+                                    $questions['solution'] = $rowQuestion['solution'];
+                                    $questions['topic_id'] = $rowQuestion['topic_id'];
+
+
+                                    $choice = array();
+                                    if ($rowQuestion['question_format'] == 'MCQ') {
+                                        $queryGetChoice = "SELECT `id`, `question_id`, `choice_text`, `is_right`, `image_link`, `audio_link`, `video_link` FROM " . TABLE_ANSWER_CHOICES . " WHERE `question_id`=" . $rowQuestion['id'] . " AND is_delete=0 ";
+                                        $resultGetChoice = mysqli_query($GLOBALS['con'], $queryGetChoice) or $message = mysqli_error($GLOBALS['con']);
+                                        // echo $resultGetChoice;
+                                        if (mysqli_num_rows($resultGetChoice)) {
+                                            while ($rowGetChoice = mysqli_fetch_assoc($resultGetChoice)) {
+                                                $choice[] = $rowGetChoice;
+
+                                            }
+                                            $questions['answers'] = $choice;
+                                        }
+                                    } else {
+                                        $questions['answers'] = $choice;
+                                    }
+
+
+
+                                    $tags = array();
+                                    $tagQuery = "SELECT tags.id as 'tag_id',tags.tag_name FROM " . TABLE_TAGS_QUESTION . " tag_question JOIN " . TABLE_TAGS . " tags ON tags.id=tag_question.tag_id WHERE tag_question.question_id=" . $rowQuestion['id'] . " and tags.is_delete=0 and tag_question.is_delete=0";
+                                    $tagResult = mysqli_query($GLOBALS['con'], $tagQuery) or $message = mysqli_error($GLOBALS['con']);
+                                    if (mysqli_num_rows($tagResult)) {
+
+                                        while ($rowGetTags = mysqli_fetch_assoc($tagResult)) {
+                                            $tags[] = $rowGetTags;
+
+                                        }
+                                        $questions['tags'] = $tags;
+                                    } else {
+                                        $questions['tags'] = $tags;
+                                    }
+                                }
+
+
+
+                                if ($rowExam['exam_mode'] == "subjective") {
+//
+                                    $query = "SELECT * FROM " . TABLE_EXAM_SCHEDULE . " exam_schedule INNER JOIN " . TABLE_USERS . " users on exam_schedule.exam_assessor=users.id WHERE exam_id=" . $rowExam['id']." AND exam_schedule.is_delete=0 AND users.is_delete=0";
+                                    $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                                    $row = mysqli_fetch_assoc($result);
+
+                                    $post['evaluator_id'] = $row['exam_assessor'];
+                                    $post['evaluator_name'] = $row['full_name'];
+                                    $post['evaluator_profile_pic'] = $row['profile_pic'];
+
+                                    $evaluation = array();
+                                    $queryEvaluation = "SELECT * FROM " . TABLE_EXAM_EVALUATION . " WHERE exam_id=" . $rowExam['id'] ." AND is_delete=0";
+                                    $resultEvaluation = mysqli_query($GLOBALS['con'], $queryEvaluation) or $message = mysqli_error($GLOBALS['con']);
+
+                                    if (mysqli_num_rows($resultEvaluation)) {
+                                        $rowEvaluation = mysqli_fetch_assoc($resultEvaluation);
+                                        if ($rowEvaluation['evaluation_status'] == "unassesed") {
+                                            $evaluation['evaluation_score'] = $rowEvaluation['evaluation_status'];
+                                        } else {
+                                            //user_id=".$student_id."
+                                            $queryStudentRes = "SELECT student_subjective_evaluation.*,questions.question_score FROM " . TABLE_STUDENT_SUBJECTIVE_EVALUATION . " JOIN questions on questions.id=student_subjective_evaluation.question_id WHERE student_subjective_evaluation.is_delete=0 and student_subjective_evaluation.`exam_id`=" . $rowExam['id'] . " and student_subjective_evaluation.`user_id`=" . $user_id . " and evaluation_by=".$row['exam_assessor']." and student_subjective_evaluation.question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $rowExam['id'] . ")";
+                                            $resultStudentRes = mysqli_query($GLOBALS['con'], $queryStudentRes) or $message = mysqli_error($GLOBALS['con']);
+                                            //echo $queryStudentRes;
+                                            // echo "\n".mysqli_num_rows($resultStudentRes);
+                                            $evaluations = array();
+                                            if (mysqli_num_rows($resultStudentRes)) {
+                                                while ($rowEvaluation = mysqli_fetch_assoc($resultStudentRes)) {
+                                                    $evaluation['question_id'] = $rowEvaluation['question_id'];
+                                                    $evaluation['student_response'] = $rowEvaluation['student_response'];
+                                                    $evaluation['evaluation_score'] = $rowEvaluation['evaluation_score'];
+                                                    $evaluation['evaluation_notes'] = $rowEvaluation['evaluation_notes'];
+                                                    $evaluation['question_score'] = $rowEvaluation['question_score'];
+                                                    $evaluations[] = $evaluation;
+
+                                                }
+                                                $questions['evaluations'] = $evaluations;
+                                            }
+
+                                        }
+
+                                    }
+
+                                } else if ($rowExam['exam_mode'] == "objective") {
+//                {
+//                    "exam_id":9,
+//                    "student_id":202
+//                }
+                                    $queryStudentRes = "SELECT student_objective_response.*,questions.question_score FROM " . TABLE_STUDENT_OBJECTIVE_RESPONSE . " JOIN questions on questions.id=student_objective_response.question_id WHERE student_objective_response.is_delete=0 and student_objective_response.`user_id`=" . $user_id . " and student_objective_response.`exam_id`=" . $rowExam['id'] . " and student_objective_response.question_id=".$questions['question_id'];
+                                    $resultStudentRes = mysqli_query($GLOBALS['con'], $queryStudentRes) or $message = mysqli_error($GLOBALS['con']);
+                                    //echo $queryStudentRes;exit;
+                                    //echo "\n".mysqli_num_rows($resultStudentRes);
+                                    $evaluations = array();
+                                    if (mysqli_num_rows($resultStudentRes)) {
+                                        while ($rowEvaluation = mysqli_fetch_assoc($resultStudentRes)) {
+                                            $evaluation['question_id'] = $rowEvaluation['question_id'];
+                                            $evaluation['student_response'] = $rowEvaluation['choice_id'];
+                                            $evaluation['evaluation_score'] = $rowEvaluation['marks_obtained'];
+                                            $evaluation['is_right'] = $rowEvaluation['is_right'];
+                                            $evaluation['answer_status'] = $rowEvaluation['answer_status'];
+                                            $evaluation['question_score'] = $rowEvaluation['question_score'];
+                                            $evaluations[] = $evaluation;
+                                            $questions['evaluations']= $evaluations;
+                                        }
+
+                                    }
+                                    else{
+                                        $questions['evaluations']= array();
+                                    }
+
+                                }
+
+
+                            }
+                            $post['exam_questions'][] = $questions;
+                        }
+
+
+                    }
+
+
+                    $post['exam_created_date'] = $rowExam['created_date'];
+
+
+                    //Total Students
+                    $query = "SELECT * FROM " . TABLE_STUDENT_PROFILE . " WHERE classroom_id=" . $rowExam['classroom_id'] . " AND is_delete=0 ";
+                    $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+                    // $post['total_student']=0;// need to change
+                    $post['total_student'] = mysqli_num_rows($result);
+
+
+
+
+
+
+                    $data[]=$post;
 
                 }
-                $data[] = $post;
+
+
                 $status = SUCCESS;
                 $message = REQUEST_ACCEPTED;
             }
