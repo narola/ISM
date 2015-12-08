@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/img_dp"
         android:padding="@dimen/d10dp"
-        android:textColor="@color/color_black"
+        android:textColor="@color/black"
         android:textSize="@dimen/d25dp"/>
 
     <TextView
@@ -43,6 +43,6 @@
         android:layout_toRightOf="@id/img_dp"
         android:text="@string/reply"
         android:padding="@dimen/d10dp"
-        android:textColor="@color/color_green"
+        android:textColor="@color/green"
         android:textSize="@dimen/d18dp"/>
 </RelativeLayout>

@@ -4,7 +4,7 @@
 		android:right="10dp">
 		<shape>
 			<padding android:bottom="4dp"/>
-			<solid android:color="@color/color_green" />
+			<solid android:color="@color/green" />
 		</shape>
 	</item>
 	<item android:left="4dp"

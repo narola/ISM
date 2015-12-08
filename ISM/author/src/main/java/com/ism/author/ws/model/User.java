@@ -24,7 +24,7 @@ public class User {
     private String profilePic;
     private String fullName;
     private String username;
-    private String aboutMeText;
+    private String aboutAuthor;
     private String totalExams;
     private String totalBooks;
     private String totalQuestionAsked;
@@ -94,12 +94,12 @@ public class User {
         this.birthdate = birthdate;
     }
 
-    @JsonProperty("aboutMeText")
-    public String getAboutMeText() {
-        return this.aboutMeText;
+    @JsonProperty("about_author")
+    public String getAboutAuthor() {
+        return this.aboutAuthor;
     }
-    public void setAboutMeText(String aboutMeText) {
-        this.aboutMeText = aboutMeText;
+    public void setAboutAuthor(String aboutAuthor) {
+        this.aboutAuthor = aboutAuthor;
     }
 
     @JsonProperty("total_follweres")

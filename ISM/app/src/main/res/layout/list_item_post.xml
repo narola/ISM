@@ -22,7 +22,7 @@
 		android:layout_toRightOf="@id/img_dp"
 		android:padding="@dimen/d10dp"
 		android:text="Emma Mall"
-		android:textColor="@color/color_black"
+		android:textColor="@color/black"
 		android:textSize="@dimen/d25dp"/>
 
 	<TextView
@@ -55,7 +55,7 @@
 		android:layout_below="@id/txt_post"
 		android:layout_toRightOf="@id/img_like"
 		android:padding="@dimen/d10dp"
-		android:textColor="@color/color_black"
+		android:textColor="@color/black"
 		android:textSize="@dimen/d18dp"/>
 
 	<ImageView
@@ -75,7 +75,7 @@
 		android:layout_below="@id/txt_post"
 		android:layout_toRightOf="@id/img_comment"
 		android:padding="@dimen/d10dp"
-		android:textColor="@color/color_black"
+		android:textColor="@color/black"
 		android:textSize="@dimen/d18dp"/>
 
 	<TextView
@@ -86,7 +86,7 @@
 		android:layout_toRightOf="@id/txt_comments"
 		android:padding="@dimen/d10dp"
 		android:text="@string/view_all"
-		android:textColor="@color/color_green"
+		android:textColor="@color/green"
 		android:textSize="@dimen/d18dp"/>
 
 	<ImageView
@@ -134,7 +134,7 @@
 		android:paddingLeft="10dp"
 		android:paddingRight="10dp"
 		android:text="@string/comment"
-		android:textColor="@color/color_white"
+		android:textColor="@color/white"
 		android:textSize="@dimen/d20sp"
 		android:textStyle="bold" />
 </RelativeLayout>

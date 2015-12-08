@@ -1,19 +1,21 @@
 package com.ism.adapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.commonsource.utility.Utility;
 import com.ism.constant.WebConstants;
-import com.ism.model.TestActivity;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
@@ -22,8 +24,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
-
-import model.UserActivity;
 
 /**
  * Created by c161 on 25/11/15.
@@ -147,6 +147,24 @@ public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapte
 	private void showFeedLike(ViewHolder holder, UserActivitiy userActivity) {
 		holder.txtActivityTitle.setText(R.string.feed_liked);
 		View viewFeedLike = setMyActivityLayout(holder, R.layout.layout_timeline_feed_like);
+
+		CircleImageView imgDp = (CircleImageView) viewFeedLike.findViewById(R.id.img_dp);
+		TextView txtName = (TextView) viewFeedLike.findViewById(R.id.txt_name);
+		TextView txtPost = (TextView) viewFeedLike.findViewById(R.id.txt_post);
+		TextView txtTime = (TextView) viewFeedLike.findViewById(R.id.txt_time);
+		TextView txtLikes = (TextView) viewFeedLike.findViewById(R.id.txt_likes);
+		ImageView imgLike = (ImageView) viewFeedLike.findViewById(R.id.img_like);
+
+		txtName.setTypeface(myTypeFace.getRalewaySemiBold());
+		txtPost.setTypeface(myTypeFace.getRalewayRegular());
+		txtTime.setTypeface(myTypeFace.getRalewayItalic());
+		txtLikes.setTypeface(myTypeFace.getRalewayItalic());
+
+		Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + userActivity.getFeedPosted().getFeedUserPic(), imgDp);
+		txtName.setText(userActivity.getFeedPosted().getFeedUserName());
+		txtPost.setText(userActivity.getFeedPosted().getFeedText());
+		txtTime.setText(com.ism.utility.Utility.formatPHPDateToMMMDDYYYY(userActivity.getActivityTime()));
+		txtLikes.setText("4");
 	}
 
 	private void showStudymate(ViewHolder holder, UserActivitiy userActivity) {
@@ -188,6 +206,20 @@ public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapte
 	private void showFeedPost(ViewHolder holder, UserActivitiy userActivity) {
 		holder.txtActivityTitle.setText(R.string.feed_posted);
 		View viewFeedPost = setMyActivityLayout(holder, R.layout.layout_timeline_feed_post);
+
+		CircleImageView imgDp = (CircleImageView) viewFeedPost.findViewById(R.id.img_dp);
+		TextView txtName = (TextView) viewFeedPost.findViewById(R.id.txt_name);
+		TextView txtPost = (TextView) viewFeedPost.findViewById(R.id.txt_post);
+		TextView txtTime = (TextView) viewFeedPost.findViewById(R.id.txt_time);
+
+		txtName.setTypeface(myTypeFace.getRalewaySemiBold());
+		txtPost.setTypeface(myTypeFace.getRalewayRegular());
+		txtTime.setTypeface(myTypeFace.getRalewayItalic());
+
+		Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + userActivity.getFeedPosted().getFeedUserPic(), imgDp);
+		txtName.setText(userActivity.getFeedPosted().getFeedUserName());
+		txtPost.setText(userActivity.getFeedPosted().getFeedText());
+		txtTime.setText(com.ism.utility.Utility.formatPHPDateToMMMDDYYYY(userActivity.getActivityTime()));
 	}
 
 	private View setMyActivityLayout(ViewHolder holder, int layoutResId) {

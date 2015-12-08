@@ -47,6 +47,7 @@
     <string name="strsubmit">Submit</string>
     <string name="strcancel">Cancel</string>
     <string name="strquestiontitle">Question Title</string>
+    <string name="stradvance">Advance</string>
     <string name="strquestiontype">Question Type</string>
     <string name="strmultiplechoice">Multiple Choice</string>
     <string name="strevaluationnotes">Evaluation Notes</string>
@@ -88,6 +89,7 @@
     <string name="sayit">SAY IT</string>
     <string name="strcomments">All Comments</string>
     <string name="strclose">Close</string>
+    <string name="strdone">Done</string>
     <string name="strsearchstudymates">Search Users</string>
     <string name="strtag">TAG</string>
     <string name="strmydesk">My Desk</string>
@@ -241,6 +243,8 @@
     <string name="strAuthor">Author :</string>
     <string name="strEbookLink">Ebook link :</string>
     <string name="strfilters">Filters</string>
+    <string name="strtypetext">Type Text</string>
+
 
 
     <!--string array-->
@@ -327,4 +331,75 @@
         <item>0</item>
         <item>0</item>
     </integer-array>
+
+
+    <!--all scientific symbols for rich editor-->
+    <string name="sigma">&#931;</string>
+    <!--Σ-->
+    <string name="sum">&#8721;</string>
+    <!--∑-->
+    <string name="forall">&#8704;</string>
+    <!--∀-->
+    <string name="part">&#8706;</string>
+    <!--∂-->
+    <string name="and">&#8743;</string>
+    <!--∧-->
+    <string name="or">&#8744;</string>
+    <!--∨-->
+    <string name="ne">&#8800;</string>
+    <!--≠-->
+    <string name="asymp">&#8776;</string>
+    <!--≈-->
+    <string name="cong">&#8773;</string>
+    <!--≅-->
+    <string name="perp">&#8869;</string>
+    <!--⊥-->
+    <string name="le">&#8804;</string>
+    <!--<=-->
+    <string name="ge">&#8805;</string>
+    <!-->=-->
+    <string name="equiv">&#8801;</string>
+    <!--≡-->
+    <string name="prop">&#8733;</string>
+    <!--∝-->
+    <string name="rightwardsarrow">&#8594;</string>
+    <!--→-->
+    <string name="emptyset">&#8709;</string>
+    <!--∅-->
+    <string name="element_of">&#8712;</string>
+    <!--∈-->
+    <string name="not_an_element_of">&#8713;</string>
+    <!--∉-->
+    <string name="contains_as_member">&#8715;</string>
+    <!--∋-->
+    <string name="product">&#8719;</string>
+    <!--∏-->
+    <string name="intersection">&#8745;</string>
+    <!--∩-->
+    <string name="union">&#8746;</string>
+    <!--∪-->
+    <string name="subset_of">&#8834;</string>
+    <!--⊂-->
+    <string name="superset_of">&#8835;</string>
+    <!--⊃-->
+    <string name="not_a_subset_of">&#8836;</string>
+    <!--⊄-->
+    <string name="subset_of_or_equal_to">&#8838;</string>
+    <!--⊆-->
+    <string name="superset_of_or_equal_to">&#8839;</string>
+    <!--⊇-->
+    <string name="alef">&#8501;</string>
+    <!--ℵ-->
+    <string name="infinity">&#8734;</string>
+    <!--∞-->
+    <string name="angle">&#8736;</string>
+    <!--∠-->
+    <string name="integral">&#8747;</string>
+    <!--∫-->
+    <string name="script_capital_P">&#8472;</string>
+    <!--℘-->
+    <string name="blackletter_capital_I">&#8465;</string>
+    <!--ℑ-->
+    <string name="blackletter_capital_R">&#8476;</string>
+    <!--ℜ-->
 </resources>

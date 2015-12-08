@@ -420,7 +420,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
     }
 
     private void highlightLabel(int fragmentId, boolean attached) {
-	    int textColor = attached ? getActivity().getResources().getColor(R.color.color_green) : Color.WHITE;
+	    int textColor = attached ? getActivity().getResources().getColor(R.color.green) : Color.WHITE;
 	    switch (fragmentId) {
 		    case HostActivity.FRAGMENT_GENERAL_SETTINGS:
 			    txtGeneralSettings.setTextColor(textColor);

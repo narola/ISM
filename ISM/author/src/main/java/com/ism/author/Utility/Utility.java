@@ -348,5 +348,19 @@ public class Utility {
         view.startAnimation(slideOutAnimation);
     }
 
+    /**
+     * Arti Patel
+     * These is the method to show toast in android
+     *
+     * @param message
+     * @param context
+     */
+    public static void showToast(Context context, String message) {
+        try {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e(TAG, "showToast Exception : " + e.toString());
+        }
+    }
 
 }

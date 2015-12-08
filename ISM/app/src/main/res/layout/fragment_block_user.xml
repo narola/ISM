@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/color_white"
+    android:background="@color/white"
     tools:context="com.ism.fragment.userprofile.BlockUserFragment">
 
     <TextView
@@ -137,7 +137,7 @@
         android:id="@+id/txt_empty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_white"
+        android:background="@color/white"
         android:gravity="left"
         android:layout_marginLeft="@dimen/d10dp"
         android:padding="@dimen/d10dp"
@@ -168,7 +168,9 @@
         android:paddingBottom="3dp"
         android:paddingLeft="@dimen/d30dp"
         android:paddingRight="3dp"
+        android:linksClickable="true"
         android:textColor="#000032"
+        android:autoLink="email"
         android:paddingTop="3dp"
         android:text="@string/strContactAdminEmailAddress"
         android:textSize="@dimen/d20sp" />

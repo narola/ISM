@@ -30,7 +30,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="@dimen/d15dp"
 				android:text="Adam Stanger"
-				android:textColor="@color/color_green"
+				android:textColor="@color/green"
 				android:textSize="@dimen/d18sp"/>
 		</LinearLayout>
 

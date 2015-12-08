@@ -18,7 +18,6 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
@@ -39,8 +38,6 @@ import com.narola.kpa.richtexteditor.view.RichTextEditor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import jp.wasabeef.richeditor.RichEditor;
 
 public class AssignmentExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
@@ -279,12 +276,13 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
         rteTrialExam = (RichTextEditor) view.findViewById(R.id.rte_trial_exam);
         rteTrialExam.getRichEditor().setEditorFontSize(25);
-        rteTrialExam.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
-            @Override
-            public void onTextChange(String text) {
-                strAssignmenttext = text;
-            }
-        });
+        rteTrialExam.hideMediaControls();
+//        rteTrialExam.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
+//            @Override
+//            public void onTextChange(String text) {
+//                strAssignmenttext = text;
+//            }
+//        });
 
 
         callApiGetClassrooms();
@@ -304,7 +302,8 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             spExamSubjectname.setEnabled(false);
 
         } else {
-//            btnExamSetquestion.setVisibility(View.GONE);
+            btnExamSetquestion.setVisibility(View.GONE);
+            btnExamSave.setVisibility(View.VISIBLE);
 
         }
     }
@@ -388,7 +387,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
                 attribute.setPassingPercent(arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
                 attribute.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
-                attribute.setExamInstruction(strAssignmenttext);
+                attribute.setExamInstruction(rteTrialExam.getHtml());
                 attribute.setDeclareResults(getRadioGropuSelection(radioDeclareresult));
                 attribute.setNegativeMarking(getRadioGropuSelection(radioNegativemarking));
                 attribute.setRandomQuestion(getRadioGropuSelection(radioExamRandomQuestion));

@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
 import com.ism.ws.model.User;
@@ -58,15 +61,16 @@ public class RecommendedStudymatesAdapter extends RecyclerView.Adapter<Recommend
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		holder.txtUserName.setText("User " + position);
+		Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrayListUser.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
+		holder.txtUserName.setText(arrayListUser.get(position).getFullName());
 		holder.txtFollowing.setText("Following 34 Authors");
-		holder.txtSchool.setText("Student from St. Xaviers");
-		holder.txtCourse.setText("F.Y. CS");
+		holder.txtSchool.setText(arrayListUser.get(position).getSchoolName());
+		holder.txtCourse.setText(arrayListUser.get(position).getCourseName());
 	}
 
 	@Override
 	public int getItemCount() {
-		return 10;
+		return arrayListUser.size();
 	}
 
 }

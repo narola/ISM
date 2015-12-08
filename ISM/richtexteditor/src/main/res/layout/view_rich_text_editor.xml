@@ -10,8 +10,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/controlbar_padding"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="@dimen/controlbar_padding">
 
             <ImageButton
                 android:id="@+id/action_undo"
@@ -27,9 +27,9 @@
                 android:id="@+id/action_redo"
                 android:layout_width="@dimen/button_dimen"
                 android:layout_height="@dimen/button_dimen"
-                android:background="@drawable/bg_button_right"
                 android:layout_marginLeft="@dimen/button_bg_padding"
                 android:layout_marginRight="@dimen/controlbar_padding"
+                android:background="@drawable/bg_button_right"
                 android:contentDescription="@null"
                 android:padding="@dimen/button_padding"
                 android:scaleType="fitCenter"
@@ -49,8 +49,8 @@
                 android:id="@+id/action_italic"
                 android:layout_width="@dimen/button_dimen"
                 android:layout_height="@dimen/button_dimen"
-                android:background="@drawable/bg_button_center"
                 android:layout_marginLeft="@dimen/button_bg_padding"
+                android:background="@drawable/bg_button_center"
                 android:contentDescription="@null"
                 android:padding="@dimen/button_padding"
                 android:scaleType="fitCenter"
@@ -60,8 +60,8 @@
                 android:id="@+id/action_strikethrough"
                 android:layout_width="@dimen/button_dimen"
                 android:layout_height="@dimen/button_dimen"
-                android:background="@drawable/bg_button_center"
                 android:layout_marginLeft="@dimen/button_bg_padding"
+                android:background="@drawable/bg_button_center"
                 android:contentDescription="@null"
                 android:padding="@dimen/button_padding"
                 android:scaleType="fitCenter"
@@ -71,9 +71,9 @@
                 android:id="@+id/action_underline"
                 android:layout_width="@dimen/button_dimen"
                 android:layout_height="@dimen/button_dimen"
-                android:background="@drawable/bg_button_right"
                 android:layout_marginLeft="@dimen/button_bg_padding"
                 android:layout_marginRight="@dimen/controlbar_padding"
+                android:background="@drawable/bg_button_right"
                 android:contentDescription="@null"
                 android:padding="@dimen/button_padding"
                 android:scaleType="fitCenter"
@@ -93,9 +93,9 @@
                 android:id="@+id/action_superscript"
                 android:layout_width="@dimen/button_dimen"
                 android:layout_height="@dimen/button_dimen"
-                android:background="@drawable/bg_button_right"
                 android:layout_marginLeft="@dimen/button_bg_padding"
                 android:layout_marginRight="@dimen/controlbar_padding"
+                android:background="@drawable/bg_button_right"
                 android:contentDescription="@null"
                 android:padding="@dimen/button_padding"
                 android:scaleType="fitCenter"
@@ -105,8 +105,8 @@
                 android:id="@+id/action_txt_color"
                 android:layout_width="@dimen/button_dimen"
                 android:layout_height="@dimen/button_dimen"
-                android:background="@drawable/bg_button"
                 android:layout_marginRight="@dimen/controlbar_padding"
+                android:background="@drawable/bg_button"
                 android:contentDescription="@null"
                 android:padding="@dimen/button_padding"
                 android:scaleType="fitCenter"
@@ -126,8 +126,8 @@
                 android:id="@+id/action_align_center"
                 android:layout_width="@dimen/button_dimen"
                 android:layout_height="@dimen/button_dimen"
-                android:background="@drawable/bg_button_center"
                 android:layout_marginLeft="@dimen/button_bg_padding"
+                android:background="@drawable/bg_button_center"
                 android:contentDescription="@null"
                 android:padding="@dimen/button_padding"
                 android:scaleType="fitCenter"
@@ -137,9 +137,9 @@
                 android:id="@+id/action_align_right"
                 android:layout_width="@dimen/button_dimen"
                 android:layout_height="@dimen/button_dimen"
-                android:background="@drawable/bg_button_right"
                 android:layout_marginLeft="@dimen/button_bg_padding"
                 android:layout_marginRight="@dimen/controlbar_padding"
+                android:background="@drawable/bg_button_right"
                 android:contentDescription="@null"
                 android:padding="@dimen/button_padding"
                 android:scaleType="fitCenter"
@@ -159,9 +159,9 @@
                 android:id="@+id/action_remove_link"
                 android:layout_width="@dimen/button_dimen"
                 android:layout_height="@dimen/button_dimen"
-                android:background="@drawable/bg_button_right"
                 android:layout_marginLeft="@dimen/button_bg_padding"
                 android:layout_marginRight="@dimen/controlbar_padding"
+                android:background="@drawable/bg_button_right"
                 android:contentDescription="@null"
                 android:padding="@dimen/button_padding"
                 android:scaleType="fitCenter"
@@ -181,12 +181,36 @@
                 android:id="@+id/action_unordered_list"
                 android:layout_width="@dimen/button_dimen"
                 android:layout_height="@dimen/button_dimen"
-                android:background="@drawable/bg_button_right"
                 android:layout_marginLeft="@dimen/button_bg_padding"
+                android:background="@drawable/bg_button_right"
                 android:contentDescription="@null"
                 android:padding="@dimen/button_padding"
                 android:scaleType="fitCenter"
                 android:src="@drawable/img_unordered_list" />
+
+            <Button
+                android:id="@+id/add_image"
+                android:layout_width="@dimen/button_dimen"
+                android:layout_height="@dimen/button_dimen"
+                android:text="I"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_formula"
+                android:layout_width="@dimen/button_dimen"
+                android:layout_height="@dimen/button_dimen"
+                android:text="F"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_video"
+                android:layout_width="@dimen/button_dimen"
+                android:layout_height="@dimen/button_dimen"
+                android:text="V"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </HorizontalScrollView>
