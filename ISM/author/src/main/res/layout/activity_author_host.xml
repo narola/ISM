@@ -112,7 +112,7 @@
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:padding="10dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/color_blue"
                 android:textColorHint="@color/color_graylight"
                 android:visibility="gone" />
         </LinearLayout>

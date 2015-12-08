@@ -387,16 +387,46 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             etCno.setText(data.getContactNumber());
             Debug.i(TAG, "WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic() :" + WebConstants.HOST_IMAGE_USER + data.getProfilePic());
             Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + data.getProfilePic(), imgProfilePic, ISMStudent.options);
+            if(data.getTotalAssignment()==null)
+            txtTotalAssignment.setText("0");
+            else
             txtTotalAssignment.setText(data.getTotalAssignment());
+            if(data.getTotalAuthorsFollowed()==null)
+            txtTotalAuthorFollowed.setText("0");
+            else
             txtTotalAuthorFollowed.setText(data.getTotalAuthorsFollowed());
-            txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
-            txtTotalExam.setText(data.getTotalExams());
-            txtTotalFavQuestions.setText(data.getTotalFavoriteQuestions());
-            txtTotalIsmRank.setText(data.getIsmRank());
+            if(data.getTotalBadgesEarned()==null)
+            txtTotalBadgesEarned.setText("0");
+            else
+                txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
+            if(data.getTotalExams()==null)
+            txtTotalExam.setText("0");
+            else
+                txtTotalExam.setText(data.getTotalExams());
+            if(data.getTotalFavoriteQuestions()==null)
+            txtTotalFavQuestions.setText("0");
+            else
+                txtTotalFavQuestions.setText(data.getTotalFavoriteQuestions());
+            if(data.getIsmRank()==null)
+            txtTotalIsmRank.setText("0");
+            else
+                txtTotalIsmRank.setText(data.getIsmRank());
+            if(data.getIsmScore()==null)
+            txtTotalIsmScore.setText("0");
+            else
             txtTotalIsmScore.setText(data.getIsmScore());
+            if(data.getTotalPost()==null)
+            txtTotalPost.setText("0");
+            else
             txtTotalPost.setText(data.getTotalPost());
-            txtTotalQueAsked.setText(data.getTotalQuestionAsked());
-            txtTotalStudymates.setText(data.getTotalStudymates());
+            if(data.getTotalQuestionAsked()==null)
+            txtTotalQueAsked.setText("0");
+            else
+                txtTotalQueAsked.setText(data.getTotalQuestionAsked());
+            if(data.getTotalStudymates()==null)
+            txtTotalStudymates.setText("0");
+            else
+                txtTotalStudymates.setText(data.getTotalStudymates());
 //            imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMStudent.options);
             strDetailAboutMe = data.getAboutMeText();
             strAmbition = data.getAmbitionInLife();
@@ -479,12 +509,12 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             openGallary();
             //callApiEditAboutMe();
         } else if (v == txtClickAddAboutMe) {
-            if (strDetailAboutMe == null) {
+            if (strDetailAboutMe .length()==0) {
                 editDetails(ABOUT_ME);
             }
 
         } else if (v == txtClickAddAmbitions) {
-            if (strAmbition == null) {
+            if (strAmbition.length()==0) {
                 editDetails(YOUR_AMBITION);
             }
 
@@ -510,17 +540,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         startActivityForResult(intent, type);
 
     }
-
-    View.OnTouchListener customPopUpTouchListenr = new View.OnTouchListener() {
-
-        @Override
-        public boolean onTouch(View arg0, MotionEvent arg1) {
-            Log.d("POPUP", "Touch false");
-            return false;
-        }
-
-    };
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -549,25 +568,27 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     public void onAmbition() {
 
-        if (strAmbition != null) {
+        if (strAmbition != null && strAmbition.length()!=0) {
             txtClickAddAmbitions.setText(strAmbition);
             imgEditAmbition.setVisibility(View.VISIBLE);
             txtClickAddAmbitions.setCompoundDrawables(null, null, null, null);
             Debug.i(TAG, "Details are available!");
         } else {
             Debug.i(TAG, "Details are not available!");
+            txtClickAddAmbitions.setCompoundDrawables(null, null, getResources().getDrawable(R.drawable.aroow_gray), null);
             txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
             imgEditAmbition.setVisibility(View.GONE);
         }
     }
 
     public void onAboutMe() {
-        if (strDetailAboutMe.length() != 0) {
+        if (strDetailAboutMe != null && strDetailAboutMe.length() != 0 ) {
             txtClickAddAboutMe.setText(strDetailAboutMe);
             txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
             imgEditAboutMe.setVisibility(View.VISIBLE);
             Debug.i(TAG, "Details are available!");
         } else {
+            txtClickAddAboutMe.setCompoundDrawables(null, null,getResources().getDrawable(R.drawable.aroow_gray), null);
             txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
             imgEditAboutMe.setVisibility(View.GONE);
             Debug.i(TAG, "Details are not available!");
