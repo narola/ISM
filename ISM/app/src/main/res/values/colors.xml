@@ -3,7 +3,9 @@
     <color name="colorPrimary">#1BC4A2</color>
     <color name="colorPrimaryDark">#14987d</color>
     <color name="colorAccent">#1BC4A2</color>
-
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_black">#000000</color>
+    <color name="color_green">#1BC4A2</color>
     <color name="bg_controller_top_light">#2A343E</color>
     <color name="bg_controller_top_medium">#262E39</color>
     <color name="bg_controller_top_dark">#232A34</color>

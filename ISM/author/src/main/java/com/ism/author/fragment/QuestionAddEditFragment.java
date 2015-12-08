@@ -854,7 +854,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 }
                 Debug.e(TAG, "The HashTags Are:::" + sb.toString());
                 attribute.setHashtagData(sb.toString());
-                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.TEMPCREATEQUESTION);
 
 

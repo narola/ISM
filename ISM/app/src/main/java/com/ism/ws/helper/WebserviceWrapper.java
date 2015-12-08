@@ -93,6 +93,9 @@ public class WebserviceWrapper {
                         case WebConstants.ADD_COMMENT:
                             responseObject = new WebserviceConnector(WebConstants.URL_ADD_COMMENT).execute(ResponseHandler.class, attribute);
                             break;
+                        case WebConstants.POSTFEED:
+                            responseObject = new WebserviceConnector(WebConstants.URL_POSTFEED).execute(ResponseHandler.class, attribute);
+                            break;
                         case WebConstants.GET_ALL_COMMENTS:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_COMMENTS).execute(ResponseHandler.class, attribute);
                             break;
@@ -185,6 +188,10 @@ public class WebserviceWrapper {
                             break;
                         case WebConstants.GET_MY_ACTIVITY:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_ACTIVITY).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.UPLOAD_FEED_MEDIA:
+                            responseObject = new WebserviceConnector(WebConstants.URL_UPLOAD_FEED_MEDIA).uploadMedia(ResponseHandler.class,
+                                    attribute);
                             break;
                         case WebConstants.REFRESH_TOKEN:
                             responseObject = new WebserviceConnector(WebConstants.URL_REFRESH_TOKEN).execute(ResponseHandler.class, attribute);

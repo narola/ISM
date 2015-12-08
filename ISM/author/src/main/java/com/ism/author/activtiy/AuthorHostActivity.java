@@ -67,8 +67,10 @@ import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.socketdemo.c85.ismsocket.IOSocketHandler;
 
 import java.util.ArrayList;
+import java.util.logging.SocketHandler;
 
 /*
 * these class is for the main screen after login contains the host activity for managing the main and container fragment.
@@ -191,6 +193,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
 
     private void inigGlobal() {
+//        IOSocketHandler.ConnectSocket();
 
         mFragmentManager = getFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();

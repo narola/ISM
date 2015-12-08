@@ -84,7 +84,7 @@
             android:layout_marginBottom="@dimen/d10dp"
             android:layout_marginTop="@dimen/d10dp"
             android:layout_toRightOf="@+id/txt_block_user"
-            android:background="@drawable/bg_edit_text"
+            android:background="@drawable/bg_edit_gray"
             android:orientation="horizontal"
             android:gravity="center_vertical|left"
             android:singleLine="true"
