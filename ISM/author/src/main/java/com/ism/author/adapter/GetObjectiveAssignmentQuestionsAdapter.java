@@ -90,34 +90,44 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
                         holder.llQuestionsOptions.addView(ansView);
                     }
                 }
+
+                if (bundleArgument.getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                    holder.llEvaluationContainer.setVisibility(View.VISIBLE);
+                    holder.llAnswerContainer.setVisibility(View.VISIBLE);
+
+                    if (arrListQuestions.get(position).getAnswers() != null) {
+                        for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
+                            if (arrListQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
+                                holder.txtAnswer.setText(Utils.formatHtml(Utils.getCharForNumber(i + 1) + ". " +
+                                        arrListQuestions.get(position).getAnswers().get(i).getChoiceText()));
+                                break;
+                            } else {
+                                holder.txtAnswer.setText("");
+                            }
+                        }
+                    }
+
+                } else {
+                    holder.llEvaluationContainer.setVisibility(View.GONE);
+                    holder.llAnswerContainer.setVisibility(View.GONE);
+                }
             }
+
 
             holder.txtStudentnameAnswer.setText(bundleArgument.getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME) + " " +
                     mContext.getString(R.string.stranswer));
 
-            if (evaluationList.size() > 0) {
-                holder.llEvaluationContainer.setVisibility(View.VISIBLE);
-                holder.llAnswerContainer.setVisibility(View.VISIBLE);
+            if (evaluationList != null) {
 
-                if (arrListQuestions.get(position).getAnswers() != null) {
-                    for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
-                        if (arrListQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
-                            holder.txtAnswer.setText(Utils.formatHtml(Utils.getCharForNumber(i + 1) + ". " +
-                                    arrListQuestions.get(position).getAnswers().get(i).getChoiceText()));
-                            break;
-                        } else {
-                            holder.txtAnswer.setText("");
-                        }
-                    }
-                }
-
-                if (position < evaluationList.size()) {
-                    for (int j = 0; j < arrListQuestions.get(position).getAnswers().size(); j++) {
-                        if (evaluationList.get(position).getStudentResponse().equalsIgnoreCase(arrListQuestions.get(position).getAnswers().get(j).getId())) {
-                            holder.txtStudentAnswer.setText(Utils.formatHtml(arrListQuestions.get(position).getAnswers().get(j).getChoiceText()));
-                            break;
-                        } else {
-                            holder.txtStudentAnswer.setText("");
+                if (evaluationList.size() > 0) {
+                    if (position < evaluationList.size()) {
+                        for (int j = 0; j < arrListQuestions.get(position).getAnswers().size(); j++) {
+                            if (evaluationList.get(position).getStudentResponse().equalsIgnoreCase(arrListQuestions.get(position).getAnswers().get(j).getId())) {
+                                holder.txtStudentAnswer.setText(Utils.formatHtml(arrListQuestions.get(position).getAnswers().get(j).getChoiceText()));
+                                break;
+                            } else {
+                                holder.txtStudentAnswer.setText("");
+                            }
                         }
                     }
                 }

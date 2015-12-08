@@ -266,6 +266,8 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                         if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() > 0) {
                             getObjectiveAssignmentQuestionsAdapter.setEvaluationData(responseHandler.getExamEvaluation().get(0).getEvaluation());
                         }
+                    } else {
+                        getObjectiveAssignmentQuestionsAdapter.setEvaluationData(null);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {

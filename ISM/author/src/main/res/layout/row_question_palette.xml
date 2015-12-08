@@ -9,7 +9,7 @@
         android:id="@+id/tv_question_status"
         android:layout_width="@dimen/d40dp"
         android:layout_height="@dimen/d40dp"
-        android:background="@drawable/question_palette_assessed"
+        android:background="@drawable/question_palette_answered"
         android:gravity="center"
         android:text="1"
         android:textColor="@color/color_white"

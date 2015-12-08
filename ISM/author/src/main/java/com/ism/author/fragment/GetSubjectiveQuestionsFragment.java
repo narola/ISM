@@ -30,6 +30,7 @@ import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.Evaluation;
 import com.ism.author.ws.model.Examsubmittor;
 import com.ism.author.ws.model.Questions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -122,15 +123,19 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
                     totalItemCount = mLayoutManager.getItemCount();
                     pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
 
-//                    if (pastVisiblesItems == 0) {
-//                        loadPreviousStudentData();
-//                    } else
-//                    if (loading) {
-//                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-//                            loading = false;
-//                            Utils.showToast("Last Item Wow !", getActivity());
-//                            loadNextStudentData();
+//                    if (arrListQuestions.get(arrListQuestions.size() - 1).getIsEvaluated()) {
+//
+//                        if (pastVisiblesItems == 0) {
+//                            loadPreviousStudentData();
+//                        } else if (loading) {
+//                            if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+//                                loading = false;
+//                                Utils.showToast("Last Item Wow !", getActivity());
+//                                loadNextStudentData();
+//                            }
 //                        }
+//                    } else {
+//                        Utils.showToast(getString(R.string.msg_evaluate_question), getActivity());
 //                    }
                 }
             }
@@ -138,6 +143,23 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
         callApiGetExamQuestions();
     }
+
+//    if (firstVisibleItem == 0) {
+//        // check if we reached the top or bottom of the list
+//        View v = listview.getChildAt(0);
+//        int offset = (v == null) ? 0 : v.getTop();
+//        if (offset == 0) {
+//            // reached the top:
+//            return;
+//        }
+//    } else if (totalItemCount - visibleItemCount == firstVisibleItem){
+//        View v =  listview.getChildAt(totalItemCount-1);
+//        int offset = (v == null) ? 0 : v.getTop();
+//        if (offset == 0) {
+//            // reached the top:
+//            return;
+//        }
+//    }
 
 
     private boolean loading = true;
@@ -149,9 +171,8 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-//                request.setExamId(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setExamId("11");
-                Debug.e(TAG, "The exam ID is::" + getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+//                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setExamId("1");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
@@ -168,10 +189,9 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-//                request.setExamId(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setExamId(getBaseFragment().getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
-                request.setExamId("11");
-//                request.setStudentId("1");
+//                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setExamId("1");
+                request.setStudentId("202");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {
@@ -230,10 +250,13 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
                 responseObjGetExamEvaluation = (ResponseHandler) object;
                 if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.SUCCESS)) {
                     loading = true;
-                    subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
 
+                    subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
+                    updateStatusForEvaluation();
                     setTitleDetails();
-                    getBaseFragment().setQuestionStatusData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
+                    getBaseFragment().setQuestionStatusData(arrListQuestions,
+                            responseObjGetExamEvaluation.getExamEvaluation().get(0).getQuestionPalette());
+
 
                 } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObjGetExamEvaluation.getMessage(), getActivity());
@@ -278,7 +301,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     private void setQuestions() {
 
-//        arrListQuestions.clear();
+        arrListQuestions.clear();
         arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
         subjectiveQuestionListAdapter.addAll(arrListQuestions);
         subjectiveQuestionListAdapter.notifyDataSetChanged();
@@ -355,9 +378,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     public void onClick(View v) {
 
         if (v == llPrevStudent) {
-
             loadPreviousStudentData();
-
         } else if (v == llNextStudent) {
             loadNextStudentData();
 
@@ -365,4 +386,21 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
             setExamQuestions();
         }
     }
+
+    private void updateStatusForEvaluation() {
+        for (Questions question : arrListQuestions) {
+            for (Evaluation evaluation : responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation()) {
+                if (question.getQuestionId().equals(evaluation.getQuestionId())) {
+                    arrListQuestions.get(arrListQuestions.indexOf(question)).setIsEvaluated(true);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void updateQuestionEvaluationStatus(int position) {
+        arrListQuestions.get(position).setIsEvaluated(true);
+    }
+
+
 }
