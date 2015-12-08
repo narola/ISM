@@ -83,7 +83,6 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
             holder.llQuestionsOptions.setVisibility(View.VISIBLE);
             holder.llAnswerContainer.setVisibility(View.GONE);
             holder.llEvaluationContainer.setVisibility(View.GONE);
-
             holder.llQuestionsOptions.removeAllViews();
 
             if (holder.llQuestionsOptions.getChildCount() == 0) {
@@ -103,17 +102,19 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
             }
 
             //  holder.llQuestionsEvaluationContainer.setVisibility(View.VISIBLE);
-//            holder.llAnswerContainer.setVisibility(View.VISIBLE);
-//            for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
-//
-//                if (arrListQuestions.get(position).getAnswers() != null) {
-//                    if (arrListQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
-//                        holder.txtAnswer.setText(Utils.formatHtml(Utils.getCharForNumber(i + 1) + ". " +
-//                                arrListQuestions.get(position).getAnswers().get(position).getChoiceText()));
-//                        break;
-//                    }
-//                }
-//            }
+            holder.llAnswerContainer.setVisibility(View.VISIBLE);
+
+            if (arrListQuestions.get(position).getAnswers() != null) {
+                for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
+                    if (arrListQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
+                        holder.txtAnswer.setText(Utils.formatHtml(Utils.getCharForNumber(i + 1) + ". " +
+                                arrListQuestions.get(position).getAnswers().get(i).getChoiceText()));
+                        break;
+                    } else {
+                        holder.txtAnswer.setText("");
+                    }
+                }
+            }
 
 
         } else {
@@ -154,7 +155,6 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
         public ViewHolder(View itemView) {
             super(itemView);
             try {
-
                 txtQuestionNo = (TextView) itemView.findViewById(R.id.txt_question_no);
                 txtQuestionText = (TextView) itemView.findViewById(R.id.txt_question_text);
                 txtCorrectAnswer = (TextView) itemView.findViewById(R.id.txt_correct_answer);

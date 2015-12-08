@@ -121,6 +121,7 @@
             android:id="@+id/rv_getObjective_assignment_questionslist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/d5dp"
             android:layout_weight="1" />
     </LinearLayout>
 </LinearLayout>
