@@ -19,6 +19,7 @@ import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
+import com.ism.views.SelectAgainSpinner;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
@@ -56,7 +57,7 @@ public class YourStudymatesAdapter extends RecyclerView.Adapter<YourStudymatesAd
 
 		TextView txtUserName, txtSchool, txtFollowing;
 		Button btnViewProfile;
-		Spinner spinnerOptions;
+		SelectAgainSpinner spinnerOptions;
 
 		public ViewHolder(View view) {
 			super(view);
@@ -66,7 +67,7 @@ public class YourStudymatesAdapter extends RecyclerView.Adapter<YourStudymatesAd
 			txtSchool = (TextView) view.findViewById(R.id.txt_school);
 			txtFollowing = (TextView) view.findViewById(R.id.txt_following);
 			btnViewProfile = (Button) view.findViewById(R.id.btn_view_profile);
-			spinnerOptions = (Spinner) view.findViewById(R.id.spinner_studymate_options);
+			spinnerOptions = (SelectAgainSpinner) view.findViewById(R.id.spinner_studymate_options);
 
 			txtUserName.setTypeface(myTypeFace.getRalewaySemiBold());
 			txtSchool.setTypeface(myTypeFace.getRalewayRegular());
@@ -86,7 +87,7 @@ public class YourStudymatesAdapter extends RecyclerView.Adapter<YourStudymatesAd
 		holder.viewStatus.setBackgroundResource(arrayListUser.get(position).getIsOnline().equals("1") ? R.drawable.bg_online : R.drawable.bg_offline);
 		holder.txtUserName.setText(arrayListUser.get(position).getFullName());
 		holder.txtSchool.setText(arrayListUser.get(position).getSchoolName());
-		holder.txtFollowing.setText(R.string.following + " " + arrayListUser.get(position).getTotalAuthorsFollowed() + " " + context.getString(R.string.authors));
+		holder.txtFollowing.setText(context.getString(R.string.following) + " " + arrayListUser.get(position).getTotalAuthorsFollowed() + " " + context.getString(R.string.authors));
 
 		holder.spinnerOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override

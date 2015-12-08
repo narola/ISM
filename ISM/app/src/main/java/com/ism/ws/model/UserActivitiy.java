@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserActivitiy {
 	
     private String activityType;
+    private String activityTime;
     private Studymates studymates;
     private FeedPosted feedPosted;
 
@@ -30,6 +31,15 @@ public class UserActivitiy {
 
     public void setActivityType(String activityType) {
         this.activityType = activityType;
+    }
+
+    @JsonProperty("activity_time")
+    public String getActivityTime() {
+        return activityTime;
+    }
+
+    public void setActivityTime(String activityTime) {
+        this.activityTime = activityTime;
     }
 
     @JsonProperty("studymates")

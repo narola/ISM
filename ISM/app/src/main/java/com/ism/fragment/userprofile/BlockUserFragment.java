@@ -2,6 +2,10 @@ package com.ism.fragment.userprofile;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -27,6 +31,7 @@ import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.BlockedUsers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by c162 on 09/11/15.
@@ -99,6 +104,8 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
         //etEmailAddress.setTypeface(myTypeFace.getRalewayRegular());
         callApiForBlockedUser();
         txtBlock.setOnClickListener(this);
+        txtContactDetails.setOnClickListener(this);
+       // txtContactDetails.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 
@@ -125,6 +132,36 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
         }
+    }
+
+    public void openGmail() {
+//        Intent mailClient = new Intent(Intent.ACTION_VIEW);
+//        mailClient.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivity");
+//        startActivity(mailClient);
+        try{
+            Intent intent=new Intent(android.content.Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+// Add data to the intent, the receiving app will decide what to do with it.
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Some Subject Line");
+            intent.putExtra(Intent.EXTRA_TEXT, "Body of the message, woot!");
+//            Intent sharingIntent = new Intent(Intent.ACTION_VIEW);
+//            sharingIntent.setType("text/plain");
+//
+//            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Medicine Enquiry");
+//            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
+//
+//
+//            if (sharingIntent.resolveActivity(getActivity().getPackageManager()) != null)
+//                getActivity().startActivity(Intent.createChooser(sharingIntent, "Share using"));
+//            else {
+//                Toast.makeText(getActivity(), "No app found on your phone which can perform this action", Toast.LENGTH_SHORT).show();
+//            }
+        }catch (Exception e){
+            Debug.i(TAG,"openGmail Exception : " +e.getLocalizedMessage());
+        }
+
     }
 
     @Override
@@ -173,10 +210,24 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
                 //api call
                 callApiForBlockUser();
             }
+        }else if (v==txtContactDetails) {
+           // startApplication("com.gmail");
+           openGmail();
+
+//            if(txtContactDetails.getSelectionStart()!=-1 && txtContactDetails.getSelectionEnd()!=-1){
+//               // openGmail();
+//            }
+            //txtContactDetails.setMovementMethod(openGmail());
         }
 
     }
-
+    public static boolean isAvailable(Context ctx, Intent intent) {
+        final PackageManager mgr = ctx.getPackageManager();
+        List<ResolveInfo> list =
+                mgr.queryIntentActivities(intent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
     private void callApiForBlockUser() {
         try {
             if (Utility.isConnected(getActivity())) {

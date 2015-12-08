@@ -68,13 +68,13 @@ public class Adapters {
 		}
 		textView.setCompoundDrawables(null, null, null, null);
 		if (position == 0) {
-			textView.setTextColor(context.getResources().getColorStateList(R.color.color_white));
-			textView.setBackgroundColor(context.getResources().getColor(R.color.color_green));
+			textView.setTextColor(context.getResources().getColorStateList(R.color.white));
+			textView.setBackgroundColor(context.getResources().getColor(R.color.green));
 			textView.setEnabled(false);
 			textView.setOnClickListener(null);
 		} else {
 			textView.setTextColor(context.getResources().getColorStateList(R.color.color_dark_gray));
-			textView.setBackgroundResource(R.color.color_white);
+			textView.setBackgroundResource(R.color.white);
 		}
 	}
 
@@ -86,7 +86,7 @@ public class Adapters {
 			textView.setTextColor(context.getResources().getColor(R.color.color_text_hint));
 			return textView;
 		} else {
-			textView.setTextColor(context.getResources().getColor(R.color.color_black));
+			textView.setTextColor(context.getResources().getColor(R.color.black));
 			return textView;
 		}
 	}

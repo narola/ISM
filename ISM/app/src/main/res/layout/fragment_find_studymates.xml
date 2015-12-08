@@ -18,7 +18,7 @@
 			android:gravity="center"
 			android:textAllCaps="true"
 			android:textSize="18sp"
-			android:background="@color/color_green"
+			android:background="@color/green"
 			android:textColor="@android:color/white"/>
 
 		<TextView
@@ -31,7 +31,7 @@
 			android:textSize="18sp"
 			android:layout_toRightOf="@id/txt_people"
 			android:layout_marginLeft="1dp"
-			android:background="@color/color_green"
+			android:background="@color/green"
 			android:textColor="@android:color/white"/>
 
 		<TextView
@@ -44,7 +44,7 @@
 			android:textSize="18sp"
 			android:layout_toRightOf="@id/txt_school"
 			android:layout_marginLeft="1dp"
-			android:background="@color/color_green"
+			android:background="@color/green"
 			android:textColor="@android:color/white"/>
 
 		<TextView
@@ -57,7 +57,7 @@
 			android:textSize="18sp"
 			android:layout_toRightOf="@id/txt_area"
 			android:layout_marginLeft="1dp"
-			android:background="@color/color_green"
+			android:background="@color/green"
 			android:textColor="@android:color/white"/>
 
 		<ImageView
@@ -65,7 +65,7 @@
 			android:layout_height="match_parent"
 			android:src="@drawable/ic_search"
 			android:layout_alignParentRight="true"
-			android:background="@color/color_green"/>
+			android:background="@color/green"/>
 	</RelativeLayout>
 
 	<android.support.v7.widget.RecyclerView

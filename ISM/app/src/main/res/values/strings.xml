@@ -237,7 +237,8 @@
 	<string name="strEmailID">Email ID</string>
 	<string name="strBlockUser">Block User</string>
 	<string name="strManageBlockUsers">Manage Blocked Users</string>
-	<string name="strContactAdminEmailAddress"><![CDATA[If you have any complain for any of the user. Then you can contact us & send email at <font color=\'#3F94CD\'><b>ism_security@gmail.com</b> </font>]]></string>
+	<!--<string name="strContactAdminEmailAddress">If you lost your password please contact <a href="mailto:support@cleverfinger.com.au?Subject=Lost%20Password" target="_top">support@cleverfinger.com.au</a></string>-->
+	<string name="strContactAdminEmailAddress"><![CDATA[If you have any complain for any of the user. Then you can contact us & send email at <font color=\'#3F94CD\'><b>ism.educare@gmail.com</b> </font>]]></string>
 	<string name="strPrivacySetting">Privacy Setting</string>
 	<string name="strNotification">Notification</string>
 	<string name="strSmsAlerts">SMS ALerts</string>

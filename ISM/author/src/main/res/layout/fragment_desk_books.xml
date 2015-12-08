@@ -79,7 +79,7 @@
                         android:singleLine="true"
                         android:imeOptions="actionSearch"
                         android:padding="10dp"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/color_blue"
                         android:textColorHint="@color/border_gray"
                         android:visibility="gone" />
                 </LinearLayout>

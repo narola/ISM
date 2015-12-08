@@ -46,7 +46,7 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="@string/edit_profile"
-                android:textColor="@color/color_green"
+                android:textColor="@color/green"
                 android:textSize="20sp" />
         </LinearLayout>
     </RelativeLayout>

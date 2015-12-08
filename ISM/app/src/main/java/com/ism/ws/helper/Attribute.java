@@ -80,6 +80,8 @@ public class Attribute {
 	private String mateId;
 	private String secretKey;
 	private String accessKey;
+	private String role;
+	private String lastSyncDate;
 
     private ArrayList<String> unfavoriteResourceId;
     private ArrayList<String> favResourceId;
@@ -578,4 +580,21 @@ public class Attribute {
 		this.mateId = mateId;
 	}
 
+	@JsonProperty("role")
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	@JsonProperty("last_sync_date")
+	public String getLastSyncDate() {
+		return lastSyncDate;
+	}
+
+	public void setLastSyncDate(String lastSyncDate) {
+		this.lastSyncDate = lastSyncDate;
+	}
 }

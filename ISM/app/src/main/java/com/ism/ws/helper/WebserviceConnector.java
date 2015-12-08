@@ -36,7 +36,8 @@ public class WebserviceConnector {
 		try {
 
 			URLConnection connection = new URL(url).openConnection();
-			connection.setRequestProperty("User-Agent","Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+//			connection.setRequestProperty("User-Agent","Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+			connection.setRequestProperty("User-Agent","android");
 			connection.setDoOutput(true); // Triggers POST.
 //			connection.setRequestProperty("Accept-Charset", charset);
 //			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);

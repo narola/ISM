@@ -47,7 +47,7 @@
 		android:layout_toRightOf="@id/img_dp"
 		android:layout_marginLeft="10dp"
 		android:layout_below="@id/txt_school"
-		android:textColor="@color/color_green"
+		android:textColor="@color/green"
 		android:textSize="15sp"/>
 
 	<LinearLayout
@@ -69,7 +69,7 @@
 			android:textSize="17sp"
 			android:layout_marginRight="10dp"/>
 
-		<Spinner
+		<com.ism.views.SelectAgainSpinner
 			android:id="@+id/spinner_studymate_options"
 			android:layout_width="180dp"
 			android:layout_height="35dp"
@@ -78,6 +78,6 @@
 			android:layout_alignParentRight="true"
 			android:entries="@array/studymate_options"
 			android:background="@drawable/bg_spinner_simple"
-			android:layout_marginRight="10dp"></Spinner>
+			android:layout_marginRight="10dp"></com.ism.views.SelectAgainSpinner>
 	</LinearLayout>
 </RelativeLayout>

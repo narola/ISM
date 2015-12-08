@@ -49,7 +49,8 @@ public class User {
     private String examScore;
     private String subjectName;
     private String isOnline;
-    private String totalAuthorsFollowing;
+    private String requestStatus;
+
 	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 
     @JsonProperty("total_exams")
@@ -372,5 +373,14 @@ public class User {
     public void setIsOnline(String isOnline) {
         this.isOnline = isOnline;
     }
+
+	@JsonProperty("request_status")
+	public String getRequestStatus() {
+		return requestStatus;
+	}
+
+	public void setRequestStatus(String requestStatus) {
+		this.requestStatus = requestStatus;
+	}
 
 }

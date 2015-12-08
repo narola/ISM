@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="0sp"
         android:layout_marginRight="0sp"
-        android:background="@color/color_white"
+        android:background="@color/white"
         android:gravity="center_horizontal"
         android:orientation="horizontal" >
     </RelativeLayout>

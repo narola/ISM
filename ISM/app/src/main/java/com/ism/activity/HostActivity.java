@@ -224,15 +224,19 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
         progHost = (ActionProcessButton) findViewById(R.id.prog_host);
         inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         arrTxtMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
         progressGenerator = new ProgressGenerator();
+
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, HostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, HostActivity.this);
 	    Global.strProfilePic = WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
 //        Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
+
         if (Utility.isConnected(HostActivity.this)) {
+            callApiRefreshToken();
             callApiGetAllBadgesCount();
             callApiGetGeneralSettingPreferences();
             callApiForGetUserPreference();
@@ -366,13 +370,24 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     }
 
+    private void callApiRefreshToken() {
+        try {
+            Attribute attribute = new Attribute();
+	        attribute.setUsername("");
+
+            new WebserviceWrapper(getApplicationContext(), attribute, HostActivity.this).new WebserviceCaller()
+                    .execute(WebConstants.REFRESH_TOKEN);
+        } catch (Exception e) {
+            Log.e(TAG, "callApiRefreshToken Exception : " + e.toString());
+        }
+    }
+
     private void callApiGetGeneralSettingPreferences() {
         try {
             showProgress();
             new WebserviceWrapper(getApplicationContext(), null, HostActivity.this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTING_PREFERENCES);
 
         } catch (Exception e) {
-
             Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
         }
     }

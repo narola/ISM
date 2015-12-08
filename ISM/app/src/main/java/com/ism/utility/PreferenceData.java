@@ -37,10 +37,10 @@ public class PreferenceData {
     public static final String USER_ID = "userId";
     public static final String USER_FULL_NAME = "userFullName";
     public static final String USER_PROFILE_PIC = "userProfilePic";
-
     public static final String BADGE_COUNT_NOTIFICATION = "badgeCountNotification";
     public static final String BADGE_COUNT_MESSAGE = "badgeCountMessage";
     public static final String BADGE_COUNT_REQUEST = "badgeCountRequest";
+    public static final String ADMIN_CONFIG_SYNC_DATE = "adminConfigSyncDate";
 
     //=================================================================
     //PS=> PRIVACYSETTING
