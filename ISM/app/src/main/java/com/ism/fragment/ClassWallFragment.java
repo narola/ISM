@@ -2,6 +2,7 @@ package com.ism.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.activity.PostFeedActivity;
 import com.ism.adapter.PostFeedsAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
@@ -89,6 +91,8 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
             @Override
             public void onClick(View v) {
 //              Start post activity
+                Intent intent = new Intent(getActivity(), PostFeedActivity.class);
+                startActivity(intent);
             }
         });
 

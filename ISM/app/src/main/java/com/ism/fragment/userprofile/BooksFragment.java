@@ -168,6 +168,10 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Next");
                     listViewFavBooks.getLayoutManager().smoothScrollToPosition(listViewFavBooks, null, layoutManagerFav.findLastCompletelyVisibleItemPosition() + 1);
+                    if(layoutManagerFav.findLastVisibleItemPosition()==arrayListFavBooks.size()-1)
+                        imgNextFav.setEnabled(false);
+                    else
+                        imgNextFav.setEnabled(true);
                 }
 
             });
@@ -177,6 +181,10 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Previous");
                     listViewFavBooks.getLayoutManager().smoothScrollToPosition(listViewFavBooks, null, layoutManagerFav.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerFav.findFirstCompletelyVisibleItemPosition() - 1 : 0);
+                    if(layoutManagerFav.findFirstVisibleItemPosition()==0)
+                        imgPrevFav.setEnabled(false);
+                    else
+                        imgPrevFav.setEnabled(true);
                 }
             });
 
@@ -185,7 +193,10 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Next");
                     listViewSuggestedBooks.getLayoutManager().smoothScrollToPosition(listViewSuggestedBooks, null, layoutManagerSuggested.findLastCompletelyVisibleItemPosition() + 1);
-
+                    if(layoutManagerSuggested.findLastVisibleItemPosition()==arrayListSuggestedBooks.size()-1)
+                        imgNextSuggested.setEnabled(false);
+                    else
+                        imgNextSuggested.setEnabled(true);
                 }
             });
 
@@ -194,6 +205,10 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Previous");
                     listViewSuggestedBooks.getLayoutManager().smoothScrollToPosition(listViewSuggestedBooks, null, layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() - 1 : 0);
+                    if(layoutManagerSuggested.findFirstVisibleItemPosition()==0)
+                        imgPrevSuggested.setEnabled(false);
+                    else
+                        imgPrevSuggested.setEnabled(true);
                 }
             });
 

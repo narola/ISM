@@ -58,6 +58,7 @@ public class ResponseHandler {
     private ArrayList<Movies> movies;
     private ArrayList<Pastime> pastime;
     private ArrayList<Feeds> feeds;
+    private ArrayList<Feeds> feed;
     private ArrayList<Wallet> wallet;
     private ArrayList<BlockedUsers> blockedUsers;
     private ArrayList<UserActivitiy> userActivities;
@@ -304,6 +305,15 @@ public class ResponseHandler {
 
     public void setAdminConfig(ArrayList<AdminConfig> adminConfig) {
         this.adminConfig = adminConfig;
+    }
+
+    @JsonProperty("feed")
+    public ArrayList<Feeds> getFeed() {
+        return feed;
+    }
+
+    public void setFeed(ArrayList<Feeds> feed) {
+        this.feed = feed;
     }
 
 }

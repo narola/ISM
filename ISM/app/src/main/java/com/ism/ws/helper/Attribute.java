@@ -7,6 +7,7 @@ import com.ism.constant.WebConstants;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by c161 on 30/10/15.
@@ -88,6 +89,13 @@ public class Attribute {
     private ArrayList<String> removeBookId;
     private ArrayList<String> addBookId;
     private String studymateId;
+    private String videoThumbnail;
+    private String feedBy;
+    private String feedText;
+    private String videoLink;
+    private String audioLink;
+    private List<String> images;
+    private String postedOn;
 
 	public Attribute() {
 		setSecretKey(WebConstants.SECRET_KEY);
@@ -597,4 +605,99 @@ public class Attribute {
 	public void setLastSyncDate(String lastSyncDate) {
 		this.lastSyncDate = lastSyncDate;
 	}
+    public String getFeedBy() {
+        return this.feedBy;
+    }
+
+
+    @JsonProperty("feed_by")
+    public void setFeedBy(String feedBy) {
+        this.feedBy = feedBy;
+    }
+
+    public String getFeedText() {
+        return this.feedText;
+    }
+
+    @JsonProperty("feed_text")
+    public void setFeedText(String feedText) {
+        this.feedText = feedText;
+    }
+
+    public String getVideoLink() {
+        return this.videoLink;
+    }
+
+    @JsonProperty("video_link")
+    public void setVideoLink(String videoLink) {
+        this.videoLink = videoLink;
+    }
+
+    public String getAudioLink() {
+        return this.audioLink;
+    }
+
+    @JsonProperty("audio_link")
+    public void setAudioLink(String audioLink) {
+        this.audioLink = audioLink;
+    }
+
+    public List<String> getImages() {
+        return this.images;
+    }
+
+    @JsonProperty("images")
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    public String getPostedOn() {
+        return this.postedOn;
+    }
+
+    @JsonProperty("posted_on")
+    public void setPostedOn(String postedOn) {
+        this.postedOn = postedOn;
+    }
+
+    public String getVideoThumbnail() {
+        return this.videoThumbnail;
+    }
+
+    @JsonProperty("video_thumbnail")
+    public void setVideoThumbnail(String videoThumbnail) {
+        this.videoThumbnail = videoThumbnail;
+    }
+
+    /*these are the upload media params*/
+    private ArrayList<MediaUploadAttribute> arrListFile = new ArrayList<MediaUploadAttribute>();
+    private ArrayList<MediaUploadAttribute> arrListParam = new ArrayList<MediaUploadAttribute>();
+    private String mediaType;
+
+    public ArrayList<MediaUploadAttribute> getArrListFile() {
+        return arrListFile;
+    }
+
+    public Attribute setArrListFile(ArrayList<MediaUploadAttribute> arrListFile) {
+        this.arrListFile = arrListFile;
+        return this;
+    }
+
+    public ArrayList<MediaUploadAttribute> getArrListParam() {
+        return arrListParam;
+    }
+
+    public Attribute setArrListParam(ArrayList<MediaUploadAttribute> arrListParam) {
+        this.arrListParam = arrListParam;
+        return this;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public Attribute setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+        return this;
+    }
 }
