@@ -12,6 +12,7 @@ public class AdminConfig extends RealmObject {
 
 	@PrimaryKey
 	private int configId;
+	private int serverConfigId;
 	private String configKey;
 	private String configValue;
 	private String valueUnit;
@@ -25,6 +26,14 @@ public class AdminConfig extends RealmObject {
 
 	public void setConfigId(int configId) {
 		this.configId = configId;
+	}
+
+	public int getServerConfigId() {
+		return serverConfigId;
+	}
+
+	public void setServerConfigId(int serverConfigId) {
+		this.serverConfigId = serverConfigId;
 	}
 
 	public String getConfigKey() {

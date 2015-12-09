@@ -38,10 +38,27 @@ public class StudentHelper {
 	 * @param adminConfig
 	 */
 	public void saveAdminConfig(AdminConfig adminConfig) {
-		realm.beginTransaction();
-		realm.copyToRealmOrUpdate(adminConfig);
-		realm.commitTransaction();
+		try {
+			Number configId = realm.where(AdminConfig.class).max("configId");
+			long newId = 0;
+			if (configId != null) {
+				newId = (long) configId + 1;
+			}
+			realm.beginTransaction();
+			adminConfig.setConfigId((int)newId);
+			realm.copyToRealmOrUpdate(adminConfig);
+			realm.commitTransaction();
+		} catch (Exception e) {
+			Log.e(TAG, "saveAdminConfig Exception : " + e.toString());
+		}
 	}
+
+	/*User user = new User();
+	user.setFirstName("krunal");
+//  UserHelper user1 = new UserHelper(user,getActivity());
+	user.saveUser();
+	user  =null;
+	System.gc();*/
 
 	public void destroy() {
 
@@ -58,4 +75,5 @@ public class StudentHelper {
 			return null;
 		}
 	}
+
 }

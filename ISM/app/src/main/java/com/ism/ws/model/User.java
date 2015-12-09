@@ -50,6 +50,8 @@ public class User {
     private String subjectName;
     private String isOnline;
     private String requestStatus;
+    private String tokenName;
+
 
 	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 
@@ -382,5 +384,14 @@ public class User {
 	public void setRequestStatus(String requestStatus) {
 		this.requestStatus = requestStatus;
 	}
+
+    @JsonProperty("token_name")
+    public String getTokenName() {
+        return this.tokenName;
+    }
+
+    public void setTokenName(String tokenName) {
+        this.tokenName = tokenName;
+    }
 
 }

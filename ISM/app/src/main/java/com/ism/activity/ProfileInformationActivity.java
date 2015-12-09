@@ -30,6 +30,7 @@ import com.ism.commonsource.utility.AESHelper;
 import com.ism.commonsource.view.ProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
@@ -809,6 +810,8 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                     PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, "" + responseHandler.getUser().get(0).getUserId());
                     PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, ProfileInformationActivity.this, responseHandler.getUser().get(0).getFullName());
                     PreferenceData.setStringPrefs(PreferenceData.USER_NAME, ProfileInformationActivity.this, etUserName.getText().toString().trim());
+                    PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, ProfileInformationActivity.this, responseHandler.getUser().get(0).getTokenName());
+	                WebConstants.SECRET_KEY = responseHandler.getUser().get(0).getTokenName();
 //                    if (!responseObj.getData().get(0).getUserId().equals(" ")) {
 //                        callApiUploadPic(responseObj.getData().get(0).getUserId(), fileName);
 //                    }
@@ -816,7 +819,8 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	                String globalPassword = studentHelper.getGlobalPassword();
 	                if (globalPassword != null) {
-		                PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, AESHelper.encrypt(globalPassword, etUserName.getText().toString().trim()));
+		                WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, etUserName.getText().toString().trim());
+		                PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, WebConstants.ACCESS_KEY);
 	                }
 
                      User user = new User();
