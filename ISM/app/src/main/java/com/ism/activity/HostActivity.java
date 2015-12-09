@@ -131,9 +131,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private InputMethodManager inputMethod;
     private ScrollListener scrollListener;
 
-    public interface ScrollListener {
+	public interface ScrollListener {
         public void isLastPosition();
-
         public void isFirstPosition();
     }
 
@@ -230,13 +229,24 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, HostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, HostActivity.this);
+        Global.strAccessKey = PreferenceData.getStringPrefs(PreferenceData.ACCESS_KEY, HostActivity.this);
+        Global.strSecretKey = PreferenceData.getStringPrefs(PreferenceData.SECRET_KEY, HostActivity.this);
 	    Global.strProfilePic = WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
 //        Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
 
-        if (Utility.isConnected(HostActivity.this)) {
-            callApiRefreshToken();
+	    /*try {
+		    String username = PreferenceData.getStringPrefs(PreferenceData.USER_NAME, HostActivity.this);
+		    Log.e(TAG, "username : " + username);
+	    } catch (Exception e) {
+		    Log.e(TAG, "encrypted username Exception : " + e.toString());
+	    }*/
+
+	    if (Utility.isConnected(HostActivity.this)) {
+		    if (Global.strSecretKey == null) {
+			    callApiRefreshToken();
+		    }
             callApiGetAllBadgesCount();
             callApiGetGeneralSettingPreferences();
             callApiForGetUserPreference();
@@ -373,7 +383,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void callApiRefreshToken() {
         try {
             Attribute attribute = new Attribute();
-	        attribute.setUsername("");
+	        attribute.setUsername(Global.strAccessKey);
 
             new WebserviceWrapper(getApplicationContext(), attribute, HostActivity.this).new WebserviceCaller()
                     .execute(WebConstants.REFRESH_TOKEN);
@@ -386,7 +396,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         try {
             showProgress();
             new WebserviceWrapper(getApplicationContext(), null, HostActivity.this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTING_PREFERENCES);
-
         } catch (Exception e) {
             Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
         }
@@ -869,21 +878,43 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     public void onResponse(Object object, Exception error, int apiCode) {
         hideProgress();
         try {
-            if (WebConstants.GENERAL_SETTING_PREFERENCES == apiCode) {
-                onResponseGetAllPreference(object, error);
-
-            } else if (WebConstants.GET_USER_PREFERENCES == apiCode) {
-                onResponseGetUserPreference(object, error);
-
-            } else if (WebConstants.GET_ALL_BADGES_COUNT == apiCode) {
-                onResponseGetAllBadges(object, error);
-            }
+	        switch (apiCode) {
+		        case WebConstants.GENERAL_SETTING_PREFERENCES:
+			        onResponseGetAllPreference(object, error);
+			        break;
+		        case WebConstants.GET_USER_PREFERENCES:
+			        onResponseGetUserPreference(object, error);
+			        break;
+		        case WebConstants.GET_ALL_BADGES_COUNT:
+			        onResponseGetAllBadges(object, error);
+			        break;
+		        case WebConstants.REFRESH_TOKEN:
+			        onResponseRefreshToken(object, error);
+			        break;
+	        }
         } catch (Exception e) {
             Log.e(TAG, "On response Exception : " + e.getLocalizedMessage());
         }
     }
 
-    private void onResponseGetAllPreference(Object object, Exception error) {
+	private void onResponseRefreshToken(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, this, responseHandler.getMessage());
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "onResponseRefreshToken failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseRefreshToken api Exception :" + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseRefreshToken Exception :" + e.toString());
+		}
+	}
+
+	private void onResponseGetAllPreference(Object object, Exception error) {
         try {
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;

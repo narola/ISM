@@ -40,6 +40,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
 /**
  * Created by c161 on 12/10/15.
  */
@@ -206,10 +209,10 @@ public class Utility {
 	            confirmationListener.onConfirmationResponse(requestId, true);
             }
         }).setNegativeButton(R.string.strcancel, new DialogInterface.OnClickListener() {
-	        @Override
-	        public void onClick(DialogInterface dialog, int which) {
-		        confirmationListener.onConfirmationResponse(requestId, false);
-	        }
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                confirmationListener.onConfirmationResponse(requestId, false);
+            }
         }).create();
 	    dialog.setCancelable(cancelable);
 //        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
