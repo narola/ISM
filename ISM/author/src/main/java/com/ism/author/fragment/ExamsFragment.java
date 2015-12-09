@@ -22,9 +22,9 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
-import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.object.Global;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -255,8 +255,8 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setUserId("52");
-                request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
+                request.setUserId(Global.strUserId);
+                request.setRole(Global.role);
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLASSIGNMENTS);
             } catch (Exception e) {
@@ -290,7 +290,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             try {
                 Utility.showSpinnerProgress(progExamAuthorBook);
                 Attribute attribute = new Attribute();
-                attribute.setUserId("52");
+                attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETBOOKSFORAUTHOR);
             } catch (Exception e) {
@@ -333,12 +333,12 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    if(responseHandler.getExams().size()>0){
+                    if (responseHandler.getExams().size() > 0) {
                         arrListExams.addAll(responseHandler.getExams());
                         examsAdapter.addAll(arrListExams);
                         examsAdapter.notifyDataSetChanged();
                         tvNoExamMsg.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         tvNoExamMsg.setVisibility(View.VISIBLE);
                     }
 

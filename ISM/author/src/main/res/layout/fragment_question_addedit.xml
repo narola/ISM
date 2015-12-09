@@ -187,7 +187,7 @@
                         android:id="@+id/rl_select_image"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/d150dp"
-                        android:layout_marginLeft="@dimen/d20dp"
+                        android:layout_marginLeft="@dimen/d10dp"
                         android:layout_weight="1"
                         android:background="@drawable/news_feed_post_box">
 

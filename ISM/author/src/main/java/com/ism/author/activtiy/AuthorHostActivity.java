@@ -198,15 +198,17 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private void inigGlobal() {
 //        IOSocketHandler.ConnectSocket();
 
-        mFragmentManager = getFragmentManager();
-        mFragmentTransaction = mFragmentManager.beginTransaction();
-        Global.myTypeFace = new MyTypeFace(getApplicationContext());
 
+        Global.myTypeFace = new MyTypeFace(getApplicationContext());
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
-        Global.strUserId = "52";
-        Global.strFullName = "Arti Patel";
-        Global.strProfilePic = WebConstants.USER_IMAGES + "user_370/123_test.png";
+        Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
+        Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
+        Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
+
+        mFragmentManager = getFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+
         rlControllerTop = (RelativeLayout) findViewById(R.id.rl_controller_top);
         llSearch = (LinearLayout) findViewById(R.id.ll_search);
         rlControllerTopMenu = (RelativeLayout) findViewById(R.id.rl_controller_top_menu);

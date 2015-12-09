@@ -539,7 +539,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 etEvaluationNote2.setText(questions.getEvaluationNotes());
             }
 
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
+            imageLoader.displayImage(WebConstants.QUESTION_IMAGES + questions.getQuestionImageLink(),
                     imgSelectImage, ISMAuthor.options);
 
 
@@ -773,37 +773,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             Utility.toastOffline(getActivity());
         }
     }
-//    private void callApiSetHashTag(String questionId) {
-//        if (Utility.isConnected(getActivity())) {
-//            ((AuthorHostActivity) getActivity()).showProgress();
-//            try {
-//                Attribute attribute = new Attribute();
-//
-//                StringBuilder sb = new StringBuilder();
-//                List<HashTagsModel> list = tagsView.getObjects();
-//                for (int i = 0; i < list.size(); i++) {
-//                    sb.append(list.get(i).getTagName() + ":" + list.get(i).getTagId());
-//                    if (i < list.size() - 1) {
-//                        sb.append(",");
-//                    }
-//
-//                }
-//
-//                Utils.showToast("The tokens are::" + sb.toString(), getActivity());
-//                attribute.setHashtagData(sb.toString());
-//                attribute.setResourceId("135");
-//                attribute.setResourceType(AppConstant.RESOURCE_TYPE_QUESTION);
-//
-//                ((AuthorHostActivity) getActivity()).showProgress();
-//                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-//                        .execute(WebConstants.SETHASHTAG);
-//            } catch (Exception e) {
-//                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-//            }
-//        } else {
-//            Utility.toastOffline(getActivity());
-//        }
-//    }
 
     ArrayList<AnswerChoices> arrListAnswerChioces = new ArrayList<AnswerChoices>();
 
@@ -827,7 +796,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 add question you have to pass question id 0 */
 
                 Attribute attribute = new Attribute();
-                attribute.setUserId("52");
+                attribute.setUserId(Global.strUserId);
                 if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
                     /*for edit question*/
                     Debug.e(TAG, "The question id is::" + getFragment().getQuestionData().getQuestionId());
@@ -989,20 +958,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-//                    callApiSetHashTag(responseHandler.getQuestion().get(0).getQuestionId());
 
                     Debug.e(TAG, "The Question Id Is::" + responseHandler.getQuestion().get(0).getQuestionId());
                     if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+
                         Utils.showToast(getString(R.string.question_edit_success), getActivity());
-//                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_edit_success));
                         getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
                                 makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
                                 chkAddquestionPreview.isChecked());
                     } else {
 
                         Utils.showToast(getString(R.string.question_add_success), getActivity());
-//                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_add_success));
-                        /*this is for add question data*/
                         getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
                                 chkAddquestionPreview.isChecked());
 

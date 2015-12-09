@@ -54,7 +54,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
 
     private void initGlobal() {
 
-        getStudentsFragment = new GetStudentsFragment(this);
+        getStudentsFragment = new GetStudentsFragment(this, getArguments());
         getSubjectiveQuestionsFragment = new GetSubjectiveQuestionsFragment(this, getArguments());
         questionPaletteFragment = new QuestionPaletteFragment(this);
 

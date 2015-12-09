@@ -63,6 +63,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, getActivity())) {
             launchHostActivity();
         } else if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity())) {
@@ -81,7 +82,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
         etPwd = (EditText) findViewById(R.id.et_pwd);
         etUserid = (EditText) findViewById(R.id.et_userid);
-        etUserid.setText("0YGAJ8793B");
+        etUserid.setText("twinkle");
         etPwd.setText("narola21");
         etUserid.setTypeface(myTypeFace.getRalewayRegular());
         etPwd.setTypeface(myTypeFace.getRalewayRegular());
@@ -383,8 +384,6 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             Attribute attribute = new Attribute();
             attribute.setUsername(etUserid.getText().toString().trim());
             attribute.setPassword(etPwd.getText().toString().trim());
-//			attribute.setUsername("0YGAJ8793B");
-//			attribute.setPassword("narola21");
 
             new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.LOGIN);
@@ -478,6 +477,13 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                         launchProfileInfoActivity();
 
                     } else {
+
+                        PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, getActivity(), ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_ID, getActivity(), responseHandler.getUser().get(0).getUserId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, getActivity(), responseHandler.getUser().get(0).getFullName());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, getActivity(), responseHandler.getUser().get(0).getProfilePic());
+
+                        launchHostActivity();
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {

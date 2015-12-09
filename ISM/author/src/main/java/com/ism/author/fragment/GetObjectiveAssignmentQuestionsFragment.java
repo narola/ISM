@@ -147,7 +147,6 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
                 request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-//                request.setExamId("9");
                 new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
@@ -168,10 +167,6 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                 Attribute request = new Attribute();
                 request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 request.setStudentId(getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
-//                request.setExamId("9");
-//                request.setStudentId("202");
-//                request.setExamId("4");
-//                request.setStudentId("139");
                 new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {

@@ -27,6 +27,7 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.QuestionBankListAdapter;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.object.Global;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -242,7 +243,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId("52");
+                attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETBOOKSFORAUTHOR);
             } catch (Exception e) {
@@ -259,10 +260,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
-//                attribute.setUserId("52");
-//                attribute.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
-                attribute.setUserId("52");
-                attribute.setRole("4");
+                attribute.setUserId(Global.strUserId);
+                attribute.setRole(Global.role);
 
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETQUESTIONBANK);
