@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.adapter.Adapters;
+import com.ism.commonsource.utility.AESHelper;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
@@ -37,6 +38,8 @@ import com.realm.ismrealm.RealmAdaptor;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import realmhelper.StudentHelper;
 
 /**
  * Created by c161 on 07/10/15.
@@ -62,19 +65,24 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private AlertDialog dialogForgotPassword;
 	private MyTypeFace myTypeFace;
 	private ProgressDialog pd;
+	private StudentHelper studentHelper;
 
 	private String strValidationMsg;
-	private boolean isAdminConfigSet;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		WebConstants.SECRET_KEY = "juPC8Mos1bMZTbjKm/gFiCUqcI7+H8zr2UdlLfnCwo4=";
-		WebConstants.ACCESS_KEY = "PLF25jEXMPXkKwavzk2mmKMj/j1br7vn8zv3IRID4js";
+//		WebConstants.SECRET_KEY = "juPC8Mos1bMZTbjKm/gFiCUqcI7+H8zr2UdlLfnCwo4=";
+//		WebConstants.ACCESS_KEY = "PLF25jEXMPXkKwavzk2mmKMj/j1br7vn8zv3IRID4js";
 
+		studentHelper = new StudentHelper(LoginActivity.this);
 		callApiGetAdminConfig();
 
+//		resumeApp();
+	}
+
+	private void resumeApp() {
 		if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this)) {
 			if (PreferenceData.getBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this)) {
 				if (PreferenceData.getBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this)) {
@@ -442,8 +450,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			pd.show();
 			Attribute attribute = new Attribute();
 			attribute.setRole("All");
-			attribute.setLastSyncDate("");
-//			attribute.setLastSyncDate(PreferenceData.getStringPrefs(PreferenceData.ADMIN_CONFIG_SYNC_DATE, LoginActivity.this, ""));
+//			attribute.setLastSyncDate("");
+			attribute.setLastSyncDate(PreferenceData.getStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, LoginActivity.this, ""));
 
 			new WebserviceWrapper(LoginActivity.this, attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_ADMIN_CONFIG);
@@ -495,10 +503,16 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 					Log.e(TAG, "admin config size : " + arrListAdminConfig.size());
 
 					if (arrListAdminConfig != null && arrListAdminConfig.size() > 0) {
-						PreferenceData.setStringPrefs(PreferenceData.ADMIN_CONFIG_SYNC_DATE, LoginActivity.this,
+						for (AdminConfig config : arrListAdminConfig) {
+							model.AdminConfig adminConfig = new model.AdminConfig();
+							adminConfig.setConfigKey(config.getConfigKey());
+							adminConfig.setConfigValue(config.getConfigValue());
+							studentHelper.saveAdminConfig(adminConfig);
+						}
+						PreferenceData.setStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, LoginActivity.this,
 								Utility.formatDateMySql(Calendar.getInstance().getTime()));
 					}
-					isAdminConfigSet = true;
+					resumeApp();
 
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetAdminConfig Failed");
@@ -675,6 +689,14 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, LoginActivity.this, responseHandler.getUser().get(0).getProfilePic());
 						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupId());
 						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_NAME, this, etUserid.getText().toString().trim());
+
+						/*String globalPassword = studentHelper.getGlobalPassword();
+						Log.e(TAG, "globalPassword : " + globalPassword);
+						if (globalPassword != null) {
+							PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, LoginActivity.this, AESHelper.encrypt(globalPassword, etUserid.getText().toString().trim()));
+						}*/
+						PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, LoginActivity.this, AESHelper.encrypt("uniquemastermind", etUserid.getText().toString().trim()));
 
 //						if (responseHandler.getUser().get(0).getTutorialGroupId() == null) {
 //							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);
@@ -683,7 +705,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 //							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, true);
 //
 //							if (responseHandler.getUser().get(0).getTutorialGroupJoiningStatus().equals("1")) {
-								PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
+						PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
 //
 //								if (responseHandler.getUser().get(0).getTutorialGroupComplete().equals("1")) {
 									PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this, true);
@@ -730,4 +752,9 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		finish();
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		studentHelper.destroy();
+	}
 }
