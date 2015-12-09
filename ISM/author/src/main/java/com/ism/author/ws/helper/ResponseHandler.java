@@ -59,6 +59,7 @@ public class ResponseHandler {
     private ArrayList<StudymateRequest> studymateRequest;
     private ArrayList<Message> messages;
     private ArrayList<Books> books;
+    private ArrayList<Feeds> feedImages;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -379,6 +380,15 @@ public class ResponseHandler {
     public ResponseHandler setQuestionId(String questionId) {
         this.questionId = questionId;
         return this;
+    }
+
+    @JsonProperty("feed_images")
+    public ArrayList<Feeds> getFeedImages() {
+        return feedImages;
+    }
+
+    public void setFeedImages(ArrayList<Feeds> feedImages) {
+        this.feedImages = feedImages;
     }
 }
 

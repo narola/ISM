@@ -49,6 +49,7 @@ public class WebConstants {
 	public static final int GENERAL_SETTING_PREFERENCES = 72;
 	public static final int GET_USER_PREFERENCES=73;
 	public static final int BLOCK_USER = 74;
+	public static final int UNBLOCK_USER = 74;
 	public static final int BLOCKED_USER = 75;
 
 	//edit profiles
@@ -134,6 +135,7 @@ public class WebConstants {
 	public static final String URL_MANAGE_BOOK_LIBRARY =  HOST_WS + "ManageBookLibrary";
 	public static final String URL_EDIT_PROFILE_PIC = " ";
 	public static final String URL_GET_BLOCKED_USER =  HOST_WS + "GetBlockedUser";
+	public static final String URL_UNBLOCK_USER =  HOST_WS + "UnBlockUser";
 
 	/**
 	 * Parameter value Constants

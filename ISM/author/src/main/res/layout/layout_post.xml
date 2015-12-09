@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.ism.author.activtiy.PostActivity"
+    tools:context="com.ism.author..activity.PostFeedActivity"
     android:orientation="vertical">
     <!--<ScrollView-->
     <!--android:layout_width="match_parent"-->
@@ -13,6 +13,11 @@
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
     <!--android:orientation="vertical">-->
+    <com.ism.commonsource.view.ActionProcessButton
+        android:id="@+id/prog_host"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:visibility="gone"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60sp"
@@ -186,128 +191,128 @@
         android:orientation="vertical"
         android:visibility="visible">
 
-    <LinearLayout
-        android:id="@+id/ll_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_bottompost"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
         <LinearLayout
-            android:id="@+id/ll_captureimg"
-            android:layout_width="250sp"
+            android:id="@+id/ll_container"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="150dp"
-            android:layout_marginRight="50dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:background="@drawable/bg_bottompost"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/img_capture"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/txt_capture"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/ll_captureimg"
+                android:layout_width="250sp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="150dp"
+                android:layout_marginRight="50dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text=""
-                android:textColor="@color/color_black"
-                android:textSize="30sp" />
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img_capture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/txt_capture"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="30sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_chooseimg"
+                android:layout_width="250sp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="150dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/imggallery" />
+
+                <TextView
+                    android:id="@+id/txt_choose"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="30sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_chooseimg"
-            android:layout_width="250sp"
+            android:id="@+id/ll_recordaudio"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="150dp"
             android:layout_weight="1"
+            android:background="@drawable/bg_bottompost"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/imggallery" />
-
-            <TextView
-                android:id="@+id/txt_choose"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text=""
-                android:textColor="@color/color_black"
-                android:textSize="30sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_recordaudio"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@drawable/bg_bottompost"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/img_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/audio_done" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <com.ism.author.views.CircularSeekBar
-                android:id="@+id/circularSeekBar"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_margin="20dp"
-                android:padding="20dp"
-                app:circle_color="@color/color_white"
-                app:circle_progress_color="#EA4A51"
-                app:circle_stroke_width="2dp"
-                app:circle_x_radius="100dp"
-                app:circle_y_radius="100dp"
-                app:end_angle="90"
-                app:max="100"
-                app:pointer_alpha_ontouch="100"
-                app:pointer_color="#EA4A51"
-                app:pointer_halo_border_width="0dp"
-                app:pointer_halo_color="#00ffffff"
-                app:progress="0"
-                app:start_angle="90"
-                app:use_custom_radii="true" />
-
-            <ImageView
-                android:id="@+id/img_stop"
+                android:id="@+id/img_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"/>
-        </RelativeLayout>
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/audio_done" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.ism.author.views.CircularSeekBar
+                    android:id="@+id/circularSeekBar"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:layout_margin="20dp"
+                    android:padding="20dp"
+                    app:circle_color="@color/color_white"
+                    app:circle_progress_color="#EA4A51"
+                    app:circle_stroke_width="2dp"
+                    app:circle_x_radius="100dp"
+                    app:circle_y_radius="100dp"
+                    app:end_angle="90"
+                    app:max="100"
+                    app:pointer_alpha_ontouch="100"
+                    app:pointer_color="#EA4A51"
+                    app:pointer_halo_border_width="0dp"
+                    app:pointer_halo_color="#00ffffff"
+                    app:progress="0"
+                    app:start_angle="90"
+                    app:use_custom_radii="true" />
+
+                <ImageView
+                    android:id="@+id/img_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
 
 
-        <ImageView
-            android:id="@+id/img_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/img_stop" />
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/img_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/img_stop" />
+        </LinearLayout>
     </LinearLayout>
     <!--</ScrollView>-->
 </LinearLayout>

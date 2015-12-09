@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.ism.teacher.PostActivity;
+import com.ism.teacher.activity.PostFeedActivity;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
@@ -99,7 +99,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     private void onAttachFileClick(View view) {
         if (view == llPost || view == etWritePost) {
-            Intent intent = new Intent(getActivity(), PostActivity.class);
+            Intent intent = new Intent(getActivity(), PostFeedActivity.class);
             startActivityForResult(intent, AppConstant.REQUEST_CODE_ADD_POST);
 
         }

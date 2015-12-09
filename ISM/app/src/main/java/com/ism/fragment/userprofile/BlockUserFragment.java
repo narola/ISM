@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * Created by c162 on 09/11/15.
  */
-public class BlockUserFragment extends Fragment implements View.OnClickListener, WebserviceWrapper.WebserviceResponse {
+public class BlockUserFragment extends Fragment implements View.OnClickListener, WebserviceWrapper.WebserviceResponse,HostActivity.ResizeView {
     private View view;
     private MyTypeFace myTypeFace;
     private TextView txtBlockAssign, txtManageBlockUser, txtContactISMAdmin, txtContactDetails, txtEmailAddress, txtBlockUser, txtNotification, txtBlock;
@@ -48,11 +48,18 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
     private HostActivity activityHost;
     ArrayList<BlockedUsers> arrayListBlockedUser = new ArrayList<>();
     private TextView txtEmpty;
+    HostActivity.ResizeView resizeListView;
 
     public static BlockUserFragment newInstance() {
         BlockUserFragment fragment = new BlockUserFragment();
         return fragment;
     }
+
+    @Override
+    public void onUnBlockUser() {
+        ListViewDynamicHight();
+    }
+
 
     public BlockUserFragment() {
     }
@@ -105,14 +112,14 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
         callApiForBlockedUser();
         txtBlock.setOnClickListener(this);
         txtContactDetails.setOnClickListener(this);
-       // txtContactDetails.setMovementMethod(LinkMovementMethod.getInstance());
+        // txtContactDetails.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 
     private void setUpList() {
         try {
             if (arrayListBlockedUser.size() > 0) {
-                blockedUserAdapter = new BlockedUserAdapter(getActivity(), arrayListBlockedUser);
+                blockedUserAdapter = new BlockedUserAdapter(getActivity(), arrayListBlockedUser,this);
                 listView.setAdapter(blockedUserAdapter);
                 txtEmpty.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
@@ -138,8 +145,8 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
 //        Intent mailClient = new Intent(Intent.ACTION_VIEW);
 //        mailClient.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivity");
 //        startActivity(mailClient);
-        try{
-            Intent intent=new Intent(android.content.Intent.ACTION_SEND);
+        try {
+            Intent intent = new Intent(android.content.Intent.ACTION_SEND);
             intent.setType("text/plain");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -158,8 +165,8 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
 //            else {
 //                Toast.makeText(getActivity(), "No app found on your phone which can perform this action", Toast.LENGTH_SHORT).show();
 //            }
-        }catch (Exception e){
-            Debug.i(TAG,"openGmail Exception : " +e.getLocalizedMessage());
+        } catch (Exception e) {
+            Debug.i(TAG, "openGmail Exception : " + e.getLocalizedMessage());
         }
 
     }
@@ -210,9 +217,9 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
                 //api call
                 callApiForBlockUser();
             }
-        }else if (v==txtContactDetails) {
-           // startApplication("com.gmail");
-           openGmail();
+        } else if (v == txtContactDetails) {
+            // startApplication("com.gmail");
+            openGmail();
 
 //            if(txtContactDetails.getSelectionStart()!=-1 && txtContactDetails.getSelectionEnd()!=-1){
 //               // openGmail();
@@ -221,6 +228,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
         }
 
     }
+
     public static boolean isAvailable(Context ctx, Intent intent) {
         final PackageManager mgr = ctx.getPackageManager();
         List<ResolveInfo> list =
@@ -228,6 +236,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
                         PackageManager.MATCH_DEFAULT_ONLY);
         return list.size() > 0;
     }
+
     private void callApiForBlockUser() {
         try {
             if (Utility.isConnected(getActivity())) {

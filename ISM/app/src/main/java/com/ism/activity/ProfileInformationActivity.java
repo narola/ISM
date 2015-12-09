@@ -589,7 +589,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 imgDp.setImageBitmap(bitmap);
 //                imageURI = uri;
-//                 sourceFile = new File(getPath(imageURI));
+//                 sourceFile = new File(getPathImage(imageURI));
 //                if (!sourceFile.isFile()) {
 //                    Debug.e(TAG, "Source File Does not exist");
 //                }

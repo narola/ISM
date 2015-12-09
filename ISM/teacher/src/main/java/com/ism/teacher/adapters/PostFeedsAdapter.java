@@ -160,7 +160,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         //http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_138/group1_1445832486.jpg
-        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgDpPostCreator, ISMTeacher.options);
+        imageLoader.displayImage(WebConstants.USER_IMAGES+arrListFeeds.get(position).getProfilePic(), holder.imgDpPostCreator, ISMTeacher.options);
 
         holder.txtUsernamePostCreator.setText(arrListFeeds.get(position).getFullName());
         holder.txtPostContent.setText(arrListFeeds.get(position).getFeedText());
