@@ -442,7 +442,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     currentControllerTopMenu.get(i).setIsActive(false);
                     startSlideAnimation(txtsMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
                     txtsMenu[i].setVisibility(View.VISIBLE);
-                    //onBackClick(currentMainFragment);
+                    onBackClick(currentMainFragment);
                 }
 
             } else if (view == txtAction) {
@@ -623,6 +623,8 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
         if (currentMainFragment == FRAGMENT_TEACHER_OFFICE) {
 
+            //On loading teacher office in main frag,automatically it will call
+            //Teacher class wall(as per mockup_),first frag called inside TeacherOffice is classwall in initglobal
             loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
 
         }

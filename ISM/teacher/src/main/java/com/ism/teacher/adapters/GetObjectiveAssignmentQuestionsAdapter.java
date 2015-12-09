@@ -2,6 +2,7 @@ package com.ism.teacher.adapters;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ import com.ism.teacher.ws.model.Questions;
 import java.util.ArrayList;
 
 /**
- * Created by c162 on 05/11/15.
+ * This fragment is used to display the list of objective question
  */
 public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<GetObjectiveAssignmentQuestionsAdapter.ViewHolder> {
     private static final String TAG = GetObjectiveAssignmentQuestionsAdapter.class.getSimpleName();
@@ -29,12 +30,13 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private MyTypeFace myTypeFace;
     private LayoutInflater inflater;
+    private Bundle bundleArgument;
 
-
-    public GetObjectiveAssignmentQuestionsAdapter(Context context) {
+    public GetObjectiveAssignmentQuestionsAdapter(Context context, Bundle bundleArgument) {
         this.mContext = context;
         inflater = LayoutInflater.from(context);
         myTypeFace = new MyTypeFace(context);
+        this.bundleArgument = bundleArgument;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
         TextView txtQuestionNo, txtQuestionText, txtCorrectAnswer, txtAnswer, txtStudentnameAnswer, txtStudentAnswer, txtEvoluationsNotes,
                 txtSolution;
         EditText etEvoluationsNotes, etSolution;
-        LinearLayout llQuestionsOptions, llQuestionsEvaluationContainer;
+        LinearLayout llQuestionsOptions, llAnswerContainer, llEvaluationContainer;
 
 
         public ViewHolder(View itemView) {
@@ -64,13 +66,12 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
                 txtStudentAnswer = (TextView) itemView.findViewById(R.id.txt_student_answer);
                 txtEvoluationsNotes = (TextView) itemView.findViewById(R.id.txt_evoluations_notes);
                 txtSolution = (TextView) itemView.findViewById(R.id.txt_solution);
-
                 etEvoluationsNotes = (EditText) itemView.findViewById(R.id.et_evoluations_notes);
                 etSolution = (EditText) itemView.findViewById(R.id.et_solution);
 
                 llQuestionsOptions = (LinearLayout) itemView.findViewById(R.id.ll_questions_options);
-
-                llQuestionsEvaluationContainer = (LinearLayout) itemView.findViewById(R.id.ll_questions_evaluation_container);
+                llAnswerContainer = (LinearLayout) itemView.findViewById(R.id.ll_answer_container);
+                llEvaluationContainer = (LinearLayout) itemView.findViewById(R.id.ll_evaluation_container);
 
             } catch (Exception e) {
                 Debug.e(TAG, "ViewHolder Exceptions :" + e.toString());
@@ -101,30 +102,74 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
 
             holder.txtQuestionText.setText(Utility.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
-            holder.llQuestionsOptions.removeAllViews();
-            if (holder.llQuestionsOptions.getChildCount() == 0) {
-                for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
-                    View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
-                    holder.llQuestionsOptions.addView(ansView);
-                }
-            }
+            holder.etEvoluationsNotes.setText(Utility.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
+            holder.etSolution.setText(Utility.formatHtml(arrListQuestions.get(position).getSolution()));
 
-            if (evaluationList.size() > 0) {
-                holder.llQuestionsEvaluationContainer.setVisibility(View.VISIBLE);
 
-                for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
-                    if (arrListQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
-                        holder.txtAnswer.setText(Utility.formatHtml(Utility.getCharForNumber(i + 1) + ". " + arrListQuestions.get(position).getAnswers().get(position).getChoiceText()));
-                        break;
+            if (bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
+                holder.llQuestionsOptions.setVisibility(View.GONE);
+                holder.llAnswerContainer.setVisibility(View.GONE);
+                holder.llEvaluationContainer.setVisibility(View.VISIBLE);
+
+            } else if (bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
+                holder.llQuestionsOptions.setVisibility(View.VISIBLE);
+                holder.llAnswerContainer.setVisibility(View.GONE);
+                holder.llEvaluationContainer.setVisibility(View.GONE);
+                holder.llQuestionsOptions.removeAllViews();
+
+                if (holder.llQuestionsOptions.getChildCount() == 0) {
+                    for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
+                        View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
+                        holder.llQuestionsOptions.addView(ansView);
                     }
                 }
 
-                holder.txtStudentAnswer.setText(Utility.formatHtml(evaluationList.get(position).getStudentResponse()));
-                holder.etEvoluationsNotes.setText(Utility.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
-                holder.etSolution.setText(Utility.formatHtml(arrListQuestions.get(position).getSolution()));
+                /**
+                 * If evaluation flag is true then make evaluation and answer container both visible
+                 * else
+                 * make only answer container visible to show the answers of question
+                 */
+                if (bundleArgument.getBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                    holder.llEvaluationContainer.setVisibility(View.VISIBLE);
+                    holder.llAnswerContainer.setVisibility(View.VISIBLE);
 
-            } else {
-                holder.llQuestionsEvaluationContainer.setVisibility(View.GONE);
+                } else {
+                    holder.llEvaluationContainer.setVisibility(View.GONE);
+                    holder.llAnswerContainer.setVisibility(View.VISIBLE);
+                }
+
+                if (arrListQuestions.get(position).getAnswers() != null) {
+                    for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
+                        if (arrListQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
+                            holder.txtAnswer.setText(Utility.formatHtml(Utility.getCharForNumber(i + 1) + ". " +
+                                    arrListQuestions.get(position).getAnswers().get(i).getChoiceText()));
+                            break;
+                        } else {
+                            holder.txtAnswer.setText("");
+                        }
+                    }
+                }
+
+
+            }
+
+//            holder.txtStudentnameAnswer.setText(bundleArgument.getString(AssignmentSubmitterAdapter.ARG_STUDENT_NAME) + " " +
+//                    mContext.getString(R.string.stranswer));
+
+            if (evaluationList != null) {
+
+                if (evaluationList.size() > 0) {
+                    if (position < evaluationList.size()) {
+                        for (int j = 0; j < arrListQuestions.get(position).getAnswers().size(); j++) {
+                            if (evaluationList.get(position).getStudentResponse().equalsIgnoreCase(arrListQuestions.get(position).getAnswers().get(j).getId())) {
+                                holder.txtStudentAnswer.setText(Utility.formatHtml(arrListQuestions.get(position).getAnswers().get(j).getChoiceText()));
+                                break;
+                            } else {
+                                holder.txtStudentAnswer.setText("");
+                            }
+                        }
+                    }
+                }
             }
 
         } catch (Exception e) {

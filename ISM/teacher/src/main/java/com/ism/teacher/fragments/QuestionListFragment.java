@@ -16,6 +16,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,7 +71,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private List<Courses> arrListCourses;
     private List<Topics> arrListTopic;
     private EditText etSearchQuestions;
-    private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview;
+    private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview, tvNoQuestions;
     private RecyclerView rvQuestionlist;
     private QuestionBankListAdapter questionBankListAdapter;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
@@ -84,8 +85,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     public static final String MCQ_FORMAT = "MCQ";
     public static final String DESCRIPTIVE_FORMAT = "descriptive";
 
-    private ImageView imgSortUp, imgSortDown;
+    //private ImageView imgSortUp, imgSortDown;
     public static final int SORT_UP = 1, SORT_DOWN = 2;
+
+    public boolean isSorted = false;
+    private RelativeLayout rlSortQuestionBank;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -99,12 +103,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
-
-        imgSortUp = (ImageView) view.findViewById(R.id.img_sort_up);
-        imgSortDown = (ImageView) view.findViewById(R.id.img_sort_down);
-
-        imgSortUp.setOnClickListener(this);
-        imgSortDown.setOnClickListener(this);
+        tvNoQuestions = (TextView) view.findViewById(R.id.tv_no_questions);
+        tvNoQuestions.setTypeface(myTypeFace.getRalewayBold());
+        rlSortQuestionBank = (RelativeLayout) view.findViewById(R.id.rl_sort_question_bank);
+        rlSortQuestionBank.setOnClickListener(this);
 
         imgSearchQuestions = (ImageView) view.findViewById(R.id.img_search_questions);
 
@@ -537,12 +539,22 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 getFragment().setDataOnFragmentFlip(null, false, true);
                 break;
 
-            case R.id.img_sort_up:
-                performSorting(SORT_UP);
-                break;
+//            case R.id.img_sort_up:
+//                performSorting(SORT_UP);
+//                break;
+//
+//            case R.id.img_sort_down:
+//                performSorting(SORT_DOWN);
+//                break;
 
-            case R.id.img_sort_down:
-                performSorting(SORT_DOWN);
+            case R.id.rl_sort_question_bank:
+                if (!isSorted) {
+                    performSorting(SORT_DOWN);
+                    isSorted = true;
+                } else {
+                    performSorting(SORT_UP);
+                    isSorted = false;
+                }
                 break;
         }
     }
@@ -603,6 +615,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
         questionBankListAdapter.addAll(arrListQuestions);
         questionBankListAdapter.notifyDataSetChanged();
+        isSorted = false;
 
         filterResultsAfterAddEditDelete();
     }
@@ -685,7 +698,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 //filter based on subject id and topic id (based on subjects)
                 if (topicId != null && !topicId.equalsIgnoreCase("")) {
                     if (wp.getTopicId().equalsIgnoreCase(topicId) && wp.getSubjectId().equalsIgnoreCase(Integer.toString(subjectId))) {
-                        Debug.e(TAG + "filter success", "" + count++);
+                        //Debug.e(TAG + "filter success", "" + count++);
                         copylistOfQuestionBank.add(wp);
                     }
                 }
@@ -694,9 +707,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
             if (latestlistOfQuestionBank.size() > 0) {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
+                hideEmptyText();
             } else {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
                 Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+                showEmptyText();
             }
 
         }
@@ -714,7 +729,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             int count = 0;
             for (Questions wp : arrListQuestions) {
                 if (wp.getSubjectId().equalsIgnoreCase(Integer.toString(subjectId))) {
-                    Debug.e(TAG + "filter success", "" + count++);
+                    //    Debug.e(TAG + "filter success", "" + count++);
                     copylistOfQuestionBank.add(wp);
                 }
 
@@ -724,15 +739,17 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
             if (latestlistOfQuestionBank.size() > 0) {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
+                hideEmptyText();
             } else {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
                 Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+                showEmptyText();
             }
         }
     }
 
     private void filterResultsForExamType(String examtype) {
-        Debug.e(TAG, "examtype is:" + examtype);
+        // Debug.e(TAG, "examtype is:" + examtype);
 
         latestlistOfQuestionBank.clear();
         if (copylistOfQuestionBank.size() > 0) {
@@ -744,15 +761,28 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
             }
             if (latestlistOfQuestionBank.size() > 0) {
-                Debug.e(TAG + "results after filter for exam type:" + examtype, "" + latestlistOfQuestionBank.size());
+                //  Debug.e(TAG + "results after filter for exam type:" + examtype, "" + latestlistOfQuestionBank.size());
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
+                hideEmptyText();
             } else {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
+
                 Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+                showEmptyText();
             }
 
         }
 
+    }
+
+    public void showEmptyText() {
+        tvNoQuestions.setVisibility(View.VISIBLE);
+        rvQuestionlist.setVisibility(View.INVISIBLE);
+    }
+
+    public void hideEmptyText() {
+        tvNoQuestions.setVisibility(View.GONE);
+        rvQuestionlist.setVisibility(View.VISIBLE);
     }
 
 

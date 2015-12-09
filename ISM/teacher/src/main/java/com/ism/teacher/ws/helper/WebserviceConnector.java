@@ -117,7 +117,8 @@ public class WebserviceConnector {
 
         return mapper;
     }
-    public <Response> Response uploadMedia(Class<Response> responseType, Attribute mediaUploadAttribute) {
+
+        public <Response> Response uploadMedia(Class<Response> responseType, Attribute mediaUploadAttribute) {
         String charset = "UTF-8";
         String requestURL = url;
         String responseString = null;

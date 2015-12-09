@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_white">
 
+    <TextView
+        android:id="@+id/tv_no_questions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/no_questions_in_your_exam"
+        android:textSize="@dimen/d22sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,6 +35,32 @@
                 android:text="Preview"
                 android:textColor="@color/color_question"
                 android:textSize="22sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/d10dp"
+                android:layout_toRightOf="@+id/tv_questionlist_title"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_total_questions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=""
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/tv_total_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:gravity="center"
+                    android:text="Total Score:"
+                    android:textSize="22sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_freeze_question"
@@ -50,6 +86,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
+
     </LinearLayout>
 
-</LinearLayout>
+
+</RelativeLayout>

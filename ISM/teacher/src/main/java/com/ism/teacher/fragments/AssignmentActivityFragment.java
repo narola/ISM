@@ -18,7 +18,6 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
@@ -251,7 +250,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
             try {
 
                 CreateAssignmentRequest createAssignmentRequest = new CreateAssignmentRequest();
-                createAssignmentRequest.setUser_id(AppConstant.TEST_USER_ID);
+                createAssignmentRequest.setUser_id(WebConstants.TEST_USER_ID);
                 createAssignmentRequest.setSubmission_date(strDob);
                 createAssignmentRequest.setClassroom_id(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0);
@@ -362,7 +361,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
     private void onResponseCreateAssignment(Object object) {
         ResponseHandler createAssignmentResponseHandler = (ResponseHandler) object;
-        if (createAssignmentResponseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && createAssignmentResponseHandler != null) {
+        if (createAssignmentResponseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
             backToTrialScreen();
             Utility.showToast(createAssignmentResponseHandler.getMessage(), getActivity());
 
@@ -375,7 +374,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     private void onResponseGetTopics(Object object) {
 
         ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && responseHandler != null) {
+        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
             arrListTopic = new ArrayList<>();
             arrListTopic.addAll(responseHandler.getTopics());
@@ -397,7 +396,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     private void onResponseGetSubject(Object object) {
 
         ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && responseHandler != null) {
+        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
             arrListSubject = new ArrayList<>();
             arrListSubject.addAll(responseHandler.getSubjects());
@@ -417,7 +416,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
     private void onResponseGetClassRooms(Object object) {
         ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && responseHandler != null) {
+        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
             arrListClassRooms = new ArrayList<>();
             arrListClassRooms.addAll(responseHandler.getClassrooms());
             List<String> classrooms = new ArrayList<String>();

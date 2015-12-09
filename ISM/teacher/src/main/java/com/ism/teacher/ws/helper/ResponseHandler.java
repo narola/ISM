@@ -16,6 +16,7 @@ import com.ism.teacher.ws.model.ExamSubmission;
 import com.ism.teacher.ws.model.Exams;
 import com.ism.teacher.ws.model.Feed;
 import com.ism.teacher.ws.model.Feeds;
+import com.ism.teacher.ws.model.FileUploadResponse;
 import com.ism.teacher.ws.model.HashTags;
 import com.ism.teacher.ws.model.Question;
 import com.ism.teacher.ws.model.Questions;
@@ -38,6 +39,9 @@ public class ResponseHandler {
     private String message;
     private ArrayList<Data> data;
     private String status;
+
+    private String mediaType;
+    private String imageLink;
 
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
@@ -289,6 +293,19 @@ public class ResponseHandler {
 
     public void setQuestion(ArrayList<Question> question) {
         this.question = question;
+    }
+
+
+    FileUploadResponse fileUploadResponse;
+
+    @JsonProperty("upload_question")
+    public FileUploadResponse getFileUploadResponse() {
+        return fileUploadResponse;
+    }
+
+    public ResponseHandler setFileUploadResponse(FileUploadResponse fileUploadResponse) {
+        this.fileUploadResponse = fileUploadResponse;
+        return this;
     }
 
     @JsonProperty("feed_images")

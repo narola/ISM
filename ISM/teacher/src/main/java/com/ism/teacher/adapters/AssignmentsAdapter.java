@@ -13,10 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
+import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.GetAssignmentsSubmitterFragment;
 import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
-import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Exams;
 
@@ -71,7 +71,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View assignments_view = inflater.inflate(R.layout.assignment_subjects_row, parent, false);
+        View assignments_view = inflater.inflate(R.layout.row_assignment, parent, false);
         ViewHolder viewHolder = new ViewHolder(assignments_view);
         return viewHolder;
     }
@@ -79,9 +79,9 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        LinearLayout llParentAssignment, llViewQuestions, llAssessedQuestion, llUnassessedQuestion;
+        LinearLayout llParentAssignment, llViewQuestions;
         RelativeLayout rlTopAssignment;
-        TextView txtAssignmentCourse, txtAssignmentClassName, txtAssignmentDate, txtNumberAssessedQuestion, txtNumberUnassessedQuestion, txtNumberTotalQuestions;
+        TextView txtExamName, txtAssignmentClassName, txtAssignmentDate, txtNumberAssessedQuestion, txtNumberUnassessedQuestion, txtNumberTotalQuestions;
         TextView txtAssignmentSubject, txtAssessedLabel, txtUnassessedLabel, txtQuestionLabel, txtAssignmentType;
 
         public ViewHolder(View itemView) {
@@ -89,14 +89,12 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
             llParentAssignment = (LinearLayout) itemView.findViewById(R.id.ll_parent_assignment);
 
-            llAssessedQuestion = (LinearLayout) itemView.findViewById(R.id.ll_assessed_question);
-            llUnassessedQuestion = (LinearLayout) itemView.findViewById(R.id.ll_unassessed_question);
             llViewQuestions = (LinearLayout) itemView.findViewById(R.id.ll_view_questions);
 
             rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_top_assignment);
             txtAssignmentSubject = (TextView) itemView.findViewById(R.id.txt_assignment_subject);
 
-            txtAssignmentCourse = (TextView) itemView.findViewById(R.id.txt_assignment_course);
+            txtExamName = (TextView) itemView.findViewById(R.id.txt_exam_name);
             txtAssignmentClassName = (TextView) itemView.findViewById(R.id.txt_assignment_class_name);
             txtAssignmentDate = (TextView) itemView.findViewById(R.id.txt_assignment_date);
 
@@ -119,13 +117,13 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         holder.txtAssignmentSubject.setText(arrayListAssignments.get(position).getSubjectName());
-        //holder.txtAssignmentCourse.setText(arrayListAssignments.get(position).getClass_name());
+        holder.txtExamName.setText(arrayListAssignments.get(position).getExamName());
         holder.txtAssignmentClassName.setText(arrayListAssignments.get(position).getClassroomName());
-//        holder.txtAssignmentDate.setText(arrayListAssignments.get(position).);
+        holder.txtAssignmentDate.setText(Html.fromHtml("<font color='#0E970C'>Assignment Date:" + "</font>" + (Utility.getFormattedDate("dd-MMM-yyyy", arrayListAssignments.get(position).getExamCreatedDate()))));
 
-//        holder.txtNumberAssessedQuestion.setText(arrayListAssignments.get(position).);
-//        holder.txtNumberUnassessedQuestion.setText(arrayListAssignments.get(position).);
-//        holder.txtNumberTotalQuestions.setText(arrayListAssignments.get(position).);
+        holder.txtNumberAssessedQuestion.setText(arrayListAssignments.get(position).getTotalAssessed());
+        holder.txtNumberUnassessedQuestion.setText(arrayListAssignments.get(position).getTotalUnassessed());
+        holder.txtNumberTotalQuestions.setText(arrayListAssignments.get(position).getTotalQuestion());
         holder.txtAssignmentType.setText(Html.fromHtml("<font color='#77C2EA'>Assignment Type:" + arrayListAssignments.get(position).getExamMode() + "</font>"));
 
 
@@ -152,7 +150,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         bundleAssignmentDetails.putString(ARG_EXAM_SUBJECT_NAME, arrayListAssignments.get(position).getSubjectName());
         bundleAssignmentDetails.putString(ARG_EXAM_TOPIC_ID, WebConstants.TOPIC_ID_5);
         bundleAssignmentDetails.putString(ARG_EXAM_TOPIC_NAME, "");
-        bundleAssignmentDetails.putString(ARG_EXAM_BOOK_ID, WebConstants.BOOK_ID_2);
+        bundleAssignmentDetails.putString(ARG_EXAM_BOOK_ID, arrayListAssignments.get(position).getBookId());
         bundleAssignmentDetails.putString(ARG_EXAM_BOOK_NAME, "");
         bundleAssignmentDetails.putString(ARG_EXAM_CATEGORY, arrayListAssignments.get(position).getExamCategory());
         bundleAssignmentDetails.putString(ARG_EXAM_TYPE, arrayListAssignments.get(position).getExamType());
@@ -161,7 +159,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         bundleAssignmentDetails.putInt(ARG_ASSIGNMENT_NO, position);
         bundleAssignmentDetails.putString(ARG_EXAM_PASS_PERCENTAGE, arrayListAssignments.get(position).getPassPercentage());
         bundleAssignmentDetails.putString(ARG_EXAM_QUESTION_SCORE, "0");
-        bundleAssignmentDetails.putString(ARG_EXAM_CREATED_DATE, "");
+        bundleAssignmentDetails.putString(ARG_EXAM_CREATED_DATE, arrayListAssignments.get(position).getExamCreatedDate());
 
         holder.llParentAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,20 +175,23 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             @Override
             public void onClick(View view) {
 
-                if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_OBJECTIVE)) {
-
-                    bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
-                    mFragment.getFragmentManager().beginTransaction().
+//                if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_OBJECTIVE)) {
+//
+//                    bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
+//                    mFragment.getFragmentManager().beginTransaction().
+//                            replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
+//
+//
+//                } else if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_SUBJECTIVE)) {
+//
+//                    bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
+//                    mFragment.getFragmentManager().beginTransaction().
+//                            replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
+//
+//                }
+                bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
+                mFragment.getFragmentManager().beginTransaction().
                             replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
-
-
-                } else if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_SUBJECTIVE)) {
-
-                    bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
-                    mFragment.getFragmentManager().beginTransaction().
-                            replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
-
-                }
 
             }
         });

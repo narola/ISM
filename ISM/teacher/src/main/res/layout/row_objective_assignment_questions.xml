@@ -61,6 +61,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_answer_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -90,7 +91,7 @@
                         android:layout_height="match_parent"
                         android:gravity="left"
                         android:paddingLeft="5dp"
-                        android:text="Answer"
+                        android:text=""
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -117,7 +118,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:paddingLeft="10dp"
-                        android:text="Answer"
+                        android:text=""
                         android:textSize="18sp"
                         android:visibility="visible" />
                 </LinearLayout>
@@ -131,6 +132,7 @@
                 android:background="#d1d1d1" />
 
             <LinearLayout
+                android:id="@+id/ll_evaluation_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
