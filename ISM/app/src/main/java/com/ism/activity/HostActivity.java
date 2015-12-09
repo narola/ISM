@@ -130,6 +130,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private ArrayList<PrivacySetting> arrayListPrivacySetting = new ArrayList<>();
     private InputMethodManager inputMethod;
     private ScrollListener scrollListener;
+    private ResizeView resizeListView;
 
     public interface ScrollListener {
         public void isLastPosition();
@@ -168,6 +169,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 		public void onProfileControllerAttached();
 		public void onProfileControllerDetached();
 	}
+    public interface ResizeView {
+        public void onUnBlockUser();
+    }
 
     public interface BooksListner {
         public void onAddToFav(int position);
@@ -230,6 +234,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         progHost = (ActionProcessButton) findViewById(R.id.prog_host);
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, HostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, HostActivity.this);
+        Debug.i(TAG,"User Image : "+WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this));
 	    Global.strProfilePic = WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
 //        Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
         Global.imageLoader = ImageLoader.getInstance();
@@ -999,7 +1004,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         public void onAddToLibrary(String id);
         public void onRemoveFromLibrary(String id );
     }
-
+    public void setListenerResizeView(ResizeView resizeListView) {
+        this.resizeListView = resizeListView;
+    }
     public void setListenerAddToLibrary(AddToLibraryListner addToLibraryListner) {
         this.addToLibraryListner = addToLibraryListner;
     }

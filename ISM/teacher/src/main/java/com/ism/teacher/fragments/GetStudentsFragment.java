@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import com.ism.teacher.R;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.MyStudentsAdapter;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -178,7 +177,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private void onResponseMyStudents(Object object) {
 
         ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
+        if (responseHandler.getStatus().equalsIgnoreCase(ResponseHandler.SUCCESS)) {
 
             arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
             myStudentsAdapter.addAll(arrListExamSubmittor);

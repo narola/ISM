@@ -31,6 +31,7 @@ import com.ism.constant.WebConstants;
 import com.ism.fragment.AllStudymateRequestFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
+import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
@@ -117,6 +118,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         arrImgNotificationIcon = new ImageView[]{imgNotification, imgMessage, imgFriendRequest};
 
         txtUserName.setText(Global.strFullName);
+        Debug.i(TAG,"User Image: "+ Global.strProfilePic);
         Global.imageLoader.displayImage(Global.strProfilePic, imgDp, ISMStudent.options);
         showBadges();
 

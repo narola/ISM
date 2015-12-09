@@ -118,7 +118,7 @@ public class WebserviceConnector {
         return mapper;
     }
 
-    public <Response> Response uploadMedia(Class<Response> responseType, Attribute mediaUploadAttribute) {
+        public <Response> Response uploadMedia(Class<Response> responseType, Attribute mediaUploadAttribute) {
         String charset = "UTF-8";
         String requestURL = url;
         String responseString = null;
@@ -139,6 +139,7 @@ public class WebserviceConnector {
 
             /*This is to add file content*/
             for (int i = 0; i < mediaUploadAttribute.getArrListFile().size(); i++) {
+                Debug.i(TAG, "File path : " + mediaUploadAttribute.getArrListFile().get(i).getFileName());
                 multipart.addFilePart(mediaUploadAttribute.getArrListFile().get(i).getParamName(),
                         new File(mediaUploadAttribute.getArrListFile().get(i).getFileName()));
             }
@@ -146,16 +147,15 @@ public class WebserviceConnector {
             List<String> response = multipart.finish();
             Debug.e(TAG, "SERVER REPLIED:");
             for (String line : response) {
-                Debug.e(TAG, "Upload Question Image Response:::" + line);
+                Debug.e(TAG, "Upload Media Response:::" + line);
                 responseString = line;
             }
 
             ret = getMapper().readValue(responseString, responseType);
         } catch (IOException ex) {
-            System.err.println(ex);
+            Debug.i(TAG,"uploadMedia  IOException : "+ex.getLocalizedMessage());
         }
         return ret;
 
     }
-
 }

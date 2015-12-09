@@ -38,17 +38,11 @@ public class AppConstant {
     public static final String RalewayThin = "Raleway-Thin.ttf";
     public static final String RalewayThinItalic = "Raleway-ThinItalic.ttf";
 
-    public static final String USERID = "USERID";
-    public static final String PASSWORD = "PASSWORD";
-    public static final String API_STATUS_SUCCESS = "success";
-    public static final String API_STATUS_FAIL = "fail";
-
-    public static final String imageCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Images";
-    public static final String videoCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
-    public static final String audioCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Audios";
+    public static final String IMAGE_CAPTURE_PATH = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Images";
+    public static final String VIDEO_CAPTURE_PATH = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
+    public static final String AUDIO_CAPTURE_PATH = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Audios";
 
 
-    public static final String TEST_USER_ID = "370";
     public static final String TEST_GET_ALL_FEEDS = "141";
     public static final String TEST_GETSTUDYMATES = "167";
     public static final String TEST_FEEDID = "240";

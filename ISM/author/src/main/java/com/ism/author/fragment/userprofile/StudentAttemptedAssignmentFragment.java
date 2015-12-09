@@ -14,6 +14,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.StudentAttemptedAssignmentAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
@@ -78,11 +79,9 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-//                request.setExamId(fragmentArgument.getRequestObject().getExamId());
-                request.setExamId("9");
-                request.setUserId("340");
+                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setUserId("52");
                 request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
-
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMSUBMISSION);
             } catch (Exception e) {

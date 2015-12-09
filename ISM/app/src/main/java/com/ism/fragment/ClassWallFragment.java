@@ -28,6 +28,7 @@ import com.ism.ws.helper.WebserviceWrapper;
 public class ClassWallFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = ClassWallFragment.class.getSimpleName();
+    private static final int REQUEST_CODE_ADD_NEW_POST = 100;
 
     private View view;
     private RecyclerView recyclerPostFeeds;
@@ -92,12 +93,18 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
             public void onClick(View v) {
 //              Start post activity
                 Intent intent = new Intent(getActivity(), PostFeedActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_ADD_NEW_POST);
             }
         });
 
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_ADD_NEW_POST) {
+            callApiGetAllFeeds();
+        }
 
+    }
     private void callApiGetAllFeeds() {
         try {
             activityHost.showProgress();

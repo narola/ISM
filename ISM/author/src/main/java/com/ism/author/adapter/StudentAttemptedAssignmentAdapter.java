@@ -84,9 +84,8 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
                 public void onClick(View v) {
 
                     /*this is to select the current student*/
-                    bundleArgument.putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID, arrListExamSubmittor.get(position).getStudentId());
+                    setBundleArgument(position);
                     notifyDataSetChanged();
-//                    ((GetObjectiveAssignmentQuestionsFragment) fragmentArgument.getFragment()).loadStudentEvaluationData();
                     ((AuthorHostActivity) mContext).loadStudentEvaluationData();
 
                 }
@@ -137,5 +136,16 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
                 Debug.e(TAG, "ViewHolder Exceptions :" + e.toString());
             }
         }
+    }
+
+    public void setBundleArgument(int position) {
+        bundleArgument.putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
+        bundleArgument.putString(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
+                arrListExamSubmittor.get(position).getStudentProfilePic());
+        bundleArgument.putString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME,
+                arrListExamSubmittor.get(position).getStudentName());
+        bundleArgument.putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID,
+                arrListExamSubmittor.get(position).getStudentId());
+        notifyDataSetChanged();
     }
 }

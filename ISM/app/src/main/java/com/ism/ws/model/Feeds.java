@@ -26,6 +26,8 @@ public class Feeds {
 	private String profilePic;
 	private String videoThumbnail;
 	private String videoLink;
+	private String link;
+    private String mediaType;
 	private String feedText;
 	private String totalComment;
 	private ArrayList<Comment> comments;
@@ -183,5 +185,24 @@ public class Feeds {
     public void setTotalComment(String totalComment) {
         this.totalComment = totalComment;
     }
+
+    @JsonProperty("mediaType")
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    @JsonProperty("link")
+    public String getLink() {
+        return this.link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
 
 }

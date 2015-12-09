@@ -19,7 +19,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
-import com.ism.author.activtiy.PostActivity;
+import com.ism.author.activtiy.PostFeedActivity;
 import com.ism.author.adapter.PostFeedsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     private void onAttachFileClick(View view) {
 
         if (view == llPost || view == etWritePost) {
-            Intent intent = new Intent(getActivity(), PostActivity.class);
+            Intent intent = new Intent(getActivity(), PostFeedActivity.class);
             startActivity(intent);
 
         }

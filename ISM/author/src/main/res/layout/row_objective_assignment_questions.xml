@@ -121,7 +121,6 @@
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:paddingLeft="10dp"
-                            android:text="Answer"
                             android:textSize="18sp"
                             android:visibility="visible" />
                     </LinearLayout>

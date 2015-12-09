@@ -59,7 +59,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private ArrayList<Classrooms> arrListClassRooms;
     private List<String> arrListAssessment;
 
-    private TextView txtSubmissionDate;
+    private TextView txtSubmissionDate, tvNoExamMsg;
     private EditText etExamStartdate, etExamEnddate;
     private String strExamStartDate = "", strExamEndDate = "";
 
@@ -103,10 +103,13 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         Adapters.setUpSpinner(getActivity(), spExamEvaluationStatus, arrListAssessment, Adapters.ADAPTER_SMALL);
 
         txtSubmissionDate = (TextView) view.findViewById(R.id.txt_submission_date);
+        tvNoExamMsg = (TextView) view.findViewById(R.id.tv_no_exam_msg);
         etExamStartdate = (EditText) view.findViewById(R.id.et_exam_startdate);
         etExamEnddate = (EditText) view.findViewById(R.id.et_exam_enddate);
 
+
         txtSubmissionDate.setTypeface(myTypeFace.getRalewayRegular());
+        tvNoExamMsg.setTypeface(myTypeFace.getRalewayRegular());
         etExamStartdate.setTypeface(myTypeFace.getRalewayRegular());
         etExamEnddate.setTypeface(myTypeFace.getRalewayRegular());
 
@@ -329,11 +332,19 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListExams.addAll(responseHandler.getExams());
-                    examsAdapter.addAll(arrListExams);
-                    examsAdapter.notifyDataSetChanged();
+
+                    if(responseHandler.getExams().size()>0){
+                        arrListExams.addAll(responseHandler.getExams());
+                        examsAdapter.addAll(arrListExams);
+                        examsAdapter.notifyDataSetChanged();
+                        tvNoExamMsg.setVisibility(View.GONE);
+                    }else{
+                        tvNoExamMsg.setVisibility(View.VISIBLE);
+                    }
+
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
+
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAllAssignments api Exception : " + error.toString());

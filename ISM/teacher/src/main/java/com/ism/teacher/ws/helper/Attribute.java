@@ -827,7 +827,6 @@ public class Attribute {
         return this;
     }
 
-
     /*these are the upload media params*/
     private ArrayList<MediaUploadAttribute> arrListFile = new ArrayList<MediaUploadAttribute>();
     private ArrayList<MediaUploadAttribute> arrListParam = new ArrayList<MediaUploadAttribute>();

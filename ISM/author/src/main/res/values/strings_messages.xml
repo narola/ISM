@@ -70,5 +70,7 @@
     <string name="msg_validation_no_exams_filter">No exams found to filter.</string>
     <string name="msg_validation_no_questions_filter">No questions found to filter.</string>
     <string name="msg_help_add_advance_question">By Clicking On Advance You could be able to add formatted text containing image,various scientific symbols and many options to format text </string>
-
+    <string name="msg_no_exams_found">Sorry no exams created yet.</string>
+    <string name="msg_no_exam_submittor">Sorry no one has submitted the exam.</string>
+    <string name="msg_evaluate_question">Please evaluate the last question to scroll to next.</string>
 </resources>

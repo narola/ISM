@@ -60,6 +60,9 @@
     <string name="strassignmentdatecolon">Assignment Date:</string>
     <string name="strassignmentdate">Assignment date</string>
     <string name="strassessed">Assessed</string>
+    <string name="stranswered">Answered</string>
+    <string name="strnotanswered">Not Answered</string>
+    <string name="strskipped">Skipped</string>
     <string name="strunasssessed">Unassessed</string>
     <string name="strassignmenttype">Assignment Type :</string>
     <string name="stravgscore">Avrage Score</string>
@@ -244,7 +247,6 @@
     <string name="strEbookLink">Ebook link :</string>
     <string name="strfilters">Filters</string>
     <string name="strtypetext">Type Text</string>
-
 
 
     <!--string array-->

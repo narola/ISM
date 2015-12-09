@@ -161,6 +161,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     /*if bundle arguments are not null then we will call get exam evaluation for student nd set data according to it*/
     private void callAPiGetExamEvaluation() {
+
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
@@ -265,6 +266,8 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                         if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() > 0) {
                             getObjectiveAssignmentQuestionsAdapter.setEvaluationData(responseHandler.getExamEvaluation().get(0).getEvaluation());
                         }
+                    } else {
+                        getObjectiveAssignmentQuestionsAdapter.setEvaluationData(null);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {

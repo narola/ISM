@@ -81,6 +81,7 @@
         <activity
             android:name="com.ism.activity.PostFeedActivity"
             android:hardwareAccelerated="false"
+            android:windowSoftInputMode="stateAlwaysVisible"
             android:screenOrientation="landscape" />
     </application>
 
