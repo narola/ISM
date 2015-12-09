@@ -228,6 +228,7 @@ public class AddQuestionContainerFragment extends Fragment {
     public void setQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData, Boolean isChecked) {
         questionListFragment.updateQuestionDataAfterEditQuestion(prevQuestionData, updatedQuestionData, isChecked);
         previewQuestionFragment.updateQuestionDataAfterEditQuestion(prevQuestionData, updatedQuestionData, isChecked);
+
     }
 
     /*this is to refresh list after successfull question add  */

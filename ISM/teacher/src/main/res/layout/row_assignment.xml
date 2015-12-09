@@ -19,15 +19,16 @@
         android:background="@drawable/bg_news_feed"
         android:orientation="vertical">
 
-
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="150dp">
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d150dp">
 
             <RelativeLayout
                 android:id="@+id/rl_top_assignment"
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
+                android:layout_height="@dimen/d100dp"
+                android:background="@drawable/bg_subject_yellow"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txt_assignment_subject"
@@ -35,10 +36,10 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d10dp"
                     android:singleLine="true"
-                    android:text=""
+                    android:text="@string/strtest"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d16sp"
+                    android:textSize="@dimen/d17sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -52,233 +53,161 @@
                     android:layout_marginTop="@dimen/d40dp"
                     android:background="@drawable/btn_dark_grey"
                     android:singleLine="false"
-                    android:text=""
+                    android:text="@string/strtest"
                     android:textColor="@color/color_white"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/d15sp" />
+
             </RelativeLayout>
 
-            <FrameLayout
-                android:id="@+id/frame_circle_class"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp">
-
-                <TextView
-                    android:id="@+id/txt_assignment_class_name"
-                    android:layout_width="@dimen/d100dp"
-                    android:layout_height="@dimen/d100dp"
-                    android:background="@drawable/bg_circle_white"
-                    android:gravity="center"
-                    android:padding="@dimen/d15dp"
-                    android:singleLine="false"
-                    android:text=""
-                    android:textColor="@color/color_green"
-                    android:textSize="18sp" />
-
-            </FrameLayout>
-
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_alignParentLeft="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/rl_top_assignment"
                 android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/txt_label_assigndate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d5dp"
-                    android:text="Assignment Date:"
-                    android:textColor="@color/color_green" />
 
                 <TextView
                     android:id="@+id/txt_assignment_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textColor="@color/color_black" />
+                    android:paddingLeft="@dimen/d10dp"
+                    android:text="@string/strassignmentdatecolon"
+                    android:textSize="@dimen/d15sp" />
+
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/txt_assignment_class_name"
+                android:layout_width="@dimen/d100dp"
+                android:layout_height="@dimen/d100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/d20dp"
+                android:layout_marginRight="@dimen/d15dp"
+                android:background="@drawable/bg_circle_white"
+                android:gravity="center"
+                android:padding="@dimen/d15dp"
+                android:singleLine="false"
+                android:text="@string/strtest"
+                android:textColor="@color/color_green"
+                android:textSize="@dimen/d18sp" />
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/img_separator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/frame_circle_class"
-            android:layout_marginTop="8dp"
-            android:background="@color/color_shade_news_feed" />
+            android:background="@color/assignment_separator" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:paddingBottom="@dimen/d10dp"
+            android:paddingTop="@dimen/d10dp">
 
-            <!-- First part-->
             <LinearLayout
-                android:id="@+id/ll_assessed_question"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <RelativeLayout
+                <TextView
+                    android:id="@+id/txt_number_assessed_question"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_violet_assignment"
+                    android:textSize="@dimen/d20sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/txt_number_assessed_question"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="@color/color_violet_assignment"
-                            android:textSize="@dimen/d18sp" />
-
-                        <TextView
-                            android:id="@+id/txt_assessed_label"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="@string/strassessed" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:background="@color/color_shade_news_feed" />
-                </RelativeLayout>
-
-            </LinearLayout>
-            <!-- Second-->
-            <LinearLayout
-                android:id="@+id/ll_unassessed_question"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/txt_assessed_label"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/txt_number_unassessed_question"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="@color/color_red_assignment"
-                            android:textSize="@dimen/d18sp" />
-
-                        <TextView
-                            android:id="@+id/txt_unassessed_label"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="@string/strunasssessed" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:background="@color/color_shade_news_feed" />
-
-
-                </RelativeLayout>
-
+                    android:singleLine="true"
+                    android:text="@string/strassessed"
+                    android:textSize="@dimen/d15sp" />
             </LinearLayout>
-            <!-- Third-->
+
+            <ImageView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/assignment_separator" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_number_unassessed_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_violet_assignment"
+                    android:textSize="@dimen/d20sp" />
+
+                <TextView
+                    android:id="@+id/txt_unassessed_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/strunasssessed"
+                    android:textSize="@dimen/d15sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/assignment_separator" />
+
             <LinearLayout
                 android:id="@+id/ll_view_questions"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/txt_number_total_questions"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_violet_assignment"
+                    android:textSize="@dimen/d20sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/txt_number_total_questions"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="@color/color_blue_assignment"
-                            android:textSize="@dimen/d18sp" />
-
-                        <TextView
-                            android:id="@+id/txt_question_label"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="@string/strquestion" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:background="@color/color_shade_news_feed" />
-
-
-                </RelativeLayout>
-
-
+                <TextView
+                    android:id="@+id/txt_question_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/strquestion"
+                    android:textSize="@dimen/d15sp" />
             </LinearLayout>
+
 
         </LinearLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/color_shade_news_feed" />
+            android:background="@color/assignment_separator" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/txt_assignment_type"
             android:layout_width="match_parent"
-            android:layout_height="30dp">
-
-            <TextView
-                android:id="@+id/txt_assignment_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text=""
-                android:textColor="@color/color_blue_assignment_type"
-                android:textSize="14sp" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="2dp"
+            android:gravity="center"
+            android:padding="@dimen/d5dp"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/color_blue_assignment_type"
+            android:textSize="@dimen/d15sp" />
     </LinearLayout>
 
 

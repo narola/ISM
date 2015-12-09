@@ -61,6 +61,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_answer_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -131,6 +132,7 @@
                 android:background="#d1d1d1" />
 
             <LinearLayout
+                android:id="@+id/ll_evaluation_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

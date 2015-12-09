@@ -186,12 +186,10 @@
 
                         <ImageView
                             android:id="@+id/img_cancel"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:background="@drawable/img_cancel"
-                            android:gravity="center"
-                            android:padding="20dp"
+                            android:background="@drawable/img_clear_pic"
                             android:visibility="gone" />
 
                     </RelativeLayout>
