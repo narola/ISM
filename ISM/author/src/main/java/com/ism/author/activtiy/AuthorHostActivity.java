@@ -150,12 +150,17 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         public void onSubFragmentDetached(int fragmentId);
         //  public void onControllerMenuItemClicked(int position);
     }
+
     public interface BooksListner {
         public void onAddToFav(int position);
+
         public void onRemoveFromFav(int position);
+
         public void onAddToLibrary(String id);
+
         public void onRemoveFromLibrary(String id);
     }
+
     public interface HostListenerAllNotification {
         public void onControllerTopBackClick();
     }
@@ -191,6 +196,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
 
     private void inigGlobal() {
+//        IOSocketHandler.ConnectSocket();
 
         mFragmentManager = getFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
@@ -1038,7 +1044,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             Debug.i(TAG, "onResponseGetAllBadges Exceptiion : " + e.toString());
         }
     }
-
 
 
 }

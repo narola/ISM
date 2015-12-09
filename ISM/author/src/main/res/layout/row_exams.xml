@@ -41,18 +41,19 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_exam_course_name"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_exam_name"
+                    android:layout_width="@dimen/d170dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="bottom"
+                    android:layout_alignParentBottom="false"
+                    android:layout_gravity="top"
                     android:layout_marginBottom="@dimen/d10dp"
                     android:layout_marginLeft="@dimen/d15dp"
+                    android:layout_marginTop="@dimen/d40dp"
                     android:background="@drawable/btn_dark_grey"
+                    android:singleLine="false"
                     android:text="@string/strtest"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/d15dp" />
-
 
             </RelativeLayout>
 

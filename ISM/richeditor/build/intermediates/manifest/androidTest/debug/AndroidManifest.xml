@@ -13,6 +13,8 @@
         android:label="Tests for jp.wasabeef.richeditor.test"
         android:targetPackage="jp.wasabeef.richeditor.test" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application>
         <uses-library android:name="android.test.runner" />
     </application>

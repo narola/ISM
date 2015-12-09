@@ -10,7 +10,7 @@
         android:id="@+id/rl_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_highscore_subjectlist">
+        android:background="@drawable/bg_postfeed_files">
 
         <ImageView
             android:id="@+id/img_video"
@@ -23,22 +23,21 @@
             android:layout_width="wrap_content"
             android:id="@+id/img_play"
             android:layout_height="wrap_content"
-            android:src="@drawable/audio_play"
             android:layout_centerInParent="true"
             android:visibility="gone" />
         <!--<VideoView-->
-            <!--android:id="@+id/video"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:visibility="gone" />-->
+        <!--android:id="@+id/video"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:visibility="gone" />-->
 
         <!--<ImageView-->
-            <!--android:id="@+id/img_audio"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:visibility="gone" />-->
+        <!--android:id="@+id/img_audio"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:visibility="gone" />-->
 
     </RelativeLayout>
     <TextView
@@ -49,14 +48,14 @@
         android:layout_height="20sp"
         android:layout_alignLeft="@+id/rl_image"
         android:layout_alignBottom="@+id/rl_image"
-        android:drawableLeft="@drawable/arrow" />
+         />
 
     <ImageView
         android:id="@+id/img_cancel"
         android:layout_width="15sp"
         android:layout_height="15sp"
-        android:padding="10dp"
-        android:background="@drawable/img_cancel"
+        android:src="@drawable/img_cancel"
+        android:background="@drawable/img_red_circle"
         android:visibility="gone"
         android:gravity="center"
         android:layout_alignRight="@+id/rl_image"

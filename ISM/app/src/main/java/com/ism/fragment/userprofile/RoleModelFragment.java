@@ -127,6 +127,10 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
                 @Override
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Next");
+                    imgPrevFav.setEnabled(arrayListFav.size() > 4);
+                    if (layoutManagerFav.findLastCompletelyVisibleItemPosition() == arrayListFav.size() - 2) {
+                        imgNextFav.setEnabled(false);
+                    }
                     listViewFav.getLayoutManager().smoothScrollToPosition(listViewFav, null, layoutManagerFav.findLastCompletelyVisibleItemPosition() + 1);
                 }
 
@@ -136,6 +140,10 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
                 @Override
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Previous");
+                    imgNextFav.setEnabled(arrayListFav.size() > 4);
+                    if (layoutManagerFav.findFirstCompletelyVisibleItemPosition() == 1) {
+                        imgPrevFav.setEnabled(false);
+                    }
                     listViewFav.getLayoutManager().smoothScrollToPosition(listViewFav, null, layoutManagerFav.findFirstCompletelyVisibleItemPosition() > 0? layoutManagerFav.findFirstCompletelyVisibleItemPosition() - 1:0);
                 }
             });
@@ -144,6 +152,10 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
                 @Override
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Next");
+                    imgPrevSuggested.setEnabled(arrayListSuggested.size() > 4);
+                    if (layoutManagerSuggested.findLastCompletelyVisibleItemPosition() == arrayListSuggested.size() - 2) {
+                        imgNextSuggested.setEnabled(false);
+                    }
                     listViewSuggested.getLayoutManager().smoothScrollToPosition(listViewSuggested, null, layoutManagerSuggested.findLastCompletelyVisibleItemPosition() + 1);
 
                 }
@@ -153,6 +165,10 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
                 @Override
                 public void onClick(View v) {
                     Utility.showToast(getActivity(), "Previous");
+                    imgNextSuggested.setEnabled(arrayListSuggested.size() > 4);
+                    if (layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() == 1) {
+                        imgPrevSuggested.setEnabled(false);
+                    }
                     listViewSuggested.getLayoutManager().smoothScrollToPosition(listViewSuggested, null, layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() - 1:0);
                 }
             });
@@ -311,7 +327,13 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
             favRoleModelsAdapter = new FavoriteRoleModelsAdapter(getActivity(), arrayListFav, this);
             listViewFav.setAdapter(favRoleModelsAdapter);
             setVisibilityFavItems(arrayListFav.size());
-
+            if (arrayListFav.size() > 5) {
+                imgNextFav.setEnabled(true);
+                imgPrevFav.setEnabled(false);
+            } else {
+                imgNextFav.setEnabled(false);
+                imgPrevFav.setEnabled(false);
+            }
         } catch (Exception e) {
             Debug.e(TAG, "setUpFavList Exceptions :" + e.getLocalizedMessage());
         }
@@ -323,7 +345,13 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
             suggestedRoleModelsAdapter = new SuggestedRoleModelsAdapter(getActivity(), arrayListSuggested, this);
             listViewSuggested.setAdapter(suggestedRoleModelsAdapter);
             setVisibilitySuggestedItems(arrayListSuggested.size());
-
+            if (arrayListSuggested.size() > 5) {
+                imgNextSuggested.setEnabled(true);
+                imgPrevSuggested.setEnabled(false);
+            } else {
+                imgNextSuggested.setEnabled(false);
+                imgPrevSuggested.setEnabled(false);
+            };
         } catch (Exception e) {
             Debug.e(TAG, "setUpSuggestedList Exceptions :" + e.getLocalizedMessage());
         }

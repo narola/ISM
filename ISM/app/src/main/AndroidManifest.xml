@@ -78,6 +78,11 @@
             <action android:name="android.intent.action.MAIN"/>
             <category android:name="android.intent.category.LAUNCHER"/>
         </intent-filter>-->
+        <activity
+            android:name="com.ism.activity.PostFeedActivity"
+            android:hardwareAccelerated="false"
+            android:windowSoftInputMode="stateAlwaysVisible"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

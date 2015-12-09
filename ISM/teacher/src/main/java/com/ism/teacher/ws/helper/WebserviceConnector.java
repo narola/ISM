@@ -9,13 +9,17 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.ism.teacher.Utility.Debug;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -113,5 +117,44 @@ public class WebserviceConnector {
 
         return mapper;
     }
+    public <Response> Response uploadMedia(Class<Response> responseType, Attribute mediaUploadAttribute) {
+        String charset = "UTF-8";
+        String requestURL = url;
+        String responseString = null;
+        Response ret = null;
 
+        try {
+            MultipartUtility multipart = new MultipartUtility(requestURL, charset);
+            /*No header so no need to add it*/
+
+//            multipart.addHeaderField("User-Agent", "CodeJava");
+//            multipart.addHeaderField("Test-Header", "Header-Value");
+
+            /*This is to add parameter values */
+            for (int i = 0; i < mediaUploadAttribute.getArrListParam().size(); i++) {
+                multipart.addFormField(mediaUploadAttribute.getArrListParam().get(i).getParamName(),
+                        mediaUploadAttribute.getArrListParam().get(i).getParamValue());
+            }
+
+            /*This is to add file content*/
+            for (int i = 0; i < mediaUploadAttribute.getArrListFile().size(); i++) {
+                Debug.i(TAG, "File path : " + mediaUploadAttribute.getArrListFile().get(i).getFileName());
+                multipart.addFilePart(mediaUploadAttribute.getArrListFile().get(i).getParamName(),
+                        new File(mediaUploadAttribute.getArrListFile().get(i).getFileName()));
+            }
+
+            List<String> response = multipart.finish();
+            Debug.e(TAG, "SERVER REPLIED:");
+            for (String line : response) {
+                Debug.e(TAG, "Upload Media Response:::" + line);
+                responseString = line;
+            }
+
+            ret = getMapper().readValue(responseString, responseType);
+        } catch (IOException ex) {
+            Debug.i(TAG,"uploadMedia  IOException : "+ex.getLocalizedMessage());
+        }
+        return ret;
+
+    }
 }

@@ -33,10 +33,25 @@
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_assignment_submittor_list"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:padding="@dimen/d10dp" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_assignment_submittor_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="@dimen/d10dp" />
+
+        <TextView
+            android:id="@+id/tv_no_submittor_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/msg_no_exam_submittor"
+            android:textSize="@dimen/d20dp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 </LinearLayout>

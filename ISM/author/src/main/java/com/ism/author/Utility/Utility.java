@@ -33,6 +33,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -361,6 +362,14 @@ public class Utility {
         } catch (Exception e) {
             Log.e(TAG, "showToast Exception : " + e.toString());
         }
+    }
+    /*
+    * Arti Patel
+    * */
+    public static String getDate() {
+        SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        return curFormater.format(calendar.getTime());
     }
 
 }

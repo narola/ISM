@@ -38,8 +38,9 @@ public class WebConstants {
 	public static final int GET_ALL_STUDYMATES_WITH_DETAILS = 28;
 	public static final int GET_ALL_RECOMMENDED_STUDYMATES = 29;
 	public static final int GET_MY_ACTIVITY = 30;
-	public static final int GET_ADMIN_CONFIG = 31;
-	public static final int REFRESH_TOKEN = 32;
+	public static final int UPLOAD_FEED_MEDIA = 31;
+	public static final int GET_ADMIN_CONFIG = 32;
+	public static final int REFRESH_TOKEN = 33;
 
 
 	//general settings
@@ -48,6 +49,7 @@ public class WebConstants {
 	public static final int GENERAL_SETTING_PREFERENCES = 72;
 	public static final int GET_USER_PREFERENCES=73;
 	public static final int BLOCK_USER = 74;
+	public static final int UNBLOCK_USER = 74;
 	public static final int BLOCKED_USER = 75;
 
 	//edit profiles
@@ -60,8 +62,7 @@ public class WebConstants {
 	public static final int GET_MOVIES_FOR_USER = 59;
 	public static final int MANAGE_FAVOURITES = 60;
 	public static final int MANAGE_BOOK_LIBRARY = 61;
-
-
+	public static final int POSTFEED = 62;
 
 	/**
 	 *  URLs
@@ -77,13 +78,11 @@ public class WebConstants {
 
 //	private static final String DIR_PATH = "pg/ISM/WS_ISM/";    //  SERVER
 	private static final String DIR_PATH = "WS_ISM/";           //  KINJAL
-
 	private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
-//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_Images/";
+	//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_Images/";
 	public static final String HOST_IMAGE_USER = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_Images/";
+
 	public static final String HOST_IMAGE_FEED = HOST + DIR_PATH + "images/feeds/";
-
-
 	public static final String HOST_IMAGE_USER_OLD = "http://192.168.1.202/pg/ISM/WS_ISM/";
 	public static final String URL_ACCEPT_TUTORIAL_GROUP = HOST_WS + "AcceptTutorialGroup";
 	public static final String URL_ALLOCATE_TUTORIAL_GROUP = HOST_WS + "AllocateTutorialGroup";
@@ -117,7 +116,9 @@ public class WebConstants {
 	public static final String URL_GET_MY_FEEDS = HOST_WS + "GetMyFeeds";
 	public static final String URL_GET_ALL_STUDYMATES_WITH_DETAILS = HOST_WS + "GetStudymatesWithDetails";
 	public static final String URL_GET_ALL_RECOMMENDED_STUDYMATES = HOST_WS + "GetSuggestedStudymates";
+	public static final String URL_POSTFEED = HOST_WS + "PostFeed";
 	public static final String URL_GET_MY_ACTIVITY = HOST_WS + "GetMyActivity";
+	public static final String URL_UPLOAD_FEED_MEDIA = HOST_WS + "UploadMedia";
 	public static final String URL_REFRESH_TOKEN = HOST_WS + "RefreshToken";
 	public static final String URL_GET_ADMIN_CONFIG = HOST_WS + "GetAdminConfig";
 
@@ -134,6 +135,7 @@ public class WebConstants {
 	public static final String URL_MANAGE_BOOK_LIBRARY =  HOST_WS + "ManageBookLibrary";
 	public static final String URL_EDIT_PROFILE_PIC = " ";
 	public static final String URL_GET_BLOCKED_USER =  HOST_WS + "GetBlockedUser";
+	public static final String URL_UNBLOCK_USER =  HOST_WS + "UnBlockUser";
 
 	/**
 	 * Parameter value Constants

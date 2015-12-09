@@ -20,9 +20,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.MyStudentListAdapter;
-import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
@@ -147,10 +145,17 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setExamId(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setExamId("9");
-                request.setUserId("340");
-                request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
+//                request.setExamId(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+//                request.setUserId("52");
+//                request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
+
+
+                /*static data for subjective exam ealuation*/
+
+                request.setExamId("1");
+                request.setUserId("370");
+                request.setRole("3");
+
 
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMSUBMISSION);

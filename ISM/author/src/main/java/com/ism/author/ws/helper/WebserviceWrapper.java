@@ -228,6 +228,10 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_UPLOADMEDIAFORQUESTION).uploadMedia(ResponseHandler.class,
                                     (Attribute) attribute);
                             break;
+                        case WebConstants.UPLOAD_FEED_MEDIA:
+                            responseObject = new WebserviceConnector(WebConstants.URL_UPLOAD_FEED_MEDIA).uploadMedia(ResponseHandler.class,
+                                    (Attribute) attribute);
+                            break;
                     }
                 }
             } catch (Exception e) {

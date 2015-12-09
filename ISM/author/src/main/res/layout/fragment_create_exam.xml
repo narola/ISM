@@ -727,15 +727,36 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
-                <com.narola.kpa.richtexteditor.view.RichTextEditor
-                    android:id="@+id/rte_trial_exam"
+                <RelativeLayout
+                    android:id="@+id/layoutRich"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/rich_text_editor_height"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/d15dp"
-                    android:layout_marginTop="@dimen/d15dp">
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:orientation="vertical">
 
-                </com.narola.kpa.richtexteditor.view.RichTextEditor>
+                    <TextView
+                        android:id="@+id/tv_exam_instruction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@color/color_blue"
+                        android:padding="@dimen/d15dp"
+                        android:text="@string/strexaminstruction"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/d18dp"
+                        android:visibility="gone" />
+
+                    <com.narola.kpa.richtexteditor.view.RichTextEditor
+                        android:id="@+id/rte_trial_exam"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/rich_text_editor_height"
+                        android:layout_below="@+id/tv_exam_instruction"></com.narola.kpa.richtexteditor.view.RichTextEditor>
+
+                </RelativeLayout>
+
+
             </LinearLayout>
 
 

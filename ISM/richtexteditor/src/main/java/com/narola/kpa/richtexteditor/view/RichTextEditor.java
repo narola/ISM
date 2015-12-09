@@ -5,10 +5,12 @@ import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -17,6 +19,7 @@ import com.narola.kpa.richtexteditor.R;
 
 import jp.wasabeef.richeditor.RichEditor;
 import yuku.ambilwarna.AmbilWarnaDialog;
+
 
 /**
  * Created by Krunal Panchal on 18/09/15.
@@ -42,11 +45,41 @@ public class RichTextEditor extends LinearLayout {
     private ImageButton mImageRemoveLink;
     private ImageButton mImageOrderedList;
     private ImageButton mImageUnorderedList;
+    private Button mImage;
+    private Button mBtnFormula;
+    private Button mBtnVideo;
     private RichEditor mRichEditor;
+    private RichTextListener mRichTextListener;
+    private final int SELECT_PHOTO = 1;
 
     private String mPlaceHolder = "";
     private int mFontSize = 20;
     private int mFontColor = Color.BLACK;
+
+
+    public void setRichTextListener(RichTextListener richTextListener) {
+        this.mRichTextListener = richTextListener;
+    }
+
+    /**
+     * interface for add symbol,image and video.
+     */
+    public interface RichTextListener {
+        /**
+         * open Image picker from {@link AppCompatActivity}
+         */
+        public void imagePicker();
+
+        /**
+         * open video picker from {@link AppCompatActivity}
+         */
+        public void videoPicker();
+
+        /**
+         * open formula dialog from parent activity
+         */
+        public void openFormulaDialog();
+    }
 
     public RichTextEditor(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -94,7 +127,10 @@ public class RichTextEditor extends LinearLayout {
         mImageRemoveLink = (ImageButton) findViewById(R.id.action_remove_link);
         mImageOrderedList = (ImageButton) findViewById(R.id.action_ordered_list);
         mImageUnorderedList = (ImageButton) findViewById(R.id.action_unordered_list);
+        mImage = (Button) findViewById(R.id.add_image);
         mRichEditor = (RichEditor) findViewById(R.id.rich_editor);
+        mBtnFormula = (Button) findViewById(R.id.btn_formula);
+        mBtnVideo = (Button) findViewById(R.id.btn_video);
 
         mRichEditor.setPlaceholder(mPlaceHolder);
         mRichEditor.setEditorFontSize(mFontSize);
@@ -222,6 +258,34 @@ public class RichTextEditor extends LinearLayout {
             }
         });
 
+        mImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mRichTextListener.imagePicker();
+
+
+            }
+        });
+
+        mBtnFormula.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRichTextListener.openFormulaDialog();
+            }
+        });
+
+        mBtnVideo.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mRichTextListener.videoPicker();
+
+
+            }
+        });
+
+
     }
 
     public RichEditor getRichEditor() {
@@ -277,4 +341,48 @@ public class RichTextEditor extends LinearLayout {
         return valid;
     }
 
+    /**
+     * insert Image to rich text editor coming from {@link AppCompatActivity}
+     */
+    public void insertImage(String path) {
+
+        String value = "file://" + path;
+        mRichEditor.insertImage(value, "img");
+    }
+
+    /**
+     * insert Video to rich text editor coming from {@link AppCompatActivity}
+     */
+    public void insertVideo(String path) {
+
+        String value = "file://" + path;
+        mRichEditor.insertVideo(value);
+    }
+
+    /**
+     * add symbol in <div></> using js  coming from parent class.
+     *
+     * @param symbol - symbol for equations
+     */
+    public void addSymbols(String symbol) {
+        mRichEditor.addSymbol(symbol);
+    }
+
+
+    public void setHtml(String mContents) {
+        mRichEditor.setHtml(mContents);
+    }
+
+    public String getHtml() {
+        return mRichEditor.getHtml();
+    }
+
+
+    public void hideMediaControls() {
+
+        mImage.setVisibility(View.GONE);
+        mBtnVideo.setVisibility(View.GONE);
+        mBtnFormula.setVisibility(View.GONE);
+
+    }
 }

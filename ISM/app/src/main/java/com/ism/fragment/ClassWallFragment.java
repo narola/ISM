@@ -2,6 +2,7 @@ package com.ism.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.activity.PostFeedActivity;
 import com.ism.adapter.PostFeedsAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
@@ -26,6 +28,7 @@ import com.ism.ws.helper.WebserviceWrapper;
 public class ClassWallFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = ClassWallFragment.class.getSimpleName();
+    private static final int REQUEST_CODE_ADD_NEW_POST = 100;
 
     private View view;
     private RecyclerView recyclerPostFeeds;
@@ -89,11 +92,19 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
             @Override
             public void onClick(View v) {
 //              Start post activity
+                Intent intent = new Intent(getActivity(), PostFeedActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_ADD_NEW_POST);
             }
         });
 
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_ADD_NEW_POST) {
+            callApiGetAllFeeds();
+        }
 
+    }
     private void callApiGetAllFeeds() {
         try {
             activityHost.showProgress();

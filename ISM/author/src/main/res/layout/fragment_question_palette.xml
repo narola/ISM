@@ -18,7 +18,7 @@
             android:text="@string/strquestionpallete"
             android:textAllCaps="true"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/d18dp" />
+            android:textSize="@dimen/d15dp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_questionpalette_list"
@@ -40,49 +40,49 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_ques_palette_assessed"
+            android:id="@+id/tv_ques_palette_answered"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/fragment_background_color"
-            android:drawableLeft="@drawable/question_palette_assessed"
+            android:drawableLeft="@drawable/question_palette_answered"
             android:drawablePadding="@dimen/d15dp"
             android:gravity="center_vertical"
             android:paddingBottom="@dimen/d5dp"
             android:paddingLeft="@dimen/d15dp"
             android:paddingTop="@dimen/d5dp"
-            android:text="@string/strassessed"
+            android:text="@string/stranswered"
             android:textColor="@color/color_gray"
             android:textSize="@dimen/d15dp" />
 
         <TextView
-            android:id="@+id/tv_ques_palette_not_attempted"
+            android:id="@+id/tv_ques_palette_not_answered"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/d10dp"
             android:background="@color/fragment_background_color"
-            android:drawableLeft="@drawable/question_palette_not_attempted"
+            android:drawableLeft="@drawable/question_palette_not_answered"
             android:drawablePadding="@dimen/d15dp"
             android:gravity="center_vertical"
             android:paddingBottom="@dimen/d5dp"
             android:paddingLeft="@dimen/d15dp"
             android:paddingTop="@dimen/d5dp"
-            android:text="@string/strnotattemted"
+            android:text="@string/strnotanswered"
             android:textColor="@color/color_gray"
             android:textSize="@dimen/d15dp" />
 
         <TextView
-            android:id="@+id/tv_ques_palette_unassessed"
+            android:id="@+id/tv_ques_palette_skipped"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/d10dp"
             android:background="@color/fragment_background_color"
-            android:drawableLeft="@drawable/question_pallete_unassessed"
+            android:drawableLeft="@drawable/question_pallete_skipped"
             android:drawablePadding="@dimen/d15dp"
             android:gravity="center_vertical"
             android:paddingBottom="@dimen/d5dp"
             android:paddingLeft="@dimen/d15dp"
             android:paddingTop="@dimen/d5dp"
-            android:text="@string/strunasssessed"
+            android:text="@string/strskipped"
             android:textColor="@color/color_gray"
             android:textSize="@dimen/d15dp" />
 
