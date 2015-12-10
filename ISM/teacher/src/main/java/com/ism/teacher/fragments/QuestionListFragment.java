@@ -71,7 +71,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private List<Courses> arrListCourses;
     private List<Topics> arrListTopic;
     private EditText etSearchQuestions;
-    private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview;
+    private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview, tvNoQuestions;
     private RecyclerView rvQuestionlist;
     private QuestionBankListAdapter questionBankListAdapter;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
@@ -88,7 +88,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     //private ImageView imgSortUp, imgSortDown;
     public static final int SORT_UP = 1, SORT_DOWN = 2;
 
-    private boolean isSort = false;
+    public boolean isSorted = false;
     private RelativeLayout rlSortQuestionBank;
 
     @Override
@@ -103,6 +103,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
+        tvNoQuestions = (TextView) view.findViewById(R.id.tv_no_questions);
+        tvNoQuestions.setTypeface(myTypeFace.getRalewayBold());
         rlSortQuestionBank = (RelativeLayout) view.findViewById(R.id.rl_sort_question_bank);
         rlSortQuestionBank.setOnClickListener(this);
 
@@ -546,12 +548,12 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 //                break;
 
             case R.id.rl_sort_question_bank:
-                if (!isSort) {
+                if (!isSorted) {
                     performSorting(SORT_DOWN);
-                    isSort = true;
+                    isSorted = true;
                 } else {
                     performSorting(SORT_UP);
-                    isSort = false;
+                    isSorted = false;
                 }
                 break;
         }
@@ -613,6 +615,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
         questionBankListAdapter.addAll(arrListQuestions);
         questionBankListAdapter.notifyDataSetChanged();
+        isSorted = false;
 
         filterResultsAfterAddEditDelete();
     }
@@ -704,9 +707,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
             if (latestlistOfQuestionBank.size() > 0) {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
+                hideEmptyText();
             } else {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
                 Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+                showEmptyText();
             }
 
         }
@@ -734,9 +739,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
             if (latestlistOfQuestionBank.size() > 0) {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
+                hideEmptyText();
             } else {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
                 Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+                showEmptyText();
             }
         }
     }
@@ -756,13 +763,26 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             if (latestlistOfQuestionBank.size() > 0) {
                 //  Debug.e(TAG + "results after filter for exam type:" + examtype, "" + latestlistOfQuestionBank.size());
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
+                hideEmptyText();
             } else {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
+
                 Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+                showEmptyText();
             }
 
         }
 
+    }
+
+    public void showEmptyText() {
+        tvNoQuestions.setVisibility(View.VISIBLE);
+        rvQuestionlist.setVisibility(View.INVISIBLE);
+    }
+
+    public void hideEmptyText() {
+        tvNoQuestions.setVisibility(View.GONE);
+        rvQuestionlist.setVisibility(View.VISIBLE);
     }
 
 

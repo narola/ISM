@@ -11,8 +11,6 @@ public class Global {
 
     public static String strUserId;
     public static String strFullName;
-    public static String strAccessKey;
-    public static String strSecretKey;
     public static String strProfilePic;
 
     public static int intApiCounter = 0;

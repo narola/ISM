@@ -88,6 +88,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     AddQuestionTextDialog addQuestionTextDialog;
     private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
 
+    //public boolean isSpinnerClickable=false;
 
     public QuestionAddEditFragment() {
     }
@@ -176,8 +177,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         spAddquestionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                 /*here i checked that if question is of related exam type then only add to preview otherwise not*/
+                     /*here i checked that if question is of related exam type then only add to preview otherwise not*/
                 if (position == 1 || position == 2) {
                     llAddMcqanswer.setVisibility(View.GONE);
                     etAddquestionAnswer.setVisibility(View.VISIBLE);
@@ -199,6 +199,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         chkAddquestionPreview.setChecked(true);
                     }
                 }
+
             }
 
             @Override
@@ -210,14 +211,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         spAddquestionType.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
-                if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-                    Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+                        Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
+                    }
                 }
                 return true;
             }
         });
-
 
         callAPiGetAllHashTag();
     }
@@ -285,7 +286,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                             e.printStackTrace();
                         }
 
-
                     }
                 }
             }
@@ -343,7 +343,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         chkAddquestionPreview.setChecked(false);
 
         spAddquestionType.setSelection(1);
-        spAddquestionType.setEnabled(true);
+//        spAddquestionType.setEnabled(true);
+        spAddquestionType.setClickable(true);
 
     }
 
@@ -485,7 +486,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
             /*check that if user edit question then disable the formatting of question type.*/
             if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-                spAddquestionType.setEnabled(false);
+                // spAddquestionType.setEnabled(false);
+                spAddquestionType.setClickable(false);
             } else {
                 spAddquestionType.setEnabled(true);
             }
@@ -856,22 +858,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
 
                     if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-
                         //  Utility.showToast(getString(R.string.question_edit_success), getActivity());
 //                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_edit_success));
                         getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
                                 makeQuestionData(responseHandler.getFileUploadResponse().getQuestion_id(), responseHandler.getFileUploadResponse().getImageLink()),
                                 chkAddquestionPreview.isChecked());
-                    } else {
-
-//                        Utility.showToast(getString(R.string.question_add_success), getActivity());
-//                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_add_success));
-                        /*this is for add question data*/
-                        getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getFileUploadResponse().getQuestion_id(), responseHandler.getFileUploadResponse().getImageLink()),
-                                chkAddquestionPreview.isChecked());
-
                     }
-
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), getActivity());
