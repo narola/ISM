@@ -79,7 +79,7 @@
     <dimen name="circular_imageview_border_width">1dp</dimen>
     <dimen name="dp_post_creater_image_width_height">160dp</dimen>
     <dimen name="office_tab_width">315dp</dimen>
-    <dimen name="rich_text_editor_height">450dp</dimen>
+    <dimen name="rich_text_editor_height">290dp</dimen>
     <dimen name="d22sp">22sp</dimen>
     <dimen name="d2dp">2dp</dimen>
     <dimen name="notification_digit_text_size">16sp</dimen>

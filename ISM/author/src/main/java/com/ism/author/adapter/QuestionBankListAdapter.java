@@ -18,6 +18,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.fragment.AddQuestionContainerFragment;
+import com.ism.author.object.Global;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.Answers;
 import com.ism.author.ws.model.Questions;
@@ -77,7 +78,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
-            if (arrListQuestions.get(position).getQuestionCreatorId().equals("52")) {
+            if (arrListQuestions.get(position).getQuestionCreatorId().equals(Global.strUserId)) {
                 holder.imgQuestionEdit.setVisibility(View.VISIBLE);
             } else {
                 holder.imgQuestionEdit.setVisibility(View.GONE);
@@ -325,19 +326,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
 
     public Boolean canAddToPreview = false;
-
-
-//    if (!checkForQuestionPresence(arrListQuestions.get(position).getQuestionId())) {
-//                                if (holder.chkSelectQuestion.isChecked()) {
-//                                    arrListQuestions.get(position).setIsQuestionAddedInPreview(true);
-//                                    getFragment().getListOfPreviewQuestionsToAdd().add(arrListQuestions.get(position));
-//                                } else {
-//                                    arrListQuestions.get(position).setIsQuestionAddedInPreview(false);
-//                                    getFragment().getListOfPreviewQuestionsToAdd().remove(arrListQuestions.get(position));
-//                                }
-//                            } else {
-//                                arrListQuestions.get(position).setIsQuestionAddedInPreview(true);
-//                            }
 
 
 }

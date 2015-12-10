@@ -41,7 +41,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private FragmentListener fragListener;
 
     private TextView tvObjectiveAssignmentSubject, tvObjectiveAssignmentClass, tvObjectiveAssignmentNo, tvObjectiveAssignmentTitle,
-            tvObjectiveAssignmentDateTitle, tvObjectiveAssignmentDate;
+            tvObjectiveAssignmentDateTitle, tvObjectiveAssignmentDate, tvNoQuestionsMsg;
     private ImageView imgEditExam, imgCopyExam;
 
     private RecyclerView rvGetObjectiveAssignmentQuestionslist;
@@ -86,6 +86,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         tvObjectiveAssignmentTitle = (TextView) view.findViewById(R.id.tv_objective_assignment_title);
         tvObjectiveAssignmentDateTitle = (TextView) view.findViewById(R.id.tv_objective_assignment_date_title);
         tvObjectiveAssignmentDate = (TextView) view.findViewById(R.id.tv_objective_assignment_date);
+        tvNoQuestionsMsg = (TextView) view.findViewById(R.id.tv_no_questions_msg);
 
         imgEditExam = (ImageView) view.findViewById(R.id.img_edit_exam);
         imgCopyExam = (ImageView) view.findViewById(R.id.img_copy_exam);
@@ -147,7 +148,6 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
                 request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-//                request.setExamId("9");
                 new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
@@ -168,10 +168,6 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                 Attribute request = new Attribute();
                 request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 request.setStudentId(getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
-//                request.setExamId("9");
-//                request.setStudentId("202");
-//                request.setExamId("4");
-//                request.setStudentId("139");
                 new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {
@@ -234,13 +230,19 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
             if (object != null) {
                 responseObjGetAllExamQuestions = (ResponseHandler) object;
                 if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
-                    getObjectiveAssignmentQuestionsAdapter.addAll(arrListQuestions);
-                    getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
+
+                    if (responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions().size() > 0) {
+                        arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
+                        getObjectiveAssignmentQuestionsAdapter.addAll(arrListQuestions);
+                        getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
 
 
-                    if (getArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
-                        callAPiGetExamEvaluation();
+                        if (getArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                            callAPiGetExamEvaluation();
+                        }
+                        tvNoQuestionsMsg.setVisibility(View.GONE);
+                    } else {
+                        tvNoQuestionsMsg.setVisibility(View.VISIBLE);
                     }
 
                 } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.FAILED)) {
@@ -283,7 +285,6 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     private void setAssignmentDetails() {
         if (getArguments() != null) {
-
             tvObjectiveAssignmentSubject.setText(getResources().getString(R.string.strbookname) + ": ");
             if (getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME) != null) {
                 tvObjectiveAssignmentSubject.append(Utility.getSpannableString(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME), getResources().getColor(R.color.bg_assessment)));
@@ -292,14 +293,11 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
             if (getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME) != null) {
                 tvObjectiveAssignmentClass.append(Utility.getSpannableString(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME), getResources().getColor(R.color.bg_assessment)));
             }
-//            tvObjectiveAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + ": " + getArguments().getString(ExamsAdapter.ARG_EXAM_NO));
             tvObjectiveAssignmentTitle.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
-//            tvObjectiveAssignmentDate.setText(getActivity().getResources().getString(R.string.strassignmentdatecolon) + " " +
-//                    Utility.getFormattedDate("dd-MMM-yyyy", getArguments().getString(ExamsAdapter.ARG_EXAM_CREATED_DATE)));
+
+            tvObjectiveAssignmentDate.setText(Utils.getDateInApiFormat(getArguments().getString(ExamsAdapter.ARG_EXAM_CREATED_DATE)));
 
         }
-
-
     }
 
     public void loadStudentEvaluationData() {

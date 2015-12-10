@@ -203,6 +203,8 @@ public class AddQuestionContainerFragment extends Fragment {
     public void updateQuestionListviewAfterDeleteQuestionInPreview(Questions question) {
         questionListFragment.updateViewAfterDeleteInPreviewQuestion(question.getQuestionId());
         previewQuestionFragment.arrListQuestions.remove(question);
+
+        previewQuestionFragment.updateQuestionInfoAfterDelete(Integer.parseInt(question.getQuestionScore()));
         questionAddEditFragment.updateAddToPreviewCheckBoxStatus();
     }
 

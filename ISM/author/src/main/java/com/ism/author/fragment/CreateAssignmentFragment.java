@@ -22,6 +22,7 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.object.Global;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -225,7 +226,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId(WebConstants.TEST_USER_ID);
+                attribute.setUserId(Global.strUserId);
                 attribute.setSubmissionDate(strSubmissionDate);
                 attribute.setClassroomId(String.valueOf(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0));
@@ -296,7 +297,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private boolean isTextSetInRichTextEditor() {
 
-        if (rteTrialActivity.getHtml().trim().length() > 0) {
+        if (rteTrialActivity.getHtml().length() > 0) {
             return true;
         } else {
             strValidationMsg += getString(R.string.msg_validation_add_text_rich_editor);
