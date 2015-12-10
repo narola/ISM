@@ -72,7 +72,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     /*these sre for the xml views*/
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
             tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank, tvAddquestionAdvance;
-    private ImageView imgSelectImage, imgPlay, img_cancel, imgHelp;
+    private ImageView imgSelectImage, imgPlay, img_cancel, imgHelp, imageValidationQuestionType;
     private EditText etAddquestionTitle, etAddquestionAnswer, etEvaluationNote1, etEvaluationNote2;
     private Spinner spAddquestionType;
     private CheckBox chkAddquestionPreview;
@@ -87,7 +87,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     AddQuestionTextDialog addQuestionTextDialog;
     private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
 
-    private View overlay_view;
 
     public QuestionAddEditFragment() {
     }
@@ -113,8 +112,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
-        overlay_view = (View) view.findViewById(R.id.overlay_view);
-        overlay_view.setOnClickListener(this);
+        imageValidationQuestionType = (ImageView) view.findViewById(R.id.image_validation_questionType);
+        imageValidationQuestionType.setOnClickListener(this);
 
         imgHelp = (ImageView) view.findViewById(R.id.img_help);
         img_cancel = (ImageView) view.findViewById(R.id.img_cancel);
@@ -352,7 +351,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         spAddquestionType.setEnabled(true);
         spAddquestionType.setSelection(1);
 
-
+        imageValidationQuestionType.setVisibility(View.GONE);
     }
 
     /*this method is for inflating views for addquestion*/
@@ -494,14 +493,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             /*check that if user edit question then disable the formatting of question type.*/
             if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
 
+                imageValidationQuestionType.setVisibility(View.VISIBLE);
 
-                //overlay_view.setVisibility(View.VISIBLE);
-                spAddquestionType.setEnabled(false);
-                // spAddquestionType.setClickable(false);
             } else {
-                spAddquestionType.setEnabled(true);
-                // overlay_view.setVisibility(View.GONE);
-
+                imageValidationQuestionType.setVisibility(View.GONE);
             }
             setSpinnerData(questions.getQuestionFormat());
             if (questions.getQuestionText() != null) {
@@ -660,7 +655,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         } else if (v == imgHelp) {
 //            showHelpInstruction();
             Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.msg_help_add_advance_question));
-        } else if (v == overlay_view) {
+        } else if (v == imageValidationQuestionType) {
             Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
         }
 

@@ -147,23 +147,26 @@
                                 android:textColor="@color/color_blue"
                                 android:textSize="@dimen/d20dp"
                                 android:textStyle="bold" />
+
                             <RelativeLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="@dimen/d40dp"
                                 android:layout_weight="1">
-                            <View
-                                android:id="@+id/overlay_view"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/shadow_grey_small_size"
-                                android:visibility="gone"/>
-                            <Spinner
-                                android:id="@+id/sp_addquestion_type"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/shadow_grey_small_size"
-                                android:entries="@array/question_type"
-                                android:spinnerMode="dropdown" />
+
+                                <Spinner
+                                    android:id="@+id/sp_addquestion_type"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/shadow_grey_small_size"
+                                    android:entries="@array/question_type"
+                                    android:spinnerMode="dropdown" />
+
+                                <ImageView
+                                    android:id="@+id/image_validation_questionType"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@android:color/transparent"
+                                    android:visibility="gone" />
                             </RelativeLayout>
                         </LinearLayout>
 
