@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="no_notification_available">No notification available!</string>
+	<string name="no_message_available">No message available!</string>
+	<string name="no_request_available">No studymate request available!</string>
+	<string name="no_feeds_available">No feeds available!</string>
+	<string name="no_activity_available">No activity available!</string>
+	<string name="no_coupons_available">No coupons available!</string>
+	<string name="no_books_available">No books available!</string>
+	<string name="no_rolemodels_available">No role models available!</string>
+	<string name="no_movies_available">No movies available!</string>
+	<string name="no_pastimes_available">No pastimes available!</string>
+	<string name="no_blocked_users_available">No blocked users available!</string>
+	
+	
+	<string name="no_questions_in_your_exam">No questions in your exam!</string>
+</resources>

@@ -31,7 +31,7 @@
                 android:text="@string/strtest"
                 android:textAllCaps="true"
                 android:textColor="@color/color_blue"
-                android:textSize="@dimen/d15dp" />
+                android:textSize="@dimen/d15sp" />
         </LinearLayout>
 
         <ImageView
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/strtest"
                 android:textColor="@color/color_gray"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -148,7 +148,7 @@
                 android:layout_marginTop="@dimen/d5dp"
                 android:text="@string/strtest"
                 android:textColor="@color/color_answer"
-                android:textSize="@dimen/d15dp" />
+                android:textSize="@dimen/d15sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -166,7 +166,7 @@
                 android:singleLine="true"
                 android:text="@string/strevaluationnotes"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/d15dp" />
+                android:textSize="@dimen/d15sp" />
 
             <TextView
                 android:id="@+id/tv_subjective_ques_evaluation_notes"
@@ -175,7 +175,7 @@
                 android:layout_marginTop="@dimen/d5dp"
                 android:text="@string/strtest"
                 android:textColor="@color/color_answer"
-                android:textSize="@dimen/d15dp" />
+                android:textSize="@dimen/d15sp" />
 
         </LinearLayout>
 
@@ -220,7 +220,7 @@
                 android:padding="@dimen/d15dp"
                 android:text="@string/strgood"
                 android:textColor="@drawable/good_score_color_text"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -237,7 +237,7 @@
                 android:padding="@dimen/d15dp"
                 android:text="@string/strfair"
                 android:textColor="@drawable/fair_score_color_text"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -254,8 +254,7 @@
                 android:padding="@dimen/d15dp"
                 android:text="@string/straverage"
                 android:textColor="@drawable/average_score_color_text"
-
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -273,7 +272,7 @@
                 android:padding="@dimen/d15dp"
                 android:text="@string/strpoor"
                 android:textColor="@drawable/poor_score_color_text"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -290,7 +289,7 @@
                 android:padding="@dimen/d15dp"
                 android:text="@string/strincorrect"
                 android:textColor="@drawable/fair_score_color_text"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
 
         </LinearLayout>

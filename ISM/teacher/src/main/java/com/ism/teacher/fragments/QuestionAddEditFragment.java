@@ -6,10 +6,12 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,7 +29,6 @@ import android.widget.TextView;
 import com.ism.teacher.ISMTeacher;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
-import com.ism.teacher.Utility.MediaUploader;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
@@ -37,10 +38,12 @@ import com.ism.teacher.autocomplete.FilteredArrayAdapter;
 import com.ism.teacher.autocomplete.TokenCompleteTextView;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
+import com.ism.teacher.dialog.AddQuestionTextDialog;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.HashTagsModel;
 import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.MediaUploadAttribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.ism.teacher.ws.model.AnswerChoices;
@@ -55,7 +58,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class QuestionAddEditFragment extends Fragment implements TokenCompleteTextView.TokenListener, View.OnClickListener, WebserviceWrapper.WebserviceResponse {
+public class QuestionAddEditFragment extends Fragment implements TokenCompleteTextView.TokenListener, View.OnClickListener, WebserviceWrapper.WebserviceResponse,
+        AddQuestionTextDialog.SelectMediaListener, AddQuestionTextDialog.AddTextListener {
 
     private static final String TAG = QuestionAddEditFragment.class.getSimpleName();
     private View view;
@@ -68,8 +72,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     /*these sre for the xml views*/
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
-            tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank;
-    private ImageView imgEditQuestion, imgCopyQuestion, imgDeleteQuestion, imgSelectImage, imgPlay;
+            tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank, tvAddquestionAdvance;
+    private ImageView imgSelectImage, imgPlay, img_cancel, imgHelp;
     private EditText etAddquestionTitle, etAddquestionAnswer, etEvaluationNote1, etEvaluationNote2;
     private Spinner spAddquestionType;
     private CheckBox chkAddquestionPreview;
@@ -80,6 +84,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     MyTypeFace myTypeFace;
     private InputValidator inputValidator;
     private Boolean isAddMore = false;
+    private Uri selectedUri = null;
+    AddQuestionTextDialog addQuestionTextDialog;
+    private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
 
 
     public QuestionAddEditFragment() {
@@ -106,6 +113,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
+        imgHelp = (ImageView) view.findViewById(R.id.img_help);
+        img_cancel = (ImageView) view.findViewById(R.id.img_cancel);
+        img_cancel.setOnClickListener(this);
+        tvAddquestionAdvance = (TextView) view.findViewById(R.id.tv_addquestion_advance);
         tvAddquestionHeader = (TextView) view.findViewById(R.id.tv_addquestion_header);
         tvAddquestionTitle = (TextView) view.findViewById(R.id.tv_addquestion_title);
         tvAddquestionType = (TextView) view.findViewById(R.id.tv_addquestion_type);
@@ -118,8 +129,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         tvAddquestionSave.setOnClickListener(this);
         tvAddquestionSaveAddmore.setOnClickListener(this);
         tvAddquestionGotoquestionbank.setOnClickListener(this);
+        tvAddquestionAdvance.setOnClickListener(this);
+        tvAddquestionAdvance.setPaintFlags(tvAddquestionAdvance.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-
+        tvAddquestionAdvance.setTypeface(myTypeFace.getRalewayRegular());
         tvAddquestionHeader.setTypeface(myTypeFace.getRalewayRegular());
         tvAddquestionTitle.setTypeface(myTypeFace.getRalewayBold());
         tvAddquestionType.setTypeface(myTypeFace.getRalewayBold());
@@ -131,9 +144,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         tvAddquestionGotoquestionbank.setTypeface(myTypeFace.getRalewayRegular());
 
 
-        imgEditQuestion = (ImageView) view.findViewById(R.id.img_edit_question);
-        imgCopyQuestion = (ImageView) view.findViewById(R.id.img_copy_question);
-        imgDeleteQuestion = (ImageView) view.findViewById(R.id.img_delete_question);
         imgSelectImage = (ImageView) view.findViewById(R.id.img_select_image);
         imgPlay = (ImageView) view.findViewById(R.id.img_play);
 
@@ -204,7 +214,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
                     Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
                 }
-                return false;
+                return true;
             }
         });
 
@@ -213,47 +223,75 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
     //intiGlobalEnds
 
-    Uri selectedUri = null;
-
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent returnedIntent) {
+        super.onActivityResult(requestCode, resultCode, returnedIntent);
 
-        if (requestCode == AppConstant.REQUEST_CODE_PICK_FROM_GALLERY) {
-            if (data != null) {
-                selectedUri = data.getData();
-                String[] columns = {MediaStore.Images.Media.DATA,
-                        MediaStore.Images.Media.MIME_TYPE};
 
-                Cursor cursor = getActivity().getContentResolver().query(selectedUri, columns, null, null, null);
-                cursor.moveToFirst();
+        if (returnedIntent != null) {
+            selectedUri = returnedIntent.getData();
+            if (requestCode == AppConstant.REQUEST_CODE_PICK_FROM_GALLERY) {
 
-                int pathColumnIndex = cursor.getColumnIndex(columns[0]);
-                int mimeTypeColumnIndex = cursor.getColumnIndex(columns[1]);
+                if (returnedIntent != null) {
+                    selectedUri = returnedIntent.getData();
+                    String[] columns = {MediaStore.Images.Media.DATA,
+                            MediaStore.Images.Media.MIME_TYPE};
+                    Cursor cursor = getActivity().getContentResolver().query(selectedUri, columns, null, null, null);
+                    cursor.moveToFirst();
 
-                String contentPath = cursor.getString(pathColumnIndex);
-                String mimeType = cursor.getString(mimeTypeColumnIndex);
-                cursor.close();
+                    int pathColumnIndex = cursor.getColumnIndex(columns[0]);
+                    int mimeTypeColumnIndex = cursor.getColumnIndex(columns[1]);
 
-                if (mimeType.startsWith("image")) {
+                    String contentPath = cursor.getString(pathColumnIndex);
+                    String mimeType = cursor.getString(mimeTypeColumnIndex);
+                    cursor.close();
 
-                    imgSelectImage.setImageURI(selectedUri);
-                    imgPlay.setVisibility(View.GONE);
+                    if (mimeType.startsWith("image")) {
 
-                } else if (mimeType.startsWith("video")) {
+                        try {
+                            if (addQuestionTextDialog != null && addQuestionTextDialog.isShowing()) {
 
-                    MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
-                    mMediaMetadataRetriever.setDataSource(getActivity(), selectedUri);
-                    Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-                    imgSelectImage.setImageBitmap(bitmap);
-                    imgPlay.setVisibility(View.VISIBLE);
+                                String imgPath = getRealPathFromURI(selectedUri);
+                                addQuestionTextDialog.insertImage(imgPath);
+                            } else {
+                                imgSelectImage.setImageURI(selectedUri);
+                                imgPlay.setVisibility(View.GONE);
+                                img_cancel.setVisibility(View.VISIBLE);
+                            }
 
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    } else if (mimeType.startsWith("video")) {
+
+                        try {
+                            if (addQuestionTextDialog != null && addQuestionTextDialog.isShowing()) {
+
+                                String videoPath = getRealPathFromURI(selectedUri);
+                                addQuestionTextDialog.insertVideo(videoPath);
+                            } else {
+                                MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+                                mMediaMetadataRetriever.setDataSource(getActivity(), selectedUri);
+                                Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+                                imgSelectImage.setImageBitmap(bitmap);
+                                imgPlay.setVisibility(View.VISIBLE);
+                                img_cancel.setVisibility(View.VISIBLE);
+
+                            }
+
+//                        richText.insertVideo(videoPath);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
                 }
-
             }
         }
 
     }
-
 
     private void updateTokenConfirmation() {
         StringBuilder sb = new StringBuilder("Current tokens:\n");
@@ -461,8 +499,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 etEvaluationNote2.setText(questions.getEvaluationNotes());
             }
 
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
-                    imgSelectImage, ISMTeacher.options);
+            if (questions.getQuestionImageLink() != null && !questions.getQuestionImageLink().equals("")) {
+                imageLoader.displayImage(WebConstants.Image_url + questions.getQuestionImageLink(), imgSelectImage, ISMTeacher.options);
+
+                Debug.e(TAG, "============from set data =======================" + questions.getQuestionImageLink());
+                img_cancel.setVisibility(View.VISIBLE);
+            }
 
             setMcqAnswers(questions);
             setTags(questions);
@@ -581,17 +623,65 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("*/*");
             startActivityForResult(intent, AppConstant.REQUEST_CODE_PICK_FROM_GALLERY);
+            //   openImage();
 
         } else if (v == tvAddquestionGotoquestionbank) {
             getFragment().flipCard();
 
+        } else if (v == img_cancel) {
+            if (selectedUri != null) {
+                imgSelectImage.setImageDrawable(null);
+                img_cancel.setVisibility(View.GONE);
+                selectedUri = null;
+            } else if (imgSelectImage.getDrawable() != null) {
+                imgSelectImage.setImageDrawable(null);
+                img_cancel.setVisibility(View.GONE);
+            }
+        } else if (v == tvAddquestionAdvance) {
+
+            addQuestionTextDialog = new AddQuestionTextDialog(getActivity(), (AddQuestionTextDialog.SelectMediaListener) this,
+                    (AddQuestionTextDialog.AddTextListener) this, Html.toHtml(etAddquestionTitle.getText()));
+            addQuestionTextDialog.show();
+
+        } else if (v == imgHelp) {
+//            showHelpInstruction();
+            Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.msg_help_add_advance_question));
         }
 
     }
 
-    private void callApiUploadMediaForQuestion(String question_id, String mediaType, String realPathFromURI) {
+    private void callApiUploadMediaForQuestion(String questionId, String mediaType, String fileName) {
+//        new MediaUploader(getActivity()).new MediaUploaderCaller().execute(fileName);
+        if (Utility.isConnected(getActivity())) {
+            ((TeacherHostActivity) getActivity()).showProgress();
+            try {
+                Attribute attribute = new Attribute();
+                MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
+                questionIdParam.setParamName("question_id");
+                questionIdParam.setParamValue(questionId);
+                attribute.getArrListParam().add(questionIdParam);
 
-        new MediaUploader(getActivity(), question_id).new MediaUploaderCaller().execute(realPathFromURI);
+
+                MediaUploadAttribute mediaTypeParam = new MediaUploadAttribute();
+                mediaTypeParam.setParamName("mediaType");
+                mediaTypeParam.setParamValue(mediaType);
+                attribute.getArrListParam().add(mediaTypeParam);
+
+
+                MediaUploadAttribute mediaFileParam = new MediaUploadAttribute();
+                mediaFileParam.setParamName("mediaFile");
+                mediaFileParam.setFileName(fileName);
+                attribute.getArrListFile().add(mediaFileParam);
+
+
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.UPLOADMEDIAFORQUESTION);
+            } catch (Exception e) {
+                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(getActivity());
+        }
     }
 
     private String getRealPathFromURI(Uri contentURI) {
@@ -666,7 +756,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 attribute.setBookId(getArguments().getString(AssignmentExamFragment.ARG_EXAM_BOOK_ID));
 
 //                attribute.setTags(arrListTags);
-
 
                 if (getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
                     arrListAnswerChioces.clear();
@@ -747,12 +836,53 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 case WebConstants.SET_HASHTAG:
                     onResponseSetHashTag(object, error);
                     break;
+                case WebConstants.UPLOADMEDIAFORQUESTION:
+                    onResponseUploadMediaForQuestion(object, error);
+                    break;
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponse Exception : " + e.toString());
         }
     }
 
+    private void onResponseUploadMediaForQuestion(Object object, Exception error) {
+        try {
+            ((TeacherHostActivity) getActivity()).hideProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    Debug.e(TAG, "The Image url is::" + responseHandler.getFileUploadResponse().getImageLink() + " question id is: " + responseHandler.getFileUploadResponse().getQuestion_id());
+                    Utility.showToast(getString(R.string.msg_success_imgupload_question), getActivity());
+
+
+                    if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+
+                        //  Utility.showToast(getString(R.string.question_edit_success), getActivity());
+//                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_edit_success));
+                        getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
+                                makeQuestionData(responseHandler.getFileUploadResponse().getQuestion_id(), responseHandler.getFileUploadResponse().getImageLink()),
+                                chkAddquestionPreview.isChecked());
+                    } else {
+
+//                        Utility.showToast(getString(R.string.question_add_success), getActivity());
+//                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_add_success));
+                        /*this is for add question data*/
+                        getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getFileUploadResponse().getQuestion_id(), responseHandler.getFileUploadResponse().getImageLink()),
+                                chkAddquestionPreview.isChecked());
+
+                    }
+
+
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseUploadMediaForQuestion api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseUploadMediaForQuestion Exception : " + e.toString());
+        }
+    }
 
     private ArrayList<HashTags> arrListTags = new ArrayList<HashTags>();
 
@@ -769,21 +899,22 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         Utility.showToast(getString(R.string.question_edit_success), getActivity());
 //                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_edit_success));
                         getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
-                                makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
+                                makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId(), ""),
                                 chkAddquestionPreview.isChecked());
                     } else {
 
                         Utility.showToast(getString(R.string.question_add_success), getActivity());
 //                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_add_success));
                         /*this is for add question data*/
-                        getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
+                        getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId(), ""),
                                 chkAddquestionPreview.isChecked());
 
                     }
 
                     //upload image to question
                     if (selectedUri != null) {
-                        callApiUploadMediaForQuestion(responseHandler.getQuestion().get(0).getQuestionId(), "image", getRealPathFromURI(selectedUri));
+                        callApiUploadMediaForQuestion(responseHandler.getQuestion().get(0).getQuestionId(), AppConstant.MEDIATYPE_IMAGE,
+                                getRealPathFromURI(selectedUri));
 
                     }
                     if (isAddMore) {
@@ -803,7 +934,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
 
-    private Questions makeQuestionData(String questionId) {
+    private Questions makeQuestionData(String questionId, String imagelink) {
         Questions question = new Questions();
         try {
             question.setQuestionId(questionId);
@@ -812,7 +943,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             question.setQuestionFormat(getQuestionFormat());
             question.setQuestionText(etAddquestionTitle.getText().toString());
             question.setQuestionAssetsLink("");
-            question.setQuestionImageLink("");
+
+            if (imagelink != null && !imagelink.equals("")) {
+//                question.setQuestionImageLink(WebConstants.Image_url + imagelink);
+                question.setQuestionImageLink(imagelink);
+            } else {
+                question.setQuestionImageLink("");
+
+            }
             question.setEvaluationNotes(etEvaluationNote1.getText().toString());
             question.setSolution(etEvaluationNote2.getText().toString());
 
@@ -921,5 +1059,33 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         } catch (Exception e) {
             Debug.e(TAG, "onResponseSetHashTags Exception : " + e.toString());
         }
+    }
+
+    @Override
+    public void SetText(String text) {
+        etAddquestionTitle.setText(Utility.formatHtml(text));
+    }
+
+    @Override
+    public void ImagePicker() {
+        openImage();
+    }
+
+    @Override
+    public void VideoPicker() {
+        openVideo();
+    }
+
+    private void openImage() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+    }
+
+    private void openVideo() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("video/*");
+        startActivityForResult(photoPickerIntent, SELECT_VIDEO);
+
     }
 }

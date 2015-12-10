@@ -90,7 +90,7 @@
                         android:layout_height="match_parent"
                         android:gravity="left"
                         android:paddingLeft="5dp"
-                        android:text="Answer"
+                        android:text=""
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -117,7 +117,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:paddingLeft="10dp"
-                        android:text="Answer"
+                        android:text=""
                         android:textSize="18sp"
                         android:visibility="visible" />
                 </LinearLayout>

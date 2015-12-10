@@ -14,8 +14,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.constant.WebConstants;
-import com.ism.author.object.Global;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.Exams;
 
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     private Context mContext;
     private ArrayList<Exams> arrListExams = new ArrayList<Exams>();
     private LayoutInflater inflater;
+    private MyTypeFace myTypeFace;
 
 
     /*this bundle arguments are use for both in edit exam and create exam we have to set it both the places*/
@@ -55,6 +55,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 
     public ExamsAdapter(Context mContext) {
         this.mContext = mContext;
+        myTypeFace = new MyTypeFace(mContext);
         this.inflater = LayoutInflater.from(mContext);
     }
 
@@ -70,17 +71,17 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         try {
-            holder.tvExamBookName.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamName.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamDate.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamClassName.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamNoofAssessed.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamAssessed.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamNoofUnassessed.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamUnassessed.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamNoofQuestion.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamType.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvExamBookName.setTypeface(myTypeFace.getRalewayBold());
+            holder.tvExamName.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvExamDate.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvExamClassName.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvExamNoofAssessed.setTypeface(myTypeFace.getRalewayBold());
+            holder.tvExamAssessed.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvExamNoofUnassessed.setTypeface(myTypeFace.getRalewayBold());
+            holder.tvExamUnassessed.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvExamNoofQuestion.setTypeface(myTypeFace.getRalewayBold());
+            holder.tvExamQuestion.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvExamType.setTypeface(myTypeFace.getRalewayRegular());
 
 
             holder.tvExamBookName.setText(arrListExams.get(position).getBookName());
@@ -138,8 +139,8 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 //            bundleExamDetails.putString(ARG_EXAM_SUBJECT_NAME, arrListExams.get(position).getSubjectName());
 //            bundleExamDetails.putString(ARG_EXAM_TOPIC_ID, WebConstants.TEST_TOPIC_ID);
 //            bundleExamDetails.putString(ARG_EXAM_TOPIC_NAME, "");
-            bundleExamDetails.putString(ARG_EXAM_BOOK_ID, WebConstants.TEST_BOOK_ID);
-            bundleExamDetails.putString(ARG_EXAM_BOOK_NAME, WebConstants.TEST_BOOK_NAME);
+            bundleExamDetails.putString(ARG_EXAM_BOOK_ID, arrListExams.get(position).getBookId());
+            bundleExamDetails.putString(ARG_EXAM_BOOK_NAME, arrListExams.get(position).getBookName());
             bundleExamDetails.putString(ARG_EXAM_CATEGORY, arrListExams.get(position).getExamCategory());
             bundleExamDetails.putString(ARG_EXAM_TYPE, arrListExams.get(position).getExamType());
             bundleExamDetails.putString(ARG_EXAM_MODE, arrListExams.get(position).getExamMode());
@@ -147,7 +148,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             bundleExamDetails.putInt(ARG_EXAM_NO, position);
             bundleExamDetails.putString(ARG_EXAM_PASS_PERCENTAGE, arrListExams.get(position).getPassPercentage());
             bundleExamDetails.putString(ARG_EXAM_QUESTION_SCORE, "0");
-            bundleExamDetails.putString(ARG_EXAM_CREATED_DATE, "");
+            bundleExamDetails.putString(ARG_EXAM_CREATED_DATE, arrListExams.get(position).getExamCreatedDate());
 
 
             holder.llExamContainer.setOnClickListener(new View.OnClickListener() {

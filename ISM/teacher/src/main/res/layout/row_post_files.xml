@@ -26,18 +26,18 @@
             android:layout_centerInParent="true"
             android:visibility="gone" />
         <!--<VideoView-->
-        <!--android:id="@+id/video"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:visibility="gone" />-->
+            <!--android:id="@+id/video"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:visibility="gone" />-->
 
         <!--<ImageView-->
-        <!--android:id="@+id/img_audio"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:visibility="gone" />-->
+            <!--android:id="@+id/img_audio"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:visibility="gone" />-->
 
     </RelativeLayout>
     <TextView
@@ -48,15 +48,15 @@
         android:layout_height="20sp"
         android:layout_alignLeft="@+id/rl_image"
         android:layout_alignBottom="@+id/rl_image"
-         />
+        android:drawableLeft="@drawable/arrow" />
 
     <ImageView
         android:id="@+id/img_cancel"
         android:layout_width="15sp"
         android:layout_height="15sp"
-        android:src="@drawable/img_cancel"
-        android:background="@drawable/img_red_circle"
-        android:visibility="gone"
+        android:padding="10dp"
+        android:background="@drawable/img_cancel"
+        android:visibility="visible"
         android:gravity="center"
         android:layout_alignRight="@+id/rl_image"
         android:layout_alignTop="@+id/rl_image"

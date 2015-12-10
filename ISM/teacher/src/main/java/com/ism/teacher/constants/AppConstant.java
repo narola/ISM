@@ -12,6 +12,11 @@ public class AppConstant {
     //Pick from Gallery
     public static final int REQUEST_CODE_PICK_FROM_GALLERY = 1;
     public static final int REQUEST_CODE_ADD_POST = 2;
+
+    //Constants for MediaType used in uploading
+    public static final String MEDIATYPE_IMAGE = "image";
+    public static final String MEDIATYPE_VIDEO = "video";
+    public static final String MEDIATYPE_AUDIO = "audio";
     //All fonts
 
     public static final String RalewayBlack = "Raleway-Black.ttf";
@@ -33,17 +38,11 @@ public class AppConstant {
     public static final String RalewayThin = "Raleway-Thin.ttf";
     public static final String RalewayThinItalic = "Raleway-ThinItalic.ttf";
 
-    public static final String USERID = "USERID";
-    public static final String PASSWORD = "PASSWORD";
-    public static final String API_STATUS_SUCCESS = "success";
-    public static final String API_STATUS_FAIL = "fail";
-
     public static final String IMAGE_CAPTURE_PATH = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Images";
     public static final String VIDEO_CAPTURE_PATH = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
     public static final String AUDIO_CAPTURE_PATH = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Audios";
 
 
-    public static final String TEST_USER_ID = "370";
     public static final String TEST_GET_ALL_FEEDS = "141";
     public static final String TEST_GETSTUDYMATES = "167";
     public static final String TEST_FEEDID = "240";

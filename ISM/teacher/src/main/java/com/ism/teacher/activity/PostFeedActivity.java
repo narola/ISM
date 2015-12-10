@@ -335,7 +335,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
                 }
 
                 Attribute attribute = new Attribute();
-                attribute.setFeedBy(WebConstants.TEST_USER_ID);
+                attribute.setFeedBy(WebConstants.TEST_USER_ID_52);
                 attribute.setImages(null);
                 attribute.setVideoLink("");
                 attribute.setAudioLink("");

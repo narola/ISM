@@ -297,7 +297,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private boolean isTextSetInRichTextEditor() {
 
-        if (rteTrialActivity.getHtml().trim().length() > 0) {
+        if (rteTrialActivity.getHtml().length() > 0) {
             return true;
         } else {
             strValidationMsg += getString(R.string.msg_validation_add_text_rich_editor);

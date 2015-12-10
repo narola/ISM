@@ -33,7 +33,6 @@ import com.ism.author.ws.model.AuthorBook;
 import com.ism.author.ws.model.Classrooms;
 import com.ism.author.ws.model.Exams;
 import com.ism.author.ws.model.Questions;
-import com.ism.commonsource.view.ActionProcessButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,7 +52,6 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private MyTypeFace myTypeFace;
     private FragmentListener fragListener;
     private Spinner spExamAuthorBooks, spExamClass, spExamEvaluationStatus;
-    private ActionProcessButton progExamAuthorBook, progExamClass, progExamAssessed;
     private ImageView imgToggleList;
     private ArrayList<AuthorBook> arrListAuthorBooks;
     private ArrayList<Classrooms> arrListClassRooms;
@@ -94,9 +92,6 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         spExamClass = (Spinner) view.findViewById(R.id.sp_exam_class);
         spExamEvaluationStatus = (Spinner) view.findViewById(R.id.sp_exam_evaluation_status);
 
-        progExamAuthorBook = (ActionProcessButton) view.findViewById(R.id.prog_exam_authorbook);
-        progExamClass = (ActionProcessButton) view.findViewById(R.id.prog_exam_class);
-        progExamAssessed = (ActionProcessButton) view.findViewById(R.id.prog_exam_assessed);
 
         arrListAssessment = new ArrayList<String>();
         arrListAssessment = Arrays.asList(getResources().getStringArray(R.array.assessment_type));
@@ -105,7 +100,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         txtSubmissionDate = (TextView) view.findViewById(R.id.txt_submission_date);
         tvNoExamMsg = (TextView) view.findViewById(R.id.tv_no_exam_msg);
         etExamStartdate = (EditText) view.findViewById(R.id.et_exam_startdate);
-        etExamEnddate = (EditText) view.findViewById(R.id.et_exam_enddate);
+        etExamEnddate = (EditText) view.findViewById(R.id.et_exam_startTime);
 
 
         txtSubmissionDate.setTypeface(myTypeFace.getRalewayRegular());
@@ -271,7 +266,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
         if (Utility.isConnected(getActivity())) {
             try {
-                Utility.showSpinnerProgress(progExamClass);
+
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCLASSROOMS);
 
@@ -288,7 +283,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
         if (Utility.isConnected(getActivity())) {
             try {
-                Utility.showSpinnerProgress(progExamAuthorBook);
+
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -356,7 +351,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void onResponseGetClassrooms(Object object, Exception error) {
         try {
-            Utility.hideSpinnerProgress(progExamClass);
+
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -384,7 +379,6 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void onResponseGetAuthorBooks(Object object, Exception error) {
         try {
-            Utility.hideSpinnerProgress(progExamAuthorBook);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

@@ -242,29 +242,29 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     ResponseHandler responseObjGetExamEvaluation;
 
     private void onResponseGetExamEvaluation(Object object, Exception error) {
-//        try {
-        ((AuthorHostActivity) getActivity()).hideProgress();
-        if (object != null) {
-            responseObjGetExamEvaluation = (ResponseHandler) object;
-            if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.SUCCESS)) {
-                loading = true;
+        try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
+            if (object != null) {
+                responseObjGetExamEvaluation = (ResponseHandler) object;
+                if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    loading = true;
 
-                subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
-                updateStatusForEvaluation();
-                setTitleDetails();
-                getBaseFragment().setQuestionStatusData(arrListQuestions,
-                        responseObjGetExamEvaluation.getExamEvaluation().get(0).getQuestionPalette());
+                    subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
+                    updateStatusForEvaluation();
+                    setTitleDetails();
+                    getBaseFragment().setQuestionStatusData(arrListQuestions,
+                            responseObjGetExamEvaluation.getExamEvaluation().get(0).getQuestionPalette());
 
 
-            } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
-                Utils.showToast(responseObjGetExamEvaluation.getMessage(), getActivity());
+                } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseObjGetExamEvaluation.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetExamEvaluation api Exception : " + error.toString());
             }
-        } else if (error != null) {
-            Debug.e(TAG, "onResponseGetExamEvaluation api Exception : " + error.toString());
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetExamEvaluation Exception : " + e.toString());
         }
-//        } catch (Exception e) {
-//            Debug.e(TAG, "onResponseGetExamEvaluation Exception : " + e.toString());
-//        }
     }
 
 

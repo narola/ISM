@@ -41,6 +41,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
 /**
  * Created by c161 on 12/10/15.
  */

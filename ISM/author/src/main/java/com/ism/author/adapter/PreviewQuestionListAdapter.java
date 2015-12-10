@@ -61,9 +61,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
         holder.tvPreviewQuestion.setTypeface(myTypeFace.getRalewayRegular());
         holder.tvPreviewQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
-
-
-//        if (arrListQuestions.get(position).getQuestionCreatorId().equals(WebConstants.TEST_USER_ID)) {
+        
         if (arrListQuestions.get(position).getQuestionCreatorId().equals(Global.strUserId)) {
             holder.imgPreviewQuestionEdit.setVisibility(View.VISIBLE);
         } else {
