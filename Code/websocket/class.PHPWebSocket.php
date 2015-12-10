@@ -2529,7 +2529,7 @@ class PHPWebSocket {
 
                 if ($str != '') {
 
-                    $query = "INSERT INTO `" . TBL_FEEDS_TAGGED_USER . "`(`user_id`, `feed_id`, `tagged_by`, `created_date`, `is_delete`, `is_see`, `is_testdata`) "
+                    $query = "INSERT INTO `" . TBL_FEEDS_TAGGED_USER . "`(`user_id`, `feed_id`, `tagged_by`, `created_date`, `is_delete`, `is_seen`, `is_testdata`) "
                             . "VALUES $str";
                     $x = mysqli_query($link, $query);
                 }

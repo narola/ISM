@@ -238,7 +238,7 @@ function active_chat($user_id){
 					)
 				)
 			);
-		$where = array('where' => array('tg.is_delete'=>0,'tg.is_see'=> 0,'tg.user_id'=>$user_id));
+		$where = array('where' => array('tg.is_delete'=>0,'tg.is_seen'=> 0,'tg.user_id'=>$user_id));
 		$tagged_notification = select(TBL_FEEDS_TAGGED_USER.' tg','u.id,u.full_name,\' tagged you in a post \' as msg,p.profile_link,tg.created_date',$where,$options);
 
 		$options = array('join' =>
@@ -259,7 +259,7 @@ function active_chat($user_id){
 	}
 
 	function count_notification_list($user_id){
-		$where = array('where' => array('tg.is_delete' => 0,'tg.is_see' => 0,'tg.user_id' => $user_id));
+		$where = array('where' => array('tg.is_delete' => 0,'tg.is_seen' => 0,'tg.user_id' => $user_id));
 		$cnt_tagged_user = select(TBL_FEEDS_TAGGED_USER.' tg',null,$where);
 
 		$where = array('where' => array('sr.status' => 1,'sr.is_delete' => 1,'sr.is_seen' => 0,'sr.request_from_mate_id' => $user_id));

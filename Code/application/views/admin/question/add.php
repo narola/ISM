@@ -30,7 +30,7 @@
                    		<div class="col-sm-12 padding_t15">
                         	<div class="form-group">
                                 <label class="txt_red">Question</label>
-                                <textarea class="form-control" name='question_text'><?php echo set_value('question_text'); ?></textarea>
+                                <textarea class="form-control" name='question_text' name='question_text'><?php echo set_value('question_text'); ?></textarea>
                             </div>
                             
                             <div class="form-group select">
@@ -193,7 +193,7 @@
                             	<h3>Evaluation Notes</h3>
                             </div>
                         	<div class="form-group">
-                                <textarea class="form-control" name="evaluation_notes"><?php echo set_value('evaluation_notes'); ?></textarea>
+                                <textarea class="form-control" name="evaluation_notes" name="evaluation_notes"><?php echo set_value('evaluation_notes'); ?></textarea>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6 inner_txtarea">
@@ -201,7 +201,7 @@
                             	<h3>Solution</h3>
                             </div>
                         	<div class="form-group">
-                                <textarea class="form-control" name="solution"><?php echo set_value('solution'); ?></textarea>
+                                <textarea class="form-control" id="solution" name="solution"><?php echo set_value('solution'); ?></textarea>
                             </div>
                         </div>
 
@@ -229,8 +229,36 @@
 
 <!-- <link rel="stylesheet" type="text/css" href="http://twitter.github.io/typeahead.js/css/examples.css">
 <script type='text/javascript' src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script> -->
-
+<script src="assets/ckeditor_full/ckeditor.js"></script>
 <script>
+    // CKEDITOR.replace( 'solution', { toolbar : [ [ 'EqnEditor', 'Bold', 'Italic' ] ] });
+    CKEDITOR.replace( 'solution',{removePlugins : "a11yhelp,about,bidi,blockquote,clipboard," +
+"contextmenu,dialogadvtab,div,elementspath,enterkey,entities,popup," +
+"filebrowser,find,fakeobjects,flash,floatingspace,listblock,richcombo," +
+"forms,horizontalrule,htmlwriter,iframe,image,indent," +
+"link,maximize," +
+"newpage,pagebreak,pastefromword,pastetext,preview,print," +
+"resize,save,menubutton,scayt,selectall,showblocks," +
+"smiley,sourcearea,tab,table," +
+"tabletools,templates,undo,wsc"} );
+    CKEDITOR.replace( 'evaluation_notes',{removePlugins : "a11yhelp,about,bidi,blockquote,clipboard," +
+"contextmenu,dialogadvtab,div,elementspath,enterkey,entities,popup," +
+"filebrowser,find,fakeobjects,flash,floatingspace,listblock,richcombo," +
+"forms,horizontalrule,htmlwriter,iframe,image,indent," +
+"link,maximize," +
+"newpage,pagebreak,pastefromword,pastetext,preview,print," +
+"resize,save,menubutton,scayt,selectall,showblocks," +
+"smiley,sourcearea,tab,table," +
+"tabletools,templates,undo,wsc"} );
+ CKEDITOR.replace( 'question_text',{removePlugins : "a11yhelp,about,bidi,blockquote,clipboard," +
+"contextmenu,dialogadvtab,div,elementspath,enterkey,entities,popup," +
+"filebrowser,find,fakeobjects,flash,floatingspace,listblock,richcombo," +
+"forms,horizontalrule,htmlwriter,iframe,image,indent," +
+"link,maximize," +
+"newpage,pagebreak,pastefromword,pastetext,preview,print," +
+"resize,save,menubutton,scayt,selectall,showblocks," +
+"smiley,sourcearea,tab,table," +
+"tabletools,templates,undo,wsc"} );
 
     function set_hidden(button_data){
         if(button_data == 'save'){

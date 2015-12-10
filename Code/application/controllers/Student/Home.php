@@ -210,7 +210,7 @@ class Home extends ISM_Controller {
 		$data['my_studymates'] = select(TBL_USERS.' u',null,array('where_in'=>array('id'=>$my_studymates)));
 		
 		//--remove tagged user notification list as already seen
-		update(TBL_FEEDS_TAGGED_USER,array('user_id'=>$user_id),array('is_see'=>1));
+		update(TBL_FEEDS_TAGGED_USER,array('user_id'=>$user_id),array('is_seen'=>1));
 		update(TBL_STUDYMATES_REQUEST,array('request_from_mate_id'=>$user_id),array('is_seen'=>1));
 
 		//--Latest three notice sended via admin
