@@ -73,19 +73,18 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
         try {
             switch (status) {
                 case "A":
-                    tv.setBackgroundResource(R.drawable.question_palette_answered);
+                    tv.setBackgroundResource(R.drawable.img_answered);
                     break;
                 case "N":
-                    tv.setBackgroundResource(R.drawable.question_palette_not_answered);
+                    tv.setBackgroundResource(R.drawable.img_not_answered);
                     break;
                 case "S":
                     tv.setText("");
-                    tv.setBackgroundResource(R.drawable.question_pallete_skipped);
+                    tv.setBackgroundResource(R.drawable.img_skipped);
                     break;
                 case "R":
-                    tv.setBackgroundResource(R.drawable.question_pallete_skipped);
+                    tv.setBackgroundResource(R.drawable.img_skipped);
                     break;
-
             }
 
         } catch (Exception e) {
