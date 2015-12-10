@@ -336,6 +336,23 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             }
         });
 
+        spExamSubjecttopic.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+
+                if (arrListTopic.size() > 0 && position > 0) {
+                    getArguments().putString(ARG_EXAM_TOPIC_ID, arrListTopic.get(position - 1).getId());
+
+                    Debug.e("test topic:", "topic id:" + arrListTopic.get(position - 1).getId());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
     }
 
 
