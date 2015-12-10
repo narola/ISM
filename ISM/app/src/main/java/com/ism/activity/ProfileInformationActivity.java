@@ -804,14 +804,14 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
-                    PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
+                            PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
                     PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
                     PreferenceData.remove(PreferenceData.USER_PASSWORD, ProfileInformationActivity.this);
                     PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, "" + responseHandler.getUser().get(0).getUserId());
                     PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, ProfileInformationActivity.this, responseHandler.getUser().get(0).getFullName());
                     PreferenceData.setStringPrefs(PreferenceData.USER_NAME, ProfileInformationActivity.this, etUserName.getText().toString().trim());
-                    PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, ProfileInformationActivity.this, responseHandler.getUser().get(0).getTokenName());
 	                WebConstants.SECRET_KEY = responseHandler.getUser().get(0).getTokenName();
+	                PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, ProfileInformationActivity.this, WebConstants.SECRET_KEY);
 //                    if (!responseObj.getData().get(0).getUserId().equals(" ")) {
 //                        callApiUploadPic(responseObj.getData().get(0).getUserId(), fileName);
 //                    }

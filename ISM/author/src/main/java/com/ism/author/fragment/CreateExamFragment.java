@@ -111,6 +111,10 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         myTypeFace = new MyTypeFace(mContext);
         inputValidator = new InputValidator(mContext);
 
+        rteTrialExam = (RichTextEditor) view.findViewById(R.id.rte_trial_exam);
+        rteTrialExam.getRichEditor().setEditorFontSize(20);
+        rteTrialExam.hideMediaControls();
+
         tvExamTitle = (TextView) view.findViewById(R.id.tv_exam_title);
 
         tvExamExamschedule = (TextView) view.findViewById(R.id.tv_exam_examschedule);
@@ -326,21 +330,13 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         });
 
 
-        rteTrialExam = (RichTextEditor) view.findViewById(R.id.rte_trial_exam);
-        rteTrialExam.getRichEditor().setEditorFontSize(20);
-        rteTrialExam.hideMediaControls();
+        if (getArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
 
-
-        if (!getArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
-            setExamDetails();
-            spExamBookname.setEnabled(false);
-            spExamExammode.setEnabled(false);
-
-            /*we cant change the exam mode and subject for that particular exam if it once created*/
-        } else {
             btnExamSetquestion.setVisibility(View.GONE);
             btnExamSave.setVisibility(View.VISIBLE);
 
+        } else {
+            setExamDetails();
         }
         callApiGetClassrooms();
         callApiGetAuthorBooks();
@@ -351,6 +347,10 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private void setExamDetails() {
 
+        spExamBookname.setEnabled(false);
+        spExamExammode.setEnabled(false);
+
+            /*we cant change the exam mode and subject for that particular exam if it once created*/
         if (getArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
 
             btnExamSetquestion.setVisibility(View.GONE);
@@ -359,7 +359,9 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         } else {
 
             btnExamSetquestion.setVisibility(View.VISIBLE);
-            btnExamSave.setVisibility(View.GONE);
+            btnExamSave.setVisibility(View.VISIBLE);
+            btnExamSave.setText(getString(R.string.streditexam));
+
 
         }
         etExamName.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
@@ -424,6 +426,15 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
 
+                /*set exam id "0" if you are creating new and copy exam ,In case of edit set particular exam id*/
+                attribute.setExamId("0");
+                if (getArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                    if (!getArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                        attribute.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                    }
+                }
+
+
                 attribute.setExamName(etExamName.getText().toString());
                 attribute.setClassroomId(String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
@@ -445,8 +456,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 attribute.setCorrectAnswerScore(getQuestionScoreValue());
                 attribute.setExamInstruction(rteTrialExam.getHtml());
                 attribute.setUserId(Global.strUserId);
-
-                /*Insert subject id and topic default value*/
+                /*Insert subject id and topic default value in author module*/
                 attribute.setSubjectId("0");
                 attribute.setExamType("topic");
 
@@ -462,34 +472,39 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
 
-    //local field validations
+    /*methods for value validation*/
     private String strValidationMsg;
 
     private boolean isInputsValid() {
+
+//        & inputValidator.validateStringPresence(etExamStartdate) & inputValidator.validateStringPresence(etExamStartTime)
         return inputValidator.validateStringPresence(etExamName) & inputValidator.validateStringPresence(etExamAttemptcount)
-                & inputValidator.validateStringPresence(etExamStartdate) & inputValidator.validateStringPresence(etExamStartTime)
-                && checkRadioButtonInputs() && checkOtherInputs();
+                && checkOtherInputs() && checkRadioButtonInputs();
     }
 
     private boolean checkRadioButtonInputs() {
         strValidationMsg = "";
-
-        if (isDeclareResultOption() & isNegativeMarkingOption() & isRandomQuestionOption() & isUseScoreFromQuestion()) {
+//        if (isDeclareResultOption() & isNegativeMarkAdded() & isRandomQuestionOption() & isScoreAdded()) {
+        if (isNegativeMarkAdded() & isScoreAdded()) {
+            svCreateExam.fullScroll(ScrollView.FOCUS_UP);
             return true;
         } else {
-//            Utility.alert(mContext, null, strValidationMsg);
+            svCreateExam.fullScroll(ScrollView.FOCUS_DOWN);
             return false;
         }
     }
 
-    private boolean isUseScoreFromQuestion() {
-//        if (radioExamUsescore.getCheckedRadioButtonId() == -1) {
-//            strValidationMsg += Utility.getString(R.string.msg_validation_use_score_from_questions, mContext);
-//            return false;
-//        } else {
-//            return true;
-//        }
 
+    private boolean isDeclareResultOption() {
+        if (radioDeclareresult.getCheckedRadioButtonId() == -1) {
+            strValidationMsg += Utility.getString(R.string.msg_validation_declare_results, mContext);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean isScoreAdded() {
         if (radioExamUsescore.getCheckedRadioButtonId() == R.id.radio_btn_examuserscore_yes) {
             return inputValidator.validateStringPresence(etExamQuestionscorevalue);
         } else {
@@ -506,14 +521,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         }
     }
 
-    private boolean isNegativeMarkingOption() {
-//        if (radioNegativemarking.getCheckedRadioButtonId() == -1) {
-//            strValidationMsg += Utility.getString(R.string.msg_validation_negative_marking, mContext);
-//            return false;
-//        } else {
-//            return true;
-//        }
-
+    private boolean isNegativeMarkAdded() {
         if (radioNegativemarking.getCheckedRadioButtonId() == R.id.radio_btn_negativemarking_yes) {
             return inputValidator.validateStringPresence(etExamAddnegativemark);
         } else {
@@ -521,19 +529,13 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         }
     }
 
-    private boolean isDeclareResultOption() {
-        if (radioDeclareresult.getCheckedRadioButtonId() == -1) {
-            strValidationMsg += Utility.getString(R.string.msg_validation_declare_results, mContext);
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     private boolean checkOtherInputs() {
 
+//        & isTextSetInRichTextEditor()
         strValidationMsg = "";
-        if (isClassroomSet() & isSubjectSet() & isPassingPercentSet() & isExamNameSet() & isExamModeSet() & isExamDurationSet() & isTextSetInRichTextEditor()) {
+        if (isClassroomSet() & isSubjectSet() & isPassingPercentSet() & isExamNameSet() & isExamModeSet() & isExamDurationSet()
+                & isExamAssessorSelected()) {
             return true;
         } else {
             Utility.alert(mContext, null, strValidationMsg);
@@ -542,7 +544,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private boolean isTextSetInRichTextEditor() {
-        if (rteTrialExam.getHtml().length() > 0) {
+        if ((rteTrialExam.getHtml().toString() != null) & (rteTrialExam.getHtml().toString().length() > 0)) {
             return true;
         } else {
             strValidationMsg += Utility.getString(R.string.msg_validation_add_text_rich_editor, mContext);
@@ -604,6 +606,15 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         }
     }
 
+    private boolean isExamAssessorSelected() {
+        if (arrListExamAssessor != null && arrListExamAssessor.size() == 0 || spExamAssessor.getSelectedItemPosition() > 0) {
+            return true;
+        } else {
+            strValidationMsg += Utility.getString(R.string.msg_validation_set_exam_assessor, mContext);
+            return false;
+        }
+    }
+
 
     private String getRadioGropuSelection(RadioGroup radioGroup) {
         int selectedId = radioGroup.getCheckedRadioButtonId();
@@ -612,8 +623,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private String getNegativeMarkValue() {
-        int selectedId = radioNegativemarking.getCheckedRadioButtonId();
-        if (((RadioButton) view.findViewById(selectedId)).getText().toString().toLowerCase().equalsIgnoreCase(getString(R.string.stryes)) &&
+        if (radioNegativemarking.getCheckedRadioButtonId() == R.id.radio_btn_negativemarking_yes &&
                 !etExamAddnegativemark.getText().equals("")) {
             return etExamAddnegativemark.getText().toString();
         } else {
@@ -623,8 +633,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
 
     private String getQuestionScoreValue() {
-        int selectedId = radioExamUsescore.getCheckedRadioButtonId();
-        if (((RadioButton) view.findViewById(selectedId)).getText().toString().toLowerCase().equalsIgnoreCase(getString(R.string.stryes)) &&
+        if (radioExamUsescore.getCheckedRadioButtonId() == R.id.radio_btn_examuserscore_yes &&
                 !etExamQuestionscorevalue.getText().equals("")) {
             return etExamQuestionscorevalue.getText().toString();
         } else {
@@ -687,36 +696,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
 
-//    private void onResponseGetSubjects(Object object, Exception error) {
-//        try {
-//            ((AuthorHostActivity) getActivity()).hideProgress();
-//            if (object != null) {
-//                ResponseHandler responseHandler = (ResponseHandler) object;
-//                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-//
-//                    arrListAuthorBooks = new ArrayList<Subjects>();
-//                    arrListAuthorBooks.addAll(responseHandler.getSubjects());
-//                    List<String> subjects = new ArrayList<String>();
-//                    subjects.add(Utility.getString(R.string.strsubjectname, mContext));
-//                    for (Subjects subject : arrListAuthorBooks) {
-//                        subjects.add(subject.getSubjectName());
-//                    }
-//                    Adapters.setUpSpinner(mContext, spExamBookname, subjects, Adapters.ADAPTER_NORMAL);
-//
-//                    if (getArguments() != null) {
-//                        spExamBookname.setSelection(subjects.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME)));
-//                    }
-//                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-//                    Utils.showToast(responseHandler.getMessage(), mContext);
-//                }
-//            } else if (error != null) {
-//                Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
-//            }
-//        } catch (Exception e) {
-//            Debug.e(TAG, "onResponseGetSubjects Exception : " + e.toString());
-//        }
-//    }
-
     private void onResponseGetBooksForAuthor(Object object, Exception error) {
         try {
             ((AuthorHostActivity) getActivity()).hideProgress();
@@ -754,7 +733,17 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    Utils.showToast(Utility.getString(R.string.msg_success_createexam, mContext), mContext);
+
+                    if (getArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                        if (!getArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                            Utils.showToast(Utility.getString(R.string.msg_success_editexam, mContext), mContext);
+                        } else {
+                            Utils.showToast(Utility.getString(R.string.msg_success_createexam, mContext), mContext);
+                        }
+                    } else {
+                        Utils.showToast(Utility.getString(R.string.msg_success_createexam, mContext), mContext);
+                    }
+
                     svCreateExam.fullScroll(ScrollView.FOCUS_UP);
                     btnExamSetquestion.setVisibility(View.VISIBLE);
                     btnExamSave.setVisibility(View.GONE);
@@ -797,19 +786,25 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     @Override
     public void onClick(View v) {
-        if (v == btnExamSave) {
-            if (isInputsValid()) {
-                callApiCreateExam();
-            }
-        } else if (v == btnExamSetquestion) {
 
-            if (getArguments() != null) {
-                setBundleArguments();
-            }
-            ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER, getArguments());
-        } else if (v == btnExamCancel) {
-            backToTrialScreen();
+
+        switch (v.getId()) {
+            case R.id.btn_exam_save:
+                if (isInputsValid()) {
+                    callApiCreateExam();
+                }
+                break;
+            case R.id.btn_exam_setquestion:
+                if (getArguments() != null) {
+                    setBundleArguments();
+                }
+                ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER, getArguments());
+                break;
+            case R.id.btn_exam_cancel:
+//                    backToTrialScreen();
+                break;
         }
+
 
     }
 

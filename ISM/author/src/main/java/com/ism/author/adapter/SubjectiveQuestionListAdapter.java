@@ -221,8 +221,8 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
         @Override
         public void onClick(View v) {
             int position = (Integer) v.getTag(R.id.idPosition);
-            getFragment().updateQuestionEvaluationStatus(position);
 
+            getFragment().updateQuestionEvaluationStatus(position);
             TextView[] scoreTextArray = (TextView[]) v.getTag(R.id.idView);
 
             for (int i = 0; i < scoreTextArray.length; i++) {

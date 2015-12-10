@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,9 +41,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Created by c161 on 12/10/15.
@@ -190,7 +188,8 @@ public class Utility {
     /**
      * Krunal Panchal
      * Ask for confirmation and respond back.
-     *  @param context
+     *
+     * @param context
      * @param title
      * @param message
      * @param cancelable
@@ -207,7 +206,7 @@ public class Utility {
         AlertDialog dialog = builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-	            confirmationListener.onConfirmationResponse(requestId, true);
+                confirmationListener.onConfirmationResponse(requestId, true);
             }
         }).setNegativeButton(R.string.strcancel, new DialogInterface.OnClickListener() {
             @Override
@@ -215,7 +214,7 @@ public class Utility {
                 confirmationListener.onConfirmationResponse(requestId, false);
             }
         }).create();
-	    dialog.setCancelable(cancelable);
+        dialog.setCancelable(cancelable);
 //        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();
     }
@@ -231,13 +230,13 @@ public class Utility {
         return DATE_FORMAT_API.format(date);
     }
 
-	/**
-	 * Krunal Panchal
-	 * Format date to pass in api with MySql format.
-	 *
-	 * @param date
-	 * @return
-	 */
+    /**
+     * Krunal Panchal
+     * Format date to pass in api with MySql format.
+     *
+     * @param date
+     * @return
+     */
     public static String formatDateMySql(Date date) {
         return DATE_FORMAT_MY_SQL.format(date);
     }
@@ -449,6 +448,7 @@ public class Utility {
     /**
      * Arti Patel
      * get Image path from uri
+     *
      * @param uri
      * @param context
      * @return
@@ -476,6 +476,7 @@ public class Utility {
         cursor.close();
         return filePath;
     }
+
     /*
     * Arti Patel
     * */
@@ -483,6 +484,63 @@ public class Utility {
         SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         return curFormater.format(calendar.getTime());
+    }
+
+    /*
+    * Arti Patel
+    * */
+    public static Date getDateMySql() {
+        Calendar calendar = Calendar.getInstance();
+        try {
+            return DATE_FORMAT_MY_SQL.parse(DATE_FORMAT_MY_SQL.format(calendar.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /*
+    * Arti Patel
+    * */
+    public static Date getDateFormateMySql(String date) {
+        DateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return curFormater.parse(date);
+        } catch (ParseException e) {
+            Debug.i(TAG, "getDateFormateMySql ParseException : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    /*
+    * Arti Patel
+    * */
+    public static Date getDateFormate(String date) {
+        DateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return curFormater.parse(date);
+        } catch (ParseException e) {
+            Debug.i(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    private Boolean getTimeDifference(String curentDate, String lastDate) {
+        // TODO Auto-generated method stub
+        Date dateCur = null, datePrev = null;
+        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            dateCur = df.parse(curentDate);
+            datePrev = df.parse(lastDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (dateCur.compareTo(datePrev) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 }

@@ -45,7 +45,7 @@ public class PreferenceData {
     public static final String ACCESS_KEY = "accessKey";
     public static final String SECRET_KEY = "secretKey";
 
-    //=================================================================
+    //====================================================================
     //PS=> PRIVACYSETTING
     public static final String PS_VIWERS_VIEW_CONTACT = "ViewersViewContact";
     public static final String PS_VIWERS_VIEW_BIRTHDATE = "ViewersViewBirthdate";
@@ -65,7 +65,7 @@ public class PreferenceData {
 
     //=> Block user
 
-
+    public static final String LAST_MODIFIED_DATE = "lastModifieddate";
 
 
     public static void setBooleanPrefs(String prefKey, Context context, boolean value) {

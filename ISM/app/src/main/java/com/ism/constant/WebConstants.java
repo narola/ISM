@@ -140,6 +140,7 @@ public class WebConstants {
 	/**
 	 * Parameter value Constants
 	 */
+	public static final String NO_USERNAME = "nousername";
 	public static final String STUDYMATE_REQUEST = "studymate_request";
 	public static final String MESSAGES = "messages";
 	public static final String NOTIFICATION = "notification";
