@@ -489,12 +489,25 @@ public class Utility {
     /*
     * Arti Patel
     * */
+    public static Date getDateMySql() {
+        Calendar calendar = Calendar.getInstance();
+        try {
+            return DATE_FORMAT_MY_SQL.parse(DATE_FORMAT_MY_SQL.format(calendar.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /*
+    * Arti Patel
+    * */
     public static Date getDateFormateMySql(String date) {
         DateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             return curFormater.parse(date);
         } catch (ParseException e) {
-            Debug.i(TAG,"getDateFormateMySql ParseException : " +e.getLocalizedMessage());
+            Debug.i(TAG, "getDateFormateMySql ParseException : " + e.getLocalizedMessage());
         }
         return null;
     }
@@ -507,10 +520,27 @@ public class Utility {
         try {
             return curFormater.parse(date);
         } catch (ParseException e) {
-            Debug.i(TAG,"getDateFormate ParseException : " +e.getLocalizedMessage());
+            Debug.i(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
         }
         return null;
     }
 
+    private Boolean getTimeDifference(String curentDate, String lastDate) {
+        // TODO Auto-generated method stub
+        Date dateCur = null, datePrev = null;
+        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            dateCur = df.parse(curentDate);
+            datePrev = df.parse(lastDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (dateCur.compareTo(datePrev) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 
 }

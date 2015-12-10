@@ -38,18 +38,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text=""
+                    android:text="@string/strtest"
                     android:textColor="@color/color_blue"
-                    android:textSize="@dimen/d18sp" />
+                    android:textSize="@dimen/d18dp" />
 
                 <TextView
                     android:id="@+id/tv_student_roll_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/d5dp"
-                    android:text=""
+                    android:text="@string/strtest"
                     android:textColor="@color/color_gray"
-                    android:textSize="@dimen/d15sp" />
+                    android:textSize="@dimen/d15dp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -72,17 +72,17 @@
                 android:layout_height="wrap_content"
                 android:text="@string/strassignmentno"
                 android:textColor="@color/color_gray"
-                android:textSize="@dimen/d18sp" />
+                android:textSize="@dimen/d18dp" />
 
             <TextView
                 android:id="@+id/tv_assignment_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/d5dp"
-                android:text=""
+                android:text="@string/strtest"
                 android:textAllCaps="true"
                 android:textColor="@color/color_red"
-                android:textSize="@dimen/d20sp" />
+                android:textSize="@dimen/d20dp" />
         </LinearLayout>
 
         <ImageView
@@ -143,6 +143,7 @@
 
         </LinearLayout>
     </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_subjective_questions_list"

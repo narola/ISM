@@ -1,4 +1,4 @@
-package com.ism.teacher.Utility;
+package com.ism.teacher.ws.helper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by c75 on 04/12/15.
+ * Created by c162 on 08/12/15.
  */
 public class MultipartUtility {
     private final String boundary;
@@ -39,7 +39,6 @@ public class MultipartUtility {
 
         // creates a unique boundary based on time stamp
         boundary = "===" + System.currentTimeMillis() + "===";
-
         URL url = new URL(requestURL);
         httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setUseCaches(false);
@@ -102,7 +101,6 @@ public class MultipartUtility {
         }
         outputStream.flush();
         inputStream.close();
-
         writer.append(LINE_FEED);
         writer.flush();
     }
@@ -127,7 +125,6 @@ public class MultipartUtility {
      */
     public List<String> finish() throws IOException {
         List<String> response = new ArrayList<String>();
-
         writer.append(LINE_FEED).flush();
         writer.append("--" + boundary + "--").append(LINE_FEED);
         writer.close();
@@ -146,8 +143,6 @@ public class MultipartUtility {
         } else {
             throw new IOException("Server returned non-OK status: " + status);
         }
-
         return response;
     }
-
 }

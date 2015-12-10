@@ -314,6 +314,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         try {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                //ParseAllData(responseHandler.getComments());
                 ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(context, responseHandler.getComments());
                 viewAllCommentsDialog.show();
             } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {

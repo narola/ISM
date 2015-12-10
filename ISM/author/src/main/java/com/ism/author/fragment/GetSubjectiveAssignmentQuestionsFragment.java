@@ -13,7 +13,8 @@ import com.ism.author.R;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.MyTypeFace;
-import com.ism.author.ws.model.Evaluation;
+import com.ism.author.ws.model.QuestionPalette;
+import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -124,8 +125,13 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
     }
 
     /*this is to set the question status data in question palette*/
-    public void setQuestionStatusData(ArrayList<Evaluation> evaluations) {
-        questionPaletteFragment.setQuestionStatusData(evaluations);
+//    public void setQuestionStatusData(ArrayList<Evaluation> evaluations) {
+//        questionPaletteFragment.setQuestionStatusData(evaluations);
+//    }
+
+
+    public void setQuestionStatusData(ArrayList<Questions> arrListQuestions, ArrayList<QuestionPalette> arrListQuestionPalette) {
+        questionPaletteFragment.setQuestionStatusData(arrListQuestions, arrListQuestionPalette);
     }
 
     /*this is to scroll to specific question content on the click of question palette*/

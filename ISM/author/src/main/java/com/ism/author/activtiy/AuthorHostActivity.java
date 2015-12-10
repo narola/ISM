@@ -67,10 +67,8 @@ import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.socketdemo.c85.ismsocket.IOSocketHandler;
 
 import java.util.ArrayList;
-import java.util.logging.SocketHandler;
 
 /*
 * these class is for the main screen after login contains the host activity for managing the main and container fragment.
@@ -152,12 +150,17 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         public void onSubFragmentDetached(int fragmentId);
         //  public void onControllerMenuItemClicked(int position);
     }
+
     public interface BooksListner {
         public void onAddToFav(int position);
+
         public void onRemoveFromFav(int position);
+
         public void onAddToLibrary(String id);
+
         public void onRemoveFromLibrary(String id);
     }
+
     public interface HostListenerAllNotification {
         public void onControllerTopBackClick();
     }
@@ -1041,7 +1044,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             Debug.i(TAG, "onResponseGetAllBadges Exceptiion : " + e.toString());
         }
     }
-
 
 
 }

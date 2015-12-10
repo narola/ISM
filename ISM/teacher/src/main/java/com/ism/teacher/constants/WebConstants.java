@@ -8,6 +8,7 @@ public class WebConstants {
     public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Feeds/";
     public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/";
 
+
     //static parameters
     public static final String EXAM_ID_11_SUBJECTIVE = "11";
     public static final String EXAM_ID_3_OBJECTIVE = "3";
@@ -17,11 +18,13 @@ public class WebConstants {
     public static final String USER_ID_340 = "340";
     public static final String TEST_GETSTUDYMATES = "167";
 
+
     public static final String TEACHER_ROLE_ID = "3";
     public static final String STUDENT_ID_1 = "1";
     public static final String BOOK_ID_2 = "2";
     public static final String TOPIC_ID_5 = "5";
-    public static final String TEST_USER_ID = "52";
+    public static final String TEST_USER_ID = "370";
+    public static final String TEST_USER_ID_52 = "52";
     public static final String TEST_USER_NAME = "Admin";
 
 
@@ -66,6 +69,9 @@ public class WebConstants {
     public static final int SET_HASHTAG = 29;
     public static final int TEMP_CREATE_QUESTION = 30;
     public static final int UPLOAD_FEED_MEDIA = 31;
+    public static final int UPLOADMEDIAFORQUESTION = 32;
+    public static final String Image_url = "http://192.168.1.147/WS_ISM/question_images/";
+
     /**
      * URLs
      */
@@ -74,7 +80,6 @@ public class WebConstants {
     //  private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
 
     private static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
-
 
     private static final String URL_PG_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
@@ -97,28 +102,33 @@ public class WebConstants {
     public static final String URL_UPLOAD_FEED_MEDIA = URL_KINJAL_HOST + "UploadMedia";
     public static final String URL_REQUEST_CREDENTIALS = URL_KINJAL_HOST + "RequestForCredentials";
 
+
     //used for assignment
     public static final String URL_GET_ALL_ASSIGNMENTS = URL_KINJAL_HOST + "GetAllExams";
     public static final String URL_GET_EXAM_QUESTIONS = URL_KINJAL_HOST + "GetExamQuestions";
     public static final String URL_GET_EXAM_EVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
     public static final String URL_GET_MY_STUDENTS = URL_KINJAL_HOST + "GetMyStudents";
+
+
     public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_KINJAL_HOST + "GetExamSubmission";
+
     public static final String URL_GET_CITIES = URL_KINJAL_HOST + "GetCities";
     public static final String URL_GET_STATES = URL_KINJAL_HOST + "GetStates";
     public static final String URL_GET_COUNTRIES = URL_KINJAL_HOST + "GetCountries";
 
     //Add Question Functionality
-    public static final String URL_GET_ALL_HASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
 
+    public static final String URL_GET_ALL_HASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
     public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
 
     public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
+
     //Question Add/Edit Functionality
     public static final String URL_HASHTAG = URL_KINJAL_HOST + "Hashtag";
-
     public static final String URL_TEMP_CREATE_QUESTION = URL_KINJAL_HOST + "TempCreateQuestion";
 
     //Upload Media url
 
     public static final String URL_UPLOADMEDIAFORQUESTION = URL_KINJAL_HOST + "UploadMediaForQuestion";
+
 }

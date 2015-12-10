@@ -148,7 +148,6 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
     }
 
     public void setBundleArgument(int position) {
-
         getBundleArgument().putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
         getBundleArgument().putString(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
                 arrListExamSubmittor.get(position).getStudentProfilePic());
@@ -156,9 +155,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
                 arrListExamSubmittor.get(position).getStudentName());
         getBundleArgument().putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID,
                 arrListExamSubmittor.get(position).getStudentId());
-
         notifyDataSetChanged();
-
     }
 
 

@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.activity.PostFeedActivity;
-import com.ism.adapter.PostFeedsAdapter;
+import com.ism.adapter.PostFeedsAdapterTest;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
@@ -45,7 +45,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     private RecyclerView recyclerPostFeeds;
     private RelativeLayout rlNewPost;
 
-    private PostFeedsAdapter adpPostFeeds;
+    private PostFeedsAdapterTest adpPostFeeds;
     private HostActivity activityHost;
 
     public static ClassWallFragment newInstance() {
@@ -70,7 +70,6 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
         recyclerPostFeeds = (RecyclerView) view.findViewById(R.id.recycler_post);
         rlNewPost = (RelativeLayout) view.findViewById(R.id.rl_new_post);
         recyclerPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -121,9 +120,6 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     @Override
     public void onPause() {
         super.onPause();
-        StudentHelper studentHelper = new StudentHelper(getActivity());
-     //   studentHelper.
-
     }
 
     private void callApiGetAllFeeds() {
@@ -158,8 +154,6 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     if (responseHandler.getFeeds().size() != 0) {
-                        adpPostFeeds = new PostFeedsAdapter(getActivity(), responseHandler.getFeeds());
-                        recyclerPostFeeds.setAdapter(adpPostFeeds);
                         ParseAllData(responseHandler.getFeeds());
                     }
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
@@ -218,6 +212,9 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
             }
             feedRealm.setFeedImages(feedImages);
             studentHelper.Feeds(feedRealm);
+            adpPostFeeds = new PostFeedsAdapterTest(getActivity(), studentHelper.getFeeds(-1));
+//            adpPostFeeds = new PostFeedsAdapterTest(getActivity(), arrayList);
+            recyclerPostFeeds.setAdapter(adpPostFeeds);
         }
     }
 

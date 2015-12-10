@@ -40,8 +40,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jp.wasabeef.richeditor.RichEditor;
-
 public class AssignmentExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
     private View view;
@@ -279,12 +277,13 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
         rteTrialExam = (RichTextEditor) view.findViewById(R.id.rte_trial_exam);
         rteTrialExam.getRichEditor().setEditorFontSize(25);
-        rteTrialExam.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
-            @Override
-            public void onTextChange(String text) {
-                strAssignmenttext = text;
-            }
-        });
+        rteTrialExam.hideMediaControls();
+//        rteTrialExam.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
+//            @Override
+//            public void onTextChange(String text) {
+//                strAssignmenttext = text;
+//            }
+//        });
 
 
         callApiGetClassrooms();
@@ -304,7 +303,8 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             spExamSubjectname.setEnabled(false);
 
         } else {
-//            btnExamSetquestion.setVisibility(View.GONE);
+            btnExamSetquestion.setVisibility(View.GONE);
+            btnExamSave.setVisibility(View.VISIBLE);
 
         }
     }
@@ -319,6 +319,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
         spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE)));
         spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_DURATION)));
+
 
     }
 
@@ -388,7 +389,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
                 attribute.setPassingPercent(arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
                 attribute.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
-                attribute.setExamInstruction(strAssignmenttext);
+                attribute.setExamInstruction(rteTrialExam.getHtml());
                 attribute.setDeclareResults(getRadioGropuSelection(radioDeclareresult));
                 attribute.setNegativeMarking(getRadioGropuSelection(radioNegativemarking));
                 attribute.setRandomQuestion(getRadioGropuSelection(radioExamRandomQuestion));
@@ -397,6 +398,8 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 attribute.setUserId("370");
                 attribute.setNegativeMarkValue(etExamAddnegativemark.getText().toString());
                 attribute.setBookId(String.valueOf(0));
+
+                //latest add params
 
                 new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.CREATE_EXAM);
@@ -489,7 +492,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     }
 
     private boolean isTextSetInRichTextEditor() {
-        if (strAssignmenttext.trim().length() > 0) {
+        if (rteTrialExam.getHtml().trim().length() > 0) {
             return true;
         } else {
             strValidationMsg += Utility.getString(R.string.msg_validation_add_text_rich_editor, mContext);

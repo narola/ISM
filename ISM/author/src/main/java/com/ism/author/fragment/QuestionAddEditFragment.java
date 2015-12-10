@@ -8,13 +8,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -698,13 +696,13 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             getFragment().flipCard();
 
         } else if (v == tvAddquestionAdvance) {
-          String htmlText = Html.toHtml(etAddquestionTitle.getText());
+            String htmlText = Html.toHtml(etAddquestionTitle.getText());
 
 
-            htmlText =  htmlText.replace("<p dir=\"ltr\"><img","<img");
-            htmlText= htmlText.replace(".png\"></p>", ".png\">");
+            htmlText = htmlText.replace("<p dir=\"ltr\"><img", "<img");
+            htmlText = htmlText.replace(".png\"></p>", ".png\">");
             addQuestionTextDialog = new AddQuestionTextDialog(getActivity(), (AddQuestionTextDialog.SelectMediaListener) this,
-                    (AddQuestionTextDialog.AddTextListener) this,htmlText);
+                    (AddQuestionTextDialog.AddTextListener) this, htmlText);
             addQuestionTextDialog.show();
 
         } else if (v == imgHelp) {
@@ -713,17 +711,19 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         }
 
     }
-int startingPosition = 0;
+
+    int startingPosition = 0;
     String trimmedText;
-    private void trimText(String text,int startPosition){
+
+    private void trimText(String text, int startPosition) {
         String substring = text;
 //        <p dir="ltr"><img src="file:///storage/emulated/0/Download/01.png"></p>
 //        <p dir="ltr">hiiszdcdsafdsf sdf sdf s&#160;</p>
 //        <p dir="ltr"><img src="file:///storage/emulated/0/Download/04.png"></p>
 //        <p dir="ltr">&#160;dff s fss dfs fd</p>
 
-               text.replace("<p dir=\"ltr\"><img","<img");
-               text.replace(".png\"></p>","png\">");
+        text.replace("<p dir=\"ltr\"><img", "<img");
+        text.replace(".png\"></p>", "png\">");
 
     }
 
@@ -1198,7 +1198,7 @@ int startingPosition = 0;
     @Override
     public void SetText(String text) {
         htmlText = text;
-        etAddquestionTitle.setText(Html.fromHtml(text, new HtmlImageGetter(50,50),null));
+        etAddquestionTitle.setText(Html.fromHtml(text, new HtmlImageGetter(50, 50), null));
 //        etAddquestionTitle.setText(Utils.formatHtml(text));
     }
 
