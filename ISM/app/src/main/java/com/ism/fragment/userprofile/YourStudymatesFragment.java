@@ -108,6 +108,14 @@ public class YourStudymatesFragment extends Fragment implements WebserviceWrappe
 		adpRecommendedStudymates = new RecommendedStudymatesAdapter(getActivity(), arrListRecommendedStudymates);
 		recyclerRecommendedStudymates.setAdapter(adpRecommendedStudymates);*/
 
+		recyclerRecommendedStudymates.setOnScrollListener(new RecyclerView.OnScrollListener() {
+			@Override
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+				super.onScrolled(recyclerView, dx, dy);
+				Log.e(TAG, "RecyclerView dX : " + dx + ", dY : " + dy);
+			}
+		});
+
 		imgNext.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

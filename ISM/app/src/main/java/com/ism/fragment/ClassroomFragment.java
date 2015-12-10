@@ -8,9 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ism.activity.HostActivity;
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.interfaces.FragmentListener;
+import com.ism.utility.Debug;
+import com.ism.utility.Utility;
+
+import realmhelper.StudentHelper;
 
 /**
  * Created by c161 on --/10/15.
@@ -24,17 +28,17 @@ public class ClassroomFragment extends Fragment implements HostActivity.HostList
     private FragmentListener fragListener;
 
     private static final String ARG_FRAGMENT = "fragment";
-	public static final int FRAGMENT_CLASSWALL = 0;
-	public static final int FRAGMENT_LESSON_NOTES = 1;
-	public static final int FRAGMENT_ASSIGNMENT = 2;
-	public static final int FRAGMENT_EXAM = 3;
-	static private int fragment;
+    public static final int FRAGMENT_CLASSWALL = 0;
+    public static final int FRAGMENT_LESSON_NOTES = 1;
+    public static final int FRAGMENT_ASSIGNMENT = 2;
+    public static final int FRAGMENT_EXAM = 3;
+    static private int fragment;
 
     public static ClassroomFragment newInstance(int fragment) {
         ClassroomFragment fragClassroom = new ClassroomFragment();
-	    Bundle args = new Bundle();
-	    args.putInt(ARG_FRAGMENT, fragment);
-	    fragClassroom.setArguments(args);
+        Bundle args = new Bundle();
+        args.putInt(ARG_FRAGMENT, fragment);
+        fragClassroom.setArguments(args);
         return fragClassroom;
     }
 
@@ -42,16 +46,16 @@ public class ClassroomFragment extends Fragment implements HostActivity.HostList
         // Required empty public constructor
     }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			fragment = getArguments().getInt(ARG_FRAGMENT);
-			if (fragListener != null) {
-				fragListener.onFragmentAttached(fragment);
-			}
-		}
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            fragment = getArguments().getInt(ARG_FRAGMENT);
+            if (fragListener != null) {
+                fragListener.onFragmentAttached(fragment);
+            }
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,8 +68,7 @@ public class ClassroomFragment extends Fragment implements HostActivity.HostList
 
     private void initGlobal() {
 
-	    loadFragment(FRAGMENT_CLASSWALL);
-
+        loadFragment(FRAGMENT_CLASSWALL);
     }
 
     @Override
@@ -91,31 +94,31 @@ public class ClassroomFragment extends Fragment implements HostActivity.HostList
         fragListener = null;
     }
 
-	@Override
-	public void onControllerMenuItemClicked(int position) {
-		loadFragment(position);
-	}
+    @Override
+    public void onControllerMenuItemClicked(int position) {
+        loadFragment(position);
+    }
 
-	private void loadFragment(int fragment) {
-		try {
-			switch (fragment) {
-				case FRAGMENT_CLASSWALL:
-					getChildFragmentManager().beginTransaction().replace(R.id.fl_classroom, ClassWallFragment.newInstance()).commit();
-					break;
-				case FRAGMENT_LESSON_NOTES:
-					break;
-				case FRAGMENT_ASSIGNMENT:
-					break;
-				case FRAGMENT_EXAM:
-					break;
-			}
-		} catch (Exception e) {
-			Log.e(TAG, "loadFragment Exception : " + e.toString());
-		}
-	}
+    private void loadFragment(int fragment) {
+        try {
+            switch (fragment) {
+                case FRAGMENT_CLASSWALL:
+                    getChildFragmentManager().beginTransaction().replace(R.id.fl_classroom, ClassWallFragment.newInstance()).commit();
+                    break;
+                case FRAGMENT_LESSON_NOTES:
+                    break;
+                case FRAGMENT_ASSIGNMENT:
+                    break;
+                case FRAGMENT_EXAM:
+                    break;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "loadFragment Exception : " + e.toString());
+        }
+    }
 
-	public static int getCurrentChildFragment() {
-		return fragment;
-	}
+    public static int getCurrentChildFragment() {
+        return fragment;
+    }
 
 }

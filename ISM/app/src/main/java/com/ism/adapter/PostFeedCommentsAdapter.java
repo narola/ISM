@@ -6,9 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.ws.model.Comment;
 
 import java.util.ArrayList;
@@ -38,6 +42,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
         holder.txtCommenterUsername.setText(listOfComments.get(position).getFullName());
         holder.txtCommenterComment.setText(listOfComments.get(position).getComment());
         holder.txtCommentDuration.setText(listOfComments.get(position).getCommentBy());
+        Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + listOfComments.get(position).getProfilePic(), holder.imgProfilePic, ISMStudent.options);
     }
 
 
@@ -60,6 +65,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        private final ImageView imgProfilePic;
         TextView txtCommenterUsername;
         TextView txtCommenterComment;
         TextView txtCommentDuration;
@@ -72,6 +78,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
             txtCommenterComment = (TextView) itemView.findViewById(R.id.txt_commenter_comment);
             txtCommentDuration = (TextView) itemView.findViewById(R.id.txt_comment_duration);
             txtCommentDuration = (TextView) itemView.findViewById(R.id.txt_comment_duration);
+            imgProfilePic = (ImageView) itemView.findViewById(R.id.img_commenter_dp);
 
         }
     }

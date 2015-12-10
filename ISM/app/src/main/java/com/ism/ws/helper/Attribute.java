@@ -98,12 +98,8 @@ public class Attribute {
     private String postedOn;
 
 	public Attribute() {
-		if (WebConstants.SECRET_KEY != null) {
-			setSecretKey(WebConstants.SECRET_KEY);
-		}
-		if (WebConstants.ACCESS_KEY != null) {
-			setAccessKey(WebConstants.ACCESS_KEY);
-		}
+		setAccessKey(WebConstants.ACCESS_KEY);
+		setSecretKey(WebConstants.SECRET_KEY);
 	}
 
 	@JsonProperty("secret_key")
@@ -177,7 +173,6 @@ public class Attribute {
 	public void setAboutMeText(String aboutMeText) {
 		this.aboutMeText = aboutMeText;
 	}
-
 
 	public String getKeyId() {
 		return keyId;
@@ -613,7 +608,6 @@ public class Attribute {
         return this.feedBy;
     }
 
-
     @JsonProperty("feed_by")
     public void setFeedBy(String feedBy) {
         this.feedBy = feedBy;
@@ -673,7 +667,7 @@ public class Attribute {
         this.videoThumbnail = videoThumbnail;
     }
 
-    /*these are the upload media params*/
+    /* these are the upload media params */
     private ArrayList<MediaUploadAttribute> arrListFile = new ArrayList<MediaUploadAttribute>();
     private ArrayList<MediaUploadAttribute> arrListParam = new ArrayList<MediaUploadAttribute>();
     private String mediaType;
@@ -704,4 +698,5 @@ public class Attribute {
         this.mediaType = mediaType;
         return this;
     }
+
 }
