@@ -166,9 +166,21 @@ class ProfileFunctions
             }
                 break;
 
+            case "GetAdminConfig":
+            {
+                return $this->getAdminConfig($postData);
+            }
+                break;
+
             case "UnBlockUser":
             {
                 return $this->unBlockUser($postData);
+            }
+                break;
+
+            case "UploadProfileImages":
+            {
+                return $this->uploadProfileImages($postData);
             }
                 break;
 
@@ -398,7 +410,7 @@ class ProfileFunctions
         if($isSecure==yes) {
 
             $queryState = "SELECT `state_name` FROM `states` WHERE `id`=" . $state_id ." and is_delete=0";
-            $resultState = mysqli_query($GLOBALS['con'], $queryState) or $errorMsg = mysqli_error($GLOBALS['con']);
+            $resultState = mysqli_query($GLOBALS['con'], $queryState) or $message = mysqli_error($GLOBALS['con']);
             if (mysqli_num_rows($resultState)) {
                 while ($val = mysqli_fetch_assoc($resultState)) {
                     $state_name = $val['state_name'];
@@ -535,8 +547,8 @@ class ProfileFunctions
 
         if ($isSecure == yes) {
 
-            $queryUser = "SELECT id,username,password,profile_pic,full_name from ".TABLE_USERS." where username='".$username."' and is_delete=0";
-            //echo $encrypted_passwd = $obj->encode($password);
+           $queryUser = "SELECT id,username,password,profile_pic,full_name from ".TABLE_USERS." where username='".$username."' and is_delete=0";
+            // $encrypted_passwd = $obj->encode($password);
             //$decrypted_password = $obj->decode("vxbhjXDuOZ8uncgNP7ykB2UvgLr5Q9SU31K6z+JGMYfREqZTYyr1f5E20k7jMTxNILaWMK0ImrNVS1GGn6gshA==");
             //echo "---------".$obj->decode("v8R/H5JqnMdmkqVWyYLr7a/z46844fI8otkn17Ba+Afd5eOTjH9uJRg0X5nHW6EAcAQP4QNhvbNWmfgqlzLXew==");
             $resultUser = mysqli_query($GLOBALS['con'], $queryUser) or $message = mysqli_error($GLOBALS['con']);
@@ -545,10 +557,11 @@ class ProfileFunctions
                 while ($val = mysqli_fetch_assoc($resultUser)) {
                     //echo $obj->encode($password);
                     $encryptedPassword = $val['password'];
-                    //echo $encryptedPassword;
+                   // echo $encryptedPassword;
                     $decrypted_password = $obj->decode($encryptedPassword);
                     //echo $decrypted_password;
                     if ($decrypted_password == $password) {
+
                         $post = array();
                         $message = CREDENTIALS_EXITST;
                         $post['user_id'] = $val['id'];
@@ -714,20 +727,12 @@ class ProfileFunctions
         $access_key = addslashes($access_key);
 
         $security=new SecurityFunctions();
-        $isSecure = $security->checkForSecurity($access_key,$secret_key);
-
+        //$isSecure = $security->checkForSecurity($access_key,$secret_key);
+        $isSecure = $security->checkForSecurityTest($access_key,$secret_key);
+        echo $isSecure; exit;
         if ($isSecure == yes) {
 
-            $profile_image_name_array = explode(".", $profile_image_name);
-            if (!is_dir(USER_PROFILE_PICTURE)) {
-                mkdir(USER_PROFILE_PICTURE, 0777, true);
-            }
-            // if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
-            // die('Failed to create folders...'.USER_PROFILE_PICTURE);
-            // }
-            // echo $profile_image_name_array[0]."_test.".$profile_image_name_array[1];
 
-            $profile_image_name = $profile_image_name_array[0] . "_test." . $profile_image_name_array[1];
             $obj = new CI_Encrypt();
 
             $firstName=ucfirst(strtolower($firstname));
@@ -797,21 +802,33 @@ class ProfileFunctions
 
                 }
                 //Image Saving
-                $profile_user_link = "user_" . $user_id . "/";
-
-                $profile_image_dir = USER_PROFILE_PICTURE . $profile_user_link;
-
-                if (!is_dir(USER_PROFILE_PICTURE . $profile_user_link)) {
-                    mkdir(USER_PROFILE_PICTURE . $profile_user_link, 0777, true);
-                }
-
-                $profile_image_dir = $profile_image_dir . $profile_image_name;
-                $profile_image_link = $profile_user_link . $profile_image_name;
-                file_put_contents($profile_image_dir, base64_decode($profile_image));
-
-                $queryProfileImage = "INSERT INTO " . TABLE_USER_PROFILE_PICTURE . "(`user_id`, `profile_link`) VALUES (" . $user_id . ",'" . $profile_image_link . "')";
-                $resultProfileImage = mysqli_query($GLOBALS['con'], $queryProfileImage) or $message = mysqli_error($GLOBALS['con']);
-
+//                $profile_image_name_array = explode(".", $profile_image_name);
+//                if (!is_dir(USER_PROFILE_PICTURE)) {
+//                    mkdir(USER_PROFILE_PICTURE, 0777, true);
+//                }
+//                // if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
+//                // die('Failed to create folders...'.USER_PROFILE_PICTURE);
+//                // }
+//                // echo $profile_image_name_array[0]."_test.".$profile_image_name_array[1];
+//
+//                $profile_image_name = $profile_image_name_array[0] . "_test." . $profile_image_name_array[1];
+//
+//
+//                $profile_user_link = "user_" . $user_id . "/";
+//
+//                $profile_image_dir = USER_PROFILE_PICTURE . $profile_user_link;
+//
+//                if (!is_dir(USER_PROFILE_PICTURE . $profile_user_link)) {
+//                    mkdir(USER_PROFILE_PICTURE . $profile_user_link, 0777, true);
+//                }
+//
+//                $profile_image_dir = $profile_image_dir . $profile_image_name;
+//                $profile_image_link = $profile_user_link . $profile_image_name;
+//                file_put_contents($profile_image_dir, base64_decode($profile_image));
+//
+//                $queryProfileImage = "INSERT INTO " . TABLE_USER_PROFILE_PICTURE . "(`user_id`, `profile_link`) VALUES (" . $user_id . ",'" . $profile_image_link . "')";
+//                $resultProfileImage = mysqli_query($GLOBALS['con'], $queryProfileImage) or $message = mysqli_error($GLOBALS['con']);
+//
 
 
                 //Generate Token
@@ -833,7 +850,7 @@ class ProfileFunctions
 
                 if($resultAddToken)
                 {
-                    $post['token']=$secret_key;
+                    $post['token_name']=$secret_key;
                     $status=SUCCESS;
                     $message="Token key generated.";
                 }
@@ -850,7 +867,7 @@ class ProfileFunctions
                     // echo $updateStatus;
                     $post['user_id']=$user_id;
                     $post['full_name']=$firstname." ".$lastname;
-                    $post['profile_pic']=$profile_image_link;
+                    //$post['profile_pic']=$profile_image_link;
                     $data[]=$post;
                     $status=SUCCESS;
                     $message="Registration completed successfully";
@@ -1448,7 +1465,7 @@ class ProfileFunctions
                          INNER JOIN ". TABLE_FEEDS ." feed ON feed.id=feed_like.feed_id
                         INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
                          where feed_like.like_by=".$user_id." and feed_like.feed_id= ". $val['resource_id']." and feed_like.is_delete=0 and feed.is_delete=0 and user.is_delete=0";
-                        $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $errorMsg= mysqli_error($GLOBALS['con']);
+                        $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $message= mysqli_error($GLOBALS['con']);
 
 //echo $queryFeedLike; exit;
 
@@ -1468,7 +1485,7 @@ class ProfileFunctions
                                /* $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
             ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 LIMIT 2";
                                 //echo $queryGetAllComments;
-                                $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg =  mysqli_error($GLOBALS['con']);
+                                $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $message =  mysqli_error($GLOBALS['con']);
                                 $allcomment=array();
 
                                 if(mysqli_num_rows($resultGetAlComments))
@@ -1583,7 +1600,7 @@ class ProfileFunctions
                         $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEEDS." feed
                         INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
                          where feed.feed_by=".$user_id." and feed.id= ". $val['resource_id']." and feed.is_delete=0 and user.is_delete=0";
-                        $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $errorMsg= mysqli_error($GLOBALS['con']);
+                        $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $message= mysqli_error($GLOBALS['con']);
 
 //echo $queryFeedLike; exit;
                         $feedPosted=array();
@@ -1602,7 +1619,7 @@ class ProfileFunctions
                                /* $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
             ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC LIMIT 2";
                                 //echo $queryGetAllComments;
-                                $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg =  mysqli_error($GLOBALS['con']);
+                                $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $message =  mysqli_error($GLOBALS['con']);
                                 $allcomments=array();
 
                                 if(mysqli_num_rows($resultGetAlComments))
@@ -2189,7 +2206,7 @@ class ProfileFunctions
                     else
                     {
                         $queryUpdate="UPDATE " .$table ." SET is_delete = 0 WHERE user_id=".$user_id." AND ".$resource_name_id."  =" . $fav_id;
-                        $resultUpdate = mysqli_query($GLOBALS['con'],$queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
+                        $resultUpdate = mysqli_query($GLOBALS['con'],$queryUpdate) or $message = mysqli_error($GLOBALS['con']);
 
                         if($resultUpdate)
                         {
@@ -2217,10 +2234,10 @@ class ProfileFunctions
                     if (mysqli_num_rows($resultCheckFeed) > 0) {
 
                         $queryUpdate="UPDATE " .$table ." SET is_delete = 1 WHERE user_id=".$user_id." AND ".$resource_name_id."  =" . $unfav_id;
-                        $resultUpdate = mysqli_query($GLOBALS['con'],$queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
+                        $resultUpdate = mysqli_query($GLOBALS['con'],$queryUpdate) or $message = mysqli_error($GLOBALS['con']);
 
                         // $queryToDelete="DELETE * FROM " .$table ."  WHERE user_id=".$user_id." AND ".$resource_name_id."  =" . $unfav_id;
-                        //$resultToDelete = mysqli_query($GLOBALS['con'],$queryToDelete) or $errorMsg = mysqli_error($GLOBALS['con']);
+                        //$resultToDelete = mysqli_query($GLOBALS['con'],$queryToDelete) or $message = mysqli_error($GLOBALS['con']);
 
                         if($resultUpdate)
                         {
@@ -2530,7 +2547,7 @@ class ProfileFunctions
                     if (mysqli_num_rows($resultCheckFeed) > 0) {
 
                         $queryUpdate = "UPDATE " . TABLE_USER_LIBRARY . " SET is_delete = 1 WHERE user_id=" . $user_id . " AND book_id=" . $book_id . " AND is_delete=0";
-                        $resultUpdate = mysqli_query($GLOBALS['con'], $queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
+                        $resultUpdate = mysqli_query($GLOBALS['con'], $queryUpdate) or $message = mysqli_error($GLOBALS['con']);
                         // echo $queryUpdate;
 
                         if ($resultUpdate) {
@@ -2803,7 +2820,7 @@ class ProfileFunctions
                          inner join ". TABLE_FEEDS ." feed
                         INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
                          where feed_like.like_by=".$user_id." and feed_like.feed_id= ". $val['resource_id']." and feed_like.is_delete=0 and feed.is_delete=0 and user.is_delete=0";
-                        $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $errorMsg= mysqli_error($GLOBALS['con']);
+                        $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $message= mysqli_error($GLOBALS['con']);
 
 
                         $feeds=array();
@@ -2823,7 +2840,7 @@ class ProfileFunctions
                                 $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
             ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 LIMIT 2";
                                 //echo $queryGetAllComments;
-                                $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg =  mysqli_error($GLOBALS['con']);
+                                $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $message =  mysqli_error($GLOBALS['con']);
                                 $allcomment=array();
 
                                 if(mysqli_num_rows($resultGetAlComments))
@@ -2904,7 +2921,7 @@ class ProfileFunctions
                         $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEEDS." feed
                         INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
                          where feed.feed_by=".$user_id." and feed.id= ". $val['resource_id']." and feed.is_delete=0 and user.is_delete=0";
-                        $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $errorMsg= mysqli_error($GLOBALS['con']);
+                        $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $message= mysqli_error($GLOBALS['con']);
 
 
                         $feeds=array();
@@ -2924,7 +2941,7 @@ class ProfileFunctions
                                 $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
             ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC LIMIT 2";
                                 //echo $queryGetAllComments;
-                                $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg =  mysqli_error($GLOBALS['con']);
+                                $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $message =  mysqli_error($GLOBALS['con']);
                                 $allcomments=array();
 
                                 if(mysqli_num_rows($resultGetAlComments))
@@ -2976,70 +2993,189 @@ class ProfileFunctions
         $data=array();
         $response=array();
 
-        $username = validateObject ($postData , 'username', "");
-        $username = addslashes($username);
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $secret_key=NULL;
+
+//        echo $access_key;
+//        echo "sec=".$secret_key;
 
         $security=new SecurityFunctions();
 
+     $isSecure = $security->checkForSecurityTest($access_key,$secret_key);
 
-        $query = "SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='globalPassword' AND is_delete=0";
-        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
-        $masterKey = mysqli_fetch_row($result);
+        /*if($isSecure==yes) {
 
-        $crypterSecurity=new Security();
-        $decrypted_username=$crypterSecurity->decrypt($username,$masterKey[0]);
+            $query = "SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='globalPassword' AND is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            $masterKey = mysqli_fetch_row($result);
 
-
-        $queryToGetUserId="SELECT id FROM ". TABLE_USERS." WHERE username='".$decrypted_username."' AND is_delete=0";
-        $resultToGetUserId=mysqli_query($GLOBALS['con'], $queryToGetUserId) or $errorMsg =  mysqli_error($GLOBALS['con']);
-
-        if(mysqli_num_rows($resultToGetUserId)>0) {
-            $user_id = mysqli_fetch_row($resultToGetUserId);
-
-            //Generate Token
-
-            $generateToken=$security->generateToken(8);
+            $crypterSecurity = new Security();
+            $decrypted_username = $crypterSecurity->decrypt($access_key, $masterKey[0]);
 
 
-            $insertTokenField = "`user_id`, `token`";
-            $insertTokenValue = "" . $user_id[0] . ",'" . $generateToken . "'";
+            $queryToGetUserId = "SELECT id FROM " . TABLE_USERS . " WHERE username='" . $decrypted_username . "' AND is_delete=0";
+            $resultToGetUserId = mysqli_query($GLOBALS['con'], $queryToGetUserId) or $message = mysqli_error($GLOBALS['con']);
 
-            $queryToCheckRecordExist="SELECT * FROM ". TABLE_TOKENS." WHERE user_id=".$user_id[0]." AND is_delete=0";
-            $resultToCheckRecordExist=mysqli_query($GLOBALS['con'], $queryToCheckRecordExist) or $errorMsg =  mysqli_error($GLOBALS['con']);
+            if (mysqli_num_rows($resultToGetUserId) > 0) {
+                $user_id = mysqli_fetch_row($resultToGetUserId);
+
+                //Generate Token
+
+                $generateToken = $security->generateToken(8);
 
 
-            if(mysqli_num_rows($resultToCheckRecordExist)==0) {
-                $queryAddToken = "INSERT INTO " . TABLE_TOKENS . "(" . $insertTokenField . ") values (" . $insertTokenValue . ")";
-                $resultAddToken = mysqli_query($GLOBALS['con'], $queryAddToken) or $message = mysqli_error($GLOBALS['con']);
+                $insertTokenField = "`user_id`, `token`";
+                $insertTokenValue = "" . $user_id[0] . ",'" . $generateToken . "'";
 
-                //===================Call AES Encrypt Function=======================
+                $queryToCheckRecordExist = "SELECT * FROM " . TABLE_TOKENS . " WHERE user_id=" . $user_id[0] . " AND is_delete=0";
+                $resultToCheckRecordExist = mysqli_query($GLOBALS['con'], $queryToCheckRecordExist) or $message = mysqli_error($GLOBALS['con']);
+                $rowRecord = mysqli_fetch_row($resultToCheckRecordExist);
+                $tokenName = $rowRecord[2];
 
-                $secret_key=$crypterSecurity->encrypt($generateToken,$decrypted_username);
-                //**************************End Encryption***************************
+                if (mysqli_num_rows($resultToCheckRecordExist) == 0) {
+                    $queryAddToken = "INSERT INTO " . TABLE_TOKENS . "(" . $insertTokenField . ") values (" . $insertTokenValue . ")";
+                    $resultAddToken = mysqli_query($GLOBALS['con'], $queryAddToken) or $message = mysqli_error($GLOBALS['con']);
 
-                if ($resultAddToken) {
-                    $data['token_name'] = $secret_key;
-                    $data['username'] = $username;
-                    $status = SUCCESS;
-                    $message = "Token key generated.";
+                    //===================Call AES Encrypt Function=======================
+
+                    $secret_key = $crypterSecurity->encrypt($generateToken, $decrypted_username);
+                    //**************************End Encryption***************************
+
+                    if ($resultAddToken) {
+                        $data['token_name'] = $secret_key;
+                        $data['username'] = $access_key;
+                        $status = SUCCESS;
+                        $message = "Token key generated.";
+                    } else {
+                        $status = FAILED;
+                        $message = "Failed to generate token.";
+                    }
                 } else {
-                    $status = FAILED;
-                    $message = "Failed to generate token.";
+                    $status = SUCCESS;
+                    $message = RECORD_ALREADY_EXIST;
+                    $tokenName = $crypterSecurity->encrypt($tokenName, $decrypted_username);
+                    $data['token_name'] = $tokenName;
                 }
-            }
-            else{
+            } else {
                 $status = SUCCESS;
-                $message = RECORD_ALREADY_EXIST;
-            }
-        }
-        else{
-            $status = SUCCESS;
-            $message = DEFAULT_NO_RECORDS;
-        }
+                $message = DEFAULT_NO_RECORDS;
 
+            }
+        }*/
+
+
+        if($isSecure != "no")
+        {
+            $message = "";
+            $post['token_name'] = $isSecure;
+            $status = SUCCESS;
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+            $post['token_name'] = array();
+        }
+        $data[]=$post;
         $response['token']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
+        return $response;
+    }
+
+
+    /*
+  * getConfigData
+   */
+    public function getAdminConfig($postData)
+    {
+        $status='';
+        $message='';
+        $data=array();
+        $response=array();
+
+        $last_sync_date = validateObject($postData, 'last_sync_date', "");
+        $last_sync_date = addslashes($last_sync_date);
+
+        $role = validateObject($postData, 'role', "");
+        $role = addslashes($role);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($role=='Student')
+        {
+            $scope='Student';
+        }
+        elseif($role=='Author')
+        {
+            $scope='Author';
+        }
+        elseif($role=='Admin')
+        {
+            $scope='Admin';
+        }
+        elseif($role=='Teacher')
+        {
+            $scope='Teacher';
+        }
+        elseif($role=='All')
+        {
+            $scope='All';
+        }
+        elseif($role == NULL)
+        {
+            $scope='All';
+        }
+
+        if($isSecure==yes) {
+
+            //  if ($last_sync_date < date("Y-m-d")) {
+            // $last_sync_date=date("Y-m-d");
+            //$condition=" and date(created_date,'Y-M-d') < '".$last_sync_date."'";
+            //$condition=" and DATE_FORMAT(`modified_date`, 'Y-m-d') > '".$last_sync_date."'";
+            $condition=" and `modified_date` > '".$last_sync_date."'";
+            $query = "SELECT config_key,config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE  scope='" . $scope . "' and is_delete=0". $condition;
+            // echo $query;
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($result)) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $post['config_key'] = $row['config_key'];
+                    $post['config_value'] = $row['config_value'];
+
+                    $data[]=$post;
+                }
+
+
+                $status = SUCCESS;
+            }
+            else{
+                $status=SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+            // }
+        }
+        else{
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+            $data="";
+        }
+
+
+        // $response['last_sync_date'] = $last_sync_date;
+        $response['admin_config']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
         return $response;
     }
 
@@ -3117,6 +3253,136 @@ class ProfileFunctions
         $response['status'] = $status;
 
         return $response;
+    }
+
+
+    public function uploadProfileImages($postData)
+    {
+
+        $response=array();
+        $status = '';
+        $message = '';
+        $created_date = date("Ymd-His");
+
+        $user_id = $_POST['user_id'];
+
+        $secret_key = $_POST['secret_key'];
+        $access_key = $_POST['access_key'];
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $selectQuery="SELECT id FROM ".TABLE_USERS." WHERE id= ".$user_id;
+            $result=mysqli_query($GLOBALS['con'], $selectQuery) or $message =mysqli_error($GLOBALS['con']);
+
+
+            for ($i = 0; $i < count($_FILES["media_images"]["name"]); $i++) {
+                if ($_FILES["media_images"]["name"][$i] != '') { // don't insert if file name empty
+
+                    $file_ext=explode('.',$_FILES['media_images']['name'][$i])	;
+                    $file_ext=end($file_ext);
+                    $file_ext=strtolower(end(explode('.',$_FILES['media_images']['name'][$i])));
+
+                    $mediaName = $i."_IMAGE" . $created_date . "_test.";
+                    $fileName =  $mediaName .$file_ext ;
+
+
+
+                    $user_media_dir = "user_" . $user_id . "/";
+
+                   $target_path1 =  USER_PROFILE_PICTURE . $user_media_dir;
+
+                    if(is_dir($target_path1)==false){
+                        $target_path1 =  USER_PROFILE_PICTURE . $user_media_dir;
+                        mkdir($target_path1, 0777);		// Create directory if it does not exist
+                         $target_path =  USER_PROFILE_PICTURE . $user_media_dir . $fileName;
+                    }
+                    else
+                    {
+                        if (file_exists($target_path1)) {
+                         //  echo "dir=".$user_media_dir;
+
+                            //$target_path1 =  USER_PROFILE_PICTURE . $user_media_dir;
+                            //chmod($target_path1,0777);
+
+                            $user_media_dir = "user_" . $user_id."/" ;
+                            $target_path =  USER_PROFILE_PICTURE . $user_media_dir . $fileName;
+                            (@fopen($target_path,"r")==true);
+
+                        }
+
+                    }
+
+//                    $target_path =  USER_PROFILE_PICTURE . $user_media_dir . $fileName;
+                    if (move_uploaded_file($_FILES["media_images"]["tmp_name"][$i], $target_path)) {    // The file is in the images/gallery folder.
+
+                        // Insert record into database by executing the following query:
+                        $queryProfileImage = "INSERT INTO " . TABLE_USER_PROFILE_PICTURE . "(`user_id`, `profile_link`) VALUES (" . $user_id . ",'" . $fileName . "')";
+                        $result=mysqli_query($GLOBALS['con'], $queryProfileImage) or $message =mysqli_error($GLOBALS['con']);
+
+                        if($result)
+                        {
+                            $images[]=$fileName;
+                        }
+                        else{
+                            $status = FAILED;
+                            $message = FAILED_TO_UPLOAD_MEDIA;
+                        }
+//                        if($result = mysqli_query($GLOBALS['con'], $queryProfileImage)){
+//                                $images[]=$fileName;
+//                            mysqli_free_result($result);
+//
+//                        } else {
+//                            $status = FAILED;
+//                            $message = FAILED_TO_UPLOAD_MEDIA;
+//                            //die(mysqli_error($GLOBALS['con']));
+//                        }
+
+                        $data['profile_images']=$images;
+                        $status = SUCCESS;
+                        $message = "successfully uploaded";
+
+                    } else {
+                        $message= "There was an error uploading the file " . $_FILES['media_images']['name'][$i] . ", please try again!";
+                    }
+
+                }
+            }
+            $procedure_to_get_profile_pic= mysqli_query($GLOBALS['con'],"CALL GET_USER_PROFILE_PIC($user_id);") or $message=mysqli_error($GLOBALS['con']);
+            $currentUserPic=mysqli_fetch_row($procedure_to_get_profile_pic);
+
+            $queryUpdate = "UPDATE " . TABLE_USERS . " SET profile_pic='" . $currentUserPic[0] . "' WHERE id=" . $user_id;
+            $resultQuery = mysqli_query($GLOBALS['con'], $queryUpdate) or $message = mysqli_error($GLOBALS['con']);
+
+//            if($currentUserPic=mysqli_fetch_row($procedure_to_get_profile_pic)) {
+//
+//
+//                $queryUpdate = "UPDATE " . TABLE_USERS . " SET profile_pic='" . $currentUserPic[0] . "' WHERE id=" . $user_id;
+//                mysqli_free_result($currentUserPic);
+//            }
+//
+//            if($resultQuery = mysqli_query($GLOBALS['con'], $queryUpdate)) {
+//                mysqli_free_result($resultQuery);
+//            }
+//            else{
+//                $message="hie yes ".mysqli_error($GLOBALS['con']);
+//            }
+        }
+
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+
+
+        $response['user_images']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
     }
 
 }

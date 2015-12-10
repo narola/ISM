@@ -72,12 +72,6 @@ class SocialFunctions
                 return $this->getSecurirty($postData);
             }
                 break;
-                
-            case "GetAdminConfig":
-            {
-                return $this->getAdminConfig($postData);
-            }
-                break;
 
             case "EncryptionData":
             {
@@ -134,7 +128,7 @@ class SocialFunctions
 
         if($isSecure==yes) {
 
-            $getFields = "f.id, f.comment,f.created_date, f.comment_by,u.full_name,p.profile_link";
+            $getFields = "f.id, f.comment,f.created_date, f.comment_by,u.full_name,p.profile_link as 'profile_pic'";
             $query = "SELECT ".$getFields."  FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feed_id ." AND f.is_delete=0 AND p.is_delete=0 AND u.is_delete=0";
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
             //echo $query;
@@ -1164,10 +1158,10 @@ class SocialFunctions
         $access_key = addslashes($access_key);
 
         $security=new SecurityFunctions();
-		$isSecure = $security->checkForSecurity($access_key,$secret_key);
+		//$isSecure = $security->checkForSecurity($access_key,$secret_key);
 
 
-
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
 		if($isSecure==yes)
     	{
     	
@@ -1267,98 +1261,7 @@ class SocialFunctions
         return $response;
     }
     
-    /*
-    * getConfigData
-     */
-    public function getAdminConfig($postData)
-    {
-     	$status='';
-     	$message='';
-        $data=array();
-        $response=array();
 
-        $last_sync_date = validateObject($postData, 'last_sync_date', "");
-        $last_sync_date = addslashes($last_sync_date);
-
-        $role = validateObject($postData, 'role', "");
-        $role = addslashes($role);
-
-        $secret_key = validateObject($postData, 'secret_key', "");
-        $secret_key = addslashes($secret_key);
-
-        $access_key = validateObject($postData, 'access_key', "");
-        $access_key = addslashes($access_key);
-
-        $security=new SecurityFunctions();
-        $isSecure = $security->checkForSecurity($access_key,$secret_key);
-
-        if($role=='Student')
-        {
-            $scope='Student';
-        }
-        elseif($role=='Author')
-        {
-            $scope='Author';
-        }
-        elseif($role=='Admin')
-        {
-            $scope='Admin';
-        }
-        elseif($role=='Teacher')
-        {
-            $scope='Teacher';
-        }
-        elseif($role=='All')
-        {
-            $scope='All';
-        }
-        elseif($role == NULL)
-        {
-            $scope='All';
-        }
-
-        if($isSecure==yes) {
-
-          //  if ($last_sync_date < date("Y-m-d")) {
-               // $last_sync_date=date("Y-m-d");
-                //$condition=" and date(created_date,'Y-M-d') < '".$last_sync_date."'";
-                //$condition=" and DATE_FORMAT(`modified_date`, 'Y-m-d') > '".$last_sync_date."'";
-                $condition=" and `modified_date` > '".$last_sync_date."'";
-                $query = "SELECT config_key,config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE  scope='" . $scope . "' and is_delete=0". $condition;
-               // echo $query;
-                $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
-
-                if (mysqli_num_rows($result)) {
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $post['config_key'] = $row['config_key'];
-                        $post['config_value'] = $row['config_value'];
-
-                        $data[]=$post;
-                    }
-
-
-                    $status = SUCCESS;
-                }
-            else{
-                $status=SUCCESS;
-                $message = DEFAULT_NO_RECORDS;
-            }
-           // }
-        }
-        else{
-            $status=FAILED;
-            $message = MALICIOUS_SOURCE;
-            $data="";
-        }
-
-
-       // $response['last_sync_date'] = $last_sync_date;
-    	$response['admin_config']=$data;
-        $response['message'] = $message;
-        $response['status'] = $status;
-
-        return $response;
-    }
 
 
 	public function encryptionData($postData)
@@ -1371,7 +1274,6 @@ class SocialFunctions
         
         $username = validateObject($postData, username, "");
         $username = addslashes($username);
-
 
         
 		$query = "SELECT config_value FROM ".TABLE_ADMIN_CONFIG. " WHERE config_key='globalPassword'";

@@ -51,7 +51,9 @@ switch ($_REQUEST['Service'])
     case "GetBlockedUser":
     case "GetBooksForAuthor":
     case "RefreshToken":
+    case "GetAdminConfig":
     case "UnBlockUser":
+    case "UploadProfileImages":
     {
         include_once 'ProfileFunctions.php';
         $profile = new ProfileFunctions();
@@ -130,7 +132,6 @@ switch ($_REQUEST['Service'])
     case "AddQuestionToFavorite":
     case "TempGetMyFeeds":
     case "GetSecurirty":
-    case "GetAdminConfig":
     case "EncryptionData":
     case "DecryptionData":
     case "Hashtag":
