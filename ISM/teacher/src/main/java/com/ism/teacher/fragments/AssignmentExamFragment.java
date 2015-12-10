@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -207,6 +209,11 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         arrListDefalt = new ArrayList<String>();
         arrListDefalt.add(Utility.getString(R.string.select, mContext));
 
+        /**
+         * For Spinner of topic
+         */
+        Adapters.setUpSpinner(mContext, spExamSubjecttopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
+
 
         getPassingPercentSpinnerValues();
         Adapters.setUpSpinner(mContext, spExamPassingpercent, arrListPassingPercent, Adapters.ADAPTER_NORMAL);
@@ -278,12 +285,6 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         rteTrialExam = (RichTextEditor) view.findViewById(R.id.rte_trial_exam);
         rteTrialExam.getRichEditor().setEditorFontSize(25);
         rteTrialExam.hideMediaControls();
-//        rteTrialExam.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
-//            @Override
-//            public void onTextChange(String text) {
-//                strAssignmenttext = text;
-//            }
-//        });
 
 
         callApiGetClassrooms();
@@ -307,6 +308,34 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             btnExamSave.setVisibility(View.VISIBLE);
 
         }
+
+
+        spExamSubjectname.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (arrListSubject != null && position > 0) {
+                    callApiGetTopics(Integer.parseInt(arrListSubject.get(position - 1).getId()));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        tbExamSelectexamfor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
+                if (isCheck) {
+                    spExamSubjecttopic.setVisibility(View.GONE);
+                } else {
+                    spExamSubjecttopic.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
+
     }
 
 
@@ -394,9 +423,10 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 attribute.setRandomQuestion(getRadioGropuSelection(radioExamRandomQuestion));
                 attribute.setExamStartDate(Utility.getDateInApiFormat(etExamStartdate.getText().toString()));
                 attribute.setExamStartTime("5:00:00");
-                attribute.setUserId("370");
+                attribute.setUserId(WebConstants.USER_ID_370);
                 attribute.setNegativeMarkValue(etExamAddnegativemark.getText().toString());
                 attribute.setBookId(String.valueOf(0));
+
 
                 //latest add params
 
