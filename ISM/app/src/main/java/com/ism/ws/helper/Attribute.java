@@ -98,8 +98,12 @@ public class Attribute {
     private String postedOn;
 
 	public Attribute() {
-		setSecretKey(WebConstants.SECRET_KEY);
-		setAccessKey(WebConstants.ACCESS_KEY);
+		if (WebConstants.SECRET_KEY != null) {
+			setSecretKey(WebConstants.SECRET_KEY);
+		}
+		if (WebConstants.ACCESS_KEY != null) {
+			setAccessKey(WebConstants.ACCESS_KEY);
+		}
 	}
 
 	@JsonProperty("secret_key")

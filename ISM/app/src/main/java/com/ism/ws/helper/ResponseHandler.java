@@ -20,6 +20,7 @@ import com.ism.ws.model.RoleModel;
 import com.ism.ws.model.SettingPreferences;
 import com.ism.ws.model.State;
 import com.ism.ws.model.StudymateRequest;
+import com.ism.ws.model.Token;
 import com.ism.ws.model.TutorialGroup;
 import com.ism.ws.model.User;
 import com.ism.ws.model.UserActivitiy;
@@ -64,6 +65,7 @@ public class ResponseHandler {
     private ArrayList<BlockedUsers> blockedUsers;
     private ArrayList<UserActivitiy> userActivities;
     private ArrayList<AdminConfig> adminConfig;
+    private ArrayList<Token> token;
 
 
 
@@ -328,4 +330,12 @@ public class ResponseHandler {
         this.feedImages = feedImages;
     }
 
+    @JsonProperty("token")
+    public ArrayList<Token> getToken() {
+        return this.token;
+    }
+
+    public void setToken(ArrayList<Token> token) {
+        this.token = token;
+    }
 }

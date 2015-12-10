@@ -2,16 +2,17 @@ package com.ism.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private Spinner spCountry;
 	private Spinner spState;
 	private Spinner spCity;
+	private LinearLayout llLogin;
 	private ActionProcessButton btnLogin, progForgotPwd, progRequestCredentials, progCountry, progState, progCity;
 	private Button btnForgotPwdSubmit, btnCredentialsSubmit;
 
@@ -64,7 +66,6 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private ProgressGenerator progressGenerator;
 	private AlertDialog dialogForgotPassword;
 	private MyTypeFace myTypeFace;
-	private ProgressDialog pd;
 	private StudentHelper studentHelper;
 
 	private String strValidationMsg;
@@ -72,14 +73,11 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-//		WebConstants.SECRET_KEY = "juPC8Mos1bMZTbjKm/gFiCUqcI7+H8zr2UdlLfnCwo4=";
-//		WebConstants.ACCESS_KEY = "PLF25jEXMPXkKwavzk2mmKMj/j1br7vn8zv3IRID4js";
+		setContentView(R.layout.activity_login);
 
 		studentHelper = new StudentHelper(LoginActivity.this);
 		callApiGetAdminConfig();
 
-//		resumeApp();
 	}
 
 	private void resumeApp() {
@@ -98,16 +96,22 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		} else if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, LoginActivity.this)) {
 			launchProfileInfoActivity();
 		} else {
-			setContentView(R.layout.activity_login);
 			initGlobal();
 		}
 	}
 
 	private void initGlobal() {
+		PreferenceData.clearWholePreference(this);
+		WebConstants.ACCESS_KEY = null;
+		WebConstants.SECRET_KEY = null;
+
 		myTypeFace = new MyTypeFace(this);
 		btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
 		etPwd = (EditText) findViewById(R.id.et_pwd);
 		etUserid = (EditText) findViewById(R.id.et_userid);
+		llLogin = (LinearLayout) findViewById(R.id.ll_login);
+
+		showLoginLayout();
 
 //		etUserid.setText("0YGAJ8793B");
 //		etUserid.setText("prerna");
@@ -121,7 +125,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 		inputValidator = new InputValidator(LoginActivity.this);
 
-		arrListDefalt = new ArrayList<String>();
+		arrListDefalt = new ArrayList<>();
 		arrListDefalt.add(getString(R.string.select));
 
 		progressGenerator = new ProgressGenerator();
@@ -129,20 +133,21 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		RealmAdaptor.getInstance(this);
 	}
 
+	private void showLoginLayout() {
+		llLogin.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
+		llLogin.setVisibility(View.VISIBLE);
+		findViewById(R.id.img_logo).startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
+	}
+
 	public void onClickLogin(View view) {
 		if (Utility.isConnected(LoginActivity.this)) {
-
-			/*if (strValidationMsg == null || strValidationMsg.equals("")) {
-				strValidationMsg = "1";
-				btnLogin.setProgress(1);
-				progressGenerator.start(btnLogin);
-			} else {
-				strValidationMsg = "";
-				btnLogin.setProgress(100);
-			}*/
-
 			if (isInputsValid()) {
-				callApiAuthenticateUser();
+				String globalPassword = studentHelper.getGlobalPassword();
+				if (globalPassword != null) {
+					WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, etUserid.getText().toString().trim());
+					PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, LoginActivity.this, WebConstants.ACCESS_KEY);
+				}
+				callApiRefreshToken();
 			}
 		} else {
 			Utility.alertOffline(LoginActivity.this);
@@ -444,19 +449,26 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiGetAdminConfig() {
 		try {
-			pd = new ProgressDialog(LoginActivity.this);
-			pd.setMessage("Configuring app...");
-			pd.setCancelable(false);
-			pd.show();
 			Attribute attribute = new Attribute();
 			attribute.setRole("All");
-//			attribute.setLastSyncDate("");
 			attribute.setLastSyncDate(PreferenceData.getStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, LoginActivity.this, ""));
 
 			new WebserviceWrapper(LoginActivity.this, attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_ADMIN_CONFIG);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiAuthenticateUser Exception : " + e.getLocalizedMessage());
+		}
+	}
+
+	private void callApiRefreshToken() {
+		try {
+			Attribute attribute = new Attribute();
+			attribute.setUsername(WebConstants.ACCESS_KEY);
+
+			new WebserviceWrapper(getApplicationContext(), attribute, this).new WebserviceCaller()
+					.execute(WebConstants.REFRESH_TOKEN);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiRefreshToken Exception : " + e.toString());
 		}
 	}
 
@@ -485,6 +497,9 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 				case WebConstants.REQUEST_CREDENTIALS:
 					onResponseCredentials(object, error);
 					break;
+				case WebConstants.REFRESH_TOKEN:
+					onResponseRefreshToken(object, error);
+					break;
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponse Exception : " + e.toString());
@@ -493,9 +508,6 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void onResponseGetAdminConfig(Object object, Exception error) {
 		try {
-			if (pd != null) {
-				pd.dismiss();
-			}
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
@@ -522,6 +534,25 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseGetAdminConfig Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseRefreshToken(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, this, responseHandler.getToken().get(0).getTokenName());
+					WebConstants.SECRET_KEY = responseHandler.getToken().get(0).getTokenName();
+					callApiAuthenticateUser();
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "onResponseRefreshToken failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseRefreshToken api Exception :" + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseRefreshToken Exception :" + e.toString());
 		}
 	}
 
@@ -690,13 +721,6 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupId());
 						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupName());
 						PreferenceData.setStringPrefs(PreferenceData.USER_NAME, this, etUserid.getText().toString().trim());
-
-						/*String globalPassword = studentHelper.getGlobalPassword();
-						Log.e(TAG, "globalPassword : " + globalPassword);
-						if (globalPassword != null) {
-							PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, LoginActivity.this, AESHelper.encrypt(globalPassword, etUserid.getText().toString().trim()));
-						}*/
-						PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, LoginActivity.this, AESHelper.encrypt("uniquemastermind", etUserid.getText().toString().trim()));
 
 //						if (responseHandler.getUser().get(0).getTutorialGroupId() == null) {
 //							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);

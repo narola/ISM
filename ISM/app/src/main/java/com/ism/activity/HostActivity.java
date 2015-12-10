@@ -64,6 +64,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
+import realmhelper.StudentHelper;
+
 /**
  * Created by c161 on --/10/15.
  */
@@ -95,6 +97,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private AddToLibraryListner addToLibraryListner;
     private BooksListner booksListner;
     private HostListenerEditAboutMe listenerEditAboutMe;
+	private StudentHelper studentHelper;
 
     private TextView arrTxtMenu[];
     private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
@@ -227,31 +230,29 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
         inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
+	    studentHelper = new StudentHelper(this);
+
         arrTxtMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
         progressGenerator = new ProgressGenerator();
 
         progHost = (ActionProcessButton) findViewById(R.id.prog_host);
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, HostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, HostActivity.this);
-        Global.strAccessKey = PreferenceData.getStringPrefs(PreferenceData.ACCESS_KEY, HostActivity.this);
-        Global.strSecretKey = PreferenceData.getStringPrefs(PreferenceData.SECRET_KEY, HostActivity.this);
+	    WebConstants.ACCESS_KEY = PreferenceData.getStringPrefs(PreferenceData.ACCESS_KEY, HostActivity.this);
+	    WebConstants.SECRET_KEY = PreferenceData.getStringPrefs(PreferenceData.SECRET_KEY, HostActivity.this);
         Debug.i(TAG,"User Image : "+WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this));
 	    Global.strProfilePic = WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
 //        Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
 
-	    /*try {
-		    String username = PreferenceData.getStringPrefs(PreferenceData.USER_NAME, HostActivity.this);
-		    Log.e(TAG, "username : " + username);
-	    } catch (Exception e) {
-		    Log.e(TAG, "encrypted username Exception : " + e.toString());
-	    }*/
+	    Log.e(TAG, "Access Key : " + WebConstants.ACCESS_KEY);
+	    Log.e(TAG, "Secret Key : " + WebConstants.SECRET_KEY);
 
 	    if (Utility.isConnected(HostActivity.this)) {
-		    if (Global.strSecretKey == null) {
+		    /*if (Global.strSecretKey == null) {
 			    callApiRefreshToken();
-		    }
+		    }*/
             callApiGetAllBadgesCount();
             callApiGetGeneralSettingPreferences();
             callApiForGetUserPreference();
@@ -385,17 +386,17 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     }
 
-    private void callApiRefreshToken() {
+    /*private void callApiRefreshToken() {
         try {
             Attribute attribute = new Attribute();
-	        attribute.setUsername(Global.strAccessKey);
+	        attribute.setUsername(WebConstants.ACCESS_KEY);
 
             new WebserviceWrapper(getApplicationContext(), attribute, HostActivity.this).new WebserviceCaller()
                     .execute(WebConstants.REFRESH_TOKEN);
         } catch (Exception e) {
             Log.e(TAG, "callApiRefreshToken Exception : " + e.toString());
         }
-    }
+    }*/
 
     private void callApiGetGeneralSettingPreferences() {
         try {
@@ -893,21 +894,21 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 		        case WebConstants.GET_ALL_BADGES_COUNT:
 			        onResponseGetAllBadges(object, error);
 			        break;
-		        case WebConstants.REFRESH_TOKEN:
+		        /*case WebConstants.REFRESH_TOKEN:
 			        onResponseRefreshToken(object, error);
-			        break;
+			        break;*/
 	        }
         } catch (Exception e) {
             Log.e(TAG, "On response Exception : " + e.getLocalizedMessage());
         }
     }
 
-	private void onResponseRefreshToken(Object object, Exception error) {
+	/*private void onResponseRefreshToken(Object object, Exception error) {
 		try {
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-					PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, this, responseHandler.getMessage());
+					PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, this, responseHandler.getToken().get(0).getTokenName());
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseRefreshToken failed");
 				}
@@ -917,7 +918,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseRefreshToken Exception :" + e.toString());
 		}
-	}
+	}*/
 
 	private void onResponseGetAllPreference(Object object, Exception error) {
         try {
