@@ -134,10 +134,6 @@ public class AddQuestionTextDialog extends Dialog implements View.OnClickListene
      *
      * @param symbol - specific symbol of formula.
      */
-    public void insertSymbols(String symbol) {
-        rteDialogAddText.addSymbols(symbol);
-    }
-
 
     @Override
     public void insertSymbol(String symbol) {

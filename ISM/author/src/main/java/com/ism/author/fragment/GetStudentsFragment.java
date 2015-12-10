@@ -20,8 +20,10 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.object.Global;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -39,8 +41,9 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private View view;
     Fragment mFragment;
 
-    public GetStudentsFragment(Fragment fragment) {
+    public GetStudentsFragment(Fragment fragment, Bundle bundleArguments) {
         this.mFragment = fragment;
+        setArguments(bundleArguments);
 
     }
 
@@ -145,16 +148,9 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-//                request.setExamId(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-//                request.setUserId("52");
-//                request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
-
-
-                /*static data for subjective exam ealuation*/
-
-                request.setExamId("1");
-                request.setUserId("370");
-                request.setRole("3");
+                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setUserId(Global.strUserId);
+                request.setRole(Global.role);
 
 
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -189,6 +185,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+
                     arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
                     myStudentListAdapter.addAll(arrListExamSubmittor);
                     myStudentListAdapter.notifyDataSetChanged();

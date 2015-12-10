@@ -6,8 +6,8 @@ package com.ism.author.constant;
 public class WebConstants {
 
     //private static final String URL_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
-   // public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
-   // public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
+    // public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
+    // public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";
 
     public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Images/feeds/";
@@ -131,23 +131,21 @@ public class WebConstants {
 
     /*status for apisuccess ans apifailed*/
     public static final String SUCCESS = "success";
-
     public static final String FAILED = "failed";
-    /*these are the temparory questionData for testing*/
-    public static final String TEST_USER_ID = "370";
-    public static final String TEST_USER_NAME = "Admin";
     public static final String TEST_GETSTUDYMATES = "167";
-    public static final String TEST_BOOK_ID = "2";
-    public static final String TEST_BOOK_NAME = "Microsoft Visual Basic 2005";
-    public static final String TEST_TOPIC_ID = "5";
-    public static final String TEST_SUBJECT_ID = "3";
+
     /**
      * Parameter values
      */
     public static final String STUDYMATE_REQUEST = "studymate_request";
     public static final String MESSAGES = "messages";
     public static final String NOTIFICATION = "notification";
-    public static final String ROLE_ALL = "all";
-    public static final String ROLE_STUDENT = "student";
+
+
+
+
+    /*Image Url Constants*/
+
+    public static final String QUESTION_IMAGES = "http://192.168.1.147/WS_ISM/question_images/";
 }
 

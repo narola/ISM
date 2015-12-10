@@ -20,6 +20,7 @@ import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.object.Global;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -88,17 +89,12 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
+
                 Attribute request = new Attribute();
+                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setUserId(Global.strUserId);
+                request.setRole(Global.role);
 
-//                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-//                request.setUserId("52");
-//                request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
-
-
-                /*static data for subjective exam check*/
-                request.setExamId("1");
-                request.setUserId("370");
-                request.setRole("3");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMSUBMISSION);
             } catch (Exception e) {

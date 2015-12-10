@@ -27,6 +27,7 @@ import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.NetworkStateListener;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
@@ -37,6 +38,7 @@ import com.ism.ws.model.AdminConfig;
 import com.ism.ws.model.City;
 import com.ism.ws.model.Country;
 import com.ism.ws.model.State;
+import com.ism.ws.model.User;
 import com.realm.ismrealm.RealmAdaptor;
 
 import java.util.ArrayList;
@@ -155,10 +157,10 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		arrListDefalt = new ArrayList<>();
 		arrListDefalt.add(getString(R.string.select));
 
-		progressGenerator = new ProgressGenerator();
+        progressGenerator = new ProgressGenerator();
 
-		RealmAdaptor.getInstance(this);
-	}
+        RealmAdaptor.getInstance(this);
+    }
 
 	private void showLoginLayout() {
 		llLogin.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
@@ -296,7 +298,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-					}
+                    }
 
 				}).setNegativeButton(R.string.strclose, new DialogInterface.OnClickListener() {
 					@Override
@@ -787,25 +789,45 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		}
 	}
 
-	private void launchProfileInfoActivity() {
-		Utility.launchActivity(LoginActivity.this, ProfileInformationActivity.class);
-		finish();
-	}
+    private void ParseAllData(ArrayList<User> user) {
+        try {
+            model.User userData = new model.User();
+            userData.setUserId(Integer.parseInt(user.get(0).getUserId()));
+            userData.setFullName(user.get(0).getFullName());
+            userData.setProfilePicture(user.get(0).getProfilePic());
+//			userData.setClassName(user.get(0).getClassName());
+//			userData.setFirstName(user.get(0).getCourseName());
+//			userData.setFirstName(user.get(0).getCourseName());
+//			userData.setFirstName(user.get(0).getCourseName());
+//			userData.setFirstName(user.get(0).getCourseName());
+//			userData.setFirstName(user.get(0).getCourseName());
+            StudentHelper studentHelper = new StudentHelper(this);
+            studentHelper.saveUser(userData);
 
-	private void launchHostActivity() {
-		Utility.launchActivity(LoginActivity.this, HostActivity.class);
-		finish();
-	}
+        } catch (Exception e) {
+            Debug.i(TAG, "ParseAllData Exception : " + e.getLocalizedMessage());
+        }
+    }
 
-	private void launchWelcomeActivity() {
-		Utility.launchActivity(LoginActivity.this, WelComeActivity.class);
-		finish();
-	}
+    private void launchProfileInfoActivity() {
+        Utility.launchActivity(LoginActivity.this, ProfileInformationActivity.class);
+        finish();
+    }
 
-	private void launchAcceptTutorialGroupActivity() {
-		Utility.launchActivity(LoginActivity.this, AcceptTutorialGroupActivity.class);
-		finish();
-	}
+    private void launchHostActivity() {
+        Utility.launchActivity(LoginActivity.this, HostActivity.class);
+        finish();
+    }
+
+    private void launchWelcomeActivity() {
+        Utility.launchActivity(LoginActivity.this, WelComeActivity.class);
+        finish();
+    }
+
+    private void launchAcceptTutorialGroupActivity() {
+        Utility.launchActivity(LoginActivity.this, AcceptTutorialGroupActivity.class);
+        finish();
+    }
 
 	@Override
 	protected void onDestroy() {

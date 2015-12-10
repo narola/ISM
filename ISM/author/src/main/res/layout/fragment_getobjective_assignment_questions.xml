@@ -22,9 +22,9 @@
             android:padding="@dimen/d10dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="1.25"
                 android:orientation="vertical">
 
                 <TextView
@@ -46,16 +46,17 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_weight="1.25"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_objective_assignment_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/strassignmentno"
+                    android:text="@string/strassignmentname"
                     android:textColor="@color/color_gray"
                     android:textSize="@dimen/d18dp" />
 
@@ -71,9 +72,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_weight="0.55"
                 android:gravity="right"
                 android:orientation="vertical">
 
@@ -103,25 +105,42 @@
                     android:text="@string/strassignmentdate"
                     android:textColor="@color/color_gray"
                     android:textSize="@dimen/d18dp"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tv_objective_assignment_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/d5dp"
-                    android:text="@string/strtest"
+                    android:text=""
                     android:textColor="@color/color_violet_assignment"
                     android:textSize="@dimen/d18dp" />
             </LinearLayout>
 
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_getObjective_assignment_questionslist"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/d5dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_getObjective_assignment_questionslist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/d5dp"
+                android:layout_weight="1" />
+
+
+            <TextView
+                android:id="@+id/tv_no_questions_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/msg_no_exam_questions"
+                android:textSize="@dimen/d20dp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

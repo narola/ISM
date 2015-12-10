@@ -117,6 +117,8 @@
     <string name="strexamname">Exam Name</string>
     <string name="strsubjectname">Subject Name</string>
     <string name="strpassingpercent">Passing Percent</string>
+    <string name="strexamassessor">Exam Assessor</string>
+    <string name="strnoassessor">No Assessor</string>
     <string name="strexamfor">Exam For:</string>
     <string name="strexamtype">Exam Type</string>
     <string name="strexamtype_colon">Exam Type :</string>
@@ -129,6 +131,7 @@
     <string name="strexamschedule">Exam Schedule</string>
     <string name="strstartdate">Start Date</string>
     <string name="strenddate">End Date</string>
+    <string name="strstarttime">Strat Time</string>
     <string name="strnotifystudent">Notify Student Via SMS</string>
     <string name="strexaminstruction">Exam Instruction</string>
     <string name="strdeclareresults">Declare Results :</string>
@@ -143,7 +146,8 @@
     <string name="strcourse">Course</string>
     <string name="strquestionbank">Question Bank</string>
     <string name="strquestion">Question</string>
-    <string name="strcategory">Category:</string>
+    <string name="strcategorycolon">Category:</string>
+    <string name="strcategory">Category</string>
     <string name="strcreatedby">Created by:</string>
     <string name="straddnewquestion">Add New Question</string>
     <string name="straddtopreview">Add to Preview</string>
@@ -247,6 +251,9 @@
     <string name="strEbookLink">Ebook link :</string>
     <string name="strfilters">Filters</string>
     <string name="strtypetext">Type Text</string>
+    <string name="strexamcategory">Exam Category</string>
+    <string name="strtotalquestions">Total Questions</string>
+    <string name="strtotalscore">Total Score</string>
 
 
     <!--string array-->

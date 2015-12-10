@@ -171,8 +171,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-//                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setExamId("1");
+                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
@@ -189,9 +188,8 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-//                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setExamId("1");
-                request.setStudentId("202");
+                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setStudentId(getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {
@@ -205,19 +203,19 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     @Override
     public void onResponse(int apiCode, Object object, Exception error) {
-        try {
-            switch (apiCode) {
-                case WebConstants.GETEXAMQUESTIONS:
-                    onResponseGetAllExamQuestions(object, error);
-                    break;
-                case WebConstants.GETEXAMEVALUATIONS:
-                    onResponseGetExamEvaluation(object, error);
-                    break;
-            }
-
-        } catch (Exception e) {
-            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+//        try {
+        switch (apiCode) {
+            case WebConstants.GETEXAMQUESTIONS:
+                onResponseGetAllExamQuestions(object, error);
+                break;
+            case WebConstants.GETEXAMEVALUATIONS:
+                onResponseGetExamEvaluation(object, error);
+                break;
         }
+
+//        } catch (Exception e) {
+//            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+//        }
 
     }
 
@@ -333,6 +331,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     private void setTitleDetails() {
 
         arrListExamSubmittor = getBaseFragment().getArguments().getParcelableArrayList(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
+
         tvStudentEvalutionNo.setText(getActivity().getResources().getString(R.string.strevaluation) + " " +
                 (getBaseFragment().getArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION) + 1) + " " +
                 getActivity().getResources().getString(R.string.strof) + " " +
