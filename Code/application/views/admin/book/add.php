@@ -25,7 +25,7 @@
             <div class="form-group authors col-sm-12 col-md-6 col-lg-8 padding_r15_" >
                 <label> Select Author </label>
 
-                <select name="authors[]" class="js-example-basic-single form-control" multiple="multiple" id="authors">
+                <select name="authors" class="js-example-basic-single form-control" multiple="multiple">
                     
                     <?php
                        if(!empty($authors)){
@@ -87,14 +87,14 @@
                 </div>
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-2 padding_r15_ ">
-                        <label>pdf File</label>
+                        <label class="file_label">pdf File</label>
                     <div class="upload_ques_img pdf">
                     	<input class="form-control" name="book_pdf" type="file">
                     </div>
                 </div>
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-2 padding_r15_ ">
-                        <label>epub File</label>
+                        <label class="file_label">epub File</label>
                     <div class="upload_ques_img epub">
                     	<input class="form-control" name="book_epub" type="file">
                     </div>
@@ -114,13 +114,15 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
+        $(".js-example-basic-single").select2();
         $("#book_frm").validate({
             // Specify the validation rules
+            ignore: 'input[type=hidden]', // considers the hidden elements also
             errorElement: 'span',
             errorClass: 'help-block',
             rules: {
                 "book_name": "required",
-                "authors[]": "required",
+                "authors": "required",
                 "price": "required",
                 "isbn_no": "required",
                 "publisher_name": "required",
@@ -132,7 +134,7 @@
             },
             messages: {
                 "book_name": "Please provide Book Name",
-                "authors[]": "Please Select Author",
+                "authors": "Please Select Author",
                 "price": "Please enter price",
                 "isbn_no": "Please provide ISBN No.",
                 "publisher_name": "Please provide Publisher Name",
@@ -140,18 +142,26 @@
                 
             },
             highlight: function(element) { // hightlight error inputs
-                $(element)
-                        .closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                var elem = $(element);
+                console.log(elem);
+                if (elem.hasClass("select2-offscreen")) {
+                    $("#s2id_" + elem.attr("id") + " ul").closest('.form-group').removeClass('has-success').addClass('has-error');
+                } else {
+                    elem.closest('.form-group').removeClass('has-success').addClass('has-error');
+                }
             },
             unhighlight: function(element) { // revert the change done by hightlight
-                $(element)
-                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                var elem = $(element);
+                if (elem.hasClass("select2-offscreen")) {
+                    $("#s2id_" + elem.attr("id") + " ul").closest('.form-group').removeClass('has-error');
+                } else {
+                    elem.closest('.form-group').removeClass('has-error');
+                }
             },
             submitHandler: function(form) {
                 form.submit();
             }
         });
-        $(".js-example-basic-single").select2();
 
         $("#publication_date").datepicker({
             format: " yyyy",
@@ -159,14 +169,13 @@
             minViewMode: "years"
         });
 
-           $(".add_book_page").mCustomScrollbar({
-                callbacks:{
-                    whileScrolling:function(){
-                        console.log('here');
-                        var inp = $('input#publication_date');
-                        $('.datepicker').css('top', inp.offset().top + inp.outerHeight());
-                    }
+       $(".add_book_page").mCustomScrollbar({
+            callbacks:{
+                whileScrolling:function(){
+                    var inp = $('input#publication_date');
+                    $('.datepicker').css('top', inp.offset().top + inp.outerHeight());
                 }
-            }); 
+            }
+        }); 
     });
 </script>

@@ -2350,7 +2350,11 @@ body{
     border-color: #a94442;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
 }
-.box_body .has-error .upload_ques_img  .form-control{
+.box_body .has-error .form-control.book_desc {
+    border: 1px solid rgba(0, 0, 0, 0.07);
+}
+.box_body .has-error .upload_ques_img{
 	 border-color: #a94442;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
 }
+.file_label{ margin-top: 10px; }

@@ -127,7 +127,7 @@ $url = uri_string();
                                         <li <?php echo ($url == 'admin/course/add_course') ? 'class="active"' : ''; ?>><a href="admin/course/add_course">Add New Course</a></li>
                                     </ul>
                                 </li>
-                                <li <?php echo ($url == 'admin/classroom') ? 'class="active"' : ''; ?>><a href="admin/classroom">Classroom</a></li>
+                                <li <?php echo ($url == 'admin/classroom') ? 'class="active"' : ''; ?>><a href="admin/classroom">Classrooms</a></li>
                                 
                             </ul>
                         </li>
