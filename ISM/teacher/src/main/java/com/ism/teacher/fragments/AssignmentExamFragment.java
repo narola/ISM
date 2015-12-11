@@ -65,7 +65,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     private EditText etExamName, etExamStartdate, etExamStartTime, etExamQuestionscorevalue, etExamAttemptcount, etExamAddnegativemark;
     private CheckBox cbExamStartdateNotify, cbExamEnddateNotify;
     private RadioGroup radioDeclareresult, radioNegativemarking, radioExamRandomQuestion, radioExamUsescore;
-    private LinearLayout llAddQuestionscore, llAddNegativeMark, llExamStartdate, llExamEnddate, llExamStartTime;
+    private LinearLayout llAddQuestionscore, llAddNegativeMark, llExamStartdate, llExamStartTime, llTopicSpinner;
     private Button btnExamSave, btnExamSetquestion, btnExamCancel;
     private RichTextEditor rteTrialExam;
     private ScrollView svCreateExam;
@@ -131,6 +131,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         myTypeFace = new MyTypeFace(mContext);
         inputValidator = new InputValidator(mContext);
         llExamStartTime = (LinearLayout) view.findViewById(R.id.ll_exam_startTime);
+        llTopicSpinner = (LinearLayout) view.findViewById(R.id.ll_topic_spinner);
 
         tvExamName = (TextView) view.findViewById(R.id.tv_exam_name);
         tvExamClass = (TextView) view.findViewById(R.id.tv_exam_class);
@@ -342,16 +343,15 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
          *  so disable exam mode and subject selection spinner
          */
 
-        if (!getArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
+        if (getArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
+            btnExamSetquestion.setVisibility(View.GONE);
+            btnExamSave.setVisibility(View.VISIBLE);
+
+        } else {
             setExamDetails();
             btnExamSetquestion.setVisibility(View.VISIBLE);
             spExamExammode.setEnabled(false);
             spExamSubjectname.setEnabled(false);
-
-        } else {
-            btnExamSetquestion.setVisibility(View.GONE);
-            btnExamSave.setVisibility(View.VISIBLE);
-
         }
 
 
@@ -373,9 +373,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
                 if (isCheck) {
-                    spExamSubjecttopic.setVisibility(View.INVISIBLE);
+                    llTopicSpinner.setVisibility(View.INVISIBLE);
                 } else {
-                    spExamSubjecttopic.setVisibility(View.VISIBLE);
+                    llTopicSpinner.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -401,7 +401,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         arrListExamAssessor = new ArrayList<String>();
         arrListExamAssessor.add(getString(R.string.strexamassessor));
         arrListExamAssessor.add(getString(R.string.strnoassessor));
-        arrListExamAssessor.add(Global.strFullName);
+//        arrListExamAssessor.add(Global.strFullName);
         Adapters.setUpSpinner(mContext, spExamAssessor, arrListExamAssessor, Adapters.ADAPTER_NORMAL);
 
     }
@@ -409,12 +409,34 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     private void setExamDetails() {
 
+
         etExamName.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
         spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE)));
         setExamType(getArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
         spExamExamCategory.setSelection(arrListExamCategory.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CATEGORY)));
         spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE)));
         spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_DURATION)));
+
+
+            /*we cant change the exam mode and subject for that particular exam if it once created*/
+        if (getArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+
+            btnExamSetquestion.setVisibility(View.GONE);
+            btnExamSave.setVisibility(View.VISIBLE);
+
+        } else {
+
+            btnExamSetquestion.setVisibility(View.VISIBLE);
+            btnExamSave.setVisibility(View.VISIBLE);
+            btnExamSave.setText(getString(R.string.streditexam));
+
+        }
+        etExamName.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
+        spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE)));
+        spExamExamCategory.setSelection(arrListExamCategory.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CATEGORY)));
+        spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE)));
+        spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_DURATION)));
+        etExamQuestionscorevalue.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_QUESTION_SCORE));
 
     }
 
@@ -484,15 +506,22 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 ((TeacherHostActivity) getActivity()).hideProgress();
                 Attribute attribute = new Attribute();
 
+                /*set exam id "0" if you are creating new and copy exam ,In case of edit set particular exam id*/
+                attribute.setExamId("0");
+                if (getArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                    if (!getArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                        attribute.setExamId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
+                    }
+                }
                 attribute.setExamName(etExamName.getText().toString());
                 attribute.setClassroomId(String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
                 attribute.setSubjectId(String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
                         get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
                 attribute.setAttemptCount(String.valueOf(Integer.valueOf(etExamAttemptcount.getText().toString())));
-                attribute.setExamType(getExamType());
-                attribute.setExamCategory(arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
-                attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
+                attribute.setExamType(getExamType());//subject or topic
+                attribute.setExamCategory(arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));//ISM Mock,wassce
+                attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));//subjective/objective
                 attribute.setPassingPercent(arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
                 attribute.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
                 attribute.setExamInstruction(rteTrialExam.getHtml());
@@ -500,17 +529,24 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 attribute.setNegativeMarking(getRadioGropuSelection(radioNegativemarking));
                 attribute.setRandomQuestion(getRadioGropuSelection(radioExamRandomQuestion));
                 attribute.setExamStartDate(Utility.getDateInApiFormat(etExamStartdate.getText().toString()));
-                attribute.setExamStartTime("5:00:00");
+                attribute.setExamStartTime(etExamStartTime.getText().toString());
                 attribute.setUserId(WebConstants.USER_ID_370);
+
+
+                //new param
+//                attribute.setExamAssessor(getExamAssessorId());
+                attribute.setExamAssessor(WebConstants.USER_ID_370);
+
+
                 attribute.setNegativeMarkValue(etExamAddnegativemark.getText().toString());
                 attribute.setBookId(String.valueOf(0));
 
+                //latest added params
 
-                //latest add params
-                attribute.setExamAssessor(getExamAssessorId());
-//                attribute.setTopicId(String.valueOf(spExamSubjecttopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
-//                        get(spExamSubjecttopic.getSelectedItemPosition() - 1).getId()) : 0));
-//
+                attribute.setUseQuestionScore(getRadioGropuSelection(radioExamUsescore));
+                attribute.setTopicId(String.valueOf(spExamSubjecttopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
+                        get(spExamSubjecttopic.getSelectedItemPosition() - 1).getId()) : 0));
+                attribute.setCorrectAnswerScore(getQuestionScoreValue());
 
                 new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.CREATE_EXAM);
@@ -527,8 +563,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     private String strValidationMsg;
 
     private boolean isInputsValid() {
+
+//        return inputValidator.validateStringPresence(etExamStartdate) & inputValidator.validateStringPresence(etExamStartTime)
         return inputValidator.validateStringPresence(etExamName) & inputValidator.validateStringPresence(etExamAttemptcount)
-                & inputValidator.validateStringPresence(etExamStartdate) & inputValidator.validateStringPresence(etExamStartTime)
                 && checkRadioButtonInputs() && checkOtherInputs();
     }
 
@@ -808,14 +845,6 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utility.showToast(Utility.getString(R.string.msg_success_createexam, mContext), mContext);
                     btnExamSetquestion.setVisibility(View.VISIBLE);
-
-//                    if (getArguments() != null) {
-//                        getArguments().putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
-//                    } else {
-//
-//                        bundleExamDetails.putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
-//                        setArguments(bundleExamDetails);
-//                    }
                     getArguments().putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
                     setBundleArguments();
 
@@ -861,10 +890,6 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 svCreateExam.fullScroll(ScrollView.FOCUS_UP);
             }
         } else if (v == btnExamSetquestion) {
-
-//            if (getArguments() != null) {
-//                setBundleArguments();
-//            }
             ((CreateExamAssignmentContainerFragment) fragmentContext).hideTopBar();
             getFragmentManager().beginTransaction().
                     replace(R.id.fl_fragment_assignment_container, AddQuestionContainerFragment.newInstance(getArguments()))
@@ -876,23 +901,60 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     }
 
     private void setBundleArguments() {
-
         try {
+            //exam name
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_NAME, etExamName.getText().toString());
+            //classroomid
             getArguments().putString(ARG_EXAM_CLASSROOM_ID, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
                     Integer.parseInt(arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
+
+
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
+                    arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getClassName() : 0));
+            //subject id
             getArguments().putString(ARG_EXAM_SUBJECT_ID, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
                     Integer.parseInt(arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
-            getArguments().putString(ARG_EXAM_TOPIC_ID, "5");
-            getArguments().putString(ARG_EXAM_BOOK_ID, "3");
-            getArguments().putString(ARG_EXAM_QUESTION_SCORE, etExamQuestionscorevalue.getText().toString().equals("") ?
-                    "0" : etExamQuestionscorevalue.getText().toString());
+
+            //topicid
+            getArguments().putString(ARG_EXAM_TOPIC_ID, String.valueOf(spExamSubjecttopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
+                    get(spExamSubjecttopic.getSelectedItemPosition() - 1).getId()) : 0));
+            //book id
+            getArguments().putString(ARG_EXAM_BOOK_ID, "0");
+            //subject/topic
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getExamType());
+            //ISMmock /wassce
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_CATEGORY, arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
+
+            //subject name
             getArguments().putString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME, arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName());
+            //subjective/objective
             getArguments().putString(AssignmentsAdapter.ARG_EXAM_MODE,
                     arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
+
+            //exam duration
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_DURATION,
+                    arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
+
+            getArguments().putString(AssignmentsAdapter.ARG_ASSIGNMENT_NO, "0");
+            //pass percentage
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE, arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
+            //getQuestion score
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_QUESTION_SCORE, getQuestionScoreValue());
+            //exam created date
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_CREATED_DATE, etExamStartdate.getText().toString());
+
+
         } catch (Exception e) {
             Debug.e(TAG, "SetBundleArgumentsException : " + e.toString());
         }
     }
 
-
+    private String getQuestionScoreValue() {
+        if (radioExamUsescore.getCheckedRadioButtonId() == R.id.radio_btn_examuserscore_yes &&
+                !etExamQuestionscorevalue.getText().toString().equals("")) {
+            return etExamQuestionscorevalue.getText().toString();
+        } else {
+            return "0";
+        }
+    }
 }

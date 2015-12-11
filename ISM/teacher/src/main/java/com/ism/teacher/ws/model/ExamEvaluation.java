@@ -11,18 +11,18 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExamEvaluation {
 
-    private ArrayList<String> questionPalette;
+    private ArrayList<QuestionPalette> questionPalette;
     private String examScore;
     private String examId;
     private ArrayList<Evaluation> evaluation;
 
 
     @JsonProperty("question_palette")
-    public ArrayList<String> getQuestionPalette() {
+    public ArrayList<QuestionPalette> getQuestionPalette() {
         return this.questionPalette;
     }
 
-    public void setQuestionPalette(ArrayList<String> questionPalette) {
+    public void setQuestionPalette(ArrayList<QuestionPalette> questionPalette) {
         this.questionPalette = questionPalette;
     }
 

@@ -61,7 +61,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         holder.tvPreviewQuestion.setTypeface(myTypeFace.getRalewayRegular());
         holder.tvPreviewQuestion.setText(Utility.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
-        if (arrListQuestions.get(position).getQuestionCreatorId().equals(WebConstants.TEST_USER_ID)) {
+        if (arrListQuestions.get(position).getQuestionCreatorId().equals(WebConstants.USER_ID_370)) {
             holder.imgPreviewQuestionEdit.setVisibility(View.VISIBLE);
         } else {
             holder.imgPreviewQuestionEdit.setVisibility(View.GONE);
@@ -102,17 +102,18 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
                 getFragment().updateQuestionListviewAfterDeleteQuestionInPreview(arrListQuestions.get(position));
                 arrListQuestions.remove(arrListQuestions.get(position));
                 notifyDataSetChanged();
-                if(arrListQuestions.size()>0)
-                {
-                    ((AddQuestionContainerFragment)mFragment).hideText();
-                    ((AddQuestionContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
 
-                }
-                else
-                {
-                    ((AddQuestionContainerFragment)mFragment).showText();
-                    ((AddQuestionContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
-                }
+//                if(arrListQuestions.size()>0)
+//                {
+//                    ((AddQuestionContainerFragment)mFragment).hideText();
+//                    ((AddQuestionContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
+//
+//                }
+//                else
+//                {
+//                    ((AddQuestionContainerFragment)mFragment).showText();
+//                    ((AddQuestionContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
+//                }
             }
         });
 

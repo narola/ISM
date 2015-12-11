@@ -13,12 +13,11 @@ import com.ism.teacher.R;
 import com.ism.teacher.adapters.QuestionPaletteAdapter;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Evaluation;
+import com.ism.teacher.ws.model.QuestionPalette;
+import com.ism.teacher.ws.model.Questions;
 
 import java.util.ArrayList;
 
-/**
- * Created by c166 on 16/11/15.
- */
 public class QuestionPaletteFragment extends Fragment {
 
 
@@ -75,11 +74,13 @@ public class QuestionPaletteFragment extends Fragment {
 //
 //    }
 
-    public void setQuestionStatusData(ArrayList<Evaluation> evaluations) {
-        arrListEvaluation.clear();
-        arrListEvaluation.addAll(evaluations);
-        questionPaletteAdapter.addAll(arrListEvaluation);
-        questionPaletteAdapter.notifyDataSetChanged();
+    public void setQuestionStatusData(ArrayList<Questions> arrListQuestions, ArrayList<QuestionPalette> arrListQuestionPalette) {
+
+        if (arrListQuestions.size() > 0) {
+            questionPaletteAdapter.addAll(arrListQuestions, arrListQuestionPalette);
+            questionPaletteAdapter.notifyDataSetChanged();
+
+        }
     }
 
 

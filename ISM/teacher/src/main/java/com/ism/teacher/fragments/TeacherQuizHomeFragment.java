@@ -13,7 +13,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.teacher.R;
@@ -49,8 +49,8 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     private EditText etAssignmentStartdate, etAssignmentEnddate;
     private Spinner spAssignmentSubject, spAssignmentClasswise, spAssignentAssessed;
     private ImageView imgToggleList;
-    private ActionProcessButton progAssignmentSubject, progAssignmentClass, progAssignmentAssessed;
-
+    private ActionProcessButton progAssignmentSubject, progAssignmentClass;
+    private TextView tvNoAssignments;
 
     //Array list
 
@@ -87,6 +87,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     private void initGlobal(View view) {
         assignmentsAdapter = new AssignmentsAdapter(getActivity(), this);
+        tvNoAssignments = (TextView) view.findViewById(R.id.tv_no_assignments);
         recyclerAssignmentSubjects = (RecyclerView) view.findViewById(R.id.recycler_assignment_subjects);
         recyclerAssignmentSubjects.setHasFixedSize(true);
         recyclerAssignmentSubjects.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -100,7 +101,6 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
         progAssignmentSubject = (ActionProcessButton) view.findViewById(R.id.prog_assignment_subject);
         progAssignmentClass = (ActionProcessButton) view.findViewById(R.id.prog_assignment_class);
-        progAssignmentAssessed = (ActionProcessButton) view.findViewById(R.id.prog_assignment_assessed);
 
         etAssignmentStartdate = (EditText) view.findViewById(R.id.et_assignment_startdate);
         etAssignmentEnddate = (EditText) view.findViewById(R.id.et_assignment_enddate);
@@ -209,6 +209,20 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     private void clearFilters() {
         assignmentsAdapter.addAll(arrayListAssignments);
+        if (arrayListAssignments.size() > 0) {
+            hideFilterText();
+        } else {
+            showFilterText();
+        }
+    }
+
+    public void hideFilterText() {
+        tvNoAssignments.setVisibility(View.GONE);
+    }
+
+    public void showFilterText() {
+//        tvNoAssignments.setText(getString(R.string.no_assignments_found_for_your_filter_criteria));
+        tvNoAssignments.setVisibility(View.VISIBLE);
     }
 
     private void filterSubjectIdWiseAssignments(String subjectId) {
@@ -225,9 +239,11 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
             if (copyListAssignments.size() > 0) {
                 Debug.e(TAG + "results after filter:", "" + copyListAssignments.size());
                 assignmentsAdapter.addAll(copyListAssignments);
+                hideFilterText();
             } else {
-                //assignmentsAdapter.addAll(copyListAssignments);
-                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+                assignmentsAdapter.addAll(copyListAssignments);
+                showFilterText();
+//                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -248,9 +264,11 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
             if (copyListAssignments.size() > 0) {
                 Debug.e(TAG + "results after filter:", "" + copyListAssignments.size());
                 assignmentsAdapter.addAll(copyListAssignments);
+                hideFilterText();
             } else {
-                //  assignmentsAdapter.addAll(copyListAssignments);
-                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+                assignmentsAdapter.addAll(copyListAssignments);
+                showFilterText();
+//                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -271,9 +289,10 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
             if (copyListAssignments.size() > 0) {
                 Debug.e(TAG + "results after filter:", "" + copyListAssignments.size());
                 assignmentsAdapter.addAll(copyListAssignments);
+                hideFilterText();
             } else {
-                // assignmentsAdapter.addAll(copyListAssignments);
-                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+                assignmentsAdapter.addAll(copyListAssignments);
+                showFilterText();
             }
 
         }
@@ -319,6 +338,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
                 Attribute attribute = new Attribute();
                 attribute.setUserId(WebConstants.USER_ID_370);
                 attribute.setRole(AppConstant.TEACHER_ROLE_ID);
+                attribute.setExamCategory("");
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_ASSIGNMENTS);
             } catch (Exception e) {
@@ -415,6 +435,14 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
             arrayListAssignments.addAll(responseHandler.getExams());
             assignmentsAdapter.addAll(arrayListAssignments);
+            Debug.e("assignment size",""+arrayListAssignments.size());
+
+            if (arrayListAssignments.size() == 0) {
+                tvNoAssignments.setVisibility(View.VISIBLE);
+            } else {
+                tvNoAssignments.setVisibility(View.GONE);
+
+            }
 
         } else {
 

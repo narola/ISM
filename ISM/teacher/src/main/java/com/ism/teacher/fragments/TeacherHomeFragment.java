@@ -12,11 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.ism.teacher.activity.PostFeedActivity;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.activity.PostFeedActivity;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.PostFeedsAdapter;
 import com.ism.teacher.constants.AppConstant;
@@ -37,6 +38,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
     private View rootview;
     private RecyclerView recyclerviewPost;
     private FragmentListener fragListener;
+    private TextView tvNoFeeds;
 
     PostFeedsAdapter postFeedsAdapter;
 
@@ -69,6 +71,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     private void initGlobal(View rootview) {
         recyclerviewPost = (RecyclerView) rootview.findViewById(R.id.recyclerview_post);
+        tvNoFeeds =(TextView)rootview.findViewById(R.id.tv_no_questions);
 
         postFeedsAdapter = new PostFeedsAdapter(getActivity());
         recyclerviewPost.setAdapter(postFeedsAdapter);
@@ -175,6 +178,11 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     if (responseHandler.getFeeds().size() > 0) {
                         postFeedsAdapter.addAll(responseHandler.getFeeds());
+                        tvNoFeeds.setVisibility(View.GONE);
+                    }
+                    else
+                    {
+                        tvNoFeeds.setVisibility(View.VISIBLE);
                     }
 
 

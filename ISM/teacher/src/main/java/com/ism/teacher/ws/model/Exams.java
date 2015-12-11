@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Exams {
 
+    private String totalStudent;
+
+
     private String totalQuestion;
     private String classroomName;
     private String examMode;
@@ -28,6 +31,27 @@ public class Exams {
     private String totalUnassessed;
     private String bookId;
 
+    private String topicId;
+
+    @JsonProperty("total_student")
+    public String getTotalStudent() {
+        return totalStudent;
+    }
+
+    public Exams setTotalStudent(String totalStudent) {
+        this.totalStudent = totalStudent;
+        return this;
+    }
+
+    @JsonProperty("topic_id")
+    public String getTopicId() {
+        return topicId;
+    }
+
+    public Exams setTopicId(String topicId) {
+        this.topicId = topicId;
+        return this;
+    }
 
     @JsonProperty("book_id")
     public String getBookId() {

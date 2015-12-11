@@ -250,7 +250,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
             try {
 
                 CreateAssignmentRequest createAssignmentRequest = new CreateAssignmentRequest();
-                createAssignmentRequest.setUser_id(WebConstants.TEST_USER_ID);
+                createAssignmentRequest.setUser_id(WebConstants.USER_ID_370);
                 createAssignmentRequest.setSubmission_date(strDob);
                 createAssignmentRequest.setClassroom_id(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0);

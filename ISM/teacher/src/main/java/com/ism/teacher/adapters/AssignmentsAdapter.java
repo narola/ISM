@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.GetAssignmentsSubmitterFragment;
 import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.helper.MyTypeFace;
@@ -133,10 +132,10 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             holder.rlTopAssignment.setBackgroundResource(R.drawable.bg_subject_yellow);
         }
 
-        if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase("objective")) {
-            holder.txtUnassessedLabel.setText("Average Score");
+        if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
+            holder.txtUnassessedLabel.setText(mContext.getString(R.string.straverage_score));
         } else {
-            holder.txtUnassessedLabel.setText("Unassessed");
+            holder.txtUnassessedLabel.setText(mContext.getString(R.string.strunasssessed));
         }
 
 
@@ -148,7 +147,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         bundleAssignmentDetails.putString(ARG_EXAM_CLASSROOM_NAME, arrayListAssignments.get(position).getClassroomName());
         bundleAssignmentDetails.putString(ARG_EXAM_SUBJECT_ID, arrayListAssignments.get(position).getSubjectId());
         bundleAssignmentDetails.putString(ARG_EXAM_SUBJECT_NAME, arrayListAssignments.get(position).getSubjectName());
-        bundleAssignmentDetails.putString(ARG_EXAM_TOPIC_ID, WebConstants.TOPIC_ID_5);
+        bundleAssignmentDetails.putString(ARG_EXAM_TOPIC_ID, arrayListAssignments.get(position).getTopicId());
         bundleAssignmentDetails.putString(ARG_EXAM_TOPIC_NAME, "");
         bundleAssignmentDetails.putString(ARG_EXAM_BOOK_ID, arrayListAssignments.get(position).getBookId());
         bundleAssignmentDetails.putString(ARG_EXAM_BOOK_NAME, "");
@@ -191,7 +190,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 //                }
                 bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
                 mFragment.getFragmentManager().beginTransaction().
-                            replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
+                        replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
 
             }
         });

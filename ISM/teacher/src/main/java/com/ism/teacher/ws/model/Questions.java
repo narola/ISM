@@ -31,6 +31,7 @@ public class Questions implements Parcelable, Comparable<Questions> {
     private String questionCreatorName;
     private String subjectName;
     private Boolean isQuestionAddedInPreview = false;
+    private String questionScore;
 
     public Questions() {
     }
@@ -281,5 +282,24 @@ public class Questions implements Parcelable, Comparable<Questions> {
 
     }
 
+
+    @JsonProperty("question_score")
+    public String getQuestionScore() {
+        return questionScore;
+    }
+
+    public Questions setQuestionScore(String questionScore) {
+        this.questionScore = questionScore;
+        return this;
+    }
+    private Boolean isEvaluated = false;
+    public Boolean getIsEvaluated() {
+        return isEvaluated;
+    }
+
+    public Questions setIsEvaluated(Boolean isEvaluated) {
+        this.isEvaluated = isEvaluated;
+        return this;
+    }
 
 }
