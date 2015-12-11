@@ -19,6 +19,8 @@ public class FeedLike extends RealmObject {
     private Feeds feed;
     private Date createdDate;
     private Date modifiedDate;
+    private int isLiked;
+    private boolean isSync;
 
     public int getFeedLikeId() {
         return feedLikeId;
@@ -58,5 +60,20 @@ public class FeedLike extends RealmObject {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public int getIsLiked() {
+        return isLiked;
+    }
+
+    public void setIsLiked(int isLiked) {
+        this.isLiked = isLiked;
+    }
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setIsSync(boolean isSync) {
+        this.isSync = isSync;
     }
 }

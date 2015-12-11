@@ -140,6 +140,8 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         progState = (ProcessButton) findViewById(R.id.prog_state);
         progCity = (ProcessButton) findViewById(R.id.prog_city);
 
+	    studentHelper = new StudentHelper(this);
+
         myTypeFace = new MyTypeFace(this);
         ((TextView) findViewById(R.id.txt_youare_)).setTypeface(myTypeFace.getRalewayThin());
         ((TextView) findViewById(R.id.txt_ifits_)).setTypeface(myTypeFace.getRalewayThin());
@@ -187,6 +189,12 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         txtSchoolGender.setText(strSchoolType);
         txtProgramCourse.setText(strCourseName);
 
+	    arrListDefalt = new ArrayList<>();
+	    arrListDefalt.add(getString(R.string.select));
+	    Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, arrListDefalt, myTypeFace.getRalewayRegular());
+	    Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
+	    Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
+
         if (Utility.isConnected(ProfileInformationActivity.this)) {
             callApiGetCountries();
         } else {
@@ -194,79 +202,70 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         }
 
         etDob.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    showDatePickerDob();
-                }
-                return true;
-            }
+	        @Override
+	        public boolean onTouch(View v, MotionEvent event) {
+		        if (event.getAction() == MotionEvent.ACTION_UP) {
+			        showDatePickerDob();
+		        }
+		        return true;
+	        }
         });
 
         spCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (arrListCountries != null && position > 0) {
-                    if (Utility.isConnected(ProfileInformationActivity.this)) {
-                        callApiGetStates(arrListCountries.get(position - 1).getId());
-                    } else {
-                        Utility.alertOffline(ProfileInformationActivity.this);
-                    }
-                } else {
-                    Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
-                }
-            }
+	        @Override
+	        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		        if (arrListCountries != null && position > 0) {
+			        if (Utility.isConnected(ProfileInformationActivity.this)) {
+				        callApiGetStates(arrListCountries.get(position - 1).getId());
+			        } else {
+				        Utility.alertOffline(ProfileInformationActivity.this);
+			        }
+		        } else {
+			        Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
+		        }
+	        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+	        @Override
+	        public void onNothingSelected(AdapterView<?> parent) {
 
-            }
+	        }
         });
 
         spState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (arrListStates != null && position > 0) {
-                    if (Utility.isConnected(ProfileInformationActivity.this)) {
-                        callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
-                    } else {
-                        Utility.alertOffline(ProfileInformationActivity.this);
-                    }
-                } else {
-                    Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
-                }
-            }
+	        @Override
+	        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		        if (arrListStates != null && position > 0) {
+			        if (Utility.isConnected(ProfileInformationActivity.this)) {
+				        callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
+			        } else {
+				        Utility.alertOffline(ProfileInformationActivity.this);
+			        }
+		        } else {
+			        Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
+		        }
+	        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+	        @Override
+	        public void onNothingSelected(AdapterView<?> parent) {
 
-            }
+	        }
         });
 
-        arrListGender = new ArrayList<String>();
+        arrListGender = new ArrayList<>();
         arrListGender.add(getString(R.string.gender));
         arrListGender.add(getString(R.string.male));
         arrListGender.add(getString(R.string.female));
         Adapters.setUpSpinner(ProfileInformationActivity.this, spGender, arrListGender, myTypeFace.getRalewayRegular());
 
-        arrListDefalt = new ArrayList<String>();
-        arrListDefalt.add(getString(R.string.select));
-        Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, arrListDefalt, myTypeFace.getRalewayRegular());
-        Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
-        Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
-//        etAge.setText("1");
-//        etConfirmPwd.setText("123123123");
-//        etNewPwd.setText("123123123");
-//        etCurrentPwd.setText("narola21");
-//        etContactNo.setText("9874123650");
-//        etEmailAddress.setText("arp@gmail.com");
-//        etLastName.setText("Patel");
-//        etFirstName.setText("Arp");
-
-       // spCity.setSelection(1);
-       // spCountry.setSelection(2);
-        spGender.setSelection(2);
-        //spState.setSelection(1);
+	    etFirstName.setText("Sudhir");
+	    etLastName.setText("Tyagi");
+	    etEmailAddress.setText("@.com");
+	    etContactNo.setText("9898989898");
+	    etAge.setText("27");
+	    etHomeAddress.setText("Surat");
+	    etConfirmPwd.setText("password");
+	    etNewPwd.setText("password");
+	    etCurrentPwd.setText("narola21");
 
     }
 
@@ -394,7 +393,37 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             btnSubmit.setProgress(1);
             btnSubmit.setEnabled(false);
             progressGenerator.start(btnSubmit);
+
+	        /*
+	         {
+		         "credential_id":1,
+		         "email_address":"alpesh.narola@narolainfotech.com",
+		         "password":"password",
+		         "firstname":"Alpesh",
+		         "birthdate":"1992-12-12",
+		         "lastname":"Patel",
+		         "city_id":1,
+		         "state_id":1,
+		         "country_id":2,
+		         "device_token":"1111111",
+		         "gender":"Male",
+		         "username":"alpesh",
+		         "home_address":"Surat",
+		         "contact_number":"9898989898",
+		         "school_id":10,
+		         "course_id":12,
+		         "classroom_id":10,
+		         "academic_year":"2015-2016",
+		         "role_id":2,
+		         "device_type":"Android",
+		         "school_classroom_id":10,
+		         "secret_key":"allowaccesstoapp",
+		         "access_key":"/6NOTTWw4VFCzhdHzJ/p5g=="
+	         }
+	         */
+
             Attribute attribute = new Attribute();
+	        attribute.setCredentialId(1);
             attribute.setFirstname(etFirstName.getText().toString().trim());
             attribute.setLastname(etLastName.getText().toString().trim());
             attribute.setEmailAddress(etEmailAddress.getText().toString().trim());
@@ -412,6 +441,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             attribute.setClassroomId(Integer.parseInt(strClassId));
             attribute.setCourseId(Integer.parseInt(strCourseId));
             attribute.setAcademicYear(strAcademicYear);
+	        attribute.setSchoolClassroomId(10);
 //			requestObject.setRoleId(Integer.parseInt(strRoleId));
             attribute.setRoleId(strRoleId);
             attribute.setDeviceType(getString(R.string.android));
@@ -430,7 +460,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             progCountry.setProgress(1);
             progCountry.setVisibility(View.VISIBLE);
             progressGenerator.start(progCountry);
-            new WebserviceWrapper(ProfileInformationActivity.this, null, this).new WebserviceCaller()
+            new WebserviceWrapper(ProfileInformationActivity.this, new Attribute(), this).new WebserviceCaller()
                     .execute(WebConstants.GET_COUNTRIES);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
@@ -636,7 +666,6 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
         try {
-	        Log.e(TAG, "onResponse");
             switch (apiCode) {
                 case WebConstants.GET_COUNTRIES:
                     onResponseCountries(object, error);
@@ -784,6 +813,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                     for (Country country : arrListCountries) {
                         countries.add(country.getCountryName());
                     }
+	                Log.e(TAG, "setCountries");
                     Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, countries, myTypeFace.getRalewayRegular());
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseCountries Failed");
@@ -807,7 +837,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                             PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
                     PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
                     PreferenceData.remove(PreferenceData.USER_PASSWORD, ProfileInformationActivity.this);
-                    PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, "" + responseHandler.getUser().get(0).getUserId());
+                    PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, responseHandler.getUser().get(0).getUserId());
                     PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, ProfileInformationActivity.this, responseHandler.getUser().get(0).getFullName());
                     PreferenceData.setStringPrefs(PreferenceData.USER_NAME, ProfileInformationActivity.this, etUserName.getText().toString().trim());
 	                WebConstants.SECRET_KEY = responseHandler.getUser().get(0).getTokenName();
@@ -815,7 +845,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 //                    if (!responseObj.getData().get(0).getUserId().equals(" ")) {
 //                        callApiUploadPic(responseObj.getData().get(0).getUserId(), fileName);
 //                    }
-	                PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, responseHandler.getUser().get(0).getProfilePic());
+//	                PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, responseHandler.getUser().get(0).getProfilePic());
 
 	                String globalPassword = studentHelper.getGlobalPassword();
 	                if (globalPassword != null) {
@@ -852,7 +882,6 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();
-		studentHelper.destroy();
+        super.onDestroy();
 	}
 }

@@ -3,7 +3,6 @@ package com.ism.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -426,6 +425,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiRequestCredentials(Attribute attribute) {
 		try {
+			Log.e(TAG, "WS : REQUEST_CREDENTIALS");
 			btnCredentialsSubmit.setEnabled(false);
 			progRequestCredentials.setVisibility(View.VISIBLE);
 			progRequestCredentials.setProgress(1);
@@ -461,6 +461,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiAuthenticateUser() {
 		try {
+			Log.e(TAG, "WS : LOGIN");
 			Attribute attribute = new Attribute();
 			attribute.setUsername(etUserName.getText().toString().trim());
 			attribute.setPassword(etPwd.getText().toString().trim());
@@ -477,6 +478,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiGetAdminConfig() {
 		try {
+			Log.e(TAG, "WS : GET_ADMIN_CONFIG");
 			Attribute attribute = new Attribute();
 			attribute.setRole("All");
 			attribute.setLastSyncDate(PreferenceData.getStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, LoginActivity.this, ""));
@@ -490,8 +492,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiRefreshToken() {
 		try {
-			Attribute attribute = new Attribute();
-			attribute.setUsername(WebConstants.ACCESS_KEY);
+			Log.e(TAG, "WS : REFRESH_TOKEN");
+			Attribute attribute = new Attribute(WebConstants.ACCESS_KEY);
 
 			new WebserviceWrapper(getApplicationContext(), attribute, this).new WebserviceCaller()
 					.execute(WebConstants.REFRESH_TOKEN);
