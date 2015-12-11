@@ -486,7 +486,7 @@ class SocialFunctions
                 } else {
                     // Image 5 = Video 6 = Audio 7
 
-                    $mediaName = "VIDEO" . $created_date . "_test.mp4";
+                    $mediaName = "_testVIDEO" . $created_date . ".mp4";
 
                     $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
                     if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
@@ -508,7 +508,7 @@ class SocialFunctions
                     $message = $_FILES["audio_link"]["error"];
                     $status = 2;
                 } else {
-                    $mediaName = "AUDIO" . $created_date . "_test.mp3";
+                    $mediaName = "_testAUDIO" . $created_date . ".mp3";
 
 
                     $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
@@ -534,8 +534,7 @@ class SocialFunctions
                     $message = $_FILES["mediaFile"]["error"];
                     $status = 2;
                 } else {
-                    $mediaName = "IMAGE" . $created_date . "_test.jpg";
-
+                    $mediaName = "_testIMAGE" . $created_date . ".jpg";
 
                     $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
                     if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
@@ -1158,10 +1157,10 @@ class SocialFunctions
         $access_key = addslashes($access_key);
 
         $security=new SecurityFunctions();
-		//$isSecure = $security->checkForSecurity($access_key,$secret_key);
+		$isSecure = $security->checkForSecurityTest($access_key,$secret_key);
 
 
-        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+        //$isSecure = $security->checkForSecurityTest($access_key,$secret_key);
 		if($isSecure==yes)
     	{
     	
@@ -1282,7 +1281,8 @@ class SocialFunctions
 
         //$secerectkey="1234567891234567";
         $sec=new Security();
-        echo $encrypted_username=$sec->encrypt($username,$secerectkey[0]);
+        echo $encrypted_username=$sec->encrypt($username,$secerectkey[0]); exit;
+       //echo $encrypted_username=$sec->encrypt($username,"sandip");
 
 
         // 32 byte binary blob

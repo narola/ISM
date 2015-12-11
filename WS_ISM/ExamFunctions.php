@@ -363,8 +363,8 @@ class ExamFunctions
                 $status = SUCCESS;
             } else {
 
-                $status = FAILED;
-                //$message="";
+                $status = SUCCESS;
+                $message=DEFAULT_NO_RECORDS;
             }
 
         }
@@ -414,6 +414,9 @@ class ExamFunctions
 
         $subject_id = validateObject ($postData , 'subject_id', "");
         $subject_id = addslashes($subject_id);
+
+        $topic_id = validateObject ($postData , 'topic_id', "");
+        $topic_id = addslashes($topic_id);
 
         $exam_mode = validateObject ($postData , 'exam_mode', "");
         $exam_mode = addslashes($exam_mode);
@@ -473,23 +476,23 @@ class ExamFunctions
 
             if ($exam_id == 0) {
 
-                $insertFields = "`created_by`,`exam_name`, `book_id`,`classroom_id`, `subject_id`, `exam_type`, `exam_category`, `exam_mode`, `pass_percentage`, `duration`, `instructions`, `negative_marking`,`negative_mark_value`,`use_question_score`,`correct_answer_score`, `random_question`, `declare_results`,`attempt_count`";
-                $insertValues = "".$user_id . ",'" . $exam_name . "'," . $book_id . "," . $classroom_id . "," . $subject_id . ",'" . $exam_type . "','" . $exam_category . "','" . $exam_mode . "'," . $passing_percent . "," . $exam_duration . ",'" . $exam_instruction . "','" . $negative_marking . "'," . $negative_mark_value . ",'".$use_question_score."',".$correct_answer_score.",'" . $random_question . "','" . $declare_results . "'," . $attempt_count;
+                $insertFields = "`created_by`,`exam_name`, `book_id`,`classroom_id`, `subject_id`, `topic_id`, `exam_type`, `exam_category`, `exam_mode`, `pass_percentage`, `duration`, `instructions`, `negative_marking`,`negative_mark_value`,`use_question_score`,`correct_answer_score`, `random_question`, `declare_results`,`attempt_count`";
+                $insertValues = "".$user_id . ",'" . $exam_name . "'," . $book_id . "," . $classroom_id . "," . $subject_id . "," . $topic_id . ",'" . $exam_type . "','" . $exam_category . "','" . $exam_mode . "'," . $passing_percent . "," . $exam_duration . ",'" . $exam_instruction . "','" . $negative_marking . "'," . $negative_mark_value . ",'".$use_question_score."',".$correct_answer_score.",'" . $random_question . "','" . $declare_results . "'," . $attempt_count;
 
                 $query = "INSERT INTO " . TABLE_EXAMS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                //echo $query; exit;
+                echo $query; exit;
                 $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
                 if ($result) {
-
+                    $post['exam_id'] = mysqli_insert_id($GLOBALS['con']);
                     if ($exam_start_date != null and $exam_start_time != null) {
                         $insertExamScheduleFields = "`exam_id`, `schedule_by`, `exam_assessor`, `start_date`, `start_time`, `school_classroom_id`";
                         $insertExamScheduleValues = "" . $post['exam_id'] . "," . $user_id . "," . $exam_assessor . ",'" . $exam_start_date . "','" . $exam_start_time . "'," . $classroom_id;
                         $queryInsertExamSchedule = "INSERT INTO ". TABLE_EXAM_SCHEDULE."(" . $insertExamScheduleFields . ") VALUES (" . $insertExamScheduleValues . ")";
                         $resultExamSchedule = mysqli_query($GLOBALS['con'], $queryInsertExamSchedule) or $message = mysqli_error($GLOBALS['con']);
-                        //  echo $queryInsertExamSchedule;
+                         // echo $queryInsertExamSchedule; exit;
                         if ($resultExamSchedule) {
-                            $post['exam_id'] = mysqli_insert_id($GLOBALS['con']);
+
                             $status = SUCCESS;
                               $message="Exam created and scheduled";
                         } else {
@@ -516,7 +519,7 @@ class ExamFunctions
                 $resultToChkIfExist = mysqli_query($GLOBALS['con'], $queryToChkIfExist) or $message = mysqli_error($GLOBALS['con']);
 
                 if(mysqli_num_rows($resultToChkIfExist)>0) {
-                    $updateFields = "`created_by`=" . $user_id . " ,`exam_name`='" . $exam_name . "', `book_id`=" . $book_id . ",`classroom_id`=" . $classroom_id . ", `subject_id`=" . $subject_id . ", `exam_type`='" . $exam_type . "', `exam_category`='" . $exam_category . "', `exam_mode`='" . $exam_mode . "', `pass_percentage`=" . $passing_percent . ", `duration`=" . $exam_duration . ", `instructions`='" . $exam_instruction . "', `negative_marking`='" . $negative_marking . "',`negative_mark_value`=" . $negative_mark_value . ", `use_question_score`='".$use_question_score."',`correct_answer_score`=".$correct_answer_score.", `random_question`='" . $random_question . "', `declare_results`='" . $declare_results . "',`attempt_count`=" . $attempt_count;
+                    $updateFields = "`created_by`=" . $user_id . " ,`exam_name`='" . $exam_name . "', `book_id`=" . $book_id . ",`classroom_id`=" . $classroom_id . ", `subject_id`=" . $subject_id . ", `topic_id`=" . $topic_id . ", `exam_type`='" . $exam_type . "', `exam_category`='" . $exam_category . "', `exam_mode`='" . $exam_mode . "', `pass_percentage`=" . $passing_percent . ", `duration`=" . $exam_duration . ", `instructions`='" . $exam_instruction . "', `negative_marking`='" . $negative_marking . "',`negative_mark_value`=" . $negative_mark_value . ", `use_question_score`='".$use_question_score."',`correct_answer_score`=".$correct_answer_score.", `random_question`='" . $random_question . "', `declare_results`='" . $declare_results . "',`attempt_count`=" . $attempt_count;
                     //echo $updateFields; exit;
                     $queryUpdate = "UPDATE " . TABLE_EXAMS . " SET " . $updateFields . " WHERE id=" . $exam_id;
                     $resultUpdate = mysqli_query($GLOBALS['con'], $queryUpdate) or $message = mysqli_error($GLOBALS['con']);
@@ -1059,17 +1062,22 @@ class ExamFunctions
             }
 
 
+            if($exam_category!="")
+            {
+                $condition=" AND exam_category='".$exam_category."' ";
+            }
 
-            $queryExam = "SELECT * FROM ".TABLE_EXAMS." WHERE is_delete=0 AND ".$getField." in (SELECT ".$getField." FROM ".$table." WHERE `user_id`=".$user_id.")";
+
+            $queryExam = "SELECT * FROM ".TABLE_EXAMS." WHERE is_delete=0 ".$condition." AND ".$getField." in (SELECT ".$getField." FROM ".$table." WHERE `user_id`=".$user_id.")";
             $resultExam = mysqli_query($GLOBALS['con'], $queryExam) or $message = mysqli_error($GLOBALS['con']);
-            //echo $queryExam;
+            //echo $queryExam; exit;
             if (mysqli_num_rows($resultExam) > 0) {
                 while ($rowExam = mysqli_fetch_assoc($resultExam)) {
                     $exam_id[] = $rowExam['id'];
                     $data[] = $this->getExamData($rowExam);
                 }
             }
-            $queryExam = "SELECT * FROM ".TABLE_EXAMS." WHERE is_delete=0 AND id in (select exam_id from ".TABLE_EXAM_SCHEDULE." where exam_assessor=".$user_id.")";
+            $queryExam = "SELECT * FROM ".TABLE_EXAMS." WHERE is_delete=0 ".$condition."  AND id in (select exam_id from ".TABLE_EXAM_SCHEDULE." where exam_assessor=".$user_id.")";
             $resultExam = mysqli_query($GLOBALS['con'], $queryExam) or $message = mysqli_error($GLOBALS['con']);
            // echo $queryExam."\n".mysqli_num_rows($resultExam);
             if (mysqli_num_rows($resultExam)) {
@@ -1157,16 +1165,18 @@ class ExamFunctions
             }
 
         //get Topic Ids
-//        $query = "SELECT id,topic_name FROM " . TABLE_TOPICS . " WHERE subject_id=" . $rowExam['subject_id'] . " AND is_delete=0 ";
-////                        echo $query;
+
+        $post['topic_id'] = $rowExam['topic_id'];
+
+//        $query = "SELECT topic_name FROM " . TABLE_TOPICS . " WHERE id=" . $rowExam['topic_id'] . " AND is_delete=0 ";
+//////                        echo $query;
 //        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 //        if (mysqli_num_rows($result)) {
 //            while ($rowName = mysqli_fetch_assoc($result)) {
 //
-//                $post['topic_id'][] = $rowName['id'];
+//                $post['topic_name'] = $rowName['topic_name'];
 //            }
-//        }
-
+//       }
 
         $post['exam_type']=$rowExam['exam_type'];
         $post['exam_category']=$rowExam['exam_category'];
@@ -1572,10 +1582,10 @@ class ExamFunctions
             }
 
             if ("video" == $mediaType) {
-                $mediaName = "VIDEO" . $created_date . "_test.mp4";
+                $mediaName = "_testVIDEO" . $created_date . ".mp4";
                 $procedure = "UPDATE_QUESTION_VIDEO_LINK";
             } else if ("image" == $mediaType) {
-                $mediaName = "IMAGE" . $created_date . "_test.png";
+                $mediaName = "_testIMAGE" . $created_date . ".png";
                 $procedure = "UPDATE_QUESTION_IMAGE";
             }
 

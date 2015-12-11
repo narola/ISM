@@ -320,7 +320,7 @@ class ProfileFunctions
         $security=new SecurityFunctions();
         $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
-        if($isSecure==yes) {
+        if ($isSecure != no) {
 
             if ($username != null) {
                 $queryUserName = "SELECT `username` FROM ".TABLE_USERS." WHERE `username`='".$username."'  and is_delete=0";
@@ -545,7 +545,7 @@ class ProfileFunctions
         $security=new SecurityFunctions();
         $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
-        if ($isSecure == yes) {
+        if ($isSecure != no) {
 
            $queryUser = "SELECT id,username,password,profile_pic,full_name from ".TABLE_USERS." where username='".$username."' and is_delete=0";
             // $encrypted_passwd = $obj->encode($password);
@@ -729,8 +729,8 @@ class ProfileFunctions
         $security=new SecurityFunctions();
         //$isSecure = $security->checkForSecurity($access_key,$secret_key);
         $isSecure = $security->checkForSecurityTest($access_key,$secret_key);
-        echo $isSecure; exit;
-        if ($isSecure == yes) {
+        //echo $isSecure; exit;
+        if ($isSecure != no) {
 
 
             $obj = new CI_Encrypt();
@@ -743,10 +743,9 @@ class ProfileFunctions
 
             $queryInsert = "INSERT INTO " . TABLE_USERS . "(" . $insertFields . ") values(" . $insertValues . ")";
             $resultQuery = mysqli_query($GLOBALS['con'], $queryInsert) or $message = mysqli_error($GLOBALS['con']);
-            if($resultQuery)
-            {
-                $user_id =  mysqli_insert_id($GLOBALS['con']);
-                if($role_id==2) {
+            if($resultQuery) {
+                $user_id = mysqli_insert_id($GLOBALS['con']);
+                if ($role_id == 2) {
                     $course_id = validateObject($postData, 'course_id', "");
                     $course_id = addslashes($course_id);
 
@@ -764,13 +763,12 @@ class ProfileFunctions
 
 
                     $insertAcademicField = "`user_id`, `school_id`, `classroom_id`, `school_classroom_id`, `academic_year`, `joining_year`, `joining_class`, `course_id`";
-                    $insertAcademicValue = "'" . $user_id . "', '" . $school_id . "','" . $classroom_id . "','".$school_classroom_id."','" . $academic_year . "','" . date('M,Y') . "','" . $classroom_id . "','" . $course_id . "'";
+                    $insertAcademicValue = "'" . $user_id . "', '" . $school_id . "','" . $classroom_id . "','" . $school_classroom_id . "','" . $academic_year . "','" . date('M,Y') . "','" . $classroom_id . "','" . $course_id . "'";
 
                     $queryAcademic = "INSERT INTO " . TABLE_STUDENT_PROFILE . "(" . $insertAcademicField . ") values (" . $insertAcademicValue . ")";
                     $resultAcademic = mysqli_query($GLOBALS['con'], $queryAcademic) or $message = mysqli_error($GLOBALS['con']);
 
-                }
-                else if($role_id==3) {
+                } else if ($role_id == 3) {
                     $specialization = validateObject($postData, 'specialization', "");
                     $specialization = addslashes($specialization);
 
@@ -787,9 +785,7 @@ class ProfileFunctions
                     $resultTeacher = mysqli_query($GLOBALS['con'], $queryTeacher) or $message = mysqli_error($GLOBALS['con']);
 
 
-
-                }
-                else if($role_id==4) {
+                } else if ($role_id == 4) {
 
                     $education = validateObject($postData, 'education', "");
                     $education = addslashes($education);
@@ -801,64 +797,48 @@ class ProfileFunctions
                     $resultAuthor = mysqli_query($GLOBALS['con'], $queryAuthor) or $message = mysqli_error($GLOBALS['con']);
 
                 }
-                //Image Saving
-//                $profile_image_name_array = explode(".", $profile_image_name);
-//                if (!is_dir(USER_PROFILE_PICTURE)) {
-//                    mkdir(USER_PROFILE_PICTURE, 0777, true);
-//                }
-//                // if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
-//                // die('Failed to create folders...'.USER_PROFILE_PICTURE);
-//                // }
-//                // echo $profile_image_name_array[0]."_test.".$profile_image_name_array[1];
-//
-//                $profile_image_name = $profile_image_name_array[0] . "_test." . $profile_image_name_array[1];
-//
-//
-//                $profile_user_link = "user_" . $user_id . "/";
-//
-//                $profile_image_dir = USER_PROFILE_PICTURE . $profile_user_link;
-//
-//                if (!is_dir(USER_PROFILE_PICTURE . $profile_user_link)) {
-//                    mkdir(USER_PROFILE_PICTURE . $profile_user_link, 0777, true);
-//                }
-//
-//                $profile_image_dir = $profile_image_dir . $profile_image_name;
-//                $profile_image_link = $profile_user_link . $profile_image_name;
-//                file_put_contents($profile_image_dir, base64_decode($profile_image));
-//
-//                $queryProfileImage = "INSERT INTO " . TABLE_USER_PROFILE_PICTURE . "(`user_id`, `profile_link`) VALUES (" . $user_id . ",'" . $profile_image_link . "')";
-//                $resultProfileImage = mysqli_query($GLOBALS['con'], $queryProfileImage) or $message = mysqli_error($GLOBALS['con']);
-//
 
 
-                //Generate Token
-                $security=new SecurityFunctions();
-                $generateToken=$security->generateToken(8);
+                $crypterSecurity = new Security();
+                $queryToCheckRecordExist = "SELECT * FROM " . TABLE_TOKENS . " WHERE user_id=" . $user_id . " AND is_delete=0";
+                $resultToCheckRecordExist = mysqli_query($GLOBALS['con'], $queryToCheckRecordExist) or $message = mysqli_error($GLOBALS['con']);
+                //echo $queryToCheckRecordExist;
+                if (mysqli_num_rows($resultToCheckRecordExist) > 0) {
 
+                    $rowRecord = mysqli_fetch_row($resultToCheckRecordExist);
+                    $tokenName = $rowRecord[2];
+                    $tokenName = $crypterSecurity->encrypt($tokenName, $username);
+                    $post['token_name'] = $tokenName;
 
-                $insertTokenField="`user_id`, `token`";
-                $insertTokenValue="".$user_id.",'".$generateToken."'";
-
-                $queryAddToken="INSERT INTO ".TABLE_TOKENS."(".$insertTokenField.") values (".$insertTokenValue.")";
-                $resultAddToken=mysqli_query($GLOBALS['con'], $queryAddToken) or $message=mysqli_error($GLOBALS['con']);
-
-                //**************************For Encryption***************************
-
-                $crypterSecurity=new Security();
-                $secret_key=$crypterSecurity->encrypt($generateToken,$username);
-                //**************************End Encryption***************************
-
-                if($resultAddToken)
-                {
-                    $post['token_name']=$secret_key;
+                    $message="Token already exist";
                     $status=SUCCESS;
-                    $message="Token key generated.";
-                }
-                else
-                {
-                    $status=FAILED;
-                }
 
+                } else {
+
+                    //Generate Token
+                    $security = new SecurityFunctions();
+                    $generateToken = $security->generateToken(8);
+
+
+                    $insertTokenField = "`user_id`, `token`";
+                    $insertTokenValue = "" . $user_id . ",'" . $generateToken . "'";
+
+                    $queryAddToken = "INSERT INTO " . TABLE_TOKENS . "(" . $insertTokenField . ") values (" . $insertTokenValue . ")";
+                    $resultAddToken = mysqli_query($GLOBALS['con'], $queryAddToken) or $message = mysqli_error($GLOBALS['con']);
+
+                    //**************************For Encryption***************************
+
+                    $secret_key = $crypterSecurity->encrypt($generateToken, $username);
+                    //**************************End Encryption***************************
+
+                    if ($resultAddToken) {
+                        $post['token_name'] = $secret_key;
+                        $status = SUCCESS;
+                        $message = "Token key generated.";
+                    } else {
+                        $status = FAILED;
+                    }
+                }
 
                 if($resultAcademic || $resultAuthor || $resultTeacher)
                 {
@@ -2993,17 +2973,22 @@ class ProfileFunctions
         $data=array();
         $response=array();
 
+
         $access_key = validateObject($postData, 'access_key', "");
         $access_key = addslashes($access_key);
 
+
+//        $secret_key = validateObject($postData, 'secret_key', "");
+//        $secret_key = addslashes($secret_key);
+
         $secret_key=NULL;
 
-//        echo $access_key;
-//        echo "sec=".$secret_key;
 
         $security=new SecurityFunctions();
 
-     $isSecure = $security->checkForSecurityTest($access_key,$secret_key);
+        $isSecure = $security->checkForSecurityTest($access_key,$secret_key);
+
+
 
         /*if($isSecure==yes) {
 
@@ -3066,23 +3051,33 @@ class ProfileFunctions
         }*/
 
 
-        if($isSecure != "no")
-        {
-            $message = "";
-            $post['token_name'] = $isSecure;
-            $status = SUCCESS;
+        if($isSecure != no) {
+
+            if ($isSecure == allowaccesstoapp) {
+
+                $post[]['token_name'] = $isSecure;
+                $response['token'] = $post;
+                $response['status'] = SUCCESS;
+                $response['message'] = "Temp token generated";
+
+            } else {
+
+                $response = $isSecure;
+            }
         }
         else
         {
-            $status=FAILED;
-            $message = MALICIOUS_SOURCE;
-            $post['token_name'] = array();
+            $post[]['token_name'] = array();
+            $response['token']=$post;
+            $response['status']=FAILED;
+            $response['message'] = MALICIOUS_SOURCE;
+
         }
-        $data[]=$post;
-        $response['token']=$data;
-        $response['message'] = $message;
-        $response['status'] = $status;
+
         return $response;
+//        $response['message'] = $message;
+//        $response['status'] = $status;
+
     }
 
 
@@ -3109,42 +3104,55 @@ class ProfileFunctions
         $access_key = addslashes($access_key);
 
         $security=new SecurityFunctions();
-        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+        $isSecure = $security->checkForSecurityTest($access_key,$secret_key);
 
-        if($role=='Student')
+//        if($isSecure != no)
+//        {
+//            if($isSecure != yes)
+//            {
+//
+//            }
+//        }
+
+//        if($role=='Student')
+//        {
+//            $scope='Student';
+//        }
+//        elseif($role=='Author')
+//        {
+//            $scope='Author';
+//        }
+//        elseif($role=='Admin')
+//        {
+//            $scope='Admin';
+//        }
+//        elseif($role=='Teacher')
+//        {
+//            $scope='Teacher';
+//        }
+//        elseif($role=='All')
+//        {
+//            $scope='All';
+//        }
+        //else
+        if($role == NULL)
         {
-            $scope='Student';
-        }
-        elseif($role=='Author')
-        {
-            $scope='Author';
-        }
-        elseif($role=='Admin')
-        {
-            $scope='Admin';
-        }
-        elseif($role=='Teacher')
-        {
-            $scope='Teacher';
-        }
-        elseif($role=='All')
-        {
-            $scope='All';
-        }
-        elseif($role == NULL)
-        {
-            $scope='All';
+            $role='All';
         }
 
-        if($isSecure==yes) {
+        if($isSecure != no) {
 
             //  if ($last_sync_date < date("Y-m-d")) {
             // $last_sync_date=date("Y-m-d");
             //$condition=" and date(created_date,'Y-M-d') < '".$last_sync_date."'";
             //$condition=" and DATE_FORMAT(`modified_date`, 'Y-m-d') > '".$last_sync_date."'";
-            $condition=" and `modified_date` > '".$last_sync_date."'";
-            $query = "SELECT config_key,config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE  scope='" . $scope . "' and is_delete=0". $condition;
-            // echo $query;
+
+            if($last_sync_date!=NULL)
+             {
+                $condition = " and `modified_date` > '" . $last_sync_date . "'";
+            }
+            $query = "SELECT config_key,config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE  scope='" . $role . "' and is_delete=0". $condition;
+            //echo $query;
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
             if (mysqli_num_rows($result)) {
@@ -3285,7 +3293,7 @@ class ProfileFunctions
                     $file_ext=end($file_ext);
                     $file_ext=strtolower(end(explode('.',$_FILES['media_images']['name'][$i])));
 
-                    $mediaName = $i."_IMAGE" . $created_date . "_test.";
+                    $mediaName = "_test".$i."_IMAGE" . $created_date . ".";
                     $fileName =  $mediaName .$file_ext ;
 
 
