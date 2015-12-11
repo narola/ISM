@@ -93,7 +93,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     /*these sre for the xml views*/
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
             tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank, tvAddquestionAdvance;
-    private ImageView imgSelectImage, imgPlay, imgHelp, imgDelete;
+    private ImageView imgSelectImage, imgPlay, imgHelp, imgDelete, imageValidationQuestionType;
     private EditText etAddquestionTitle, etAddquestionAnswer, etEvaluationNote1, etEvaluationNote2;
     private Spinner spAddquestionType;
     private CheckBox chkAddquestionPreview;
@@ -155,8 +155,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         imgPlay = (ImageView) view.findViewById(R.id.img_play);
         imgHelp = (ImageView) view.findViewById(R.id.img_help);
         imgDelete = (ImageView) view.findViewById(R.id.img_delete);
+        imageValidationQuestionType = (ImageView) view.findViewById(R.id.image_validation_questionType);
         imgHelp.setOnClickListener(this);
         imgDelete.setOnClickListener(this);
+        imageValidationQuestionType.setOnClickListener(this);
 
 
         etAddquestionTitle = (EditText) view.findViewById(R.id.et_addquestion_title);
@@ -217,19 +219,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-
-        spAddquestionType.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-                        Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
-                    }
-                }
-                return true;
             }
         });
 
@@ -384,7 +373,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         chkAddquestionPreview.setChecked(false);
 
         spAddquestionType.setSelection(1);
-        spAddquestionType.setClickable(true);
+        imageValidationQuestionType.setVisibility(View.GONE);
 
     }
 
@@ -525,9 +514,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
             /*check that if user edit question then disable the formatting of question type.*/
             if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-                spAddquestionType.setClickable(false);
+
+                imageValidationQuestionType.setVisibility(View.VISIBLE);
             } else {
-                spAddquestionType.setClickable(true);
+
+                imageValidationQuestionType.setVisibility(View.GONE);
             }
             setSpinnerData(questions.getQuestionFormat());
             if (questions.getQuestionText() != null) {
@@ -657,13 +648,16 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     @Override
     public void onClick(View v) {
-        if (v == tvAddquestionSave) {
-            isAddMore = false;
-            if (isInputsValid()) {
-                callApiCreateQuestion();
-            }
-        } else if (v == tvAddquestionSaveAddmore) {
-            isAddMore = true;
+
+        switch (v.getId()) {
+            case R.id.tv_addquestion_save:
+                isAddMore = false;
+                if (isInputsValid()) {
+                    callApiCreateQuestion();
+                }
+                break;
+
+            case R.id.tv_addquestion_save_addmore:
 //            if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
 //                Debug.e(TAG, "QUESTION EDIT CALLED");
 //                getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
@@ -675,35 +669,50 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 //                    callApiCreateQuestion();
 //                }
 //            }
+                isAddMore = true;
+                if (isInputsValid()) {
+                    callApiCreateQuestion();
+                }
+                break;
 
-            if (isInputsValid()) {
-                callApiCreateQuestion();
-            }
+            case R.id.rl_select_image:
 
-        } else if (v == rlSelectImage) {
 //            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //            intent.setType("*/*");
 //            startActivityForResult(intent, 1);
-            openImage();
 
-        } else if (v == tvAddquestionGotoquestionbank) {
-            getFragment().flipCard();
-        } else if (v == tvAddquestionAdvance) {
-            String htmlText = Html.toHtml(etAddquestionTitle.getText());
-            htmlText = htmlText.replace("<p dir=\"ltr\"><img", "<img");
-            htmlText = htmlText.replace(".png\"></p>", ".png\">");
-            addQuestionTextDialog = new AddQuestionTextDialog(getActivity(), (AddQuestionTextDialog.SelectMediaListener) this,
-                    (AddQuestionTextDialog.AddTextListener) this, htmlText);
-            addQuestionTextDialog.show();
+                openImage();
+                break;
 
-        } else if (v == imgHelp) {
-//            showHelpInstruction();
-            Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.msg_help_add_advance_question));
+            case R.id.tv_addquestion_gotoquestionbank:
+                getFragment().flipCard();
+                break;
 
-        } else if (v == imgDelete) {
-            imgSelectImage.setImageDrawable(null);
-            imgSelectImage.setImageBitmap(null);
-            selectedUri = null;
+            case R.id.tv_addquestion_advance:
+
+                String htmlText = Html.toHtml(etAddquestionTitle.getText());
+                htmlText = htmlText.replace("<p dir=\"ltr\"><img", "<img");
+                htmlText = htmlText.replace(".png\"></p>", ".png\">");
+                addQuestionTextDialog = new AddQuestionTextDialog(getActivity(), (AddQuestionTextDialog.SelectMediaListener) this,
+                        (AddQuestionTextDialog.AddTextListener) this, htmlText);
+                addQuestionTextDialog.show();
+                break;
+
+            case R.id.img_help:
+//                showHelpInstruction();
+                Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.msg_help_add_advance_question));
+                break;
+
+            case R.id.img_delete:
+
+                imgSelectImage.setImageDrawable(null);
+                imgSelectImage.setImageBitmap(null);
+                selectedUri = null;
+                break;
+
+            case R.id.image_validation_questionType:
+                Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
+
         }
 
     }

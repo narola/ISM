@@ -516,7 +516,7 @@
                                 android:background="@drawable/selector"
                                 android:editable="false"
                                 android:gravity="center_vertical"
-                                android:hint="@string/strenddate"
+                                android:hint="@string/strstarttime"
                                 android:paddingLeft="@dimen/d20dp"
                                 android:textColor="@color/color_black"
                                 android:textColorHint="@color/color_text_hint"

@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -73,7 +72,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     /*these sre for the xml views*/
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
             tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank, tvAddquestionAdvance;
-    private ImageView imgSelectImage, imgPlay, img_cancel, imgHelp;
+    private ImageView imgSelectImage, imgPlay, img_cancel, imgHelp, imageValidationQuestionType;
     private EditText etAddquestionTitle, etAddquestionAnswer, etEvaluationNote1, etEvaluationNote2;
     private Spinner spAddquestionType;
     private CheckBox chkAddquestionPreview;
@@ -88,7 +87,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     AddQuestionTextDialog addQuestionTextDialog;
     private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
 
-    //public boolean isSpinnerClickable=false;
 
     public QuestionAddEditFragment() {
     }
@@ -113,6 +111,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         inputValidator = new InputValidator(getActivity());
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+
+        imageValidationQuestionType = (ImageView) view.findViewById(R.id.image_validation_questionType);
+        imageValidationQuestionType.setOnClickListener(this);
 
         imgHelp = (ImageView) view.findViewById(R.id.img_help);
         img_cancel = (ImageView) view.findViewById(R.id.img_cancel);
@@ -208,17 +209,22 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
         });
 
-        spAddquestionType.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-                        Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
-                    }
-                }
-                return true;
-            }
-        });
+//        spAddquestionType.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+////                if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+////                    Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
+////                    return false;
+////                } else {
+////                    spAddquestionType.setEnabled(true);
+////                    return false;
+////                }
+//                if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+//                    Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
+//                }
+//                return false;
+//            }
+//        });
 
         callAPiGetAllHashTag();
     }
@@ -342,10 +348,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         chkAddquestionPreview.setEnabled(true);
         chkAddquestionPreview.setChecked(false);
 
+        spAddquestionType.setEnabled(true);
         spAddquestionType.setSelection(1);
-//        spAddquestionType.setEnabled(true);
-        spAddquestionType.setClickable(true);
 
+        imageValidationQuestionType.setVisibility(View.GONE);
     }
 
     /*this method is for inflating views for addquestion*/
@@ -486,10 +492,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
             /*check that if user edit question then disable the formatting of question type.*/
             if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-                // spAddquestionType.setEnabled(false);
-                spAddquestionType.setClickable(false);
+
+                imageValidationQuestionType.setVisibility(View.VISIBLE);
+
             } else {
-                spAddquestionType.setEnabled(true);
+                imageValidationQuestionType.setVisibility(View.GONE);
             }
             setSpinnerData(questions.getQuestionFormat());
             if (questions.getQuestionText() != null) {
@@ -648,6 +655,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         } else if (v == imgHelp) {
 //            showHelpInstruction();
             Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.msg_help_add_advance_question));
+        } else if (v == imageValidationQuestionType) {
+            Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
         }
 
     }

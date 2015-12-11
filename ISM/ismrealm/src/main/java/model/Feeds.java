@@ -13,6 +13,7 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Feeds extends RealmObject {
     @PrimaryKey
+    private int localId;
     private int feedId;
     private User feedBy;
     private String feedText;
@@ -24,12 +25,19 @@ public class Feeds extends RealmObject {
     private Date postedOn;
     private Date createdDate;
     private Date modifiedDate;
-   // private String fullName;
+    private boolean isSync;
     private String like;
     ////private String profilePic;
-    private RealmList<FeedComment> comments;
-    private RealmList<FeedImage> feedImages;
+    private RealmList<FeedComment> comments=new RealmList<>();
+    private RealmList<FeedImage> feedImages=new RealmList<>();
 
+    public int getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
+    }
 
     public int getFeedId() {
         return feedId;
@@ -157,5 +165,13 @@ public class Feeds extends RealmObject {
 
     public void setFeedImages(RealmList<FeedImage> feedImages) {
         this.feedImages = feedImages;
+    }
+
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setIsSync(boolean isSync) {
+        this.isSync = isSync;
     }
 }

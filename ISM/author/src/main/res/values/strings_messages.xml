@@ -13,6 +13,7 @@
     <string name="msg_validation_set_topic">\nPlease select your subject topic.</string>
     <string name="msg_validation_add_text_rich_editor">\nPlease set the assignment instructions.</string>
     <string name="msg_validation_set_classroom">\nPlease select your classroom.</string>
+    <string name="msg_validation_set_exam_assessor">\nPlease select exam assessor.</string>
     <string name="msg_validation_set_subject">\nPlease select your subject.</string>
     <string name="msg_validation_set_passingpercent">\nPlease select passing percent</string>
     <string name="msg_validation_set_exam_name">\nPlease select exam name</string>
@@ -45,6 +46,7 @@
     <string name="msg_tag_done">Tag done!</string>
     <string name="msg_success_createassignment">Assignment Created Successfully.</string>
     <string name="msg_success_createexam">Exam Created Successfully.</string>
+    <string name="msg_success_editexam">Exam Edited Successfully.</string>
     <string name="msg_mcq_ans_limit">You can only add up to 6 MCQ Answers.</string>
     <string name="msg_wrong_current_pwd">Wrong current password.</string>
     <string name="msg_validaton_dob"><![CDATA[\n> Please set your date of birth.]]></string>

@@ -52,6 +52,9 @@
     <string name="msg_validation_negative_marking">\nPlease select any negative marking option.</string>
     <string name="msg_validation_random_question">\nPlease select any random question option.</string>
     <string name="msg_validation_use_score_from_questions">\nPlease select use score from question option.</string>
+    <string name="strexamassessor">Exam Assessor</string>
+    <string name="strnoassessor">No Assessor</string>
+    <string name="strexamcategory">Exam Category</string>
 
 
     <!-- Controller String-->
@@ -77,6 +80,7 @@
     <string name="strattemptcount">Attempt Count</string>
     <string name="strexamschedule">Exam Schedule</string>
     <string name="strstartdate">Start Date</string>
+    <string name="strstarttime">Start Time</string>
     <string name="strenddate">End Date</string>
     <string name="strnotifystudent">Notify Student Via SMS</string>
     <string name="strexaminstruction">Exam Instruction</string>

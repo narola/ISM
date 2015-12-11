@@ -3,7 +3,6 @@ package com.ism.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -180,7 +179,6 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 					WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, etUserName.getText().toString().trim());
 					PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, LoginActivity.this, WebConstants.ACCESS_KEY);
 					callApiRefreshToken();
-//					callApiAuthenticateUser();
 				}
 			}
 		} else {
