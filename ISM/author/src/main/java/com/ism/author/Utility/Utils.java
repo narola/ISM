@@ -62,7 +62,7 @@ public class Utils {
                     mEdittext.setText(Utility.formatDateDisplay(calDob.getTime()));
                 }
             }, calDob.get(Calendar.YEAR), calDob.get(Calendar.MONTH), calDob.get(Calendar.DAY_OF_MONTH));
-
+            datePickerDob.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
             datePickerDob.show();
         } catch (Exception e) {
             Log.e(TAG, "showDatePickerDob Exception : " + e.toString());

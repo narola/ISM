@@ -1,10 +1,11 @@
 package com.ism.teacher.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +16,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.ism.teacher.R;
+import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.MyStudentsAdapter;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -45,21 +46,18 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private Fragment mFragment;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
 
-    public static GetStudentsFragment newInstance() {
+    public static GetStudentsFragment newInstance(Fragment fragment, Bundle bundleArgument) {
         GetStudentsFragment getStudentsFragment = new GetStudentsFragment();
+        if (bundleArgument != null) {
+            getStudentsFragment.setArguments(bundleArgument);
+        }
+        getStudentsFragment.mFragment = fragment;
         return getStudentsFragment;
     }
 
     public GetStudentsFragment() {
         // Required empty public constructor
     }
-
-    @SuppressLint("ValidFragment")
-    public GetStudentsFragment(Fragment fragment) {
-        this.mFragment = fragment;
-
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,41 +79,42 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
 
 
         callGetExamSubmissionApi();
+        imgSearchMystudents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-//        imgSearchMystudents.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if (etSearchMystudents.getVisibility() == View.VISIBLE) {
-//                    etSearchMystudents.setVisibility(View.GONE);
-//                    myStudentsAdapter.filter("");
-//                    etSearchMystudents.setText("");
-//
-//                } else {
-//                    startSlideAnimation(etSearchMystudents, etSearchMystudents.getWidth(), 0, 0, 0);
-//                    startSlideAnimation(imgSearchMystudents, etSearchMystudents.getWidth(), 0, 0, 0);
-//                    etSearchMystudents.setVisibility(View.VISIBLE);
-//                    Utility.showSoftKeyboard(etSearchMystudents, getActivity());
-//                }
-//            }
-//        });
-//
-//        etSearchMystudents.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                myStudentsAdapter.filter(s);
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+                if (etSearchMystudents.getVisibility() == View.VISIBLE) {
+//                    startSlideAnimation(etSearchMystudents, 0, etSearchMystudents.getWidth(), 0, 0);
+//                    startSlideAnimation(imgSearchMystudents, -imgSearchMystudents.getWidth(), 0, 0, 0);
+                    etSearchMystudents.setVisibility(View.GONE);
+                    myStudentsAdapter.filter("");
+                    etSearchMystudents.setText("");
+
+                } else {
+                    startSlideAnimation(etSearchMystudents, etSearchMystudents.getWidth(), 0, 0, 0);
+                    startSlideAnimation(imgSearchMystudents, etSearchMystudents.getWidth(), 0, 0, 0);
+                    etSearchMystudents.setVisibility(View.VISIBLE);
+                    Utility.showSoftKeyboard(etSearchMystudents, getActivity());
+                }
+            }
+        });
+
+        etSearchMystudents.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                myStudentsAdapter.filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 
@@ -146,9 +145,13 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private void callGetExamSubmissionApi() {
         try {
             Attribute attribute = new Attribute();
-            attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
-            attribute.setUserId(WebConstants.USER_ID_340);
-            attribute.setRole(WebConstants.TEACHER_ROLE_ID);
+
+            if (getArguments() != null) {
+                attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
+                attribute.setUserId(WebConstants.USER_ID_340);
+                attribute.setRole(WebConstants.TEACHER_ROLE_ID);
+
+            }
 
             ((TeacherHostActivity) getActivity()).showProgress();
             new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -178,7 +181,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private void onResponseMyStudents(Object object) {
 
         ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
+        if (responseHandler.getStatus().equalsIgnoreCase(ResponseHandler.SUCCESS)) {
 
             arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
             myStudentsAdapter.addAll(arrListExamSubmittor);

@@ -19,65 +19,30 @@
             android:paddingRight="@dimen/d10dp"
             android:paddingTop="@dimen/d10dp">
 
-            <LinearLayout
+            <Spinner
+                android:id="@+id/sp_exam_authorbooks"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:background="@drawable/shadow_grey_small_size" />
 
-                <Spinner
-                    android:id="@+id/sp_exam_authorbooks"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_grey_small_size" />
-
-                <com.ism.commonsource.view.ActionProcessButton
-                    android:id="@+id/prog_exam_authorbook"
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:visibility="invisible" />
-            </LinearLayout>
-
-            <LinearLayout
+            <Spinner
+                android:id="@+id/sp_exam_class"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:background="@drawable/shadow_grey_small_size" />
 
-                <Spinner
-                    android:id="@+id/sp_exam_class"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_grey_small_size" />
-
-                <com.ism.commonsource.view.ActionProcessButton
-                    android:id="@+id/prog_exam_class"
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:visibility="invisible" />
-            </LinearLayout>
-
-            <LinearLayout
+            <Spinner
+                android:id="@+id/sp_exam_evaluation_status"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:background="@drawable/shadow_grey_small_size" />
 
-                <Spinner
-                    android:id="@+id/sp_exam_evaluation_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_grey_small_size" />
-
-                <com.ism.commonsource.view.ActionProcessButton
-                    android:id="@+id/prog_exam_assessed"
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:visibility="invisible" />
-            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -153,7 +118,7 @@
                 android:padding="@dimen/d2dp">
 
                 <EditText
-                    android:id="@+id/et_exam_enddate"
+                    android:id="@+id/et_exam_startTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shadow_grey_small_size"
@@ -181,13 +146,26 @@
         </LinearLayout>
     </LinearLayout>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_exams_list"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:padding="@dimen/d10dp" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_exams_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="@dimen/d10dp" />
+
+        <TextView
+            android:id="@+id/tv_no_exam_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/msg_no_exams_found"
+            android:textSize="@dimen/d20dp"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 
 </LinearLayout>

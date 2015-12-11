@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,15 +45,15 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
 
-    private TextView tvPreviewQuestionlistTitle, tvPreviewQuestionlistFreeze;
-    private RecyclerView rvPreviewquestionlist;
+    public TextView tvPreviewQuestionlistTitle, tvPreviewQuestionlistFreeze, tvNoQuestions;
+    public RecyclerView rvPreviewquestionlist;
     private PreviewQuestionListAdapter previewQuestionListAdapter;
-    //    RecyclerListAdapter adapter;
     public ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     MyTypeFace myTypeFace;
 
     //this is for the movable recyclerview.
-    private ItemTouchHelper mItemTouchHelper;
+
+    public TextView tv_total_questions, tv_total_score;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,10 +66,17 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     private void initGlobal() {
         myTypeFace = new MyTypeFace(getActivity());
 
+        tv_total_questions = (TextView) view.findViewById(R.id.tv_total_questions);
+        tv_total_score = (TextView) view.findViewById(R.id.tv_total_score);
+        tv_total_questions.setTypeface(myTypeFace.getRalewayRegular());
+        tv_total_score.setTypeface(myTypeFace.getRalewayRegular());
+
+        tvNoQuestions = (TextView) view.findViewById(R.id.tv_no_questions);
         tvPreviewQuestionlistTitle = (TextView) view.findViewById(R.id.tv_questionlist_title);
         tvPreviewQuestionlistFreeze = (TextView) view.findViewById(R.id.tv_freeze_question);
 
         tvPreviewQuestionlistTitle.setTypeface(myTypeFace.getRalewayRegular());
+        tvNoQuestions.setTypeface(myTypeFace.getRalewayBold());
 
         rvPreviewquestionlist = (RecyclerView) view.findViewById(R.id.rv_previewquestionlist);
         previewQuestionListAdapter = new PreviewQuestionListAdapter(getActivity(), mFragment);
@@ -93,7 +99,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 try {
                     Attribute attribute = new Attribute();
                     attribute.setExamId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
-                    attribute.setQuestionIdList(getQuestionIdList());
+                    attribute.setQuestionIdList(getArrListQuestionId());
 
                     new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                             .execute(WebConstants.SET_QUESTIONS_FOR_EXAM);
@@ -112,27 +118,34 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     public void setExamQuestions(ArrayList<Questions> arrListExamQuestions) {
         arrListQuestions.addAll(arrListExamQuestions);
         previewQuestionListAdapter.addAll(this.arrListQuestions);
+        tv_total_questions.setText(getString(R.string.strtotalquestions)+ arrListQuestions.size());
+
     }
 
-    private ArrayList<String> questionIdList = new ArrayList<String>();
+    private ArrayList<String> arrListQuestionId = new ArrayList<String>();
 
-    private ArrayList<String> getQuestionIdList() {
+    private ArrayList<String> getArrListQuestionId() {
 
         for (int i = 0; i < arrListQuestions.size(); i++) {
-            questionIdList.add(arrListQuestions.get(i).getQuestionId());
+            arrListQuestionId.add(arrListQuestions.get(i).getQuestionId());
         }
-        return questionIdList;
+
+        return arrListQuestionId;
 
     }
 
 
     public void addQuestionsToPreviewFragment(ArrayList<Questions> arrListQuestionsToAdd) {
-
+        Debug.e(TAG, "inside addQuetopreview data");
         if (arrListQuestionsToAdd.size() > 0) {
 
-            arrListQuestions.addAll(arrListQuestionsToAdd);
-            previewQuestionListAdapter.addAll(arrListQuestions);
-
+            for (int i = 0; i < arrListQuestionsToAdd.size(); i++) {
+                arrListQuestions.add(arrListQuestionsToAdd.get(i));
+            }
+            Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS" + arrListQuestions.size());
+            previewQuestionListAdapter.addAll(this.arrListQuestions);
+            tv_total_questions.setText(getString(R.string.strtotalquestions)+ arrListQuestions.size());
+            getFragment().hideText();
         }
 
     }
@@ -205,14 +218,17 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
     public void addQuestionDataAfterAddQuestion(Questions question) {
-        arrListQuestions.add(0, question);
+//        arrListQuestions.add(0, question);
+        arrListQuestions.add(question);
         previewQuestionListAdapter.addAll(arrListQuestions);
         previewQuestionListAdapter.notifyDataSetChanged();
+
+        Debug.e(TAG, "inside addQue data");
     }
+
 
     private AddQuestionContainerFragment getFragment() {
         return (AddQuestionContainerFragment) mFragment;
     }
-
 
 }

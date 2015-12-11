@@ -2,26 +2,32 @@ package com.ism.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.adapter.Adapters;
+import com.ism.broadcastReceiver.NetworkStatusReceiver;
+import com.ism.commonsource.utility.AESHelper;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
+import com.ism.interfaces.NetworkStateListener;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
@@ -32,23 +38,27 @@ import com.ism.ws.model.AdminConfig;
 import com.ism.ws.model.City;
 import com.ism.ws.model.Country;
 import com.ism.ws.model.State;
+import com.ism.ws.model.User;
 import com.realm.ismrealm.RealmAdaptor;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import realmhelper.StudentHelper;
+
 /**
  * Created by c161 on 07/10/15.
  */
-public class LoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse {
+public class LoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse, NetworkStateListener {
 
 	private static final String TAG = LoginActivity.class.getSimpleName();
 
-	private EditText etPwd, etUserid;
+	private EditText etUserName, etPwd;
 	private Spinner spCountry;
 	private Spinner spState;
 	private Spinner spCity;
+	private LinearLayout llLogin;
 	private ActionProcessButton btnLogin, progForgotPwd, progRequestCredentials, progCountry, progState, progCity;
 	private Button btnForgotPwdSubmit, btnCredentialsSubmit;
 
@@ -61,21 +71,50 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private ProgressGenerator progressGenerator;
 	private AlertDialog dialogForgotPassword;
 	private MyTypeFace myTypeFace;
-	private ProgressDialog pd;
+	private StudentHelper studentHelper;
 
 	private String strValidationMsg;
+	private boolean isRememberMe;
+	private boolean isRememberMeFirstLogin;
 	private boolean isAdminConfigSet;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
 
-		WebConstants.SECRET_KEY = "juPC8Mos1bMZTbjKm/gFiCUqcI7+H8zr2UdlLfnCwo4=";
-		WebConstants.ACCESS_KEY = "PLF25jEXMPXkKwavzk2mmKMj/j1br7vn8zv3IRID4js";
+		studentHelper = new StudentHelper(LoginActivity.this);
 
-		callApiGetAdminConfig();
+		isAdminConfigSet = false;
+		isRememberMe = PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this);
+		isRememberMeFirstLogin = PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, LoginActivity.this);
 
-		if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this)) {
+		NetworkStatusReceiver.setNetworkStateListener(this);
+
+		if (Utility.isConnected(this)) {
+			initializeData();
+		} else {
+			Utility.alertOffline(this);
+		}
+
+	}
+
+	private void initializeData() {
+		if (isRememberMe || isRememberMeFirstLogin) {
+			WebConstants.ACCESS_KEY = PreferenceData.getStringPrefs(PreferenceData.ACCESS_KEY, this);
+			WebConstants.SECRET_KEY = PreferenceData.getStringPrefs(PreferenceData.SECRET_KEY, this);
+			callApiGetAdminConfig();
+		} else {
+			PreferenceData.clearWholePreference(this);
+			PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, WebConstants.NO_USERNAME);
+			WebConstants.ACCESS_KEY = WebConstants.NO_USERNAME;
+			WebConstants.SECRET_KEY = null;
+			callApiRefreshToken();
+		}
+	}
+
+	private void resumeApp() {
+		if (isRememberMe) {
 			if (PreferenceData.getBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this)) {
 				if (PreferenceData.getBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this)) {
 					launchHostActivity();
@@ -87,10 +126,9 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			} else {
 				launchWelcomeActivity();
 			}
-		} else if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, LoginActivity.this)) {
+		} else if (isRememberMeFirstLogin) {
 			launchProfileInfoActivity();
 		} else {
-			setContentView(R.layout.activity_login);
 			initGlobal();
 		}
 	}
@@ -99,13 +137,16 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		myTypeFace = new MyTypeFace(this);
 		btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
 		etPwd = (EditText) findViewById(R.id.et_pwd);
-		etUserid = (EditText) findViewById(R.id.et_userid);
+		etUserName = (EditText) findViewById(R.id.et_userid);
+		llLogin = (LinearLayout) findViewById(R.id.ll_login);
 
-//		etUserid.setText("0YGAJ8793B");
-//		etUserid.setText("prerna");
+		showLoginLayout();
+
+//		etUserName.setText("0YGAJ8793B");
+//		etUserName.setText("prerna");
 //		etPwd.setText("narola21");
 
-		etUserid.setTypeface(myTypeFace.getRalewayRegular());
+		etUserName.setTypeface(myTypeFace.getRalewayRegular());
 		etPwd.setTypeface(myTypeFace.getRalewayRegular());
 		((TextView) findViewById(R.id.txt_donothave)).setTypeface(myTypeFace.getRalewayRegular());
 		((TextView) findViewById(R.id.txt_clickhere)).setTypeface(myTypeFace.getRalewayRegular());
@@ -113,28 +154,33 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 		inputValidator = new InputValidator(LoginActivity.this);
 
-		arrListDefalt = new ArrayList<String>();
+		arrListDefalt = new ArrayList<>();
 		arrListDefalt.add(getString(R.string.select));
 
-		progressGenerator = new ProgressGenerator();
+        progressGenerator = new ProgressGenerator();
 
-		RealmAdaptor.getInstance(this);
+        RealmAdaptor.getInstance(this);
+    }
+
+	private void showLoginLayout() {
+		llLogin.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
+		llLogin.setVisibility(View.VISIBLE);
+		findViewById(R.id.img_logo).startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
 	}
 
 	public void onClickLogin(View view) {
 		if (Utility.isConnected(LoginActivity.this)) {
-
-			/*if (strValidationMsg == null || strValidationMsg.equals("")) {
-				strValidationMsg = "1";
-				btnLogin.setProgress(1);
-				progressGenerator.start(btnLogin);
-			} else {
-				strValidationMsg = "";
-				btnLogin.setProgress(100);
-			}*/
-
 			if (isInputsValid()) {
-				callApiAuthenticateUser();
+				btnLogin.setProgress(1);
+				btnLogin.setEnabled(false);
+				progressGenerator.start(btnLogin);
+
+				String globalPassword = studentHelper.getGlobalPassword();
+				if (globalPassword != null) {
+					WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, etUserName.getText().toString().trim());
+					PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, LoginActivity.this, WebConstants.ACCESS_KEY);
+					callApiRefreshToken();
+				}
 			}
 		} else {
 			Utility.alertOffline(LoginActivity.this);
@@ -252,7 +298,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-					}
+                    }
 
 				}).setNegativeButton(R.string.strclose, new DialogInterface.OnClickListener() {
 					@Override
@@ -392,7 +438,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	}
 
 	private boolean isInputsValid() {
-		return inputValidator.validateStringPresence(etUserid) &
+		return inputValidator.validateStringPresence(etUserName) &
 				(inputValidator.validateStringPresence(etPwd) && inputValidator.validatePasswordLength(etPwd));
 	}
 
@@ -415,13 +461,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiAuthenticateUser() {
 		try {
-			btnLogin.setProgress(1);
-			btnLogin.setEnabled(false);
-			progressGenerator.start(btnLogin);
-
-			btnLogin.setEnabled(false);
 			Attribute attribute = new Attribute();
-			attribute.setUsername(etUserid.getText().toString().trim());
+			attribute.setUsername(etUserName.getText().toString().trim());
 			attribute.setPassword(etPwd.getText().toString().trim());
 //			requestObject.setUsername("0YGAJ8793B");
 //			requestObject.setPassword("narola21");
@@ -436,19 +477,26 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiGetAdminConfig() {
 		try {
-			pd = new ProgressDialog(LoginActivity.this);
-			pd.setMessage("Configuring app...");
-			pd.setCancelable(false);
-			pd.show();
 			Attribute attribute = new Attribute();
 			attribute.setRole("All");
-			attribute.setLastSyncDate("");
-//			attribute.setLastSyncDate(PreferenceData.getStringPrefs(PreferenceData.ADMIN_CONFIG_SYNC_DATE, LoginActivity.this, ""));
+			attribute.setLastSyncDate(PreferenceData.getStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, LoginActivity.this, ""));
 
 			new WebserviceWrapper(LoginActivity.this, attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_ADMIN_CONFIG);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiAuthenticateUser Exception : " + e.getLocalizedMessage());
+		}
+	}
+
+	private void callApiRefreshToken() {
+		try {
+			Attribute attribute = new Attribute();
+			attribute.setUsername(WebConstants.ACCESS_KEY);
+
+			new WebserviceWrapper(getApplicationContext(), attribute, this).new WebserviceCaller()
+					.execute(WebConstants.REFRESH_TOKEN);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiRefreshToken Exception : " + e.toString());
 		}
 	}
 
@@ -477,6 +525,9 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 				case WebConstants.REQUEST_CREDENTIALS:
 					onResponseCredentials(object, error);
 					break;
+				case WebConstants.REFRESH_TOKEN:
+					onResponseRefreshToken(object, error);
+					break;
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponse Exception : " + e.toString());
@@ -485,9 +536,6 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void onResponseGetAdminConfig(Object object, Exception error) {
 		try {
-			if (pd != null) {
-				pd.dismiss();
-			}
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
@@ -495,10 +543,17 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 					Log.e(TAG, "admin config size : " + arrListAdminConfig.size());
 
 					if (arrListAdminConfig != null && arrListAdminConfig.size() > 0) {
-						PreferenceData.setStringPrefs(PreferenceData.ADMIN_CONFIG_SYNC_DATE, LoginActivity.this,
+						for (AdminConfig config : arrListAdminConfig) {
+							model.AdminConfig adminConfig = new model.AdminConfig();
+							adminConfig.setConfigKey(config.getConfigKey());
+							adminConfig.setConfigValue(config.getConfigValue());
+							studentHelper.saveAdminConfig(adminConfig);
+						}
+						PreferenceData.setStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, LoginActivity.this,
 								Utility.formatDateMySql(Calendar.getInstance().getTime()));
+						isAdminConfigSet = true;
 					}
-					isAdminConfigSet = true;
+					resumeApp();
 
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetAdminConfig Failed");
@@ -508,6 +563,29 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseGetAdminConfig Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseRefreshToken(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, this, responseHandler.getToken().get(0).getTokenName());
+					WebConstants.SECRET_KEY = responseHandler.getToken().get(0).getTokenName();
+					if (isAdminConfigSet) {
+						callApiAuthenticateUser();
+					} else {
+						callApiGetAdminConfig();
+					}
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "onResponseRefreshToken failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseRefreshToken api Exception :" + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseRefreshToken Exception :" + e.toString());
 		}
 	}
 
@@ -675,6 +753,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, LoginActivity.this, responseHandler.getUser().get(0).getProfilePic());
 						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupId());
 						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_NAME, this, etUserName.getText().toString().trim());
 
 //						if (responseHandler.getUser().get(0).getTutorialGroupId() == null) {
 //							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);
@@ -683,7 +762,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 //							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, true);
 //
 //							if (responseHandler.getUser().get(0).getTutorialGroupJoiningStatus().equals("1")) {
-								PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
+						PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
 //
 //								if (responseHandler.getUser().get(0).getTutorialGroupComplete().equals("1")) {
 									PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this, true);
@@ -710,24 +789,57 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		}
 	}
 
-	private void launchProfileInfoActivity() {
-		Utility.launchActivity(LoginActivity.this, ProfileInformationActivity.class);
-		finish();
+    private void ParseAllData(ArrayList<User> user) {
+        try {
+            model.User userData = new model.User();
+            userData.setUserId(Integer.parseInt(user.get(0).getUserId()));
+            userData.setFullName(user.get(0).getFullName());
+            userData.setProfilePicture(user.get(0).getProfilePic());
+//			userData.setClassName(user.get(0).getClassName());
+//			userData.setFirstName(user.get(0).getCourseName());
+//			userData.setFirstName(user.get(0).getCourseName());
+//			userData.setFirstName(user.get(0).getCourseName());
+//			userData.setFirstName(user.get(0).getCourseName());
+//			userData.setFirstName(user.get(0).getCourseName());
+            StudentHelper studentHelper = new StudentHelper(this);
+            studentHelper.saveUser(userData);
+
+        } catch (Exception e) {
+            Debug.i(TAG, "ParseAllData Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void launchProfileInfoActivity() {
+        Utility.launchActivity(LoginActivity.this, ProfileInformationActivity.class);
+        finish();
+    }
+
+    private void launchHostActivity() {
+        Utility.launchActivity(LoginActivity.this, HostActivity.class);
+        finish();
+    }
+
+    private void launchWelcomeActivity() {
+        Utility.launchActivity(LoginActivity.this, WelComeActivity.class);
+        finish();
+    }
+
+    private void launchAcceptTutorialGroupActivity() {
+        Utility.launchActivity(LoginActivity.this, AcceptTutorialGroupActivity.class);
+        finish();
+    }
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		studentHelper.destroy();
 	}
 
-	private void launchHostActivity() {
-		Utility.launchActivity(LoginActivity.this, HostActivity.class);
-		finish();
-	}
-
-	private void launchWelcomeActivity() {
-		Utility.launchActivity(LoginActivity.this, WelComeActivity.class);
-		finish();
-	}
-
-	private void launchAcceptTutorialGroupActivity() {
-		Utility.launchActivity(LoginActivity.this, AcceptTutorialGroupActivity.class);
-		finish();
+	@Override
+	public void onNetworkStateChange() {
+		if (Utility.isConnected(this)) {
+			initializeData();
+		}
 	}
 
 }

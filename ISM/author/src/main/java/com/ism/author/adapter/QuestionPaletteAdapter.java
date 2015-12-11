@@ -12,7 +12,8 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.fragment.GetSubjectiveAssignmentQuestionsFragment;
 import com.ism.author.object.MyTypeFace;
-import com.ism.author.ws.model.Evaluation;
+import com.ism.author.ws.model.QuestionPalette;
+import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,8 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
 
     private static final String TAG = QuestionPaletteAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Evaluation> arrListEvaluation = new ArrayList<Evaluation>();
+    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
+    private ArrayList<QuestionPalette> arrListQuestionPalette = new ArrayList<QuestionPalette>();
     private MyTypeFace myTypeFace;
     private Fragment mFragment;
     private LayoutInflater inflater;
@@ -50,6 +52,9 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
             holder.tvQuestionStatus.setText("" + (position + 1));
             holder.tvQuestionStatus.setTypeface(myTypeFace.getRalewayRegular());
 
+
+            setQuestionStatus(holder.tvQuestionStatus, getQuestionStatus(arrListQuestions.get(position).getQuestionId()));
+
             holder.tvQuestionStatus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -63,15 +68,59 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
 
     }
 
-    @Override
-    public int getItemCount() {
-        return arrListEvaluation.size();
+    private void setQuestionStatus(TextView tv, String status) {
+
+        try {
+            switch (status) {
+                case "A":
+                    tv.setBackgroundResource(R.drawable.img_answered);
+                    break;
+                case "N":
+                    tv.setBackgroundResource(R.drawable.img_not_answered);
+                    break;
+                case "S":
+                    tv.setText("");
+                    tv.setBackgroundResource(R.drawable.img_skipped);
+                    break;
+                case "R":
+                    tv.setBackgroundResource(R.drawable.img_skipped);
+                    break;
+            }
+
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponse Exception : " + e.toString());
+        }
+
     }
 
-    public void addAll(ArrayList<Evaluation> evaluations) {
+    private String getQuestionStatus(String questionId) {
+        String questionStatus = "N";
+
+
+        for (QuestionPalette questionPalette : arrListQuestionPalette) {
+
+            if (questionPalette.getQuestionId().equals(questionId)) {
+                questionStatus = questionPalette.getValue();
+                break;
+            }
+        }
+
+        return questionStatus;
+    }
+
+    @Override
+    public int getItemCount() {
+        return arrListQuestions.size();
+    }
+
+    public void addAll(ArrayList<Questions> arrListQuestions, ArrayList<QuestionPalette> arrListQuestionPalette) {
         try {
-            this.arrListEvaluation.clear();
-            this.arrListEvaluation.addAll(evaluations);
+
+            this.arrListQuestions.clear();
+            this.arrListQuestions.addAll(arrListQuestions);
+            this.arrListQuestionPalette.clear();
+            this.arrListQuestionPalette.addAll(arrListQuestionPalette);
+
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }

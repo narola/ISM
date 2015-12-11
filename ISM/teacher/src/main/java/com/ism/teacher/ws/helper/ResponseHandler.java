@@ -16,6 +16,7 @@ import com.ism.teacher.ws.model.ExamSubmission;
 import com.ism.teacher.ws.model.Exams;
 import com.ism.teacher.ws.model.Feed;
 import com.ism.teacher.ws.model.Feeds;
+import com.ism.teacher.ws.model.FileUploadResponse;
 import com.ism.teacher.ws.model.HashTags;
 import com.ism.teacher.ws.model.Question;
 import com.ism.teacher.ws.model.Questions;
@@ -39,10 +40,14 @@ public class ResponseHandler {
     private ArrayList<Data> data;
     private String status;
 
+    private String mediaType;
+    private String imageLink;
+
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
     public static final String DUPLICATE_ENTRY = "Duplicate entry";
     private String TAG = ResponseHandler.class.getSimpleName();
+    private ArrayList<Feeds> feedImages;
 
     public String getMessage() {
         return this.message;
@@ -291,5 +296,25 @@ public class ResponseHandler {
     }
 
 
+    FileUploadResponse fileUploadResponse;
+
+    @JsonProperty("upload_question")
+    public FileUploadResponse getFileUploadResponse() {
+        return fileUploadResponse;
+    }
+
+    public ResponseHandler setFileUploadResponse(FileUploadResponse fileUploadResponse) {
+        this.fileUploadResponse = fileUploadResponse;
+        return this;
+    }
+
+    @JsonProperty("feed_images")
+    public ArrayList<Feeds> getFeedImages() {
+        return feedImages;
+    }
+
+    public void setFeedImages(ArrayList<Feeds> feedImages) {
+        this.feedImages = feedImages;
+    }
 }
 

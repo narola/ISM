@@ -65,7 +65,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        Global.imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
+        Global.imageLoader.displayImage(WebConstants.HOST_IMAGES+arrListFeeds.get(position).getProfilePic(),
                 holder.imgDpPostCreator, ISMAuthor.options);
         holder.txtPostCreaterName.setText(arrListFeeds.get(position).getFullName());
         holder.txtPostContent.setText(arrListFeeds.get(position).getFeedText());
@@ -308,7 +308,8 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 addCommentFeedPosition = position;
                 Attribute attribute = new Attribute();
                 attribute.setFeedId(arrListFeeds.get(position).getFeedId());
-                attribute.setCommentBy(WebConstants.TEST_USER_ID);
+//                attribute.setCommentBy(WebConstants.TEST_USER_ID);
+                attribute.setCommentBy(Global.strUserId);
                 attribute.setComment(comment);
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
@@ -364,7 +365,8 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             try {
                 Attribute attribute = new Attribute();
                 attribute.setFeedId(arrListFeeds.get(tagFeedPosition).getFeedId());
-                attribute.setTaggedBy(WebConstants.TEST_USER_ID);
+//                attribute.setTaggedBy(WebConstants.TEST_USER_ID);
+                attribute.setTaggedBy(Global.strUserId);
                 attribute.setTaggedUserIds(arrTagUser);
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()

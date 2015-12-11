@@ -19,6 +19,7 @@ import com.ism.author.ws.model.ExamSubmission;
 import com.ism.author.ws.model.Exams;
 import com.ism.author.ws.model.Feed;
 import com.ism.author.ws.model.Feeds;
+import com.ism.author.ws.model.FileUploadResponse;
 import com.ism.author.ws.model.HashTags;
 import com.ism.author.ws.model.Message;
 import com.ism.author.ws.model.Notification;
@@ -46,9 +47,6 @@ public class ResponseHandler {
     private String message;
     private String status;
 
-    private String questionId;
-    private String mediaType;
-    private String imageLink;
 
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
@@ -59,6 +57,7 @@ public class ResponseHandler {
     private ArrayList<StudymateRequest> studymateRequest;
     private ArrayList<Message> messages;
     private ArrayList<Books> books;
+    private ArrayList<Feeds> feedImages;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -104,6 +103,7 @@ public class ResponseHandler {
     private ArrayList<Question> question;
     private ArrayList<HashTags> tags;
     private ArrayList<AuthorBook> authorBook;
+    FileUploadResponse fileUploadResponse;
 
     @JsonProperty("feeds")
     public ArrayList<Feeds> getFeeds() {
@@ -350,34 +350,23 @@ public class ResponseHandler {
     }
 
 
-    /*add image for question param*/
-    @JsonProperty("image_link")
-    public String getImageLink() {
-        return imageLink;
+    @JsonProperty("feed_images")
+    public ArrayList<Feeds> getFeedImages() {
+        return feedImages;
     }
 
-    public ResponseHandler setImageLink(String imageLink) {
-        this.imageLink = imageLink;
-        return this;
+    public void setFeedImages(ArrayList<Feeds> feedImages) {
+        this.feedImages = feedImages;
     }
 
-    @JsonProperty("mediaType")
-    public String getMediaType() {
-        return mediaType;
+
+    @JsonProperty("upload_question")
+    public FileUploadResponse getFileUploadResponse() {
+        return fileUploadResponse;
     }
 
-    public ResponseHandler setMediaType(String mediaType) {
-        this.mediaType = mediaType;
-        return this;
-    }
-
-    @JsonProperty("question_id")
-    public String getQuestionId() {
-        return questionId;
-    }
-
-    public ResponseHandler setQuestionId(String questionId) {
-        this.questionId = questionId;
+    public ResponseHandler setFileUploadResponse(FileUploadResponse fileUploadResponse) {
+        this.fileUploadResponse = fileUploadResponse;
         return this;
     }
 }

@@ -5,8 +5,8 @@ package com.ism.teacher.constants;
  */
 public class WebConstants {
 
-    public static final String FEED_MEDIA = "http://192.168.1.162/ISM/WS_ISM/Feeds/";
-    public static final String USER_IMAGES = "http://192.168.1.162/ISM/WS_ISM/Images/";
+    public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Feeds/";
+    public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/";
 
 
     //static parameters
@@ -24,6 +24,7 @@ public class WebConstants {
     public static final String BOOK_ID_2 = "2";
     public static final String TOPIC_ID_5 = "5";
     public static final String TEST_USER_ID = "370";
+    public static final String TEST_USER_ID_52 = "52";
     public static final String TEST_USER_NAME = "Admin";
 
 
@@ -67,19 +68,20 @@ public class WebConstants {
     public static final int GET_ALL_BADGES_COUNT = 28;
     public static final int SET_HASHTAG = 29;
     public static final int TEMP_CREATE_QUESTION = 30;
-
+    public static final int UPLOAD_FEED_MEDIA = 31;
+    public static final int UPLOADMEDIAFORQUESTION = 32;
+    public static final String Image_url = "http://192.168.1.147/WS_ISM/question_images/";
 
     /**
      * URLs
      */
-    private static final String URL_HOST_75 = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";    // RAVI
-    private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";  // KRUNAL
-    private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
+    // private static final String URL_HOST_75 = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";    // RAVI
+    // private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";  // KRUNAL
+    //  private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
+
     private static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
 
     private static final String URL_PG_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";
-
-
     public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
     public static final String URL_GET_ALL_FEEDS = URL_KINJAL_HOST + "GetAllFeeds";
     public static final String URL_GET_ALL_COMMENTS = URL_KINJAL_HOST + "GetAllComments";
@@ -97,6 +99,7 @@ public class WebConstants {
     public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
     public static final String URL_SET_QUESTIONS_FOR_EXAM = URL_KINJAL_HOST + "SetQuestionsForExam";
     public static final String URL_FORGOT_PASSWORD = URL_KINJAL_HOST + "ForgotPassword";
+    public static final String URL_UPLOAD_FEED_MEDIA = URL_KINJAL_HOST + "UploadMedia";
     public static final String URL_REQUEST_CREDENTIALS = URL_KINJAL_HOST + "RequestForCredentials";
 
 

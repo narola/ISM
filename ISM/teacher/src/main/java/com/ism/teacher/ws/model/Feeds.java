@@ -27,6 +27,8 @@ public class Feeds {
     private String videoLink;
     private String feedText;
     private String totalComment;
+    private String mediaType;
+    private String link;
 
     @JsonProperty("like")
     public String getLike() {
@@ -181,5 +183,21 @@ public class Feeds {
         this.totalComment = totalComment;
     }
 
+    @JsonProperty("mediaType")
+    public String getMediaType() {
+        return mediaType;
+    }
 
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    @JsonProperty("link")
+    public String getLink() {
+        return this.link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 }

@@ -12,7 +12,8 @@ import android.widget.TextView;
 import com.ism.author.R;
 import com.ism.author.adapter.QuestionPaletteAdapter;
 import com.ism.author.object.MyTypeFace;
-import com.ism.author.ws.model.Evaluation;
+import com.ism.author.ws.model.QuestionPalette;
+import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -30,11 +31,10 @@ public class QuestionPaletteFragment extends Fragment {
         this.mFragment = fragment;
     }
 
-    private TextView tvQuestionPaletteTitle, tvLegend, tvQuesPaletteAssessed, tvQuesPaletteNotAttempted,
-            tvQuesPaletteUnassessed;
+    private TextView tvQuestionPaletteTitle, tvLegend, tvQuesPaletteAnswered, tvQuesPaletteNotAnswered,
+            tvQuesPaletteSkipped;
     private RecyclerView rvQuestionpaletteList;
     private MyTypeFace myTypeFace;
-    private ArrayList<Evaluation> arrListEvaluation = new ArrayList<Evaluation>();
     private QuestionPaletteAdapter questionPaletteAdapter;
 
 
@@ -51,9 +51,9 @@ public class QuestionPaletteFragment extends Fragment {
 
         tvQuestionPaletteTitle = (TextView) view.findViewById(R.id.tv_question_palette_title);
         tvLegend = (TextView) view.findViewById(R.id.tv_legend);
-        tvQuesPaletteAssessed = (TextView) view.findViewById(R.id.tv_ques_palette_assessed);
-        tvQuesPaletteNotAttempted = (TextView) view.findViewById(R.id.tv_ques_palette_not_attempted);
-        tvQuesPaletteUnassessed = (TextView) view.findViewById(R.id.tv_ques_palette_unassessed);
+        tvQuesPaletteAnswered = (TextView) view.findViewById(R.id.tv_ques_palette_answered);
+        tvQuesPaletteNotAnswered = (TextView) view.findViewById(R.id.tv_ques_palette_not_answered);
+        tvQuesPaletteSkipped = (TextView) view.findViewById(R.id.tv_ques_palette_skipped);
         rvQuestionpaletteList = (RecyclerView) view.findViewById(R.id.rv_questionpalette_list);
         questionPaletteAdapter = new QuestionPaletteAdapter(getActivity(), mFragment);
         rvQuestionpaletteList.setAdapter(questionPaletteAdapter);
@@ -62,24 +62,21 @@ public class QuestionPaletteFragment extends Fragment {
 
         tvQuestionPaletteTitle.setTypeface(myTypeFace.getRalewayRegular());
         tvLegend.setTypeface(myTypeFace.getRalewayBold());
-        tvQuesPaletteAssessed.setTypeface(myTypeFace.getRalewayRegular());
-        tvQuesPaletteNotAttempted.setTypeface(myTypeFace.getRalewayRegular());
-        tvQuesPaletteUnassessed.setTypeface(myTypeFace.getRalewayRegular());
+        tvQuesPaletteAnswered.setTypeface(myTypeFace.getRalewayRegular());
+        tvQuesPaletteNotAnswered.setTypeface(myTypeFace.getRalewayRegular());
+        tvQuesPaletteSkipped.setTypeface(myTypeFace.getRalewayRegular());
 
 
     }
 
 
-//    private Bundle getBundleArgument() {
-//        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getBundleArgument();
-//
-//    }
+    public void setQuestionStatusData(ArrayList<Questions> arrListQuestions, ArrayList<QuestionPalette> arrListQuestionPalette) {
 
-    public void setQuestionStatusData(ArrayList<Evaluation> evaluations) {
-        arrListEvaluation.clear();
-        arrListEvaluation.addAll(evaluations);
-        questionPaletteAdapter.addAll(arrListEvaluation);
-        questionPaletteAdapter.notifyDataSetChanged();
+        if (arrListQuestions.size() > 0) {
+            questionPaletteAdapter.addAll(arrListQuestions, arrListQuestionPalette);
+            questionPaletteAdapter.notifyDataSetChanged();
+
+        }
     }
 
 

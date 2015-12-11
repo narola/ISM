@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.AddQuestionContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Answers;
@@ -24,7 +25,6 @@ import java.util.ArrayList;
  * these adapter class is to set the list of previewquestions.
  */
 public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQuestionListAdapter.ViewHolder> {
-
 
     private static final String TAG = PreviewQuestionListAdapter.class.getSimpleName();
     private Context mContext;
@@ -61,6 +61,12 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         holder.tvPreviewQuestion.setTypeface(myTypeFace.getRalewayRegular());
         holder.tvPreviewQuestion.setText(Utility.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
+        if (arrListQuestions.get(position).getQuestionCreatorId().equals(WebConstants.TEST_USER_ID)) {
+            holder.imgPreviewQuestionEdit.setVisibility(View.VISIBLE);
+        } else {
+            holder.imgPreviewQuestionEdit.setVisibility(View.GONE);
+        }
+
         if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
 
             holder.tvPreviewQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
@@ -96,6 +102,17 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
                 getFragment().updateQuestionListviewAfterDeleteQuestionInPreview(arrListQuestions.get(position));
                 arrListQuestions.remove(arrListQuestions.get(position));
                 notifyDataSetChanged();
+                if(arrListQuestions.size()>0)
+                {
+                    ((AddQuestionContainerFragment)mFragment).hideText();
+                    ((AddQuestionContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
+
+                }
+                else
+                {
+                    ((AddQuestionContainerFragment)mFragment).showText();
+                    ((AddQuestionContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
+                }
             }
         });
 
@@ -112,6 +129,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
                 openAddEditQuestionFragment(position, true);
             }
         });
+
 
 
     }

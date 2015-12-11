@@ -19,10 +19,11 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
-import com.ism.author.activtiy.PostActivity;
+import com.ism.author.activtiy.PostFeedActivity;
 import com.ism.author.adapter.PostFeedsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -118,7 +119,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     private void onAttachFileClick(View view) {
 
         if (view == llPost || view == etWritePost) {
-            Intent intent = new Intent(getActivity(), PostActivity.class);
+            Intent intent = new Intent(getActivity(), PostFeedActivity.class);
             startActivity(intent);
 
         }
@@ -131,7 +132,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
             ((AuthorHostActivity) getActivity()).showProgress();
             try {
                 Attribute attribute = new Attribute();
-                attribute.setUserId(WebConstants.TEST_USER_ID);
+                attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLFEEDS);
             } catch (Exception e) {

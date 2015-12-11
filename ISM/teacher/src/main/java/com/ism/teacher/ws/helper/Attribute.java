@@ -826,4 +826,71 @@ public class Attribute {
         this.questionid = questionid;
         return this;
     }
+
+    /*these are the upload media params*/
+    private ArrayList<MediaUploadAttribute> arrListFile = new ArrayList<MediaUploadAttribute>();
+    private ArrayList<MediaUploadAttribute> arrListParam = new ArrayList<MediaUploadAttribute>();
+    private String mediaType;
+
+    public ArrayList<MediaUploadAttribute> getArrListFile() {
+        return arrListFile;
+    }
+
+    public Attribute setArrListFile(ArrayList<MediaUploadAttribute> arrListFile) {
+        this.arrListFile = arrListFile;
+        return this;
+    }
+
+    public ArrayList<MediaUploadAttribute> getArrListParam() {
+        return arrListParam;
+    }
+
+    public Attribute setArrListParam(ArrayList<MediaUploadAttribute> arrListParam) {
+        this.arrListParam = arrListParam;
+        return this;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public Attribute setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+        return this;
+    }
+
+    private String examAssessor;
+    private String useQuestionScore;
+    private String correctAnswerScore;
+
+    @JsonProperty("exam_assessor")
+    public String getExamAssessor() {
+        return examAssessor;
+    }
+
+    public Attribute setExamAssessor(String examAssessor) {
+        this.examAssessor = examAssessor;
+        return this;
+    }
+
+    @JsonProperty("use_question_score")
+    public String getUseQuestionScore() {
+        return useQuestionScore;
+    }
+
+    public Attribute setUseQuestionScore(String useQuestionScore) {
+        this.useQuestionScore = useQuestionScore;
+        return this;
+    }
+
+    @JsonProperty("correct_answer_score")
+    public String getCorrectAnswerScore() {
+        return correctAnswerScore;
+    }
+
+    public Attribute setCorrectAnswerScore(String correctAnswerScore) {
+        this.correctAnswerScore = correctAnswerScore;
+        return this;
+    }
+
 }

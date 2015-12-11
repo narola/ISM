@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
+import com.ism.author.fragment.GetSubjectiveQuestionsFragment;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.Evaluation;
 import com.ism.author.ws.model.Questions;
@@ -79,8 +80,10 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
 
             for (int i = 0; i < holder.scoreTextArray.length; i++) {
+
                 holder.scoreTextArray[i].setActivated(false);
-                holder.scoreTextArray[i].setTag(holder.scoreTextArray);
+                holder.scoreTextArray[i].setTag(R.id.idView, holder.scoreTextArray);
+                holder.scoreTextArray[i].setTag(R.id.idPosition, position);
                 holder.scoreTextArray[i].setOnClickListener(evaluationClickListener);
             }
 
@@ -92,18 +95,23 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
                         holder.tvSubjectiveQuestionAns.setText(Utils.formatHtml(evaluationList.get(evaluationIndex).getStudentResponse()));
                     }
 
-                    int score = Integer.valueOf(evaluationList.get(evaluationIndex).getEvaluationScore());
-                    if (score >= 5) {
-                        setEvaluationScore(holder.tvScoreExcellent);
-                    } else if (score == 4) {
-                        setEvaluationScore(holder.tvScoreGood);
-                    } else if (score == 3) {
-                        setEvaluationScore(holder.tvScoreFair);
-                    } else if (score == 2) {
-                        setEvaluationScore(holder.tvScoreAverage);
-                    } else if (score == 1) {
-                        setEvaluationScore(holder.tvScorePoor);
-                    } else if (score == 0) {
+
+                    if (evaluationList.get(evaluationIndex).getEvaluationScore() != null) {
+                        int score = Integer.valueOf(evaluationList.get(evaluationIndex).getEvaluationScore());
+                        if (score >= 5) {
+                            setEvaluationScore(holder.tvScoreExcellent);
+                        } else if (score == 4) {
+                            setEvaluationScore(holder.tvScoreGood);
+                        } else if (score == 3) {
+                            setEvaluationScore(holder.tvScoreFair);
+                        } else if (score == 2) {
+                            setEvaluationScore(holder.tvScoreAverage);
+                        } else if (score == 1) {
+                            setEvaluationScore(holder.tvScorePoor);
+                        } else if (score == 0) {
+                            setEvaluationScore(holder.tvScoreIncorrect);
+                        }
+                    } else {
                         setEvaluationScore(holder.tvScoreIncorrect);
                     }
                 } else {
@@ -212,7 +220,10 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     View.OnClickListener evaluationClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            TextView[] scoreTextArray = (TextView[]) v.getTag();
+            int position = (Integer) v.getTag(R.id.idPosition);
+
+            getFragment().updateQuestionEvaluationStatus(position);
+            TextView[] scoreTextArray = (TextView[]) v.getTag(R.id.idView);
 
             for (int i = 0; i < scoreTextArray.length; i++) {
                 if (v == scoreTextArray[i]) {
@@ -221,6 +232,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
                     scoreTextArray[i].setActivated(false);
                 }
             }
+
         }
     };
 
@@ -237,4 +249,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     }
 
 
+    private GetSubjectiveQuestionsFragment getFragment() {
+        return (GetSubjectiveQuestionsFragment) mFragment;
+    }
 }

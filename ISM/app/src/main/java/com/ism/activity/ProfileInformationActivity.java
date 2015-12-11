@@ -26,9 +26,11 @@ import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.adapter.Adapters;
+import com.ism.commonsource.utility.AESHelper;
 import com.ism.commonsource.view.ProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
@@ -49,6 +51,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import model.User;
+import realmhelper.StudentHelper;
 import realmhelper.UserHelper;
 
 /**
@@ -77,6 +80,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
     private DatePickerDialog datePickerDob;
     private AlertDialog dialogSchoolInfo;
     private ProgressGenerator progressGenerator;
+	private StudentHelper studentHelper;
 
     private String strUserId;
     private String strCurrentPassword;
@@ -589,7 +593,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 imgDp.setImageBitmap(bitmap);
 //                imageURI = uri;
-//                 sourceFile = new File(getPath(imageURI));
+//                 sourceFile = new File(getPathImage(imageURI));
 //                if (!sourceFile.isFile()) {
 //                    Debug.e(TAG, "Source File Does not exist");
 //                }
@@ -800,15 +804,24 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
-                    PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
+                            PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
                     PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
                     PreferenceData.remove(PreferenceData.USER_PASSWORD, ProfileInformationActivity.this);
                     PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, "" + responseHandler.getUser().get(0).getUserId());
                     PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, ProfileInformationActivity.this, responseHandler.getUser().get(0).getFullName());
+                    PreferenceData.setStringPrefs(PreferenceData.USER_NAME, ProfileInformationActivity.this, etUserName.getText().toString().trim());
+	                WebConstants.SECRET_KEY = responseHandler.getUser().get(0).getTokenName();
+	                PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, ProfileInformationActivity.this, WebConstants.SECRET_KEY);
 //                    if (!responseObj.getData().get(0).getUserId().equals(" ")) {
 //                        callApiUploadPic(responseObj.getData().get(0).getUserId(), fileName);
 //                    }
-                    PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, responseHandler.getUser().get(0).getProfilePic());
+	                PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, responseHandler.getUser().get(0).getProfilePic());
+
+	                String globalPassword = studentHelper.getGlobalPassword();
+	                if (globalPassword != null) {
+		                WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, etUserName.getText().toString().trim());
+		                PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, WebConstants.ACCESS_KEY);
+	                }
 
                      User user = new User();
                      user.setFullName(responseHandler.getUser().get(0).getFullName());
@@ -837,4 +850,9 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         }
     }
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		studentHelper.destroy();
+	}
 }

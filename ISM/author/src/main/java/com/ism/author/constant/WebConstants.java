@@ -5,9 +5,9 @@ package com.ism.author.constant;
  */
 public class WebConstants {
 
-    private static final String URL_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
-    public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
-    public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
+    //private static final String URL_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
+    // public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
+    // public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";
 
     public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Images/feeds/";
@@ -53,8 +53,9 @@ public class WebConstants {
     public static final int GETBOOKSFORAUTHOR = 34;
     public static final int UPLOADMEDIAFORQUESTION = 35;
     public static final int UPLOADFEEDMEDIA = 36;
-    //user settings preferences
+    public static final int UPLOAD_FEED_MEDIA = 37;
 
+    //user settings preferences
     public static final int GENERAL_SETTING_PREFERENCES = 51;
     public static final int GET_USER_PREFERENCES = 52;
     public static final int GET_NOTIFICATION = 53;
@@ -90,8 +91,8 @@ public class WebConstants {
     public static final String URL_GETCOURSES = URL_KINJAL_HOST + "GetCourses";
     public static final String URL_GETBOOKSFORAUTHOR = URL_KINJAL_HOST + "GetBooksForAuthor";
     public static final String URL_UPLOADMEDIAFORQUESTION = URL_KINJAL_HOST + "UploadMediaForQuestion";
-    public static final String URL_UPLOAD_FEED_MEDIA = URL_KINJAL_HOST + "UploadMedia";
 
+    public static final String URL_UPLOAD_FEED_MEDIA = URL_KINJAL_HOST + "UploadMedia";
     public static final String URL_CREATEEXAM = URL_KINJAL_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
     public static final String URL_GETALLEXAM = URL_KINJAL_HOST + "GetAllExams";
@@ -112,41 +113,39 @@ public class WebConstants {
     public static final String URL_TEMPCREATEQUESTION = URL_KINJAL_HOST + "TempCreateQuestion";
     public static final String URL_GETALLHASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
     public static final String URL_RESPOND_TO_REQUEST = URL_KINJAL_HOST + "AcceptRequestFromStudymate";
+
     public static final String URL_UPDATE_READ_STATUS = URL_KINJAL_HOST + "UpdateReadStatus"; // studymate_request, messages, notification
-
     public static final String URL_GET_HIGH_SCORERS = URL_KINJAL_HOST + "GetHighScorers";
-    public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
 
+    public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
     /*status for apisuccess ans apifailed*/
     public static final String URL_GET_WALLET_SUMMARY = URL_KINJAL_HOST + "GetWalletSummary";
     public static final String URL_GET_MY_FEEDS = URL_KINJAL_HOST + "GetMyFeeds";
-    public static final String URL_GET_BLOCKED_USER = URL_KINJAL_HOST + "GetBlockedUser";
 
+    public static final String URL_GET_BLOCKED_USER = URL_KINJAL_HOST + "GetBlockedUser";
     public static final String URL_GET_ABOUT_ME = URL_KINJAL_HOST + "GetAboutMe";
     public static final String URL_GET_BOOKS_FOR_USER = URL_KINJAL_HOST + "GetBooksForUser";
     public static final String URL_MANAGE_FAVOURITES = URL_KINJAL_HOST + "ManageFavorite";
+
     public static final String URL_MANAGE_BOOK_LIBRARY = URL_KINJAL_HOST + "ManageBookLibrary";
 
     /*status for apisuccess ans apifailed*/
-
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
-
-    /*these are the temparory questionData for testing*/
-    public static final String TEST_USER_ID = "370";
-    public static final String TEST_USER_NAME = "Admin";
     public static final String TEST_GETSTUDYMATES = "167";
-    public static final String TEST_BOOK_ID = "2";
-    public static final String TEST_BOOK_NAME = "Microsoft Visual Basic 2005";
-    public static final String TEST_TOPIC_ID = "5";
-    public static final String TEST_SUBJECT_ID = "3";
+
     /**
      * Parameter values
      */
     public static final String STUDYMATE_REQUEST = "studymate_request";
     public static final String MESSAGES = "messages";
     public static final String NOTIFICATION = "notification";
-    public static final String ROLE_ALL = "all";
-    public static final String ROLE_STUDENT = "student";
+
+
+
+
+    /*Image Url Constants*/
+
+    public static final String QUESTION_IMAGES = "http://192.168.1.147/WS_ISM/question_images/";
 }
 

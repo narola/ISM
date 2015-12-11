@@ -96,7 +96,6 @@
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
 
-
                             <ImageView
                                 android:id="@+id/img_help"
                                 android:layout_width="@dimen/d25dp"
@@ -107,38 +106,19 @@
                     </RelativeLayout>
 
 
-                    <ImageView
-                        android:id="@+id/img_edit_question"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/d5dp"
-                        android:src="@drawable/img_edit_question" />
-
-                    <ImageView
-                        android:id="@+id/img_copy_question"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/d5dp"
-                        android:src="@drawable/img_copy_question" />
-
-                    <ImageView
-                        android:id="@+id/img_delete_question"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/d10dp"
-                        android:src="@drawable/img_delete_question" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/d15dp"
+
                     android:orientation="horizontal"
                     android:weightSum="3">
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/d15dp"
                         android:layout_weight="2"
                         android:orientation="vertical">
 
@@ -169,14 +149,28 @@
                                 android:textSize="@dimen/d20dp"
                                 android:textStyle="bold" />
 
-                            <Spinner
-                                android:id="@+id/sp_addquestion_type"
+                            <RelativeLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@drawable/shadow_grey_small_size"
-                                android:entries="@array/question_type"
-                                android:spinnerMode="dropdown" />
+                                android:layout_height="@dimen/d40dp"
+                                android:layout_weight="1">
+
+
+                                <Spinner
+                                    android:id="@+id/sp_addquestion_type"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/shadow_grey_small_size"
+                                    android:entries="@array/question_type"
+                                    android:spinnerMode="dropdown" />
+
+                                <ImageView
+                                    android:id="@+id/image_validation_questionType"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@android:color/transparent"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+
 
                         </LinearLayout>
 
@@ -187,23 +181,40 @@
                         android:id="@+id/rl_select_image"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/d150dp"
-                        android:layout_marginLeft="@dimen/d20dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/news_feed_post_box">
+                        android:layout_marginLeft="@dimen/d10dp"
+                        android:layout_weight="1">
 
-                        <ImageView
-                            android:id="@+id/img_play"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:src="@drawable/audio_play"
-                            android:visibility="visible" />
 
-                        <ImageView
-                            android:id="@+id/img_select_image"
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="centerCrop" />
+                            android:layout_marginRight="@dimen/d20dp"
+                            android:layout_marginTop="@dimen/d20dp"
+                            android:background="@drawable/news_feed_post_box">
+
+                            <ImageView
+                                android:id="@+id/img_play"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/audio_play"
+                                android:visibility="visible" />
+
+                            <ImageView
+                                android:id="@+id/img_select_image"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop" />
+
+                        </RelativeLayout>
+
+                        <ImageView
+                            android:id="@+id/img_delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/btn_close" />
 
                     </RelativeLayout>
                 </LinearLayout>

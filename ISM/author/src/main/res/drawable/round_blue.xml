@@ -9,6 +9,6 @@
         android:width="3dp"
         android:color="@color/color_blue" />
     <size
-        android:width="@dimen/d15dp"
-        android:height="@dimen/d15dp" />
+        android:width="@dimen/d10dp"
+        android:height="@dimen/d10dp" />
 </shape>

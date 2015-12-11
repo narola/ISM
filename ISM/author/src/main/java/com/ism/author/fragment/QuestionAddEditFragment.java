@@ -8,13 +8,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -95,7 +93,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     /*these sre for the xml views*/
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
             tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank, tvAddquestionAdvance;
-    private ImageView imgEditQuestion, imgCopyQuestion, imgDeleteQuestion, imgSelectImage, imgPlay, imgHelp;
+    private ImageView imgSelectImage, imgPlay, imgHelp, imgDelete, imageValidationQuestionType;
     private EditText etAddquestionTitle, etAddquestionAnswer, etEvaluationNote1, etEvaluationNote2;
     private Spinner spAddquestionType;
     private CheckBox chkAddquestionPreview;
@@ -114,7 +112,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_question_addedit, container, false);
-//        Utils.showToast("THE QUESTION ADD EDIT FRAGMENT CALLED", getActivity());
         initGlobal();
         return view;
     }
@@ -154,14 +151,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         tvAddquestionGotoquestionbank.setTypeface(myTypeFace.getRalewayRegular());
         tvAddquestionAdvance.setTypeface(myTypeFace.getRalewayRegular());
 
-
-        imgEditQuestion = (ImageView) view.findViewById(R.id.img_edit_question);
-        imgCopyQuestion = (ImageView) view.findViewById(R.id.img_copy_question);
-        imgDeleteQuestion = (ImageView) view.findViewById(R.id.img_delete_question);
         imgSelectImage = (ImageView) view.findViewById(R.id.img_select_image);
         imgPlay = (ImageView) view.findViewById(R.id.img_play);
         imgHelp = (ImageView) view.findViewById(R.id.img_help);
+        imgDelete = (ImageView) view.findViewById(R.id.img_delete);
+        imageValidationQuestionType = (ImageView) view.findViewById(R.id.image_validation_questionType);
         imgHelp.setOnClickListener(this);
+        imgDelete.setOnClickListener(this);
+        imageValidationQuestionType.setOnClickListener(this);
 
 
         etAddquestionTitle = (EditText) view.findViewById(R.id.et_addquestion_title);
@@ -222,17 +219,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-
-        spAddquestionType.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-                    Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
-                }
-                return false;
             }
         });
 
@@ -309,6 +295,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     }
                     break;
                 case SELECT_VIDEO:
+
                     if (resultCode == getActivity().RESULT_OK) {
                         try {
                             if (addQuestionTextDialog != null && addQuestionTextDialog.isShowing()) {
@@ -386,7 +373,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         chkAddquestionPreview.setChecked(false);
 
         spAddquestionType.setSelection(1);
-        spAddquestionType.setEnabled(true);
+        imageValidationQuestionType.setVisibility(View.GONE);
 
     }
 
@@ -527,9 +514,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
             /*check that if user edit question then disable the formatting of question type.*/
             if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-                spAddquestionType.setEnabled(false);
+
+                imageValidationQuestionType.setVisibility(View.VISIBLE);
             } else {
-                spAddquestionType.setEnabled(true);
+
+                imageValidationQuestionType.setVisibility(View.GONE);
             }
             setSpinnerData(questions.getQuestionFormat());
             if (questions.getQuestionText() != null) {
@@ -540,9 +529,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 etEvaluationNote1.setText(questions.getEvaluationNotes());
                 etEvaluationNote2.setText(questions.getEvaluationNotes());
             }
-
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
-                    imgSelectImage, ISMAuthor.options);
+            if (questions.getQuestionImageLink() != null && !questions.getQuestionImageLink().equals("")) {
+                imageLoader.displayImage(WebConstants.QUESTION_IMAGES + questions.getQuestionImageLink(),
+                        imgSelectImage, ISMAuthor.options);
+            }
 
 
             setMcqAnswers(questions);
@@ -658,17 +648,16 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     @Override
     public void onClick(View v) {
-        if (v == tvAddquestionSave) {
 
-            isAddMore = false;
-            if (isInputsValid()) {
-                callApiCreateQuestion();
-            }
+        switch (v.getId()) {
+            case R.id.tv_addquestion_save:
+                isAddMore = false;
+                if (isInputsValid()) {
+                    callApiCreateQuestion();
+                }
+                break;
 
-            Debug.e(TAG, "the quetion text is::" + Html.toHtml(etAddquestionTitle.getText()));
-
-        } else if (v == tvAddquestionSaveAddmore) {
-            isAddMore = true;
+            case R.id.tv_addquestion_save_addmore:
 //            if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
 //                Debug.e(TAG, "QUESTION EDIT CALLED");
 //                getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
@@ -680,61 +669,58 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 //                    callApiCreateQuestion();
 //                }
 //            }
+                isAddMore = true;
+                if (isInputsValid()) {
+                    callApiCreateQuestion();
+                }
+                break;
 
-            if (isInputsValid()) {
-                callApiCreateQuestion();
-            }
+            case R.id.rl_select_image:
 
-        } else if (v == rlSelectImage) {
 //            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //            intent.setType("*/*");
 //            startActivityForResult(intent, 1);
 
+                openImage();
+                break;
 
-            openImage();
+            case R.id.tv_addquestion_gotoquestionbank:
+                getFragment().flipCard();
+                break;
 
-        } else if (v == tvAddquestionGotoquestionbank) {
+            case R.id.tv_addquestion_advance:
 
-            getFragment().flipCard();
+                String htmlText = Html.toHtml(etAddquestionTitle.getText());
+                htmlText = htmlText.replace("<p dir=\"ltr\"><img", "<img");
+                htmlText = htmlText.replace(".png\"></p>", ".png\">");
+                addQuestionTextDialog = new AddQuestionTextDialog(getActivity(), (AddQuestionTextDialog.SelectMediaListener) this,
+                        (AddQuestionTextDialog.AddTextListener) this, htmlText);
+                addQuestionTextDialog.show();
+                break;
 
-        } else if (v == tvAddquestionAdvance) {
-          String htmlText = Html.toHtml(etAddquestionTitle.getText());
+            case R.id.img_help:
+//                showHelpInstruction();
+                Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.msg_help_add_advance_question));
+                break;
 
+            case R.id.img_delete:
 
-            htmlText =  htmlText.replace("<p dir=\"ltr\"><img","<img");
-            htmlText= htmlText.replace(".png\"></p>", ".png\">");
-            addQuestionTextDialog = new AddQuestionTextDialog(getActivity(), (AddQuestionTextDialog.SelectMediaListener) this,
-                    (AddQuestionTextDialog.AddTextListener) this,htmlText);
-            addQuestionTextDialog.show();
+                imgSelectImage.setImageDrawable(null);
+                imgSelectImage.setImageBitmap(null);
+                selectedUri = null;
+                break;
 
-        } else if (v == imgHelp) {
-//            showHelpInstruction();
-            Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.msg_help_add_advance_question));
+            case R.id.image_validation_questionType:
+                Utility.alert(getActivity(), null, getString(R.string.msg_validation_question_type));
+
         }
 
     }
-int startingPosition = 0;
-    String trimmedText;
-    private void trimText(String text,int startPosition){
-        String substring = text;
-//        <p dir="ltr"><img src="file:///storage/emulated/0/Download/01.png"></p>
-//        <p dir="ltr">hiiszdcdsafdsf sdf sdf s&#160;</p>
-//        <p dir="ltr"><img src="file:///storage/emulated/0/Download/04.png"></p>
-//        <p dir="ltr">&#160;dff s fss dfs fd</p>
-
-               text.replace("<p dir=\"ltr\"><img","<img");
-               text.replace(".png\"></p>","png\">");
-
-    }
-
 
     private void showHelpInstruction() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.help_notification, null);
-
         TextView tvHelpMsg = (TextView) view.findViewById(R.id.tv_help_msg);
         tvHelpMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-
-
         final PopupWindow popupNotification = new PopupWindow(view, 250, 200, true);
         popupNotification.setOutsideTouchable(true);
         popupNotification.setBackgroundDrawable(new BitmapDrawable());
@@ -759,7 +745,6 @@ int startingPosition = 0;
 
 
     private void callAPiGetAllHashTag() {
-
         if (Utility.isConnected(getActivity())) {
             ((AuthorHostActivity) getActivity()).showProgress();
             try {
@@ -773,37 +758,6 @@ int startingPosition = 0;
             Utility.toastOffline(getActivity());
         }
     }
-//    private void callApiSetHashTag(String questionId) {
-//        if (Utility.isConnected(getActivity())) {
-//            ((AuthorHostActivity) getActivity()).showProgress();
-//            try {
-//                Attribute attribute = new Attribute();
-//
-//                StringBuilder sb = new StringBuilder();
-//                List<HashTagsModel> list = tagsView.getObjects();
-//                for (int i = 0; i < list.size(); i++) {
-//                    sb.append(list.get(i).getTagName() + ":" + list.get(i).getTagId());
-//                    if (i < list.size() - 1) {
-//                        sb.append(",");
-//                    }
-//
-//                }
-//
-//                Utils.showToast("The tokens are::" + sb.toString(), getActivity());
-//                attribute.setHashtagData(sb.toString());
-//                attribute.setResourceId("135");
-//                attribute.setResourceType(AppConstant.RESOURCE_TYPE_QUESTION);
-//
-//                ((AuthorHostActivity) getActivity()).showProgress();
-//                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-//                        .execute(WebConstants.SETHASHTAG);
-//            } catch (Exception e) {
-//                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-//            }
-//        } else {
-//            Utility.toastOffline(getActivity());
-//        }
-//    }
 
     ArrayList<AnswerChoices> arrListAnswerChioces = new ArrayList<AnswerChoices>();
 
@@ -812,7 +766,7 @@ int startingPosition = 0;
 
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
-                Debug.e(TAG, "The user id is::" + "52");
+                Debug.e(TAG, "The user id is::" + Global.strUserId);
                 Debug.e(TAG, "The question text is::" + Html.toHtml(etAddquestionTitle.getText()));
                 Debug.e(TAG, "The subject id is::" + "0");
                 Debug.e(TAG, "The question score is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_QUESTION_SCORE));
@@ -827,7 +781,7 @@ int startingPosition = 0;
                 add question you have to pass question id 0 */
 
                 Attribute attribute = new Attribute();
-                attribute.setUserId("52");
+                attribute.setUserId(Global.strUserId);
                 if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
                     /*for edit question*/
                     Debug.e(TAG, "The question id is::" + getFragment().getQuestionData().getQuestionId());
@@ -839,9 +793,6 @@ int startingPosition = 0;
                     attribute.setQuestionid("0");
 
                 }
-
-//                attribute.setSubjectId(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID));
-//                attribute.setTopicId(getArguments().getString(ExamsAdapter.ARG_EXAM_TOPIC_ID));
 
                 attribute.setSubjectId("0");
                 attribute.setTopicId("0");
@@ -989,21 +940,18 @@ int startingPosition = 0;
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-//                    callApiSetHashTag(responseHandler.getQuestion().get(0).getQuestionId());
 
                     Debug.e(TAG, "The Question Id Is::" + responseHandler.getQuestion().get(0).getQuestionId());
                     if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+
                         Utils.showToast(getString(R.string.question_edit_success), getActivity());
-//                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_edit_success));
                         getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
-                                makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
+                                makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId(), ""),
                                 chkAddquestionPreview.isChecked());
                     } else {
 
                         Utils.showToast(getString(R.string.question_add_success), getActivity());
-//                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_add_success));
-                        /*this is for add question data*/
-                        getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
+                        getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId(), ""),
                                 chkAddquestionPreview.isChecked());
 
                     }
@@ -1028,25 +976,27 @@ int startingPosition = 0;
         }
     }
 
-    private Questions makeQuestionData(String questionId) {
+    private Questions makeQuestionData(String questionId, String imageLink) {
         Questions question = new Questions();
         try {
             question.setQuestionId(questionId);
-            question.setQuestionCreatorName("Janna  Beasley");
-            question.setQuestionCreatorId("52");
+            question.setQuestionCreatorName(Global.strFullName);
+            question.setQuestionCreatorId(Global.strUserId);
             question.setQuestionFormat(getQuestionFormat());
             question.setQuestionText(etAddquestionTitle.getText().toString());
             question.setQuestionAssetsLink("");
-            question.setQuestionImageLink("");
+            if (imageLink != null && !imageLink.equals("")) {
+                question.setQuestionImageLink(imageLink);
+            } else {
+                question.setQuestionImageLink("");
+
+            }
             question.setEvaluationNotes(etEvaluationNote1.getText().toString());
             question.setSolution(etEvaluationNote2.getText().toString());
             if (getArguments() != null) {
-//                question.setTopicId(getArguments().getString(ExamsAdapter.ARG_EXAM_TOPIC_ID));
-//                question.setSubjectId(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_ID));
-//                question.setSubjectName(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME));
                 question.setTopicId("0");
                 question.setSubjectId("0");
-                question.setSubjectName("0");
+                question.setSubjectName("");
                 question.setClassroomId(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID));
                 question.setBookId(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
                 question.setBookName(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
@@ -1158,8 +1108,19 @@ int startingPosition = 0;
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    Debug.e(TAG, "The Image Link IS::" + responseHandler.getImageLink());
+                    Debug.e(TAG, "The Image url is::" + responseHandler.getFileUploadResponse().getImageLink() + " question id is: " +
+                            responseHandler.getFileUploadResponse().getQuestion_id());
                     Utils.showToast(getString(R.string.msg_success_imgupload_question), getActivity());
+
+                    getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
+                            makeQuestionData(responseHandler.getFileUploadResponse().getQuestion_id(), responseHandler.getFileUploadResponse().getImageLink()),
+                            chkAddquestionPreview.isChecked());
+//                    } else {
+//                        getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getFileUploadResponse().getQuestion_id(),
+//                                        responseHandler.getFileUploadResponse().getImageLink()),
+//                                chkAddquestionPreview.isChecked());
+//
+//                    }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
@@ -1198,7 +1159,7 @@ int startingPosition = 0;
     @Override
     public void SetText(String text) {
         htmlText = text;
-        etAddquestionTitle.setText(Html.fromHtml(text, new HtmlImageGetter(50,50),null));
+        etAddquestionTitle.setText(Html.fromHtml(text, new HtmlImageGetter(50, 50), null));
 //        etAddquestionTitle.setText(Utils.formatHtml(text));
     }
 

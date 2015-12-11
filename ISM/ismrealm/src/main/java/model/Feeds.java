@@ -2,6 +2,7 @@ package model;
 
 import java.util.Date;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -12,7 +13,7 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Feeds extends RealmObject {
     @PrimaryKey
-    private  int feedId;
+    private int feedId;
     private User feedBy;
     private String feedText;
     private String videoLink;
@@ -23,6 +24,12 @@ public class Feeds extends RealmObject {
     private Date postedOn;
     private Date createdDate;
     private Date modifiedDate;
+   // private String fullName;
+    private String like;
+    ////private String profilePic;
+    private RealmList<FeedComment> comments;
+    private RealmList<FeedImage> feedImages;
+
 
     public int getFeedId() {
         return feedId;
@@ -110,5 +117,45 @@ public class Feeds extends RealmObject {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+//    public String getFullName() {
+//        return fullName;
+//    }
+//
+//    public void setFullName(String fullName) {
+//        this.fullName = fullName;
+//    }
+
+    public String getLike() {
+        return like;
+    }
+
+    public void setLike(String like) {
+        this.like = like;
+    }
+
+//    public String getProfilePic() {
+//        return profilePic;
+//    }
+//
+//    public void setProfilePic(String profilePic) {
+//        this.profilePic = profilePic;
+//    }
+
+    public RealmList<FeedComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(RealmList<FeedComment> comments) {
+        this.comments = comments;
+    }
+
+    public RealmList<FeedImage> getFeedImages() {
+        return feedImages;
+    }
+
+    public void setFeedImages(RealmList<FeedImage> feedImages) {
+        this.feedImages = feedImages;
     }
 }

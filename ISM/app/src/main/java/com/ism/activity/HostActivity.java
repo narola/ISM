@@ -64,6 +64,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
+import realmhelper.StudentHelper;
+
 /**
  * Created by c161 on --/10/15.
  */
@@ -95,6 +97,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private AddToLibraryListner addToLibraryListner;
     private BooksListner booksListner;
     private HostListenerEditAboutMe listenerEditAboutMe;
+	private StudentHelper studentHelper;
 
     private TextView arrTxtMenu[];
     private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
@@ -130,10 +133,10 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private ArrayList<PrivacySetting> arrayListPrivacySetting = new ArrayList<>();
     private InputMethodManager inputMethod;
     private ScrollListener scrollListener;
+    private ResizeView resizeListView;
 
-    public interface ScrollListener {
+	public interface ScrollListener {
         public void isLastPosition();
-
         public void isFirstPosition();
     }
 
@@ -168,6 +171,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 		public void onProfileControllerAttached();
 		public void onProfileControllerDetached();
 	}
+    public interface ResizeView {
+        public void onUnBlockUser();
+    }
 
     public interface BooksListner {
         public void onAddToFav(int position);
@@ -224,19 +230,27 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
         inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
+	    studentHelper = new StudentHelper(this);
+
         arrTxtMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
         progressGenerator = new ProgressGenerator();
 
         progHost = (ActionProcessButton) findViewById(R.id.prog_host);
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, HostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, HostActivity.this);
+        Debug.i(TAG,"User Image : "+WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this));
 	    Global.strProfilePic = WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
 //        Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
 
-        if (Utility.isConnected(HostActivity.this)) {
-            callApiRefreshToken();
+	    Log.e(TAG, "Access Key : " + WebConstants.ACCESS_KEY);
+	    Log.e(TAG, "Secret Key : " + WebConstants.SECRET_KEY);
+
+	    if (Utility.isConnected(HostActivity.this)) {
+		    /*if (Global.strSecretKey == null) {
+			    callApiRefreshToken();
+		    }*/
             callApiGetAllBadgesCount();
             callApiGetGeneralSettingPreferences();
             callApiForGetUserPreference();
@@ -370,28 +384,26 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     }
 
-    private void callApiRefreshToken() {
+    /*private void callApiRefreshToken() {
         try {
             Attribute attribute = new Attribute();
-	        attribute.setUsername("");
+	        attribute.setUsername(WebConstants.ACCESS_KEY);
 
             new WebserviceWrapper(getApplicationContext(), attribute, HostActivity.this).new WebserviceCaller()
                     .execute(WebConstants.REFRESH_TOKEN);
         } catch (Exception e) {
             Log.e(TAG, "callApiRefreshToken Exception : " + e.toString());
         }
-    }
+    }*/
 
     private void callApiGetGeneralSettingPreferences() {
         try {
             showProgress();
             new WebserviceWrapper(getApplicationContext(), null, HostActivity.this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTING_PREFERENCES);
-
         } catch (Exception e) {
             Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
         }
     }
-
 
     private void callApiGetAllBadgesCount() {
         try {
@@ -869,21 +881,43 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     public void onResponse(Object object, Exception error, int apiCode) {
         hideProgress();
         try {
-            if (WebConstants.GENERAL_SETTING_PREFERENCES == apiCode) {
-                onResponseGetAllPreference(object, error);
-
-            } else if (WebConstants.GET_USER_PREFERENCES == apiCode) {
-                onResponseGetUserPreference(object, error);
-
-            } else if (WebConstants.GET_ALL_BADGES_COUNT == apiCode) {
-                onResponseGetAllBadges(object, error);
-            }
+	        switch (apiCode) {
+		        case WebConstants.GENERAL_SETTING_PREFERENCES:
+			        onResponseGetAllPreference(object, error);
+			        break;
+		        case WebConstants.GET_USER_PREFERENCES:
+			        onResponseGetUserPreference(object, error);
+			        break;
+		        case WebConstants.GET_ALL_BADGES_COUNT:
+			        onResponseGetAllBadges(object, error);
+			        break;
+		        /*case WebConstants.REFRESH_TOKEN:
+			        onResponseRefreshToken(object, error);
+			        break;*/
+	        }
         } catch (Exception e) {
             Log.e(TAG, "On response Exception : " + e.getLocalizedMessage());
         }
     }
 
-    private void onResponseGetAllPreference(Object object, Exception error) {
+	/*private void onResponseRefreshToken(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, this, responseHandler.getToken().get(0).getTokenName());
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "onResponseRefreshToken failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseRefreshToken api Exception :" + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseRefreshToken Exception :" + e.toString());
+		}
+	}*/
+
+	private void onResponseGetAllPreference(Object object, Exception error) {
         try {
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
@@ -999,7 +1033,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         public void onAddToLibrary(String id);
         public void onRemoveFromLibrary(String id );
     }
-
+    public void setListenerResizeView(ResizeView resizeListView) {
+        this.resizeListView = resizeListView;
+    }
     public void setListenerAddToLibrary(AddToLibraryListner addToLibraryListner) {
         this.addToLibraryListner = addToLibraryListner;
     }

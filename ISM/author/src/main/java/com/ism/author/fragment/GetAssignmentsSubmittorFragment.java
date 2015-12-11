@@ -18,9 +18,9 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
-import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.object.Global;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -36,7 +36,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
 
     private static final String TAG = GetAssignmentsSubmittorFragment.class.getSimpleName();
     private View view;
-    private TextView tvSubmittorTitle;
+    private TextView tvSubmittorTitle, tvNoSubmittorMsg;
     private ImageView imgToggleList;
     private RecyclerView rvAssignmentSubmittorList;
     private AssignmentSubmittorAdapter assignmentSubmittorAdapter;
@@ -68,6 +68,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
         myTypeFace = new MyTypeFace(getActivity());
 
         tvSubmittorTitle = (TextView) view.findViewById(R.id.tv_submittor_title);
+        tvNoSubmittorMsg = (TextView) view.findViewById(R.id.tv_no_submittor_msg);
         imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
         rvAssignmentSubmittorList = (RecyclerView) view.findViewById(R.id.rv_assignment_submittor_list);
         assignmentSubmittorAdapter = new AssignmentSubmittorAdapter(getActivity(), getArguments());
@@ -76,6 +77,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rvAssignmentSubmittorList.setAdapter(assignmentSubmittorAdapter);
         tvSubmittorTitle.setTypeface(myTypeFace.getRalewayBold());
+        tvNoSubmittorMsg.setTypeface(myTypeFace.getRalewayRegular());
         tvSubmittorTitle.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
 
         callApiGetExamSubmission();
@@ -87,10 +89,11 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
+
                 Attribute request = new Attribute();
                 request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setUserId("52");
-                request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
+                request.setUserId(Global.strUserId);
+                request.setRole(Global.role);
 
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMSUBMISSION);
@@ -123,10 +126,17 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
-                    assignmentSubmittorAdapter.addAll(arrListExamSubmittor);
-                    assignmentSubmittorAdapter.notifyDataSetChanged();
+                    if (responseHandler.getExamSubmission().get(0).getExamsubmittor().size() > 0) {
+                        arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
+                        assignmentSubmittorAdapter.addAll(arrListExamSubmittor);
+                        assignmentSubmittorAdapter.notifyDataSetChanged();
+                        tvNoSubmittorMsg.setVisibility(View.GONE);
+                    } else {
+                        tvNoSubmittorMsg.setVisibility(View.VISIBLE);
+                    }
+
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    tvNoSubmittorMsg.setVisibility(View.VISIBLE);
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -171,10 +181,8 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
      */
     public static class BooksFragment extends Fragment {
 
-
         private static final String TAG = BooksFragment.class.getSimpleName();
         private View view;
-
         private FragmentListener fragListener;
 
         public static BooksFragment newInstance() {

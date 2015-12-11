@@ -153,11 +153,19 @@ public class WebserviceWrapper {
                         responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_HASHTAG).execute(ResponseHandler.class, attribute);
                         break;
 
+                    case WebConstants.UPLOAD_FEED_MEDIA:
+                        responseObject = new WebserviceConnector(WebConstants.URL_UPLOAD_FEED_MEDIA).uploadMedia(ResponseHandler.class,
+                                (Attribute) attribute);
+                        break;
                     case WebConstants.SET_HASHTAG:
                         responseObject = new WebserviceConnector(WebConstants.URL_HASHTAG).execute(ResponseHandler.class, attribute);
                         break;
                     case WebConstants.TEMP_CREATE_QUESTION:
                         responseObject = new WebserviceConnector(WebConstants.URL_TEMP_CREATE_QUESTION).execute(ResponseHandler.class, attribute);
+                        break;
+                    case WebConstants.UPLOADMEDIAFORQUESTION:
+                        responseObject = new WebserviceConnector(WebConstants.URL_UPLOADMEDIAFORQUESTION).uploadMedia(ResponseHandler.class,
+                                (Attribute) attribute);
                         break;
 
                 }

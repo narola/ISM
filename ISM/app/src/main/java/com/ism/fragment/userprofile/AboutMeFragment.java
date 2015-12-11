@@ -290,7 +290,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                 // imgDp.setImageBitmap(bitmap);
 //                imageURI = uri;
-//                 sourceFile = new File(getPath(imageURI));
+//                 sourceFile = new File(getPathImage(imageURI));
 //                if (!sourceFile.isFile()) {
 //                    Debug.e(TAG, "Source File Does not exist");
 //                }
@@ -385,6 +385,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtClass.setText(data.getCourseName());
             etDob.setText(dateFormat(data.getBirthdate()));
             etCno.setText(data.getContactNumber());
+          //  Global.strProfilePic=WebConstants.HOST_IMAGE_USER + data.getProfilePic();
             Debug.i(TAG, "WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic() :" + WebConstants.HOST_IMAGE_USER + data.getProfilePic());
             Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + data.getProfilePic(), imgProfilePic, ISMStudent.options);
             if(data.getTotalAssignment()==null)
