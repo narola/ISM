@@ -250,6 +250,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
                     loading = true;
 
                     subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
+
                     updateStatusForEvaluation();
                     setTitleDetails();
                     getBaseFragment().setQuestionStatusData(arrListQuestions,

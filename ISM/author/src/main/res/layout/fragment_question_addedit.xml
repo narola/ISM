@@ -149,14 +149,28 @@
                                 android:textSize="@dimen/d20dp"
                                 android:textStyle="bold" />
 
-                            <Spinner
-                                android:id="@+id/sp_addquestion_type"
+                            <RelativeLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@drawable/shadow_grey_small_size"
-                                android:entries="@array/question_type"
-                                android:spinnerMode="dropdown" />
+                                android:layout_height="@dimen/d40dp"
+                                android:layout_weight="1">
+
+
+                                <Spinner
+                                    android:id="@+id/sp_addquestion_type"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/shadow_grey_small_size"
+                                    android:entries="@array/question_type"
+                                    android:spinnerMode="dropdown" />
+
+                                <ImageView
+                                    android:id="@+id/image_validation_questionType"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@android:color/transparent"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+
 
                         </LinearLayout>
 

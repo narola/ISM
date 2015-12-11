@@ -3,6 +3,7 @@ package com.ism.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,10 +20,12 @@ import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.adapter.Adapters;
+import com.ism.broadcastReceiver.NetworkStatusReceiver;
 import com.ism.commonsource.utility.AESHelper;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
+import com.ism.interfaces.NetworkStateListener;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
@@ -47,11 +50,11 @@ import realmhelper.StudentHelper;
 /**
  * Created by c161 on 07/10/15.
  */
-public class LoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse {
+public class LoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse, NetworkStateListener {
 
 	private static final String TAG = LoginActivity.class.getSimpleName();
 
-	private EditText etPwd, etUserid;
+	private EditText etUserName, etPwd;
 	private Spinner spCountry;
 	private Spinner spState;
 	private Spinner spCity;
@@ -71,6 +74,9 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private StudentHelper studentHelper;
 
 	private String strValidationMsg;
+	private boolean isRememberMe;
+	private boolean isRememberMeFirstLogin;
+	private boolean isAdminConfigSet;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +84,37 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		setContentView(R.layout.activity_login);
 
 		studentHelper = new StudentHelper(LoginActivity.this);
-		callApiGetAdminConfig();
+
+		isAdminConfigSet = false;
+		isRememberMe = PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this);
+		isRememberMeFirstLogin = PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, LoginActivity.this);
+
+		NetworkStatusReceiver.setNetworkStateListener(this);
+
+		if (Utility.isConnected(this)) {
+			initializeData();
+		} else {
+			Utility.alertOffline(this);
+		}
 
 	}
 
+	private void initializeData() {
+		if (isRememberMe || isRememberMeFirstLogin) {
+			WebConstants.ACCESS_KEY = PreferenceData.getStringPrefs(PreferenceData.ACCESS_KEY, this);
+			WebConstants.SECRET_KEY = PreferenceData.getStringPrefs(PreferenceData.SECRET_KEY, this);
+			callApiGetAdminConfig();
+		} else {
+			PreferenceData.clearWholePreference(this);
+			PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, WebConstants.NO_USERNAME);
+			WebConstants.ACCESS_KEY = WebConstants.NO_USERNAME;
+			WebConstants.SECRET_KEY = null;
+			callApiRefreshToken();
+		}
+	}
+
 	private void resumeApp() {
-		if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this)) {
+		if (isRememberMe) {
 			if (PreferenceData.getBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this)) {
 				if (PreferenceData.getBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this)) {
 					launchHostActivity();
@@ -95,7 +126,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			} else {
 				launchWelcomeActivity();
 			}
-		} else if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, LoginActivity.this)) {
+		} else if (isRememberMeFirstLogin) {
 			launchProfileInfoActivity();
 		} else {
 			initGlobal();
@@ -103,23 +134,19 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	}
 
 	private void initGlobal() {
-		PreferenceData.clearWholePreference(this);
-		WebConstants.ACCESS_KEY = null;
-		WebConstants.SECRET_KEY = null;
-
 		myTypeFace = new MyTypeFace(this);
 		btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
 		etPwd = (EditText) findViewById(R.id.et_pwd);
-		etUserid = (EditText) findViewById(R.id.et_userid);
+		etUserName = (EditText) findViewById(R.id.et_userid);
 		llLogin = (LinearLayout) findViewById(R.id.ll_login);
 
 		showLoginLayout();
 
-//		etUserid.setText("0YGAJ8793B");
-//		etUserid.setText("prerna");
+//		etUserName.setText("0YGAJ8793B");
+//		etUserName.setText("prerna");
 //		etPwd.setText("narola21");
 
-		etUserid.setTypeface(myTypeFace.getRalewayRegular());
+		etUserName.setTypeface(myTypeFace.getRalewayRegular());
 		etPwd.setTypeface(myTypeFace.getRalewayRegular());
 		((TextView) findViewById(R.id.txt_donothave)).setTypeface(myTypeFace.getRalewayRegular());
 		((TextView) findViewById(R.id.txt_clickhere)).setTypeface(myTypeFace.getRalewayRegular());
@@ -144,12 +171,16 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	public void onClickLogin(View view) {
 		if (Utility.isConnected(LoginActivity.this)) {
 			if (isInputsValid()) {
+				btnLogin.setProgress(1);
+				btnLogin.setEnabled(false);
+				progressGenerator.start(btnLogin);
+
 				String globalPassword = studentHelper.getGlobalPassword();
 				if (globalPassword != null) {
-					WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, etUserid.getText().toString().trim());
+					WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, etUserName.getText().toString().trim());
 					PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, LoginActivity.this, WebConstants.ACCESS_KEY);
+					callApiRefreshToken();
 				}
-				callApiRefreshToken();
 			}
 		} else {
 			Utility.alertOffline(LoginActivity.this);
@@ -407,7 +438,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	}
 
 	private boolean isInputsValid() {
-		return inputValidator.validateStringPresence(etUserid) &
+		return inputValidator.validateStringPresence(etUserName) &
 				(inputValidator.validateStringPresence(etPwd) && inputValidator.validatePasswordLength(etPwd));
 	}
 
@@ -430,13 +461,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiAuthenticateUser() {
 		try {
-			btnLogin.setProgress(1);
-			btnLogin.setEnabled(false);
-			progressGenerator.start(btnLogin);
-
-			btnLogin.setEnabled(false);
 			Attribute attribute = new Attribute();
-			attribute.setUsername(etUserid.getText().toString().trim());
+			attribute.setUsername(etUserName.getText().toString().trim());
 			attribute.setPassword(etPwd.getText().toString().trim());
 //			requestObject.setUsername("0YGAJ8793B");
 //			requestObject.setPassword("narola21");
@@ -525,6 +551,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						}
 						PreferenceData.setStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, LoginActivity.this,
 								Utility.formatDateMySql(Calendar.getInstance().getTime()));
+						isAdminConfigSet = true;
 					}
 					resumeApp();
 
@@ -546,7 +573,11 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, this, responseHandler.getToken().get(0).getTokenName());
 					WebConstants.SECRET_KEY = responseHandler.getToken().get(0).getTokenName();
-					callApiAuthenticateUser();
+					if (isAdminConfigSet) {
+						callApiAuthenticateUser();
+					} else {
+						callApiGetAdminConfig();
+					}
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseRefreshToken failed");
 				}
@@ -584,31 +615,31 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		}
 	}
 
-    private void onResponseStates(Object object, Exception error) {
-        try {
-            progState.setProgress(100);
-            progState.setVisibility(View.INVISIBLE);
-            if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    arrListStates = new ArrayList<>();
-                    arrListStates.addAll(responseHandler.getStates());
-                    List<String> states = new ArrayList<>();
-                    states.add(getString(R.string.select));
-                    for (State state : arrListStates) {
-                        states.add(state.getStateName());
-                    }
-                    Adapters.setUpSpinner(LoginActivity.this, spState, states, myTypeFace.getRalewayRegular());
-                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Log.e(TAG, "onResponseStates Failed");
-                }
-            } else if (error != null) {
-                Log.e(TAG, "onResponseStates api Exception : " + error.toString());
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "onResponseStates Exception : " + e.toString());
-        }
-    }
+	private void onResponseStates(Object object, Exception error) {
+		try {
+			progState.setProgress(100);
+			progState.setVisibility(View.INVISIBLE);
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					arrListStates = new ArrayList<>();
+					arrListStates.addAll(responseHandler.getStates());
+					List<String> states = new ArrayList<>();
+					states.add(getString(R.string.select));
+					for (State state : arrListStates) {
+						states.add(state.getStateName());
+					}
+					Adapters.setUpSpinner(LoginActivity.this, spState, states, myTypeFace.getRalewayRegular());
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "onResponseStates Failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseStates api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseStates Exception : " + e.toString());
+		}
+	}
 
 	private void onResponseCountries(Object object, Exception error) {
 		try {
@@ -722,7 +753,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, LoginActivity.this, responseHandler.getUser().get(0).getProfilePic());
 						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupId());
 						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupName());
-						PreferenceData.setStringPrefs(PreferenceData.USER_NAME, this, etUserid.getText().toString().trim());
+						PreferenceData.setStringPrefs(PreferenceData.USER_NAME, this, etUserName.getText().toString().trim());
 
 //						if (responseHandler.getUser().get(0).getTutorialGroupId() == null) {
 //							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);
@@ -798,9 +829,17 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
         finish();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        studentHelper.destroy();
-    }
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		studentHelper.destroy();
+	}
+
+	@Override
+	public void onNetworkStateChange() {
+		if (Utility.isConnected(this)) {
+			initializeData();
+		}
+	}
+
 }

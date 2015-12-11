@@ -36,10 +36,6 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     public static String ARG_EXAM_NAME = "examName";
     public static String ARG_EXAM_CLASSROOM_ID = "examClassRoomId";
     public static String ARG_EXAM_CLASSROOM_NAME = "examClassRoomName";
-    //    public static String ARG_EXAM_SUBJECT_ID = "examSubjectId";
-//    public static String ARG_EXAM_SUBJECT_NAME = "examSubjectName";
-//    public static String ARG_EXAM_TOPIC_ID = "examTopicId";
-//    public static String ARG_EXAM_TOPIC_NAME = "examTopicName";
     public static String ARG_EXAM_BOOK_ID = "examBookId";
     public static String ARG_EXAM_BOOK_NAME = "examBookName";
     public static String ARG_EXAM_CATEGORY = "examCategory";
