@@ -30,7 +30,7 @@
                     android:id="@+id/tv_objective_assignment_subject"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/strbookname"
+                    android:text="@string/strsubject"
                     android:textColor="@color/color_gray"
                     android:textSize="@dimen/d18dp" />
 

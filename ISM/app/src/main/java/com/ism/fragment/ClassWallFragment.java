@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.activity.PostFeedActivity;
-import com.ism.adapter.PostFeedsAdapterTest;
+import com.ism.adapter.PostFeedsAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
@@ -31,8 +31,10 @@ import com.ism.ws.model.Feeds;
 import java.util.ArrayList;
 
 import io.realm.RealmList;
+import io.realm.RealmResults;
 import model.FeedComment;
 import model.FeedImage;
+import model.FeedLike;
 import model.User;
 import realmhelper.StudentHelper;
 
@@ -45,8 +47,9 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     private RecyclerView recyclerPostFeeds;
     private RelativeLayout rlNewPost;
 
-    private PostFeedsAdapterTest adpPostFeeds;
+    private PostFeedsAdapter adpPostFeeds;
     private HostActivity activityHost;
+    private StudentHelper studentHelper;
 
     public static ClassWallFragment newInstance() {
         ClassWallFragment fragment = new ClassWallFragment();
@@ -82,13 +85,14 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                 }
             }
         };
-
+        studentHelper = new StudentHelper(getActivity());
         recyclerPostFeeds.addItemDecoration(itemDecoration);
 
         if (Utility.isConnected(getActivity())) {
             callApiGetAllFeeds();
         } else {
             Utility.alertOffline(getActivity());
+            setUpData(studentHelper.getFeeds(-1));
         }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             recyclerPostFeeds.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -155,6 +159,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     if (responseHandler.getFeeds().size() != 0) {
                         ParseAllData(responseHandler.getFeeds());
+                        setUpData(studentHelper.getFeeds(-1));
                     }
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetAllFeeds Failed : " + responseHandler.getMessage());
@@ -168,53 +173,68 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     }
 
     private void ParseAllData(ArrayList<Feeds> arrayList) {
-        StudentHelper studentHelper = new StudentHelper(getActivity());
-        for (int i = 0; i < arrayList.size(); i++) {
-            model.Feeds feedRealm = new model.Feeds();
-            feedRealm.setFeedId(Integer.parseInt(arrayList.get(i).getFeedId()));
-            feedRealm.setUserId(arrayList.get(i).getUserId());
-            feedRealm.setFullName(arrayList.get(i).getFullName());
-            feedRealm.setFeedText(arrayList.get(i).getFeedText());
-            feedRealm.setProfilePic(arrayList.get(i).getProfilePic());
-            feedRealm.setAudioLink(arrayList.get(i).getAudioLink());
-            feedRealm.setVideoLink(arrayList.get(i).getVideoLink());
-            feedRealm.setVideoThumbnail(arrayList.get(i).getVideoThumbnail());
-            feedRealm.setTotalComment(Integer.parseInt(arrayList.get(i).getTotalComment()));
-            feedRealm.setTotalLike(Integer.parseInt(arrayList.get(i).getTotalLike()));
-            feedRealm.setCreatedDate(Utility.getDateFormateMySql(arrayList.get(i).getCreatedDate()));
-            feedRealm.setModifiedDate(Utility.getDateFormateMySql(arrayList.get(i).getModifiedDate()));
-            ArrayList<Comment> commentArrayList =arrayList.get(i).getComments() ;
-            RealmList<FeedComment> feedComments = new RealmList<>();
-            for (int j = 0; j < commentArrayList.size(); j++) {
-                FeedComment feedComment = new FeedComment();
-                feedComment.setFeedCommentId(Integer.parseInt(commentArrayList.get(j).getId()));
-                feedComment.setComment(commentArrayList.get(j).getComment());
-                User user = new User();
-                user.setUserId(Integer.parseInt(commentArrayList.get(j).getCommentBy()));
-                user.setFullName(commentArrayList.get(j).getFullName());
-                user.setProfilePicture(commentArrayList.get(j).getProfilePic());
-                feedComment.setCommentBy(user);
-                feedComment.setCreatedDate(Utility.getDateFormateMySql(commentArrayList.get(j).getId()));
-                feedComments.add(feedComment);
+        int i = 0;
+        try {
+            for (i = 0; i < arrayList.size(); i++) {
+                model.Feeds feeds = new model.Feeds();
+                feeds.setFeedId(Integer.parseInt(arrayList.get(i).getFeedId()));
+                User feedBy = new User();
+                feedBy.setUserId(Integer.parseInt(arrayList.get(i).getUserId()));
+                feedBy.setFullName(arrayList.get(i).getFullName());
+                feedBy.setProfilePicture(arrayList.get(i).getProfilePic());
+                studentHelper.saveUser(feedBy);
+                feeds.setFeedBy(feedBy);
+                feeds.setFeedText(arrayList.get(i).getFeedText());
+                //feeds.setProfilePic(arrayList.get(i).getProfilePic());
+                feeds.setAudioLink(arrayList.get(i).getAudioLink());
+                feeds.setVideoLink(arrayList.get(i).getVideoLink());
+                feeds.setVideoThumbnail(arrayList.get(i).getVideoThumbnail());
+                feeds.setTotalComment(Integer.parseInt(arrayList.get(i).getTotalComment()));
+                feeds.setTotalLike(Integer.parseInt(arrayList.get(i).getTotalLike()));
+                feeds.setCreatedDate(Utility.getDateFormateMySql(arrayList.get(i).getCreatedDate()));
+                feeds.setModifiedDate(Utility.getDateFormateMySql(arrayList.get(i).getModifiedDate()));
+                ArrayList<Comment> arrayListComment = arrayList.get(i).getComments();
+                RealmList<FeedComment> feedComments = new RealmList<>();
+                if (arrayListComment.size() > 0) {
+                    for (int j = 0; j < arrayListComment.size(); j++) {
+                        FeedComment feedComment = new FeedComment();
+                        feedComment.setFeedCommentId(Integer.parseInt(arrayListComment.get(j).getId()));
+                        feedComment.setComment(arrayListComment.get(j).getComment());
+                        User user = new User();
+                        user.setUserId(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
+                        user.setFullName(arrayListComment.get(j).getFullName());
+                        user.setProfilePicture(arrayListComment.get(j).getProfilePic());
+                        studentHelper.saveUser(user);
+                        feedComment.setCommentBy(user);
+                        feedComment.setCreatedDate(Utility.getDateFormateMySql(arrayListComment.get(j).getCreatedDate()));
+                        studentHelper.saveComments(feedComment);
+                        feedComments.add(feedComment);
+                    }
+                    feeds.setComments(feedComments);
+                }
+                feeds.setLike(arrayList.get(i).getLike());
+                feeds.setPostedOn(Utility.getDateFormate(arrayList.get(i).getLike()));
+                ArrayList<FeedImages> arrayListImages = arrayList.get(i).getFeedImages();
+                RealmList<FeedImage> feedImages = new RealmList<>();
+                if (arrayListImages.size() > 0) {
+                    for (int j = 0; j < arrayListImages.size(); j++) {
+                        FeedImage feedImage = new FeedImage();
+                        feedImage.setFeedImageId(Integer.parseInt(arrayListImages.get(j).getId()));
+                        feedImage.setImageLink(arrayListImages.get(j).getImageLink());
+                        studentHelper.saveFeedImages(feedImage);
+                        feedImages.add(feedImage);
+                    }
+                    feeds.setFeedImages(feedImages);
+                }
+                studentHelper.Feeds(feeds);
+                FeedLike feedLike=new FeedLike();
+                feedLike.setFeed(feeds);
+                feedLike.setLikeBy(studentHelper.getUser(Global.strUserId));
+                feedLike.setCreatedDate(Utility.getDateFormateMySql(arrayList.get(i).getCreatedDate()));
+                studentHelper.saveFeedLikes(feedLike);
             }
-            feedRealm.setComments(feedComments);
-            feedRealm.setLike(arrayList.get(i).getLike());
-            feedRealm.setPostedOn(Utility.getDateFormate(arrayList.get(i).getLike()));
-            FeedImage feedImage = new FeedImage();
-            ArrayList<FeedImages> arrayListImages = arrayList.get(i).getFeedImages();
-            RealmList<FeedImage> feedImages = new RealmList<>();
-            for (int j = 0; j < arrayListImages.size(); j++) {
-                FeedImage feedImageData=new FeedImage();
-                feedImageData.setFeedImageId(Integer.parseInt(arrayListImages.get(j).getId()));
-                feedImageData.setImageLink(arrayListImages.get(j).getImageLink());
-                feedImages.add(feedImageData);
-//                feedImageData.set(user);
-            }
-            feedRealm.setFeedImages(feedImages);
-            studentHelper.Feeds(feedRealm);
-            adpPostFeeds = new PostFeedsAdapterTest(getActivity(), studentHelper.getFeeds(-1));
-//            adpPostFeeds = new PostFeedsAdapterTest(getActivity(), arrayList);
-            recyclerPostFeeds.setAdapter(adpPostFeeds);
+        } catch (Exception e) {
+            Log.e(TAG, i + "ParseAllData Exception : " + e.toString());
         }
     }
 
@@ -222,5 +242,43 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         activityHost = (HostActivity) activity;
+    }
+
+    public void setUpData(RealmResults<model.Feeds> realmResultFeeds) {
+        try {
+            ArrayList<Feeds> arrayList = new ArrayList<>();
+            for (int i = 0; i < realmResultFeeds.size(); i++) {
+                Feeds feeds = new Feeds();
+                feeds.setFeedId(String.valueOf(realmResultFeeds.get(i).getFeedId()));
+                feeds.setLike(realmResultFeeds.get(i).getLike());
+                feeds.setTotalComment(String.valueOf(realmResultFeeds.get(i).getTotalComment()));
+                feeds.setTotalLike(String.valueOf(realmResultFeeds.get(i).getTotalLike()));
+                feeds.setFullName((realmResultFeeds.get(i).getFeedBy() == null ? realmResultFeeds.get(i).getFeedBy() + "" : realmResultFeeds.get(i).getFeedBy().getFullName()));
+                feeds.setAudioLink(realmResultFeeds.get(i).getAudioLink());
+                feeds.setVideoThumbnail(realmResultFeeds.get(i).getVideoThumbnail());
+                feeds.setVideoLink(realmResultFeeds.get(i).getVideoLink());
+                ArrayList<Comment> arrayListComments=new ArrayList<>();
+                RealmList<FeedComment> realmListComments = realmResultFeeds.get(i).getComments();
+                for (int j = 0; j < realmListComments.size(); j++) {
+                    Comment comment = new Comment();
+                    comment.setComment(realmListComments.get(j).getComment());
+                    comment.setCommentBy(String.valueOf(realmListComments.get(j).getCommentBy().getUserId()));
+                    comment.setId(String.valueOf(realmListComments.get(j).getFeedCommentId()));
+                    comment.setProfilePic(String.valueOf(realmListComments.get(j).getCommentBy().getProfilePicture()));
+                    arrayListComments.add(comment);
+                }
+                feeds.setComments(arrayListComments);
+                feeds.setFeedText(realmResultFeeds.get(i).getFeedText());
+                feeds.setProfilePic((realmResultFeeds.get(i).getFeedBy() ==null?realmResultFeeds.get(i).getFeedBy()+"":realmResultFeeds.get(i).getFeedBy().getProfilePicture()));
+                feeds.setUserId(String.valueOf((realmResultFeeds.get(i).getFeedBy() ==null?realmResultFeeds.get(i).getFeedBy()+"":realmResultFeeds.get(i).getFeedBy().getUserId())));
+                arrayList.add(feeds);
+            }
+            adpPostFeeds = new PostFeedsAdapter(getActivity(), arrayList);
+//            adpPostFeeds = new PostFeedsAdapterTest(getActivity(), arrayList);
+            Debug.i(TAG,"arrayList size : " +arrayList.size());
+            recyclerPostFeeds.setAdapter(adpPostFeeds);
+        } catch (Exception e) {
+            Debug.i(TAG, "setUpData Exception :"+ e.getLocalizedMessage());
+        }
     }
 }

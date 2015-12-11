@@ -17,7 +17,6 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.GetAssignmentsSubmitterFragment;
 import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
-import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Exams;
 
@@ -80,7 +79,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        LinearLayout llParentAssignment, llViewQuestions, llAssessedQuestion, llUnassessedQuestion;
+        LinearLayout llParentAssignment, llViewQuestions;
         RelativeLayout rlTopAssignment;
         TextView txtExamName, txtAssignmentClassName, txtAssignmentDate, txtNumberAssessedQuestion, txtNumberUnassessedQuestion, txtNumberTotalQuestions;
         TextView txtAssignmentSubject, txtAssessedLabel, txtUnassessedLabel, txtQuestionLabel, txtAssignmentType;
@@ -90,8 +89,6 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
             llParentAssignment = (LinearLayout) itemView.findViewById(R.id.ll_parent_assignment);
 
-            llAssessedQuestion = (LinearLayout) itemView.findViewById(R.id.ll_assessed_question);
-            llUnassessedQuestion = (LinearLayout) itemView.findViewById(R.id.ll_unassessed_question);
             llViewQuestions = (LinearLayout) itemView.findViewById(R.id.ll_view_questions);
 
             rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_top_assignment);
@@ -122,7 +119,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         holder.txtAssignmentSubject.setText(arrayListAssignments.get(position).getSubjectName());
         holder.txtExamName.setText(arrayListAssignments.get(position).getExamName());
         holder.txtAssignmentClassName.setText(arrayListAssignments.get(position).getClassroomName());
-        holder.txtAssignmentDate.setText((Utility.getFormattedDate("dd-MMM-yyyy", arrayListAssignments.get(position).getExamCreatedDate())));
+        holder.txtAssignmentDate.setText(Html.fromHtml("<font color='#0E970C'>Assignment Date:" + "</font>" + (Utility.getFormattedDate("dd-MMM-yyyy", arrayListAssignments.get(position).getExamCreatedDate()))));
 
         holder.txtNumberAssessedQuestion.setText(arrayListAssignments.get(position).getTotalAssessed());
         holder.txtNumberUnassessedQuestion.setText(arrayListAssignments.get(position).getTotalUnassessed());
@@ -162,7 +159,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         bundleAssignmentDetails.putInt(ARG_ASSIGNMENT_NO, position);
         bundleAssignmentDetails.putString(ARG_EXAM_PASS_PERCENTAGE, arrayListAssignments.get(position).getPassPercentage());
         bundleAssignmentDetails.putString(ARG_EXAM_QUESTION_SCORE, "0");
-        bundleAssignmentDetails.putString(ARG_EXAM_CREATED_DATE, "");
+        bundleAssignmentDetails.putString(ARG_EXAM_CREATED_DATE, arrayListAssignments.get(position).getExamCreatedDate());
 
         holder.llParentAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,20 +175,23 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             @Override
             public void onClick(View view) {
 
-                if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_OBJECTIVE)) {
-
-                    bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
-                    mFragment.getFragmentManager().beginTransaction().
+//                if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_OBJECTIVE)) {
+//
+//                    bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
+//                    mFragment.getFragmentManager().beginTransaction().
+//                            replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
+//
+//
+//                } else if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_SUBJECTIVE)) {
+//
+//                    bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
+//                    mFragment.getFragmentManager().beginTransaction().
+//                            replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
+//
+//                }
+                bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
+                mFragment.getFragmentManager().beginTransaction().
                             replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
-
-
-                } else if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_SUBJECTIVE)) {
-
-                    bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
-                    mFragment.getFragmentManager().beginTransaction().
-                            replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
-
-                }
 
             }
         });

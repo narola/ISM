@@ -93,8 +93,8 @@
 
     <string-array name="exammode">
         <item>Exam Mode</item>
-        <item>Subjective</item>
-        <item>Objective</item>
+        <item>subjective</item>
+        <item>objective</item>
     </string-array>
 
     <string-array name="examname">

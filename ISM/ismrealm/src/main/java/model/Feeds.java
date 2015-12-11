@@ -24,10 +24,9 @@ public class Feeds extends RealmObject {
     private Date postedOn;
     private Date createdDate;
     private Date modifiedDate;
-    private String fullName;
+   // private String fullName;
     private String like;
-    private String userId;
-    private String profilePic;
+    ////private String profilePic;
     private RealmList<FeedComment> comments;
     private RealmList<FeedImage> feedImages;
 
@@ -120,13 +119,13 @@ public class Feeds extends RealmObject {
         this.modifiedDate = modifiedDate;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+//    public String getFullName() {
+//        return fullName;
+//    }
+//
+//    public void setFullName(String fullName) {
+//        this.fullName = fullName;
+//    }
 
     public String getLike() {
         return like;
@@ -136,21 +135,13 @@ public class Feeds extends RealmObject {
         this.like = like;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getProfilePic() {
-        return profilePic;
-    }
-
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
-    }
+//    public String getProfilePic() {
+//        return profilePic;
+//    }
+//
+//    public void setProfilePic(String profilePic) {
+//        this.profilePic = profilePic;
+//    }
 
     public RealmList<FeedComment> getComments() {
         return comments;
