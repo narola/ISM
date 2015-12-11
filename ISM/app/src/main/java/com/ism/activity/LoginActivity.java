@@ -3,7 +3,6 @@ package com.ism.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 import com.ism.R;
 import com.ism.adapter.Adapters;
 import com.ism.broadcastReceiver.NetworkStatusReceiver;
-import com.ism.commonsource.utility.AESHelper;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
@@ -103,7 +101,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		if (isRememberMe || isRememberMeFirstLogin) {
 			WebConstants.ACCESS_KEY = PreferenceData.getStringPrefs(PreferenceData.ACCESS_KEY, this);
 			WebConstants.SECRET_KEY = PreferenceData.getStringPrefs(PreferenceData.SECRET_KEY, this);
-			callApiGetAdminConfig();
+			//callApiGetAdminConfig();
+			resumeApp();
 		} else {
 			PreferenceData.clearWholePreference(this);
 			PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, WebConstants.NO_USERNAME);
@@ -175,12 +174,13 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 				btnLogin.setEnabled(false);
 				progressGenerator.start(btnLogin);
 
-				String globalPassword = studentHelper.getGlobalPassword();
-				if (globalPassword != null) {
-					WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, etUserName.getText().toString().trim());
-					PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, LoginActivity.this, WebConstants.ACCESS_KEY);
-					callApiRefreshToken();
-				}
+//				String globalPassword = studentHelper.getGlobalPassword();
+//				if (globalPassword != null) {
+//					WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, etUserName.getText().toString().trim());
+//					PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, LoginActivity.this, WebConstants.ACCESS_KEY);
+//					callApiRefreshToken();
+//				}
+				callApiAuthenticateUser();
 			}
 		} else {
 			Utility.alertOffline(LoginActivity.this);
