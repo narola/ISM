@@ -75,13 +75,13 @@
                 <div class="form-group col-sm-12 col-md-6 col-lg-2 padding_r15_">
                         <label>Front Cover</label>
                     <div class="upload_ques_img ">
-                    	<input class="form-control" name="front_cover" type="file">
+                    	<input class="form-control"  name="front_cover" id="front_cover" type="file">
                     </div>
                 </div>  
                 <div class="form-group col-sm-12 col-md-6 col-lg-2 padding_r15_ ">
                         <label>Back Cover</label>
                     <div class="upload_ques_img">
-                    	<input class="form-control" name="back_cover" type="file">
+                    	<input class="form-control" name="back_cover" id="back_cover" type="file">
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -89,14 +89,14 @@
                 <div class="form-group col-sm-12 col-md-6 col-lg-2 padding_r15_ ">
                         <label class="file_label">pdf File</label>
                     <div class="upload_ques_img pdf">
-                    	<input class="form-control" name="book_pdf" type="file">
+                    	<input class="form-control" name="book_pdf" id="book_pdf" type="file">
                     </div>
                 </div>
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-2 padding_r15_ ">
                         <label class="file_label">epub File</label>
                     <div class="upload_ques_img epub">
-                    	<input class="form-control" name="book_epub" type="file">
+                    	<input class="form-control" name="book_epub" id="book_epub" type="file">
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -113,6 +113,12 @@
     </div>
 </div>
 <script type="text/javascript">
+$(function() {
+     $("input#front_cover").change(function (){
+       var file_data = $("#front_cover").prop("files")[0];
+       console.log('file_data: '+ file_data.type);
+     });
+  });
     $(document).ready(function() {
         $(".js-example-basic-single").select2();
         $("#book_frm").validate({
@@ -143,7 +149,6 @@
             },
             highlight: function(element) { // hightlight error inputs
                 var elem = $(element);
-                console.log(elem);
                 if (elem.hasClass("select2-offscreen")) {
                     $("#s2id_" + elem.attr("id") + " ul").closest('.form-group').removeClass('has-success').addClass('has-error');
                 } else {
@@ -158,8 +163,11 @@
                     elem.closest('.form-group').removeClass('has-error');
                 }
             },
-            submitHandler: function(form) {
-                form.submit();
+            submitHandler: function(form, event) {
+                event.preventDefault();
+                console.log('here');
+                upload_product_img(form, event);
+                // form.submit();
             }
         });
 
@@ -178,4 +186,20 @@
             }
         }); 
     });
+    function upload_product_img(form, event) {
+        console.log('here');
+        return false;
+        /*if (user_file) {
+            var file_size = user_file.size / 1024;
+            if (file_size > 1024)
+            {
+                alert('Please upload an image with size less than 1 MB.');
+                return false;
+            } else {
+                form.submit();
+            }
+        } else {
+            event.preventDefault();
+        }*/
+    }
 </script>
