@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import io.realm.RealmResults;
 import model.FeedComment;
 import model.FeedLike;
+import model.StudyMates;
 import model.User;
 import realmhelper.StudentHelper;
 
@@ -131,7 +132,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                         arrListFeeds.get(position).setTotalLike("" + (Integer.parseInt(arrListFeeds.get(position).getTotalLike()) + 1));
                     }
                     holder.imgLike.setActivated(arrListFeeds.get(position).getLike().equals("1"));
-                    updateFeedLike(Integer.parseInt(arrListFeeds.get(position).getFeedId()),Integer.parseInt(arrListFeeds.get(position).getLike()));
+                    updateFeedLike(Integer.parseInt(arrListFeeds.get(position).getFeedId()), Integer.parseInt(arrListFeeds.get(position).getLike()));
                     notifyDataSetChanged();
                 }
             });
@@ -182,13 +183,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private void updateFeedLike(int feedId, int like) {
         try {
-            FeedLike feedLike=new FeedLike();
+            FeedLike feedLike = new FeedLike();
             feedLike.setFeed(studentHelper.getFeeds(feedId).get(0));
             feedLike.setFeedLikeId(like);
-           // studentHelper.saveFeedLikes(f);
-        }
-        catch (Exception e){
-            Debug.i(TAG,"updateFeedLike Exception : "+e.getLocalizedMessage());
+            // studentHelper.saveFeedLikes(f);
+        } catch (Exception e) {
+            Debug.i(TAG, "updateFeedLike Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -320,8 +320,9 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                 if (responseHandler.getStudymates().size() > 0) {
-                    TagStudyMatesDialog tagStudyMatesDialog = new TagStudyMatesDialog(context, responseHandler.getStudymates(), this);
-                    tagStudyMatesDialog.show();
+                    ParseAllStudymatesData(responseHandler.getStudymates())
+//                    TagStudyMatesDialog tagStudyMatesDialog = new TagStudyMatesDialog(context, responseHandler.getStudymates(), this);
+//                    tagStudyMatesDialog.show();
                 }
             } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                 Toast.makeText(context, responseHandler.getMessage(), Toast.LENGTH_LONG).show();
@@ -331,11 +332,36 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         }
     }
 
+    private void ParseAllStudymatesData(ArrayList<com.ism.ws.model.User> arrayList) {
+        try {
+            if (arrayList.size() > 0) {
+                for (int i = 0; i < arrayList.size(); i++) {
+                    StudyMates studyMates = new StudyMates();
+                    studyMates.setStudyMateId(Integer.parseInt(arrayList.get(i).getUserId()));
+                    User user = new User();
+                    user.setFullName(arrayList.get(i).getFullName());
+                    user.setProfilePicture(comments.get(i).getProfilePic());
+                    user.setUserId(Integer.parseInt(comments.get(i).getCommentBy()));
+                    studentHelper.saveUser(user);
+                    feedComment.setCommentBy(user);
+                    model.Feeds feeds = new model.Feeds();
+                    feeds.setFeedId(Integer.parseInt(arrListFeeds.get(viewAllFeedId).getFeedId()));
+                    feedComment.setFeed(feeds);
+                    feedComment.setComment(comments.get(i).getComment());
+                    studentHelper.FeedCommments(feedComment);
+                }
+            }
+            setUpData(studentHelper.getFeedComments(Integer.parseInt(arrListFeeds.get(viewAllFeedId).getFeedId())));
+        } catch (Exception e) {
+            Debug.i(TAG, "ParseAllStudymatesData Ec=xceptions : " + e.getLocalizedMessage());
+        }
+    }
+
     private void onResponseGetAllComments(Object object) {
         try {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                ParseAllData(responseHandler.getComments());
+                ParseAllComments(responseHandler.getComments());
             } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                 Toast.makeText(context, responseHandler.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -358,7 +384,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         }
     }
 
-    private void ParseAllData(ArrayList<Comment> comments) {
+    private void ParseAllComments(ArrayList<Comment> comments) {
         try {
             if (comments.size() > 0) {
                 for (int i = 0; i < comments.size(); i++) {
@@ -380,14 +406,14 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             setUpData(studentHelper.getFeedComments(Integer.parseInt(arrListFeeds.get(viewAllFeedId).getFeedId())));
 
         } catch (Exception e) {
-            Log.e(TAG, "ParseAllData Exception : " + e.toString());
+            Log.e(TAG, "ParseAllComments Exception : " + e.toString());
         }
     }
 
     public void setUpData(RealmResults<model.FeedComment> realmResult) {
         try {
             ArrayList<Comment> arrayList = new ArrayList<>();
-            if(realmResult.size()>0) {
+            if (realmResult.size() > 0) {
                 for (int i = 0; i < realmResult.size(); i++) {
                     Comment comment = new Comment();
                     comment.setFullName((realmResult.get(i).getCommentBy() == null ? realmResult.get(i).getCommentBy() + "" : realmResult.get(i).getCommentBy().getFullName()));
