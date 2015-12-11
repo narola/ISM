@@ -10,7 +10,6 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.adapter.PostFeedCommentsAdapterTest;
 
 import io.realm.RealmResults;
 import model.FeedComment;

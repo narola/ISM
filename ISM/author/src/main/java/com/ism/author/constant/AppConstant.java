@@ -40,7 +40,6 @@ public class AppConstant {
 
 
     public static final String STATUS_UPLOADING = "uploading";
-    public static final int AUTHOR_ROLE_ID = 4;
     public static final String MEDIATYPE_IMAGE = "image";
     public static final String MEDIATYPE_VIDEO = "video";
     public static final String MEDIATYPE_AUDIO = "audio";

@@ -71,6 +71,8 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
 
             holder.etEvoluationsNotes.setText(Utils.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
             holder.etSolution.setText(Utils.formatHtml(arrListQuestions.get(position).getSolution()));
+            holder.txtStudentnameAnswer.setText(bundleArgument.getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME) + " " +
+                    mContext.getString(R.string.stranswer));
 
 
             if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
@@ -90,32 +92,28 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
                         holder.llQuestionsOptions.addView(ansView);
                     }
                 }
-
-                if (bundleArgument.getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
-                    holder.llEvaluationContainer.setVisibility(View.VISIBLE);
-                    holder.llAnswerContainer.setVisibility(View.VISIBLE);
-
-                    if (arrListQuestions.get(position).getAnswers() != null) {
-                        for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
-                            if (arrListQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
-                                holder.txtAnswer.setText(Utils.formatHtml(Utils.getCharForNumber(i + 1) + ". " +
-                                        arrListQuestions.get(position).getAnswers().get(i).getChoiceText()));
-                                break;
-                            } else {
-                                holder.txtAnswer.setText("");
-                            }
+                holder.llAnswerContainer.setVisibility(View.VISIBLE);
+                if (arrListQuestions.get(position).getAnswers() != null) {
+                    for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
+                        if (arrListQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
+                            holder.txtAnswer.setText(Utils.formatHtml(Utils.getCharForNumber(i + 1) + ". " +
+                                    arrListQuestions.get(position).getAnswers().get(i).getChoiceText()));
+                            break;
+                        } else {
+                            holder.txtAnswer.setText("");
                         }
                     }
-
+                }
+                if (bundleArgument.getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                    holder.llEvaluationContainer.setVisibility(View.VISIBLE);
                 } else {
                     holder.llEvaluationContainer.setVisibility(View.GONE);
-                    holder.llAnswerContainer.setVisibility(View.GONE);
+                    holder.txtStudentnameAnswer.setVisibility(View.GONE);
+                    holder.txtStudentAnswer.setVisibility(View.GONE);
+//                    holder.llAnswerContainer.setVisibility(View.GONE);
                 }
             }
 
-
-            holder.txtStudentnameAnswer.setText(bundleArgument.getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME) + " " +
-                    mContext.getString(R.string.stranswer));
 
             if (evaluationList != null) {
 

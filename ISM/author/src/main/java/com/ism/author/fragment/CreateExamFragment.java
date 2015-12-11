@@ -2,6 +2,7 @@ package com.ism.author.fragment;
 
 
 import android.app.Fragment;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
+import android.widget.TimePicker;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
@@ -28,6 +29,7 @@ import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.object.Global;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -38,6 +40,7 @@ import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -51,9 +54,9 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private Fragment fragment;
     public static String ARG_IS_CREATE_EXAM = "isCreateExam";
 
-    //    private FragmentListener fragListener;
     public static CreateExamFragment newInstance(Bundle bundleArgument, Context mContext) {
         CreateExamFragment createExamFragment = new CreateExamFragment();
+
         if (bundleArgument != null) {
             createExamFragment.setArguments(bundleArgument);
             createExamFragment.getArguments().putBoolean(ARG_IS_CREATE_EXAM, false);
@@ -72,33 +75,28 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private TextView tvExamTitle, tvExamExamschedule, tvExamExaminstruction, tvExamDeclareresult,
-            tvExamNegativemarking, tvExamRandomquestion, tvExamUsescore, tvExamQuestionscorevalue, tvExamAddnegativemark;
+            tvExamNegativemarking, tvExamRandomquestion, tvExamUsescore, tvExamQuestionscorevalue, tvExamAddnegativemark,
+            tvExamName, tvExamClass, tvExamBookname, tvExamPassingpercent, tvExamCategory, tvExamExammode,
+            tvExamExamduration, tvExamAttemptcount, tvExamschedule, tvExamStartdate, tvExamStartTime, tvExamAssessor;
     private Spinner spExamClassroom, spExamBookname, spExamPassingpercent, spExamExamCategory, spExamExammode,
-            spExamExamduration;
+            spExamExamduration, spExamAssessor;
     private ArrayList<Classrooms> arrListClassRooms;
     private ArrayList<AuthorBook> arrListAuthorBooks;
-    private List<String> arrListDefalt, arrListPassingPercent, arrListExamDuration, arrListExamMode, arrListExamCategory;
-    private ToggleButton tbExamSelectexamfor;
-    private EditText etExamName, etExamStartdate, etExamEnddate, etExamQuestionscorevalue, etExamAttemptcount, etExamAddnegativemark;
+    private List<String> arrListDefalt, arrListPassingPercent, arrListExamDuration, arrListExamMode, arrListExamCategory, arrListExamAssessor;
+    private EditText etExamName, etExamStartdate, etExamStartTime, etExamQuestionscorevalue, etExamAttemptcount, etExamAddnegativemark;
     private CheckBox cbExamStartdateNotify, cbExamEnddateNotify;
     private RadioGroup radioDeclareresult, radioNegativemarking, radioExamRandomQuestion, radioExamUsescore;
-    private LinearLayout llAddQuestionscore, llAddNegativeMark, llExamStartdate, llExamEnddate;
+    private RadioButton radio_btn_declareresult_yes, radio_btn_declareresult_no, radio_btn_negativemarking_yes, radio_btn_negativemarking_no,
+            radio_btn_randomquestion_yes, radio_btn_randomquestion_no, radio_btn_examuserscore_yes, radio_btn_examuserscore_no;
+    private LinearLayout llAddQuestionscore, llAddNegativeMark, llExamStartdate, llExamStartTime;
     private Button btnExamSave, btnExamSetquestion, btnExamCancel;
     private ScrollView svCreateExam;
-
-
     private MyTypeFace myTypeFace;
-
+    private InputValidator inputValidator;
+    private RichTextEditor rteTrialExam;
+    String examStartDate = "";
     private static int PASSINGPERCENT_INTERVAL = 5, PASSINGPERCENT_STARTVALUE = 30, PASSINGPERCENT_ENDVALUE = 99;
     private static int EXAMDURATION_INTERVAL = 5, EXAMDURATION_STARTVALUE = 30, EXAMDURATION_ENDVALUE = 300;
-
-    String examStartDate = "", examEndDate = "";
-    private InputValidator inputValidator;
-
-    /*This is for the rich text editor*/
-
-    private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
-    private RichTextEditor rteTrialExam;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -124,6 +122,31 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         tvExamQuestionscorevalue = (TextView) view.findViewById(R.id.tv_exam_questionscorevalue);
         tvExamAddnegativemark = (TextView) view.findViewById(R.id.tv_exam_addnegativemark);
 
+        tvExamName = (TextView) view.findViewById(R.id.tv_exam_name);
+        tvExamClass = (TextView) view.findViewById(R.id.tv_exam_class);
+        tvExamBookname = (TextView) view.findViewById(R.id.tv_exam_bookname);
+        tvExamPassingpercent = (TextView) view.findViewById(R.id.tv_exam_passingpercent);
+        tvExamCategory = (TextView) view.findViewById(R.id.tv_exam_category);
+        tvExamExammode = (TextView) view.findViewById(R.id.tv_exam_exammode);
+        tvExamExamduration = (TextView) view.findViewById(R.id.tv_exam_examduration);
+        tvExamAttemptcount = (TextView) view.findViewById(R.id.tv_exam_attemptcount);
+        tvExamschedule = (TextView) view.findViewById(R.id.tv_exam_examschedule);
+        tvExamStartdate = (TextView) view.findViewById(R.id.tv_exam_startdate);
+        tvExamStartTime = (TextView) view.findViewById(R.id.tv_exam_startTime);
+        tvExamAssessor = (TextView) view.findViewById(R.id.tv_exam_assessor);
+
+        tvExamName.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamClass.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamBookname.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamPassingpercent.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamCategory.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamExammode.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamExamduration.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamAttemptcount.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamschedule.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamStartdate.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamStartTime.setTypeface(myTypeFace.getRalewayRegular());
+
         tvExamTitle.setTypeface(myTypeFace.getRalewayRegular());
         tvExamExamschedule.setTypeface(myTypeFace.getRalewayRegular());
         tvExamExaminstruction.setTypeface(myTypeFace.getRalewayRegular());
@@ -133,7 +156,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         tvExamUsescore.setTypeface(myTypeFace.getRalewayRegular());
         tvExamQuestionscorevalue.setTypeface(myTypeFace.getRalewayRegular());
         tvExamAddnegativemark.setTypeface(myTypeFace.getRalewayRegular());
-
+        tvExamAssessor.setTypeface(myTypeFace.getRalewayRegular());
 
         spExamClassroom = (Spinner) view.findViewById(R.id.sp_exam_classroom);
         spExamBookname = (Spinner) view.findViewById(R.id.sp_exam_bookname);
@@ -141,20 +164,18 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         spExamExamCategory = (Spinner) view.findViewById(R.id.sp_exam_examcategory);
         spExamExammode = (Spinner) view.findViewById(R.id.sp_exam_exammode);
         spExamExamduration = (Spinner) view.findViewById(R.id.sp_exam_examduration);
-
-
-        tbExamSelectexamfor = (ToggleButton) view.findViewById(R.id.tb_exam_selectexamfor);
+        spExamAssessor = (Spinner) view.findViewById(R.id.sp_exam_assessor);
 
         etExamName = (EditText) view.findViewById(R.id.et_exam_name);
         etExamStartdate = (EditText) view.findViewById(R.id.et_exam_startdate);
-        etExamEnddate = (EditText) view.findViewById(R.id.et_exam_enddate);
+        etExamStartTime = (EditText) view.findViewById(R.id.et_exam_startTime);
         etExamQuestionscorevalue = (EditText) view.findViewById(R.id.et_exam_questionscorevalue);
         etExamAttemptcount = (EditText) view.findViewById(R.id.et_exam_attemptcount);
         etExamAddnegativemark = (EditText) view.findViewById(R.id.et_exam_addnegativemark);
 
         etExamName.setTypeface(myTypeFace.getRalewayRegular());
         etExamStartdate.setTypeface(myTypeFace.getRalewayRegular());
-        etExamEnddate.setTypeface(myTypeFace.getRalewayRegular());
+        etExamStartTime.setTypeface(myTypeFace.getRalewayRegular());
         etExamQuestionscorevalue.setTypeface(myTypeFace.getRalewayRegular());
         etExamAddnegativemark.setTypeface(myTypeFace.getRalewayRegular());
 
@@ -172,6 +193,29 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         radioExamRandomQuestion.check(R.id.radio_btn_randomquestion_yes);
         radioExamUsescore.check(R.id.radio_btn_examuserscore_yes);
 
+        radio_btn_declareresult_yes = (RadioButton) view.findViewById(R.id.radio_btn_declareresult_yes);
+        radio_btn_declareresult_no = (RadioButton) view.findViewById(R.id.radio_btn_declareresult_no);
+
+        radio_btn_negativemarking_yes = (RadioButton) view.findViewById(R.id.radio_btn_negativemarking_yes);
+        radio_btn_negativemarking_no = (RadioButton) view.findViewById(R.id.radio_btn_negativemarking_no);
+
+        radio_btn_randomquestion_yes = (RadioButton) view.findViewById(R.id.radio_btn_randomquestion_yes);
+        radio_btn_randomquestion_no = (RadioButton) view.findViewById(R.id.radio_btn_randomquestion_no);
+
+        radio_btn_examuserscore_yes = (RadioButton) view.findViewById(R.id.radio_btn_examuserscore_yes);
+        radio_btn_examuserscore_no = (RadioButton) view.findViewById(R.id.radio_btn_examuserscore_no);
+
+
+        radio_btn_declareresult_yes.setTypeface(myTypeFace.getRalewayRegular());
+        radio_btn_declareresult_no.setTypeface(myTypeFace.getRalewayRegular());
+        radio_btn_negativemarking_yes.setTypeface(myTypeFace.getRalewayRegular());
+        radio_btn_negativemarking_no.setTypeface(myTypeFace.getRalewayRegular());
+        radio_btn_randomquestion_yes.setTypeface(myTypeFace.getRalewayRegular());
+        radio_btn_randomquestion_no.setTypeface(myTypeFace.getRalewayRegular());
+        radio_btn_examuserscore_yes.setTypeface(myTypeFace.getRalewayRegular());
+        radio_btn_examuserscore_no.setTypeface(myTypeFace.getRalewayRegular());
+
+
         svCreateExam = (ScrollView) view.findViewById(R.id.sv_create_exam);
 
 
@@ -183,6 +227,10 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         btnExamSetquestion.setTypeface(myTypeFace.getRalewayRegular());
         btnExamCancel.setTypeface(myTypeFace.getRalewayRegular());
 
+        btnExamSave.setOnClickListener(this);
+        btnExamSetquestion.setOnClickListener(this);
+        btnExamCancel.setOnClickListener(this);
+
         llAddQuestionscore = (LinearLayout) view.findViewById(R.id.ll_add_questionscore);
         llAddNegativeMark = (LinearLayout) view.findViewById(R.id.ll_add_negative_mark);
 
@@ -190,7 +238,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         llAddNegativeMark.setVisibility(View.VISIBLE);
 
         llExamStartdate = (LinearLayout) view.findViewById(R.id.ll_exam_startdate);
-        llExamEnddate = (LinearLayout) view.findViewById(R.id.ll_exam_enddate);
+        llExamStartTime = (LinearLayout) view.findViewById(R.id.ll_exam_startTime);
 
 
         arrListDefalt = new ArrayList<String>();
@@ -212,6 +260,14 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         arrListExamCategory = Arrays.asList(getResources().getStringArray(R.array.examname));
         Adapters.setUpSpinner(mContext, spExamExamCategory, arrListExamCategory, Adapters.ADAPTER_NORMAL);
 
+
+        arrListExamAssessor = new ArrayList<String>();
+        arrListExamAssessor.add(getString(R.string.strexamassessor));
+        arrListExamAssessor.add(getString(R.string.strnoassessor));
+        arrListExamAssessor.add(Global.strFullName);
+        Adapters.setUpSpinner(mContext, spExamAssessor, arrListExamAssessor, Adapters.ADAPTER_NORMAL);
+
+
         llExamStartdate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -223,21 +279,27 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             }
         });
 
-        llExamEnddate.setOnTouchListener(new View.OnTouchListener() {
+        llExamStartTime.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    examEndDate = Utils.showDatePickerDob(mContext, etExamEnddate);
-                    etExamEnddate.setError(null);
+                    Calendar mcurrentTime = Calendar.getInstance();
+                    int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                    int minute = mcurrentTime.get(Calendar.MINUTE);
+                    TimePickerDialog mTimePicker;
+                    mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                            etExamStartTime.setText(selectedHour + ":" + selectedMinute);
+                        }
+                    }, hour, minute, true);//Yes 24 hour time
+                    mTimePicker.setTitle("Select Time");
+                    mTimePicker.show();
                 }
                 return true;
+
             }
         });
-
-
-        btnExamSave.setOnClickListener(this);
-        btnExamSetquestion.setOnClickListener(this);
-        btnExamCancel.setOnClickListener(this);
 
 
         radioNegativemarking.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -262,15 +324,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 }
             }
         });
-
-
-//        rteTrialExam.getRichEditor().setEditorFontSize(25);
-//        rteTrialExam.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
-//            @Override
-//            public void onTextChange(String text) {
-//                strAssignmenttext = text;
-//            }
-//        });
 
 
         rteTrialExam = (RichTextEditor) view.findViewById(R.id.rte_trial_exam);
@@ -311,7 +364,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         }
         etExamName.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
         spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE)));
-        setExamType(getArguments().getString(ExamsAdapter.ARG_EXAM_TYPE));
         spExamExamCategory.setSelection(arrListExamCategory.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_CATEGORY)));
         spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_MODE)));
         spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_DURATION)));
@@ -341,7 +393,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId("52");
+                attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETBOOKSFORAUTHOR);
             } catch (Exception e) {
@@ -350,6 +402,18 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         } else {
             Utility.toastOffline(mContext);
         }
+    }
+
+
+    /*These method has to be change after api integration of these values*/
+    private String getExamAssessorId() {
+
+        if (spExamAssessor.getSelectedItemPosition() == 1) {
+            return Global.strUserId;
+        } else {
+            return Global.strUserId;
+        }
+
     }
 
 
@@ -363,23 +427,29 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 attribute.setExamName(etExamName.getText().toString());
                 attribute.setClassroomId(String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
-                attribute.setSubjectId("0");
-                attribute.setAttemptCount(String.valueOf(Integer.valueOf(etExamAttemptcount.getText().toString())));
-                attribute.setExamType("topic");
-                attribute.setExamCategory(arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
-                attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
-                attribute.setPassingPercent(arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
-                attribute.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
-                attribute.setExamInstruction(rteTrialExam.getHtml());
-                attribute.setDeclareResults(getRadioGropuSelection(radioDeclareresult));
-                attribute.setNegativeMarking(getRadioGropuSelection(radioNegativemarking));
-                attribute.setRandomQuestion(getRadioGropuSelection(radioExamRandomQuestion));
-                attribute.setExamStartDate(Utils.getDateInApiFormat(etExamStartdate.getText().toString()));
-                attribute.setExamStartTime("5:00:00");
-                attribute.setUserId("52");
-                attribute.setNegativeMarkValue(etExamAddnegativemark.getText().toString());
                 attribute.setBookId(String.valueOf(spExamBookname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListAuthorBooks.
                         get(spExamBookname.getSelectedItemPosition() - 1).getBookId()) : 0));
+                attribute.setPassingPercent(arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
+                attribute.setExamAssessor(getExamAssessorId());
+                attribute.setExamCategory(arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
+                attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
+                attribute.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
+                attribute.setAttemptCount(String.valueOf(Integer.valueOf(etExamAttemptcount.getText().toString())));
+                attribute.setExamStartDate(Utils.getDateInApiFormat(etExamStartdate.getText().toString()));
+                attribute.setExamStartTime(etExamStartTime.getText().toString());
+                attribute.setDeclareResults(getRadioGropuSelection(radioDeclareresult));
+                attribute.setNegativeMarking(getRadioGropuSelection(radioNegativemarking));
+                attribute.setNegativeMarkValue(getNegativeMarkValue());
+                attribute.setRandomQuestion(getRadioGropuSelection(radioExamRandomQuestion));
+                attribute.setUseQuestionScore(getRadioGropuSelection(radioExamUsescore));
+                attribute.setCorrectAnswerScore(getQuestionScoreValue());
+                attribute.setExamInstruction(rteTrialExam.getHtml());
+                attribute.setUserId(Global.strUserId);
+
+                /*Insert subject id and topic default value*/
+                attribute.setSubjectId("0");
+                attribute.setExamType("topic");
+
 
                 new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.CREATEEXAM);
@@ -397,7 +467,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private boolean isInputsValid() {
         return inputValidator.validateStringPresence(etExamName) & inputValidator.validateStringPresence(etExamAttemptcount)
-                & inputValidator.validateStringPresence(etExamStartdate) & inputValidator.validateStringPresence(etExamEnddate)
+                & inputValidator.validateStringPresence(etExamStartdate) & inputValidator.validateStringPresence(etExamStartTime)
                 && checkRadioButtonInputs() && checkOtherInputs();
     }
 
@@ -472,7 +542,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private boolean isTextSetInRichTextEditor() {
-        if (rteTrialExam.getHtml().trim().length() > 0) {
+        if (rteTrialExam.getHtml().length() > 0) {
             return true;
         } else {
             strValidationMsg += Utility.getString(R.string.msg_validation_add_text_rich_editor, mContext);
@@ -534,26 +604,32 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         }
     }
 
-    private String getExamType() {
-        if (tbExamSelectexamfor.isChecked()) {
-            return "subject";
-        } else {
-            return "topic";
-        }
-    }
-
-    private void setExamType(String value) {
-        if (value.equals("subject")) {
-            tbExamSelectexamfor.setChecked(true);
-        } else if (value.equals("topic")) {
-            tbExamSelectexamfor.setChecked(false);
-        }
-
-    }
 
     private String getRadioGropuSelection(RadioGroup radioGroup) {
         int selectedId = radioGroup.getCheckedRadioButtonId();
+        Debug.e(TAG, "The radio button selection value is:::" + ((RadioButton) view.findViewById(selectedId)).getText().toString().toLowerCase());
         return ((RadioButton) view.findViewById(selectedId)).getText().toString().toLowerCase();
+    }
+
+    private String getNegativeMarkValue() {
+        int selectedId = radioNegativemarking.getCheckedRadioButtonId();
+        if (((RadioButton) view.findViewById(selectedId)).getText().toString().toLowerCase().equalsIgnoreCase(getString(R.string.stryes)) &&
+                !etExamAddnegativemark.getText().equals("")) {
+            return etExamAddnegativemark.getText().toString();
+        } else {
+            return "0";
+        }
+    }
+
+
+    private String getQuestionScoreValue() {
+        int selectedId = radioExamUsescore.getCheckedRadioButtonId();
+        if (((RadioButton) view.findViewById(selectedId)).getText().toString().toLowerCase().equalsIgnoreCase(getString(R.string.stryes)) &&
+                !etExamQuestionscorevalue.getText().equals("")) {
+            return etExamQuestionscorevalue.getText().toString();
+        } else {
+            return "0";
+        }
     }
 
 
@@ -714,14 +790,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     }
 
-    private String getQuestionScoreValue() {
-
-        if (etExamQuestionscorevalue.getText().equals("")) {
-            return "0";
-        } else {
-            return etExamQuestionscorevalue.getText().toString();
-        }
-    }
 
     private void backToTrialScreen() {
 //        ((AuthorHostActivity) mContext).onBackPressed();
@@ -754,16 +822,12 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     Integer.parseInt(arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
             getArguments().putString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
                     arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getClassName() : 0));
-//            getArguments().putString(ExamsAdapter.ARG_EXAM_SUBJECT_ID, "0");
-//            getArguments().putString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME, "");
-//            getArguments().putString(ExamsAdapter.ARG_EXAM_TOPIC_ID, WebConstants.TEST_TOPIC_ID);
-//            getArguments().putString(ExamsAdapter.ARG_EXAM_TOPIC_NAME, "");
             getArguments().putString(ExamsAdapter.ARG_EXAM_BOOK_ID, String.valueOf(spExamBookname.getSelectedItemPosition() > 0 ?
                     Integer.parseInt(arrListAuthorBooks.get(spExamBookname.getSelectedItemPosition() - 1).getBookId()) : 0));
             getArguments().putString(ExamsAdapter.ARG_EXAM_BOOK_NAME, String.valueOf(spExamBookname.getSelectedItemPosition() > 0 ?
                     arrListAuthorBooks.get(spExamBookname.getSelectedItemPosition() - 1).getBookName() : 0));
             getArguments().putString(ExamsAdapter.ARG_EXAM_CATEGORY, arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
-            getArguments().putString(ExamsAdapter.ARG_EXAM_TYPE, getExamType());
+            getArguments().putString(ExamsAdapter.ARG_EXAM_TYPE, "topic");
             getArguments().putString(ExamsAdapter.ARG_EXAM_MODE,
                     arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
             getArguments().putString(ExamsAdapter.ARG_EXAM_DURATION,

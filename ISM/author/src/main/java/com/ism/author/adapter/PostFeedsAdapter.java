@@ -308,7 +308,8 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 addCommentFeedPosition = position;
                 Attribute attribute = new Attribute();
                 attribute.setFeedId(arrListFeeds.get(position).getFeedId());
-                attribute.setCommentBy(WebConstants.TEST_USER_ID);
+//                attribute.setCommentBy(WebConstants.TEST_USER_ID);
+                attribute.setCommentBy(Global.strUserId);
                 attribute.setComment(comment);
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
@@ -364,7 +365,8 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             try {
                 Attribute attribute = new Attribute();
                 attribute.setFeedId(arrListFeeds.get(tagFeedPosition).getFeedId());
-                attribute.setTaggedBy(WebConstants.TEST_USER_ID);
+//                attribute.setTaggedBy(WebConstants.TEST_USER_ID);
+                attribute.setTaggedBy(Global.strUserId);
                 attribute.setTaggedUserIds(arrTagUser);
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()

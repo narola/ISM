@@ -27,6 +27,7 @@ public class Questions implements Parcelable, Comparable<Questions> {
     private String bookName;
     private String solution;
     private String questionId;
+    private String questionScore;
     private String questionText;
     private String questionCreatorId;
     private String questionCreatorName;
@@ -311,6 +312,17 @@ public class Questions implements Parcelable, Comparable<Questions> {
 
     public Questions setIsEvaluated(Boolean isEvaluated) {
         this.isEvaluated = isEvaluated;
+        return this;
+    }
+
+
+    @JsonProperty("question_score")
+    public String getQuestionScore() {
+        return questionScore;
+    }
+
+    public Questions setQuestionScore(String questionScore) {
+        this.questionScore = questionScore;
         return this;
     }
 
