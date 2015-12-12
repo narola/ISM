@@ -38,7 +38,7 @@ public class YourStudymatesAdapter extends RecyclerView.Adapter<YourStudymatesAd
 	private Context context;
 	private MyTypeFace myTypeFace;
 	private ArrayList<User> arrayListUser;
-	private int currentOptionPosition;
+	private int currentPosition;
 
 	private static final int REQUEST_BLOCK_STUDYMATE = 0;
 	private static final int REQUEST_REMOVE_STUDYMATE = 1;
@@ -82,7 +82,7 @@ public class YourStudymatesAdapter extends RecyclerView.Adapter<YourStudymatesAd
 	}
 
 	@Override
-	public void onBindViewHolder(ViewHolder holder, int position) {
+	public void onBindViewHolder(ViewHolder holder, final int position) {
 		Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrayListUser.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
 		holder.viewStatus.setBackgroundResource(arrayListUser.get(position).getIsOnline().equals("1") ? R.drawable.bg_online : R.drawable.bg_offline);
 		holder.txtUserName.setText(arrayListUser.get(position).getFullName());
@@ -91,23 +91,22 @@ public class YourStudymatesAdapter extends RecyclerView.Adapter<YourStudymatesAd
 
 		holder.spinnerOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemSelected(AdapterView<?> parent, View view, int selectedItemPosition, long id) {
 				if (Utility.isConnected(context)) {
-					switch (position) {
+					switch (selectedItemPosition) {
 						case 1:
 							Utility.askConfirmation(context, YourStudymatesAdapter.this, REQUEST_BLOCK_STUDYMATE,
 									context.getString(R.string.block_studymate),
 									context.getString(R.string.msg_block_studymate) + arrayListUser.get(position).getFullName(),
 									false);
-							currentOptionPosition = position;
+							currentPosition = position;
 							break;
 						case 2:
 							Utility.askConfirmation(context, YourStudymatesAdapter.this, REQUEST_REMOVE_STUDYMATE,
 									context.getString(R.string.remove_studymate),
 									context.getString(R.string.msg_remove_studymate) + arrayListUser.get(position).getFullName(),
 									false);
-							currentOptionPosition = position;
-							callApiRemoveStudymate();
+							currentPosition = position;
 							break;
 					}
 				} else {
@@ -180,9 +179,10 @@ public class YourStudymatesAdapter extends RecyclerView.Adapter<YourStudymatesAd
 		if (confirmed) {
 			switch (requestId) {
 				case REQUEST_BLOCK_STUDYMATE:
-					callApiBlockStudymate(arrayListUser.get(currentOptionPosition).getUserId());
+					callApiBlockStudymate(arrayListUser.get(currentPosition).getUserId());
 					break;
 				case REQUEST_REMOVE_STUDYMATE:
+					callApiRemoveStudymate();
 					break;
 			}
 		}
