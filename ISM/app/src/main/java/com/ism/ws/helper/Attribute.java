@@ -104,12 +104,10 @@ public class Attribute {
 	public Attribute() {
 		setAccessKey(WebConstants.ACCESS_KEY);
 		setSecretKey(WebConstants.SECRET_KEY);
-		Log.e("Attribute", "AK : " + WebConstants.ACCESS_KEY + ",  SK : " + WebConstants.SECRET_KEY);
 	}
 
 	public Attribute(String accessKey) {
 		setAccessKey(accessKey);
-		Log.e("Attribute", "AK : " + accessKey);
 	}
 
 	@JsonProperty("secret_key")

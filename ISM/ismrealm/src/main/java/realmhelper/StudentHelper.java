@@ -75,7 +75,6 @@ public class StudentHelper {
         RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
                 .equalTo("configKey", "globalPassword")
                 .findAll();
-        Log.e(TAG, "getGlobalPassword size : " + adminConfigs.size());
         if (adminConfigs != null && adminConfigs.size() > 0) {
             return adminConfigs.get(0).getConfigValue();
         } else {

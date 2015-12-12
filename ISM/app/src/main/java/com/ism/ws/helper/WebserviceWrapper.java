@@ -73,7 +73,6 @@ public class WebserviceWrapper {
 			                responseObject = new WebserviceConnector(WebConstants.URL_REFRESH_TOKEN).execute(ResponseHandler.class, new Attribute(WebConstants.ACCESS_KEY));
 		                }
 	                } else {
-		                Log.e(TAG, "AK : " + attribute.getAccessKey() + ",  SK : " + attribute.getSecretKey());
 		                switch (currentApiCode) {
 			                case WebConstants.LOGIN:
 				                responseObject = new WebserviceConnector(WebConstants.URL_LOGIN).execute(ResponseHandler.class, attribute);
@@ -239,15 +238,16 @@ public class WebserviceWrapper {
 				        if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					        PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, context, responseHandler.getToken().get(0).getTokenName());
 					        WebConstants.SECRET_KEY = responseHandler.getToken().get(0).getTokenName();
-					        new WebserviceWrapper(context, attribute, webserviceResponse).new WebserviceCaller().execute(currentApiCode);
+					        attribute.setSecretKey(WebConstants.SECRET_KEY);
+					        new WebserviceCaller().execute(currentApiCode);
 				        } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					        Log.e(TAG, "onResponseRefreshToken failed");
 				        }
 			        } else if (exception != null) {
-				        Log.e(TAG, "onResponseRefreshToken api Exception :" + exception.toString());
+				        Log.e(TAG, "onResponseRefreshToken api Exception : " + exception.toString());
 			        }
 		        } catch (Exception e) {
-			        Log.e(TAG, "onResponseRefreshToken Exception :" + e.toString());
+			        Log.e(TAG, "onResponseRefreshToken Exception : " + e.toString());
 		        }
 	        } else {
 		        webserviceResponse.onResponse(responseObject, exception, currentApiCode);

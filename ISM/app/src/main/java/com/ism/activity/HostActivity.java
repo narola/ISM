@@ -399,7 +399,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void callApiGetGeneralSettingPreferences() {
         try {
             showProgress();
-            new WebserviceWrapper(this, null, this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTING_PREFERENCES);
+            new WebserviceWrapper(this, new Attribute(), this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTING_PREFERENCES);
         } catch (Exception e) {
             Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
         }
