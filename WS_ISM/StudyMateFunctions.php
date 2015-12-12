@@ -130,26 +130,36 @@ class StudyMateFunctions
 
         if($isSecure==yes) {
 
-            $query = "SELECT * FROM ".TABLE_STUDYMATES ." where mate_of=".$mate_of. " and mate_id=". $mate_id." and is_delete=0";
-            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            $selectUserExist="SELECT * FROM ".TABLE_USERS." WHERE id IN(".$mate_of. ",". $mate_id.")";
+            $resultUserExist=mysqli_query($GLOBALS['con'], $selectUserExist) or $message = mysqli_error($GLOBALS['con']);
 
-            if (mysqli_num_rows($result) == 0) {
-                $insertFields = "`mate_of`,`mate_id`,`status`,`is_request_seen`";
-                $insertValues = "" . $mate_of . "," . $mate_id . ",'request', 0";
+            if(mysqli_num_rows($resultUserExist) ==2) {
 
-                $insertQuery = "INSERT INTO " . TABLE_STUDYMATES . "(" . $insertFields . ") VALUES( " . $insertValues . ")";
-                $insertResult = mysqli_query($GLOBALS['con'], $insertQuery) or $message = mysqli_error($GLOBALS['con']);
+                $query = "SELECT * FROM " . TABLE_STUDYMATES . " where ((mate_id=".$mate_id. " and mate_of=". $mate_of." ) or (mate_id=".$mate_of. " and mate_of=". $mate_id." ))  and is_delete=0";
+               // $query = "SELECT * FROM " . TABLE_STUDYMATES . " where mate_of=" . $mate_of . " and mate_id=" . $mate_id . " and is_delete=0";
 
-                if ($insertResult) {
-                    $message = "Request sent.";
-                    $status = SUCCESS;
+
+                $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                if (mysqli_num_rows($result) == 0) {
+                    $insertFields = "`mate_of`,`mate_id`,`status`,`is_request_seen`";
+                    $insertValues = "" . $mate_of . "," . $mate_id . ",'request', 0";
+
+                    $insertQuery = "INSERT INTO " . TABLE_STUDYMATES . "(" . $insertFields . ") VALUES( " . $insertValues . ")";
+                     //echo $insertQuery; exit;
+                    $insertResult = mysqli_query($GLOBALS['con'], $insertQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                    if ($insertResult) {
+                        $message = "Request sent.";
+                        $status = SUCCESS;
+                    } else {
+                        $message = "failed to sent request";
+                        $status = FAILED;
+                    }
                 } else {
-                    $message = "";
-                    $status = FAILED;
+                    $message = "Request already sent.";
+                    $status = SUCCESS;
                 }
-            } else {
-                $message = "Request already sent.";
-                $status = SUCCESS;
             }
         }
         else

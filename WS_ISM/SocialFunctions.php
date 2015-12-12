@@ -30,26 +30,31 @@ class SocialFunctions
                 return $this->uploadMedia($postData);
             }
                 break;
+
             case "TagFriendInFeed":
             {
                 return $this->tagFriendInFeed($postData);
             }
                 break;
+
             case "AddComment":
             {
                 return $this->addComment($postData);
             }
                 break;
+
             case "LikeFeed":
             {
                 return $this->likeFeed($postData);
             }
                 break;
+
             case "GetAllComments":
             {
                 return $this->getAllComments($postData);
             }
                 break;
+
             case "GetMyFeeds":
             {
                 return $this->getMyFeeds($postData);
@@ -486,7 +491,7 @@ class SocialFunctions
                 } else {
                     // Image 5 = Video 6 = Audio 7
 
-                    $mediaName = "_testVIDEO" . $created_date . ".mp4";
+                    $mediaName = "_test_VIDEO" . $created_date . ".mp4";
 
                     $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
                     if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
@@ -508,7 +513,7 @@ class SocialFunctions
                     $message = $_FILES["audio_link"]["error"];
                     $status = 2;
                 } else {
-                    $mediaName = "_testAUDIO" . $created_date . ".mp3";
+                    $mediaName = "_test_AUDIO" . $created_date . ".mp3";
 
 
                     $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
@@ -534,7 +539,7 @@ class SocialFunctions
                     $message = $_FILES["mediaFile"]["error"];
                     $status = 2;
                 } else {
-                    $mediaName = "_testIMAGE" . $created_date . ".jpg";
+                    $mediaName = "_test_IMAGE" . $created_date . ".jpg";
 
                     $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
                     if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
@@ -1407,56 +1412,110 @@ class SocialFunctions
                 $arraySeparateKeyValue = explode(':', $tag);
                 $arrayTagsID[] = $arraySeparateKeyValue[1];
                 $arrayTagsName[] = $arraySeparateKeyValue[0];
+                $arrayTagsIDDelete[] = $arraySeparateKeyValue[2];
             }
+          //  print_r($arrayTagsID); print_r($arrayTagsName);print_r($arrayTagsIDDelete); exit;
 
             if ($hashtag_data != null) {
 
-
                 for ($i = 0; $i < count($arrayTagsName); $i++) {
                     if ($arrayTagsID[$i] == 0) {
+                        if($arrayTagsIDDelete[$i]==1) {
 
-                        $selectQueryFotTagName = "SELECT id FROM " . TABLE_TAGS . " WHERE  LOWER(`tag_name`) = LOWER('$arrayTagsName[$i]') AND is_delete=0";
-                        $resultQueryFotTagName = mysqli_query($GLOBALS['con'], $selectQueryFotTagName) or $message = mysqli_error($GLOBALS['con']);
-                        $getTagID = mysqli_fetch_row($resultQueryFotTagName);
+                            $selectQueryFotTagName = "SELECT id FROM " . TABLE_TAGS . " WHERE  LOWER(`tag_name`) = LOWER('$arrayTagsName[$i]') AND is_delete=0";
+                            $resultQueryFotTagName = mysqli_query($GLOBALS['con'], $selectQueryFotTagName) or $message = mysqli_error($GLOBALS['con']);
+                            $getTagID = mysqli_fetch_row($resultQueryFotTagName);
 
-                        if (mysqli_num_rows($resultQueryFotTagName) == 0) {
-                            // while ($rowGetTags = mysqli_fetch_assoc($resultQueryFotTagName)) {
+                            if (mysqli_num_rows($resultQueryFotTagName) == 0) {
+                                // while ($rowGetTags = mysqli_fetch_assoc($resultQueryFotTagName)) {
 
-                            //$found=in_array($rowGetTags['tag_name'],$arrayTagsName,true);
-                            //echo $rowGetTags['tag_name'];
+                                //$found=in_array($rowGetTags['tag_name'],$arrayTagsName,true);
+                                //echo $rowGetTags['tag_name'];
 
-                            $insertFields = "`tag_name`";
-                            $insertValues = "'" . $arrayTagsName[$i] . "'";
-
-
-                            $queryToInsertNewTag = "INSERT INTO " . TABLE_TAGS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                            $resultToInsertNewTag = mysqli_query($GLOBALS['con'], $queryToInsertNewTag) or $message = mysqli_error($GLOBALS['con']);
-
-                            $latest_tag_id = mysqli_insert_id($GLOBALS['con']);
-
-                            $insertFields = "`tag_id`,`" . $resource_name . "`";
-                            $insertValues = $latest_tag_id . "," . $resource_id;
+                                $insertFields = "`tag_name`";
+                                $insertValues = "'" . $arrayTagsName[$i] . "'";
 
 
-                            $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+                                $queryToInsertNewTag = "INSERT INTO " . TABLE_TAGS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                                $resultToInsertNewTag = mysqli_query($GLOBALS['con'], $queryToInsertNewTag) or $message = mysqli_error($GLOBALS['con']);
 
-                            if ($result) {
-                                $status = SUCCESS;
-                                $message = "resource hash tagged";
+                                $latest_tag_id = mysqli_insert_id($GLOBALS['con']);
+
+                                $insertFields = "`tag_id`,`" . $resource_name . "`";
+                                $insertValues = $latest_tag_id . "," . $resource_id;
+
+
+                                $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                                $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                                if ($result) {
+                                    $status = SUCCESS;
+                                    $message = "resource hash tagged";
+                                } else {
+                                    $status = FAILED;
+                                    $message = "";
+                                }
+                                //}
                             } else {
-                                $status = FAILED;
-                                $message = "";
+
+                                $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i] . " AND is_delete=0";
+                                $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                                if (mysqli_num_rows($resultQuery) == 0) {
+                                    $insertFields = "`tag_id`,`" . $resource_name . "`";
+                                    $insertValues = $getTagID[0] . "," . $resource_id;
+
+                                    $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                                    $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                                    if ($result) {
+                                        $status = SUCCESS;
+                                        $message = "resource hash tagged";
+                                    } else {
+                                        $status = FAILED;
+                                        $message = "";
+                                    }
+                                } else {
+                                    $status = SUCCESS;
+                                    $message = RECORD_ALREADY_EXIST;
+                                }
                             }
-                            //}
-                        } else {
+                        }
+
+                    } else
+                    {
+
+                        if($arrayTagsIDDelete[$i]==0)
+                        {
+
+                            $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i] . " AND is_delete=0";
+                            $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                            if (mysqli_num_rows($resultQuery) > 0) {
+                                $queryToDeleteRecord = "UPDATE " . $table . " SET is_delete=1 WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i] . " AND is_delete=0";
+                               // echo $queryToDeleteRecord; exit;
+                                $resultToDeleteRecord = mysqli_query($GLOBALS['con'], $queryToDeleteRecord) or $message = mysqli_error($GLOBALS['con']);
+
+
+                                if ($resultToDeleteRecord) {
+                                    $status = SUCCESS;
+                                    $message = "resource hash tag is removed";
+                                } else {
+                                    $status = FAILED;
+                                    $message = "failed to remove hash tag";
+                                }
+                            }
+                        }
+                        else
+                        {
 
                             $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i] . " AND is_delete=0";
                             $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
 
                             if (mysqli_num_rows($resultQuery) == 0) {
+
                                 $insertFields = "`tag_id`,`" . $resource_name . "`";
-                                $insertValues = $getTagID[0] . "," . $resource_id;
+                                $insertValues = $arrayTagsID[$i] . "," . $resource_id;
 
                                 $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
                                 $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
@@ -1472,31 +1531,7 @@ class SocialFunctions
                                 $status = SUCCESS;
                                 $message = RECORD_ALREADY_EXIST;
                             }
-                        }
 
-                    } else {
-
-                        $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i] . " AND is_delete=0";
-                        $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
-
-                        if (mysqli_num_rows($resultQuery) == 0) {
-
-                            $insertFields = "`tag_id`,`" . $resource_name . "`";
-                            $insertValues = $arrayTagsID[$i] . "," . $resource_id;
-
-                            $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
-
-                            if ($result) {
-                                $status = SUCCESS;
-                                $message = "resource hash tagged";
-                            } else {
-                                $status = FAILED;
-                                $message = "";
-                            }
-                        } else {
-                            $status = SUCCESS;
-                            $message = RECORD_ALREADY_EXIST;
                         }
                     }
 
@@ -1587,29 +1622,45 @@ class SocialFunctions
 
         if($isSecure==yes) {
 
-            $selectToGetSubjectId="SELECT questions.*,subjects.subject_name FROM ".TABLE_USER_FAVORITE_QUESTION." user_favorite_question
+//            $selectToGetSubjectId="SELECT questions.*,subjects.subject_name FROM ".TABLE_USER_FAVORITE_QUESTION." user_favorite_question
+//            INNER JOIN ".TABLE_QUESTIONS." questions ON questions.id=user_favorite_question.question_id
+//            INNER JOIN " . TABLE_SUBJECTS . " subjects ON subjects.id=questions.subject_id
+//            WHERE user_favorite_question.user_id=".$user_id." and user_favorite_question.is_delete=0 GROUP BY subjects.id";
+
+
+            $selectToGetSubjectId="SELECT * FROM (SELECT questions.*,subjects.subject_name,subjects.id as 'sid' FROM ".TABLE_USER_FAVORITE_QUESTION." user_favorite_question
             INNER JOIN ".TABLE_QUESTIONS." questions ON questions.id=user_favorite_question.question_id
             INNER JOIN " . TABLE_SUBJECTS . " subjects ON subjects.id=questions.subject_id
-            WHERE user_favorite_question.user_id=".$user_id." and user_favorite_question.is_delete=0 ";
+            WHERE user_favorite_question.user_id=".$user_id." and user_favorite_question.is_delete=0)se ";
+            //echo $selectToGetSubjectId; exit;
             $resultToGetSubjectId=mysqli_query($GLOBALS['con'], $selectToGetSubjectId) or $message = mysqli_error($GLOBALS['con']);
 
-
+            $post=array();
+            $post1=array();
             if (mysqli_num_rows($resultToGetSubjectId) > 0) {
-                while ($rowQuestion1 = mysqli_fetch_assoc($resultToGetSubjectId)) {
 
-                    $post=array();
+                while ($rowQuestion= mysqli_fetch_assoc($resultToGetSubjectId)) {
 
-                    $selQuery = "SELECT questions.*,subjects.subject_name FROM " . TABLE_QUESTIONS . " questions
-                    INNER JOIN " . TABLE_SUBJECTS . " subjects ON subjects.id=questions.subject_id
-                    WHERE questions.subject_id=" . $rowQuestion1['subject_id'] . " and questions.id=".$rowQuestion1['id']." and questions.is_delete=0 group by questions.subject_id";
+
+
+//                    $selQuery = "SELECT questions.*,subjects.subject_name FROM " . TABLE_QUESTIONS . " questions
+//                    INNER JOIN " . TABLE_SUBJECTS . " subjects ON subjects.id=questions.subject_id
+//                    WHERE questions.subject_id=" . $rowQuestion1['subject_id'] .  " and questions.id=".$rowQuestion1['id']." and questions.is_delete=0 ";
+
+                    $questions=array();
+
+                    $selQuery = "SELECT id,subject_name FROM " . TABLE_SUBJECTS . "  WHERE id=" . $rowQuestion['subject_id'] .  " and is_delete=0 ";//group by id";
+
                     $selResult = mysqli_query($GLOBALS['con'], $selQuery) or $message = mysqli_error($GLOBALS['con']);
+                    //echo  $selQuery ;
 
 
-                    if (mysqli_num_rows($selResult) > 0) {
-                        $post1['subject_name']=$rowQuestion1['subject_name'];
-                        while ($rowQuestion = mysqli_fetch_assoc($selResult)) {
-                            $questions=array();
+                  //  if (mysqli_num_rows($selResult) > 0) {
 
+                      //  while ($rowQuestion1 = mysqli_fetch_assoc($selResult)) {
+
+                            //print_r($rowQuestion);
+                            $post['subject_name']=$rowQuestion['subject_name'];
                             $questions['question_id'] = $rowQuestion['id'];
                             $questions['question_text'] = $rowQuestion['question_text'];
                             $questions['question_format'] = $rowQuestion['question_format'];
@@ -1617,6 +1668,7 @@ class SocialFunctions
                             $questions['subject_id'] = $rowQuestion['subject_id'];
                             $questions['subject_name'] = $rowQuestion['subject_name'];
                             $questions['solution'] = $rowQuestion['solution'];
+
 
                            /* $choice = array();
                             if ($rowQuestion['question_format'] == 'MCQ') {
@@ -1634,14 +1686,21 @@ class SocialFunctions
                                 $questions['answers'] = $choice;
                             }*/
 
+                           // $post1['subjects'][]=$questions;
+                            $post1[]=$questions;
 
-                        }
-                        $post1['subjects'][]=$questions;
-                        $post[]=$post1;
-                    }
+
+                      //  }
+
+
+                        //$post[]=$post1;
+                       // $post[]=$post1;
+                   // }
+
 
 
                 }
+                $post[]=$post1;
                 $data[]=$post;
                 $status = SUCCESS;
                 $message = REQUEST_ACCEPTED;

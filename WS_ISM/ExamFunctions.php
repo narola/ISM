@@ -196,6 +196,9 @@ class ExamFunctions
                         $post['question_palette'][] = $insert_question_palette;
                     }
                 }
+                else{
+                    $post['question_palette']=array();
+                }
                 //$post['question_palette'] = $insert_question_palette;
                 //=========================Finish ti Add Question Paallete =================
                 if ($rowExam['exam_mode'] == "subjective") {
@@ -327,26 +330,27 @@ class ExamFunctions
                     $evaluation = array();
                     $student_id = $row['user_id'];
 
-                    $queryStudentDetails = $queryStudentDetails="SELECT user.id,user.full_name,user.profile_pic,student_profile.roll_no FROM ".TABLE_USERS." user JOIN .".TABLE_STUDENT_PROFILE." student_profile
-                ON student_profile.user_id=user.id WHERE user.id=".$student_id ." and user.is_delete=0 and student_profile.is_delete=0";
+                    $queryStudentDetails = "SELECT user.id,user.full_name,user.profile_pic,student_profile.roll_no,schools.school_name,classroom.class_name FROM " . TABLE_USERS . " user JOIN ." . TABLE_STUDENT_PROFILE . " student_profile ON student_profile.user_id=user.id LEFT JOIN " . TABLE_CLASSROOMS . " classroom ON  student_profile.classroom_id=classroom.id LEFT JOIN " . TABLE_SCHOOLS . " schools ON student_profile.school_id=schools.id WHERE user.id=" . $student_id . " and user.is_delete=0 and student_profile.is_delete=0";
                     $resultStudentDetails = mysqli_query($GLOBALS['con'], $queryStudentDetails) or $message = mysqli_error($GLOBALS['con']);
-                    // echo $queryStudentDetails;
+                   // echo $queryStudentDetails;
                     if (mysqli_num_rows($resultStudentDetails)) {
                         $rowDetails = mysqli_fetch_assoc($resultStudentDetails);
                         $evaluation['student_id'] = $rowDetails['id'];
                         $evaluation['student_name'] = $rowDetails['full_name'];
                         $evaluation['student_profile_pic'] = $rowDetails['profile_pic'];
-                        if($role==2)
-                        {
+                        if ($role == 2) {
                             $evaluation['student_roll_no'] = $rowDetails['student_roll_no'];
                         }
+                        $evaluation['student_school_name'] = $rowDetails['school_name'];
+                        $evaluation['student_class_name'] = $rowDetails['class_name'];
+
 
                     }
-                    $evaluation['evaluation_score'] = $row['marks_obtained'];
-                    $evaluation['exam_status'] = $row['exam_status'];
-                    $evaluation['submission_date'] = $row['exam_endtime'];
-                    $evaluation['remarks'] = $row['remarks'];
-                    $evaluations[] = $evaluation;
+                        $evaluation['evaluation_score'] = $row['marks_obtained'];
+                        $evaluation['exam_status'] = $row['exam_status'];
+                        $evaluation['submission_date'] = $row['exam_endtime'];
+                        $evaluation['remarks'] = $row['remarks'];
+                        $evaluations[] = $evaluation;
 //                $queryStudentDetails="SELECT studentExamScore.user_id,users.full_name,users.profile_pic,studentExamScore.marks_obtained,studentExamScore.remarks FROM ".TABLE_STUDENT_EXAM_SCORE." studentExamScore INNER JOIN ".TABLE_USERS." users on studentExamScore.user_id=users.id WHERE studentExamScore.exam_id=".$exam_id." and studentExamScore.user_id=".$student_id;
 //                $resultStudentDetails=mysqli_query($GLOBALS['con'],$queryStudentDetails) or  $message=mysqli_error($GLOBALS['con']);
 //                echo $queryStudentDetails;
@@ -479,8 +483,9 @@ class ExamFunctions
                 $insertFields = "`created_by`,`exam_name`, `book_id`,`classroom_id`, `subject_id`, `topic_id`, `exam_type`, `exam_category`, `exam_mode`, `pass_percentage`, `duration`, `instructions`, `negative_marking`,`negative_mark_value`,`use_question_score`,`correct_answer_score`, `random_question`, `declare_results`,`attempt_count`";
                 $insertValues = "".$user_id . ",'" . $exam_name . "'," . $book_id . "," . $classroom_id . "," . $subject_id . "," . $topic_id . ",'" . $exam_type . "','" . $exam_category . "','" . $exam_mode . "'," . $passing_percent . "," . $exam_duration . ",'" . $exam_instruction . "','" . $negative_marking . "'," . $negative_mark_value . ",'".$use_question_score."',".$correct_answer_score.",'" . $random_question . "','" . $declare_results . "'," . $attempt_count;
 
+
                 $query = "INSERT INTO " . TABLE_EXAMS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                echo $query; exit;
+                //echo $query; exit;
                 $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
                 if ($result) {
@@ -1079,7 +1084,7 @@ class ExamFunctions
             }
             $queryExam = "SELECT * FROM ".TABLE_EXAMS." WHERE is_delete=0 ".$condition."  AND id in (select exam_id from ".TABLE_EXAM_SCHEDULE." where exam_assessor=".$user_id.")";
             $resultExam = mysqli_query($GLOBALS['con'], $queryExam) or $message = mysqli_error($GLOBALS['con']);
-           // echo $queryExam."\n".mysqli_num_rows($resultExam);
+            //echo $queryExam."\n".mysqli_num_rows($resultExam);
             if (mysqli_num_rows($resultExam)) {
                 while ($rowExam = mysqli_fetch_assoc($resultExam)) {
                     $flag = false;
@@ -1178,14 +1183,56 @@ class ExamFunctions
 //            }
 //       }
 
+
+        $queryEvaluation = "SELECT total_student_attempted FROM " . TABLE_EXAM_EVALUATION . " WHERE exam_id=" . $post['exam_id'] ." AND is_delete=0";
+        $resultEvaluation = mysqli_query($GLOBALS['con'], $queryEvaluation) or $message = mysqli_error($GLOBALS['con']);
+        $rowTotalStudentAttempted=mysqli_fetch_row($resultEvaluation);
+
+        if($rowTotalStudentAttempted[0]== 0)
+            $post['total_student_attempted']=0;
+        else
+            $post['total_student_attempted']=$rowTotalStudentAttempted[0];
+
         $post['exam_type']=$rowExam['exam_type'];
         $post['exam_category']=$rowExam['exam_category'];
         $post['exam_mode']=$rowExam['exam_mode'];
         $post['pass_percentage']=$rowExam['pass_percentage'];
         $post['duration']=$rowExam['duration'];
+        $post['attempt_count']=$rowExam['attempt_count'];
+        $post['exam_instructions']=$rowExam['instructions'];
+        $post['random_question']=$rowExam['random_question'];
+        $post['negative_marking']=$rowExam['negative_marking'];
+
+        if($rowExam['negative_mark_value'] == null)
+            $post['negative_mark_value']="";
+        else
+            $post['negative_mark_value']=$rowExam['negative_mark_value'];
+        $post['use_question_score']=$rowExam['use_question_score'];
+
+        if($rowExam['correct_answer_score'] == null)
+            $post['correct_answer_score']="";
+        else
+            $post['correct_answer_score']=$rowExam['correct_answer_score'];
+        $post['declare_results']=$rowExam['declare_results'];
+
+        $query="SELECT * FROM ".TABLE_EXAM_SCHEDULE." WHERE `exam_id`=".$rowExam['id'] ." AND is_delete=0 ";
+        $result=mysqli_query($GLOBALS['con'],$query) or  $message=mysqli_error($GLOBALS['con']);
+        // echo $query;
+        if(mysqli_num_rows($result)>0) {
+            while($rowName=mysqli_fetch_assoc($result)) {
+                $post['exam_assessor'] = $rowName['exam_assessor'];
+                $post['exam_start_date'] = $rowName['start_date'];
+                $post['exam_start_time'] = $rowName['start_time'];
+            }
+        }
+        else{
+            $post['exam_assessor']="";
+            $post['exam_start_date']="";
+            $post['exam_start_time']="";
+        }
 
 
-        //total questions
+            //total questions
         $query="SELECT `evaluation_status`, `total_questions`, `average_score`, `total_student_attempted`, `total_assessed` FROM `exam_evaluation` WHERE `exam_id`=".$rowExam['id'] ." AND is_delete=0 ";
         $result=mysqli_query($GLOBALS['con'],$query) or  $message=mysqli_error($GLOBALS['con']);
        // echo $query;

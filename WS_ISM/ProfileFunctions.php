@@ -29,6 +29,7 @@ class ProfileFunctions
                 return $this->authenticateUser($postData);//done
             }
                 break;
+
             case "RegisterUser":
             {
                 return $this->registerUser($postData);//done
@@ -58,6 +59,7 @@ class ProfileFunctions
                 return $this->getStudentAcademicInfo($postData);//done
             }
                 break;
+
             case "RequestForSchoolInfoUpdation":
             {
                 return $this->requestForSchoolInfoUpdation($postData);//done
@@ -731,7 +733,6 @@ class ProfileFunctions
         $isSecure = $security->checkForSecurityTest($access_key,$secret_key);
         //echo $isSecure; exit;
         if ($isSecure != no) {
-
 
             $obj = new CI_Encrypt();
 
@@ -3332,6 +3333,7 @@ class ProfileFunctions
 
                         if($result)
                         {
+                            mysqli_free_result($result);
                             $images[]=$fileName;
                         }
                         else{
@@ -3359,11 +3361,19 @@ class ProfileFunctions
                 }
             }
             $procedure_to_get_profile_pic= mysqli_query($GLOBALS['con'],"CALL GET_USER_PROFILE_PIC($user_id);") or $message=mysqli_error($GLOBALS['con']);
+
+            if($procedure_to_get_profile_pic)
+                mysqli_free_result($procedure_to_get_profile_pic);
             $currentUserPic=mysqli_fetch_row($procedure_to_get_profile_pic);
 
-            $queryUpdate = "UPDATE " . TABLE_USERS . " SET profile_pic='" . $currentUserPic[0] . "' WHERE id=" . $user_id;
-            $resultQuery = mysqli_query($GLOBALS['con'], $queryUpdate) or $message = mysqli_error($GLOBALS['con']);
 
+            $queryUpdate = "UPDATE " . TABLE_USERS . " SET profile_pic='" . $currentUserPic[0] . "' WHERE id=" . $user_id;
+            $resultQuery = mysqli_query($GLOBALS['con'], $queryUpdate);// or $message = mysqli_error($GLOBALS['con']);
+
+            if($resultQuery)
+            {
+                mysqli_free_result($resultQuery);
+            }
 //            if($currentUserPic=mysqli_fetch_row($procedure_to_get_profile_pic)) {
 //
 //

@@ -26,5 +26,4 @@ define("FEEDS_MEDIA",  'images/feeds/');
 
 define("NOTES_MEDIA",  'notes/');
 
-
 ?>
