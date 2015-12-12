@@ -3,10 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="1dp"
     android:background="@drawable/bg_highscore_subjectlist"
     android:orientation="vertical"
-    tools:context="com.ism.author.fragment.StudentAttemptedFragment">
+    android:paddingLeft="1dp">
 
     <TextView
         android:id="@+id/txt_student_attepted"

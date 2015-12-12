@@ -1,6 +1,5 @@
 package com.ism.author.fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.StudentAttemptedAdapter;
 import com.ism.author.adapter.TrialExamDetailsAdapter;
 import com.ism.author.constant.WebConstants;
@@ -72,33 +71,33 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
 
     }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            fragListener = (FragmentListener) activity;
-            if (fragListener != null) {
-                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
-            }
-        } catch (ClassCastException e) {
-            Debug.e(TAG, "onAttach Exception : " + e.toString());
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        try {
-            if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
-                Debug.i(TAG, "detach");
-            }
-        } catch (ClassCastException e) {
-            Debug.e(TAG, "onDetach Exception : " + e.toString());
-        }
-        fragListener = null;
-    }
+//
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        try {
+//            fragListener = (FragmentListener) activity;
+//            if (fragListener != null) {
+//                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
+//            }
+//        } catch (ClassCastException e) {
+//            Debug.e(TAG, "onAttach Exception : " + e.toString());
+//        }
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        try {
+//            if (fragListener != null) {
+//                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
+//                Debug.i(TAG, "detach");
+//            }
+//        } catch (ClassCastException e) {
+//            Debug.e(TAG, "onDetach Exception : " + e.toString());
+//        }
+//        fragListener = null;
+//    }
 
 
     @Override

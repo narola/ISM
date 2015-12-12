@@ -1,6 +1,5 @@
 package com.ism.author.fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.ism.author.Utility.Utility;
-import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.Utility;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.TrialExamsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
@@ -75,49 +74,48 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void callApiForGetAllExam() {
         try {
-            if(Utility.isConnected(getActivity())){
+            if (Utility.isConnected(getActivity())) {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setRole(Global.role);
                 attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GETALLEXAM);
-            }
-            else {
+            } else {
                 Utility.alertOffline(getActivity());
             }
-        }catch (Exception e ){
-            Debug.i(TAG,"callApiForGetAllExam Exception : "+e.getLocalizedMessage());
+        } catch (Exception e) {
+            Debug.i(TAG, "callApiForGetAllExam Exception : " + e.getLocalizedMessage());
         }
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            fragListener = (FragmentListener) activity;
-            if (fragListener != null) {
-                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_TRIAL);
-                Debug.i(TAG, "attach");
-            }
-        } catch (ClassCastException e) {
-            Debug.e(TAG, "onAttach Exception : " + e.toString());
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        try {
-            if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_TRIAL);
-                Debug.i(TAG, "detach");
-            }
-        } catch (ClassCastException e) {
-            Debug.e(TAG, "onDetach Exception : " + e.toString());
-        }
-        fragListener = null;
-    }
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        try {
+//            fragListener = (FragmentListener) activity;
+//            if (fragListener != null) {
+//                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_TRIAL);
+//                Debug.i(TAG, "attach");
+//            }
+//        } catch (ClassCastException e) {
+//            Debug.e(TAG, "onAttach Exception : " + e.toString());
+//        }
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        try {
+//            if (fragListener != null) {
+//                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_TRIAL);
+//                Debug.i(TAG, "detach");
+//            }
+//        } catch (ClassCastException e) {
+//            Debug.e(TAG, "onDetach Exception : " + e.toString());
+//        }
+//        fragListener = null;
+//    }
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {

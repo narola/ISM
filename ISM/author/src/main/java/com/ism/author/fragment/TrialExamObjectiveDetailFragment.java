@@ -87,7 +87,7 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
         txtBookNameValue.setTypeface(myTypeFace.getRalewayRegular());
         txtExamTypeName.setTypeface(myTypeFace.getRalewayRegular());
         txtEamTypeName.setTypeface(myTypeFace.getRalewayRegular());
-        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED, null);
+//        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED, null);
     }
 
 

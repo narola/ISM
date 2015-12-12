@@ -36,7 +36,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
 
     private static final String TAG = GetAssignmentsSubmittorFragment.class.getSimpleName();
     private View view;
-    private TextView tvSubmittorTitle, tvNoSubmittorMsg;
+    private TextView tvSubmittorTitle, tvNoDataMsg;
     private ImageView imgToggleList;
     private RecyclerView rvAssignmentSubmittorList;
     private AssignmentSubmittorAdapter assignmentSubmittorAdapter;
@@ -68,7 +68,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
         myTypeFace = new MyTypeFace(getActivity());
 
         tvSubmittorTitle = (TextView) view.findViewById(R.id.tv_submittor_title);
-        tvNoSubmittorMsg = (TextView) view.findViewById(R.id.tv_no_submittor_msg);
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
         rvAssignmentSubmittorList = (RecyclerView) view.findViewById(R.id.rv_assignment_submittor_list);
         assignmentSubmittorAdapter = new AssignmentSubmittorAdapter(getActivity(), getArguments());
@@ -77,7 +77,9 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rvAssignmentSubmittorList.setAdapter(assignmentSubmittorAdapter);
         tvSubmittorTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvNoSubmittorMsg.setTypeface(myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setTypeface(myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(View.GONE);
+        tvNoDataMsg.setText(getString(R.string.no_exam_submittor));
         tvSubmittorTitle.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
 
         callApiGetExamSubmission();
@@ -126,17 +128,16 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    if (responseHandler.getExamSubmission().get(0).getExamsubmittor().size() > 0) {
+                    if (responseHandler.getExamSubmission().size() > 0) {
                         arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
                         assignmentSubmittorAdapter.addAll(arrListExamSubmittor);
                         assignmentSubmittorAdapter.notifyDataSetChanged();
-                        tvNoSubmittorMsg.setVisibility(View.GONE);
+                        tvNoDataMsg.setVisibility(View.GONE);
                     } else {
-                        tvNoSubmittorMsg.setVisibility(View.VISIBLE);
+                        tvNoDataMsg.setVisibility(View.VISIBLE);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    tvNoSubmittorMsg.setVisibility(View.VISIBLE);
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {

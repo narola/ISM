@@ -50,7 +50,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
 
     private TextView tvPreviewQuestionlistTitle, tvPreviewQuestionlistFreeze, tvPreviewTotalQuestionTitle, tvPreviewTotalQuestionNo,
-            tvPreviewTotalScoreTitle, tvPreviewTotalScoreNo;
+            tvPreviewTotalScoreTitle, tvPreviewTotalScoreNo, tvNoDataMsg;
     private RecyclerView rvPreviewquestionlist;
     private PreviewQuestionListAdapter previewQuestionListAdapter;
     //    RecyclerListAdapter adapter;
@@ -80,6 +80,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         tvPreviewTotalQuestionNo = (TextView) view.findViewById(R.id.tv_preview_total_question_no);
         tvPreviewTotalScoreTitle = (TextView) view.findViewById(R.id.tv_preview_total_score_title);
         tvPreviewTotalScoreNo = (TextView) view.findViewById(R.id.tv_preview_total_score_no);
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
 
         tvPreviewQuestionlistFreeze.setTypeface(myTypeFace.getRalewayRegular());
         tvPreviewTotalQuestionTitle.setTypeface(myTypeFace.getRalewayBold());
@@ -89,6 +90,9 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
         tvPreviewTotalQuestionNo.setText("0");
         tvPreviewTotalScoreNo.setText("0");
+        tvNoDataMsg.setTypeface(myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(View.GONE);
+        tvNoDataMsg.setText(getString(R.string.no_preview_questions));
 
 
         rvPreviewquestionlist = (RecyclerView) view.findViewById(R.id.rv_previewquestionlist);
@@ -114,27 +118,9 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 callApiFreezeQuestions();
             }
         });
-
-
-
-        /*this condition will not work this is for testing*/
-        /*check for the arraylist presence*/
-
-//        if (getArguments() != null) {
-//
-//            if (getArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
-//
-//                arrListQuestions = getArguments().getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
-//                previewQuestionListAdapter.addAll(this.arrListQuestions);
-//
-//                Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS" + arrListQuestions.size());
-//            }
-//        }
-
     }
 
     public void setExamQuestions(ArrayList<Questions> arrListExamQuestions) {
-
         arrListQuestions.addAll(arrListExamQuestions);
         previewQuestionListAdapter.addAll(this.arrListQuestions);
 
@@ -144,8 +130,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         }
 
         UpdateQuestionInfo();
-
-
     }
 
     int totalQuestions = 0;
@@ -172,6 +156,11 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 //    }
 
     public void UpdateQuestionInfo() {
+        if (totalQuestions > 0) {
+            tvNoDataMsg.setVisibility(View.GONE);
+        } else {
+            tvNoDataMsg.setVisibility(View.VISIBLE);
+        }
 
         tvPreviewTotalQuestionNo.setText(String.valueOf(totalQuestions));
         tvPreviewTotalScoreNo.setText(String.valueOf(totalScore));

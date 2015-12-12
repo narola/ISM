@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="no_notification_available">No notification available!</string>
-	<string name="no_message_available">No message available!</string>
-	<string name="no_request_available">No studymate request available!</string>
-	<string name="no_feeds_available">No feeds available!</string>
-	<string name="no_activity_available">No activity available!</string>
-	<string name="no_coupons_available">No coupons available!</string>
-	<string name="no_books_available">No books available!</string>
-	<string name="no_rolemodels_available">No role models available!</string>
-	<string name="no_movies_available">No movies available!</string>
-	<string name="no_pastimes_available">No pastimes available!</string>
-	<string name="no_blocked_users_available">No blocked users available!</string>
+    <string name="no_notification_available">No notification available!</string>
+    <string name="no_message_available">No message available!</string>
+    <string name="no_request_available">No studymate request available!</string>
+    <string name="no_feeds_available">No feeds available!</string>
+    <string name="no_activity_available">No activity available!</string>
+    <string name="no_coupons_available">No coupons available!</string>
+    <string name="no_books_available">No books available!</string>
+    <string name="no_rolemodels_available">No role models available!</string>
+    <string name="no_movies_available">No movies available!</string>
+    <string name="no_pastimes_available">No pastimes available!</string>
+    <string name="no_blocked_users_available">No blocked users available!</string>
+    <string name="no_preview_questions">No Questions added in preview!</string>
+    <string name="no_questions_in_questionbank">No Questions added in questionbank!</string>
+    <string name="no_filter_questions">No Questions available for this filter!</string>
+    <string name="no_post_feeds">No feeds posted yet,click on the post to add feed!</string>
+    <string name="no_exam_questions">No questions are set for the exam,click on edit to set questions!</string>
+    <string name="no_exam_submittor">No one has submitted the exam!</string>
+    <string name="no_exams">No exams created yet!</string>
+    <string name="no_filter_exams">No exams found to filter!</string>
+
 </resources>

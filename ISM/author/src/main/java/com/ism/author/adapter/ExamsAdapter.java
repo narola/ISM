@@ -47,6 +47,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     public static String ARG_EXAM_QUESTION_SCORE = "examQuestionScore";
     public static String ARG_EXAM_CREATED_DATE = "examCreatedDate";
     public static String ARG_ISLOAD_FRAGMENTFOREVALUATION = "examIsLoadFragmentForEvaluation";
+    public static String ARG_FRAGMENT_TYPE = "fragmentType";
 
 
     public ExamsAdapter(Context mContext) {
@@ -131,10 +132,6 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             bundleExamDetails.putString(ARG_EXAM_NAME, arrListExams.get(position).getExamName());
             bundleExamDetails.putString(ARG_EXAM_CLASSROOM_ID, arrListExams.get(position).getClassroomId());
             bundleExamDetails.putString(ARG_EXAM_CLASSROOM_NAME, arrListExams.get(position).getClassroomName());
-//            bundleExamDetails.putString(ARG_EXAM_SUBJECT_ID, arrListExams.get(position).getSubjectId());
-//            bundleExamDetails.putString(ARG_EXAM_SUBJECT_NAME, arrListExams.get(position).getSubjectName());
-//            bundleExamDetails.putString(ARG_EXAM_TOPIC_ID, WebConstants.TEST_TOPIC_ID);
-//            bundleExamDetails.putString(ARG_EXAM_TOPIC_NAME, "");
             bundleExamDetails.putString(ARG_EXAM_BOOK_ID, arrListExams.get(position).getBookId());
             bundleExamDetails.putString(ARG_EXAM_BOOK_NAME, arrListExams.get(position).getBookName());
             bundleExamDetails.putString(ARG_EXAM_CATEGORY, arrListExams.get(position).getExamCategory());
@@ -145,6 +142,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             bundleExamDetails.putString(ARG_EXAM_PASS_PERCENTAGE, arrListExams.get(position).getPassPercentage());
             bundleExamDetails.putString(ARG_EXAM_QUESTION_SCORE, "0");
             bundleExamDetails.putString(ARG_EXAM_CREATED_DATE, arrListExams.get(position).getExamCreatedDate());
+            bundleExamDetails.putInt(ARG_FRAGMENT_TYPE, AuthorHostActivity.currentMainFragment);
 
 
             holder.llExamContainer.setOnClickListener(new View.OnClickListener() {
@@ -202,7 +200,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 
             rlTopExam = (RelativeLayout) itemView.findViewById(R.id.rl_top_exam);
             tvExamBookName = (TextView) itemView.findViewById(R.id.tv_exam_book_name);
-            tvExamName = (TextView) itemView.findViewById(R.id.tv_exam_name);
+            tvExamName = (TextView) itemView.findViewById(R.id.tv_exam_type);
             tvExamDate = (TextView) itemView.findViewById(R.id.tv_exam_date);
             tvExamClassName = (TextView) itemView.findViewById(R.id.tv_exam_class_name);
             tvExamNoofAssessed = (TextView) itemView.findViewById(R.id.tv_exam_noof_assessed);

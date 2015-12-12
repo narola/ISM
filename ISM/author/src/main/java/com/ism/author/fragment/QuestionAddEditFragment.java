@@ -92,9 +92,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     /*these sre for the xml views*/
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
-            tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank, tvAddquestionAdvance;
+            tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank, tvAddquestionAdvance, tvAddquestionAnswer;
     private ImageView imgSelectImage, imgPlay, imgHelp, imgDelete, imageValidationQuestionType;
-    private EditText etAddquestionTitle, etAddquestionAnswer, etEvaluationNote1, etEvaluationNote2;
+    private EditText etAddquestionTitle, etEvaluationNote1, etEvaluationNote2;
     private Spinner spAddquestionType;
     private CheckBox chkAddquestionPreview;
     List<String> arrListQuestionType;
@@ -162,13 +162,13 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
 
         etAddquestionTitle = (EditText) view.findViewById(R.id.et_addquestion_title);
-        etAddquestionAnswer = (EditText) view.findViewById(R.id.et_addquestion_answer);
+        tvAddquestionAnswer = (TextView) view.findViewById(R.id.tv_addquestion_answer);
         etEvaluationNote1 = (EditText) view.findViewById(R.id.et_evaluation_note1);
         etEvaluationNote2 = (EditText) view.findViewById(R.id.et_evaluation_note2);
 
 
         etAddquestionTitle.setTypeface(myTypeFace.getRalewayRegular());
-        etAddquestionAnswer.setTypeface(myTypeFace.getRalewayRegular());
+        tvAddquestionAnswer.setTypeface(myTypeFace.getRalewayRegular());
         etEvaluationNote1.setTypeface(myTypeFace.getRalewayRegular());
         etEvaluationNote2.setTypeface(myTypeFace.getRalewayRegular());
 
@@ -193,7 +193,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 /*here i checked that if question is of related exam type then only add to preview otherwise not*/
                 if (position == 1 || position == 2) {
                     llAddMcqanswer.setVisibility(View.GONE);
-                    etAddquestionAnswer.setVisibility(View.VISIBLE);
+                    tvAddquestionAnswer.setVisibility(View.VISIBLE);
                     if (getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(true);
@@ -203,7 +203,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     }
                 } else if (position == 3) {
                     llAddMcqanswer.setVisibility(View.VISIBLE);
-                    etAddquestionAnswer.setVisibility(View.GONE);
+                    tvAddquestionAnswer.setVisibility(View.GONE);
                     if (getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(false);
@@ -355,7 +355,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private void clearViewsData() {
 
         etAddquestionTitle.setText("");
-        etAddquestionAnswer.setText("");
+        tvAddquestionAnswer.setText("");
         llAddMcqanswer.removeAllViews();
         if (tagsView.getObjects().size() > 0) {
             tagsView.clear();
@@ -549,15 +549,15 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
             spAddquestionType.setSelection(3);
             llAddMcqanswer.setVisibility(View.VISIBLE);
-            etAddquestionAnswer.setVisibility(View.GONE);
+            tvAddquestionAnswer.setVisibility(View.GONE);
         } else if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatdescriptive))) {
             spAddquestionType.setSelection(1);
             llAddMcqanswer.setVisibility(View.GONE);
-            etAddquestionAnswer.setVisibility(View.VISIBLE);
+            tvAddquestionAnswer.setVisibility(View.VISIBLE);
         } else if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatfillups))) {
             spAddquestionType.setSelection(2);
             llAddMcqanswer.setVisibility(View.GONE);
-            etAddquestionAnswer.setVisibility(View.VISIBLE);
+            tvAddquestionAnswer.setVisibility(View.VISIBLE);
         }
     }
 
@@ -598,10 +598,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         Boolean isValidate = false;
         switch (spPosition) {
             case 1:
-                isValidate = inputValidator.validateStringPresence(etAddquestionAnswer);
+                isValidate = true;
                 break;
             case 2:
-                isValidate = inputValidator.validateStringPresence(etAddquestionAnswer);
+                isValidate = true;
                 break;
             case 3:
                 isValidate = true;

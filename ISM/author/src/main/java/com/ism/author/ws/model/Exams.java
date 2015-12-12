@@ -31,6 +31,8 @@ public class Exams {
     private String totalUnAssessed;
     private String examCreatedDate;
 
+
+
     @JsonProperty("total_question")
     public String getTotalQuestion() {
         return this.totalQuestion;
