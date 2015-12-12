@@ -733,7 +733,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             try {
                 ((TeacherHostActivity) getActivity()).showProgress();
 
-                Debug.e(TAG, "The user id is::" + WebConstants.TEST_USER_ID);
+                Debug.e(TAG, "The user id is::" + WebConstants.USER_ID_370);
                 Debug.e(TAG, "The question text is::" + etAddquestionTitle.getText().toString());
                 Debug.e(TAG, "The subject id is::" + getArguments().getString(AssignmentExamFragment.ARG_EXAM_SUBJECT_ID));
                 Debug.e(TAG, "The question score is::" + getArguments().getString(AssignmentExamFragment.ARG_EXAM_QUESTION_SCORE));
@@ -745,7 +745,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 Debug.e(TAG, "The book id  is::" + getArguments().getString(AssignmentExamFragment.ARG_EXAM_BOOK_ID));
 
                 Attribute attribute = new Attribute();
-                attribute.setUserId(WebConstants.TEST_USER_ID);
+                attribute.setUserId(WebConstants.USER_ID_370);
                 if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
                     /*for edit question*/
                     Debug.e(TAG, "The question id is::" + getFragment().getQuestionData().getQuestionId());
@@ -940,7 +940,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         try {
             question.setQuestionId(questionId);
             question.setQuestionCreatorName(WebConstants.TEST_USER_NAME);
-            question.setQuestionCreatorId(WebConstants.TEST_USER_ID);
+            question.setQuestionCreatorId(WebConstants.USER_ID_370);
             question.setQuestionFormat(getQuestionFormat());
             question.setQuestionText(etAddquestionTitle.getText().toString());
             question.setQuestionAssetsLink("");

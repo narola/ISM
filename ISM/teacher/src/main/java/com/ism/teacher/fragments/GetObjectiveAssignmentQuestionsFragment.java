@@ -38,7 +38,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private MyTypeFace myTypeFace;
 
     private TextView tvObjectiveAssignmentSubject, tvObjectiveAssignmentClass, tvObjectiveAssignmentNo, tvObjectiveAssignmentTitle,
-            tvObjectiveAssignmentDateTitle, tvObjectiveAssignmentDate;
+            tvObjectiveAssignmentDateTitle, tvObjectiveAssignmentDate, tvNoQuestions;
     private ImageView imgEditExam, imgCopyExam;
 
     private RecyclerView rvGetObjectiveAssignmentQuestionslist;
@@ -73,6 +73,8 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
+
+        tvNoQuestions = (TextView) view.findViewById(R.id.tv_no_questions);
         tvObjectiveAssignmentSubject = (TextView) view.findViewById(R.id.tv_objective_assignment_subject);
         tvObjectiveAssignmentClass = (TextView) view.findViewById(R.id.tv_objective_assignment_class);
         tvObjectiveAssignmentNo = (TextView) view.findViewById(R.id.tv_objective_assignment_no);
@@ -197,7 +199,11 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                     arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
                     getObjectiveAssignmentQuestionsAdapter.addAll(arrListQuestions);
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
-                    //   setAssignmentDetails(responseObjGetAllExamQuestions.getExamQuestions().get(0));
+
+                    if(arrListQuestions.size()==0)
+                    {
+                        Utility.showView(tvNoQuestions);
+                    }
 
                     if (getArguments().getBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                         callAPiGetExamEvaluation();
