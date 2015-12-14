@@ -64,6 +64,6 @@
 		android:paddingLeft="10dp"
 		android:paddingRight="10dp"
 		android:layout_marginBottom="5dp"
-		android:background="@drawable/bg_button_green"
+		android:background="@drawable/bg_button_green_small"
 		android:layout_alignParentBottom="true"/>
 </RelativeLayout>

@@ -41,6 +41,7 @@ public class WebConstants {
 	public static final int UPLOAD_FEED_MEDIA = 31;
 	public static final int GET_ADMIN_CONFIG = 32;
 	public static final int REFRESH_TOKEN = 33;
+	public static final int SEND_REQUEST_STUDYMATE = 34;
 
 
 	//general settings
@@ -121,6 +122,7 @@ public class WebConstants {
 	public static final String URL_UPLOAD_FEED_MEDIA = HOST_WS + "UploadMedia";
 	public static final String URL_REFRESH_TOKEN = HOST_WS + "RefreshToken";
 	public static final String URL_GET_ADMIN_CONFIG = HOST_WS + "GetAdminConfig";
+	public static final String URL_SEND_REQUEST_STUDYMATE = HOST_WS + "SendRequestToStudymate";
 
 	/*
 	* edit profile
