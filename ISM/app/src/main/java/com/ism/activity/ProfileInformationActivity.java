@@ -257,15 +257,15 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         arrListGender.add(getString(R.string.female));
         Adapters.setUpSpinner(ProfileInformationActivity.this, spGender, arrListGender, myTypeFace.getRalewayRegular());
 
-	    etFirstName.setText("Sudhir");
-	    etLastName.setText("Tyagi");
-	    etEmailAddress.setText("@.com");
-	    etContactNo.setText("9898989898");
-	    etAge.setText("27");
-	    etHomeAddress.setText("Surat");
-	    etConfirmPwd.setText("password");
-	    etNewPwd.setText("password");
-	    etCurrentPwd.setText("narola21");
+//	    etFirstName.setText("Sudhir");
+//	    etLastName.setText("Tyagi");
+//	    etEmailAddress.setText("@.com");
+//	    etContactNo.setText("9898989898");
+//	    etAge.setText("27");
+//	    etHomeAddress.setText("Surat");
+//	    etConfirmPwd.setText("password");
+//	    etNewPwd.setText("password");
+//	    etCurrentPwd.setText("narola21");
 
     }
 

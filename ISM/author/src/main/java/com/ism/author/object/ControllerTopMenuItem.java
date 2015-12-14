@@ -78,6 +78,21 @@ public class ControllerTopMenuItem {
         return menu;
     }
 
+    public static ArrayList<ControllerTopMenuItem> getMenuBooks(Context mContext) {
+        ArrayList<ControllerTopMenuItem> menu = null;
+        try {
+            menu = new ArrayList<ControllerTopMenuItem>();
+//            ArrayList<String> trial = new ArrayList<String>();
+//            trial.add(mContext.getString(R.string.strTrial));
+//            trial.add(mContext.getString(R.string.notes));
+//            trial.add(mContext.getString(R.string.books));
+            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.strBooks), mContext.getString(R.string.strAddNew), null));
+        } catch (Exception e) {
+            Debug.e(TAG, "getMenuBooks Exception : " + e.toString());
+        }
+        return menu;
+    }
+
     public static ArrayList<ControllerTopMenuItem> getMenuAssessment(Context mContext) {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
@@ -112,6 +127,7 @@ public class ControllerTopMenuItem {
         }
         return menu;
     }
+
     public static ArrayList<ControllerTopMenuItem> getMenuMyDesk(Context mContext) {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {

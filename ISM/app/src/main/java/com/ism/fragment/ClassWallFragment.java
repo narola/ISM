@@ -128,8 +128,8 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
         try {
             activityHost.showProgress();
             Attribute attribute = new Attribute();
-            attribute.setUserId(Global.strUserId);
-            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+	        attribute.setUserId(Global.strUserId);
+	        new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_FEEDS);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetAllFeeds Exception : " + e.toString());

@@ -56,21 +56,21 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
 
-        try {
+//        try {
 
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
-                    holder.imgUserPic, ISMAuthor.options);
+        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
+                holder.imgUserPic, ISMAuthor.options);
 
-            holder.txtStudentName.setTypeface(myTypeFace.getRalewayBold());
-            holder.txtStudentSchool.setTypeface(myTypeFace.getRalewayRegular());
-            holder.txtStudentMarks.setTypeface(myTypeFace.getRalewayRegular());
-            holder.txtStudentClass.setTypeface(myTypeFace.getRalewayRegular());
+        holder.txtStudentName.setTypeface(myTypeFace.getRalewayBold());
+        holder.txtStudentSchool.setTypeface(myTypeFace.getRalewayRegular());
+        holder.txtStudentMarks.setTypeface(myTypeFace.getRalewayRegular());
+        holder.txtStudentClass.setTypeface(myTypeFace.getRalewayRegular());
 
-            holder.txtStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
+        holder.txtStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
 //            holder.txtStudentSchool.setText(arrListExamSubmittor.get(position).getSchoolName());
-            holder.txtStudentMarks.setText(arrListExamSubmittor.get(position).getEvaluationScore());
-//            holder.txtStudentSchool.setText(arrListExamSubmittor.get(position).getClassName());
+        holder.txtStudentMarks.setText(arrListExamSubmittor.get(position).getEvaluationScore());
 
+        if (bundleArgument.containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_ID)) {
             if (bundleArgument.getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
                 holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.fragment_background_color));
                 holder.txt_bottom_line.setBackgroundColor(mContext.getResources().getColor(R.color.color_blue));
@@ -78,23 +78,24 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
                 holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.color_white));
                 holder.txt_bottom_line.setBackgroundColor(mContext.getResources().getColor(R.color.border_gray));
             }
+        }
 
-            holder.llMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        holder.llMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
                     /*this is to select the current student*/
-                    setBundleArgument(position);
-                    notifyDataSetChanged();
-                    ((AuthorHostActivity) mContext).loadStudentEvaluationData();
+                setBundleArgument(position);
+                notifyDataSetChanged();
+                ((AuthorHostActivity) mContext).loadStudentEvaluationData();
 
-                }
-            });
+            }
+        });
 
-
-        } catch (Exception e) {
-            Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());
-        }
+//
+//        } catch (Exception e) {
+//            Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());
+//        }
 
     }
 

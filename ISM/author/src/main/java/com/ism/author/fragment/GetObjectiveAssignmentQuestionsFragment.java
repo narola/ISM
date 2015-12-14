@@ -33,6 +33,8 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 10/11/15.
  */
+
+/*these fragment will be use for objective evaluation ,view total questions for subjective and objective and view student data for both subjective and objective*/
 public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = GetObjectiveAssignmentQuestionsFragment.class.getSimpleName();
@@ -41,7 +43,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private FragmentListener fragListener;
 
     private TextView tvObjectiveAssignmentSubject, tvObjectiveAssignmentClass, tvObjectiveAssignmentNo, tvObjectiveAssignmentTitle,
-            tvObjectiveAssignmentDateTitle, tvObjectiveAssignmentDate, tvNoQuestionsMsg;
+            tvObjectiveAssignmentDateTitle, tvObjectiveAssignmentDate, tvNoDataMsg;
     private ImageView imgEditExam, imgCopyExam;
 
     private RecyclerView rvGetObjectiveAssignmentQuestionslist;
@@ -55,9 +57,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     public static GetObjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArgument) {
         GetObjectiveAssignmentQuestionsFragment getObjectiveAssignmentQuestionsFragment = new GetObjectiveAssignmentQuestionsFragment();
         if (bundleArgument != null) {
-
             getObjectiveAssignmentQuestionsFragment.setArguments(bundleArgument);
-//            getObjectiveAssignmentQuestionsFragment.fragmentArgument.setFragment(getObjectiveAssignmentQuestionsFragment);
         } else {
         }
         return getObjectiveAssignmentQuestionsFragment;
@@ -86,7 +86,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         tvObjectiveAssignmentTitle = (TextView) view.findViewById(R.id.tv_objective_assignment_title);
         tvObjectiveAssignmentDateTitle = (TextView) view.findViewById(R.id.tv_objective_assignment_date_title);
         tvObjectiveAssignmentDate = (TextView) view.findViewById(R.id.tv_objective_assignment_date);
-        tvNoQuestionsMsg = (TextView) view.findViewById(R.id.tv_no_questions_msg);
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
 
         imgEditExam = (ImageView) view.findViewById(R.id.img_edit_exam);
         imgCopyExam = (ImageView) view.findViewById(R.id.img_copy_exam);
@@ -97,6 +97,9 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         tvObjectiveAssignmentTitle.setTypeface(myTypeFace.getRalewayBold());
         tvObjectiveAssignmentDateTitle.setTypeface(myTypeFace.getRalewayRegular());
         tvObjectiveAssignmentDate.setTypeface(myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setTypeface(myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(View.GONE);
+        tvNoDataMsg.setText(getString(R.string.no_exam_questions));
 
         rvGetObjectiveAssignmentQuestionslist = (RecyclerView) view.findViewById(R.id.rv_getObjective_assignment_questionslist);
         getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(getActivity(), getArguments());
@@ -235,14 +238,12 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                         arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
                         getObjectiveAssignmentQuestionsAdapter.addAll(arrListQuestions);
                         getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
-
-
                         if (getArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                             callAPiGetExamEvaluation();
                         }
-                        tvNoQuestionsMsg.setVisibility(View.GONE);
+                        tvNoDataMsg.setVisibility(View.GONE);
                     } else {
-                        tvNoQuestionsMsg.setVisibility(View.VISIBLE);
+                        tvNoDataMsg.setVisibility(View.VISIBLE);
                     }
 
                 } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.FAILED)) {
@@ -284,6 +285,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     }
 
     private void setAssignmentDetails() {
+
         if (getArguments() != null) {
             tvObjectiveAssignmentSubject.setText(getResources().getString(R.string.strbookname) + ": ");
             if (getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME) != null) {

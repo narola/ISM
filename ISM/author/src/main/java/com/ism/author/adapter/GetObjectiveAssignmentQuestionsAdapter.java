@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.Answers;
 import com.ism.author.ws.model.Evaluation;
@@ -71,18 +72,25 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
 
             holder.etEvoluationsNotes.setText(Utils.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
             holder.etSolution.setText(Utils.formatHtml(arrListQuestions.get(position).getSolution()));
-            holder.txtStudentnameAnswer.setText(bundleArgument.getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME) + " " +
-                    mContext.getString(R.string.stranswer));
+            if (bundleArgument.containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_NAME)) {
+                holder.txtStudentnameAnswer.setText(bundleArgument.getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME) + " " +
+                        mContext.getString(R.string.stranswer));
 
+            }
 
             if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
                 holder.llQuestionsOptions.setVisibility(View.GONE);
                 holder.llAnswerContainer.setVisibility(View.GONE);
                 holder.llEvaluationContainer.setVisibility(View.VISIBLE);
 
+                if (bundleArgument.getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == AuthorHostActivity.FRAGMENT_MYTHIRTY) {
+
+                }
+
+
             } else if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
                 holder.llQuestionsOptions.setVisibility(View.VISIBLE);
-                holder.llAnswerContainer.setVisibility(View.GONE);
+                holder.llAnswerContainer.setVisibility(View.VISIBLE);
                 holder.llEvaluationContainer.setVisibility(View.GONE);
                 holder.llQuestionsOptions.removeAllViews();
 
@@ -92,41 +100,43 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
                         holder.llQuestionsOptions.addView(ansView);
                     }
                 }
-                holder.llAnswerContainer.setVisibility(View.VISIBLE);
+
+                holder.txtAnswer.setText("");
                 if (arrListQuestions.get(position).getAnswers() != null) {
                     for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
                         if (arrListQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
                             holder.txtAnswer.setText(Utils.formatHtml(Utils.getCharForNumber(i + 1) + ". " +
                                     arrListQuestions.get(position).getAnswers().get(i).getChoiceText()));
                             break;
-                        } else {
-                            holder.txtAnswer.setText("");
                         }
                     }
                 }
-                if (bundleArgument.getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+
+                if (bundleArgument.getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION) ||
+                        bundleArgument.getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == AuthorHostActivity.FRAGMENT_MYTHIRTY) {
                     holder.llEvaluationContainer.setVisibility(View.VISIBLE);
                 } else {
                     holder.llEvaluationContainer.setVisibility(View.GONE);
                     holder.txtStudentnameAnswer.setVisibility(View.GONE);
                     holder.txtStudentAnswer.setVisibility(View.GONE);
-//                    holder.llAnswerContainer.setVisibility(View.GONE);
                 }
             }
 
-
+            holder.txtStudentAnswer.setText("");
             if (evaluationList != null) {
-
-                if (evaluationList.size() > 0) {
-                    if (position < evaluationList.size()) {
+                if (evaluationList.size() > 0 && position < evaluationList.size()) {
+                    if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
                         for (int j = 0; j < arrListQuestions.get(position).getAnswers().size(); j++) {
-                            if (evaluationList.get(position).getStudentResponse().equalsIgnoreCase(arrListQuestions.get(position).getAnswers().get(j).getId())) {
-                                holder.txtStudentAnswer.setText(Utils.formatHtml(arrListQuestions.get(position).getAnswers().get(j).getChoiceText()));
+                            if (evaluationList.get(position).getStudentResponse().equalsIgnoreCase
+                                    (arrListQuestions.get(position).getAnswers().get(j).getId())) {
+                                holder.txtStudentAnswer.setText(Utils.formatHtml(Utils.getCharForNumber(j + 1) + ". " +
+                                        arrListQuestions.get(position).getAnswers().get(j).getChoiceText()));
                                 break;
-                            } else {
-                                holder.txtStudentAnswer.setText("");
                             }
                         }
+                    } else if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
+
+
                     }
                 }
             }
@@ -156,10 +166,7 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
         TextView txtQuestionNo, txtQuestionText, txtCorrectAnswer, txtAnswer, txtStudentnameAnswer, txtStudentAnswer, txtEvoluationsNotes,
                 txtSolution;
         EditText etEvoluationsNotes, etSolution;
-        LinearLayout llQuestionsOptions, llAnswerContainer, llEvaluationContainer;
-
-//        llQuestionsEvaluationContainer
-
+        LinearLayout llQuestionsOptions, llAnswerContainer, llEvaluationContainer, llCorrectAnswer;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -180,7 +187,7 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
                 llAnswerContainer = (LinearLayout) itemView.findViewById(R.id.ll_answer_container);
                 llEvaluationContainer = (LinearLayout) itemView.findViewById(R.id.ll_evaluation_container);
 
-//                llQuestionsEvaluationContainer = (LinearLayout) itemView.findViewById(R.id.ll_questions_evaluation_container);
+                llCorrectAnswer = (LinearLayout) itemView.findViewById(R.id.ll_correct_answer);
 
             } catch (Exception e) {
                 Debug.e(TAG, "ViewHolder Exceptions :" + e.toString());

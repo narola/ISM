@@ -126,7 +126,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         tvExamQuestionscorevalue = (TextView) view.findViewById(R.id.tv_exam_questionscorevalue);
         tvExamAddnegativemark = (TextView) view.findViewById(R.id.tv_exam_addnegativemark);
 
-        tvExamName = (TextView) view.findViewById(R.id.tv_exam_name);
+        tvExamName = (TextView) view.findViewById(R.id.tv_exam_type);
         tvExamClass = (TextView) view.findViewById(R.id.tv_exam_class);
         tvExamBookname = (TextView) view.findViewById(R.id.tv_exam_bookname);
         tvExamPassingpercent = (TextView) view.findViewById(R.id.tv_exam_passingpercent);

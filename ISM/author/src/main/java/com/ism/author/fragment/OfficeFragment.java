@@ -25,15 +25,17 @@ public class OfficeFragment extends Fragment {
     private static final String TAG = OfficeFragment.class.getSimpleName();
     private View view;
     private FragmentListener fragListener;
-    public static final int FRAGMENT_TRIAL = 0;
-    //    public static final int FRAGMENT_TRIAL_EXAM_DETAILS = 1;
-    public static final int FRAGMENT_ASSESSMENT = 2;
-    public static final int FRAGMENT_MY_DESK = 3;
+
+    public static final int FRAGMENT_MY_DESK = 0;
+    public static final int FRAGMENT_GOTRENDING = 1;
+    public static final int FRAGMENT_TRIAL = 2;
+    public static final int FRAGMENT_MYTHIRTY = 3;
+    public static final int FRAGMENT_ASSESSMENT = 4;
+    public static int CURRENT_OFFICE_FRAGMENT = 0;
+
     GridView gvOfficetab;
     OfficeTabGridAdapter officeTabGridAdapter;
-
     OfficeTabDataSet officeTabDataSet = new OfficeTabDataSet();
-    private int currentFragment = 0;
 
 
     public static OfficeFragment newInstance() {
@@ -102,23 +104,30 @@ public class OfficeFragment extends Fragment {
     }
 
     public void loadFragment(int fragment) {
+
+        CURRENT_OFFICE_FRAGMENT = fragment;
         switch (fragment) {
-            case FRAGMENT_TRIAL:
-                currentFragment = fragment;
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL, null);
-                break;
-//            case FRAGMENT_TRIAL_EXAM_DETAILS:
-//                currentFragment = fragment;
-//                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
-//                break;
-            case FRAGMENT_ASSESSMENT:
-                currentFragment = fragment;
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT, null);
-                break;
+
             case FRAGMENT_MY_DESK:
-                currentFragment = fragment;
                 ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK, null);
                 break;
+
+            case FRAGMENT_GOTRENDING:
+                break;
+
+            case FRAGMENT_TRIAL:
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MYTHIRTY, null);
+                break;
+
+            case FRAGMENT_MYTHIRTY:
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MYTHIRTY, null);
+                break;
+
+            case FRAGMENT_ASSESSMENT:
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT, null);
+                break;
+
+
         }
     }
 

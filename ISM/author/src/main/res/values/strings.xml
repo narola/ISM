@@ -121,6 +121,7 @@
     <string name="strnoassessor">No Assessor</string>
     <string name="strexamfor">Exam For:</string>
     <string name="strexamtype">Exam Type</string>
+    <string name="strstudent">Student</string>
     <string name="strexamtype_colon">Exam Type :</string>
     <string name="strClass_colon">Class :</string>
     <string name="processing">Processing</string>
@@ -255,7 +256,8 @@
     <string name="strexamcategory">Exam Category</string>
     <string name="strtotalquestions">Total Questions</string>
     <string name="strtotalscore">Total Score</string>
-
+    <string name="stravg">Avrage %</string>
+    <string name="strattempted">Attempted</string>
 
     <!--string array-->
 
@@ -307,12 +309,22 @@
         <item>@string/strobjective</item>
     </string-array>
 
+
+    <string name="strismmock">ISM_Mock</string>
+    <string name="strwassce">WASSCE</string>
+    <string name="strendofterm">EndOfTerm</string>
+    <string name="strtutorial">Tutorial</string>
+    <string name="strtrial">Trial</string>
+    <string name="strmy30">My30</string>
+
     <string-array name="examname">
         <item>Exam Category</item>
-        <item>ISM_Mock</item>
-        <item>WASSCE</item>
-        <item>EndOfTerm</item>
-        <item>Tutorial</item>
+        <item>@string/strismmock</item>
+        <item>@string/strwassce</item>
+        <item>@string/strendofterm</item>
+        <item>@string/strtutorial</item>
+        <item>@string/strtrial</item>
+        <item>@string/strmy30</item>
     </string-array>
 
     <string-array name="questionsfilter">

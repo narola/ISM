@@ -61,7 +61,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
         holder.tvPreviewQuestion.setTypeface(myTypeFace.getRalewayRegular());
         holder.tvPreviewQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
-        
+
         if (arrListQuestions.get(position).getQuestionCreatorId().equals(Global.strUserId)) {
             holder.imgPreviewQuestionEdit.setVisibility(View.VISIBLE);
         } else {
@@ -69,15 +69,12 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         }
 
         if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
-
             holder.tvPreviewQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvPreviewQuestionAns.setText(arrListQuestions.get(position).getSolution());
 
 
             holder.llPreviewQuestionAnswers.setVisibility(View.GONE);
             holder.tvPreviewQuestionAns.setVisibility(View.VISIBLE);
-
-
         } else {
 
             holder.llPreviewQuestionAnswers.removeAllViews();
