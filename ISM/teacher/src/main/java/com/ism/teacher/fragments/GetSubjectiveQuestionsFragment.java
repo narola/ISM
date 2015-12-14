@@ -29,6 +29,7 @@ import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
+import com.ism.teacher.ws.model.Evaluation;
 import com.ism.teacher.ws.model.Examsubmittor;
 import com.ism.teacher.ws.model.Questions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -251,10 +252,14 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
                 responseObjGetExamEvaluation = (ResponseHandler) object;
                 if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.SUCCESS)) {
                     loading = true;
+
                     subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
 
+                    updateStatusForEvaluation();
                     setTitleDetails();
-                    getBaseFragment().setQuestionStatusData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
+                    getBaseFragment().setQuestionStatusData(arrListQuestions,
+                            responseObjGetExamEvaluation.getExamEvaluation().get(0).getQuestionPalette());
+
 
                 } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseObjGetExamEvaluation.getMessage(), getActivity());
@@ -267,6 +272,16 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         }
     }
 
+    private void updateStatusForEvaluation() {
+        for (Questions question : arrListQuestions) {
+            for (Evaluation evaluation : responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation()) {
+                if (question.getQuestionId().equals(evaluation.getQuestionId())) {
+                    arrListQuestions.get(arrListQuestions.indexOf(question)).setIsEvaluated(true);
+                    break;
+                }
+            }
+        }
+    }
 
     private void setStudentData(int position) {
         getBaseFragment().setBundleArgumentForStudent(position);

@@ -1,5 +1,7 @@
 package com.ism.ws.helper;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -51,6 +53,8 @@ public class Attribute {
     private String gender;
     private String deviceType;
     private int classroomId;
+    private int schoolClassroomId;
+    private int credentialId;
     private String roleId;
 
     //	SchoolInfoRequest
@@ -100,6 +104,10 @@ public class Attribute {
 	public Attribute() {
 		setAccessKey(WebConstants.ACCESS_KEY);
 		setSecretKey(WebConstants.SECRET_KEY);
+	}
+
+	public Attribute(String accessKey) {
+		setAccessKey(accessKey);
 	}
 
 	@JsonProperty("secret_key")
@@ -699,4 +707,21 @@ public class Attribute {
         return this;
     }
 
+	public int getCredentialId() {
+		return credentialId;
+	}
+
+	@JsonProperty("credential_id")
+	public void setCredentialId(int credentialId) {
+		this.credentialId = credentialId;
+	}
+
+	public int getSchoolClassroomId() {
+		return schoolClassroomId;
+	}
+
+	@JsonProperty("school_classroom_id")
+	public void setSchoolClassroomId(int schoolClassroomId) {
+		this.schoolClassroomId = schoolClassroomId;
+	}
 }

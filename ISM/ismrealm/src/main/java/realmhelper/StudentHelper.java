@@ -75,7 +75,6 @@ public class StudentHelper {
         RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
                 .equalTo("configKey", "globalPassword")
                 .findAll();
-        Log.e(TAG, "getGlobalPassword size : " + adminConfigs.size());
         if (adminConfigs != null && adminConfigs.size() > 0) {
             return adminConfigs.get(0).getConfigValue();
         } else {
@@ -84,7 +83,14 @@ public class StudentHelper {
     }
 
 
-    public void Feeds(Feeds feeds) {
+    public void saveFeeds(Feeds feeds) {
+
+        // remaining : to update feed with local id
+        Number localId = realm.where(Feeds.class).max("localId");
+        long newId = 0;
+        if (localId != null) {
+            newId = (long) localId + 1;
+        }
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(feeds);
         realm.commitTransaction();
@@ -153,14 +159,22 @@ public class StudentHelper {
      * @param feedLike
      */
     public void saveFeedLikes(FeedLike feedLike) {
+        realm.beginTransaction();
         Number feedLikeId = realm.where(FeedLike.class).max("feedLikeId");
         long newId = 0;
         if (feedLikeId != null) {
             newId = (long) feedLikeId + 1;
         }
-        realm.beginTransaction();
         feedLike.setFeedLikeId((int) newId);
         realm.copyToRealmOrUpdate(feedLike);
+        realm.commitTransaction();
+    }
+
+    public void updateFeedLikes(Feeds feeds,int like) {
+        Feeds toUpdateFeeds=realm.where(Feeds.class).equalTo("feedId",feeds.getFeedId()).findFirst();
+        realm.beginTransaction();
+        toUpdateFeeds.setLike(String.valueOf(like));
+        toUpdateFeeds.setTotalLike(feeds.getTotalLike());
         realm.commitTransaction();
     }
 

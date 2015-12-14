@@ -8,23 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
+import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
+import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.ism.teacher.ws.model.Examsubmittor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by c161 on --/10/15.
@@ -33,17 +32,17 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
 
     private static final String TAG = GetAssignmentsSubmitterFragment.class.getSimpleName();
 
-    private View view;
-
+    //Views
     private RecyclerView rvAssignmentSubmittorList;
-    AssignmentSubmitterAdapter assignmentSubmitterAdapter;
-
-    Spinner spAssignmentSubject, spAssignmentClasswise, spAssignentSubmissionDate, spAssignentAssessed;
     ImageView imgToggleList;
+    TextView tvNoSubmissions, tvSubmittorTitle;
 
-    List<String> arrayListSubjects, arrayListClasses, arrayListSubmissionDate, arrayListAssessed;
-
+    //List
     ArrayList<Examsubmittor> arrayListAssignments = new ArrayList<>();
+
+    //Objects
+    AssignmentSubmitterAdapter assignmentSubmitterAdapter;
+    MyTypeFace myTypeFace;
 
     public GetAssignmentsSubmitterFragment() {
     }
@@ -56,7 +55,7 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_examwise_assignment, container, false);
+        View view = inflater.inflate(R.layout.fragment_get_assignment_submittor, container, false);
 
         initGlobal(view);
 
@@ -65,30 +64,15 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
 
     private void initGlobal(View view) {
 
-        rvAssignmentSubmittorList = (RecyclerView) view.findViewById(R.id.recycler_examwise_assignments);
+        myTypeFace = new MyTypeFace(getActivity());
 
-        spAssignmentSubject = (Spinner) view.findViewById(R.id.sp_assignment_subject);
-        spAssignmentClasswise = (Spinner) view.findViewById(R.id.sp_assignment_classwise);
-        spAssignentSubmissionDate = (Spinner) view.findViewById(R.id.sp_assignent_submission_date);
-        spAssignentAssessed = (Spinner) view.findViewById(R.id.sp_assignent_assessed);
+        tvNoSubmissions = (TextView) view.findViewById(R.id.tv_no_submissions);
+        tvSubmittorTitle = (TextView) view.findViewById(R.id.tv_submittor_title);
+        rvAssignmentSubmittorList = (RecyclerView) view.findViewById(R.id.recycler_examwise_assignments);
         imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
 
-        arrayListSubjects = new ArrayList<String>();
-        arrayListClasses = new ArrayList<String>();
-        arrayListSubmissionDate = new ArrayList<String>();
-
-
-        arrayListSubjects.add(getString(R.string.strsubject));
-        arrayListClasses.add(getString(R.string.classwise));
-        arrayListSubmissionDate.add(getString(R.string.submission_date));
-
-        arrayListAssessed = Arrays.asList(getResources().getStringArray(R.array.assignment_status));
-
-        Adapters.setUpSpinner(getActivity(), spAssignmentSubject, arrayListSubjects, Adapters.ADAPTER_SMALL);
-        Adapters.setUpSpinner(getActivity(), spAssignmentClasswise, arrayListClasses, Adapters.ADAPTER_SMALL);
-        Adapters.setUpSpinner(getActivity(), spAssignentSubmissionDate, arrayListSubmissionDate, Adapters.ADAPTER_SMALL);
-        Adapters.setUpSpinner(getActivity(), spAssignentAssessed, arrayListAssessed, Adapters.ADAPTER_SMALL);
-
+        tvSubmittorTitle.setTypeface(myTypeFace.getRalewayBold());
+        tvSubmittorTitle.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
         assignmentSubmitterAdapter = new AssignmentSubmitterAdapter(getActivity(), getArguments());
 
         rvAssignmentSubmittorList.setHasFixedSize(true);
@@ -140,9 +124,17 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
 
             arrayListAssignments.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
             assignmentSubmitterAdapter.addAll(arrayListAssignments);
+
+            if (arrayListAssignments.size() == 0) {
+                Utility.showView(tvNoSubmissions);
+            } else {
+                Utility.hideView(tvNoSubmissions);
+            }
         } else {
 
             Utility.showToast(getString(R.string.web_service_issue), getActivity());
         }
     }
+
+
 }

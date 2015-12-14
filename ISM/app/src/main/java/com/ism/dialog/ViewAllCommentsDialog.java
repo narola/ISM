@@ -15,6 +15,9 @@ import com.ism.ws.model.Comment;
 
 import java.util.ArrayList;
 
+import io.realm.RealmResults;
+import model.FeedComment;
+
 /**
  * Created by c166 on 24/10/15.
  */
@@ -24,9 +27,9 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
     private RecyclerView rvPostFeedsComments;
     private PostFeedCommentsAdapter postFeedCommentsAdapter;
     private TextView tvDialogClose;
-    private ArrayList<Comment> commentsList;
+    private RealmResults<FeedComment> commentsList;
 
-    public ViewAllCommentsDialog(Context mContext, ArrayList<Comment> commentsList) {
+    public ViewAllCommentsDialog(Context mContext, RealmResults<FeedComment> commentsList) {
         super(mContext);
 
         this.mContext = mContext;

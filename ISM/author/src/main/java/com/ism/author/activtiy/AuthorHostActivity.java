@@ -31,7 +31,6 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utility;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
-import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.AddQuestionContainerFragment;
 import com.ism.author.fragment.BooksFragment;
@@ -43,8 +42,6 @@ import com.ism.author.fragment.GetSubjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.MyThirtyFragment;
 import com.ism.author.fragment.OfficeFragment;
-import com.ism.author.fragment.TrialExamObjectiveDetailFragment;
-import com.ism.author.fragment.TrialExamSujectiveDetailFragment;
 import com.ism.author.fragment.mydesk.MyDeskFragment;
 import com.ism.author.fragment.userprofile.AllMessageFragment;
 import com.ism.author.fragment.userprofile.AllNotificationFragment;
@@ -107,8 +104,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_PROGRESSREPORT = 8;
     public static final int FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT = 10;
     public static final int FRAGMENT_ADDQUESTION_CONTAINER = 11;
-    public static final int FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS = 12;
-    public static final int FRAGMENT_TRIAL_EXAM_SUBJECTIVE_DETAILS = 13;
+    //    public static final int FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS = 12;
+//    public static final int FRAGMENT_TRIAL_EXAM_SUBJECTIVE_DETAILS = 13;
     public static final int FRAGMENT_ASSESSMENT = 14;
     public static final int FRAGMENT_ASSIGNMENT_SUBMITTOR = 15;
     public static final int FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS = 16;
@@ -269,37 +266,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
     }
 
-    Bundle appBundleArgument;
-
-    public Boolean getIsBundleArgumentNull() {
-        return isBundleArgumentNull;
-    }
-
-    public AuthorHostActivity setIsBundleArgumentNull(Boolean isBundleArgumentNull) {
-        this.isBundleArgumentNull = isBundleArgumentNull;
-        return this;
-    }
-
-    Boolean isBundleArgumentNull = false;
-
-    public Bundle getAppBundleArgument() {
-        return appBundleArgument;
-    }
-
-    public AuthorHostActivity setAppBundleArgument(Bundle appBundleArgument) {
-        this.appBundleArgument = appBundleArgument;
-        return this;
-    }
-
 
     //These is for the load fragmet in main container
     public void loadFragmentInMainContainer(int fragment, Bundle bundleArgument) {
-
-        if (bundleArgument != null) {
-            setAppBundleArgument(bundleArgument);
-        }
-
-        setIsBundleArgumentNull(bundleArgument == null ? true : false);
 
         try {
             switch (fragment) {
@@ -333,13 +302,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                             AddQuestionContainerFragment.newInstance(bundleArgument)).commit();
                     break;
 
-                case FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TrialExamObjectiveDetailFragment.newInstance()).commit();
-                    break;
-
-                case FRAGMENT_TRIAL_EXAM_SUBJECTIVE_DETAILS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TrialExamSujectiveDetailFragment.newInstance()).commit();
-                    break;
 
                 case FRAGMENT_ASSESSMENT:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamsFragment.newInstance()).commit();
@@ -579,25 +541,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     imgHighScore.setActivated(true);
                     break;
 
-                case FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS:
-                    imgHome.setActivated(false);
-                    currentMainFragmentBg = R.color.bg_office;
-                    imgOffice.setActivated(true);
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_office);
-                    hideControllerTopAction();
-                    txtTitle.setText("");
-
-                    break;
-
-                case FRAGMENT_TRIAL_EXAM_SUBJECTIVE_DETAILS:
-                    imgHome.setActivated(false);
-                    currentMainFragmentBg = R.color.bg_office;
-                    imgOffice.setActivated(true);
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_office);
-                    hideControllerTopAction();
-                    txtTitle.setText("");
-
-                    break;
 
                 case FRAGMENT_ASSESSMENT:
                     imgHome.setActivated(false);
@@ -717,9 +660,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
                 case FRAGMENT_HIGHSCORE:
                     imgHighScore.setActivated(false);
-                    break;
-                case FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS:
-                    imgOffice.setActivated(true);
                     break;
                 case FRAGMENT_ASSESSMENT:
                     imgOffice.setActivated(true);
@@ -856,28 +796,25 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             loadFragmentInRightContainer(FRAGMENT_HIGHSCORE, null);
 
         } else if (currentMainFragment == FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT) {
-            if (getIsBundleArgumentNull()) {
-                if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_MYTHIRTY ||
-                        OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL) {
-                    loadFragmentInMainContainer(FRAGMENT_MYTHIRTY, null);
+//            if (getIsBundleArgumentNull()) {
+            if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_MYTHIRTY ||
+                    OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL) {
+                loadFragmentInMainContainer(FRAGMENT_MYTHIRTY, null);
 
-                } else if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_ASSESSMENT) {
+            } else if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_ASSESSMENT) {
 
-                    loadFragmentInMainContainer(FRAGMENT_ASSESSMENT, null);
-                }
-                loadFragmentInRightContainer(FRAGMENT_HIGHSCORE, null);
-
-            } else if (getAppBundleArgument().getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == FRAGMENT_MYTHIRTY) {
-
-
-            } else if (getAppBundleArgument().getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == FRAGMENT_ASSESSMENT) {
-
+                loadFragmentInMainContainer(FRAGMENT_ASSESSMENT, null);
             }
-
-        } else if (currentMainFragment == FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS) {
-
-            loadFragmentInMainContainer(FRAGMENT_MYTHIRTY, null);
             loadFragmentInRightContainer(FRAGMENT_HIGHSCORE, null);
+
+//            }
+
+//            else if (getAppBundleArgument().getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == FRAGMENT_MYTHIRTY) {
+//
+//
+//            } else if (getAppBundleArgument().getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == FRAGMENT_ASSESSMENT) {
+//
+//            }
 
         } else if (currentMainFragment == FRAGMENT_ASSIGNMENT_SUBMITTOR) {
 

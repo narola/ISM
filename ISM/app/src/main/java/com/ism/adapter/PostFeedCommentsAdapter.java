@@ -11,11 +11,12 @@ import android.widget.TextView;
 
 import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.commonsource.utility.Utility;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
-import com.ism.ws.model.Comment;
 
-import java.util.ArrayList;
+import io.realm.RealmResults;
+import model.FeedComment;
 
 /**
  * these adapter class is for getallthe comments of particular feed
@@ -25,7 +26,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     private static final String TAG = PostFeedCommentsAdapter.class.getSimpleName();
 
     Context context;
-    ArrayList<Comment> listOfComments = new ArrayList<>();
+    RealmResults<FeedComment> listOfComments;
 
 
     @Override
@@ -39,15 +40,16 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.txtCommenterUsername.setText(listOfComments.get(position).getFullName());
+        holder.txtCommenterUsername.setText(listOfComments.get(position).getCommentBy().getFullName());
         holder.txtCommenterComment.setText(listOfComments.get(position).getComment());
-        holder.txtCommentDuration.setText(listOfComments.get(position).getCommentBy());
-        Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + listOfComments.get(position).getProfilePic(), holder.imgProfilePic, ISMStudent.options);
+        holder.txtCommentDuration.setText(Utility.getTimeDuration(listOfComments.get(position).getCommentBy().getCreatedDate()));
+        Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + listOfComments.get(position).getCommentBy().getProfilePicture(), holder.imgProfilePic, ISMStudent.options);
     }
 
 
-    public void addAll(ArrayList<Comment> comments) {
+    public void addAll(RealmResults<FeedComment> comments) {
         try {
+            listOfComments=comments;
             listOfComments.clear();
             listOfComments.addAll(comments);
         } catch (Exception e) {

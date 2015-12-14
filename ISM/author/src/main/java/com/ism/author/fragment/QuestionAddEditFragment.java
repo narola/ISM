@@ -86,9 +86,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
     /*these is for the tag add functionality.*/
+    /*for hashtag you have to manage "hashtagname:hashtagid:status" structure if insert hashtag status=1 and if delete hashtag status=0 */
+    /*if you create new hashtag sent hashtag id 0 otherwise tag id get from api*/
     private ContactsCompletionView tagsView;
     private HashTagsModel[] tags;
     private ArrayAdapter<HashTagsModel> tagsAdapter;
+    private List<HashTagsModel> listOfDeletedHashTag = new ArrayList<HashTagsModel>();
 
     /*these sre for the xml views*/
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
@@ -340,6 +343,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     @Override
     public void onTokenRemoved(Object token) {
+
+        if (!((HashTagsModel) token).getTagId().equals("0")) {
+            listOfDeletedHashTag.add((HashTagsModel) token);
+        }
+
         updateTokenConfirmation();
     }
 
@@ -506,7 +514,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     public void setQuestionData(Questions questions) {
         clearViewsData();
         try {
-
 
             if (questions.getIsQuestionAddedInPreview()) {
                 chkAddquestionPreview.setChecked(true);
@@ -779,7 +786,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
                 /*if you edit question you have to pass question idfrom the question data and in
                 add question you have to pass question id 0 */
-
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
@@ -820,12 +826,27 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 StringBuilder sb = new StringBuilder();
                 List<HashTagsModel> list = tagsView.getObjects();
                 for (int i = 0; i < list.size(); i++) {
-                    sb.append(list.get(i).getTagName() + ":" + list.get(i).getTagId());
-                    if (i < list.size() - 1) {
-                        sb.append(",");
+                    sb.append(list.get(i).getTagName() + ":" + list.get(i).getTagId() + ":1");
+                    sb.append(",");
+
+                }
+
+                if (listOfDeletedHashTag.size() > 0) {
+                    for (int i = 0; i < listOfDeletedHashTag.size(); i++) {
+                        sb.append(listOfDeletedHashTag.get(i).getTagName() + ":" + listOfDeletedHashTag.get(i).getTagId() + ":0");
+                        if (i < listOfDeletedHashTag.size() - 1) {
+                            sb.append(",");
+                        }
                     }
+
+                } else {
+                    sb.substring(0, sb.toString().length() - 1);
                 }
                 Debug.e(TAG, "The HashTags Are:::" + sb.toString());
+
+                Utils.showToast("The HashTags are::" + sb.toString(), getActivity());
+
+
                 attribute.setHashtagData(sb.toString());
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.TEMPCREATEQUESTION);

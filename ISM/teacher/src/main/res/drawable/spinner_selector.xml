@@ -3,11 +3,11 @@
     <!-- disabled state -->
     <item android:state_enabled="false" android:drawable="@drawable/shadow_gray"/>
     <!-- pressed state -->
-    <item android:state_enabled="true" android:state_window_focused="true" android:state_pressed="true" android:drawable="@drawable/shadow_green"/>
+    <item android:state_enabled="true" android:state_window_focused="true" android:state_pressed="true" android:drawable="@drawable/shadow_blue"/>
     <!-- unselected state -->
-    <item android:state_enabled="true" android:state_focused="true" android:state_window_focused="true" android:drawable="@drawable/shadow_green"/>
+    <item android:state_enabled="true" android:state_focused="true" android:state_window_focused="true" android:drawable="@drawable/shadow_blue"/>
     <!-- dropdown list state -->
-    <item android:state_enabled="true" android:state_focused="true" android:drawable="@drawable/shadow_green"/>
+    <item android:state_enabled="true" android:state_focused="true" android:drawable="@drawable/shadow_blue"/>
     <!-- default -->
     <item android:drawable="@drawable/shadow_gray"/>
 </selector>

@@ -175,6 +175,7 @@ public class Utility {
         try {
             Date date = DATE_FORMAT_API.parse(dateText);
             newDate = DATE_FORMAT_API.format(date);
+            Debug.e("date test",newDate);
 
         } catch (Exception e) {
 
@@ -334,4 +335,24 @@ public class Utility {
         return mContext.getResources().getString(stringId);
 
     }
+
+
+    /**
+     * Hide the view
+     */
+
+    public static void hideView(View view)
+    {
+        view.setVisibility(View.GONE);
+    }
+    public static void invisibleView(View view)
+    {
+        view.setVisibility(View.INVISIBLE);
+    }
+    public static void showView(View view)
+    {
+        view.setVisibility(View.VISIBLE);
+    }
+
+
 }

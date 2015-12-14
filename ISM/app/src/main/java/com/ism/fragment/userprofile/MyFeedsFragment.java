@@ -133,9 +133,9 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					ArrayList<Feeds> feeds = responseHandler.getFeeds();
-					adpPostFeeds = new PostFeedsAdapter(getActivity(), feeds);
-					txtEmptyListMessage.setVisibility(feeds != null && feeds.size() > 0 ? View.GONE : View.VISIBLE);
-					recyclerPostFeeds.setAdapter(adpPostFeeds);
+					//adpPostFeeds = new PostFeedsAdapter(getActivity(), feeds);
+					//txtEmptyListMessage.setVisibility(feeds != null && feeds.size() > 0 ? View.GONE : View.VISIBLE);
+					//recyclerPostFeeds.setAdapter(adpPostFeeds);
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetMyFeeds Failed : " + responseHandler.getMessage());
 				}

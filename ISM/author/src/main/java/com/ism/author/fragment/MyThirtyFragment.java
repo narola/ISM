@@ -29,6 +29,7 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 11/12/15.
  */
+/*This fragment will use for both trial section and my30 section*/
 public class MyThirtyFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = MyThirtyFragment.class.getSimpleName();
@@ -88,7 +89,7 @@ public class MyThirtyFragment extends Fragment implements WebserviceWrapper.Webs
                 } else if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_MYTHIRTY) {
                     request.setExamCategory(getString(R.string.strmy30th));
                 }
-                request.setExamCategory("");
+//                request.setExamCategory("");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLASSIGNMENTS);
             } catch (Exception e) {

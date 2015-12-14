@@ -29,6 +29,10 @@
     <string name="msg_email_exists">Email id already exists.</string>
     <string name="msg_username_exists">Username already exists.</string>
 
+    <!-- All assignments-->
+    <string name="straverage_score">Average Score</string>
+
+
     <!-- Assignment resources-->
     <string name="stractivity">Activity</string>
     <string name="strexam">Exam</string>
@@ -52,6 +56,11 @@
     <string name="msg_validation_negative_marking">\nPlease select any negative marking option.</string>
     <string name="msg_validation_random_question">\nPlease select any random question option.</string>
     <string name="msg_validation_use_score_from_questions">\nPlease select use score from question option.</string>
+    <string name="strexamassessor">Exam Assessor</string>
+    <string name="strnoassessor">No Assessor</string>
+    <string name="strexamcategory">Exam Category</string>
+    <string name="strexamtopic">Exam Topic</string>
+    <string name="streditexam">Edit</string>
 
 
     <!-- Controller String-->
@@ -77,6 +86,7 @@
     <string name="strattemptcount">Attempt Count</string>
     <string name="strexamschedule">Exam Schedule</string>
     <string name="strstartdate">Start Date</string>
+    <string name="strstarttime">Start Time</string>
     <string name="strenddate">End Date</string>
     <string name="strnotifystudent">Notify Student Via SMS</string>
     <string name="strexaminstruction">Exam Instruction</string>
@@ -90,6 +100,7 @@
     <string name="strsetquestion">set question</string>
     <string name="strnegativemark">Question Negative Mark :</string>
     <string name="strexammode">Exam Mode</string>
+    <string name="strtotalscore">Total Score</string>
 
     <string-array name="exammode">
         <item>Exam Mode</item>

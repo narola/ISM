@@ -3,7 +3,6 @@ package com.ism.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -490,8 +489,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiRefreshToken() {
 		try {
-			Attribute attribute = new Attribute();
-			attribute.setUsername(WebConstants.ACCESS_KEY);
+			Attribute attribute = new Attribute(WebConstants.ACCESS_KEY);
 
 			new WebserviceWrapper(getApplicationContext(), attribute, this).new WebserviceCaller()
 					.execute(WebConstants.REFRESH_TOKEN);
