@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/d5dp">
+
+    <LinearLayout
+        android:id="@+id/ll_exam_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_assessment_box"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_top_exam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/img_bg_mythirty_pink"
+            android:orientation="vertical"
+            android:padding="@dimen/d10dp">
+
+            <TextView
+                android:id="@+id/tv_exam_book_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/strtest"
+                android:textAllCaps="true"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/d17dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_exam_type"
+                android:layout_width="@dimen/d190dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/d10dp"
+                android:layout_marginTop="@dimen/d10dp"
+                android:background="@drawable/btn_white"
+                android:singleLine="false"
+                android:text="@string/strexamtype"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/d15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/d10dp"
+            android:paddingTop="@dimen/d10dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_exam_noof_student"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_violet_assignment"
+                    android:textSize="@dimen/d20dp" />
+
+                <TextView
+                    android:id="@+id/tv_exam_noof_student_avg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/stravg"
+                    android:textSize="@dimen/d15dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/assignment_separator" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_exam_noof_student_attempted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_red_assignment"
+                    android:textSize="@dimen/d20dp" />
+
+                <TextView
+                    android:id="@+id/tv_exam_attempted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/strattempted"
+                    android:textSize="@dimen/d15dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

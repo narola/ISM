@@ -29,6 +29,10 @@
     <string name="msg_email_exists">Email id already exists.</string>
     <string name="msg_username_exists">Username already exists.</string>
 
+    <!-- All assignments-->
+    <string name="straverage_score">Average Score</string>
+
+
     <!-- Assignment resources-->
     <string name="stractivity">Activity</string>
     <string name="strexam">Exam</string>
@@ -55,6 +59,9 @@
     <string name="strexamassessor">Exam Assessor</string>
     <string name="strnoassessor">No Assessor</string>
     <string name="strexamcategory">Exam Category</string>
+    <string name="strexamtopic">Exam Topic</string>
+    <string name="streditexam">Edit</string>
+    <string name="strnone">None</string>
 
 
     <!-- Controller String-->
@@ -94,6 +101,7 @@
     <string name="strsetquestion">set question</string>
     <string name="strnegativemark">Question Negative Mark :</string>
     <string name="strexammode">Exam Mode</string>
+    <string name="strtotalscore">Total Score</string>
 
     <string-array name="exammode">
         <item>Exam Mode</item>

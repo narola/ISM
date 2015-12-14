@@ -16,4 +16,8 @@
     <!-- ry teacher module-->
     <string name="no_questions_in_your_exam">No questions in your exam!</string>
     <string name="no_questions_found_for_your_filter_criteria">No questions found for your filtered criteria!</string>
+    <string name="no_assignments_found_for_your_filter_criteria">No assignments found for your filtered criteria!</string>
+    <string name="no_assignments_available">No assignments available!</string>
+    <string name="no_submissions_available">No submissions available!</string>
+    <string name="no_questions_available">No questions available!</string>
 </resources>

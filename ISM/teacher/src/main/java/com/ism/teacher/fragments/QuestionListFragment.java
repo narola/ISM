@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
@@ -710,7 +709,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 hideEmptyText();
             } else {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
-                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
                 showEmptyText();
             }
 
@@ -742,7 +741,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 hideEmptyText();
             } else {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
-                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
                 showEmptyText();
             }
         }
@@ -766,8 +765,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 hideEmptyText();
             } else {
                 questionBankListAdapter.addAll(latestlistOfQuestionBank);
-
-                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
                 showEmptyText();
             }
 

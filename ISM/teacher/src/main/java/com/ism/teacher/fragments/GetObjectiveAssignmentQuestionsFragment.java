@@ -38,7 +38,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private MyTypeFace myTypeFace;
 
     private TextView tvObjectiveAssignmentSubject, tvObjectiveAssignmentClass, tvObjectiveAssignmentNo, tvObjectiveAssignmentTitle,
-            tvObjectiveAssignmentDateTitle, tvObjectiveAssignmentDate;
+            tvObjectiveAssignmentDateTitle, tvObjectiveAssignmentDate, tvNoQuestions;
     private ImageView imgEditExam, imgCopyExam;
 
     private RecyclerView rvGetObjectiveAssignmentQuestionslist;
@@ -48,7 +48,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     ResponseHandler responseObjGetAllExamQuestions = null;
 
     public static String ARG_ARR_LIST_QUESTIONS = "arrListQuestions";
-    public static String ARG_EXAM_TYPE = "examType";
+   // public static String ARG_EXAM_TYPE = "examType";
     public static String ARG_EXAM_ISCOPY = "examIsCopy";
 
 
@@ -73,6 +73,8 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
+
+        tvNoQuestions = (TextView) view.findViewById(R.id.tv_no_questions);
         tvObjectiveAssignmentSubject = (TextView) view.findViewById(R.id.tv_objective_assignment_subject);
         tvObjectiveAssignmentClass = (TextView) view.findViewById(R.id.tv_objective_assignment_class);
         tvObjectiveAssignmentNo = (TextView) view.findViewById(R.id.tv_objective_assignment_no);
@@ -121,7 +123,11 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
         if (responseObjGetAllExamQuestions != null) {
             getArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
-            getArguments().putString(ARG_EXAM_TYPE, getString(R.string.strobjective));
+
+            Debug.i("test exam type get objec assign Ques",getArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
+
+
 
 //            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
 //                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
@@ -197,7 +203,11 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                     arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
                     getObjectiveAssignmentQuestionsAdapter.addAll(arrListQuestions);
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
-                    //   setAssignmentDetails(responseObjGetAllExamQuestions.getExamQuestions().get(0));
+
+                    if(arrListQuestions.size()==0)
+                    {
+                        Utility.showView(tvNoQuestions);
+                    }
 
                     if (getArguments().getBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                         callAPiGetExamEvaluation();

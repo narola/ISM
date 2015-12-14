@@ -131,15 +131,11 @@
                 android:layout_marginBottom="@dimen/d5dp"
                 android:layout_weight="1" />
 
-
-            <TextView
-                android:id="@+id/tv_no_questions_msg"
+            <include
+                layout="@layout/include_no_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/msg_no_exam_questions"
-                android:textSize="@dimen/d20dp"
-                android:visibility="gone" />
+                android:layout_centerInParent="true" />
 
         </RelativeLayout>
     </LinearLayout>

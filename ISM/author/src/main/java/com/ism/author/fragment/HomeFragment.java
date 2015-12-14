@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
@@ -56,6 +57,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     private RecyclerView rvPostFeeds;
     private PostFeedsAdapter postFeedsAdapter;
     private OnClickListener onClickAttachFile;
+    private TextView tvNoDataMsg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,6 +71,11 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         rvPostFeeds = (RecyclerView) view.findViewById(R.id.rv_post_feeds);
         etWritePost = (EditText) view.findViewById(R.id.et_writePost);
         etWritePost.setEnabled(true);
+
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(View.GONE);
+        tvNoDataMsg.setText(getString(R.string.no_post_feeds));
 
         onClickAttachFile = new OnClickListener() {
             @Override
@@ -197,7 +204,14 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    postFeedsAdapter.addAll(responseHandler.getFeeds());
+
+
+                    if (responseHandler.getFeeds().size() > 0) {
+                        postFeedsAdapter.addAll(responseHandler.getFeeds());
+                        tvNoDataMsg.setVisibility(View.GONE);
+                    } else {
+                        tvNoDataMsg.setVisibility(View.VISIBLE);
+                    }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }

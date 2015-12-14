@@ -1,7 +1,6 @@
 package com.ism.adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import com.ism.ISMStudent;
 import com.ism.R;
-import com.ism.commonsource.utility.Utility;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;

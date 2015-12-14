@@ -20,13 +20,9 @@ public class WebConstants {
 
 
     public static final String TEACHER_ROLE_ID = "3";
-    public static final String STUDENT_ID_1 = "1";
-    public static final String BOOK_ID_2 = "2";
-    public static final String TOPIC_ID_5 = "5";
     public static final String TEST_USER_ID = "370";
     public static final String TEST_USER_ID_52 = "52";
     public static final String TEST_USER_NAME = "Admin";
-
 
     /**
      * Api IDs

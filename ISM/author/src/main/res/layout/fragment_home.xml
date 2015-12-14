@@ -13,28 +13,24 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
-
-    <!--<ListView-->
-    <!--android:id="@+id/lv_post_feeds"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="0dip"-->
-    <!--android:layout_weight="1"-->
-    <!--android:cacheColorHint="@android:color/transparent"-->
-    <!--android:divider="@null"-->
-    <!--android:dividerHeight="5dp"-->
-    <!--android:fadeScrollbars="false"-->
-    <!--android:fadingEdge="none"-->
-    <!--android:listSelector="@android:color/transparent"-->
-    <!--android:overScrollMode="never"-->
-    <!--android:scrollbarThumbVertical="@null"-->
-    <!--android:scrollbars="none"-->
-    <!--tools:listitem="@layout/row_post" />-->
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_post_feeds"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_post_feeds"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <include
+            layout="@layout/include_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+
+    </RelativeLayout>
 
 
 </LinearLayout>

@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.fragment.OfficeFragment;
-import com.ism.author.object.MyTypeFace;
 import com.ism.author.model.OfficeTabDataSet;
+import com.ism.author.object.Global;
 
 
 /**
@@ -24,7 +24,7 @@ public class OfficeTabGridAdapter extends BaseAdapter {
     LayoutInflater inflater;
     OfficeTabDataSet officeTabDataSet;
     Fragment fragment;
-    private MyTypeFace myTypeFace;
+
 
     // Constructor
     public OfficeTabGridAdapter(Context context, OfficeTabDataSet officeTabDataSet, Fragment fragment) {
@@ -34,7 +34,6 @@ public class OfficeTabGridAdapter extends BaseAdapter {
         this.officeTabDataSet = officeTabDataSet;
         this.fragment = fragment;
 
-        myTypeFace = new MyTypeFace(mContext);
     }
 
 
@@ -77,7 +76,7 @@ public class OfficeTabGridAdapter extends BaseAdapter {
             holder.tvOfficetabTitle.setText(officeTabDataSet.getOfficeTabTitleList()[position]);
             holder.tvOfficetabTitle.setBackgroundResource(officeTabDataSet.getOfficeTabTitleImages()[position]);
 
-            holder.tvOfficetabInfo.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvOfficetabInfo.setTypeface(Global.myTypeFace.getRalewayRegular());
             holder.tvOfficetabInfo.setText(officeTabDataSet.getOfficeTabInfoList()[position]);
             holder.tvOfficetabInfo.setCompoundDrawablesWithIntrinsicBounds(officeTabDataSet.getOfficeTabInfoImages()[position], 0, 0, 0);
 
@@ -85,16 +84,26 @@ public class OfficeTabGridAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
 
-                    if (position == 2)
-                        ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_TRIAL);
 
-                   else if (position == 4)
-                        ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_ASSESSMENT);
+                    switch (position) {
+                        case 0:
+                            ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_MY_DESK);
+                            break;
+                        case 1:
+                            ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_GOTRENDING);
+                            break;
+                        case 2:
+                            ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_TRIAL);
+                            break;
+                        case 3:
+                            ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_MYTHIRTY);
+                            break;
+                        case 4:
+                            ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_ASSESSMENT);
+                            break;
 
-                    else if (position == 0)
-                        ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_MY_DESK);
 
-
+                    }
                 }
             });
 

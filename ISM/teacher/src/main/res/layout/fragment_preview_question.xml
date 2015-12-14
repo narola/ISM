@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/fragment_background_color"
-            android:padding="@dimen/d10dp">
+            >
 
             <TextView
                 android:id="@+id/tv_questionlist_title"
@@ -36,30 +36,102 @@
                 android:textColor="@color/color_question"
                 android:textSize="22sp" />
 
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginLeft="@dimen/d10dp"-->
+                <!--android:layout_toRightOf="@+id/tv_questionlist_title"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_total_questions"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="sdasdas"-->
+                    <!--android:textSize="22sp" />-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_total_score"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="@dimen/d15dp"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="Total Score:"-->
+                    <!--android:textSize="22sp" />-->
+            <!--</LinearLayout>-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/d10dp"
-                android:layout_toRightOf="@+id/tv_questionlist_title"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="@dimen/d2dp"
+                android:layout_marginTop="@dimen/d2dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_total_questions"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text=""
-                    android:textSize="22sp" />
+                <LinearLayout
 
-                <TextView
-                    android:id="@+id/tv_total_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/d15dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_preview_total_question_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/strtotalquestions"
+                        android:textColor="@color/color_blue"
+                        android:textSize="@dimen/d20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_total_questions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center"
+                        android:textColor="@color/color_green"
+                        android:textSize="@dimen/d20sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/d5dp"
+                    android:layout_marginTop="@dimen/d5dp"
+                    android:background="@color/questionlistseparator" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d15dp"
                     android:gravity="center"
-                    android:text="Total Score:"
-                    android:textSize="22sp" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_preview_total_score_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center"
+                        android:text="@string/strtotalscore"
+                        android:textColor="@color/color_blue"
+                        android:textSize="@dimen/d20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_total_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center"
+                        android:textColor="@color/color_green"
+                        android:textSize="@dimen/d20sp" />
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <TextView

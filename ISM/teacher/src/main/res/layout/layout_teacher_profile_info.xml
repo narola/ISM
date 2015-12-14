@@ -73,7 +73,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="@dimen/d5dp"
                                     android:layout_weight="1"
-                                    android:background="@drawable/edittext_shadow_selector"
+                                    android:background="@drawable/selector"
                                     android:hint="@string/strfullname"
                                     android:padding="15dp"
                                     android:textColorHint="@color/color_text_hint" />
@@ -84,7 +84,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="@dimen/d5dp"
                                     android:layout_weight="1"
-                                    android:background="@drawable/edittext_shadow_selector"
+                                    android:background="@drawable/selector"
                                     android:hint="@string/stremailaddress"
                                     android:inputType="textEmailAddress"
                                     android:padding="15dp"
@@ -104,7 +104,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginRight="@dimen/d5dp"
                                     android:layout_weight="1"
-                                    android:background="@drawable/spinner_selector_blue"
+                                    android:background="@drawable/spinner_selector"
                                     android:padding="@dimen/d20dp"
                                     android:spinnerMode="dropdown" />
 
@@ -114,7 +114,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="@dimen/d5dp"
                                     android:layout_weight="1"
-                                    android:background="@drawable/edittext_shadow_selector"
+                                    android:background="@drawable/selector"
                                     android:hint="@string/strcontactnumber"
                                     android:inputType="phone"
                                     android:padding="15dp"
@@ -128,7 +128,7 @@
                                 android:layout_height="110dp"
                                 android:layout_marginRight="@dimen/d5dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/edittext_shadow_selector"
+                                android:background="@drawable/selector"
                                 android:gravity="top|left"
                                 android:hint="@string/strhomeaddress"
                                 android:padding="15dp"
@@ -262,7 +262,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector_blue"
+                            android:background="@drawable/spinner_selector"
                             android:entries="@array/list"
                             android:padding="@dimen/d20dp" />
 
@@ -272,7 +272,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector_blue"
+                            android:background="@drawable/spinner_selector"
                             android:entries="@array/list"
                             android:padding="@dimen/d20dp" />
 
@@ -290,7 +290,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector_blue"
+                            android:background="@drawable/spinner_selector"
                             android:entries="@array/list"
                             android:padding="@dimen/d20dp" />
 
@@ -301,7 +301,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector_blue"
+                            android:background="@drawable/spinner_selector"
                             android:entries="@array/list"
                             android:padding="@dimen/d20dp" />
                     </LinearLayout>
@@ -351,7 +351,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/edittext_shadow_selector"
+                            android:background="@drawable/selector"
                             android:hint="@string/strusername"
                             android:padding="15dp"
                             android:textColorHint="@color/color_text_hint" />
@@ -362,7 +362,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/edittext_shadow_selector"
+                            android:background="@drawable/selector"
                             android:hint="@string/strcurrentpwd"
                             android:inputType="textPassword"
                             android:padding="15dp"
@@ -382,7 +382,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/edittext_shadow_selector"
+                            android:background="@drawable/selector"
                             android:hint="@string/strnewpwd"
                             android:inputType="textPassword"
                             android:padding="15dp"
@@ -394,7 +394,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/edittext_shadow_selector"
+                            android:background="@drawable/selector"
                             android:hint="@string/strconfirmpwd"
                             android:inputType="textPassword"
                             android:padding="15dp"

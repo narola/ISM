@@ -399,7 +399,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void callApiGetGeneralSettingPreferences() {
         try {
             showProgress();
-            new WebserviceWrapper(getApplicationContext(), null, HostActivity.this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTING_PREFERENCES);
+            new WebserviceWrapper(this, new Attribute(), this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTING_PREFERENCES);
         } catch (Exception e) {
             Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
         }
@@ -411,7 +411,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
             Attribute attribute = new Attribute();
             attribute.setUserId(Global.strUserId);
 
-            new WebserviceWrapper(HostActivity.this, attribute, this).new WebserviceCaller()
+            new WebserviceWrapper(this, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_BADGES_COUNT);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetAllBadgesCount Exception : " + e.toString());
@@ -986,19 +986,14 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     }
 
     private void callApiForGetUserPreference() {
-
         try {
             showProgress();
             Attribute requestObject = new Attribute();
             requestObject.setUserId("1");
-            new WebserviceWrapper(getApplicationContext(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_USER_PREFERENCES);
-
+            new WebserviceWrapper(this, requestObject, this).new WebserviceCaller().execute(WebConstants.GET_USER_PREFERENCES);
         } catch (Exception e) {
-
             Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
-
         }
-
     }
 
     public void setListenerHostEditAboutMe(HostListenerEditAboutMe listenerHostEditAboutMe) {

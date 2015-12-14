@@ -99,11 +99,14 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         );
 
 
-        if (getArguments() != null) {
-            initTab(1);
-        } else {
-            initTab(0);
-        }
+//        if (getArguments() != null) {
+//            initTab(1);
+//        } else {
+//            initTab(0);
+//        }
+
+
+        initTab(1);
 
 
     }
