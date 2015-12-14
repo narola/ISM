@@ -946,7 +946,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             question.setQuestionAssetsLink("");
 
             if (imagelink != null && !imagelink.equals("")) {
-//                question.setQuestionImageLink(WebConstants.Image_url + imagelink);
                 question.setQuestionImageLink(imagelink);
             } else {
                 question.setQuestionImageLink("");
