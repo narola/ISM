@@ -11,18 +11,31 @@
                 </div>
                 <!--//breadcrumb-->
                 <!--filter-->
-                <div class="filter  group_filter">
+                <form method="get" id="filter">
+                <div class="filter  group_filter admin_controls box_body">
                 	<div class="col-sm-12">
-                    	<div class="form-group">
-                            <select class="form-control">
-                                <option>Select Author</option>
-                            </select>
+                    	<div class="form-group select">
+                            <select class="form-control js-example-basic-single" id="author" name="author">
+                                <option  selected value=""> Select Author</option>
+                                  <?php 
+                                      if(!empty($authors_list)) {
+                                        foreach($authors_list as $author) { 
+                                      ?>
+                                      <option value="<?php echo $author['id']; ?>" <?php echo set_select('author', $author['id']); ?> >
+                                            <?php echo $author['full_name']; ?>
+                                      </option>
+                                  <?php } }else{ ?>
+                                  <option disabled > No Author Found</option>  
+                                  <?php } ?> 
+                          </select>
+
+                           
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <select class="form-control">
                                 <option>Select tags</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <select class="form-control">
                                 <option>Sort by</option>
@@ -32,6 +45,7 @@
                         
                     </div>
                 </div>
+            </form>
                 <!--//filter-->
                 <!--button div-->
                 
@@ -125,3 +139,8 @@
                 </div>
                 <!--//row table-->
 </div>
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
+        $(".js-example-basic-single").select2({ placeholder: "Select Author"});   
+    });
+</script>

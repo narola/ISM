@@ -121,6 +121,7 @@ $(function() {
   });
     $(document).ready(function() {
         $(".js-example-basic-single").select2();
+
         $("#book_frm").validate({
             // Specify the validation rules
             ignore: 'input[type=hidden]', // considers the hidden elements also
@@ -163,10 +164,13 @@ $(function() {
                     elem.closest('.form-group').removeClass('has-error');
                 }
             },
-            submitHandler: function(form, event) {
-                event.preventDefault();
-                console.log('here');
-                upload_product_img(form, event);
+            submitHandler: function(form) {
+                // event.preventDefault();
+                // alert('here');
+                // console.log('here');
+                var file_data = $("#front_cover").prop("files")[0];
+                upload_product_img(form, event, file_data);
+                return false;
                 // form.submit();
             }
         });
