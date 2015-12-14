@@ -214,8 +214,8 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-                <EditText
-                    android:id="@+id/et_addquestion_answer"
+                <TextView
+                    android:id="@+id/tv_addquestion_answer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/d20dp"
@@ -225,6 +225,7 @@
                     android:minLines="3"
                     android:padding="@dimen/d10dp"
                     android:textSize="@dimen/d18dp" />
+
 
                 <LinearLayout
                     android:id="@+id/ll_add_mcqanswer"

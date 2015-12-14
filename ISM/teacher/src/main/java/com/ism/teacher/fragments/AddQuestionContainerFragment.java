@@ -240,20 +240,5 @@ public class AddQuestionContainerFragment extends Fragment {
         }
     }
 
-    public void showText() {
-        Debug.e("inside showtext", "inside showtext");
-        previewQuestionFragment.tvNoQuestions.setVisibility(View.VISIBLE);
-        previewQuestionFragment.rvPreviewquestionlist.setVisibility(View.GONE);
-    }
-
-    public void hideText() {
-        Debug.e("inside hideText", "inside hideText");
-        previewQuestionFragment.tvNoQuestions.setVisibility(View.GONE);
-        previewQuestionFragment.rvPreviewquestionlist.setVisibility(View.VISIBLE);
-    }
-
-    public void getTotalPreviewQuestions(int latestSize) {
-        previewQuestionFragment.tv_total_questions.setText(getString(R.string.strtotalquestions) + latestSize);
-    }
 
 }
