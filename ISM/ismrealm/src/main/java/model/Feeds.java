@@ -27,7 +27,7 @@ public class Feeds extends RealmObject {
    // private String fullName;
     private String like;
     ////private String profilePic;
-    private RealmList<FeedComment> comments;
+    private RealmList<FeedComment> comments ;
     private RealmList<FeedImage> feedImages;
 
 
