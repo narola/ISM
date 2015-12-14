@@ -1031,7 +1031,7 @@ class SocialFunctions
 
 
                     //Get Images
-                    $queryGetImages = "SELECT `id`,`image_link` FROM `feed_image` WHERE `feed_id`=".$feed['id']." AND f.is_delete=0";
+                    $queryGetImages = "SELECT `id`,`image_link` FROM `feed_image` WHERE `feed_id`=".$feed['id']." AND is_delete=0";
                     $resultGetImages = mysqli_query($GLOBALS['con'], $queryGetImages) or $errorMsg = mysqli_error($GLOBALS['con']);
                     $allImages = array();
                     //for counting the number of rows for query result
@@ -1621,46 +1621,22 @@ class SocialFunctions
         $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
         if($isSecure==yes) {
+            //$selectToGetSubjectId = "SELECT id FROM " . TABLE_SUBJECTS . " WHERE is_delete=0";
 
-//            $selectToGetSubjectId="SELECT questions.*,subjects.subject_name FROM ".TABLE_USER_FAVORITE_QUESTION." user_favorite_question
-//            INNER JOIN ".TABLE_QUESTIONS." questions ON questions.id=user_favorite_question.question_id
-//            INNER JOIN " . TABLE_SUBJECTS . " subjects ON subjects.id=questions.subject_id
-//            WHERE user_favorite_question.user_id=".$user_id." and user_favorite_question.is_delete=0 GROUP BY subjects.id";
-
-
-            $selectToGetSubjectId="SELECT * FROM (SELECT questions.*,subjects.subject_name,subjects.id as 'sid' FROM ".TABLE_USER_FAVORITE_QUESTION." user_favorite_question
+           $selectToGetSubjectId="SELECT questions.*,subjects.subject_name FROM ".TABLE_USER_FAVORITE_QUESTION." user_favorite_question
             INNER JOIN ".TABLE_QUESTIONS." questions ON questions.id=user_favorite_question.question_id
             INNER JOIN " . TABLE_SUBJECTS . " subjects ON subjects.id=questions.subject_id
-            WHERE user_favorite_question.user_id=".$user_id." and user_favorite_question.is_delete=0)se ";
-            //echo $selectToGetSubjectId; exit;
+            WHERE user_favorite_question.user_id=".$user_id." and user_favorite_question.is_delete=0 GROUP BY questions.id,questions.subject_id ";
+
+
             $resultToGetSubjectId=mysqli_query($GLOBALS['con'], $selectToGetSubjectId) or $message = mysqli_error($GLOBALS['con']);
 
             $post=array();
-            $post1=array();
             if (mysqli_num_rows($resultToGetSubjectId) > 0) {
 
                 while ($rowQuestion= mysqli_fetch_assoc($resultToGetSubjectId)) {
 
-
-
-//                    $selQuery = "SELECT questions.*,subjects.subject_name FROM " . TABLE_QUESTIONS . " questions
-//                    INNER JOIN " . TABLE_SUBJECTS . " subjects ON subjects.id=questions.subject_id
-//                    WHERE questions.subject_id=" . $rowQuestion1['subject_id'] .  " and questions.id=".$rowQuestion1['id']." and questions.is_delete=0 ";
-
-                    $questions=array();
-
-                    $selQuery = "SELECT id,subject_name FROM " . TABLE_SUBJECTS . "  WHERE id=" . $rowQuestion['subject_id'] .  " and is_delete=0 ";//group by id";
-
-                    $selResult = mysqli_query($GLOBALS['con'], $selQuery) or $message = mysqli_error($GLOBALS['con']);
-                    //echo  $selQuery ;
-
-
-                  //  if (mysqli_num_rows($selResult) > 0) {
-
-                      //  while ($rowQuestion1 = mysqli_fetch_assoc($selResult)) {
-
-                            //print_r($rowQuestion);
-                            $post['subject_name']=$rowQuestion['subject_name'];
+                            $questions=array();
                             $questions['question_id'] = $rowQuestion['id'];
                             $questions['question_text'] = $rowQuestion['question_text'];
                             $questions['question_format'] = $rowQuestion['question_format'];
@@ -1669,38 +1645,27 @@ class SocialFunctions
                             $questions['subject_name'] = $rowQuestion['subject_name'];
                             $questions['solution'] = $rowQuestion['solution'];
 
+                           /*  $choice = array();
+                             if ($rowQuestion['question_format'] == 'MCQ') {
+                                 $queryGetChoice = "SELECT `id`, `question_id`, `choice_text`, `is_right`, `image_link`, `audio_link`, `video_link` FROM " . TABLE_ANSWER_CHOICES . " WHERE `question_id`=" . $rowQuestion['id'] . " AND is_delete=0 ";
+                                 $resultGetChoice = mysqli_query($GLOBALS['con'], $queryGetChoice) or $message = mysqli_error($GLOBALS['con']);
+                                 // echo $resultGetChoice;
+                                 if (mysqli_num_rows($resultGetChoice)) {
+                                     while ($rowGetChoice = mysqli_fetch_assoc($resultGetChoice)) {
+                                         $choice[] = $rowGetChoice;
 
-                           /* $choice = array();
-                            if ($rowQuestion['question_format'] == 'MCQ') {
-                                $queryGetChoice = "SELECT `id`, `question_id`, `choice_text`, `is_right`, `image_link`, `audio_link`, `video_link` FROM " . TABLE_ANSWER_CHOICES . " WHERE `question_id`=" . $rowQuestion['id'] . " AND is_delete=0 ";
-                                $resultGetChoice = mysqli_query($GLOBALS['con'], $queryGetChoice) or $message = mysqli_error($GLOBALS['con']);
-                                // echo $resultGetChoice;
-                                if (mysqli_num_rows($resultGetChoice)) {
-                                    while ($rowGetChoice = mysqli_fetch_assoc($resultGetChoice)) {
-                                        $choice[] = $rowGetChoice;
-
-                                    }
-                                    $questions['answers'] = $choice;
-                                }
-                            } else {
-                                $questions['answers'] = $choice;
-                            }*/
-
-                           // $post1['subjects'][]=$questions;
-                            $post1[]=$questions;
+                                     }
+                                     $questions['answers'] = $choice;
+                                 }
+                             } else {
+                                 $questions['answers'] = $choice;
+                             }*/
 
 
-                      //  }
-
-
-                        //$post[]=$post1;
-                       // $post[]=$post1;
-                   // }
-
-
+                            $post[] = $questions;
 
                 }
-                $post[]=$post1;
+
                 $data[]=$post;
                 $status = SUCCESS;
                 $message = REQUEST_ACCEPTED;

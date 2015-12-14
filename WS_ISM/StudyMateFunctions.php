@@ -83,14 +83,40 @@ class StudyMateFunctions
 
            $query = "select * from ".TABLE_STUDYMATES." where ((mate_id=".$mate_id. " and mate_of=". $mate_of." ) or (mate_id=".$mate_of. " and mate_of=". $mate_id." )) and ( status='pending' or status='request') and is_delete=0";
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            //echo $query; exit;
             if (mysqli_num_rows($result) > 0) {
                 $updateQuery = "UPDATE " . TABLE_STUDYMATES . " SET status='friend' where ((mate_id=".$mate_id. " and mate_of=". $mate_of." ) or (mate_id=".$mate_of. " and mate_of=". $mate_id." ))";
+                //$updateQuery = "UPDATE " . TABLE_STUDYMATES . " SET status='friend' where mate_id=".$mate_id. " and mate_of=". $mate_of;
+                // echo $updateQuery; exit;
                 $updateResult = mysqli_query($GLOBALS['con'], $updateQuery) or $message = mysqli_error($GLOBALS['con']);
 
                 if ($updateResult) {
-                    $message = REQUEST_ACCEPTED;
-                    $status = SUCCESS;
-                }
+
+                    $query = "select * from ".TABLE_STUDYMATES." where mate_id=".$mate_id. " and mate_of=". $mate_of." and  status='friend' and is_delete=0";
+                   // echo $query; exit;
+                    $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                    if(mysqli_num_rows($result)== 0) {
+
+                        $insertFields = "`mate_of`,`mate_id`,`status`";
+                        $insertValues = "" . $mate_of . "," . $mate_id . ",'friend'";
+
+                        $insertQuery = "INSERT INTO " . TABLE_STUDYMATES . "(" . $insertFields . ") VALUES( " . $insertValues . ")";
+                        // echo $insertQuery; //exit;
+                        $insertResult = mysqli_query($GLOBALS['con'], $insertQuery) or $message = mysqli_error($GLOBALS['con']);
+                        if($insertResult)
+                        {
+                            $message = REQUEST_ACCEPTED;
+                            $status = SUCCESS;
+                        }
+                        else
+                        {
+                            $message = REQUEST_ACCEPTED;
+                            $status = SUCCESS;
+                        }
+                    }
+
+               }
             } else {
                 $message = DEFAULT_NO_RECORDS;
                 $status = SUCCESS;
@@ -685,8 +711,8 @@ class StudyMateFunctions
 
                     //Get Requester Scholl name and Course name
                     $querySchoolName = "SELECT schools.school_name,courses.course_name FROM ". TABLE_STUDENT_PROFILE ." studentAcademicInfo
-					INNER JOIN ". TABLE_SCHOOLS ." schools ON schools.id= studentAcademicInfo.school_id
-					INNER JOIN ". TABLE_COURSES." courses ON courses.id= studentAcademicInfo.course_id
+					INNER JOIN ". TABLE_SCHOOLS ." schools ON studentAcademicInfo.school_id=schools.id
+					INNER JOIN ". TABLE_COURSES." courses ON studentAcademicInfo.course_id=courses.id
 					WHERE studentAcademicInfo.user_id = ".$val['mate_id']." AND studentAcademicInfo.is_delete=0 AND schools.is_delete=0 AND courses.is_delete=0";
 
                     $resultSchollName = mysqli_query($GLOBALS['con'], $querySchoolName) or $message = mysqli_error($GLOBALS['con']);
@@ -697,6 +723,10 @@ class StudyMateFunctions
                             $post['requester_course_name'] = $row[1];
                         }
 
+                    }
+                    else{
+                        $post['requester_school_name'] = "";
+                        $post['requester_course_name'] = "";
                     }
 
                     $post['request_date'] = $val['created_date'];

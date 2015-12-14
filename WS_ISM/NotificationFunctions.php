@@ -162,21 +162,23 @@ class NotificationFunctions
 
             //For message_count
 
-            $queryMessage = "SELECT ifnull(count(*),'0') as 'message_count'FROM ".TABLE_MESSAGE_RECEIVER. " WHERE receiver_id = ". $user_id." and is_read=0 and is_delete=0 ";
+            //$queryMessage = "SELECT ifnull(count(*),'0') as 'message_count'FROM ".TABLE_MESSAGE_RECEIVER. " WHERE receiver_id = ". $user_id." and is_read=0 and is_delete=0 ";
+            $queryMessage = "SELECT count(id) FROM ".TABLE_MESSAGE_RECEIVER. " WHERE receiver_id = ". $user_id." and is_read=0 and is_delete=0 ";
             $resultMessage = mysqli_query($GLOBALS['con'], $queryMessage) or $message = mysqli_error($GLOBALS['con']);
             $messageCount = mysqli_fetch_row($resultMessage);
             $data['message_count'] = $messageCount[0];
 
             //For request_count
 
-            $queryRequest = "SELECT ifnull(count(*),'0') as 'request_count' FROM ".TABLE_STUDYMATES." WHERE mate_of = ". $user_id ." and is_request_seen = 0 and status='pending' and is_delete=0 ";
+            //$queryRequest = "SELECT ifnull(count(*),'0') as 'request_count' FROM ".TABLE_STUDYMATES." WHERE mate_of = ". $user_id ." and is_request_seen = 0 and status='pending' and is_delete=0 ";
+            $queryRequest = "SELECT count(id) FROM ".TABLE_STUDYMATES." WHERE mate_of = ". $user_id ." and is_request_seen = 0 and status='pending' and is_delete=0 ";
             $resultRequest = mysqli_query($GLOBALS['con'], $queryRequest) or $message = mysqli_error($GLOBALS['con']);
             $requestCount = mysqli_fetch_row($resultRequest);
             $data['request_count'] = $requestCount[0];
 
             //For notification_count
-
-            $queryNotification = "SELECT ifnull(count(*),'0') as 'notification_count' FROM ".TABLE_USER_NOTIFICATION." WHERE notification_to = ".$user_id." and is_read = 0 and is_delete=0 ";
+            //ifnull(count(*),'0') as 'notification_count'
+            $queryNotification = "SELECT count(id) FROM ".TABLE_USER_NOTIFICATION." WHERE notification_to = ".$user_id." and is_read = 0 and is_delete=0 ";
             $resultNotification = mysqli_query($GLOBALS['con'], $queryNotification);
             $notificationCount = mysqli_fetch_row($resultNotification);
             $data['notification_count'] = $notificationCount[0];
@@ -641,6 +643,7 @@ class NotificationFunctions
     {
     	$data = array();
         $response = array();
+        $post=array();
         
         $user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);

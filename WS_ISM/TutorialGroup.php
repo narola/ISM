@@ -30,6 +30,26 @@ class TutorialGroup
 				return $this->getTutorialGroupOfUser($postData);
 			}
 				break;
+
+            case "GetTopicForDay": {
+                return $this->getTopicForDay($postData);
+            }
+                break;
+
+            case "GetGroupHistory":{
+                return $this->getGroupHistory($postData);
+            }
+                break;
+
+            case "GetGroupProfile":{
+                return $this->getGroupProfile($postData);
+            }
+                break;
+
+            case "PingTutorialMate":{
+                return $this->pingTutorialMate($postData);
+            }
+                break;
 		}
 	}
 
@@ -427,6 +447,331 @@ class TutorialGroup
 		return $result;
 
 	}
+
+
+    public function getTopicForDay($postData)
+    {
+        $message ='';
+        $status='';
+        $post=array();
+        $data=array();
+        $response=array();
+
+        $group_id = validateObject($postData, 'group_id', "");
+        $group_id = addslashes($group_id);
+
+        $day_no = validateObject($postData, 'day_no', "");
+        $day_no = addslashes($day_no);
+
+        $week_no = validateObject($postData, 'week_no', "");
+        $week_no = addslashes($week_no);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+            $queryToGetGroups = "SELECT * FROM ". TABLE_TUTORIAL_GROUPS." WHERE id=".$group_id." AND is_delete=0";
+            $resultToGetGroups = mysqli_query($GLOBALS['con'], $queryToGetGroups) or $errorMsg = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultToGetGroups) > 0) {
+
+                while ($groups = mysqli_fetch_assoc($resultToGetGroups)) {
+                    if($groups['group_cycle']=='finished')
+                    {
+                        //CALL GENERATE_GROUP_CYCLE;
+                    }
+                    if($groups['group_cycle']=='ongoing'){
+
+                        $selData="tutorial_group_topic_allocation.*,tutorial_topic.topic_name,tutorial_topic,topic_description,tutorial_topic.created_by,subjects.subject_name";
+
+                         $queryToFetchTopics="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation
+                         INNER JOIN ".TABLE_TUTORIAL_TOPIC." tutorial_topic ON tutorial_group_topic_allocation.tutorial_topic_id=tutorial_topic.id
+                         INNER JOIN ".TABLE_SUBJECTS." subjects ON tutorial_topic.subject_id=subjects.id
+                         WHERE group_id=".$group_id." AND week_no = ".$week_no ." AND (".$day_no." >= 1 AND ".$day_no." <= 7) AND tutorial_group_topic_allocation.is_delete=0";
+
+                        //(".$day_no." >= 1 AND ".$day_no." <= 7)
+                        $resultToFetchTopics = mysqli_query($GLOBALS['con'], $queryToFetchTopics) or $errorMsg = mysqli_error($GLOBALS['con']);
+                       // $post=array();
+                        if (mysqli_num_rows($resultToFetchTopics) > 0) {
+                            while ($topicGroups = mysqli_fetch_assoc($resultToFetchTopics)) {
+                                $post['tutorial_topic']=$topicGroups['tutorial_topic'];
+                                $post['topic_description']=$topicGroups['topic_description'];
+                                $post['assigned_by']=$topicGroups['created_by'];
+                                $post['day_name']=$topicGroups['topic_day'];
+                                $post['interface_type']=$topicGroups['interface_type'];
+                                $post['created_date']=$topicGroups['assigned_time'];
+                                $post['subject_name']=$topicGroups['subject_name'];
+                            }
+                            $data[]=$post;
+                            $status=SUCCESS;
+                            $message="Topic details retrieved";
+                        }
+                        else
+                        {
+                            $status=SUCCESS;
+                            $message=DEFAULT_NO_RECORDS;
+
+                        }
+                    }
+                    else
+                    {
+                        $status=SUCCESS;
+                        $message=DEFAULT_NO_RECORDS;
+                    }
+
+                }
+            }
+            else
+            {
+                $status=SUCCESS;
+                $message=DEFAULT_NO_RECORDS;
+
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['tutorial_topic']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+
+    }
+
+    public function getGroupHistory($postData)
+    {
+        $message ='';
+        $status='';
+        $post=array();
+        $data=array();
+        $response=array();
+
+
+        $group_id = validateObject($postData, 'group_id', "");
+        $group_id = addslashes($group_id);
+
+        $day_no = validateObject($postData, 'day_no', "");
+        $day_no = addslashes($day_no);
+
+        $week_no = validateObject($postData, 'week_no', "");
+        $week_no = addslashes($week_no);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            //$queryToGetGroups = "SELECT tutorial_groups.*,tutorial_group_topic_allocation.group_score,tutorial_group_topic_allocation.tutorial_topic_id FROM ". TABLE_TUTORIAL_GROUPS." tutorial_groups INNER JOIN ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation ON tutorial_group_topic_allocation.group_id=tutorial_groups.id  WHERE tutorial_groups.id=".$group_id." AND tutorial_groups.is_delete=0";
+            $selData="DISTINCT tutorial_group_topic_allocation.*,tutorial_topic.topic_name,topic_description,tutorial_topic.created_by,subjects.subject_name";
+
+             $queryToFetchTopics="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation
+                         INNER JOIN ".TABLE_TUTORIAL_TOPIC." tutorial_topic ON tutorial_group_topic_allocation.tutorial_topic_id=tutorial_topic.id
+                         INNER JOIN ".TABLE_SUBJECTS." subjects ON tutorial_topic.subject_id=subjects.id
+                         WHERE group_id=".$group_id." AND week_no = ".$week_no ." AND tutorial_group_topic_allocation.is_delete=0";
+
+            $resultToFetchTopics = mysqli_query($GLOBALS['con'], $queryToFetchTopics) or $errorMsg = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultToFetchTopics) > 0) {
+
+                while ($topicGroups = mysqli_fetch_assoc($resultToFetchTopics)) {
+
+                    $post['tutorial_topic']=$topicGroups['tutorial_topic'];
+                    $post['topic_description']=$topicGroups['topic_description'];
+                    $post['assigned_by']=$topicGroups['created_by'];
+                    $post['day_name']=$topicGroups['topic_day'];
+                    $post['interface_type']=$topicGroups['interface_type'];
+                    $post['created_date']=$topicGroups['assigned_time'];
+                    $post['subject_name']=$topicGroups['subject_name'];
+
+                    $queryToGetTotalComment="SELECT total_comments FROM ".TABLE_TUTORIAL_GROUP_MEMBER_SCORE." WHERE topic_id=".$topicGroups['tutorial_topic_id'];
+                    $resultToGetTotalComment= mysqli_query($GLOBALS['con'], $queryToGetTotalComment) or $errorMsg = mysqli_error($GLOBALS['con']);
+                    $rowToGetTotalComments=mysqli_fetch_row($resultToGetTotalComment);
+
+                    $post['total_active_comments']=$rowToGetTotalComments[0];
+                    $post['group_score']=$topicGroups['group_score'];
+
+
+                    if($day_no==null AND $week_no==null)
+                    {
+
+                    }
+                    elseif($day_no!=null)
+                    {
+                        $condition=" AND week_no=".$week_no;
+                    }
+                    elseif($week_no != null)
+                    {
+                        $condition=" AND week_no=".$week_no;
+                    }
+
+                    $selData="tutorial_group_discussion.*,users.full_name,users.profile_pic";
+                    $queryToFetchMembers="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_DISCUSSION." tutorial_group_discussion
+                         INNER JOIN ".TABLE_USERS." users ON tutorial_group_discussion.sender_id=users.id
+                         WHERE tutorial_group_discussion.group_id=".$group_id." AND tutorial_group_discussion.is_delete=0 ";//ORDER BY ". $user_id;
+                    $resultToFetchMembers = mysqli_query($GLOBALS['con'], $queryToFetchMembers) or $errorMsg = mysqli_error($GLOBALS['con']);
+
+
+                    if (mysqli_num_rows($resultToFetchMembers) > 0) {
+                        while ($members = mysqli_fetch_assoc($resultToFetchMembers)) {
+
+                            $groupMembers=array();
+                            $groupMembers['comment']=$members['message'];
+                            $groupMembers['user_id']=$members['sender_id'];
+                            $groupMembers['full_name']=$members['full_name'];
+                            $groupMembers['profile_pic']=$members['profile_pic'];
+                            $groupMembers['comment_timestamp']=$members['created_date'];
+                            $groupMembers['message_type']=$members['message_type'];
+                            $groupMembers['media_link']=$members['media_link'];
+                            $post['discussion'][]=$groupMembers;
+                        }
+
+                        $status=SUCCESS;
+                        $message="Group history retrieved";
+                    }
+                    else
+                    {
+                        $status=SUCCESS;
+                        $message=DEFAULT_NO_RECORDS;
+
+                    }
+
+                    $data[]=$post;
+                }
+            }
+            else
+            {
+                $status=SUCCESS;
+                $message=DEFAULT_NO_RECORDS;
+
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['group_history']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+
+    }
+
+
+    public function getGroupProfile($postData)
+    {
+        $message ='';
+        $status='';
+        $post=array();
+        $data=array();
+        $response=array();
+
+
+        $group_id = validateObject($postData, 'group_id', "");
+        $group_id = addslashes($group_id);
+
+        $user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+            //$queryToGetGroups = "SELECT tutorial_groups.*,tutorial_group_topic_allocation.group_score,tutorial_group_topic_allocation.tutorial_topic_id FROM ". TABLE_TUTORIAL_GROUPS." tutorial_groups INNER JOIN ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation ON tutorial_group_topic_allocation.group_id=tutorial_groups.id  WHERE tutorial_groups.id=".$group_id." AND tutorial_groups.is_delete=0";
+            $queryToGetGroups = "SELECT tutorial_groups.* FROM ". TABLE_TUTORIAL_GROUPS." tutorial_groups  WHERE tutorial_groups.id=".$group_id." AND tutorial_groups.is_delete=0";
+            $resultToGetGroups = mysqli_query($GLOBALS['con'], $queryToGetGroups) or $errorMsg = mysqli_error($GLOBALS['con']);
+            $groupMembers=array();
+            if (mysqli_num_rows($resultToGetGroups) > 0) {
+
+                while ($groups = mysqli_fetch_assoc($resultToGetGroups)) {
+                        $post['group_name']=$groups['group_name'];
+                        $post['group_profile_pic']=$groups['group_profile_pic'];
+                        $post['group_name']=$groups['group_name'];
+
+                         $queryToGetTotalComment="SELECT total_comments FROM ".TABLE_TUTORIAL_GROUP_MEMBER_SCORE." WHERE topic_id=".$groups['tutorial_topic_id'];
+                         $resultToGetTotalComment= mysqli_query($GLOBALS['con'], $queryToGetTotalComment) or $errorMsg = mysqli_error($GLOBALS['con']);
+                         $rowToGetTotalComments=mysqli_fetch_row($resultToGetTotalComment);
+
+                        $post['total_active_comments']=$rowToGetTotalComments[0];
+                        $post['group_score']=$groups['group_score'];
+                        $post['group_rank']=$groups['group_rank'];
+
+                        $selData="tutorial_group_member.*,users.full_name,users.profile_pic,school.school_name";
+                        $queryToFetchMembers="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_MEMBER." tutorial_group_member
+                         INNER JOIN ".TABLE_USERS." users ON tutorial_group_member.user_id=users.id
+                         INNER JOIN ". TABLE_STUDENT_PROFILE." studentProfile ON users.id=studentProfile.user_id
+                         LEFT JOIN ".TABLE_SCHOOLS." school ON school.id=studentProfile.school_id
+                         WHERE tutorial_group_member.group_id=".$group_id." AND tutorial_group_member.is_delete=0 ORDER BY (tutorial_group_member.user_id=".$user_id.") DESC";
+                        $resultToFetchMembers = mysqli_query($GLOBALS['con'], $queryToFetchMembers) or $errorMsg = mysqli_error($GLOBALS['con']);
+
+
+                        if (mysqli_num_rows($resultToFetchMembers) > 0) {
+                            while ($members = mysqli_fetch_assoc($resultToFetchMembers)) {
+                                $groupMembers['user_id']=$members['user_id'];
+                                $groupMembers['full_name']=$members['full_name'];
+                                $groupMembers['profile_pic']=$members['profile_pic'];
+                                $groupMembers['user_is_online']=$members['is_online'];
+                                $groupMembers['school_name']=$members['school_name'];
+                                $groupMembers['last_seen']=$members['last_seen'];
+                                $post['group_members'][]=$groupMembers;
+
+                            }
+
+                            $status=SUCCESS;
+                            $message="Topic details retrieved";
+                        }
+                        else
+                        {
+                            $status=SUCCESS;
+                            $message=DEFAULT_NO_RECORDS;
+
+                        }
+
+                $data[]=$post;
+                }
+            }
+            else
+            {
+                $status=SUCCESS;
+                $message=DEFAULT_NO_RECORDS;
+
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['tutorial_group_profile']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+
+    }
+
 
 }
 

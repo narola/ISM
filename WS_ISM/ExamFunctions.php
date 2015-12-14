@@ -1757,7 +1757,7 @@ class ExamFunctions
                     $message = "";
                 }
             } else {
-                $status = FAILED;
+                $status = SUCCESS;
                 $message = DEFAULT_NO_RECORDS;
             }
         }
@@ -1797,11 +1797,7 @@ class ExamFunctions
 
         if($isSecure==yes) {
 
-            $query ="SELECT exam_score.*,s.username as 'username',s.user_profile_pic as 'profile_pic' FROM ".TABLE_STUDENT_EXAM_SCORE." exam_score
-	 	INNER JOIN (SELECT id,full_name as 'username',profile_pic as 'user_profile_pic' FROM ".TABLE_USERS." users WHERE id=".$user_id.") s ON s.id=".$user_id."
-	 	WHERE exam_score.exam_id=".$exam_id." AND exam_score.user_id=".$user_id ."AND exam_score.is_delete=0";
-
-
+            $query ="SELECT exam_score.*,s.username as 'username',s.user_profile_pic as 'profile_pic' FROM ".TABLE_STUDENT_EXAM_SCORE." exam_score INNER JOIN (SELECT id,full_name as 'username',profile_pic as 'user_profile_pic' FROM ".TABLE_USERS." users WHERE id=".$user_id.") s ON s.id=".$user_id." WHERE exam_score.exam_id=".$exam_id." AND exam_score.user_id=".$user_id ." AND exam_score.is_delete=0";
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
             if (mysqli_num_rows($result)) {
