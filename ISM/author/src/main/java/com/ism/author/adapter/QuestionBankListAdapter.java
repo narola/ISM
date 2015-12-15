@@ -78,6 +78,15 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
+//
+//            if(holder.tvQuestion.getLineCount()>6)
+//            {
+//                holder.tvQuestion.setMaxLines(6);
+//                holder.tvQuestion.setSingleLine();
+//                Debug.e("test line count",""+holder.tvQuestion.getLineCount());
+//            }
+//            holder.tvQuestion.setFilters(new InputFilter[] {new InputFilter.LengthFilter(6)});
+
             if (arrListQuestions.get(position).getQuestionCreatorId().equals(Global.strUserId)) {
                 holder.imgQuestionEdit.setVisibility(View.VISIBLE);
             } else {
@@ -119,6 +128,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                     holder.imgDropdownViewAnswer.setSelected(!holder.imgDropdownViewAnswer.isSelected());
                     arrListQuestions.get(position).setIsDropdownOpen(holder.imgDropdownViewAnswer.isSelected());
                     holder.imgDropdownViewAnswer.setActivated(holder.imgDropdownViewAnswer.isSelected());
+
 //                    if (holder.imgDropdownViewAnswer.isSelected()) {
 //                        holder.imgDropdownViewAnswer.setActivated(true);
 //                        arrListQuestions.get(position).setIsDropdownOpen(true);
@@ -205,6 +215,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                     openAddEditQuestionFragment(position, true);
                 }
             });
+
 
 
         } catch (Exception e) {

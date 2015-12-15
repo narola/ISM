@@ -389,7 +389,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         if (responseObjGetAllExamQuestions != null) {
 
             getArguments().putParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS, arrListQuestions);
-            getArguments().putString(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE, getString(R.string.strsubjective));
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getString(R.string.strsubjective));
 
 //            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
 //                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getArguments());

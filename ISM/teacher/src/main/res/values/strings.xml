@@ -61,6 +61,7 @@
     <string name="strexamcategory">Exam Category</string>
     <string name="strexamtopic">Exam Topic</string>
     <string name="streditexam">Edit</string>
+    <string name="strnone">None</string>
 
 
     <!-- Controller String-->
@@ -326,6 +327,8 @@
         <item>Assessed</item>
         <item>Non Assessed</item>
     </string-array>
+
+<string name="strquestionscore">Question Score</string>
 
 
     <!-- question -->

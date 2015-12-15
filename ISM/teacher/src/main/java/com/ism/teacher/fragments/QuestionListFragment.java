@@ -72,7 +72,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private EditText etSearchQuestions;
     private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview, tvNoQuestions;
     private RecyclerView rvQuestionlist;
-    private QuestionBankListAdapter questionBankListAdapter;
+    private RelativeLayout rlSortQuestionBank;
+
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     public ArrayList<Questions> copylistOfQuestionBank = new ArrayList<Questions>();
     public ArrayList<Questions> latestlistOfQuestionBank = new ArrayList<Questions>();
@@ -83,18 +84,15 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     public static final String MCQ_FORMAT = "MCQ";
     public static final String DESCRIPTIVE_FORMAT = "descriptive";
-
-    //private ImageView imgSortUp, imgSortDown;
     public static final int SORT_UP = 1, SORT_DOWN = 2;
 
     public boolean isSorted = false;
-    private RelativeLayout rlSortQuestionBank;
+    private QuestionBankListAdapter questionBankListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_questionlist_teacher, container, false);
 
-//        Utils.showToast("THE QUESTION LIST FRAGMENT CALLED", getActivity());
         initGlobal();
         return view;
     }
@@ -538,14 +536,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 getFragment().setDataOnFragmentFlip(null, false, true);
                 break;
 
-//            case R.id.img_sort_up:
-//                performSorting(SORT_UP);
-//                break;
-//
-//            case R.id.img_sort_down:
-//                performSorting(SORT_DOWN);
-//                break;
-
             case R.id.rl_sort_question_bank:
                 if (!isSorted) {
                     performSorting(SORT_DOWN);
@@ -636,11 +626,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         try {
             getFragment().setListOfExamQuestions(arrListExamQuestions);
             for (int i = 0; i < arrListExamQuestions.size(); i++) {
-                Debug.e(TAG, "THE EXAM QUESTION ID IS::::" + arrListExamQuestions.get(i).getQuestionId());
+               // Debug.e(TAG, "THE EXAM QUESTION ID IS::::" + arrListExamQuestions.get(i).getQuestionId());
                 for (int j = 0; j < arrListQuestions.size(); j++) {
-                    Debug.e(TAG, "THE QUESTION LIST QUESTION ID IS====" + arrListQuestions.get(j).getQuestionId());
+                   // Debug.e(TAG, "THE QUESTION LIST QUESTION ID IS====" + arrListQuestions.get(j).getQuestionId());
                     if (arrListExamQuestions.get(i).getQuestionId().equals(arrListQuestions.get(j).getQuestionId())) {
-                        Debug.e(TAG, "The position of exam question in question bank list is" + j);
+                     //   Debug.e(TAG, "The position of exam question in question bank list is" + j);
                         arrListQuestions.get(j).setIsQuestionAddedInPreview(true);
                         break;
                     }
@@ -665,10 +655,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         //handling for sorting questions based on subjective and objective
         if (latestlistOfQuestionBank.size() > 0) {
             if (typeOfSort == SORT_UP) {
-                // Debug.e("Sort_up====================", "sort up");
                 Collections.sort(latestlistOfQuestionBank);
             } else {
-//                Debug.e("Sort_down====================", "sort down");
                 Collections.sort(latestlistOfQuestionBank, Collections.reverseOrder());
             }
             questionBankListAdapter.addAll(latestlistOfQuestionBank);

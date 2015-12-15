@@ -50,6 +50,8 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
     public static GetAssignmentsSubmitterFragment newInstance(Bundle bundleArguments) {
         GetAssignmentsSubmitterFragment getAssignmentsSubmitterFragment = new GetAssignmentsSubmitterFragment();
         getAssignmentsSubmitterFragment.setArguments(bundleArguments);
+
+        Debug.e("test topic id",bundleArguments.getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
         return getAssignmentsSubmitterFragment;
     }
 
@@ -87,7 +89,7 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
             try {
                 Attribute attribute = new Attribute();
                 attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
-                attribute.setUserId(WebConstants.USER_ID_340);
+                attribute.setUserId(WebConstants.USER_ID_370);
                 attribute.setRole(AppConstant.TEACHER_ROLE_ID);
 
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()

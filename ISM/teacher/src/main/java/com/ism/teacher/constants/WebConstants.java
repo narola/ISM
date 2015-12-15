@@ -6,7 +6,7 @@ package com.ism.teacher.constants;
 public class WebConstants {
 
     public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Feeds/";
-    public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/";
+    public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
 
 
     //static parameters
@@ -20,7 +20,6 @@ public class WebConstants {
 
 
     public static final String TEACHER_ROLE_ID = "3";
-    public static final String TEST_USER_ID = "370";
     public static final String TEST_USER_ID_52 = "52";
     public static final String TEST_USER_NAME = "Admin";
 
@@ -66,7 +65,7 @@ public class WebConstants {
     public static final int TEMP_CREATE_QUESTION = 30;
     public static final int UPLOAD_FEED_MEDIA = 31;
     public static final int UPLOADMEDIAFORQUESTION = 32;
-    public static final String Image_url = "http://192.168.1.147/WS_ISM/question_images/";
+    public static final String Image_url= "http://192.168.1.147/WS_ISM/Images/questions_images/";
 
     /**
      * URLs
