@@ -32,9 +32,9 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 10/11/15.
  */
-public class GetAssignmentsSubmittorFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class AssignmentsSubmittorFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
-    private static final String TAG = GetAssignmentsSubmittorFragment.class.getSimpleName();
+    private static final String TAG = AssignmentsSubmittorFragment.class.getSimpleName();
     private View view;
     private TextView tvSubmittorTitle, tvNoDataMsg;
     private ImageView imgToggleList;
@@ -44,22 +44,22 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
     private FragmentListener fragListener;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
 
-    public static GetAssignmentsSubmittorFragment newInstance(Bundle bundleArgument) {
-        GetAssignmentsSubmittorFragment getAssignmentsSubmittorFragment = new GetAssignmentsSubmittorFragment();
+    public static AssignmentsSubmittorFragment newInstance(Bundle bundleArgument) {
+        AssignmentsSubmittorFragment assignmentsSubmittorFragment = new AssignmentsSubmittorFragment();
 
-        getAssignmentsSubmittorFragment.setArguments(bundleArgument);
+        assignmentsSubmittorFragment.setArguments(bundleArgument);
 
-        return getAssignmentsSubmittorFragment;
+        return assignmentsSubmittorFragment;
     }
 
-    public GetAssignmentsSubmittorFragment() {
+    public AssignmentsSubmittorFragment() {
         // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_get_assignment_submittor, container, false);
+        view = inflater.inflate(R.layout.fragment_assignment_submittor, container, false);
         initGlobal();
         return view;
     }

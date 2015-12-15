@@ -25,9 +25,9 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 16/11/15.
  */
-public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<GetObjectiveAssignmentQuestionsAdapter.ViewHolder> {
+public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<ObjectiveAssignmentQuestionsAdapter.ViewHolder> {
 
-    private static final String TAG = GetObjectiveAssignmentQuestionsAdapter.class.getSimpleName();
+    private static final String TAG = ObjectiveAssignmentQuestionsAdapter.class.getSimpleName();
     private Context mContext;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private MyTypeFace myTypeFace;
@@ -35,7 +35,7 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
     private Bundle bundleArgument;
 
 
-    public GetObjectiveAssignmentQuestionsAdapter(Context context, Bundle bundleArgument) {
+    public ObjectiveAssignmentQuestionsAdapter(Context context, Bundle bundleArgument) {
         this.mContext = context;
         this.bundleArgument = bundleArgument;
         inflater = LayoutInflater.from(context);

@@ -95,13 +95,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     /*these sre for the xml views*/
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
-            tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank, tvAddquestionAdvance, tvAddquestionAnswer;
+            tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank, tvAddquestionAdvance, tvAddquestionAnswer,
+            tvAddquestionScore;
     private ImageView imgSelectImage, imgPlay, imgHelp, imgDelete, imageValidationQuestionType;
     private EditText etAddquestionTitle, etEvaluationNote1, etEvaluationNote2;
-    private Spinner spAddquestionType;
+    private Spinner spAddquestionType, spExamQuestionScore;
     private CheckBox chkAddquestionPreview;
-    List<String> arrListQuestionType;
-    private LinearLayout llAddMcqanswer;
+    List<String> arrListQuestionType, arrListQuestionScore;
+    private LinearLayout llAddMcqanswer, llAddQuestionscore;
     private RelativeLayout rlSelectImage;
 
     MyTypeFace myTypeFace;
@@ -110,6 +111,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
 
     private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
+    private static int QUESTIONSCORE_INERVAL = 1, QUESTIONSCORE_STARTVALUE = 1, QUESTIONSCORE_ENDVALUE = 5;
 
 
     @Override
@@ -136,6 +138,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         tvAddquestionSaveAddmore = (TextView) view.findViewById(R.id.tv_addquestion_save_addmore);
         tvAddquestionGotoquestionbank = (TextView) view.findViewById(R.id.tv_addquestion_gotoquestionbank);
         tvAddquestionAdvance = (TextView) view.findViewById(R.id.tv_addquestion_advance);
+        tvAddquestionScore = (TextView) view.findViewById(R.id.tv_addquestion_score);
         tvAddquestionSave.setOnClickListener(this);
         tvAddquestionSaveAddmore.setOnClickListener(this);
         tvAddquestionGotoquestionbank.setOnClickListener(this);
@@ -153,6 +156,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         tvAddquestionSaveAddmore.setTypeface(myTypeFace.getRalewayRegular());
         tvAddquestionGotoquestionbank.setTypeface(myTypeFace.getRalewayRegular());
         tvAddquestionAdvance.setTypeface(myTypeFace.getRalewayRegular());
+        tvAddquestionScore.setTypeface(myTypeFace.getRalewayBold());
 
         imgSelectImage = (ImageView) view.findViewById(R.id.img_select_image);
         imgPlay = (ImageView) view.findViewById(R.id.img_play);
@@ -176,8 +180,13 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         etEvaluationNote2.setTypeface(myTypeFace.getRalewayRegular());
 
         spAddquestionType = (Spinner) view.findViewById(R.id.sp_addquestion_type);
+        spExamQuestionScore = (Spinner) view.findViewById(R.id.sp_exam_question_score);
+
+        getQuestionScoreSpinnerValues();
+        Adapters.setUpSpinner(getActivity(), spExamQuestionScore, arrListQuestionScore, Adapters.ADAPTER_SMALL);
 
         llAddMcqanswer = (LinearLayout) view.findViewById(R.id.ll_add_mcqanswer);
+        llAddQuestionscore = (LinearLayout) view.findViewById(R.id.ll_add_questionscore);
         rlSelectImage = (RelativeLayout) view.findViewById(R.id.rl_select_image);
         rlSelectImage.setOnClickListener(this);
 
@@ -204,7 +213,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         chkAddquestionPreview.setEnabled(false);
                         chkAddquestionPreview.setChecked(false);
                     }
+
                 } else if (position == 3) {
+
                     llAddMcqanswer.setVisibility(View.VISIBLE);
                     tvAddquestionAnswer.setVisibility(View.GONE);
                     if (getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
@@ -214,6 +225,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(true);
                     }
+
                 }
 
             }
@@ -540,7 +552,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 imageLoader.displayImage(WebConstants.QUESTION_IMAGES + questions.getQuestionImageLink(),
                         imgSelectImage, ISMAuthor.options);
             }
-
+            spExamQuestionScore.setSelection(arrListQuestionScore.indexOf(questions.getQuestionScore()));
 
             setMcqAnswers(questions);
             setTags(questions);
@@ -776,7 +788,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 Debug.e(TAG, "The user id is::" + Global.strUserId);
                 Debug.e(TAG, "The question text is::" + Html.toHtml(etAddquestionTitle.getText()));
                 Debug.e(TAG, "The subject id is::" + "0");
-                Debug.e(TAG, "The question score is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_QUESTION_SCORE));
+                Debug.e(TAG, "The question score is::" + arrListQuestionScore.get(spExamQuestionScore.getSelectedItemPosition()));
                 Debug.e(TAG, "The question format is::" + getQuestionFormat());
                 Debug.e(TAG, "The evaluation notes is::" + etEvaluationNote1.getText().toString());
                 Debug.e(TAG, "The solution  is::" + etEvaluationNote2.getText().toString());
@@ -805,7 +817,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 attribute.setBookId(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
                 attribute.setClassroomId(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID));
                 attribute.setQuestionText(Html.toHtml(etAddquestionTitle.getText()));
-                attribute.setQuestionScore(getArguments().getString(ExamsAdapter.ARG_EXAM_QUESTION_SCORE));
+                attribute.setQuestionScore(arrListQuestionScore.get(spExamQuestionScore.getSelectedItemPosition()));
                 attribute.setQuestionFormat(getQuestionFormat());
                 attribute.setEvaluationNotes(etEvaluationNote1.getText().toString());
                 attribute.setSolution(etEvaluationNote2.getText().toString());
@@ -1021,6 +1033,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 question.setClassroomId(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID));
                 question.setBookId(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
                 question.setBookName(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
+                question.setQuestionScore(arrListQuestionScore.get(spExamQuestionScore.getSelectedItemPosition()));
             }
             ArrayList<Tags> arrListTags = new ArrayList<Tags>();
             List<HashTagsModel> list = tagsView.getObjects();
@@ -1185,5 +1198,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
 
+    private void getQuestionScoreSpinnerValues() {
+        arrListQuestionScore = new ArrayList<String>();
+        arrListQuestionScore.add(Utility.getString(R.string.strquestionscore, getActivity()));
+        for (int i = QUESTIONSCORE_STARTVALUE; i <= QUESTIONSCORE_ENDVALUE; i += QUESTIONSCORE_INERVAL) {
+            arrListQuestionScore.add(String.valueOf(i));
+        }
+    }
 }
 

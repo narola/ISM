@@ -16,6 +16,7 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.MyThirtyAdapter;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
@@ -36,8 +37,9 @@ public class MyThirtyFragment extends Fragment implements WebserviceWrapper.Webs
     private View view;
 
 
-    public static MyThirtyFragment newInstance() {
+    public static MyThirtyFragment newInstance(Bundle bundleArgument) {
         MyThirtyFragment myThirtyFragment = new MyThirtyFragment();
+        myThirtyFragment.setArguments(bundleArgument);
         return myThirtyFragment;
     }
 
@@ -169,5 +171,10 @@ public class MyThirtyFragment extends Fragment implements WebserviceWrapper.Webs
             Debug.e(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
+    }
+
+
+    public void onBackClick() {
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYTHIRTY, getArguments());
     }
 }

@@ -19,7 +19,7 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
-import com.ism.author.adapter.GetObjectiveAssignmentQuestionsAdapter;
+import com.ism.author.adapter.ObjectiveAssignmentQuestionsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.MyTypeFace;
@@ -35,9 +35,9 @@ import java.util.ArrayList;
  */
 
 /*these fragment will be use for objective evaluation ,view total questions for subjective and objective and view student data for both subjective and objective*/
-public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class ObjectiveAssignmentQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
-    private static final String TAG = GetObjectiveAssignmentQuestionsFragment.class.getSimpleName();
+    private static final String TAG = ObjectiveAssignmentQuestionsFragment.class.getSimpleName();
     private View view;
     private MyTypeFace myTypeFace;
     private FragmentListener fragListener;
@@ -47,31 +47,28 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private ImageView imgEditExam, imgCopyExam;
 
     private RecyclerView rvGetObjectiveAssignmentQuestionslist;
-    private GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter;
+    private ObjectiveAssignmentQuestionsAdapter objectiveAssignmentQuestionsAdapter;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     public static String ARG_ARR_LIST_QUESTIONS = "arrListQuestions";
     public static String ARG_EXAM_TYPE = "examType";
     public static String ARG_EXAM_ISCOPY = "examIsCopy";
 
 
-    public static GetObjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArgument) {
-        GetObjectiveAssignmentQuestionsFragment getObjectiveAssignmentQuestionsFragment = new GetObjectiveAssignmentQuestionsFragment();
-        if (bundleArgument != null) {
-            getObjectiveAssignmentQuestionsFragment.setArguments(bundleArgument);
-        } else {
-        }
-        return getObjectiveAssignmentQuestionsFragment;
+    public static ObjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArgument) {
+        ObjectiveAssignmentQuestionsFragment objectiveAssignmentQuestionsFragment = new ObjectiveAssignmentQuestionsFragment();
+        objectiveAssignmentQuestionsFragment.setArguments(bundleArgument);
+        return objectiveAssignmentQuestionsFragment;
     }
 
 
-    public GetObjectiveAssignmentQuestionsFragment() {
+    public ObjectiveAssignmentQuestionsFragment() {
         // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_getobjective_assignment_questions, container, false);
+        view = inflater.inflate(R.layout.fragment_objective_assignment_questions, container, false);
         initGlobal();
         return view;
     }
@@ -102,8 +99,8 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         tvNoDataMsg.setText(getString(R.string.no_exam_questions));
 
         rvGetObjectiveAssignmentQuestionslist = (RecyclerView) view.findViewById(R.id.rv_getObjective_assignment_questionslist);
-        getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(getActivity(), getArguments());
-        rvGetObjectiveAssignmentQuestionslist.setAdapter(getObjectiveAssignmentQuestionsAdapter);
+        objectiveAssignmentQuestionsAdapter = new ObjectiveAssignmentQuestionsAdapter(getActivity(), getArguments());
+        rvGetObjectiveAssignmentQuestionslist.setAdapter(objectiveAssignmentQuestionsAdapter);
         rvGetObjectiveAssignmentQuestionslist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         setAssignmentDetails();
@@ -134,6 +131,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         if (responseObjGetAllExamQuestions != null) {
             getArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
             getArguments().putString(ARG_EXAM_TYPE, getString(R.string.strobjective));
+
 
             ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
                     (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getArguments());
@@ -236,8 +234,8 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
                     if (responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions().size() > 0) {
                         arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
-                        getObjectiveAssignmentQuestionsAdapter.addAll(arrListQuestions);
-                        getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
+                        objectiveAssignmentQuestionsAdapter.addAll(arrListQuestions);
+                        objectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
                         if (getArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                             callAPiGetExamEvaluation();
                         }
@@ -267,10 +265,10 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
                     if (responseHandler.getExamEvaluation().get(0).getEvaluation() != null) {
                         if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() > 0) {
-                            getObjectiveAssignmentQuestionsAdapter.setEvaluationData(responseHandler.getExamEvaluation().get(0).getEvaluation());
+                            objectiveAssignmentQuestionsAdapter.setEvaluationData(responseHandler.getExamEvaluation().get(0).getEvaluation());
                         }
                     } else {
-                        getObjectiveAssignmentQuestionsAdapter.setEvaluationData(null);
+                        objectiveAssignmentQuestionsAdapter.setEvaluationData(null);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {

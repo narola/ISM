@@ -14,7 +14,7 @@
     </item>
     <item>
         <shape>
-            <solid android:color="@color/color_actionbar" />
+            <solid android:color="@color/bg_controller_top_dark" />
         </shape>
     </item>
 </layer-list>
