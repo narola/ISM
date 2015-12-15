@@ -3,7 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context=".fragment.userprofile.FindStudymatesFragment">
+              tools:context=".fragment.userProfile.FindStudymatesFragment">
 
 	<RelativeLayout
 		android:layout_width="match_parent"

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
-    tools:context="com.ism.fragment.userprofile.PrivacySettingFragment">
+    tools:context="com.ism.fragment.userProfile.PrivacySettingFragment">
 
 
         <TextView

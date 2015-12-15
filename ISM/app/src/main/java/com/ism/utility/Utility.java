@@ -203,7 +203,7 @@ public class Utility {
         if (message != null) {
             builder.setMessage(message);
         }
-        AlertDialog dialog = builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        AlertDialog dialog = builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 confirmationListener.onConfirmationResponse(requestId, true);
@@ -272,11 +272,11 @@ public class Utility {
      * @param strDate
      * @return String : fromatted date. eg. : 6 jul 15
      */
-    public static String formatPHPDateToMMMDDYYYY(String strDate) {
+    public static String formatMySqlDateToMMMDDYYYY(String strDate) {
         try {
             return DATE_FORMAT_MMMDDYYYY.format(DATE_FORMAT_MY_SQL.parse(strDate));
         } catch (ParseException e) {
-            Log.e(TAG, "formatPHPDateToMMMDDYYYY Exception : " + e.toString());
+            Log.e(TAG, "formatMySqlDateToMMMDDYYYY Exception : " + e.toString());
             return null;
         }
     }

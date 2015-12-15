@@ -3,7 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
                 android:background="@color/color_gray_light"
-             tools:context=".fragment.userprofile.AllNotificationFragment">
+             tools:context=".fragment.userProfile.AllNotificationFragment">
 
 	<TextView
 		android:id="@+id/txt_header_white"

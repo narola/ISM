@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.ConfirmationListener;
 import com.ism.object.Global;
@@ -124,6 +125,7 @@ public class YourStudymatesAdapter extends RecyclerView.Adapter<YourStudymatesAd
 
 	private void callApiBlockStudymate(String blockUserId) {
 		try {
+			((HostActivity) context).showProgress();
 			Attribute attribute = new Attribute();
 			attribute.setUserId(Global.strUserId);
 			attribute.setBlockUser(blockUserId);
@@ -136,7 +138,15 @@ public class YourStudymatesAdapter extends RecyclerView.Adapter<YourStudymatesAd
 	}
 
 	private void callApiRemoveStudymate() {
+		try {
+			((HostActivity) context).showProgress();
+			Attribute attribute = new Attribute();
 
+//			new WebserviceWrapper(context, attribute, this).new WebserviceCaller()
+//					.execute(WebConstants.BLOCK_USER);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiRemoveStudymate Exception : " + e.toString());
+		}
 	}
 
 	@Override
@@ -159,6 +169,7 @@ public class YourStudymatesAdapter extends RecyclerView.Adapter<YourStudymatesAd
 
 	private void onResponseBlockUser(Object object, Exception error) {
 		try {
+			((HostActivity) context).hideProgress();
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
