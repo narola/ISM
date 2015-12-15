@@ -42,21 +42,21 @@ import java.util.ArrayList;
  * Created by c166 on 16/11/15.
  */
 @SuppressLint("ValidFragment")
-public class GetSubjectiveQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
+public class SubjectiveQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
-    private static final String TAG = GetSubjectiveQuestionsFragment.class.getSimpleName();
+    private static final String TAG = SubjectiveQuestionsFragment.class.getSimpleName();
     private View view;
     Fragment mFragment;
 
 
-    public GetSubjectiveQuestionsFragment(Fragment fragment, Bundle bundleArguments) {
+    public SubjectiveQuestionsFragment(Fragment fragment, Bundle bundleArguments) {
         this.mFragment = fragment;
         setArguments(bundleArguments);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_getsubjective_questions, container, false);
+        view = inflater.inflate(R.layout.fragment_subjective_questions, container, false);
         initGlobal();
         return view;
     }
@@ -352,8 +352,8 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     }
 
 
-    private GetSubjectiveAssignmentQuestionsFragment getBaseFragment() {
-        return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
+    private SubjectiveAssignmentQuestionsContainerFragment getBaseFragment() {
+        return (SubjectiveAssignmentQuestionsContainerFragment) mFragment;
 
     }
 
@@ -361,8 +361,8 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
         if (responseObjGetAllExamQuestions != null) {
 
-            getArguments().putParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS, arrListQuestions);
-            getArguments().putString(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE, getString(R.string.strsubjective));
+            getArguments().putParcelableArrayList(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS, arrListQuestions);
+            getArguments().putString(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE, getString(R.string.strsubjective));
 
             ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
                     (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getArguments());

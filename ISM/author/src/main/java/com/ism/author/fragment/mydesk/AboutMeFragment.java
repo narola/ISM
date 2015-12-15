@@ -66,7 +66,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
 
     private void initGlobal() {
-        myDeskFragment = MyDeskFragment.newInstance();
+        myDeskFragment = MyDeskFragment.newInstance(((AuthorHostActivity) getActivity()).getBundle());
 
         txtUserName = (TextView) view.findViewById(R.id.txt_user_name);
         txtTotalBooks = (TextView) view.findViewById(R.id.txt_total_books);
@@ -178,7 +178,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     }
 
 
-
     //used for changed date format in 14th May 2015
     private String dateFormat(String birthdate) {
         try {
@@ -228,7 +227,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtTotalFollowing.setText(data.getTotalFollowing());
             txtTotalPost.setText(data.getTotalPost());
             txtTotalBooks.setText(data.getTotalBooks());
-            txtAboutAuhtor.setText("ABOUT "+data.getUsername().toUpperCase());
+            txtAboutAuhtor.setText("ABOUT " + data.getUsername().toUpperCase());
 //            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + data.getProfilePic(), imgProfilePic, ISMAuthor.options);
             Global.imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMAuthor.options);
         } catch (Exception e) {

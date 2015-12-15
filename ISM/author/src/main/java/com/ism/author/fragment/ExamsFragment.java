@@ -22,6 +22,7 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
@@ -62,8 +63,9 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private String strExamStartDate = "", strExamEndDate = "";
 
 
-    public static ExamsFragment newInstance() {
+    public static ExamsFragment newInstance(Bundle bundleArgument) {
         ExamsFragment examsFragment = new ExamsFragment();
+        examsFragment.setArguments(bundleArgument);
         return examsFragment;
     }
 
@@ -453,5 +455,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         fragListener = null;
     }
 
-
+    public void onBackClick() {
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSESSMENT, getArguments());
+    }
 }

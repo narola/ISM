@@ -14,7 +14,7 @@ import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
-import com.ism.author.fragment.GetSubjectiveAssignmentQuestionsFragment;
+import com.ism.author.fragment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.model.Examsubmittor;
@@ -160,12 +160,12 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
 
 
     private Bundle getBundleArgument() {
-        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getArguments();
+        return ((SubjectiveAssignmentQuestionsContainerFragment) mFragment).getArguments();
 
     }
 
-    private GetSubjectiveAssignmentQuestionsFragment getFragmnet() {
-        return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
+    private SubjectiveAssignmentQuestionsContainerFragment getFragmnet() {
+        return (SubjectiveAssignmentQuestionsContainerFragment) mFragment;
     }
 
 }

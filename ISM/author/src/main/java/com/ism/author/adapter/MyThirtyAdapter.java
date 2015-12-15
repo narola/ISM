@@ -1,17 +1,22 @@
 package com.ism.author.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.fragment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.Exams;
 
@@ -26,10 +31,12 @@ public class MyThirtyAdapter extends RecyclerView.Adapter<MyThirtyAdapter.ViewHo
     private Context mContext;
     private ArrayList<Exams> arrListExams = new ArrayList<Exams>();
     private LayoutInflater inflater;
+    private Bundle bundleExamDetails;
 
 
     public MyThirtyAdapter(Context mContext) {
         this.mContext = mContext;
+        bundleExamDetails = new Bundle();
         this.inflater = LayoutInflater.from(mContext);
     }
 
@@ -42,7 +49,7 @@ public class MyThirtyAdapter extends RecyclerView.Adapter<MyThirtyAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         try {
 
             holder.tvExamBookName.setTypeface(Global.myTypeFace.getRalewayBold());
@@ -64,27 +71,11 @@ public class MyThirtyAdapter extends RecyclerView.Adapter<MyThirtyAdapter.ViewHo
                 holder.llTopExam.setBackgroundResource(R.drawable.img_bg_mythirty_yellow);
             }
 
-            final Bundle bundleExamDetails = new Bundle();
-
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_ID, arrListExams.get(position).getExamId());
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_NAME, arrListExams.get(position).getExamName());
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID, arrListExams.get(position).getClassroomId());
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME, arrListExams.get(position).getClassroomName());
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_BOOK_ID, arrListExams.get(position).getBookId());
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_BOOK_NAME, arrListExams.get(position).getBookName());
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_CATEGORY, arrListExams.get(position).getExamCategory());
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_TYPE, arrListExams.get(position).getExamType());
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_MODE, arrListExams.get(position).getExamMode());
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_DURATION, arrListExams.get(position).getDuration());
-            bundleExamDetails.putInt(ExamsAdapter.ARG_EXAM_NO, position);
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE, arrListExams.get(position).getPassPercentage());
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_QUESTION_SCORE, "0");
-            bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_CREATED_DATE, arrListExams.get(position).getExamCreatedDate());
-            bundleExamDetails.putInt(ExamsAdapter.ARG_FRAGMENT_TYPE, AuthorHostActivity.currentMainFragment);
 
             holder.llExamContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    setBundleArguments(position);
 
                     bundleExamDetails.putBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
                     ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS,
@@ -92,10 +83,39 @@ public class MyThirtyAdapter extends RecyclerView.Adapter<MyThirtyAdapter.ViewHo
                     ((AuthorHostActivity) mContext).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT, bundleExamDetails);
                 }
             });
+
+
+            holder.llExamEditOptions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    //Creating the instance of PopupMenu
+//                    PopupMenu popup = new PopupMenu(mContext, holder.llExamEditOptions);
+//                    //Inflating the Popup using xml file
+//                    popup.getMenuInflater().inflate(R.menu.menu_exam_options, popup.getMenu());
+//
+//                    //registering popup with OnMenuItemClickListener
+//                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                        public boolean onMenuItemClick(MenuItem item) {
+//                            Toast.makeText(mContext, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+//                            return true;
+//                        }
+//                    });
+//
+//                    popup.show();//showing popup menu
+
+
+                    showExamEditOptions(v);
+                }
+            });
+
+
         } catch (Exception e) {
             Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());
         }
     }
+
+    AlertDialog dialog;
+
 
     public void addAll(ArrayList<Exams> exams) {
         try {
@@ -117,7 +137,7 @@ public class MyThirtyAdapter extends RecyclerView.Adapter<MyThirtyAdapter.ViewHo
 
         TextView tvExamBookName, tvExamType, tvExamNoofStudent, tvExamNoofStudentAvg,
                 tvExamNoofStudentAttempted, tvExamAttempted;
-        LinearLayout llExamContainer, llTopExam;
+        LinearLayout llExamContainer, llTopExam, llExamEditOptions;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -131,7 +151,113 @@ public class MyThirtyAdapter extends RecyclerView.Adapter<MyThirtyAdapter.ViewHo
             tvExamNoofStudentAvg = (TextView) itemView.findViewById(R.id.tv_exam_noof_student_avg);
             tvExamNoofStudentAttempted = (TextView) itemView.findViewById(R.id.tv_exam_noof_student_attempted);
             tvExamAttempted = (TextView) itemView.findViewById(R.id.tv_exam_attempted);
+            llExamEditOptions = (LinearLayout) itemView.findViewById(R.id.ll_exam_edit_options);
         }
     }
+
+
+    private void setBundleArguments(int position) {
+
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_ID, arrListExams.get(position).getExamId());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_NAME, arrListExams.get(position).getExamName());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID, arrListExams.get(position).getClassroomId());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME, arrListExams.get(position).getClassroomName());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_BOOK_ID, arrListExams.get(position).getBookId());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_BOOK_NAME, arrListExams.get(position).getBookName());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_CATEGORY, arrListExams.get(position).getExamCategory());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_MODE, arrListExams.get(position).getExamMode());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE, arrListExams.get(position).getPassPercentage());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_DURATION, arrListExams.get(position).getDuration());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_ATTEMPT_COUNT, arrListExams.get(position).getAttemptCount());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_INSTRUCTIONS, arrListExams.get(position).getExamInstructions());
+        bundleExamDetails.putBoolean(ExamsAdapter.ARG_EXAM_IS_RANDOM_QUESTION, arrListExams.get(position).getRandomQuestion().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+        bundleExamDetails.putBoolean(ExamsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING, arrListExams.get(position).getNegativeMarking().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE, arrListExams.get(position).getNegativeMarkValue());
+        bundleExamDetails.putBoolean(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE, arrListExams.get(position).getUseQuestionScore().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE, arrListExams.get(position).getCorrectAnswerScore());
+        bundleExamDetails.putBoolean(ExamsAdapter.ARG_EXAM_IS_DECLARE_RESULTS, arrListExams.get(position).getDeclareResults().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_ASSESSOR, arrListExams.get(position).getExamAssessor());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_START_DATE, arrListExams.get(position).getExamStartDate());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_START_TIME, arrListExams.get(position).getExamStartTime());
+        bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_CREATED_DATE, arrListExams.get(position).getExamCreatedDate());
+        bundleExamDetails.putInt(ExamsAdapter.ARG_EXAM_NO, position);
+        bundleExamDetails.putInt(ExamsAdapter.ARG_FRAGMENT_TYPE, AuthorHostActivity.currentMainFragment);
+
+    }
+
+
+    public Bundle getBundleExamDetails() {
+        return bundleExamDetails;
+    }
+
+
+    private void showExamEditOptions(View v) {
+
+        View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_exam_edit_options, null);
+
+        TextView tvScheduleExam = (TextView) view.findViewById(R.id.tv_schedule_exam);
+        tvScheduleExam.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvScheduleExam.setOnClickListener(itemClickListener);
+
+        TextView tvCopyExam = (TextView) view.findViewById(R.id.tv_copy_exam);
+        tvCopyExam.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvCopyExam.setOnClickListener(itemClickListener);
+
+        TextView tvEditExam = (TextView) view.findViewById(R.id.tv_edit_exam);
+        tvEditExam.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvEditExam.setOnClickListener(itemClickListener);
+
+        final PopupWindow popupExamOptions = new PopupWindow(view, 250, 350, true);
+        popupExamOptions.setOutsideTouchable(true);
+        popupExamOptions.setBackgroundDrawable(new BitmapDrawable());
+
+        popupExamOptions.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+
+        popupExamOptions.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+            }
+        });
+        popupExamOptions.showAsDropDown(v, 20, -90);
+    }
+
+    View.OnClickListener itemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            switch (v.getId()) {
+                case R.id.tv_schedule_exam:
+
+                    break;
+
+                case R.id.tv_copy_exam:
+                    bundleExamDetails.putBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY, true);
+                    setExamQuestions();
+                    break;
+
+                case R.id.tv_edit_exam:
+                    bundleExamDetails.putBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY, false);
+                    setExamQuestions();
+                    break;
+
+            }
+
+        }
+    };
+
+
+    private void setExamQuestions() {
+
+    }
+
 
 }

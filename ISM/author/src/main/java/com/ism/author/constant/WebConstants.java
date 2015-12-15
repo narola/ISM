@@ -145,6 +145,6 @@ public class WebConstants {
 
     /*Image Url Constants*/
 
-    public static final String QUESTION_IMAGES = "http://192.168.1.147/WS_ISM/question_images/";
+    public static final String QUESTION_IMAGES = "http://192.168.1.147/WS_ISM/Images/questions_images/";
 }
 

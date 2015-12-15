@@ -670,7 +670,6 @@
                     android:orientation="horizontal"
                     android:weightSum="3">
 
-
                     <TextView
                         android:id="@+id/tv_exam_negativemarking"
                         android:layout_width="0dp"
@@ -680,6 +679,15 @@
                         android:textColor="@color/color_black_light"
                         android:textSize="@dimen/d20dp" />
 
+                    <!--<Spinner-->
+                    <!--android:id="@+id/sp_exam_negativemarking"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/d5dp"-->
+                    <!--android:background="@drawable/spinner_selector"-->
+                    <!--android:entries="@array/list"-->
+                    <!--android:padding="@dimen/d20dp"-->
+                    <!--android:spinnerMode="dropdown" />-->
 
                     <RadioGroup
                         android:id="@+id/radio_negativemarking"
@@ -883,16 +891,15 @@
                         android:layout_marginLeft="@dimen/d20dp"
                         android:layout_weight="1">
 
-                        <EditText
-                            android:id="@+id/et_exam_questionscorevalue"
+                        <Spinner
+                            android:id="@+id/sp_exam_question_score"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/selector"
-                            android:gravity="center_vertical"
-                            android:inputType="number"
-                            android:paddingLeft="@dimen/d20dp"
-                            android:textColor="@color/color_black"
-                            android:textSize="@dimen/d20dp" />
+                            android:layout_marginTop="@dimen/d5dp"
+                            android:background="@drawable/spinner_selector"
+                            android:entries="@array/list"
+                            android:padding="@dimen/d20dp"
+                            android:spinnerMode="dropdown" />
                     </LinearLayout>
 
 
