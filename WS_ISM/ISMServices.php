@@ -12,7 +12,7 @@ include_once 'ConstantValues.php';
 include_once 'HelperFunctions.php';
 include_once 'table_vars.php';
 include_once 'SecurityFunctions.php';
-
+//include_once 'ProfileFunctions.php';
 error_reporting(0);
 
 $post_body = file_get_contents('php://input');
@@ -154,11 +154,14 @@ switch ($_REQUEST['Service'])
     case "GetTopicForDay":
     case "GetGroupHistory":
     case "GetGroupProfile":
-    case "pingTutorialMate":
+    case "PingTutorialMate":
+    case "SubmitQuestionForFriday":
+    case "CheckFridayExamStatus":
+    case "GetFridayExamQuestion":
     {
         include_once 'TutorialGroup.php';
-        $profile = new TutorialGroup();
-        $data = $profile -> call_service($_REQUEST['Service'], $postData);
+        $tutorialGroup = new TutorialGroup();
+        $data = $tutorialGroup -> call_service($_REQUEST['Service'], $postData);
     }
         break;
 
@@ -203,7 +206,6 @@ switch ($_REQUEST['Service'])
 }
 
 header('Content-type: application/json');
-
 echo json_encode($data);
 mysqli_close($con);
 

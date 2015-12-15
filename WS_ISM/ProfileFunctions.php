@@ -12,6 +12,7 @@ include_once 'TutorialGroup.php';
 include_once 'ApiCrypter.php';
 
 error_reporting(0);
+
 class ProfileFunctions
 {
 
@@ -1288,7 +1289,8 @@ class ProfileFunctions
     */
     public function getMyActivity($postData)
     {
-    	$message ='';
+
+        $message ='';
         $status='';
         $data=array();
         $response=array();
@@ -2367,23 +2369,27 @@ class ProfileFunctions
 
 
             if ((strcasecmp($isShowDOB[0], 'yes') == 0) && (strcasecmp($isShowContact[0], 'yes') == 0)) {
-                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.birthdate,users.contact_number,users.email_id,users.about_me";
+                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.birthdate,users.contact_number,users.email_id,users.about_me,";
             } else if ((strcasecmp($isShowDOB[0], 'no') == 0) && (strcasecmp($isShowContact[0], 'yes') == 0)) {
-                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.contact_number,users.email_id,users.about_me";
+                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.contact_number,users.email_id,users.about_me,";
             } else if ((strcasecmp($isShowDOB[0], 'yes') == 0) && (strcasecmp($isShowContact[0], 'no') == 0)) {
-                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.birthdate,users.email_id,users.about_me";
+                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.birthdate,users.email_id,users.about_me,";
             } else if ((strcasecmp($isShowDOB[0], 'no') == 0) && (strcasecmp($isShowContact[0], 'no') == 0)) {
-                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.email_id,users.about_me";
+                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.email_id,users.about_me,";
+            }
+            else{
+                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.birthdate,users.contact_number,users.email_id,users.about_me,";
             }
 
+
             $getStudentProfileInfo = "studentProfile.total_score,studentProfile.total_exams,studentProfile.total_badges,studentProfile.total_studymate,studentProfile.total_authors_followed,studentProfile.total_assignment,studentProfile.total_favorite_question,studentProfile.total_question_asked,studentProfile.total_post,studentProfile.rank as 'ism_rank',studentProfile.ambition_in_life";
-            $queryGetInfo = "SELECT ".$getUserInfo.",school.school_name,tutorial_group.group_name,course.course_name,classroom.class_name as 'classroom_name',".$getStudentProfileInfo." FROM ".TABLE_STUDENT_PROFILE." studentProfile
+            $queryGetInfo = "SELECT ".$getUserInfo." school.school_name,ifnull(tutorial_group.group_name,'') as 'group_name',course.course_name,classroom.class_name as 'classroom_name',".$getStudentProfileInfo." FROM ".TABLE_STUDENT_PROFILE." studentProfile
     	INNER JOIN ".TABLE_USERS." users ON users.id=studentProfile.user_id
     	LEFT JOIN ".TABLE_SCHOOLS." school ON school.id=studentProfile.school_id
     	LEFT JOIN ".TABLE_CLASSROOMS." classroom ON classroom.id=studentProfile.classroom_id
     	LEFT JOIN ".TABLE_COURSES." course ON course.id=studentProfile.course_id
     	LEFT JOIN ".TABLE_TUTORIAL_GROUPS." tutorial_group ON tutorial_group.classroom_id=studentProfile.classroom_id
-    	WHERE studentProfile.user_id=".$user_id." AND studentProfile.is_delete=0 AND users.is_delete=0 AND school.is_delete=0 AND classroom.is_delete=0 AND course.is_delete=0 AND tutorial_group.is_delete=0 ";
+    	WHERE studentProfile.user_id=".$user_id." AND studentProfile.is_delete=0 AND users.is_delete=0 ";//AND school.is_delete=0 AND classroom.is_delete=0 AND course.is_delete=0 AND tutorial_group.is_delete=0 ";
             //echo $queryGetInfo;
             $resultGetInfo = mysqli_query($GLOBALS['con'], $queryGetInfo) or $message = mysqli_error($GLOBALS['con']);
 

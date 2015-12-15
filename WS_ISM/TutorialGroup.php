@@ -4,7 +4,8 @@
  * User: c161
  * Date: 20/10/15
  */
-
+include_once 'SendEmail.php';
+include_once 'ExamFunctions.php';
 class TutorialGroup
 {
 
@@ -50,6 +51,24 @@ class TutorialGroup
                 return $this->pingTutorialMate($postData);
             }
                 break;
+
+            case "SubmitQuestionForFriday":{
+                return $this->submitQuestionForFriday($postData);
+            }
+                break;
+
+            case "CheckFridayExamStatus":{
+
+                return $this->checkFridayExamStatus($postData);
+            }
+                break;
+
+            case "GetFridayExamQuestion":{
+
+                return $this->getFridayExamQuestion($postData);
+             }
+                break;
+
 		}
 	}
 
@@ -477,7 +496,7 @@ class TutorialGroup
 
         if($isSecure==yes) {
             $queryToGetGroups = "SELECT * FROM ". TABLE_TUTORIAL_GROUPS." WHERE id=".$group_id." AND is_delete=0";
-            $resultToGetGroups = mysqli_query($GLOBALS['con'], $queryToGetGroups) or $errorMsg = mysqli_error($GLOBALS['con']);
+            $resultToGetGroups = mysqli_query($GLOBALS['con'], $queryToGetGroups) or $message = mysqli_error($GLOBALS['con']);
 
             if (mysqli_num_rows($resultToGetGroups) > 0) {
 
@@ -496,7 +515,7 @@ class TutorialGroup
                          WHERE group_id=".$group_id." AND week_no = ".$week_no ." AND (".$day_no." >= 1 AND ".$day_no." <= 7) AND tutorial_group_topic_allocation.is_delete=0";
 
                         //(".$day_no." >= 1 AND ".$day_no." <= 7)
-                        $resultToFetchTopics = mysqli_query($GLOBALS['con'], $queryToFetchTopics) or $errorMsg = mysqli_error($GLOBALS['con']);
+                        $resultToFetchTopics = mysqli_query($GLOBALS['con'], $queryToFetchTopics) or $message = mysqli_error($GLOBALS['con']);
                        // $post=array();
                         if (mysqli_num_rows($resultToFetchTopics) > 0) {
                             while ($topicGroups = mysqli_fetch_assoc($resultToFetchTopics)) {
@@ -554,7 +573,7 @@ class TutorialGroup
         $post=array();
         $data=array();
         $response=array();
-
+        //echo jddayofweek ( cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y")) , 1 ); exit; //monday
 
         $group_id = validateObject($postData, 'group_id', "");
         $group_id = addslashes($group_id);
@@ -582,9 +601,9 @@ class TutorialGroup
              $queryToFetchTopics="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation
                          INNER JOIN ".TABLE_TUTORIAL_TOPIC." tutorial_topic ON tutorial_group_topic_allocation.tutorial_topic_id=tutorial_topic.id
                          INNER JOIN ".TABLE_SUBJECTS." subjects ON tutorial_topic.subject_id=subjects.id
-                         WHERE group_id=".$group_id." AND week_no = ".$week_no ." AND tutorial_group_topic_allocation.is_delete=0";
+                         WHERE tutorial_group_topic_allocation.group_id=".$group_id." AND tutorial_group_topic_allocation.week_no = ".$week_no ." AND tutorial_group_topic_allocation.is_delete=0";
 
-            $resultToFetchTopics = mysqli_query($GLOBALS['con'], $queryToFetchTopics) or $errorMsg = mysqli_error($GLOBALS['con']);
+            $resultToFetchTopics = mysqli_query($GLOBALS['con'], $queryToFetchTopics) or $message = mysqli_error($GLOBALS['con']);
 
             if (mysqli_num_rows($resultToFetchTopics) > 0) {
 
@@ -599,7 +618,7 @@ class TutorialGroup
                     $post['subject_name']=$topicGroups['subject_name'];
 
                     $queryToGetTotalComment="SELECT total_comments FROM ".TABLE_TUTORIAL_GROUP_MEMBER_SCORE." WHERE topic_id=".$topicGroups['tutorial_topic_id'];
-                    $resultToGetTotalComment= mysqli_query($GLOBALS['con'], $queryToGetTotalComment) or $errorMsg = mysqli_error($GLOBALS['con']);
+                    $resultToGetTotalComment= mysqli_query($GLOBALS['con'], $queryToGetTotalComment) or $message = mysqli_error($GLOBALS['con']);
                     $rowToGetTotalComments=mysqli_fetch_row($resultToGetTotalComment);
 
                     $post['total_active_comments']=$rowToGetTotalComments[0];
@@ -608,11 +627,19 @@ class TutorialGroup
 
                     if($day_no==null AND $week_no==null)
                     {
+                        $day = time(); // or whatever unix timestamp, etc
+                        echo $weekNum = date('W', $day) - date('W', strtotime(date('Y-m-01', $day))) + 1;
+                        $week_no=$weekNum;
 
+//                        $time = time(); // or whenever
+//                        $week_of_the_month = ceil(date('d', $time)/7);
+                        $condition=" AND week_no=".$week_no;
                     }
                     elseif($day_no!=null)
                     {
-                        $condition=" AND week_no=".$week_no;
+                        jddayofweek ( cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y")) , 1 ); exit; //monday
+                        $weekNum = date('W', $day) - date('W', strtotime(date('Y-m-01', $day))) + 1;
+                        $condition=" AND week_day='".jddayofweek."' AND AND week_no=".$weekNum;
                     }
                     elseif($week_no != null)
                     {
@@ -622,8 +649,8 @@ class TutorialGroup
                     $selData="tutorial_group_discussion.*,users.full_name,users.profile_pic";
                     $queryToFetchMembers="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_DISCUSSION." tutorial_group_discussion
                          INNER JOIN ".TABLE_USERS." users ON tutorial_group_discussion.sender_id=users.id
-                         WHERE tutorial_group_discussion.group_id=".$group_id." AND tutorial_group_discussion.is_delete=0 ";//ORDER BY ". $user_id;
-                    $resultToFetchMembers = mysqli_query($GLOBALS['con'], $queryToFetchMembers) or $errorMsg = mysqli_error($GLOBALS['con']);
+                         WHERE tutorial_group_discussion.group_id=".$group_id. $condition." AND tutorial_group_discussion.is_delete=0 ";//ORDER BY ". $user_id;
+                    $resultToFetchMembers = mysqli_query($GLOBALS['con'], $queryToFetchMembers) or $message = mysqli_error($GLOBALS['con']);
 
 
                     if (mysqli_num_rows($resultToFetchMembers) > 0) {
@@ -701,7 +728,7 @@ class TutorialGroup
         if($isSecure==yes) {
             //$queryToGetGroups = "SELECT tutorial_groups.*,tutorial_group_topic_allocation.group_score,tutorial_group_topic_allocation.tutorial_topic_id FROM ". TABLE_TUTORIAL_GROUPS." tutorial_groups INNER JOIN ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation ON tutorial_group_topic_allocation.group_id=tutorial_groups.id  WHERE tutorial_groups.id=".$group_id." AND tutorial_groups.is_delete=0";
             $queryToGetGroups = "SELECT tutorial_groups.* FROM ". TABLE_TUTORIAL_GROUPS." tutorial_groups  WHERE tutorial_groups.id=".$group_id." AND tutorial_groups.is_delete=0";
-            $resultToGetGroups = mysqli_query($GLOBALS['con'], $queryToGetGroups) or $errorMsg = mysqli_error($GLOBALS['con']);
+            $resultToGetGroups = mysqli_query($GLOBALS['con'], $queryToGetGroups) or $message = mysqli_error($GLOBALS['con']);
             $groupMembers=array();
             if (mysqli_num_rows($resultToGetGroups) > 0) {
 
@@ -711,7 +738,7 @@ class TutorialGroup
                         $post['group_name']=$groups['group_name'];
 
                          $queryToGetTotalComment="SELECT total_comments FROM ".TABLE_TUTORIAL_GROUP_MEMBER_SCORE." WHERE topic_id=".$groups['tutorial_topic_id'];
-                         $resultToGetTotalComment= mysqli_query($GLOBALS['con'], $queryToGetTotalComment) or $errorMsg = mysqli_error($GLOBALS['con']);
+                         $resultToGetTotalComment= mysqli_query($GLOBALS['con'], $queryToGetTotalComment) or $message = mysqli_error($GLOBALS['con']);
                          $rowToGetTotalComments=mysqli_fetch_row($resultToGetTotalComment);
 
                         $post['total_active_comments']=$rowToGetTotalComments[0];
@@ -724,7 +751,7 @@ class TutorialGroup
                          INNER JOIN ". TABLE_STUDENT_PROFILE." studentProfile ON users.id=studentProfile.user_id
                          LEFT JOIN ".TABLE_SCHOOLS." school ON school.id=studentProfile.school_id
                          WHERE tutorial_group_member.group_id=".$group_id." AND tutorial_group_member.is_delete=0 ORDER BY (tutorial_group_member.user_id=".$user_id.") DESC";
-                        $resultToFetchMembers = mysqli_query($GLOBALS['con'], $queryToFetchMembers) or $errorMsg = mysqli_error($GLOBALS['con']);
+                        $resultToFetchMembers = mysqli_query($GLOBALS['con'], $queryToFetchMembers) or $message = mysqli_error($GLOBALS['con']);
 
 
                         if (mysqli_num_rows($resultToFetchMembers) > 0) {
@@ -772,6 +799,421 @@ class TutorialGroup
 
     }
 
+    public  function pingTutorialMate($postData)
+    {
+        $message ='';
+        $post=array();
+        $response=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $query = "SELECT * FROM ".TABLE_USERS." WHERE `id`=" . $user_id ." AND is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            if (mysqli_num_rows($result))
+            {
+                $userData=mysqli_fetch_row($result);
+                $email_address=$userData[7];
+                $contact_number=$userData[8];
+
+                $sendEmail = new SendEmail();
+                $message = "Hello ISM,\nI am very much interested to be part of ISM system.Please check my details below and let me know how can I become the part of this system.\nContact number: " . $contact_number .
+                    "\nEmail address: " . $email_address ."\n\nI am waiting for your call.
+		\nThanks.";
+                $status = SUCCESS;
+                $sendEmail->sendemail($email_address, $message, "Ping to Tutorial Mate", "ism.educare@gmail.com");
+                //  $response['status'] =$status;
+                $message="ping sent to the user";
+
+
+                //For send sms(Remaining)
+
+
+            }
+            else
+            {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['status'] =$status;
+        $response['message'] =$message;
+        $response['ping_tutorial_mate']=$post;
+        return $response;
+
+    }
+
+
+    public function submitQuestionForFriday($postData)
+    {
+        $message ='';
+        $status='';
+        $post=array();
+        $data=array();
+        $response=array();
+
+        $group_id = validateObject($postData, 'group_id', "");
+        $group_id = addslashes($group_id);
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $tutorial_topic_id = validateObject ($postData , 'tutorial_topic_id', "");
+        $tutorial_topic_id = addslashes($tutorial_topic_id);
+
+        $question_text = validateObject ($postData , 'question_text', "");
+        $question_text = addslashes($question_text);
+
+        $answer_choices = validateObject ($postData , 'answer_choices', "");
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $queryChkInTutorialTopicExam="SELECT * FROM ".TABLE_TUTORIAL_TOPIC_EXAM." WHERE tutorial_group_id=".$group_id." AND tutorial_topic_id=".$tutorial_topic_id." AND is_delete=0";
+            $resultChkInTutorialTopicExam = mysqli_query($GLOBALS['con'], $queryChkInTutorialTopicExam) or $message = mysqli_error($GLOBALS['con']);
+
+            if(mysqli_num_rows($resultChkInTutorialTopicExam)>0)
+            {
+                while($topic_exam=mysqli_fetch_assoc($resultChkInTutorialTopicExam))
+                {
+                    $getExamId=$topic_exam['exam_id'];
+                    $question_count=$topic_exam['exam_question_count'];
+
+                    if($topic_exam['exam_question_count']==5)
+                    {
+                        $updateData=",is_ready=1";
+                        $updateFields=" exam_question_count=".$question_count."+ 1".$updateData;
+                    }
+                    else{
+                        $updateFields=" exam_question_count=".$question_count."+ 1";
+                    }
+
+                   // echo "update".$updateFields; exit;
+                    $updateQuery="UPDATE ". TABLE_TUTORIAL_TOPIC_EXAM." SET ". $updateFields." WHERE tutorial_topic_id=".$tutorial_topic_id ." AND tutorial_group_id=".$group_id. " AND exam_id=".$getExamId;
+                    $updateResult = mysqli_query($GLOBALS['con'], $updateQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                    if($updateResult)
+                    {
+                        $status=SUCCESS;
+                        $message="Succesfully updated";
+                    }
+                    else{
+                        $status=FAILED;
+                        $message="failed to update";
+                    }
+                }
+            }
+            //If Exam Id is not TutorialTopicExam Table, then Insert exam in Exam Table
+            else
+            {
+
+                //====================================Insert Exam================================
+                $exam_type="topic";
+                $exam_mode="objective";
+                $exam_category="Tutorial";
+                $use_question_score="no";
+                $exam_name="";
+
+
+                $selectConfigValue="SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='fridayInternalExamScore' AND is_delete=0";
+                $resultConfigValue = mysqli_query($GLOBALS['con'], $selectConfigValue) or $message = mysqli_error($GLOBALS['con']);
+                $configValue = mysqli_fetch_row($resultConfigValue);
+                $correct_answer_score=$configValue[0];
+
+
+                //Get Classroom_id from Student Profile table
+                $queryToGetClassId="SELECT classroom_id FROM ".TABLE_STUDENT_PROFILE." WHERE user_id=".$user_id." AND is_delete=0";
+                $resultToGetClassId=mysqli_query($GLOBALS['con'], $queryToGetClassId) or $message = mysqli_error($GLOBALS['con']);
+                $classroom_id = mysqli_fetch_row($resultToGetClassId);
+
+                $insertFields = "`created_by`,`exam_name`,`classroom_id`, `topic_id`, `exam_type`, `exam_category`, `exam_mode`,`use_question_score`,`correct_answer_score`";
+                $insertValues = "".$user_id . ",'" . $exam_name . "'," . $classroom_id[0] . "," . $tutorial_topic_id . ",'" . $exam_type . "','" . $exam_category . "','" . $exam_mode . "','".$use_question_score."',".$correct_answer_score."";
+
+
+                $queryInsertExam = "INSERT INTO " . TABLE_EXAMS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                //echo $queryInsertExam; exit;
+                $resultInsertExam = mysqli_query($GLOBALS['con'], $queryInsertExam) or $message = mysqli_error($GLOBALS['con']);
+
+                $getExamId=mysqli_insert_id($GLOBALS['con']);
+
+
+                if($resultInsertExam)
+                {
+                    $data['exam_id']=$getExamId;
+                    $message="Exam created";
+                    $status=SUCCESS;
+                }
+                else{
+                    $message="failed to create exam";
+                    $status=FAILED;
+                }
+                //====================================Insert Question================================
+
+                $question_format="MCQ";
+
+                $queryGetTopicAndSubject="SELECT * FROM ".TABLE_TUTORIAL_TOPIC." WHERE id=".$tutorial_topic_id ." AND is_delete=0";
+                $resultGetTopicAndSubject= mysqli_query($GLOBALS['con'], $queryGetTopicAndSubject) or $message = mysqli_error($GLOBALS['con']);
+                $getData = mysqli_fetch_row($resultGetTopicAndSubject);
+                $subject_id=$getData['6'];
+                $topic_id=$getData['7'];
+
+
+                $insertFields = "`question_text`,`question_score`, `question_format`, `question_creator_id`, `topic_id`, `subject_id`, `classroom_id`";
+                $insertValues = "'" . $question_text . "'," . $correct_answer_score . ",'" . $question_format . "'," . $user_id . "," . $topic_id . "," . $subject_id . "," . $classroom_id[0];
+
+                $queryInsertQuestion = "INSERT INTO " . TABLE_QUESTIONS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                // echo $queryInsertQuestion;
+                $resultInsertQuestion = mysqli_query($GLOBALS['con'], $queryInsertQuestion) or $message = mysqli_error($GLOBALS['con']);
+
+                $questionID = mysqli_insert_id($GLOBALS['con']);
+
+
+
+                if($resultInsertQuestion){
+
+                        $data['question_id']=$questionID;
+                        $message="Question created";
+                        $status=SUCCESS;
+
+                    if($question_format==MCQ) {
+                        if (is_array($answer_choices)) {
+
+                            foreach ($answer_choices as $row) {
+
+                                $insertChoiceFields = "`question_id`,`choice_text`,`is_right`";
+                                $insertChoiceValues = "" . $questionID . ",'" . $row->choice_text . "'," . (int)$row->is_right;
+
+                                $insertQuestionQuery = "INSERT INTO " . TABLE_ANSWER_CHOICES . "(" . $insertChoiceFields . ") VALUES( " . $insertChoiceValues . ")";
+                                $resultQuestionQuery = mysqli_query($GLOBALS['con'], $insertQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
+
+
+                                if ($resultQuestionQuery) {
+
+                                    $answer_ids[] = mysqli_insert_id($GLOBALS['con']);
+
+                                }
+                                else
+                                {
+                                    $status = FAILED;
+                                    $message = "failed to insert answer choice";
+                                }
+                            }
+                            $data['answer_ids']=$answer_ids;
+                        }
+                    }
+
+
+                        //====================================Insert Tutorial Topic Exam ================================
+
+                    if($resultInsertExam && $resultInsertQuestion)
+                    {
+                        //====================================Insert Exam_Question ================================
+                        $insertExamQuestionFields = "`exam_id`,`question_id`";
+                        $insertExamQuestionValues = "" . $getExamId . ",".$questionID;
+
+                        $insertExamQuestionQuery = "INSERT INTO " . TABLE_EXAM_QUESTION . "(" . $insertExamQuestionFields . ") VALUES( " . $insertExamQuestionValues . ")";
+                        $resultExamQuestionQuery = mysqli_query($GLOBALS['con'], $insertExamQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
+
+
+                        if($resultExamQuestionQuery)
+                        {
+                            $status=SUCCESS;
+                            $message="Exam and question added";
+                        }
+                        else{
+                            $status=FAILED;
+                            $message="failed to add exam and question";
+                        }
+
+
+
+                        $insertTopicExamFields = "`tutorial_topic_id`,`tutorial_group_id`,`exam_id`, `exam_question_count`";//, `exam_type`";
+                        $insertTopicExamValues = "".$tutorial_topic_id . ",'" . $group_id . "'," . $getExamId . ",1  ";//,'" . $topic_exam_type . "'";
+
+
+                        $queryInsertTopicExam = "INSERT INTO " . TABLE_TUTORIAL_TOPIC_EXAM . "(" . $insertTopicExamFields . ") VALUES (" . $insertTopicExamValues . ")";
+                        //echo $queryInsertTopicExam; exit;
+                        $resultInsertTopicExam = mysqli_query($GLOBALS['con'], $queryInsertTopicExam) or $message = mysqli_error($GLOBALS['con']);
+
+                        if($resultInsertTopicExam)
+                        {
+                            $status=SUCCESS;
+                            $message="exam and question added successfully";
+                        }
+                        else
+                        {
+                            $status = FAILED;
+                            $message = "Failed to insert record";
+                        }
+                    }
+                }
+                else
+                {
+                    $message="failed to create question";
+                    $status=FAILED;
+                }
+
+            }
+
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['question_for_friday'][]=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+
+    }
+
+
+    public function checkFridayExamStatus($postData)
+    {
+
+        $message ='';
+        $post=array();
+        $response=array();
+
+        $group_id = validateObject($postData, 'group_id', "");
+        $group_id = addslashes($group_id);
+
+        $tutorial_topic_id = validateObject ($postData , 'tutorial_topic_id', "");
+        $tutorial_topic_id = addslashes($tutorial_topic_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $queryChkInTutorialTopicExam="SELECT * FROM ".TABLE_TUTORIAL_TOPIC_EXAM." WHERE tutorial_group_id=".$group_id." AND tutorial_topic_id=".$tutorial_topic_id." AND is_delete=0";
+            $resultChkInTutorialTopicExam = mysqli_query($GLOBALS['con'], $queryChkInTutorialTopicExam) or $message = mysqli_error($GLOBALS['con']);
+
+            if(mysqli_num_rows($resultChkInTutorialTopicExam)>0)
+            {
+                $status = mysqli_fetch_row($resultChkInTutorialTopicExam);
+                $isReady=$status[6];
+
+                if($isReady==1)
+                {
+                    $status=SUCCESS;
+                    $message="question submission successfully";
+                    $post['is_ready']='yes';
+                }
+                else{
+                    $status=SUCCESS;
+                    $message="waiting for question submission";
+                    $post['is_ready']='no';
+                }
+            }
+            else{
+                $status=SUCCESS;
+                $message=DEFAULT_NO_RECORDS;
+                $data=array();
+            }
+            $data[]=$post;
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['status'] =$status;
+        $response['message'] =$message;
+        $response['friday_exam_status']=$data;
+        return $response;
+
+    }
+
+    public function getFridayExamQuestion($postData)
+    {
+        $message ='';
+        $status='';
+        $post=array();
+        $data=array();
+        $response=array();
+
+        $group_id = validateObject($postData, 'group_id', "");
+        $group_id = addslashes($group_id);
+
+        $tutorial_topic_id = validateObject ($postData , 'tutorial_topic_id', "");
+        $tutorial_topic_id = addslashes($tutorial_topic_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $queryChkInTutorialTopicExam="SELECT * FROM ".TABLE_TUTORIAL_TOPIC_EXAM." WHERE tutorial_group_id=".$group_id." AND tutorial_topic_id=".$tutorial_topic_id." AND is_delete=0";
+            $resultChkInTutorialTopicExam = mysqli_query($GLOBALS['con'], $queryChkInTutorialTopicExam) or $message = mysqli_error($GLOBALS['con']);
+
+
+            if(mysqli_num_rows($resultChkInTutorialTopicExam)>0)
+            {
+                $getExamClass = new ExamFunctions();
+                $postParam = new stdClass();
+                while($topicExam=mysqli_fetch_assoc($resultChkInTutorialTopicExam))
+                {
+                    $exam_id=$topicExam['exam_id'];
+                    $postParam->exam_id = $exam_id;
+                    $data=$getExamClass->call_service("GetExamQuestions", $postParam);
+                }
+
+            }
+
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        //$response['question_for_friday']=$data;
+        $response=$data;
+       // $response['message'] = $message;
+       // $response['status'] = $status;
+
+        return $response;
+
+    }
 
 }
 

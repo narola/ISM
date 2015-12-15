@@ -1423,6 +1423,8 @@ class SocialFunctions
                         if($arrayTagsIDDelete[$i]==1) {
 
                             $selectQueryFotTagName = "SELECT id FROM " . TABLE_TAGS . " WHERE  LOWER(`tag_name`) = LOWER('$arrayTagsName[$i]') AND is_delete=0";
+
+                            //echo $selectQueryFotTagName ; exit;
                             $resultQueryFotTagName = mysqli_query($GLOBALS['con'], $selectQueryFotTagName) or $message = mysqli_error($GLOBALS['con']);
                             $getTagID = mysqli_fetch_row($resultQueryFotTagName);
 
@@ -1458,9 +1460,10 @@ class SocialFunctions
                                 //}
                             } else {
 
-                                $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i] . " AND is_delete=0";
+                                $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " .$getTagID[0] ." AND is_delete=0";//$arrayTagsID[$i] . " AND is_delete=0";
                                 $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
 
+                                //echo $selectQuery; exit;
                                 if (mysqli_num_rows($resultQuery) == 0) {
                                     $insertFields = "`tag_id`,`" . $resource_name . "`";
                                     $insertValues = $getTagID[0] . "," . $resource_id;
@@ -1482,7 +1485,8 @@ class SocialFunctions
                             }
                         }
 
-                    } else
+                    }
+                    else
                     {
 
                         if($arrayTagsIDDelete[$i]==0)

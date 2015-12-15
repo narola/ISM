@@ -756,9 +756,6 @@ class ExamFunctions
 
 
 
-
-
-
                             $tags = array();
                             $tagQuery = "SELECT tags.id as 'tag_id',tags.tag_name FROM ".TABLE_TAGS_QUESTION." tag_question JOIN ".TABLE_TAGS." tags ON tags.id=tag_question.tag_id WHERE tag_question.question_id=".$rowQuestion['id'] ." and tags.is_delete=0 and tag_question.is_delete=0";
                             $tagResult = mysqli_query($GLOBALS['con'], $tagQuery) or $message = mysqli_error($GLOBALS['con']);
@@ -2183,7 +2180,7 @@ class ExamFunctions
 
         if($isSecure==yes) {
 
-            $query = "SELECT `id`, `book_name`, `book_description`,`ebook_link`,`image_link` FROM ".TABLE_BOOKS ." WHERE is_delete=0";
+            $query = "SELECT `id`, `book_name`, `book_description`,`ebook_link`,`front_cover_image`,`back_cover_image` FROM ".TABLE_BOOKS ." WHERE is_delete=0";
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
             //echo $query;
             if (mysqli_num_rows($result)) {
