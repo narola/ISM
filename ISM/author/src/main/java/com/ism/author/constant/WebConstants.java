@@ -126,7 +126,6 @@ public class WebConstants {
     public static final String URL_GET_ABOUT_ME = URL_KINJAL_HOST + "GetAboutMe";
     public static final String URL_GET_BOOKS_FOR_USER = URL_KINJAL_HOST + "GetBooksForUser";
     public static final String URL_MANAGE_FAVOURITES = URL_KINJAL_HOST + "ManageFavorite";
-
     public static final String URL_MANAGE_BOOK_LIBRARY = URL_KINJAL_HOST + "ManageBookLibrary";
 
     /*status for apisuccess ans apifailed*/
@@ -146,6 +145,6 @@ public class WebConstants {
 
     /*Image Url Constants*/
 
-    public static final String QUESTION_IMAGES = "http://192.168.1.147/WS_ISM/question_images/";
+    public static final String QUESTION_IMAGES = "http://192.168.1.147/WS_ISM/Images/questions_images/";
 }
 

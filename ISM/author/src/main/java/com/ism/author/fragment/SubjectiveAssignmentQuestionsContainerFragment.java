@@ -21,33 +21,33 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 16/11/15.
  */
-public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
+public class SubjectiveAssignmentQuestionsContainerFragment extends Fragment {
 
-    private static final String TAG = GetSubjectiveAssignmentQuestionsFragment.class.getSimpleName();
+    private static final String TAG = SubjectiveAssignmentQuestionsContainerFragment.class.getSimpleName();
     private View view;
     private MyTypeFace myTypeFace;
     private FragmentListener fragListener;
     public GetStudentsFragment getStudentsFragment;
-    public GetSubjectiveQuestionsFragment getSubjectiveQuestionsFragment;
+    public SubjectiveQuestionsFragment subjectiveQuestionsFragment;
     public QuestionPaletteFragment questionPaletteFragment;
     private FrameLayout flGetsubjectiveAssignmentContainerLeft, flGetsubjectiveAssignmentContainerMiddle,
             flGetsubjectiveAssignmentContainerRight;
 
 
-    public static GetSubjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArgument) {
-        GetSubjectiveAssignmentQuestionsFragment getSubjectiveAssignmentQuestionsFragment = new GetSubjectiveAssignmentQuestionsFragment();
-        getSubjectiveAssignmentQuestionsFragment.setArguments(bundleArgument);
-        return getSubjectiveAssignmentQuestionsFragment;
+    public static SubjectiveAssignmentQuestionsContainerFragment newInstance(Bundle bundleArgument) {
+        SubjectiveAssignmentQuestionsContainerFragment subjectiveAssignmentQuestionsContainerFragment = new SubjectiveAssignmentQuestionsContainerFragment();
+        subjectiveAssignmentQuestionsContainerFragment.setArguments(bundleArgument);
+        return subjectiveAssignmentQuestionsContainerFragment;
     }
 
-    public GetSubjectiveAssignmentQuestionsFragment() {
+    public SubjectiveAssignmentQuestionsContainerFragment() {
         // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_getsubjective_assignment_questions, container, false);
+        view = inflater.inflate(R.layout.fragment_subjective_assignment_questions_container, container, false);
         initGlobal();
         return view;
     }
@@ -55,7 +55,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
     private void initGlobal() {
 
         getStudentsFragment = new GetStudentsFragment(this, getArguments());
-        getSubjectiveQuestionsFragment = new GetSubjectiveQuestionsFragment(this, getArguments());
+        subjectiveQuestionsFragment = new SubjectiveQuestionsFragment(this, getArguments());
         questionPaletteFragment = new QuestionPaletteFragment(this);
 
         flGetsubjectiveAssignmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_getsubjective_assignment_container_left);
@@ -68,7 +68,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
                 .commit();
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fl_getsubjective_assignment_container_middle, getSubjectiveQuestionsFragment)
+                .replace(R.id.fl_getsubjective_assignment_container_middle, subjectiveQuestionsFragment)
                 .commit();
         getFragmentManager()
                 .beginTransaction()
@@ -104,20 +104,20 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
         fragListener = null;
     }
 
-//    public Bundle getBundleArgument() {
+//    public Bundle getBundle() {
 //        return getArguments();
 //    }
 
 
     /*this is to load data for student evaluation*/
     public void loadStudentEvaluationData(String studentId) {
-        getSubjectiveQuestionsFragment.loadStudentEvaluationData();
+        subjectiveQuestionsFragment.loadStudentEvaluationData();
     }
 
 
     /*this is to refresh adapter on the click of next and previous button*/
-//    public void setBundleArgument() {
-//        getStudentsFragment.setBundleArgument();
+//    public void setBundle() {
+//        getStudentsFragment.setBundle();
 //    }
 
     public void setBundleArgumentForStudent(int position) {
@@ -136,6 +136,6 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
 
     /*this is to scroll to specific question content on the click of question palette*/
     public void scrollToSpecificQuestion(int position) {
-        getSubjectiveQuestionsFragment.scrollToSpecificQuestion(position);
+        subjectiveQuestionsFragment.scrollToSpecificQuestion(position);
     }
 }

@@ -86,19 +86,23 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
     /*these is for the tag add functionality.*/
+    /*for hashtag you have to manage "hashtagname:hashtagid:status" structure if insert hashtag status=1 and if delete hashtag status=0 */
+    /*if you create new hashtag sent hashtag id 0 otherwise tag id get from api*/
     private ContactsCompletionView tagsView;
     private HashTagsModel[] tags;
     private ArrayAdapter<HashTagsModel> tagsAdapter;
+    private List<HashTagsModel> listOfDeletedHashTag = new ArrayList<HashTagsModel>();
 
     /*these sre for the xml views*/
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
-            tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank, tvAddquestionAdvance;
+            tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank, tvAddquestionAdvance, tvAddquestionAnswer,
+            tvAddquestionScore;
     private ImageView imgSelectImage, imgPlay, imgHelp, imgDelete, imageValidationQuestionType;
-    private EditText etAddquestionTitle, etAddquestionAnswer, etEvaluationNote1, etEvaluationNote2;
-    private Spinner spAddquestionType;
+    private EditText etAddquestionTitle, etEvaluationNote1, etEvaluationNote2;
+    private Spinner spAddquestionType, spExamQuestionScore;
     private CheckBox chkAddquestionPreview;
-    List<String> arrListQuestionType;
-    private LinearLayout llAddMcqanswer;
+    List<String> arrListQuestionType, arrListQuestionScore;
+    private LinearLayout llAddMcqanswer, llAddQuestionscore;
     private RelativeLayout rlSelectImage;
 
     MyTypeFace myTypeFace;
@@ -107,6 +111,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
 
     private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
+    private static int QUESTIONSCORE_INERVAL = 1, QUESTIONSCORE_STARTVALUE = 1, QUESTIONSCORE_ENDVALUE = 5;
 
 
     @Override
@@ -133,6 +138,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         tvAddquestionSaveAddmore = (TextView) view.findViewById(R.id.tv_addquestion_save_addmore);
         tvAddquestionGotoquestionbank = (TextView) view.findViewById(R.id.tv_addquestion_gotoquestionbank);
         tvAddquestionAdvance = (TextView) view.findViewById(R.id.tv_addquestion_advance);
+        tvAddquestionScore = (TextView) view.findViewById(R.id.tv_addquestion_score);
         tvAddquestionSave.setOnClickListener(this);
         tvAddquestionSaveAddmore.setOnClickListener(this);
         tvAddquestionGotoquestionbank.setOnClickListener(this);
@@ -150,6 +156,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         tvAddquestionSaveAddmore.setTypeface(myTypeFace.getRalewayRegular());
         tvAddquestionGotoquestionbank.setTypeface(myTypeFace.getRalewayRegular());
         tvAddquestionAdvance.setTypeface(myTypeFace.getRalewayRegular());
+        tvAddquestionScore.setTypeface(myTypeFace.getRalewayBold());
 
         imgSelectImage = (ImageView) view.findViewById(R.id.img_select_image);
         imgPlay = (ImageView) view.findViewById(R.id.img_play);
@@ -162,19 +169,24 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
 
         etAddquestionTitle = (EditText) view.findViewById(R.id.et_addquestion_title);
-        etAddquestionAnswer = (EditText) view.findViewById(R.id.et_addquestion_answer);
+        tvAddquestionAnswer = (TextView) view.findViewById(R.id.tv_addquestion_answer);
         etEvaluationNote1 = (EditText) view.findViewById(R.id.et_evaluation_note1);
         etEvaluationNote2 = (EditText) view.findViewById(R.id.et_evaluation_note2);
 
 
         etAddquestionTitle.setTypeface(myTypeFace.getRalewayRegular());
-        etAddquestionAnswer.setTypeface(myTypeFace.getRalewayRegular());
+        tvAddquestionAnswer.setTypeface(myTypeFace.getRalewayRegular());
         etEvaluationNote1.setTypeface(myTypeFace.getRalewayRegular());
         etEvaluationNote2.setTypeface(myTypeFace.getRalewayRegular());
 
         spAddquestionType = (Spinner) view.findViewById(R.id.sp_addquestion_type);
+        spExamQuestionScore = (Spinner) view.findViewById(R.id.sp_exam_question_score);
+
+        getQuestionScoreSpinnerValues();
+        Adapters.setUpSpinner(getActivity(), spExamQuestionScore, arrListQuestionScore, Adapters.ADAPTER_SMALL);
 
         llAddMcqanswer = (LinearLayout) view.findViewById(R.id.ll_add_mcqanswer);
+        llAddQuestionscore = (LinearLayout) view.findViewById(R.id.ll_add_questionscore);
         rlSelectImage = (RelativeLayout) view.findViewById(R.id.rl_select_image);
         rlSelectImage.setOnClickListener(this);
 
@@ -193,7 +205,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 /*here i checked that if question is of related exam type then only add to preview otherwise not*/
                 if (position == 1 || position == 2) {
                     llAddMcqanswer.setVisibility(View.GONE);
-                    etAddquestionAnswer.setVisibility(View.VISIBLE);
+                    tvAddquestionAnswer.setVisibility(View.VISIBLE);
                     if (getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(true);
@@ -201,9 +213,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         chkAddquestionPreview.setEnabled(false);
                         chkAddquestionPreview.setChecked(false);
                     }
+
                 } else if (position == 3) {
+
                     llAddMcqanswer.setVisibility(View.VISIBLE);
-                    etAddquestionAnswer.setVisibility(View.GONE);
+                    tvAddquestionAnswer.setVisibility(View.GONE);
                     if (getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(false);
@@ -211,6 +225,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(true);
                     }
+
                 }
 
             }
@@ -340,6 +355,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     @Override
     public void onTokenRemoved(Object token) {
+
+        if (!((HashTagsModel) token).getTagId().equals("0")) {
+            listOfDeletedHashTag.add((HashTagsModel) token);
+        }
+
         updateTokenConfirmation();
     }
 
@@ -355,7 +375,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private void clearViewsData() {
 
         etAddquestionTitle.setText("");
-        etAddquestionAnswer.setText("");
+        tvAddquestionAnswer.setText("");
         llAddMcqanswer.removeAllViews();
         if (tagsView.getObjects().size() > 0) {
             tagsView.clear();
@@ -507,7 +527,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         clearViewsData();
         try {
 
-
             if (questions.getIsQuestionAddedInPreview()) {
                 chkAddquestionPreview.setChecked(true);
                 chkAddquestionPreview.setEnabled(false);
@@ -533,7 +552,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 imageLoader.displayImage(WebConstants.QUESTION_IMAGES + questions.getQuestionImageLink(),
                         imgSelectImage, ISMAuthor.options);
             }
-
+            spExamQuestionScore.setSelection(arrListQuestionScore.indexOf(questions.getQuestionScore()));
 
             setMcqAnswers(questions);
             setTags(questions);
@@ -549,15 +568,15 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
             spAddquestionType.setSelection(3);
             llAddMcqanswer.setVisibility(View.VISIBLE);
-            etAddquestionAnswer.setVisibility(View.GONE);
+            tvAddquestionAnswer.setVisibility(View.GONE);
         } else if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatdescriptive))) {
             spAddquestionType.setSelection(1);
             llAddMcqanswer.setVisibility(View.GONE);
-            etAddquestionAnswer.setVisibility(View.VISIBLE);
+            tvAddquestionAnswer.setVisibility(View.VISIBLE);
         } else if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatfillups))) {
             spAddquestionType.setSelection(2);
             llAddMcqanswer.setVisibility(View.GONE);
-            etAddquestionAnswer.setVisibility(View.VISIBLE);
+            tvAddquestionAnswer.setVisibility(View.VISIBLE);
         }
     }
 
@@ -598,10 +617,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         Boolean isValidate = false;
         switch (spPosition) {
             case 1:
-                isValidate = inputValidator.validateStringPresence(etAddquestionAnswer);
+                isValidate = true;
                 break;
             case 2:
-                isValidate = inputValidator.validateStringPresence(etAddquestionAnswer);
+                isValidate = true;
                 break;
             case 3:
                 isValidate = true;
@@ -769,7 +788,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 Debug.e(TAG, "The user id is::" + Global.strUserId);
                 Debug.e(TAG, "The question text is::" + Html.toHtml(etAddquestionTitle.getText()));
                 Debug.e(TAG, "The subject id is::" + "0");
-                Debug.e(TAG, "The question score is::" + getArguments().getString(ExamsAdapter.ARG_EXAM_QUESTION_SCORE));
+                Debug.e(TAG, "The question score is::" + arrListQuestionScore.get(spExamQuestionScore.getSelectedItemPosition()));
                 Debug.e(TAG, "The question format is::" + getQuestionFormat());
                 Debug.e(TAG, "The evaluation notes is::" + etEvaluationNote1.getText().toString());
                 Debug.e(TAG, "The solution  is::" + etEvaluationNote2.getText().toString());
@@ -779,7 +798,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
                 /*if you edit question you have to pass question idfrom the question data and in
                 add question you have to pass question id 0 */
-
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
@@ -799,7 +817,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 attribute.setBookId(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
                 attribute.setClassroomId(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID));
                 attribute.setQuestionText(Html.toHtml(etAddquestionTitle.getText()));
-                attribute.setQuestionScore(getArguments().getString(ExamsAdapter.ARG_EXAM_QUESTION_SCORE));
+                attribute.setQuestionScore(arrListQuestionScore.get(spExamQuestionScore.getSelectedItemPosition()));
                 attribute.setQuestionFormat(getQuestionFormat());
                 attribute.setEvaluationNotes(etEvaluationNote1.getText().toString());
                 attribute.setSolution(etEvaluationNote2.getText().toString());
@@ -820,12 +838,27 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 StringBuilder sb = new StringBuilder();
                 List<HashTagsModel> list = tagsView.getObjects();
                 for (int i = 0; i < list.size(); i++) {
-                    sb.append(list.get(i).getTagName() + ":" + list.get(i).getTagId());
-                    if (i < list.size() - 1) {
-                        sb.append(",");
+                    sb.append(list.get(i).getTagName() + ":" + list.get(i).getTagId() + ":1");
+                    sb.append(",");
+
+                }
+
+                if (listOfDeletedHashTag.size() > 0) {
+                    for (int i = 0; i < listOfDeletedHashTag.size(); i++) {
+                        sb.append(listOfDeletedHashTag.get(i).getTagName() + ":" + listOfDeletedHashTag.get(i).getTagId() + ":0");
+                        if (i < listOfDeletedHashTag.size() - 1) {
+                            sb.append(",");
+                        }
                     }
+
+                } else {
+                    sb.substring(0, sb.toString().length() - 1);
                 }
                 Debug.e(TAG, "The HashTags Are:::" + sb.toString());
+
+                Utils.showToast("The HashTags are::" + sb.toString(), getActivity());
+
+
                 attribute.setHashtagData(sb.toString());
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.TEMPCREATEQUESTION);
@@ -1000,6 +1033,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 question.setClassroomId(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID));
                 question.setBookId(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
                 question.setBookName(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
+                question.setQuestionScore(arrListQuestionScore.get(spExamQuestionScore.getSelectedItemPosition()));
             }
             ArrayList<Tags> arrListTags = new ArrayList<Tags>();
             List<HashTagsModel> list = tagsView.getObjects();
@@ -1164,5 +1198,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
 
+    private void getQuestionScoreSpinnerValues() {
+        arrListQuestionScore = new ArrayList<String>();
+        arrListQuestionScore.add(Utility.getString(R.string.strquestionscore, getActivity()));
+        for (int i = QUESTIONSCORE_STARTVALUE; i <= QUESTIONSCORE_ENDVALUE; i += QUESTIONSCORE_INERVAL) {
+            arrListQuestionScore.add(String.valueOf(i));
+        }
+    }
 }
 

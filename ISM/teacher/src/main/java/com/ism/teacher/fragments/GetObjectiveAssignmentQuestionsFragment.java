@@ -48,7 +48,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     ResponseHandler responseObjGetAllExamQuestions = null;
 
     public static String ARG_ARR_LIST_QUESTIONS = "arrListQuestions";
-    public static String ARG_EXAM_TYPE = "examType";
+   // public static String ARG_EXAM_TYPE = "examType";
     public static String ARG_EXAM_ISCOPY = "examIsCopy";
 
 
@@ -123,7 +123,11 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
         if (responseObjGetAllExamQuestions != null) {
             getArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
-            getArguments().putString(ARG_EXAM_TYPE, getString(R.string.strobjective));
+
+            Debug.i("test exam type get objec assign Ques",getArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
+            getArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
+
+
 
 //            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
 //                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);

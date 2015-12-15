@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="@string/strquestion"
             android:textColor="@color/color_orange"
-            android:textSize="@dimen/d22dp" />
+            android:textSize="@dimen/d22sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:layout_toLeftOf="@+id/tv_question_createdby"
                 android:text="@string/strbook"
                 android:textColor="@color/color_blue"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
             <TextView
                 android:id="@+id/tv_question_createdby"
@@ -42,7 +42,7 @@
                 android:layout_alignParentRight="true"
                 android:text="@string/strcreatedby"
                 android:textColor="@color/color_blue"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
         </RelativeLayout>
 
 
@@ -51,9 +51,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/d5dp"
+            android:singleLine="true"
             android:text="@string/strquestion"
             android:textColor="@color/color_question"
-            android:textSize="@dimen/d22dp" />
+            android:textSize="@dimen/d22sp" />
 
 
         <LinearLayout
@@ -70,7 +71,7 @@
             android:layout_marginTop="@dimen/d10dp"
             android:text="@string/strquestion"
             android:textColor="@color/color_answer"
-            android:textSize="@dimen/d18dp"
+            android:textSize="@dimen/d18sp"
             android:textStyle="bold"
             android:visibility="gone" />
 

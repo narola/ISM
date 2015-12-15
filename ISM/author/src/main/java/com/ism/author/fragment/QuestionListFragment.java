@@ -63,7 +63,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private List<String> arrListFilter, arrListSort;
     private List<AuthorBook> arrListAuthorBooks;
     private EditText etSearchQuestions;
-    private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview;
+    private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview, tvNoDataMsg;
     private RecyclerView rvQuestionlist;
     private QuestionBankListAdapter questionBankListAdapter;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
@@ -93,6 +93,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         tvQuestionlistTitle = (TextView) view.findViewById(R.id.tv_questionlist_title);
         tvQuestionlistAddNewQuestion = (TextView) view.findViewById(R.id.tv_questionlist_add_new_question);
         tvQuestionlistAddPreview = (TextView) view.findViewById(R.id.tv_questionlist_add_preview);
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
+        tvNoDataMsg.setTypeface(myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(View.GONE);
+        tvNoDataMsg.setText(getString(R.string.no_questions_in_questionbank));
 
         rvQuestionlist = (RecyclerView) view.findViewById(R.id.rv_questionlist);
         questionBankListAdapter = new QuestionBankListAdapter(getActivity(), mFragment);
@@ -276,22 +280,30 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListAuthorBooks = new ArrayList<AuthorBook>();
-                    arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
-                    List<String> authorBooks = new ArrayList<String>();
-                    authorBooks.add(getString(R.string.strbookname));
+
+                    if (responseHandler.getAuthorBook().size() > 0) {
+                        arrListAuthorBooks = new ArrayList<AuthorBook>();
+                        arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
+                        List<String> authorBooks = new ArrayList<String>();
+                        authorBooks.add(getString(R.string.strbookname));
 //                    authorBooks.add(getString(R.string.strall));
-                    for (AuthorBook authorbook : arrListAuthorBooks) {
-                        authorBooks.add(authorbook.getBookName());
+                        for (AuthorBook authorbook : arrListAuthorBooks) {
+                            authorBooks.add(authorbook.getBookName());
 
+                        }
+                        Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL);
+                        if (getArguments() != null) {
+                            Debug.e(TAG, "THE BOOK NAME IS" + getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
+                            if (arrListAuthorBooks.contains(authorBooks.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)))) {
+                                spQuestionlistAuthorBooks.setSelection(authorBooks.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
+                            } else {
+                                spQuestionlistAuthorBooks.setSelection(1);
+                            }
+                        }
+                        tvNoDataMsg.setVisibility(View.GONE);
+                    } else {
+                        tvNoDataMsg.setVisibility(View.VISIBLE);
                     }
-                    Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL);
-
-                    if (getArguments() != null) {
-                        Debug.e(TAG, "THE BOOK NAME IS" + getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
-                        spQuestionlistAuthorBooks.setSelection(authorBooks.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
-                    }
-
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
@@ -328,15 +340,12 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     /*set question bank data and exam question data if edit exam is there*/
     private void setQuestionData(ArrayList<Questions> questions) {
         questionBankListAdapter.addAll(questions);
-        Debug.e(TAG, "The no of questions are::" + questions.size());
         if (getArguments() != null) {
-            if (getArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
+            if (getArguments().containsKey(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
                 ArrayList<Questions> arrListExamQuestions = getArguments().
-                        getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
-
+                        getParcelableArrayList(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
                 Debug.e(TAG, "THE NO OF QUESTION IS QUESTION BANK ARE::" + questions.size());
                 Debug.e(TAG, "THE NO OF QUESTIONS OF EXAM ARE::" + arrListExamQuestions.size());
-
                 updateQuestionStatusAfterSetDataOfExam(arrListExamQuestions);
             }
         }
@@ -347,10 +356,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
         switch (v.getId()) {
             case R.id.tv_questionlist_add_preview:
-
                 if (getFragment().getListOfPreviewQuestionsToAdd().size() > 0) {
-
-                    Debug.e(TAG, "The size of preview questions is" + getFragment().getListOfPreviewQuestion().size());
                     getFragment().addQuestionsToPreviewFragment();
                     getFragment().getListOfPreviewQuestionsToAdd().clear();
                 } else {
@@ -359,12 +365,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 break;
 
             case R.id.tv_questionlist_add_new_question:
-
                 getFragment().setDataOnFragmentFlip(null, false, true);
                 break;
 
             case R.id.img_search_questions:
-
                 if (etSearchQuestions.getVisibility() == View.VISIBLE) {
                     etSearchQuestions.setVisibility(View.GONE);
                     questionBankListAdapter.filter("");
@@ -475,12 +479,16 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             questionBankListAdapter.addAll(copylistOfQuestionBank);
 
             if (!(copylistOfQuestionBank.size() > 0)) {
-                Utils.showToast(getString(R.string.msg_validation_no_questions_filter), getActivity());
+//                Utils.showToast(getString(R.string.msg_validation_no_questions_filter), getActivity());
+                showMsgNoFilterData(true);
+            } else {
+                showMsgNoFilterData(false);
             }
         }
     }
 
     private void clearFilters() {
+       showMsgNoFilterData(false);
         questionBankListAdapter.addAll(arrListQuestions);
     }
 
@@ -495,6 +503,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 case 2:
                     filterlistOfQuestionBank.clear();
                     if (copylistOfQuestionBank.size() > 0) {
+                        showMsgNoFilterData(false);
                         for (Questions wp : copylistOfQuestionBank) {
                             if (wp.getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatdescriptive))) {
                                 filterlistOfQuestionBank.add(wp);
@@ -502,15 +511,17 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                         }
                         questionBankListAdapter.addAll(filterlistOfQuestionBank);
                     }
-
                     if (!(filterlistOfQuestionBank.size() > 0)) {
-                        Utils.showToast(getString(R.string.msg_validation_no_questions_filter), getActivity());
+
+//                        Utils.showToast(getString(R.string.msg_validation_no_questions_filter), getActivity());
+                        showMsgNoFilterData(true);
 
                     }
                     break;
                 case 3:
                     filterlistOfQuestionBank.clear();
                     if (copylistOfQuestionBank.size() > 0) {
+                        showMsgNoFilterData(false);
                         for (Questions wp : copylistOfQuestionBank) {
                             if (wp.getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
                                 filterlistOfQuestionBank.add(wp);
@@ -518,10 +529,9 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                         }
                         questionBankListAdapter.addAll(filterlistOfQuestionBank);
                     }
-
                     if (!(filterlistOfQuestionBank.size() > 0)) {
-                        Utils.showToast(getString(R.string.msg_validation_no_questions_filter), getActivity());
-
+//                        Utils.showToast(getString(R.string.msg_validation_no_questions_filter), getActivity());
+                        showMsgNoFilterData(true);
                     }
                     break;
                 case 4:
@@ -535,6 +545,14 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
     }
 
+    private void showMsgNoFilterData(Boolean showMsg) {
+        if (showMsg) {
+            tvNoDataMsg.setText(getString(R.string.no_filter_questions));
+            tvNoDataMsg.setVisibility(View.VISIBLE);
+        } else {
+            tvNoDataMsg.setVisibility(View.GONE);
+        }
+    }
 
     /**
      * Perform sorting always on latestlistOfQuestionBank to sort the latest list after filter.
@@ -545,12 +563,13 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void sortQuestions(int typeOfSort) {
 
+
         if (spQuestionlistFilter.getSelectedItemPosition() == 2 || spQuestionlistFilter.getSelectedItemPosition() == 3) {
             if (typeOfSort == SORT_UP) {
-                // Debug.e("Sort_up====================", "sort up");
+              /*sort up all questions*/
                 Collections.sort(filterlistOfQuestionBank);
             } else {
-//                Debug.e("Sort_down====================", "sort down");
+                /*sort down all questions*/
                 Collections.sort(filterlistOfQuestionBank, Collections.reverseOrder());
             }
             questionBankListAdapter.addAll(filterlistOfQuestionBank);
@@ -558,19 +577,16 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         } else if (spQuestionlistFilter.getSelectedItemPosition() == 1) {
             if (copylistOfQuestionBank.size() > 0) {
                 if (typeOfSort == SORT_UP) {
-                    // Debug.e("Sort_all_questions_up====================", "sort up");
+                    /*sort up all questions*/
                     Collections.sort(copylistOfQuestionBank);
-
                 } else {
-//                Debug.e("Sort_all_questions down====================", "sort down");
+                    /*sort down all questions*/
                     Collections.sort(copylistOfQuestionBank, Collections.reverseOrder());
                 }
                 questionBankListAdapter.addAll(copylistOfQuestionBank);
                 questionBankListAdapter.notifyDataSetChanged();
             }
         }
-
-
     }
 
 

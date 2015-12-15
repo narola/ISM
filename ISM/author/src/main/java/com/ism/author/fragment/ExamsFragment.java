@@ -22,6 +22,7 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
@@ -57,13 +58,14 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private ArrayList<Classrooms> arrListClassRooms;
     private List<String> arrListAssessment;
 
-    private TextView txtSubmissionDate, tvNoExamMsg;
+    private TextView txtSubmissionDate, tvNoDataMsg;
     private EditText etExamStartdate, etExamEnddate;
     private String strExamStartDate = "", strExamEndDate = "";
 
 
-    public static ExamsFragment newInstance() {
+    public static ExamsFragment newInstance(Bundle bundleArgument) {
         ExamsFragment examsFragment = new ExamsFragment();
+        examsFragment.setArguments(bundleArgument);
         return examsFragment;
     }
 
@@ -98,13 +100,15 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         Adapters.setUpSpinner(getActivity(), spExamEvaluationStatus, arrListAssessment, Adapters.ADAPTER_SMALL);
 
         txtSubmissionDate = (TextView) view.findViewById(R.id.txt_submission_date);
-        tvNoExamMsg = (TextView) view.findViewById(R.id.tv_no_exam_msg);
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         etExamStartdate = (EditText) view.findViewById(R.id.et_exam_startdate);
         etExamEnddate = (EditText) view.findViewById(R.id.et_exam_startTime);
 
 
         txtSubmissionDate.setTypeface(myTypeFace.getRalewayRegular());
-        tvNoExamMsg.setTypeface(myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setTypeface(myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(View.GONE);
+        tvNoDataMsg.setText(getString(R.string.no_exams));
         etExamStartdate.setTypeface(myTypeFace.getRalewayRegular());
         etExamEnddate.setTypeface(myTypeFace.getRalewayRegular());
 
@@ -130,7 +134,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
         callApiGetAuthorBooks();
         callApiGetClassrooms();
-        callApiGetAllAssignments();
+        callApiGetAllExams();
 
 
         /**
@@ -197,6 +201,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private void filterAuthorBookWiseAssignments(String bookId) {
         copyListExams.clear();
         if (arrListExams.size() > 0) {
+            showMsgNoFilterData(false);
             for (Exams wp : arrListExams) {
                 if (wp.getBookId().equalsIgnoreCase(bookId)) {
                     copyListExams.add(wp);
@@ -204,18 +209,29 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             }
             examsAdapter.addAll(copyListExams);
             if (!(copyListExams.size() > 0)) {
-                Utils.showToast(getString(R.string.msg_validation_no_exams_filter), getActivity());
+                showMsgNoFilterData(true);
             }
         }
     }
 
     private void clearFilters() {
+        showMsgNoFilterData(false);
         examsAdapter.addAll(arrListExams);
+    }
+
+    private void showMsgNoFilterData(Boolean showMsg) {
+        if (showMsg) {
+            tvNoDataMsg.setText(getString(R.string.no_filter_exams));
+            tvNoDataMsg.setVisibility(View.VISIBLE);
+        } else {
+            tvNoDataMsg.setVisibility(View.GONE);
+        }
     }
 
     private void filterClassroomWiseAssignments(String classroom_id) {
         copyListExams.clear();
         if (arrListExams.size() > 0) {
+            showMsgNoFilterData(false);
             for (Exams wp : arrListExams) {
                 if (wp.getClassroomId().equalsIgnoreCase(classroom_id)) {
                     copyListExams.add(wp);
@@ -224,7 +240,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
             examsAdapter.addAll(copyListExams);
             if (!(copyListExams.size() > 0)) {
-                Utils.showToast(getString(R.string.msg_validation_no_exams_filter), getActivity());
+                showMsgNoFilterData(true);
             }
         }
     }
@@ -232,6 +248,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private void filterAssessedNotAssessedAssignments(String evaluation_status) {
         copyListExams.clear();
         if (arrListExams.size() > 0) {
+            showMsgNoFilterData(false);
             for (Exams wp : arrListExams) {
                 if (!wp.getEvaluationStatus().equals("") && wp.getEvaluationStatus().equalsIgnoreCase(evaluation_status)) {
                     copyListExams.add(wp);
@@ -239,19 +256,20 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             }
             examsAdapter.addAll(copyListExams);
             if (!(copyListExams.size() > 0)) {
-                Utils.showToast(getString(R.string.msg_validation_no_exams_filter), getActivity());
+                showMsgNoFilterData(true);
             }
 
         }
     }
 
-    private void callApiGetAllAssignments() {
+    private void callApiGetAllExams() {
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
                 request.setUserId(Global.strUserId);
                 request.setRole(Global.role);
+                request.setExamCategory("");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLASSIGNMENTS);
             } catch (Exception e) {
@@ -303,7 +321,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         try {
             switch (apiCode) {
                 case WebConstants.GETALLASSIGNMENTS:
-                    onResponseGetAllAssignments(object, error);
+                    onResponseGetAllExams(object, error);
                     break;
 
                 case WebConstants.GETCLASSROOMS:
@@ -320,7 +338,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         }
     }
 
-    private void onResponseGetAllAssignments(Object object, Exception error) {
+    private void onResponseGetAllExams(Object object, Exception error) {
 
         try {
             ((AuthorHostActivity) getActivity()).hideProgress();
@@ -332,9 +350,9 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                         arrListExams.addAll(responseHandler.getExams());
                         examsAdapter.addAll(arrListExams);
                         examsAdapter.notifyDataSetChanged();
-                        tvNoExamMsg.setVisibility(View.GONE);
+                        tvNoDataMsg.setVisibility(View.GONE);
                     } else {
-                        tvNoExamMsg.setVisibility(View.VISIBLE);
+                        tvNoDataMsg.setVisibility(View.VISIBLE);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -342,10 +360,10 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
                 }
             } else if (error != null) {
-                Debug.e(TAG, "onResponseGetAllAssignments api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseGetAllExams api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Debug.e(TAG, "onResponseGetAllAssignments Exception : " + e.toString());
+            Debug.e(TAG, "onResponseGetAllExams Exception : " + e.toString());
         }
     }
 
@@ -437,5 +455,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         fragListener = null;
     }
 
-
+    public void onBackClick() {
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSESSMENT, getArguments());
+    }
 }

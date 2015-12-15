@@ -20,4 +20,5 @@
     <string name="no_assignments_available">No assignments available!</string>
     <string name="no_submissions_available">No submissions available!</string>
     <string name="no_questions_available">No questions available!</string>
+    <string name="no_preview_questions">No Questions added in preview!</string>
 </resources>

@@ -111,7 +111,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:orientation="horizontal"
                     android:weightSum="3">
 
@@ -151,7 +150,7 @@
 
                             <RelativeLayout
                                 android:layout_width="0dp"
-                                android:layout_height="@dimen/d40dp"
+                                android:layout_height="@dimen/d45dp"
                                 android:layout_weight="1">
 
 
@@ -219,8 +218,44 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-                <EditText
-                    android:id="@+id/et_addquestion_answer"
+
+                <LinearLayout
+                    android:id="@+id/ll_add_questionscore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/d15dp"
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_addquestion_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/strscorevalue"
+                        android:textColor="@color/color_blue"
+                        android:textSize="@dimen/d20dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/d200dp"
+                        android:layout_height="@dimen/d45dp"
+                        android:layout_marginLeft="@dimen/d20dp">
+
+                        <Spinner
+                            android:id="@+id/sp_exam_question_score"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/shadow_grey_small_size"
+                            android:entries="@array/list"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_addquestion_answer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/d20dp"

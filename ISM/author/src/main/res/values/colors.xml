@@ -12,7 +12,6 @@
     <color name="color_gray1">#393A3C</color>
     <color name="color_gray">#323232</color>
     <color name="color_graylight">#F5F5F5</color>
-    <color name="color_actionbar">#232A34</color>
     <color name="color_text_hint">#C0C0C0</color>
     <color name="color_green">#1BC4A2</color>
     <color name="color_dark_gray">#333333</color>
@@ -64,5 +63,7 @@
     <color name="text_gray">#C3C3C3</color>
     <color name="color_gray_light">#F5F5F5</color>
     <color name="desk_tab_bg">#F2F2F2</color>
+    <color name="exam_options_dialog_sep"> #3C4652</color>
+
 
 </resources>

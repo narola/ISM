@@ -122,6 +122,7 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
                 bundleArgument.putInt(ARG_STUDENT_POSITION, position);
                 bundleArgument.putString(ARG_STUDENT_PROFILE_PIC, arrListExamSubmittor.get(position).getStudentProfilePic());
                 bundleArgument.putString(ARG_STUDENT_NAME, arrListExamSubmittor.get(position).getStudentName());
+                bundleArgument.putString(AssignmentsAdapter.ARG_EXAM_TYPE,bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_TYPE));
 
                 bundleArgument.putBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
 

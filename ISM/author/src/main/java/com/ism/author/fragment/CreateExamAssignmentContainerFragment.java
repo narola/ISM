@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.MyTypeFace;
 
@@ -38,7 +39,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     public CreateExamAssignmentContainerFragment() {
         // Required empty public constructor
     }
-
 
     public static final int FRAGMENT_TRIAL_ACTIVITY = 1;
     public static final int FRAGMENT_TRIAL_EXAM = 2;
@@ -99,11 +99,14 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         );
 
 
-        if (getArguments() != null) {
-            initTab(1);
-        } else {
-            initTab(0);
-        }
+//        if (getArguments() != null) {
+//            initTab(1);
+//        } else {
+//            initTab(0);
+//        }
+
+
+        initTab(1);
 
 
     }
@@ -178,5 +181,8 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
     }
 
+    public void onBackClick() {
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_CREATEEXAMCONTAINER, getArguments());
+    }
 
 }

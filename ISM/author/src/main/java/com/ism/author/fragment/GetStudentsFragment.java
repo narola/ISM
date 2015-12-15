@@ -209,8 +209,8 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
 
     }
 
-    private GetSubjectiveAssignmentQuestionsFragment getBaseFragment() {
-        return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
+    private SubjectiveAssignmentQuestionsContainerFragment getBaseFragment() {
+        return (SubjectiveAssignmentQuestionsContainerFragment) mFragment;
 
     }
 

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
-import com.ism.author.fragment.GetSubjectiveAssignmentQuestionsFragment;
+import com.ism.author.fragment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.QuestionPalette;
 import com.ism.author.ws.model.Questions;
@@ -138,7 +138,7 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
         }
     }
 
-    private GetSubjectiveAssignmentQuestionsFragment getBaseFragment() {
-        return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
+    private SubjectiveAssignmentQuestionsContainerFragment getBaseFragment() {
+        return (SubjectiveAssignmentQuestionsContainerFragment) mFragment;
     }
 }

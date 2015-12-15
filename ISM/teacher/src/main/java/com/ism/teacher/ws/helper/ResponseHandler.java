@@ -76,7 +76,6 @@ public class ResponseHandler {
 
     /*this is the new code for the response handler*/
 
-
     private ArrayList<Feeds> feeds;
     private ArrayList<CommentList> comments;
     private ArrayList<Studymates> studymates;
@@ -109,7 +108,6 @@ public class ResponseHandler {
         this.questionBanks = questionBanks;
         return this;
     }
-
 
     @JsonProperty("user")
     public ArrayList<User> getUser() {

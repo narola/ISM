@@ -64,16 +64,14 @@
     <string name="msg_success_imgupload_question">Image Successfully added to Question.</string>
     <string name="msg_validation_addsubjective_question">You cant add Objective Question in Subjective Exam.</string>
     <string name="msg_validation_addobjective_question">You cant add Subjective Question in Objective Exam.</string>
-    <string name="msg_validation_add_question">You cant add another subject question in this Exam.</string>
+    <string name="msg_validation_add_question">You cant add another book question in this book exam.</string>
     <string name="question_add_success">Question Added Successfully.</string>
     <string name="question_edit_success">Question Edited Successfully.</string>
     <string name="msg_validation_question_type">You cant change the question type, just copy the question if you want to change question format.
     </string>
-    <string name="msg_validation_no_exams_filter">No exams found to filter.</string>
-    <string name="msg_validation_no_questions_filter">No questions found to filter.</string>
+
     <string name="msg_help_add_advance_question">By Clicking On Advance You could be able to add formatted text containing image,various scientific symbols and many options to format text </string>
-    <string name="msg_no_exams_found">Sorry no exams created yet.</string>
-    <string name="msg_no_exam_submittor">Sorry no one has submitted the exam.</string>
     <string name="msg_evaluate_question">Please evaluate the last question to scroll to next.</string>
-    <string name="msg_no_exam_questions">Sorry no questions are set for the exam.</string>
+
+
 </resources>

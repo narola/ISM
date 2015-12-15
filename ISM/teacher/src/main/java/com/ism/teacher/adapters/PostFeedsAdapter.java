@@ -159,8 +159,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        //http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_138/group1_1445832486.jpg
-        imageLoader.displayImage(WebConstants.USER_IMAGES+arrListFeeds.get(position).getProfilePic(), holder.imgDpPostCreator, ISMTeacher.options);
+        imageLoader.displayImage(WebConstants.USER_IMAGES + arrListFeeds.get(position).getProfilePic(), holder.imgDpPostCreator, ISMTeacher.options);
 
         holder.txtUsernamePostCreator.setText(arrListFeeds.get(position).getFullName());
         holder.txtPostContent.setText(arrListFeeds.get(position).getFeedText());
@@ -281,7 +280,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         // holder.rlImage.setVisibility(View.GONE);
         //video
-        if (arrListFeeds.get(position).getVideoThumbnail() != "") {
+        if (!arrListFeeds.get(position).getVideoThumbnail().equals("")) {
 
             holder.imgVideo.setVisibility(View.VISIBLE);
             holder.imgPlay.setVisibility(View.VISIBLE);
@@ -291,7 +290,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         }
         //audio
-        if (arrListFeeds.get(position).getAudioLink() != "") {
+        if (!arrListFeeds.get(position).getAudioLink().equals("")) {
 
             holder.imgAudio.setVisibility(View.VISIBLE);
         }
@@ -401,7 +400,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         txtCommenterComment.setText(commentList.getComment());
         txtCommentDuration.setText(commentList.getCommentBy());
 
-        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
+        imageLoader.displayImage(WebConstants.USER_IMAGES + commentList.getProfileLink(),
                 img_dp_commenter, ISMTeacher.options);
 
 
