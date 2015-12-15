@@ -80,6 +80,9 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     FragmentTransaction mFragmentTransaction;
     FragmentManager mFragmentManager;
+    Bundle fragmentBundle = new Bundle();
+
+    public static final String ARG_LOAD_FRAGMENT = "LOAD_FRAGMENT";
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -261,7 +264,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     break;
 
                 case FRAGMENT_TEACHER_OFFICE:
-                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance(FRAGMENT_TEACHER_OFFICE);
+                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance(FRAGMENT_TEACHER_OFFICE, fragmentArgument);
                     listenerHost = teacherOfficeFragment;
                     addTopicsListener = teacherOfficeFragment;
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment).commit();
@@ -337,7 +340,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     txtTitle.setVisibility(View.GONE);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_report_card);
                     txtAction.setTextColor(getResources().getColor(R.color.bg_report_card));
-                    rlAddPost.setVisibility(View.VISIBLE);
+                    rlAddPost.setVisibility(View.GONE);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     break;
                 case FRAGMENT_TEACHER_TUTORIAL_GROUP:
@@ -442,7 +445,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     currentControllerTopMenu.get(i).setIsActive(false);
                     startSlideAnimation(txtsMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
                     txtsMenu[i].setVisibility(View.VISIBLE);
-                    onBackClick(currentMainFragment);
+                    //onBackClick(currentMainFragment);
                 }
 
             } else if (view == txtAction) {
@@ -507,10 +510,10 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                             }
 
                             /**
-                             * Menu item click event
+                             * Menu item click event for top bar text(notes,quiz,classwall....)
                              */
                             if (listenerHost != null) {
-                                listenerHost.onControllerMenuItemClicked(i);
+                                listenerHost.onControllerMenuItemClicked(i + 1);
                             }
 
 
@@ -594,13 +597,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         progress_bar.setVisibility(View.INVISIBLE);
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        Log.e(TAG, "inside on resume host activity");
-//        loadFragmentInMainContainer(FRAGMENT_TEACHER_HOME, null);
-//
-//    }
 
     public void showRightContainerFragment() {
         flFragmentContainerRight.setVisibility(View.VISIBLE);
@@ -625,10 +621,38 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
             //On loading teacher office in main frag,automatically it will call
             //Teacher class wall(as per mockup_),first frag called inside TeacherOffice is classwall in initglobal
-            loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
+            // loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
+
+            int current_office_fragment;
+            current_office_fragment = TeacherOfficeFragment.getCurrentChildFragment();
+
+            if (current_office_fragment == TeacherOfficeFragment.FRAGMENT_CLASSWALL) {
+                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
+            } else if (current_office_fragment == TeacherOfficeFragment.FRAGMENT_NOTES) {
+                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
+            } else if (current_office_fragment == TeacherOfficeFragment.FRAGMENT_MARK_SCRIPT) {
+                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
+            } else if (current_office_fragment == TeacherOfficeFragment.FRAGMENT_RESULTS) {
+                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
+            } else if (current_office_fragment == TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT) {
+                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
+            } else if (current_office_fragment == TeacherOfficeFragment.FRAGMENT_QUIZ) {
+                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
+            }
+
+//            else if(current_office_fragment==TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER)
+//            {
+//                Debug.e("from assignment submitter to test", "test");
+//                fragmentBundle.putInt(ARG_LOAD_FRAGMENT, TeacherOfficeFragment.FRAGMENT_QUIZ);
+//                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, fragmentBundle);
+//            }
 
         }
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

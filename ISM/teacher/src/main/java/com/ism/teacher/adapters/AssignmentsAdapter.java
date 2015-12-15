@@ -186,8 +186,12 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             public void onClick(View view) {
 
                 bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
+
+                //getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER, bundleAssignmentDetails);
                 mFragment.getFragmentManager().beginTransaction().
                         replace(R.id.fl_teacher_office_home, GetAssignmentsSubmitterFragment.newInstance(bundleAssignmentDetails)).commit();
+
+
             }
         });
 
@@ -222,4 +226,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
     }
 
 
+//    private TeacherOfficeFragment getFragment() {
+//        return (TeacherOfficeFragment) mFragment;
+//    }
 }

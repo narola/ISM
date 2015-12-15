@@ -61,7 +61,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     private List<String> arrListAssessment = new ArrayList<>();
 
     //Objects
-    Fragment mFragment;
+    public Fragment mFragment;
     AssignmentsAdapter assignmentsAdapter;
 
     private String examStartDate = "", examEndDate = "";
@@ -450,5 +450,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         }
     }
 
-
+//    private TeacherOfficeFragment getFragment() {
+//        return (TeacherOfficeFragment) mFragment;
+//    }
 }
