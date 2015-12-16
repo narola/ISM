@@ -12,11 +12,11 @@
                 <!--//breadcrumb-->
                 <!--filter-->
                 <form method="get" id="filter">
-                <div class="filter  group_filter admin_controls box_body">
+                <div class="filter group_filter admin_controls box_body">
                 	<div class="col-sm-12">
                     	<div class="form-group select">
-                            <select class="form-control js-example-basic-single" id="author" name="author">
-                                <option  selected value=""> Select Author</option>
+                            <select onchange="filter_data()" class="form-control js-example-basic-single" id="author" name="author">
+                                <option selected value=""> Select Author</option>
                                   <?php 
                                       if(!empty($authors_list)) {
                                         foreach($authors_list as $author) { 
@@ -37,8 +37,12 @@
                             </select>
                         </div> -->
                         <div class="form-group">
-                            <select class="form-control">
-                                <option>Sort by</option>
+                            <select class="form-control" name="order" id="order" onchange="filter_data()">
+                                <option value="">Sort By</option>
+                                <option value="name_asc">Name Ascending</option>
+                                <option value="name_desc">Name Descending</option>
+                                <option value="latest">Latest First</option>
+                                <option value="older">Older First</option>
                             </select>
                         </div>
                         
@@ -120,21 +124,21 @@
                                             <a class="icon icon_timeline" href="#"></a>
                                             <a class="icon icon_books" href="#"></a>
                                             <a class="icon icon_performance" href="#"></a>
-                                            
                                             <a class="icon icon_blockgroup" href="#"></a>
                                             <a class="icon icon_mail" href="#"></a>
                                             <a class="icon icon_chat" href="#"></a>
                                         </td>
                                     </tr>
-
-
-
-                                 <?php } ?>
+                                <?php } ?>
                             <?php } ?>
                                 </tbody>
                            	</table>
                         </div>
-                        
+                        <nav  class="text-center">
+
+                <?php echo $this->pagination->create_links(); ?>
+
+            </nav>
                     </div>
                 </div>
                 <!--//row table-->
