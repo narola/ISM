@@ -116,11 +116,11 @@ public class OfficeFragment extends Fragment {
                 break;
 
             case FRAGMENT_TRIAL:
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MYTHIRTY);
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
                 break;
 
             case FRAGMENT_MYTHIRTY:
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MYTHIRTY);
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
                 break;
 
             case FRAGMENT_ASSESSMENT:

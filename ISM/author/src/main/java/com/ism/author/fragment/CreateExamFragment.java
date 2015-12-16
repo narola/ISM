@@ -696,9 +696,9 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
                     }
                     Adapters.setUpSpinner(getActivity(), spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL);
-                    if (getBaseFragment().getBundleArguments() != null) {
-                        spExamClassroom.setSelection(classrooms.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME)));
-                    }
+//                    if (!getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
+                    spExamClassroom.setSelection(classrooms.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME)));
+//                    }
 
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -729,9 +729,10 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     }
                     Adapters.setUpSpinner(getActivity(), spExamBookname, authorBooks, Adapters.ADAPTER_NORMAL);
 
-                    if (getBaseFragment().getBundleArguments() != null) {
-                        spExamBookname.setSelection(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
-                    }
+
+//                    if (!getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
+                    spExamBookname.setSelection(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
+//                    }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }

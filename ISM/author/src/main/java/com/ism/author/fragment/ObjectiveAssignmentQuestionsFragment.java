@@ -312,6 +312,11 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
     }
 
     public void onBackClick() {
+
+        getBundleArguments().remove(ARG_ARR_LIST_QUESTIONS);
+        getBundleArguments().remove(ARG_EXAM_TYPE);
+        getBundleArguments().remove(ARG_EXAM_ISCOPY);
+
         ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS);
     }
 

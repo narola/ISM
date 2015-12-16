@@ -53,24 +53,8 @@ public class AddQuestionContainerFragment extends Fragment {
         initGlobal();
         if (savedInstanceState == null) {
 
-//            getFragmentManager()
-//                    .beginTransaction()
-//                    .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
-//                    .commit();
-//
-//            getFragmentManager()
-//                    .beginTransaction()
-//                    .add(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
-//                    .commit();
-//
-//
-//            showHideFragment(questionAddEditFragment);
-//
-//            isFrontVisible = true;
 
             /*new code*/
-
-
             getFragmentManager()
                     .beginTransaction()
                     .add(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
@@ -263,6 +247,8 @@ public class AddQuestionContainerFragment extends Fragment {
 
 
     public void onBackClick() {
+
+
         ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ADDQUESTION_CONTAINER);
     }
 

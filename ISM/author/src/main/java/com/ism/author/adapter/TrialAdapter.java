@@ -25,15 +25,15 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 11/12/15.
  */
-public class MyThirtyAdapter extends RecyclerView.Adapter<MyThirtyAdapter.ViewHolder> {
+public class TrialAdapter extends RecyclerView.Adapter<TrialAdapter.ViewHolder> {
 
-    private static final String TAG = MyThirtyAdapter.class.getSimpleName();
+    private static final String TAG = TrialAdapter.class.getSimpleName();
     private Context mContext;
     private ArrayList<Exams> arrListExams = new ArrayList<Exams>();
     private LayoutInflater inflater;
 
 
-    public MyThirtyAdapter(Context mContext) {
+    public TrialAdapter(Context mContext) {
         this.mContext = mContext;
         this.inflater = LayoutInflater.from(mContext);
     }

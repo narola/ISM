@@ -30,8 +30,10 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utility;
+import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
 import com.ism.author.adapter.ExamsAdapter;
+import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.AddQuestionContainerFragment;
@@ -41,7 +43,7 @@ import com.ism.author.fragment.CreateExamAssignmentContainerFragment;
 import com.ism.author.fragment.CreateExamFragment;
 import com.ism.author.fragment.ExamsFragment;
 import com.ism.author.fragment.HomeFragment;
-import com.ism.author.fragment.MyThirtyFragment;
+import com.ism.author.fragment.TrialFragment;
 import com.ism.author.fragment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.OfficeFragment;
 import com.ism.author.fragment.SubjectiveAssignmentQuestionsContainerFragment;
@@ -103,7 +105,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_BOOKS = 2;
     public static final int FRAGMENT_MY_DESK = 3;
     public static final int FRAGMENT_GOTRENDING = 4;
-    public static final int FRAGMENT_MYTHIRTY = 5;
+    public static final int FRAGMENT_TRIAL = 5;
     public static final int FRAGMENT_ASSESSMENT = 6;
     public static final int FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT = 7;
     public static final int FRAGMENT_ADDQUESTION_CONTAINER = 8;
@@ -265,6 +267,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
     /*this bundle used to pass data between fragments and also managing backstack for the fragment*/
     /*remove bundle data on backclcik of fragment as it is not necessory*/
+
     Bundle bundle = new Bundle();
 
     public Bundle getBundle() {
@@ -301,11 +304,11 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                             MyDeskFragment.newInstance(), AppConstant.FRAGMENT_MYDESK).commit();
                     break;
 
-                case FRAGMENT_MYTHIRTY:
+                case FRAGMENT_TRIAL:
 
-                    setBackStackFragmentKey(AppConstant.FRAGMENT_MYTHIRTY);
+                    setBackStackFragmentKey(AppConstant.FRAGMENT_TRIAL);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            MyThirtyFragment.newInstance(), AppConstant.FRAGMENT_MYTHIRTY).commit();
+                            TrialFragment.newInstance(), AppConstant.FRAGMENT_TRIAL).commit();
                     break;
 
                 case FRAGMENT_ASSESSMENT:
@@ -440,7 +443,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
 
                 case FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedAssignmentFragment.newInstance(getBundle())).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedAssignmentFragment.newInstance()).commit();
                     break;
             }
             currentRightFragment = fragment;
@@ -505,7 +508,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     }
                     break;
 
-                case FRAGMENT_MYTHIRTY:
+                case FRAGMENT_TRIAL:
                     ArrayList<ControllerTopMenuItem> menu_trial = null;
                     if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL) {
                         menu_trial = controllerTopMenuTrial;
@@ -580,15 +583,23 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     } else if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_ASSESSMENT) {
                         menu_view_questions = controllerTopMenuAssessment;
 
-                        if (getBundle().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
-                            if (currentRightFragment != FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT) {
-                                loadFragmentInRightContainer(FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT);
+                        if (getBundle().containsKey(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                            if (getBundle().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                                if (currentRightFragment != FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT) {
+                                    loadFragmentInRightContainer(FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT);
+                                }
+                            } else {
+                                if (currentRightFragment != FRAGMENT_HIGHSCORE) {
+                                    loadFragmentInRightContainer(FRAGMENT_HIGHSCORE);
+                                }
                             }
                         } else {
                             if (currentRightFragment != FRAGMENT_HIGHSCORE) {
                                 loadFragmentInRightContainer(FRAGMENT_HIGHSCORE);
                             }
                         }
+
+
                     }
                     setTopBarValues(fragment, getResources().getColor(R.color.bg_office), false, true, false, menu_view_questions, false);
 
@@ -615,11 +626,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                         menuAddQuestion = controllerTopMenuMyThirty;
 
                     } else if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_ASSESSMENT) {
-
                         menuAddQuestion = controllerTopMenuAssessment;
                     }
 
-                    setTopBarValues(fragment, getResources().getColor(R.color.bg_office), false, true, false, controllerTopMenuAssessment, true);
+                    setTopBarValues(fragment, getResources().getColor(R.color.bg_office), false, true, false, controllerTopMenuAssessment, false);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     flFragmentContainerRight.setVisibility(View.GONE);
                     break;
@@ -702,46 +712,48 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             switch (fragment) {
                 case FRAGMENT_OFFICE:
 
-//                    imgOffice.setActivated(false);
+                    imgOffice.setActivated(false);
                     break;
 
                 case FRAGMENT_BOOKS:
 
-//                    imgBooks.setActivated(false);
+                    imgBooks.setActivated(false);
                     break;
 
                 case FRAGMENT_MY_DESK:
 
-                    // imgOffice.setActivated(true);
+                    imgOffice.setActivated(true);
                     break;
 
-                case FRAGMENT_MYTHIRTY:
+                case FRAGMENT_TRIAL:
 
-//                     imgOffice.setActivated(true);
+                    imgOffice.setActivated(true);
                     break;
 
                 case FRAGMENT_ASSESSMENT:
 
-//                    imgOffice.setActivated(true);
+                    imgOffice.setActivated(true);
                     break;
 
 
                 case FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT:
 
-//                    imgOffice.setActivated(true);
+                    imgOffice.setActivated(true);
                     break;
 
                 case FRAGMENT_ASSIGNMENT_SUBMITTOR:
 
-//                    imgOffice.setActivated(true);
+                    imgOffice.setActivated(true);
                     break;
 
                 case FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS:
 
-//                    imgOffice.setActivated(true);
+                    imgOffice.setActivated(true);
                     break;
 
                 case FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER:
+
+
                     imgOffice.setActivated(true);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     flFragmentContainerRight.setVisibility(View.VISIBLE);
@@ -753,6 +765,45 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     flFragmentContainerRight.setVisibility(View.VISIBLE);
                     break;
 
+                case FRAGMENT_MY_FEEDS:
+
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+                    break;
+
+                case FRAGMENT_MY_BOOKS:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+                    break;
+
+                case FRAGMENT_FOLLOWERS:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+                    break;
+
+                case FRAGMENT_MY_ACTIVITY:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+                    break;
+
+                case FRAGMENT_VIEW_PROFILE:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+                    break;
+
+                case FRAGMENT_ALL_NOTIFICATION:
+                    hideControllerTopBackButton();
+                    loadControllerTopMenu(null);
+                    break;
+
+                case FRAGMENT_ALL_MESSAGE:
+                    loadControllerTopMenu(null);
+                    break;
+
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    loadControllerTopMenu(null);
+                    break;
+
                 case FRAGMENT_PROFILE_CONTROLLER:
                     imgAuthorProfile.setActivated(false);
                     break;
@@ -760,39 +811,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     imgHighScore.setActivated(false);
                     break;
 
-
-
-
-                case FRAGMENT_MY_ACTIVITY:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
-                case FRAGMENT_MY_BOOKS:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
-                case FRAGMENT_FOLLOWERS:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
-                case FRAGMENT_MY_FEEDS:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
-                case FRAGMENT_VIEW_PROFILE:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
-                case FRAGMENT_ALL_NOTIFICATION:
-                    hideControllerTopBackButton();
-                    loadControllerTopMenu(null);
-                    break;
-                case FRAGMENT_ALL_MESSAGE:
-                    loadControllerTopMenu(null);
-                    break;
-                case FRAGMENT_ALL_STUDYMATE_REQUEST:
-                    loadControllerTopMenu(null);
-                    break;
             }
         } catch (Exception e) {
             Debug.i(TAG, "onFragmentDetached Exception : " + e.toString());
@@ -877,16 +895,16 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     /*to handle back click events*/
     private void onBackClick(int currentMainFragment) {
 
-//        if (currentMainFragment == FRAGMENT_MYTHIRTY || currentMainFragment == FRAGMENT_ASSESSMENT
+//        if (currentMainFragment == FRAGMENT_TRIAL || currentMainFragment == FRAGMENT_ASSESSMENT
 //                || currentMainFragment == FRAGMENT_GOTRENDING || currentMainFragment == FRAGMENT_MY_DESK) {
 //
 //            loadFragmentInMainContainer(FRAGMENT_OFFICE, null);
 //            loadFragmentInRightContainer(FRAGMENT_HIGHSCORE, null);
 //
 //        } else if (currentMainFragment == FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT) {
-//            if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_MYTHIRTY ||
+//            if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL ||
 //                    OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL) {
-//                loadFragmentInMainContainer(FRAGMENT_MYTHIRTY, null);
+//                loadFragmentInMainContainer(FRAGMENT_TRIAL, null);
 //
 //            } else if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_ASSESSMENT) {
 //
@@ -901,9 +919,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 //
 //        } else if (currentMainFragment == FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS) {
 //
-//            if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_MYTHIRTY ||
+//            if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL ||
 //                    OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL) {
-//                loadFragmentInMainContainer(FRAGMENT_MYTHIRTY, null);
+//                loadFragmentInMainContainer(FRAGMENT_TRIAL, null);
 //            } else if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_ASSESSMENT) {
 //                loadFragmentInMainContainer(FRAGMENT_ASSESSMENT, null);
 //            }
@@ -919,7 +937,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 //        } else if (currentMainFragment == FRAGMENT_ADDQUESTION_CONTAINER) {
 //
 //            flFragmentContainerRight.setVisibility(View.VISIBLE);
-//            loadFragmentInMainContainer(FRAGMENT_MYTHIRTY, null);
+//            loadFragmentInMainContainer(FRAGMENT_TRIAL, null);
 //
 //        } else if (currentMainFragment == FRAGMENT_ALL_NOTIFICATION) {
 //
@@ -953,10 +971,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 myDeskFragment.onBackClick();
                 break;
 
-            case FRAGMENT_MYTHIRTY:
+            case FRAGMENT_TRIAL:
 
-                MyThirtyFragment myThirtyFragment = (MyThirtyFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_MYTHIRTY);
-                myThirtyFragment.onBackClick();
+                TrialFragment trialFragment = (TrialFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TRIAL);
+                trialFragment.onBackClick();
                 break;
 
             case FRAGMENT_ASSESSMENT:
@@ -1008,7 +1026,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     /*for handling clcik of top action button*/
     private void handleTheActionButtonFragmentEvents() {
 
-        if (currentMainFragment == FRAGMENT_MYTHIRTY || currentMainFragment == FRAGMENT_ASSESSMENT) {
+        if (currentMainFragment == FRAGMENT_TRIAL || currentMainFragment == FRAGMENT_ASSESSMENT
+                || currentMainFragment == FRAGMENT_ASSIGNMENT_SUBMITTOR) {
 
             getBundle().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, true);
             loadFragmentInMainContainer(FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT);
@@ -1090,6 +1109,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     }
 
     public void openMainContainerFragment(View view) {
+        removeBundleArguments();
         switch (view.getId()) {
             case R.id.img_logo:
                 loadFragmentInMainContainer(FRAGMENT_HOME);
@@ -1249,5 +1269,44 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public void handleBackClick(String fragmentName) {
         loadFragmentInMainContainer(getBundle().getInt(fragmentName));
         getBundle().remove(fragmentName);
+    }
+
+    private void removeBundleArguments() {
+
+        getBundle().remove(CreateExamFragment.ARG_IS_CREATE_EXAM);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_ID);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_NAME);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_ID);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_BOOK_ID);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_BOOK_NAME);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_CATEGORY);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_MODE);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_DURATION);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_ATTEMPT_COUNT);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_INSTRUCTIONS);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_ASSESSOR);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_START_DATE);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_START_TIME);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_CREATED_DATE);
+        getBundle().remove(ExamsAdapter.ARG_EXAM_NO);
+        getBundle().remove(ExamsAdapter.ARG_FRAGMENT_TYPE);
+        getBundle().remove(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
+        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_ID);
+        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
+        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC);
+        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_NAME);
+        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE);
+        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY);
+        getBundle().remove(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
+
     }
 }

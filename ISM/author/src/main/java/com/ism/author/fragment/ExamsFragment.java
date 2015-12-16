@@ -453,13 +453,42 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         }
         fragListener = null;
     }
+    /*remove the arguments which are not necessary here*/
 
     public void onBackClick() {
+
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_ID);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_NAME);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_ID);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_BOOK_ID);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_BOOK_NAME);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CATEGORY);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_MODE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_DURATION);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_ATTEMPT_COUNT);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_INSTRUCTIONS);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_ASSESSOR);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_START_DATE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_START_TIME);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CREATED_DATE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_NO);
+        getBundleArguments().remove(ExamsAdapter.ARG_FRAGMENT_TYPE);
+        getBundleArguments().remove(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
+
+
         ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSESSMENT);
     }
 
 
-    private Bundle getBundleArguments() {
+    public Bundle getBundleArguments() {
         return ((AuthorHostActivity) getActivity()).getBundle();
     }
 }

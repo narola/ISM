@@ -81,7 +81,7 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
                 holder.llAnswerContainer.setVisibility(View.GONE);
                 holder.llEvaluationContainer.setVisibility(View.VISIBLE);
 
-                if (getBundleArguments().getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == AuthorHostActivity.FRAGMENT_MYTHIRTY) {
+                if (getBundleArguments().getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == AuthorHostActivity.FRAGMENT_TRIAL) {
 
                 }
 
@@ -111,7 +111,7 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
                 }
 
                 if (getBundleArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION) ||
-                        getBundleArguments().getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == AuthorHostActivity.FRAGMENT_MYTHIRTY) {
+                        getBundleArguments().getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == AuthorHostActivity.FRAGMENT_TRIAL) {
                     holder.llEvaluationContainer.setVisibility(View.VISIBLE);
                 } else {
                     holder.llEvaluationContainer.setVisibility(View.GONE);

@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import com.ism.author.R;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.MyTypeFace;
@@ -139,6 +140,8 @@ public class SubjectiveAssignmentQuestionsContainerFragment extends Fragment {
 
     /*this is for back navigation*/
     public void onBackClick() {
+
+        getBundleArguments().remove(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
         ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER);
     }
 

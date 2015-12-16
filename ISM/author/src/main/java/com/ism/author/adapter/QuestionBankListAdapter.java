@@ -77,15 +77,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
             holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
-
-//
-//            if(holder.tvQuestion.getLineCount()>6)
-//            {
-//                holder.tvQuestion.setMaxLines(6);
-//                holder.tvQuestion.setSingleLine();
-//                Debug.e("test line count",""+holder.tvQuestion.getLineCount());
-//            }
-//            holder.tvQuestion.setFilters(new InputFilter[] {new InputFilter.LengthFilter(6)});
+            
 
             if (arrListQuestions.get(position).getQuestionCreatorId().equals(Global.strUserId)) {
                 holder.imgQuestionEdit.setVisibility(View.VISIBLE);

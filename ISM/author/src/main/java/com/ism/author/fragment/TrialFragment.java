@@ -15,7 +15,8 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.adapter.MyThirtyAdapter;
+import com.ism.author.adapter.ExamsAdapter;
+import com.ism.author.adapter.TrialAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
@@ -31,23 +32,23 @@ import java.util.ArrayList;
  * Created by c166 on 11/12/15.
  */
 /*This fragment will use for both trial section and my30 section*/
-public class MyThirtyFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class TrialFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
-    private static final String TAG = MyThirtyFragment.class.getSimpleName();
+    private static final String TAG = TrialFragment.class.getSimpleName();
     private View view;
 
 
-    public static MyThirtyFragment newInstance() {
-        MyThirtyFragment myThirtyFragment = new MyThirtyFragment();
-        return myThirtyFragment;
+    public static TrialFragment newInstance() {
+        TrialFragment trialFragment = new TrialFragment();
+        return trialFragment;
     }
 
-    public MyThirtyFragment() {
+    public TrialFragment() {
         // Required empty public constructor
     }
 
     private RecyclerView rvMythirtyList;
-    private MyThirtyAdapter myThirtyAdapter;
+    private TrialAdapter trialAdapter;
     private ArrayList<Exams> arrListExams = new ArrayList<Exams>();
     private TextView tvNoDataMsg;
     private FragmentListener fragListener;
@@ -55,7 +56,7 @@ public class MyThirtyFragment extends Fragment implements WebserviceWrapper.Webs
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_mythirty, container, false);
+        view = inflater.inflate(R.layout.fragment_trial, container, false);
         initGlobal();
         return view;
     }
@@ -63,11 +64,11 @@ public class MyThirtyFragment extends Fragment implements WebserviceWrapper.Webs
     private void initGlobal() {
 
         rvMythirtyList = (RecyclerView) view.findViewById(R.id.rv_mythirty_list);
-        myThirtyAdapter = new MyThirtyAdapter(getActivity());
+        trialAdapter = new TrialAdapter(getActivity());
 
         rvMythirtyList.setHasFixedSize(true);
         rvMythirtyList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        rvMythirtyList.setAdapter(myThirtyAdapter);
+        rvMythirtyList.setAdapter(trialAdapter);
 
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -127,7 +128,7 @@ public class MyThirtyFragment extends Fragment implements WebserviceWrapper.Webs
 
                     if (responseHandler.getExams().size() > 0) {
                         arrListExams.addAll(responseHandler.getExams());
-                        myThirtyAdapter.addAll(arrListExams);
+                        trialAdapter.addAll(arrListExams);
                         tvNoDataMsg.setVisibility(View.GONE);
                     } else {
                         tvNoDataMsg.setVisibility(View.VISIBLE);
@@ -151,7 +152,7 @@ public class MyThirtyFragment extends Fragment implements WebserviceWrapper.Webs
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_MYTHIRTY);
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_TRIAL);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -163,7 +164,7 @@ public class MyThirtyFragment extends Fragment implements WebserviceWrapper.Webs
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_MYTHIRTY);
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_TRIAL);
                 Debug.i(TAG, "detach");
             }
         } catch (ClassCastException e) {
@@ -174,7 +175,34 @@ public class MyThirtyFragment extends Fragment implements WebserviceWrapper.Webs
 
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYTHIRTY);
+
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_ID);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_NAME);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_ID);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_BOOK_ID);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_BOOK_NAME);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CATEGORY);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_MODE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_DURATION);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_ATTEMPT_COUNT);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_INSTRUCTIONS);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_ASSESSOR);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_START_DATE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_START_TIME);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CREATED_DATE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_NO);
+        getBundleArguments().remove(ExamsAdapter.ARG_FRAGMENT_TYPE);
+        getBundleArguments().remove(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
+
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_TRIAL);
     }
 
     private Bundle getBundleArguments() {
