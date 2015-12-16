@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="14"
-            android:src="@drawable/userdp" />
+            android:src="@drawable/img_default_dp" />
 
         <TextView
             android:id="@+id/txt_studentName"

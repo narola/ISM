@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="@string/strquestion"
             android:textColor="@color/color_orange"
-            android:textSize="@dimen/d22dp" />
+            android:textSize="@dimen/d22sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:layout_alignParentLeft="true"
                 android:text="@string/strcategory"
                 android:textColor="@color/color_blue"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
             <TextView
                 android:id="@+id/tv_question_createdby"
@@ -41,7 +41,7 @@
                 android:layout_alignParentRight="true"
                 android:text="@string/strcreatedby"
                 android:textColor="@color/color_blue"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
         </RelativeLayout>
 
 
@@ -52,7 +52,7 @@
             android:layout_marginTop="@dimen/d5dp"
             android:text="@string/strquestion"
             android:textColor="@color/color_question"
-            android:textSize="@dimen/d22dp" />
+            android:textSize="@dimen/d22sp" />
 
 
         <LinearLayout

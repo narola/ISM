@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
-import com.ism.author.fragment.GetSubjectiveQuestionsFragment;
+import com.ism.author.fragment.SubjectiveQuestionsFragment;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.Evaluation;
 import com.ism.author.ws.model.Questions;
@@ -249,7 +249,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     }
 
 
-    private GetSubjectiveQuestionsFragment getFragment() {
-        return (GetSubjectiveQuestionsFragment) mFragment;
+    private SubjectiveQuestionsFragment getFragment() {
+        return (SubjectiveQuestionsFragment) mFragment;
     }
 }

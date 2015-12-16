@@ -45,7 +45,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
 
-    public TextView tvPreviewQuestionlistTitle, tvPreviewQuestionlistFreeze, tvNoQuestions;
+    public TextView tvPreviewQuestionlistTitle, tvPreviewQuestionlistFreeze, tvNoQuestions,tv_total_questions, tv_total_score;
     public RecyclerView rvPreviewquestionlist;
     private PreviewQuestionListAdapter previewQuestionListAdapter;
     public ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
@@ -53,7 +53,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     //this is for the movable recyclerview.
 
-    public TextView tv_total_questions, tv_total_score;
     int totalQuestions = 0;
     int totalScore = 0;
 
@@ -79,6 +78,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
         tvPreviewQuestionlistTitle.setTypeface(myTypeFace.getRalewayRegular());
         tvNoQuestions.setTypeface(myTypeFace.getRalewayBold());
+
 
         rvPreviewquestionlist = (RecyclerView) view.findViewById(R.id.rv_previewquestionlist);
         previewQuestionListAdapter = new PreviewQuestionListAdapter(getActivity(), mFragment);
@@ -121,51 +121,52 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         arrListQuestions.addAll(arrListExamQuestions);
         previewQuestionListAdapter.addAll(this.arrListQuestions);
 
-//        tv_total_questions.setText(getString(R.string.strtotalquestions)+ arrListQuestions.size());
         for (Questions question : arrListExamQuestions) {
             totalScore += Integer.parseInt(question.getQuestionScore());
             totalQuestions += 1;
         }
 
         UpdateQuestionInfo();
-
     }
+
     public void UpdateQuestionInfo() {
 
+        if (totalQuestions > 0) {
+            tvNoQuestions.setVisibility(View.GONE);
+        } else {
+            tvNoQuestions.setVisibility(View.VISIBLE);
+        }
         tv_total_questions.setText(String.valueOf(totalQuestions));
         tv_total_score.setText(String.valueOf(totalScore));
 
     }
 
+
     private ArrayList<String> arrListQuestionId = new ArrayList<String>();
 
     private ArrayList<String> getArrListQuestionId() {
-
         for (int i = 0; i < arrListQuestions.size(); i++) {
             arrListQuestionId.add(arrListQuestions.get(i).getQuestionId());
         }
-
         return arrListQuestionId;
 
     }
 
-
     public void addQuestionsToPreviewFragment(ArrayList<Questions> arrListQuestionsToAdd) {
-        Debug.e(TAG, "inside addQuetopreview data");
-        if (arrListQuestionsToAdd.size() > 0) {
 
+        if (arrListQuestionsToAdd.size() > 0) {
             for (int i = 0; i < arrListQuestionsToAdd.size(); i++) {
                 arrListQuestions.add(arrListQuestionsToAdd.get(i));
+                totalScore += Integer.parseInt(arrListQuestions.get(i).getQuestionScore());
+                totalQuestions += 1;
             }
             Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS" + arrListQuestions.size());
             previewQuestionListAdapter.addAll(this.arrListQuestions);
-
-//            tv_total_questions.setText(getString(R.string.strtotalquestions)+ arrListQuestions.size());
             UpdateQuestionInfo();
-            getFragment().hideText();
         }
 
     }
+
     public void updateQuestionInfoAfterDelete(int questionScore) {
         totalQuestions -= 1;
         totalScore -= questionScore;
@@ -210,8 +211,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     public void updateQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData, Boolean isChecked) {
 
         Boolean isQuestionPresent = false;
-
-
         for (Questions questions : arrListQuestions) {
             if (questions.getQuestionId().equals(prevQuestionData.getQuestionId())) {
                 arrListQuestions.set(arrListQuestions.indexOf(questions), updatedQuestionData);
@@ -228,7 +227,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
             totalScore += Integer.parseInt(updatedQuestionData.getQuestionScore());
             UpdateQuestionInfo();
         }
-
     }
 
     public void addQuestionDataAfterAddQuestion(Questions question) {
@@ -241,7 +239,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         UpdateQuestionInfo();
 
     }
-
 
     private AddQuestionContainerFragment getFragment() {
         return (AddQuestionContainerFragment) mFragment;

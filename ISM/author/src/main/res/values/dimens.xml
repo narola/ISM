@@ -41,6 +41,7 @@
     <dimen name="d25dp">25dp</dimen>
 
     <dimen name="d40dp">40dp</dimen>
+    <dimen name="d45dp">45dp</dimen>
     <dimen name="d50dp">50dp</dimen>
     <dimen name="d60dp">60dp</dimen>
     <dimen name="d70dp">70dp</dimen>

@@ -5,7 +5,6 @@
     <color name="colorAccent">#1BC4A2</color>
     <color name="color_white">#FFFFFF</color>
     <color name="color_black">#000000</color>
-    <color name="color_green">#1BC4A2</color>
     <color name="bg_controller_top_light">#2A343E</color>
     <color name="bg_controller_top_medium">#262E39</color>
     <color name="bg_controller_top_dark">#232A34</color>
@@ -53,6 +52,7 @@
     <color name="text_gray">#C3C3C3</color>
     <color name="divider_light">#EEEEEE</color>
     <color name="orange">#D65955</color>
+    <color name="orange_transparent">#F7DEDE</color>
     <color name="studymate_tab_bg">#F2F2F2</color>
     <color name="blue">#4294D0</color>
     <color name="blue_dark">#286fa3</color>
@@ -67,6 +67,7 @@
     <color name="green_online">#27A611</color>
     <color name="gray_offline">#b7b7b7</color>
     <color name="bg_green_light">#95E3D5</color>
-    <color name="bg_discussion">#F5F5F5</color>
+    <color name="bg_discussion">#FFFFFF</color>
     <color name="pink">#EC8AC3</color>
+    <color name="green_xlight">#B2D5D9</color>
 </resources>

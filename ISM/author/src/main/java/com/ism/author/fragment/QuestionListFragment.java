@@ -54,9 +54,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     }
 
     @SuppressLint("ValidFragment")
-    public QuestionListFragment(Fragment fragment, Bundle bundleArguments) {
+    public QuestionListFragment(Fragment fragment) {
         this.mFragment = fragment;
-        this.setArguments(bundleArguments);
     }
 
     private Spinner spQuestionlistFilter, spQuestionlistAuthorBooks, spQuestionlistSort;
@@ -146,7 +145,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position >= 1) {
-                    if (arrListAuthorBooks.get(position - 1).getBookId().equalsIgnoreCase(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID))) {
+                    if (arrListAuthorBooks.get(position - 1).getBookId().equalsIgnoreCase(getBaseFragment().
+                            getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID))) {
                         questionBankListAdapter.canAddToPreview = true;
                     } else {
                         questionBankListAdapter.canAddToPreview = false;
@@ -292,10 +292,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
                         }
                         Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL);
-                        if (getArguments() != null) {
-                            Debug.e(TAG, "THE BOOK NAME IS" + getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
-                            if (arrListAuthorBooks.contains(authorBooks.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)))) {
-                                spQuestionlistAuthorBooks.setSelection(authorBooks.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
+                        if (getBaseFragment().getBundleArguments() != null) {
+                            Debug.e(TAG, "THE BOOK NAME IS" + getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
+                            if (arrListAuthorBooks.contains(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)))) {
+                                spQuestionlistAuthorBooks.setSelection(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
                             } else {
                                 spQuestionlistAuthorBooks.setSelection(1);
                             }
@@ -340,10 +340,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     /*set question bank data and exam question data if edit exam is there*/
     private void setQuestionData(ArrayList<Questions> questions) {
         questionBankListAdapter.addAll(questions);
-        if (getArguments() != null) {
-            if (getArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
-                ArrayList<Questions> arrListExamQuestions = getArguments().
-                        getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+        if (getBaseFragment().getBundleArguments() != null) {
+            if (getBaseFragment().getBundleArguments().containsKey(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
+                ArrayList<Questions> arrListExamQuestions = getBaseFragment().getBundleArguments().
+                        getParcelableArrayList(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
                 Debug.e(TAG, "THE NO OF QUESTION IS QUESTION BANK ARE::" + questions.size());
                 Debug.e(TAG, "THE NO OF QUESTIONS OF EXAM ARE::" + arrListExamQuestions.size());
                 updateQuestionStatusAfterSetDataOfExam(arrListExamQuestions);
@@ -356,16 +356,16 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
         switch (v.getId()) {
             case R.id.tv_questionlist_add_preview:
-                if (getFragment().getListOfPreviewQuestionsToAdd().size() > 0) {
-                    getFragment().addQuestionsToPreviewFragment();
-                    getFragment().getListOfPreviewQuestionsToAdd().clear();
+                if (getBaseFragment().getListOfPreviewQuestionsToAdd().size() > 0) {
+                    getBaseFragment().addQuestionsToPreviewFragment();
+                    getBaseFragment().getListOfPreviewQuestionsToAdd().clear();
                 } else {
                     Utils.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
                 }
                 break;
 
             case R.id.tv_questionlist_add_new_question:
-                getFragment().setDataOnFragmentFlip(null, false, true);
+                getBaseFragment().setDataOnFragmentFlip(null, false, true);
                 break;
 
             case R.id.img_search_questions:
@@ -438,7 +438,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     }
 
-    private AddQuestionContainerFragment getFragment() {
+    private AddQuestionContainerFragment getBaseFragment() {
         return (AddQuestionContainerFragment) mFragment;
     }
 
@@ -446,7 +446,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     /*update the checkbox status of question in question bank to check if question is already set for the exam*/
     public void updateQuestionStatusAfterSetDataOfExam(ArrayList<Questions> arrListExamQuestions) {
         try {
-            getFragment().setListOfExamQuestions(arrListExamQuestions);
+            getBaseFragment().setListOfExamQuestions(arrListExamQuestions);
             for (int i = 0; i < arrListExamQuestions.size(); i++) {
                 for (int j = 0; j < arrListQuestions.size(); j++) {
 //                    Debug.e(TAG, "THE QUESTION LIST QUESTION ID IS====" + arrListQuestions.get(j).getQuestionId());
@@ -488,7 +488,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     }
 
     private void clearFilters() {
-       showMsgNoFilterData(false);
+        showMsgNoFilterData(false);
         questionBankListAdapter.addAll(arrListQuestions);
     }
 

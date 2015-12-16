@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.ConfirmationListener;
 import com.ism.object.Global;
@@ -123,6 +124,7 @@ public class RecommendedStudymatesAdapter extends RecyclerView.Adapter<Recommend
 
 	private void onResponseAddStudymate(Object object, Exception error) {
 		try {
+			((HostActivity) context).hideProgress();
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
@@ -141,6 +143,7 @@ public class RecommendedStudymatesAdapter extends RecyclerView.Adapter<Recommend
 	@Override
 	public void onConfirmationResponse(int requestId, boolean confirmed) {
 		if (confirmed) {
+			((HostActivity) context).showProgress();
 			callApiAddStudymate(arrayListUser.get(currentPosition).getUserId());
 		}
 	}

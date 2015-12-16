@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <gradient android:startColor="@color/bg_basic_calc"
+        android:centerColor="@color/bg_basic_calc"
+        android:endColor="@color/bg_basic_calc"
+        android:angle="270"></gradient>
+
+    <!--<stroke android:width="@dimen/calc_column_spacing"
+        android:color="@color/bg_scientific_calc"></stroke>-->
+
+</shape>

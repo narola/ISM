@@ -81,7 +81,7 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		try {
-			if (position == 0 || !arrListDiscussion.get(position).getTime().equals(arrListDiscussion.get(position - 1).getTime())) {
+			if (position == arrListDiscussion.size() - 1 || !arrListDiscussion.get(position).getTime().equals(arrListDiscussion.get(position + 1).getTime())) {
 				holder.rlHeader.setVisibility(View.VISIBLE);
 				holder.txtTime.setText(arrListDiscussion.get(position).getTime());
 			} else {

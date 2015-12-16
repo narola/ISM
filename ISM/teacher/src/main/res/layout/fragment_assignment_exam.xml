@@ -921,8 +921,8 @@
                         android:layout_marginLeft="@dimen/d20dp"
                         android:layout_weight="1">
 
-                        <EditText
-                            android:id="@+id/et_exam_questionscorevalue"
+                        <Spinner
+                            android:id="@+id/spExamQuestionScore"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/selector"

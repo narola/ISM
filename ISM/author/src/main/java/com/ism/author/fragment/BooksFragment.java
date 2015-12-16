@@ -48,13 +48,13 @@ public class BooksFragment extends Fragment {
     }
 
     private void initGlobal() {
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
         // The number of Columns
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new BooksAdapter(getActivity(),null,null);
+        mAdapter = new BooksAdapter(getActivity(), null, null);
         mRecyclerView.setAdapter(mAdapter);
     }
 

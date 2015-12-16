@@ -360,4 +360,8 @@
 	<string name="strchooseyouraudio">Choose Your Audio</string>
 	<string name="msg_add_studymate">"Are you sure to add "</string>
 	<string name="as_studymate">" as Studymate"</string>
+	<string name="yes">Yes</string>
+	<string name="msg_active_hours_finished">Active hours are finished!</string>
+	<string name="send">Send</string>
+	<string name="type_message">Type message...</string>
 </resources>

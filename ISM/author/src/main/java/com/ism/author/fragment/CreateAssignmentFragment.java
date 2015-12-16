@@ -45,9 +45,8 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     private static final String TAG = CreateAssignmentFragment.class.getSimpleName();
     private View view;
 
-    public static CreateAssignmentFragment newInstance(Bundle bundleArgument) {
+    public static CreateAssignmentFragment newInstance() {
         CreateAssignmentFragment createAssignmentFragment = new CreateAssignmentFragment();
-        createAssignmentFragment.setArguments(bundleArgument);
         return createAssignmentFragment;
     }
 

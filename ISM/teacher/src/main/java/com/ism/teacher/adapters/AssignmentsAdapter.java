@@ -28,9 +28,6 @@ import java.util.ArrayList;
 public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.ViewHolder> {
 
     private static final String TAG = AssignmentsAdapter.class.getSimpleName();
-
-    public static String EXAM_OBJECTIVE = "objective";
-    public static String EXAM_SUBJECTIVE = "subjective";
     Context mContext;
     ArrayList<Exams> arrayListAssignments = new ArrayList<Exams>();
     Fragment mFragment;
@@ -54,9 +51,22 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
     public static String ARG_EXAM_DURATION = "examDuration";
     public static String ARG_ASSIGNMENT_NO = "examNo";
     public static String ARG_EXAM_PASS_PERCENTAGE = "examPassPercentage";
-    public static String ARG_EXAM_QUESTION_SCORE = "examQuestionScore";
     public static String ARG_EXAM_CREATED_DATE = "examCreatedDate";
     public static String ARG_ISLOAD_FRAGMENTFOREVALUATION = "examIsLoadFragmentForEvaluation";
+
+    //new params
+    public static String ARG_EXAM_ATTEMPT_COUNT = "examAttemptCount";
+    public static String ARG_EXAM_INSTRUCTIONS = "examInstructions";
+    public static String ARG_EXAM_IS_RANDOM_QUESTION = "examIsRandomQuestion";
+    public static String ARG_EXAM_IS_NEGATIVE_MARKING = "examIsNegativeMarking";
+    public static String ARG_EXAM_NEGATIVE_MARK_VALUE = "examNegativeMarkValue";
+    public static String ARG_EXAM_IS_USE_QUESTION_SCORE = "examIsUseQuestionScore";
+    public static String ARG_EXAM_CORRECT_ANSWER_SCORE = "examCorrectAnswerScore";
+    public static String ARG_EXAM_IS_DECLARE_RESULTS = "examIsDeclareResults";
+    public static String ARG_EXAM_ASSESSOR = "examAssessor";
+    public static String ARG_EXAM_START_DATE = "examStartDate";
+    public static String ARG_EXAM_START_TIME = "examStartTime";
+    public static String ARG_FRAGMENT_TYPE = "fragmentType";
 
     public AssignmentsAdapter(Context context, Fragment fragment) {
         this.mContext = context;
@@ -87,22 +97,17 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             super(itemView);
 
             llParentAssignment = (LinearLayout) itemView.findViewById(R.id.ll_parent_assignment);
-
             llViewQuestions = (LinearLayout) itemView.findViewById(R.id.ll_view_questions);
-
             rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_top_assignment);
-            txtAssignmentSubject = (TextView) itemView.findViewById(R.id.txt_assignment_subject);
 
+            txtAssignmentSubject = (TextView) itemView.findViewById(R.id.txt_assignment_subject);
             txtExamName = (TextView) itemView.findViewById(R.id.txt_exam_name);
             txtAssignmentClassName = (TextView) itemView.findViewById(R.id.txt_assignment_class_name);
             txtAssignmentDate = (TextView) itemView.findViewById(R.id.txt_assignment_date);
-
             txtNumberAssessedQuestion = (TextView) itemView.findViewById(R.id.txt_number_assessed_question);
             txtNumberUnassessedQuestion = (TextView) itemView.findViewById(R.id.txt_number_unassessed_question);
             txtNumberTotalQuestions = (TextView) itemView.findViewById(R.id.txt_number_total_questions);
             txtAssignmentType = (TextView) itemView.findViewById(R.id.txt_assignment_type);
-
-
             txtAssessedLabel = (TextView) itemView.findViewById(R.id.txt_assessed_label);
             txtUnassessedLabel = (TextView) itemView.findViewById(R.id.txt_unassessed_label);
             txtQuestionLabel = (TextView) itemView.findViewById(R.id.txt_question_label);
@@ -139,8 +144,10 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         }
 
 
+        /**
+         * Bundle args
+         */
         final Bundle bundleAssignmentDetails = new Bundle();
-        //bundleAssignmentDetails.putString(ARG_EXAM_ID, "9");
         bundleAssignmentDetails.putString(ARG_EXAM_ID, arrayListAssignments.get(position).getExamId());
         bundleAssignmentDetails.putString(ARG_EXAM_NAME, arrayListAssignments.get(position).getExamName());
         bundleAssignmentDetails.putString(ARG_EXAM_CLASSROOM_ID, arrayListAssignments.get(position).getClassroomId());
@@ -148,17 +155,31 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         bundleAssignmentDetails.putString(ARG_EXAM_SUBJECT_ID, arrayListAssignments.get(position).getSubjectId());
         bundleAssignmentDetails.putString(ARG_EXAM_SUBJECT_NAME, arrayListAssignments.get(position).getSubjectName());
         bundleAssignmentDetails.putString(ARG_EXAM_TOPIC_ID, arrayListAssignments.get(position).getTopicId());
-        bundleAssignmentDetails.putString(ARG_EXAM_TOPIC_NAME, "");
         bundleAssignmentDetails.putString(ARG_EXAM_BOOK_ID, arrayListAssignments.get(position).getBookId());
-        bundleAssignmentDetails.putString(ARG_EXAM_BOOK_NAME, "");
         bundleAssignmentDetails.putString(ARG_EXAM_CATEGORY, arrayListAssignments.get(position).getExamCategory());
         bundleAssignmentDetails.putString(ARG_EXAM_TYPE, arrayListAssignments.get(position).getExamType());
         bundleAssignmentDetails.putString(ARG_EXAM_MODE, arrayListAssignments.get(position).getExamMode());
         bundleAssignmentDetails.putString(ARG_EXAM_DURATION, arrayListAssignments.get(position).getDuration());
         bundleAssignmentDetails.putInt(ARG_ASSIGNMENT_NO, position);
         bundleAssignmentDetails.putString(ARG_EXAM_PASS_PERCENTAGE, arrayListAssignments.get(position).getPassPercentage());
-        bundleAssignmentDetails.putString(ARG_EXAM_QUESTION_SCORE, "0");
+        bundleAssignmentDetails.putString(ARG_EXAM_CORRECT_ANSWER_SCORE, arrayListAssignments.get(position).getCorrectAnswerScore());
         bundleAssignmentDetails.putString(ARG_EXAM_CREATED_DATE, arrayListAssignments.get(position).getExamCreatedDate());
+
+        //new
+        bundleAssignmentDetails.putString(ARG_EXAM_ATTEMPT_COUNT, arrayListAssignments.get(position).getAttemptCount());
+        bundleAssignmentDetails.putString(ARG_EXAM_INSTRUCTIONS, arrayListAssignments.get(position).getExamInstructions());
+        bundleAssignmentDetails.putString(ARG_EXAM_IS_RANDOM_QUESTION, arrayListAssignments.get(position).getRandomQuestion());
+        bundleAssignmentDetails.putString(ARG_EXAM_IS_NEGATIVE_MARKING, arrayListAssignments.get(position).getNegativeMarking());
+        bundleAssignmentDetails.putString(ARG_EXAM_NEGATIVE_MARK_VALUE, arrayListAssignments.get(position).getNegativeMarkValue());
+        bundleAssignmentDetails.putString(ARG_EXAM_IS_USE_QUESTION_SCORE, arrayListAssignments.get(position).getUseQuestionScore());
+        bundleAssignmentDetails.putString(ARG_EXAM_CORRECT_ANSWER_SCORE, arrayListAssignments.get(position).getCorrectAnswerScore());
+        bundleAssignmentDetails.putString(ARG_EXAM_IS_DECLARE_RESULTS, arrayListAssignments.get(position).getDeclareResults());
+
+        bundleAssignmentDetails.putString(ARG_EXAM_ASSESSOR, arrayListAssignments.get(position).getExamAssessor());
+        bundleAssignmentDetails.putString(ARG_EXAM_IS_DECLARE_RESULTS, arrayListAssignments.get(position).getDeclareResults());
+        bundleAssignmentDetails.putString(ARG_EXAM_START_DATE, arrayListAssignments.get(position).getExamStartDate());
+        bundleAssignmentDetails.putString(ARG_EXAM_START_TIME, arrayListAssignments.get(position).getExamStartTime());
+
 
         holder.llParentAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,28 +194,12 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         holder.llViewQuestions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_OBJECTIVE)) {
-//
-//                    bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
-//                    mFragment.getFragmentManager().beginTransaction().
-//                            replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
-//
-//
-//                } else if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_SUBJECTIVE)) {
-//
-//                    bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
-//                    mFragment.getFragmentManager().beginTransaction().
-//                            replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
-//
-//                }
                 bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
                 mFragment.getFragmentManager().beginTransaction().
                         replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
 
             }
         });
-
 
     }
 

@@ -328,6 +328,8 @@
         <item>Non Assessed</item>
     </string-array>
 
+<string name="strquestionscore">Question Score</string>
+
 
     <!-- question -->
     <string name="msg_validation_select_answer">Please select mcq answer.</string>

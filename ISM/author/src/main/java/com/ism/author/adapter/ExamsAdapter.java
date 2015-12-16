@@ -38,16 +38,28 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     public static String ARG_EXAM_CLASSROOM_NAME = "examClassRoomName";
     public static String ARG_EXAM_BOOK_ID = "examBookId";
     public static String ARG_EXAM_BOOK_NAME = "examBookName";
+    //    public static String ARG_EXAM_TYPE = "examType";
     public static String ARG_EXAM_CATEGORY = "examCategory";
-    public static String ARG_EXAM_TYPE = "examType";
     public static String ARG_EXAM_MODE = "examMode";
-    public static String ARG_EXAM_DURATION = "examDuration";
-    public static String ARG_EXAM_NO = "examNo";
     public static String ARG_EXAM_PASS_PERCENTAGE = "examPassPercentage";
-    public static String ARG_EXAM_QUESTION_SCORE = "examQuestionScore";
+    public static String ARG_EXAM_DURATION = "examDuration";
+    public static String ARG_EXAM_ATTEMPT_COUNT = "examAttemptCount";
+    public static String ARG_EXAM_INSTRUCTIONS = "examInstructions";
+    public static String ARG_EXAM_IS_RANDOM_QUESTION = "examIsRandomQuestion";
+    public static String ARG_EXAM_IS_NEGATIVE_MARKING = "examIsNegativeMarking";
+    public static String ARG_EXAM_NEGATIVE_MARK_VALUE = "examNegativeMarkValue";
+    public static String ARG_EXAM_IS_USE_QUESTION_SCORE = "examIsUseQuestionScore";
+    public static String ARG_EXAM_CORRECT_ANSWER_SCORE = "examCorrectAnswerScore";
+    public static String ARG_EXAM_IS_DECLARE_RESULTS = "examIsDeclareResults";
+    public static String ARG_EXAM_ASSESSOR = "examAssessor";
+    public static String ARG_EXAM_START_DATE = "examStartDate";
+    public static String ARG_EXAM_START_TIME = "examStartTime";
     public static String ARG_EXAM_CREATED_DATE = "examCreatedDate";
+    public static String ARG_EXAM_NO = "examNo";
     public static String ARG_ISLOAD_FRAGMENTFOREVALUATION = "examIsLoadFragmentForEvaluation";
     public static String ARG_FRAGMENT_TYPE = "fragmentType";
+
+//    public static String ARG_EXAM_QUESTION_SCORE = "examQuestionScore";
 
 
     public ExamsAdapter(Context mContext) {
@@ -102,18 +114,18 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             }
 
 
-            if (arrListExams.get(position).getExamMode().equalsIgnoreCase("subjective")) {
+            if (arrListExams.get(position).getExamMode().equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
                 holder.tvExamUnassessed.setText(mContext.getString(R.string.strunasssessed));
                 if (arrListExams.get(position).getTotalUnAssessed() == null || arrListExams.get(position).getTotalUnAssessed().equals("")) {
                     holder.tvExamNoofUnassessed.setText("0");
                 } else {
                     holder.tvExamNoofUnassessed.setText(arrListExams.get(position).getTotalUnAssessed());
                 }
-            } else if (arrListExams.get(position).getExamMode().equalsIgnoreCase("objective")) {
+            } else if (arrListExams.get(position).getExamMode().equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
                 holder.tvExamUnassessed.setText(mContext.getString(R.string.stravgscore));
 
                 if (arrListExams.get(position).getAverageScore() == null || arrListExams.get(position).getAverageScore().equals("")) {
-                    holder.tvExamNoofUnassessed.setText("0" + " %");
+                    holder.tvExamNoofUnassessed.setText("0 " + mContext.getString(R.string.strpercent));
                 } else {
                     holder.tvExamNoofUnassessed.setText(arrListExams.get(position).getAverageScore() + mContext.getString(R.string.strpercent));
                 }
@@ -127,30 +139,14 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
                 holder.rlTopExam.setBackgroundResource(R.drawable.bg_subject_yellow);
             }
 
-            final Bundle bundleExamDetails = new Bundle();
-            bundleExamDetails.putString(ARG_EXAM_ID, arrListExams.get(position).getExamId());
-            bundleExamDetails.putString(ARG_EXAM_NAME, arrListExams.get(position).getExamName());
-            bundleExamDetails.putString(ARG_EXAM_CLASSROOM_ID, arrListExams.get(position).getClassroomId());
-            bundleExamDetails.putString(ARG_EXAM_CLASSROOM_NAME, arrListExams.get(position).getClassroomName());
-            bundleExamDetails.putString(ARG_EXAM_BOOK_ID, arrListExams.get(position).getBookId());
-            bundleExamDetails.putString(ARG_EXAM_BOOK_NAME, arrListExams.get(position).getBookName());
-            bundleExamDetails.putString(ARG_EXAM_CATEGORY, arrListExams.get(position).getExamCategory());
-            bundleExamDetails.putString(ARG_EXAM_TYPE, arrListExams.get(position).getExamType());
-            bundleExamDetails.putString(ARG_EXAM_MODE, arrListExams.get(position).getExamMode());
-            bundleExamDetails.putString(ARG_EXAM_DURATION, arrListExams.get(position).getDuration());
-            bundleExamDetails.putInt(ARG_EXAM_NO, position);
-            bundleExamDetails.putString(ARG_EXAM_PASS_PERCENTAGE, arrListExams.get(position).getPassPercentage());
-            bundleExamDetails.putString(ARG_EXAM_QUESTION_SCORE, "0");
-            bundleExamDetails.putString(ARG_EXAM_CREATED_DATE, arrListExams.get(position).getExamCreatedDate());
-            bundleExamDetails.putInt(ARG_FRAGMENT_TYPE, AuthorHostActivity.currentMainFragment);
-
 
             holder.llExamContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    bundleExamDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
-                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR, bundleExamDetails);
+                    setBundleArguments(position);
+                    getBundleArguments().putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
+                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR, getBundleArguments());
 
 
                 }
@@ -160,9 +156,10 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
                 @Override
                 public void onClick(View view) {
 
-                    bundleExamDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
-                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS,
-                            bundleExamDetails);
+                    setBundleArguments(position);
+                    getBundleArguments().putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
+                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS,
+                            getBundleArguments());
                 }
             });
 
@@ -217,5 +214,43 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
         }
     }
 
+
+    private void setBundleArguments(int position) {
+
+        getBundleArguments().putString(ARG_EXAM_ID, arrListExams.get(position).getExamId());
+        getBundleArguments().putString(ARG_EXAM_NAME, arrListExams.get(position).getExamName());
+        getBundleArguments().putString(ARG_EXAM_CLASSROOM_ID, arrListExams.get(position).getClassroomId());
+        getBundleArguments().putString(ARG_EXAM_CLASSROOM_NAME, arrListExams.get(position).getClassroomName());
+        getBundleArguments().putString(ARG_EXAM_BOOK_ID, arrListExams.get(position).getBookId());
+        getBundleArguments().putString(ARG_EXAM_BOOK_NAME, arrListExams.get(position).getBookName());
+        getBundleArguments().putString(ARG_EXAM_CATEGORY, arrListExams.get(position).getExamCategory());
+        getBundleArguments().putString(ARG_EXAM_MODE, arrListExams.get(position).getExamMode());
+        getBundleArguments().putString(ARG_EXAM_PASS_PERCENTAGE, arrListExams.get(position).getPassPercentage());
+        getBundleArguments().putString(ARG_EXAM_DURATION, arrListExams.get(position).getDuration());
+        getBundleArguments().putString(ARG_EXAM_ATTEMPT_COUNT, arrListExams.get(position).getAttemptCount());
+        getBundleArguments().putString(ARG_EXAM_INSTRUCTIONS, arrListExams.get(position).getExamInstructions());
+        getBundleArguments().putBoolean(ARG_EXAM_IS_RANDOM_QUESTION, arrListExams.get(position).getRandomQuestion().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+        getBundleArguments().putBoolean(ARG_EXAM_IS_NEGATIVE_MARKING, arrListExams.get(position).getNegativeMarking().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+        getBundleArguments().putString(ARG_EXAM_NEGATIVE_MARK_VALUE, arrListExams.get(position).getNegativeMarkValue());
+        getBundleArguments().putBoolean(ARG_EXAM_IS_USE_QUESTION_SCORE, arrListExams.get(position).getUseQuestionScore().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+        getBundleArguments().putString(ARG_EXAM_CORRECT_ANSWER_SCORE, arrListExams.get(position).getCorrectAnswerScore());
+        getBundleArguments().putBoolean(ARG_EXAM_IS_DECLARE_RESULTS, arrListExams.get(position).getDeclareResults().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+        getBundleArguments().putString(ARG_EXAM_ASSESSOR, arrListExams.get(position).getExamAssessor());
+        getBundleArguments().putString(ARG_EXAM_START_DATE, arrListExams.get(position).getExamStartDate());
+        getBundleArguments().putString(ARG_EXAM_START_TIME, arrListExams.get(position).getExamStartTime());
+        getBundleArguments().putString(ARG_EXAM_CREATED_DATE, arrListExams.get(position).getExamCreatedDate());
+        getBundleArguments().putInt(ARG_EXAM_NO, position);
+        getBundleArguments().putInt(ARG_FRAGMENT_TYPE, AuthorHostActivity.currentMainFragment);
+
+    }
+
+
+    private Bundle getBundleArguments() {
+        return ((AuthorHostActivity) mContext).getBundle();
+    }
 
 }
