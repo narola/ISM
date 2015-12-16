@@ -3300,7 +3300,7 @@ class ProfileFunctions
                     $file_ext=end($file_ext);
                     $file_ext=strtolower(end(explode('.',$_FILES['media_images']['name'][$i])));
 
-                    $mediaName = "_test".$i."_IMAGE" . $created_date . ".";
+                    $mediaName = "_test_".$i."_IMAGE_" . $created_date . ".";
                     $fileName =  $mediaName .$file_ext ;
 
 

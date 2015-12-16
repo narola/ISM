@@ -30,7 +30,44 @@ class TutorialGroup
 				return $this->getCities($postData);
 			}
 				break;
-		}
+
+            case "GetAllBadges":
+            {
+                return $this->getAllBadges($postData);
+            }
+                break;
+
+            case "GetAdBanners":
+            {
+                return $this->getAdBanners($postData);
+            }
+                break;
+
+            case "GetAllCourses":
+            {
+                return $this->getAllCourses($postData); //done
+            }
+                break;
+
+            case "GetAllSubjects":
+            {
+                return $this->getAllSubjects($postData); //done
+            }
+                break;
+
+            case "GetAllTopics":
+            {
+                return $this->getAllTopics($postData); //done
+            }
+                break;
+
+            case "GetAllClassrooms":
+            {
+                return $this->getAllClassrooms($postData); //done
+            }
+                break;
+
+        }
 	}
 
 	public function getCountries($postData)
@@ -202,6 +239,304 @@ class TutorialGroup
 
 		return $data;
 	}
+
+
+    /*
+     * getAllBadges
+    */
+    public function getAllBadges ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $query = "SELECT `id`, `badge_name`, `badge_description` FROM ".TABLE_BADGES ." WHERE is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            // echo $query;
+            if (mysqli_num_rows($result)) {
+                while ($row = mysqli_fetch_assoc($result)) {
+
+                    $data[] = $row;
+
+                }
+                $status = SUCCESS;
+
+            } else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['badges']=$data;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+
+    /*
+    * getAdBanners
+   */
+    public function getAdBanners ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $query = "SELECT `id`, `banner_title` FROM ".TABLE_BANNERSN ." WHERE is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            // echo $query;
+            if (mysqli_num_rows($result)) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $data[] = $row;
+                }
+                $status = SUCCESS;
+
+            } else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['ad_banners']=$data;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+
+    /*
+   * getCourses
+   */
+    public function getAllCourses ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $query = "SELECT `id`, `course_name` FROM ".TABLE_COURSES ." WHERE is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            // echo $query;
+            if (mysqli_num_rows($result)) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $data[] = $row;
+                }
+                $status = SUCCESS;
+
+            } else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['courses']=$data;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+
+    /*
+     * getCourses
+    */
+    public function getAllSubjects ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $query = "SELECT `id`, `subject_name`, `subject_image` FROM ".TABLE_SUBJECTS ." WHERE is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            // echo $query;
+            if (mysqli_num_rows($result)) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $data[] = $row;
+
+                }
+                $status = SUCCESS;
+
+            } else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['subjects']=$data;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+
+    /*
+     * getTopic
+    */
+    public function getAllTopics ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $query = "SELECT `id`, `topic_name`, `topic_description` FROM ".TABLE_TOPICS ." where is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            // echo $query;
+            if (mysqli_num_rows($result)) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $data[] = $row;
+
+                }
+                $status = SUCCESS;
+
+            } else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['topics']=$data;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+
+    /*
+     * getClassrooms
+    */
+    public function getAllClassrooms ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $query = "SELECT `id`, `course_id`, `class_name`, `class_nickname` FROM ".TABLE_CLASSROOMS ." WHERE is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            // echo $query;
+            if (mysqli_num_rows($result)) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $data[] = $row;
+                }
+                $status = SUCCESS;
+
+            } else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['classrooms']=$data;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
 
 }
 

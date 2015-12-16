@@ -100,10 +100,7 @@ switch ($_REQUEST['Service'])
     case "CreateExam":
     case "SetQuestionsForExam":
     case "GetQuestionBank":
-    case "GetCourses":
-    case "GetSubject":
     case "GetTopics":
-    case "GetClassrooms":
     case "GetAllExams":
     case "GetExamQuestions":
     case "GetExamSubmission":
@@ -116,6 +113,12 @@ switch ($_REQUEST['Service'])
     case "TempCreateQuestion":
     case "GetBooks":
     case "GetExamsByUser":
+    case "SubmitQuestionForFriday":
+    case "CheckFridayExamStatus":
+    case "GetFridayExamQuestion":
+    case "SetMyExamPrivacySettings":
+    case "GetFridayExamEvaluation";
+    case "SubmitStudentObjectiveResponse":
     {
         include_once 'ExamFunctions.php';
         $exam = new ExamFunctions();
@@ -155,9 +158,6 @@ switch ($_REQUEST['Service'])
     case "GetGroupHistory":
     case "GetGroupProfile":
     case "PingTutorialMate":
-    case "SubmitQuestionForFriday":
-    case "CheckFridayExamStatus":
-    case "GetFridayExamQuestion":
     {
         include_once 'TutorialGroup.php';
         $tutorialGroup = new TutorialGroup();
@@ -170,6 +170,13 @@ switch ($_REQUEST['Service'])
     case "GetCountries":
     case "GetStates":
     case "GetCities":
+    case "GetAllBadges":
+    case "GetAdBanners":
+    case "GetAllCourses":
+    case "GetAllSubjects":
+    case "GetAllTopics":
+    case "GetAllClassrooms":
+
     {
         include_once 'Data.php';
         $profile = new TutorialGroup();
@@ -188,6 +195,7 @@ switch ($_REQUEST['Service'])
     case "ManageGeneralSettings":
     case "GetAllPreferences":
     case "GetUserPreferences":
+
     {
         include_once 'NotificationFunctions.php';
         $notification = new NotificationFunctions();

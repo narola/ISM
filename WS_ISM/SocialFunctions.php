@@ -188,14 +188,14 @@ class SocialFunctions
             $unliked_id = validateObject($postData, 'unliked_id', "");
             if ($unliked_id != null) {
                 foreach ($unliked_id as $feed_id) {
-                    $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id;
-                    // echo $queryCheckFeed."\n_unliked";
+                    $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id ." and is_delete=0";
+                     //echo $queryCheckFeed."\n_unliked";exit;
                     $resultCheckFeed = mysqli_query($GLOBALS['con'], $queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
                     // echo $queryCheckFeed . "\n";
                     if (mysqli_num_rows($resultCheckFeed)) {
                         $val = mysqli_fetch_assoc($resultCheckFeed);
                         $feed_like_id = $val['id'];
-                        $queryUpdate = "UPDATE `feed_like` SET `is_delete`=0 WHERE `id`=" . $feed_like_id;
+                        $queryUpdate = "UPDATE ".TABLE_FEED_LIKE." SET `is_delete`=1 WHERE `feed_id`=" . $feed_id ." AND like_by=".$user_id;
                         // echo $procedure;
                         $result = mysqli_query($GLOBALS['con'], $queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
                     }
@@ -204,19 +204,18 @@ class SocialFunctions
 
             if ($liked_id != null) {
                 foreach ($liked_id as $feed_id) {
-                    $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id;
+                    $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id ." and is_delete=1";
                     //echo $queryCheckFeed."\n_liked";
                     $resultCheckFeed = mysqli_query($GLOBALS['con'], $queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
                     if (mysqli_num_rows($resultCheckFeed)) {
-                        $val = mysqli_fetch_assoc($resultCheckFeed);
-                        $feed_like_id = $val['id'];
-                        $queryUpdate = "UPDATE `feed_like` SET `is_delete`=1 WHERE `id`=" . $feed_like_id;
+
+                        $queryUpdate = "UPDATE `feed_like` SET `is_delete`=0 WHERE `feed_id`=" . $feed_id." AND like_by=".$user_id;
                         // echo $procedure;
                         $result = mysqli_query($GLOBALS['con'], $queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
 
                     } else {
                         $insertFields = "`like_by`, `feed_id`,`is_delete`";
-                        $insertValues = "" . $user_id . ", " . $feed_id . ",'1'";
+                        $insertValues = "" . $user_id . ", " . $feed_id . ",'0'";
                         $query = "INSERT INTO " . TABLE_FEED_LIKE . " (" . $insertFields . ") VALUES (" . $insertValues . ")";
                         $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
                     }
@@ -273,6 +272,7 @@ class SocialFunctions
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
             //echo $query;
             if ($result) {
+                $data['comment_id']=mysqli_insert_id($GLOBALS['con']);
                 $status = SUCCESS;
                 $message = SUCCESSFULLY_ADDED;
             } else {
@@ -285,7 +285,7 @@ class SocialFunctions
             $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
-        $response['comment']=$data;
+        $response['comment'][]=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -491,7 +491,7 @@ class SocialFunctions
                 } else {
                     // Image 5 = Video 6 = Audio 7
 
-                    $mediaName = "_test_VIDEO" . $created_date . ".mp4";
+                    $mediaName = "_test_VIDEO_" . $created_date . ".mp4";
 
                     $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
                     if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
@@ -513,7 +513,7 @@ class SocialFunctions
                     $message = $_FILES["audio_link"]["error"];
                     $status = 2;
                 } else {
-                    $mediaName = "_test_AUDIO" . $created_date . ".mp3";
+                    $mediaName = "_test_AUDIO_" . $created_date . ".mp3";
 
 
                     $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
@@ -539,7 +539,7 @@ class SocialFunctions
                     $message = $_FILES["mediaFile"]["error"];
                     $status = 2;
                 } else {
-                    $mediaName = "_test_IMAGE" . $created_date . ".jpg";
+                    $mediaName = "_test_IMAGE_" . $created_date . ".jpg";
 
                     $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
                     if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
@@ -908,10 +908,14 @@ class SocialFunctions
         }
         $queryLike="select * from ".TABLE_FEED_LIKE." where like_by=".$user_id." and feed_id= ". $feeds['id']." and is_delete=0";
         $resultLike=mysqli_query($GLOBALS['con'],$queryLike) or $errorMsg=mysqli_error($GLOBALS['con']);
-        $feeds_array['like'] ="0";
+       // $feeds_array['like'] ="0";
         if(mysqli_num_rows($resultLike)){
             $valLike = mysqli_fetch_assoc($resultLike);
-            $feeds_array['like'] = $valLike['is_delete'];
+            $feeds_array['self_like'] = 1;
+        }
+        else
+        {
+            $feeds_array['self_like'] = 0;
         }
         //$feeds_array['user_id'] = $feeds['user_id'];
         $feeds_array['comment_list']=array();
@@ -1005,14 +1009,14 @@ class SocialFunctions
                     //For Like
                     $queryLike="select * from ".TABLE_FEED_LIKE." where like_by=".$user_id." and feed_id= ". $feed['id']." and is_delete=0";
                     $resultLike=mysqli_query($GLOBALS['con'],$queryLike) or $errorMsg=mysqli_error($GLOBALS['con']);
-                    $feeds_array['like'] ="0";
+                    //$feeds_array['like'] ="0";
                     if(mysqli_num_rows($resultLike)){
-                        $valLike = mysqli_fetch_assoc($resultLike);
-                        $feeds['like'] = $valLike['is_delete'];
+                       // $valLike = mysqli_fetch_assoc($resultLike);
+                        $feeds['self_like'] = 1;
                     }
                     else
                     {
-                        $feeds['like'] = 0;
+                        $feeds['self_like'] = 0;
                     }
 
                     //Get Comments

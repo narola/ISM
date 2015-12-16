@@ -34,7 +34,7 @@ class NotificationFunctions
                 
             case "GetNotification":
             {
-                return $this->getNotification($postData);//in progress
+                return $this->getNotification($postData);//done
             }
                 break;
                 
@@ -52,27 +52,29 @@ class NotificationFunctions
                 
             case "UpdateReadStatus":
             {
-                return $this->updateReadStatus($postData);//in progress
+                return $this->updateReadStatus($postData);//done
             }
                 break;
            
            case "ManageGeneralSettings":
            {
-                return $this->manageGeneralSettings($postData);//in progress
+                return $this->manageGeneralSettings($postData);//done
            }
                 break;
                 
            case "GetAllPreferences":
            {
-                return $this->getAllPreferences($postData);//in progress
+                return $this->getAllPreferences($postData);//done
            }
                 break;
                 
         	case "GetUserPreferences":
         	{
-                return $this->getUserPreferences($postData);//in progress
-           }
+                return $this->getUserPreferences($postData);//done
+            }
                 break;
+
+
         }
     }
     /*
@@ -691,6 +693,8 @@ class NotificationFunctions
         $response['message']=$message;
 		return $response;
     }
+
+
     
 }
 ?>
