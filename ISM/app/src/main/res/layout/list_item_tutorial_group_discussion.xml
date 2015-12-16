@@ -42,7 +42,7 @@
 			android:layout_marginTop="20dp"
 			android:layout_marginLeft="5dp"
 			android:layout_marginRight="5dp"
-			android:src="@drawable/userdp"/>
+			android:src="@drawable/img_default_dp"/>
 
 		<RelativeLayout
 			android:layout_width="match_parent"
@@ -74,7 +74,6 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/txt_user_name"
-				android:layout_marginBottom="15dp"
 				android:textColor="@color/bg_app_dark"
 				android:textSize="@dimen/text_size_normal_chat"/>
 		</RelativeLayout>

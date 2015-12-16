@@ -1,4 +1,4 @@
-package com.ism.fragment.userprofile;
+package com.ism.fragment.userProfile;
 
 import android.os.AsyncTask;
 import android.util.Log;

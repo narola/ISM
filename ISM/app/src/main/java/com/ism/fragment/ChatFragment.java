@@ -14,10 +14,11 @@ import com.ism.activity.HostActivity;
 import com.ism.R;
 import com.ism.adapter.StudymateChatAdapter;
 import com.ism.constant.WebConstants;
-import com.ism.fragment.userprofile.StudymatesFragment;
+import com.ism.fragment.userProfile.StudymatesFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.utility.Utility;
+import com.ism.views.AccordionView;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
@@ -35,6 +36,7 @@ public class ChatFragment extends Fragment implements WebserviceWrapper.Webservi
     private View view;
 	private ListView lvStudymates;
 	private Button btnSuggestedStudymates, btnFindMoreStudymates;
+	private AccordionView accordionViewChat;
 
 	private HostActivity activityHost;
     private FragmentListener fragListener;
@@ -62,6 +64,7 @@ public class ChatFragment extends Fragment implements WebserviceWrapper.Webservi
 	    lvStudymates = (ListView) view.findViewById(R.id.lv_studymates);
 	    btnSuggestedStudymates = (Button) view.findViewById(R.id.btn_suggested_studymates);
 	    btnFindMoreStudymates = (Button) view.findViewById(R.id.btn_find_more_studymates);
+	    accordionViewChat = (AccordionView) view.findViewById(R.id.accordion_view_chat);
 
 		if (Utility.isConnected(getActivity())) {
 			callApiGetStudymates();
@@ -148,6 +151,7 @@ public class ChatFragment extends Fragment implements WebserviceWrapper.Webservi
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					arrListStudymate = responseHandler.getStudymates();
 					fillListStudymates();
+					accordionViewChat.toggleSection(0);
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetStudymates failed");
 				}

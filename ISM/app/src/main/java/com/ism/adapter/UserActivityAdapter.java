@@ -112,29 +112,43 @@ public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapte
 		View viewComment = setMyActivityLayout(holder, R.layout.layout_timeline_comment);
 
 		CircleImageView imgDp = (CircleImageView) viewComment.findViewById(R.id.img_dp);
-		TextView txtName = (TextView) viewComment.findViewById(R.id.txt_user_name);
-		TextView txtStatusTime = (TextView) viewComment.findViewById(R.id.txt_status_time);
-		TextView txtStatusText = (TextView) viewComment.findViewById(R.id.txt_status_text);
-		TextView txtSchool = (TextView) viewComment.findViewById(R.id.txt_school);
-		TextView txtFollowing = (TextView) viewComment.findViewById(R.id.txt_following);
+		TextView txtName = (TextView) viewComment.findViewById(R.id.txt_name);
+		TextView txtPost = (TextView) viewComment.findViewById(R.id.txt_post);
+		TextView txtTime = (TextView) viewComment.findViewById(R.id.txt_time);
+		TextView txtLikes = (TextView) viewComment.findViewById(R.id.txt_likes);
+		TextView txtComment = (TextView) viewComment.findViewById(R.id.txt_comment);
+		ImageView imgLike = (ImageView) viewComment.findViewById(R.id.img_like);
 
 		txtName.setTypeface(myTypeFace.getRalewaySemiBold());
-		txtStatusTime.setTypeface(myTypeFace.getRalewayItalic());
-		txtStatusText.setTypeface(myTypeFace.getRalewayRegular());
-		txtSchool.setTypeface(myTypeFace.getRalewayRegular());
-		txtFollowing.setTypeface(myTypeFace.getRalewayRegular());
+		txtPost.setTypeface(myTypeFace.getRalewayRegular());
+		txtTime.setTypeface(myTypeFace.getRalewayItalic());
+		txtLikes.setTypeface(myTypeFace.getRalewayItalic());
+		txtComment.setTypeface(myTypeFace.getRalewayItalic());
 
-		imageLoader.displayImage(Global.strProfilePic, imgDp, ISMStudent.options);
-		txtName.setText("Albert Crowley");
-		txtStatusText.setText("Status update Status update Status update Status update Status update Status update Status update Status update Status update Status update Status update Status update Status update Status update Status update ");
-		txtStatusTime.setText("Sep 1, 2015");
-		txtSchool.setText("St. Mary");
-		txtFollowing.setText("Following 39 Authors");
+		Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + userActivity.getFeedPosted().getFeedUserPic(), imgDp);
+		txtName.setText(userActivity.getFeedPosted().getFeedUserName());
+		txtPost.setText(userActivity.getFeedPosted().getFeedText());
+		txtTime.setText(com.ism.utility.Utility.formatMySqlDateToMMMDDYYYY(userActivity.getActivityTime()));
+		txtLikes.setText("4");
+		txtComment.setText("comment text");
+		imgLike.setActivated(true);
 	}
 
 	private void showAssignment(ViewHolder holder, UserActivitiy userActivity) {
 		holder.txtActivityTitle.setText(R.string.assignment_submitted);
 		View viewAssignment = setMyActivityLayout(holder, R.layout.layout_timeline_assignment);
+
+		TextView txtAssignmentName = (TextView) viewAssignment.findViewById(R.id.txt_assignment_name);
+		TextView txtSubjectName = (TextView) viewAssignment.findViewById(R.id.txt_subject_name);
+		TextView txtSubmittedOn = (TextView) viewAssignment.findViewById(R.id.txt_submitted_on);
+
+		txtAssignmentName.setTypeface(myTypeFace.getRalewaySemiBold());
+		txtSubjectName.setTypeface(myTypeFace.getRalewayRegular());
+		txtSubmittedOn.setTypeface(myTypeFace.getRalewayItalic());
+
+		txtAssignmentName.setText(userActivity.getFeedPosted().getFeedUserName());
+		txtSubjectName.setText(userActivity.getFeedPosted().getFeedText());
+		txtSubmittedOn.setText(com.ism.utility.Utility.formatMySqlDateToMMMDDYYYY(userActivity.getActivityTime()));
 	}
 
 	private void showExam(ViewHolder holder, UserActivitiy userActivity) {
@@ -144,7 +158,7 @@ public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapte
 
 	private void showFeedLike(ViewHolder holder, UserActivitiy userActivity) {
 		holder.txtActivityTitle.setText(R.string.feed_liked);
-		View viewFeedLike = setMyActivityLayout(holder, R.layout.layout_timeline_feed_like);
+		View viewFeedLike = setMyActivityLayout(holder, R.layout.layout_timeline_feed_post);
 
 		CircleImageView imgDp = (CircleImageView) viewFeedLike.findViewById(R.id.img_dp);
 		TextView txtName = (TextView) viewFeedLike.findViewById(R.id.txt_name);
@@ -161,8 +175,9 @@ public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapte
 		Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + userActivity.getFeedPosted().getFeedUserPic(), imgDp);
 		txtName.setText(userActivity.getFeedPosted().getFeedUserName());
 		txtPost.setText(userActivity.getFeedPosted().getFeedText());
-		txtTime.setText(com.ism.utility.Utility.formatPHPDateToMMMDDYYYY(userActivity.getActivityTime()));
+		txtTime.setText(com.ism.utility.Utility.formatMySqlDateToMMMDDYYYY(userActivity.getActivityTime()));
 		txtLikes.setText("4");
+		imgLike.setActivated(true);
 	}
 
 	private void showStudymate(ViewHolder holder, UserActivitiy userActivity) {
@@ -217,7 +232,7 @@ public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapte
 		Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + userActivity.getFeedPosted().getFeedUserPic(), imgDp);
 		txtName.setText(userActivity.getFeedPosted().getFeedUserName());
 		txtPost.setText(userActivity.getFeedPosted().getFeedText());
-		txtTime.setText(com.ism.utility.Utility.formatPHPDateToMMMDDYYYY(userActivity.getActivityTime()));
+		txtTime.setText(com.ism.utility.Utility.formatMySqlDateToMMMDDYYYY(userActivity.getActivityTime()));
 	}
 
 	private View setMyActivityLayout(ViewHolder holder, int layoutResId) {

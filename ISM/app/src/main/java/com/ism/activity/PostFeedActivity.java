@@ -775,7 +775,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         imgTool.setBackground(getResources().getDrawable(R.drawable.sidebar));
         imgEmoticons.setBackground(getResources().getDrawable(R.drawable.sidebar));
         imgLink.setBackground(getResources().getDrawable(R.drawable.sidebar));
-        v.setBackgroundColor(getResources().getColor(R.color.color_green));
+        v.setBackgroundColor(getResources().getColor(R.color.green));
 //        if (v == imgImage) {
 //            imgImage.setBackgroundColor(getResources().getColor(R.color.color_green));
 //        }
