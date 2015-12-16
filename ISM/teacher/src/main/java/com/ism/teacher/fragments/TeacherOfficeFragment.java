@@ -36,6 +36,10 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
     public static final int FRAGMENT_PROGRESS_REPORT = 6;
 
     public static final int FRAGMENT_ASSIGNMENT_SUBMITTER = 7;
+    public static final int FRAGMENT_CREATE_EXAM_CONTAINER = 8;
+
+    //container to view objective/subjective questions only
+    public static final int FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW = 9;
 
     private int fragment;
     public static int current_fragment;
@@ -78,12 +82,6 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
     }
 
     private void initGlobal() {
-
-//        if (newfragment != 0) {
-//            loadFragment(newfragment, getArguments());
-//        } else {
-//            loadFragment(FRAGMENT_CLASSWALL, null);
-//        }
         loadFragment(FRAGMENT_CLASSWALL, null);
     }
 
@@ -126,29 +124,34 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                             .commit();
                     ((TeacherHostActivity) getActivity()).showRightContainerFragment();
                     break;
+
                 case FRAGMENT_NOTES:
                     current_fragment = FRAGMENT_NOTES;
                     getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
                             TeacherNoteHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_NOTES).commit();
                     ((TeacherHostActivity) getActivity()).showRightContainerFragment();
                     break;
+
                 case FRAGMENT_QUIZ:
                     current_fragment = FRAGMENT_QUIZ;
                     getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherQuizHomeFragment.newInstance(this, null), AppConstant.FRAGMENT_TAG_TEACHER_QUIZ).commit();
                     ((TeacherHostActivity) getActivity()).showRightContainerFragment();
                     break;
+
                 case FRAGMENT_MARK_SCRIPT:
                     current_fragment = FRAGMENT_MARK_SCRIPT;
                     getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
                             TeacherMarkScriptHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_MARKSCRIPT).commit();
                     ((TeacherHostActivity) getActivity()).showRightContainerFragment();
                     break;
+
                 case FRAGMENT_RESULTS:
                     current_fragment = FRAGMENT_RESULTS;
                     getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
                             TeacherResultsHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_RESULTS).commit();
                     ((TeacherHostActivity) getActivity()).showRightContainerFragment();
                     break;
+
                 case FRAGMENT_PROGRESS_REPORT:
                     current_fragment = FRAGMENT_PROGRESS_REPORT;
                     getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
@@ -162,7 +165,15 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                     getFragmentManager().beginTransaction().
                             replace(R.id.fl_teacher_office_home,
                                     GetAssignmentsSubmitterFragment.newInstance(bundleArguments), AppConstant.FRAGMENT_TAG_ASSIGNMENT_SUBMITTER).commit();
+                    break;
 
+                case FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW:
+                    current_fragment = FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW;
+                    getFragmentManager().beginTransaction().
+                            replace(R.id.fl_teacher_office_home,
+                                    GetObjectiveAssignmentQuestionsFragment.newInstance(bundleArguments), AppConstant.FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION).commit();
+
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
@@ -189,8 +200,8 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                     Utility.showToast("teacher notes test", getActivity());
                     break;
                 case FRAGMENT_QUIZ:
-                    Utility.showToast("teacher quiz", getActivity());
-                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, CreateExamAssignmentContainerFragment.newInstance(fragmentArgument)).commit();
+                    current_fragment = FRAGMENT_CREATE_EXAM_CONTAINER;
+                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, CreateExamAssignmentContainerFragment.newInstance(fragmentArgument),AppConstant.FRAGMENT_TAG_CREATE_EXAM_CONTAINER).commit();
                     break;
                 case FRAGMENT_MARK_SCRIPT:
                     // getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherMarkScriptHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_MARKSCRIPT).commit();
@@ -208,19 +219,59 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
     }
 
 
-    public void onBackClick() {
-        ((TeacherHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE, getArguments());
-    }
+    public void onBack(int old_fragment) {
+        switch (old_fragment) {
 
-    public void onBack(int current_fragment) {
-        switch (current_fragment){
             case TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER:
                 getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherQuizHomeFragment.newInstance(this, null), AppConstant.FRAGMENT_TAG_TEACHER_QUIZ).commit();
                 ((TeacherHostActivity) getActivity()).showRightContainerFragment();
+                ((TeacherHostActivity) getActivity()).showSpinnerWithSubMenu(AppConstant.INDEX_ALL_ASSIGNMENTS);
+                ((TeacherHostActivity) getActivity()).showTxtAction();
+
+                current_fragment = TeacherOfficeFragment.FRAGMENT_QUIZ;
                 break;
+
+            case TeacherOfficeFragment.FRAGMENT_QUIZ:
+                getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
+                        TeacherClassWallFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_CLASSWALL)
+                        .commit();
+                ((TeacherHostActivity) getActivity()).showRightContainerFragment();
+                ((TeacherHostActivity) getActivity()).showAllMainMenus();
+                current_fragment = TeacherOfficeFragment.FRAGMENT_CLASSWALL;
+                break;
+
+            case TeacherOfficeFragment.FRAGMENT_NOTES:
+            case TeacherOfficeFragment.FRAGMENT_MARK_SCRIPT:
+            case TeacherOfficeFragment.FRAGMENT_RESULTS:
+            case TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT:
+
+                getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
+                        TeacherClassWallFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_CLASSWALL)
+                        .commit();
+                ((TeacherHostActivity) getActivity()).showRightContainerFragment();
+                ((TeacherHostActivity) getActivity()).showAllMainMenus();
+                current_fragment = TeacherOfficeFragment.FRAGMENT_CLASSWALL;
+                break;
+
+            case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER:
+                getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherQuizHomeFragment.newInstance(this, null), AppConstant.FRAGMENT_TAG_TEACHER_QUIZ).commit();
+                ((TeacherHostActivity) getActivity()).showRightContainerFragment();
+                ((TeacherHostActivity) getActivity()).showSpinnerWithSubMenu(AppConstant.INDEX_ALL_ASSIGNMENTS);
+                ((TeacherHostActivity) getActivity()).showTxtAction();
+
+                current_fragment = TeacherOfficeFragment.FRAGMENT_QUIZ;
+                break;
+            case TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW:
+                getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherQuizHomeFragment.newInstance(this, null), AppConstant.FRAGMENT_TAG_TEACHER_QUIZ).commit();
+                ((TeacherHostActivity) getActivity()).showRightContainerFragment();
+                ((TeacherHostActivity) getActivity()).showSpinnerWithSubMenu(AppConstant.INDEX_ALL_ASSIGNMENTS);
+                ((TeacherHostActivity) getActivity()).showTxtAction();
+
+                current_fragment = TeacherOfficeFragment.FRAGMENT_QUIZ;
+                break;
+
         }
 
-       // ((TeacherHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE, getArguments());
     }
 
 

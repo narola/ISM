@@ -1,5 +1,6 @@
 package com.ism.teacher.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -60,6 +61,12 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     public GetObjectiveAssignmentQuestionsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((TeacherHostActivity)getActivity()).hideTxtAction();
     }
 
     @Override

@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.constants.AppConstant;
-import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.TeacherQuizHomeFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Exams;
@@ -189,7 +187,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
                 bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
 
                 //getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER, bundleAssignmentDetails);
-                getFragment().callOfficemethod(bundleAssignmentDetails);
+                getFragment().loadOfficeSubmitter(bundleAssignmentDetails);
 
 //                mFragment.getFragmentManager().beginTransaction().
 //                        replace(R.id.fl_teacher_office_home,
@@ -203,9 +201,12 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             @Override
             public void onClick(View view) {
                 bundleAssignmentDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
-                mFragment.getFragmentManager().beginTransaction().
-                        replace(R.id.fl_teacher_office_home,
-                                GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails), AppConstant.FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION).commit();
+
+                getFragment().loadGetObjectiveAssignmentQuestionsFragment(bundleAssignmentDetails);
+
+//                mFragment.getFragmentManager().beginTransaction().
+//                        replace(R.id.fl_teacher_office_home,
+//                                GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails), AppConstant.FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION).commit();
 
             }
         });

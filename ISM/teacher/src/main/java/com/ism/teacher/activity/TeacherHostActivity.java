@@ -30,7 +30,6 @@ import com.ism.teacher.fragments.StudentAttemptedFragment;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
 import com.ism.teacher.fragments.TeacherOfficeFragment;
-import com.ism.teacher.fragments.TeacherQuizHomeFragment;
 import com.ism.teacher.fragments.TeacherTutorialGroupFragment;
 import com.ism.teacher.fragments.UpcomingEventsFragment;
 import com.ism.teacher.fragments.UserProfileFragment;
@@ -58,7 +57,8 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
 
     private TextView txtsMenu[];
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom, controllerTopMenuAssessment, controllerTopMenuDesk, controllerTopMenuReportCard, currentControllerTopMenu;
+    public ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom, controllerTopMenuAssessment, controllerTopMenuDesk, controllerTopMenuReportCard, currentControllerTopMenu;
+
 
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_UPCOMING_EVENTS = 6;
@@ -84,7 +84,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     FragmentManager mFragmentManager;
     Bundle fragmentBundle = new Bundle();
 
-    public static final String ARG_LOAD_FRAGMENT = "LOAD_FRAGMENT";
+    public ArrayList<ControllerTopMenuItem> updatedTopMenuItem = new ArrayList<>();
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -441,13 +441,13 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         try {
             if (view == imgBack) {
                 hideControllerTopControls();
-                for (int i = 0; i < currentControllerTopMenu.size(); i++) {
-                    txtsMenu[i].setTextColor(Color.WHITE);
-                    currentControllerTopMenu.get(i).setIsActive(false);
-                    startSlideAnimation(txtsMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
-                    txtsMenu[i].setVisibility(View.VISIBLE);
+//                for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+//                    txtsMenu[i].setTextColor(Color.WHITE);
+//                    currentControllerTopMenu.get(i).setIsActive(false);
+//                    startSlideAnimation(txtsMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
+//                    txtsMenu[i].setVisibility(View.VISIBLE);
+//                }
 
-                }
                 onBackClick(currentMainFragment);
 
             }
@@ -490,6 +490,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 }
                 if (!isActive) {
                     for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+
                         if (view == txtsMenu[i]) {
                             currentControllerTopMenu.get(i).setIsActive(true);
                             txtsMenu[i].setTextColor(getResources().getColor(currentMainFragmentBg));
@@ -621,9 +622,9 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     public void showTxtAction() {
         txtAction.setVisibility(View.VISIBLE);
+        txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
     }
 
-    public static final int FRAGMENT_ASSIGNMENT_SUBMITTER = 7;
 
     private void onBackClick(int currentMainFragment) {
 
@@ -631,48 +632,57 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
             //On loading teacher office in main frag,automatically it will call
             //Teacher class wall(as per mockup_),first frag called inside TeacherOffice is classwall in initglobal
+
             int current_office_fragment;
             current_office_fragment = TeacherOfficeFragment.getCurrentChildFragment();
+            TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+
+            /**
+             *  sending old fragment in onBack param(which we need to replace with new one)
+             */
 
             switch (current_office_fragment) {
                 case TeacherOfficeFragment.FRAGMENT_QUIZ:
-                    TeacherQuizHomeFragment teacherQuizHomeFragment = (TeacherQuizHomeFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_QUIZ);
-                    teacherQuizHomeFragment.onBackClick();
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_QUIZ);
                     break;
+
                 case TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER:
-                    TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
                     teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
                     break;
 
                 case TeacherOfficeFragment.FRAGMENT_CLASSWALL:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
+                    break;
+
 
                 case TeacherOfficeFragment.FRAGMENT_NOTES:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_NOTES);
+                    break;
 
                 case TeacherOfficeFragment.FRAGMENT_MARK_SCRIPT:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_MARK_SCRIPT);
+                    break;
 
                 case TeacherOfficeFragment.FRAGMENT_RESULTS:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_RESULTS);
+                    break;
 
                 case TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT:
-                    loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT);
+                    break;
+
+                case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
+                    break;
+
+                case TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW);
                     break;
 
             }
 
         }
 
-    }
-    /*This is to handle backstack for particular fragment */
-
-    /**
-     * @param fragmentName    =name of frag from which back done
-     * @param bundleArguments
-     */
-    public void handleBackClick(String fragmentName, Bundle bundleArguments) {
-
-        if (fragmentName.equals(AppConstant.FRAGMENT_TAG_TEACHER_QUIZ)) {
-            loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, bundleArguments);
-            getBundle().remove(fragmentName);
-        }
     }
 
     Bundle bundle = new Bundle();
@@ -690,5 +700,37 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     public void showControllerTopBackButton() {
         Utility.startSlideAnimation(imgBack, -100, 0, 0, 0);
         imgBack.setVisibility(View.VISIBLE);
+    }
+
+
+    public void showSpinnerWithSubMenu(int index) {
+
+        switch (index) {
+            case AppConstant.INDEX_ALL_ASSIGNMENTS:
+                hideAllMainMenus();
+                showControllerTopBackButton();
+                startSlideAnimation(spSubmenu, -imgBack.getWidth(), 0, 0, 0);
+                spSubmenu.setVisibility(View.VISIBLE);
+                adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(index).getSubMenu(), TeacherHostActivity.this);
+                spSubmenu.setAdapter(adapterControllerTopSpinner);
+                break;
+
+        }
+    }
+
+
+    public void showAllMainMenus() {
+        for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+            txtsMenu[i].setTextColor(Color.WHITE);
+            currentControllerTopMenu.get(i).setIsActive(false);
+            startSlideAnimation(txtsMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
+            txtsMenu[i].setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hideAllMainMenus() {
+        for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+            txtsMenu[i].setVisibility(View.GONE);
+        }
     }
 }

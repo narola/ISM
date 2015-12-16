@@ -317,7 +317,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
         if (Utility.isConnected(getActivity())) {
             try {
-             //   Utility.showSpinnerProgress(progAssignmentClass);
+                //   Utility.showSpinnerProgress(progAssignmentClass);
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_CLASSROOMS);
 
@@ -334,7 +334,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
         if (Utility.isConnected(getActivity())) {
             try {
-               // Utility.showSpinnerProgress(progAssignmentSubject);
+                // Utility.showSpinnerProgress(progAssignmentSubject);
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_SUBJECT);
             } catch (Exception e) {
@@ -372,20 +372,20 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
             switch (apicode) {
                 case WebConstants.GET_ALL_ASSIGNMENTS:
                     if (getActivity() != null && isAdded()) {
-                          ((TeacherHostActivity) getActivity()).hideProgress();
+                        ((TeacherHostActivity) getActivity()).hideProgress();
                         onResponseGetAllAssignments(object);
                     }
                     break;
                 case WebConstants.GET_CLASSROOMS:
                     if (getActivity() != null && isAdded()) {
-                          ((TeacherHostActivity) getActivity()).hideProgress();
+                        ((TeacherHostActivity) getActivity()).hideProgress();
                         onResponseGetClassrooms(object, error);
 
                     }
                     break;
                 case WebConstants.GET_SUBJECT:
                     if (getActivity() != null && isAdded()) {
-                          ((TeacherHostActivity) getActivity()).hideProgress();
+                        ((TeacherHostActivity) getActivity()).hideProgress();
                         onResponseGetSubjects(object, error);
 
                     }
@@ -456,37 +456,46 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     private void onResponseGetAllAssignments(Object object) {
 
-        ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+        if (object != null) {
+            ResponseHandler responseHandler = (ResponseHandler) object;
+            if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-            arrayListAssignments.addAll(responseHandler.getExams());
-            assignmentsAdapter.addAll(arrayListAssignments);
-            Debug.e("assignment size", "" + arrayListAssignments.size());
+                arrayListAssignments.addAll(responseHandler.getExams());
+                assignmentsAdapter.addAll(arrayListAssignments);
+                Debug.e("assignment size", "" + arrayListAssignments.size());
 
-            if (arrayListAssignments.size() == 0) {
-                tvNoAssignments.setVisibility(View.VISIBLE);
+                if (arrayListAssignments.size() == 0) {
+                    tvNoAssignments.setVisibility(View.VISIBLE);
+                } else {
+                    tvNoAssignments.setVisibility(View.GONE);
+
+                }
+
             } else {
-                tvNoAssignments.setVisibility(View.GONE);
 
+                Utility.showToast(getString(R.string.web_service_issue), getActivity());
             }
-
         } else {
-
-            Utility.showToast(getString(R.string.web_service_issue), getActivity());
+            Debug.e(TAG, "onResponseGetAllAssignment Exception : " + "response object may be returning null");
         }
+
     }
 
     private TeacherOfficeFragment getFragment() {
         return (TeacherOfficeFragment) mFragment;
     }
 
-    public void callOfficemethod(Bundle args) {
+    public void loadOfficeSubmitter(Bundle args) {
         getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER, args);
     }
 
 
-    public void onBackClick() {
-        ((TeacherHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_TAG_TEACHER_QUIZ, getArguments());
+    /**
+     * GetObjectiveAssignmentQuestionsFragment (to view questions)
+     * @param args
+     */
+    public void loadGetObjectiveAssignmentQuestionsFragment(Bundle args) {
+        getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW, args);
     }
 
 
