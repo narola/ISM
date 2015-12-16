@@ -146,7 +146,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 
                     setBundleArguments(position);
                     getBundleArguments().putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
-                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR, getBundleArguments());
+                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
 
 
                 }
@@ -158,8 +158,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 
                     setBundleArguments(position);
                     getBundleArguments().putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
-                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS,
-                            getBundleArguments());
+                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS);
                 }
             });
 

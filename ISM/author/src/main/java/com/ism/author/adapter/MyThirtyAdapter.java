@@ -76,9 +76,8 @@ public class MyThirtyAdapter extends RecyclerView.Adapter<MyThirtyAdapter.ViewHo
                     setBundleArguments(position);
 
                     getBundleArguments().putBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
-                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS,
-                            getBundleArguments());
-                    ((AuthorHostActivity) mContext).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT, getBundleArguments());
+                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS);
+                    ((AuthorHostActivity) mContext).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT);
                 }
             });
 

@@ -396,7 +396,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETCLASSROOMS);
+                        .execute(WebConstants.GETALLCLASSROOMS);
             } catch (Exception e) {
                 Debug.e(TAG + Utility.getString(R.string.strerrormessage, getActivity()), e.getLocalizedMessage());
             }
@@ -663,7 +663,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     public void onResponse(int apiCode, Object object, Exception error) {
         try {
             switch (apiCode) {
-                case WebConstants.GETCLASSROOMS:
+                case WebConstants.GETALLCLASSROOMS:
                     onResponseGetClassrooms(object, error);
                     break;
                 case WebConstants.GETBOOKSFORAUTHOR:
@@ -831,7 +831,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 if (getBaseFragment().getBundleArguments() != null) {
                     setBundleArguments();
                 }
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER, getBaseFragment().getBundleArguments());
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER);
                 break;
             case R.id.btn_exam_cancel:
                 getBaseFragment().onBackClick();

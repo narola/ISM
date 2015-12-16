@@ -174,7 +174,7 @@ public class MyThirtyFragment extends Fragment implements WebserviceWrapper.Webs
 
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYTHIRTY, getBundleArguments());
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYTHIRTY);
     }
 
     private Bundle getBundleArguments() {

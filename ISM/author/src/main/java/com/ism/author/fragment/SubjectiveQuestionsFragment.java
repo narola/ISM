@@ -364,10 +364,10 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
             getBaseFragment().getBundleArguments().putString(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE, getString(R.string.strsubjective));
 
             ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
-                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getBaseFragment().getBundleArguments());
+                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT));
 
             ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
-                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
+                    (AuthorHostActivity.FRAGMENT_HIGHSCORE));
 
         }
 

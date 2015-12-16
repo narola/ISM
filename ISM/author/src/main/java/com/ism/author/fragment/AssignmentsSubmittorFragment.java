@@ -234,7 +234,7 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
     }
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSIGNMENT_SUBMITTOR, getBundleArguments());
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSIGNMENT_SUBMITTOR);
     }
 
     private Bundle getBundleArguments() {

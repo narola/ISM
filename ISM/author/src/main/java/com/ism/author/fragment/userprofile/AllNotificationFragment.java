@@ -61,9 +61,8 @@ public class AllNotificationFragment extends Fragment implements AuthorHostActiv
     private int positionNotification;
     private boolean isReadStatusUpdated = false;
 
-    public static AllNotificationFragment newInstance(Bundle bundleArgument) {
+    public static AllNotificationFragment newInstance() {
         AllNotificationFragment fragment = new AllNotificationFragment();
-        fragment.setArguments(bundleArgument);
         return fragment;
     }
 
@@ -108,11 +107,10 @@ public class AllNotificationFragment extends Fragment implements AuthorHostActiv
         if (arrListNotification != null) {
 
             adpNotification = new NotificationAdapter(getActivity(), arrListNotification);
-            if(adpNotification.getCount()>0){
-                Debug.i(TAG,"arrListNotification size : "+adpNotification.getCount());
-            }
-            else{
-                Debug.i(TAG,"arrListNotification size : "+adpNotification.getCount());
+            if (adpNotification.getCount() > 0) {
+                Debug.i(TAG, "arrListNotification size : " + adpNotification.getCount());
+            } else {
+                Debug.i(TAG, "arrListNotification size : " + adpNotification.getCount());
             }
             lvAllNotification.setAdapter(adpNotification);
         }
@@ -132,11 +130,11 @@ public class AllNotificationFragment extends Fragment implements AuthorHostActiv
         }
         lvAllNotification.setVisibility(View.VISIBLE);
         txtHeader.setVisibility(View.VISIBLE);
-	    if (Utility.isConnected(activityHost)) {
-		    callApiUpdateReadStatus();
-	    } else {
-		    Utility.alertOffline(activityHost);
-	    }
+        if (Utility.isConnected(activityHost)) {
+            callApiUpdateReadStatus();
+        } else {
+            Utility.alertOffline(activityHost);
+        }
     }
 
     private void showNotificationDetails(int position) {
@@ -150,7 +148,7 @@ public class AllNotificationFragment extends Fragment implements AuthorHostActiv
             rlNotificationDetails.setVisibility(View.VISIBLE);
         }
 
-        Global.imageLoader.displayImage(WebConstants.USER_IMAGES+arrListNotification.get(position).getNotificationFromProfilePic(), imgDp, ISMAuthor.options);
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrListNotification.get(position).getNotificationFromProfilePic(), imgDp, ISMAuthor.options);
         txtName.setText(arrListNotification.get(position).getNotificationFromName());
         txtPost.setText(arrListNotification.get(position).getNotificationText());
 //		txtLikes.setText(arrListNotification.get(position).getTotalLike());

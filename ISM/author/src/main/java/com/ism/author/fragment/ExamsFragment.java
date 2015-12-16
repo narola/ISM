@@ -285,7 +285,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             try {
 
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETCLASSROOMS);
+                        .execute(WebConstants.GETALLCLASSROOMS);
 
             } catch (Exception e) {
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -323,7 +323,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                     onResponseGetAllExams(object, error);
                     break;
 
-                case WebConstants.GETCLASSROOMS:
+                case WebConstants.GETALLCLASSROOMS:
                     onResponseGetClassrooms(object, error);
                     break;
 
@@ -455,7 +455,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSESSMENT, getBundleArguments());
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSESSMENT);
     }
 
 

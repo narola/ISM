@@ -67,13 +67,20 @@ public class ControllerTopMenuItem {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-//            ArrayList<String> trial = new ArrayList<String>();
-//            trial.add(mContext.getString(R.string.strTrial));
-//            trial.add(mContext.getString(R.string.notes));
-//            trial.add(mContext.getString(R.string.books));
             menu.add(new ControllerTopMenuItem(mContext.getString(R.string.strTrial), mContext.getString(R.string.strAddNew), null));
         } catch (Exception e) {
             Debug.e(TAG, "getMenuTrial Exception : " + e.toString());
+        }
+        return menu;
+    }
+
+    public static ArrayList<ControllerTopMenuItem> getMenuMyThirty(Context mContext) {
+        ArrayList<ControllerTopMenuItem> menu = null;
+        try {
+            menu = new ArrayList<ControllerTopMenuItem>();
+            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.strmy30th), mContext.getString(R.string.strAddNew), null));
+        } catch (Exception e) {
+            Debug.e(TAG, "getMenuMy30th  Exception : " + e.toString());
         }
         return menu;
     }
@@ -82,10 +89,6 @@ public class ControllerTopMenuItem {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-//            ArrayList<String> trial = new ArrayList<String>();
-//            trial.add(mContext.getString(R.string.strTrial));
-//            trial.add(mContext.getString(R.string.notes));
-//            trial.add(mContext.getString(R.string.books));
             menu.add(new ControllerTopMenuItem(mContext.getString(R.string.strBooks), mContext.getString(R.string.strAddNew), null));
         } catch (Exception e) {
             Debug.e(TAG, "getMenuBooks Exception : " + e.toString());
@@ -100,6 +103,18 @@ public class ControllerTopMenuItem {
             menu.add(new ControllerTopMenuItem(mContext.getString(R.string.strassessment), mContext.getString(R.string.strAddNew), null));
         } catch (Exception e) {
             Debug.e(TAG, "getMenuAssessment Exception : " + e.toString());
+        }
+        return menu;
+    }
+
+    public static ArrayList<ControllerTopMenuItem> getMenuMyDesk(Context mContext) {
+        ArrayList<ControllerTopMenuItem> menu = null;
+        try {
+            menu = new ArrayList<ControllerTopMenuItem>();
+            menu.add(new ControllerTopMenuItem((mContext.getString(R.string.strMyDesk)), null, null));
+
+        } catch (Exception e) {
+            Debug.e(TAG, "getMenuMyDesk Exception : " + e.toString());
         }
         return menu;
     }
@@ -128,15 +143,5 @@ public class ControllerTopMenuItem {
         return menu;
     }
 
-    public static ArrayList<ControllerTopMenuItem> getMenuMyDesk(Context mContext) {
-        ArrayList<ControllerTopMenuItem> menu = null;
-        try {
-            menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem((mContext.getString(R.string.strMyDesk)), null, null));
 
-        } catch (Exception e) {
-            Debug.e(TAG, "getMenuMyDesk Exception : " + e.toString());
-        }
-        return menu;
-    }
 }

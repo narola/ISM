@@ -139,7 +139,7 @@ public class SubjectiveAssignmentQuestionsContainerFragment extends Fragment {
 
     /*this is for back navigation*/
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER, getBundleArguments());
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER);
     }
 
     public Bundle getBundleArguments() {
