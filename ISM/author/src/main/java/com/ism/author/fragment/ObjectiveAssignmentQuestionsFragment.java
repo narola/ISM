@@ -20,6 +20,7 @@ import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.ObjectiveAssignmentQuestionsAdapter;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.MyTypeFace;
@@ -54,9 +55,8 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
     public static String ARG_EXAM_ISCOPY = "examIsCopy";
 
 
-    public static ObjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArgument) {
+    public static ObjectiveAssignmentQuestionsFragment newInstance() {
         ObjectiveAssignmentQuestionsFragment objectiveAssignmentQuestionsFragment = new ObjectiveAssignmentQuestionsFragment();
-        objectiveAssignmentQuestionsFragment.setArguments(bundleArgument);
         return objectiveAssignmentQuestionsFragment;
     }
 
@@ -99,7 +99,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         tvNoDataMsg.setText(getString(R.string.no_exam_questions));
 
         rvGetObjectiveAssignmentQuestionslist = (RecyclerView) view.findViewById(R.id.rv_getObjective_assignment_questionslist);
-        objectiveAssignmentQuestionsAdapter = new ObjectiveAssignmentQuestionsAdapter(getActivity(), getArguments());
+        objectiveAssignmentQuestionsAdapter = new ObjectiveAssignmentQuestionsAdapter(getActivity());
         rvGetObjectiveAssignmentQuestionslist.setAdapter(objectiveAssignmentQuestionsAdapter);
         rvGetObjectiveAssignmentQuestionslist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -109,7 +109,8 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         imgEditExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getArguments().putBoolean(ARG_EXAM_ISCOPY, false);
+                getBundleArguments().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, false);
+                getBundleArguments().putBoolean(ARG_EXAM_ISCOPY, false);
                 setExamQuestions();
             }
         });
@@ -117,7 +118,8 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         imgCopyExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getArguments().putBoolean(ARG_EXAM_ISCOPY, true);
+                getBundleArguments().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, false);
+                getBundleArguments().putBoolean(ARG_EXAM_ISCOPY, true);
                 setExamQuestions();
             }
         });
@@ -129,12 +131,12 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
     private void setExamQuestions() {
 
         if (responseObjGetAllExamQuestions != null) {
-            getArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
-            getArguments().putString(ARG_EXAM_TYPE, getString(R.string.strobjective));
+            getBundleArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
+            getBundleArguments().putString(ARG_EXAM_TYPE, getString(R.string.strobjective));
 
 
             ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
-                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getArguments());
+                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getBundleArguments());
 
             ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
                     (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
@@ -148,7 +150,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setExamId(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
@@ -167,8 +169,8 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setStudentId(getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
+                request.setExamId(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setStudentId(getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
                 new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {
@@ -185,7 +187,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS);
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS);
             }
         } catch (ClassCastException e) {
             Log.i(TAG, "onAttach Exception : " + e.toString());
@@ -197,7 +199,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS);
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS);
             }
         } catch (ClassCastException e) {
             Log.i(TAG, "onDetach Exception : " + e.toString());
@@ -236,7 +238,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                         arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
                         objectiveAssignmentQuestionsAdapter.addAll(arrListQuestions);
                         objectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
-                        if (getArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                        if (getBundleArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                             callAPiGetExamEvaluation();
                         }
                         tvNoDataMsg.setVisibility(View.GONE);
@@ -284,18 +286,18 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
 
     private void setAssignmentDetails() {
 
-        if (getArguments() != null) {
+        if (getBundleArguments() != null) {
             tvObjectiveAssignmentSubject.setText(getResources().getString(R.string.strbookname) + ": ");
-            if (getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME) != null) {
-                tvObjectiveAssignmentSubject.append(Utility.getSpannableString(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME), getResources().getColor(R.color.bg_assessment)));
+            if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME) != null) {
+                tvObjectiveAssignmentSubject.append(Utility.getSpannableString(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME), getResources().getColor(R.color.bg_assessment)));
             }
             tvObjectiveAssignmentClass.setText(getResources().getString(R.string.strclass) + ": ");
-            if (getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME) != null) {
-                tvObjectiveAssignmentClass.append(Utility.getSpannableString(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME), getResources().getColor(R.color.bg_assessment)));
+            if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME) != null) {
+                tvObjectiveAssignmentClass.append(Utility.getSpannableString(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME), getResources().getColor(R.color.bg_assessment)));
             }
-            tvObjectiveAssignmentTitle.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
+            tvObjectiveAssignmentTitle.setText(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
 
-            tvObjectiveAssignmentDate.setText(Utils.getDateInApiFormat(getArguments().getString(ExamsAdapter.ARG_EXAM_CREATED_DATE)));
+            tvObjectiveAssignmentDate.setText(Utils.getDateInApiFormat(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CREATED_DATE)));
 
         }
     }
@@ -303,5 +305,15 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
     public void loadStudentEvaluationData() {
         callAPiGetExamEvaluation();
     }
+
+
+    private Bundle getBundleArguments() {
+        return ((AuthorHostActivity) getActivity()).getBundle();
+    }
+
+    public void onBackClick() {
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS, getBundleArguments());
+    }
+
 
 }

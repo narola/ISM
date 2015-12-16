@@ -63,9 +63,8 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private String strExamStartDate = "", strExamEndDate = "";
 
 
-    public static ExamsFragment newInstance(Bundle bundleArgument) {
+    public static ExamsFragment newInstance() {
         ExamsFragment examsFragment = new ExamsFragment();
-        examsFragment.setArguments(bundleArgument);
         return examsFragment;
     }
 
@@ -456,6 +455,11 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSESSMENT, getArguments());
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSESSMENT, getBundleArguments());
+    }
+
+
+    private Bundle getBundleArguments() {
+        return ((AuthorHostActivity) getActivity()).getBundle();
     }
 }

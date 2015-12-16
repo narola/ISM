@@ -30,9 +30,8 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     private MyTypeFace myTypeFace;
 
 
-    public static CreateExamAssignmentContainerFragment newInstance(Bundle bundleArgument) {
+    public static CreateExamAssignmentContainerFragment newInstance() {
         CreateExamAssignmentContainerFragment createExamAssignmentContainerFragment = new CreateExamAssignmentContainerFragment();
-        createExamAssignmentContainerFragment.setArguments(bundleArgument);
         return createExamAssignmentContainerFragment;
     }
 
@@ -98,14 +97,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
                                      }
         );
 
-
-//        if (getArguments() != null) {
-//            initTab(1);
-//        } else {
-//            initTab(0);
-//        }
-
-
         initTab(1);
 
 
@@ -147,11 +138,11 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         try {
             switch (fragment) {
                 case FRAGMENT_TRIAL_ACTIVITY:
-                    createAssignmentFragment = CreateAssignmentFragment.newInstance(getArguments());
+                    createAssignmentFragment = CreateAssignmentFragment.newInstance();
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, createAssignmentFragment).commit();
                     break;
                 case FRAGMENT_TRIAL_EXAM:
-                    createExamFragment = CreateExamFragment.newInstance(getArguments(), getActivity());
+                    createExamFragment = CreateExamFragment.newInstance(this);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, createExamFragment).commit();
                     break;
             }
@@ -182,7 +173,11 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     }
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_CREATEEXAMCONTAINER, getArguments());
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_CREATEEXAMCONTAINER, getBundleArguments());
+    }
+
+    public Bundle getBundleArguments() {
+        return ((AuthorHostActivity) getActivity()).getBundle();
     }
 
 }

@@ -37,9 +37,8 @@ public class MyThirtyFragment extends Fragment implements WebserviceWrapper.Webs
     private View view;
 
 
-    public static MyThirtyFragment newInstance(Bundle bundleArgument) {
+    public static MyThirtyFragment newInstance() {
         MyThirtyFragment myThirtyFragment = new MyThirtyFragment();
-        myThirtyFragment.setArguments(bundleArgument);
         return myThirtyFragment;
     }
 
@@ -175,6 +174,10 @@ public class MyThirtyFragment extends Fragment implements WebserviceWrapper.Webs
 
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYTHIRTY, getArguments());
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYTHIRTY, getBundleArguments());
+    }
+
+    private Bundle getBundleArguments() {
+        return ((AuthorHostActivity) getActivity()).getBundle();
     }
 }

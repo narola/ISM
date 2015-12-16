@@ -156,13 +156,13 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                 @Override
                 public void onClick(View v) {
 
-                    Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS:::" + getFragment().getListOfPreviewQuestion().size());
+                    Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS:::" + getBaseFragment().getListOfPreviewQuestion().size());
 
                     if (canAddToPreview) {
 
                         if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strquestionformatmcq))) {
 
-                            if (getFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                            if (getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
                                     (mContext.getString(R.string.strobjective))) {
                                 isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                             } else {
@@ -173,7 +173,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                         } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
                                 (mContext.getString(R.string.strquestionformatdescriptive))) {
 
-                            if (getFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                            if (getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
                                     (mContext.getString(R.string.strsubjective))) {
                                 isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                             } else {
@@ -184,7 +184,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                         } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
                                 (mContext.getString(R.string.strquestionformatfillups))) {
-                            if (getFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                            if (getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
                                     (mContext.getString(R.string.strsubjective))) {
                                 isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                             } else {
@@ -217,7 +217,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             });
 
 
-
         } catch (Exception e) {
             Log.e(TAG, "onBindViewHolder Exception : " + e.toString());
         }
@@ -229,10 +228,10 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         if (!checkForQuestionPresence(question.getQuestionId())) {
             if (checkBox.isChecked()) {
                 question.setIsQuestionAddedInPreview(true);
-                getFragment().getListOfPreviewQuestionsToAdd().add(question);
+                getBaseFragment().getListOfPreviewQuestionsToAdd().add(question);
             } else {
                 question.setIsQuestionAddedInPreview(false);
-                getFragment().getListOfPreviewQuestionsToAdd().remove(question);
+                getBaseFragment().getListOfPreviewQuestionsToAdd().remove(question);
             }
         } else {
             question.setIsQuestionAddedInPreview(true);
@@ -241,7 +240,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     private Boolean checkForQuestionPresence(String questionId) {
         Boolean isPresent = false;
-        for (Questions question : getFragment().getListOfPreviewQuestion()) {
+        for (Questions question : getBaseFragment().getListOfPreviewQuestion()) {
             if (question.getQuestionId().equals(questionId)) {
                 isPresent = true;
                 break;
@@ -252,7 +251,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     }
 
     private void openAddEditQuestionFragment(int position, Boolean isCopy) {
-        getFragment().setDataOnFragmentFlip(arrListQuestions.get(position), true, isCopy);
+        getBaseFragment().setDataOnFragmentFlip(arrListQuestions.get(position), true, isCopy);
     }
 
 
@@ -312,7 +311,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     }
 
 
-    private AddQuestionContainerFragment getFragment() {
+    private AddQuestionContainerFragment getBaseFragment() {
         return (AddQuestionContainerFragment) mFragment;
     }
 

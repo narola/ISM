@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import com.ism.author.R;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.QuestionPalette;
@@ -34,9 +35,9 @@ public class SubjectiveAssignmentQuestionsContainerFragment extends Fragment {
             flGetsubjectiveAssignmentContainerRight;
 
 
-    public static SubjectiveAssignmentQuestionsContainerFragment newInstance(Bundle bundleArgument) {
-        SubjectiveAssignmentQuestionsContainerFragment subjectiveAssignmentQuestionsContainerFragment = new SubjectiveAssignmentQuestionsContainerFragment();
-        subjectiveAssignmentQuestionsContainerFragment.setArguments(bundleArgument);
+    public static SubjectiveAssignmentQuestionsContainerFragment newInstance() {
+        SubjectiveAssignmentQuestionsContainerFragment subjectiveAssignmentQuestionsContainerFragment = new
+                SubjectiveAssignmentQuestionsContainerFragment();
         return subjectiveAssignmentQuestionsContainerFragment;
     }
 
@@ -54,8 +55,8 @@ public class SubjectiveAssignmentQuestionsContainerFragment extends Fragment {
 
     private void initGlobal() {
 
-        getStudentsFragment = new GetStudentsFragment(this, getArguments());
-        subjectiveQuestionsFragment = new SubjectiveQuestionsFragment(this, getArguments());
+        getStudentsFragment = new GetStudentsFragment(this);
+        subjectiveQuestionsFragment = new SubjectiveQuestionsFragment(this);
         questionPaletteFragment = new QuestionPaletteFragment(this);
 
         flGetsubjectiveAssignmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_getsubjective_assignment_container_left);
@@ -84,7 +85,7 @@ public class SubjectiveAssignmentQuestionsContainerFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS);
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER);
             }
         } catch (ClassCastException e) {
             Log.i(TAG, "onAttach Exception : " + e.toString());
@@ -96,17 +97,13 @@ public class SubjectiveAssignmentQuestionsContainerFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS);
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER);
             }
         } catch (ClassCastException e) {
             Log.i(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
     }
-
-//    public Bundle getBundle() {
-//        return getArguments();
-//    }
 
 
     /*this is to load data for student evaluation*/
@@ -137,5 +134,15 @@ public class SubjectiveAssignmentQuestionsContainerFragment extends Fragment {
     /*this is to scroll to specific question content on the click of question palette*/
     public void scrollToSpecificQuestion(int position) {
         subjectiveQuestionsFragment.scrollToSpecificQuestion(position);
+    }
+
+
+    /*this is for back navigation*/
+    public void onBackClick() {
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER, getBundleArguments());
+    }
+
+    public Bundle getBundleArguments() {
+        return ((AuthorHostActivity) getActivity()).getBundle();
     }
 }

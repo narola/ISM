@@ -41,10 +41,8 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private View view;
     Fragment mFragment;
 
-    public GetStudentsFragment(Fragment fragment, Bundle bundleArguments) {
+    public GetStudentsFragment(Fragment fragment) {
         this.mFragment = fragment;
-        setArguments(bundleArguments);
-
     }
 
     private ImageView imgSearchMystudents;
@@ -148,7 +146,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setExamId(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 request.setUserId(Global.strUserId);
                 request.setRole(Global.role);
 

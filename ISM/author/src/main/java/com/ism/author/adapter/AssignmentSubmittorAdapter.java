@@ -33,7 +33,6 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
     private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
-    private Bundle bundleArgument;
     private LayoutInflater inflater;
 
     public static String ARG_STUDENT_ID = "studenId";
@@ -42,9 +41,8 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
     public static String ARG_STUDENT_NAME = "studentName";
 
 
-    public AssignmentSubmittorAdapter(Context mContext, Bundle bundleArgument) {
+    public AssignmentSubmittorAdapter(Context mContext) {
         this.mContext = mContext;
-        this.bundleArgument = bundleArgument;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(this.mContext));
         myTypeFace = new MyTypeFace(mContext);
@@ -87,25 +85,24 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
                 @Override
                 public void onClick(View v) {
 
-                    bundleArgument.putString(ARG_STUDENT_ID, arrListExamSubmittor.get(position).getStudentId());
-                    bundleArgument.putInt(ARG_STUDENT_POSITION, position);
-                    bundleArgument.putString(ARG_STUDENT_PROFILE_PIC, arrListExamSubmittor.get(position).getStudentProfilePic());
-                    bundleArgument.putString(ARG_STUDENT_NAME, arrListExamSubmittor.get(position).getStudentName());
+                    getBundleArguments().putString(ARG_STUDENT_ID, arrListExamSubmittor.get(position).getStudentId());
+                    getBundleArguments().putInt(ARG_STUDENT_POSITION, position);
+                    getBundleArguments().putString(ARG_STUDENT_PROFILE_PIC, arrListExamSubmittor.get(position).getStudentProfilePic());
+                    getBundleArguments().putString(ARG_STUDENT_NAME, arrListExamSubmittor.get(position).getStudentName());
 
 
-                    if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase("subjective")) {
-//                        bundleArgument.putString(ARG_STUDENT_ID, "11");
+                    if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase("subjective")) {
                         ((AuthorHostActivity) mContext).loadFragmentInMainContainer
-                                (AuthorHostActivity.FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS, bundleArgument);
-                    } else if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase("objective")) {
-//                        bundleArgument.putString(ARG_STUDENT_ID, "9");
+                                (AuthorHostActivity.FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER, getBundleArguments());
+                    } else if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase("objective")) {
+
                         ((AuthorHostActivity) mContext).loadFragmentInMainContainer
-                                (AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS, bundleArgument);
+                                (AuthorHostActivity.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS, getBundleArguments());
 
                          /*if arguments are there then call the students in the right fragment*/
-                        if (bundleArgument != null) {
-                            ((AuthorHostActivity) mContext).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT, bundleArgument);
-                        }
+//                        if (bundleArgument != null) {
+                        ((AuthorHostActivity) mContext).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT, getBundleArguments());
+//                        }
 
                     }
 
@@ -164,5 +161,9 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
         }
     }
 
+
+    private Bundle getBundleArguments() {
+        return ((AuthorHostActivity) mContext).getBundle();
+    }
 
 }

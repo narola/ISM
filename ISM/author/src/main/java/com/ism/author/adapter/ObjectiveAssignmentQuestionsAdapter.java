@@ -32,12 +32,10 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private MyTypeFace myTypeFace;
     private LayoutInflater inflater;
-    private Bundle bundleArgument;
 
 
-    public ObjectiveAssignmentQuestionsAdapter(Context context, Bundle bundleArgument) {
+    public ObjectiveAssignmentQuestionsAdapter(Context context) {
         this.mContext = context;
-        this.bundleArgument = bundleArgument;
         inflater = LayoutInflater.from(context);
         myTypeFace = new MyTypeFace(context);
     }
@@ -72,23 +70,23 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
 
             holder.etEvoluationsNotes.setText(Utils.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
             holder.etSolution.setText(Utils.formatHtml(arrListQuestions.get(position).getSolution()));
-            if (bundleArgument.containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_NAME)) {
-                holder.txtStudentnameAnswer.setText(bundleArgument.getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME) + " " +
+            if (getBundleArguments().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_NAME)) {
+                holder.txtStudentnameAnswer.setText(getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME) + " " +
                         mContext.getString(R.string.stranswer));
 
             }
 
-            if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
+            if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
                 holder.llQuestionsOptions.setVisibility(View.GONE);
                 holder.llAnswerContainer.setVisibility(View.GONE);
                 holder.llEvaluationContainer.setVisibility(View.VISIBLE);
 
-                if (bundleArgument.getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == AuthorHostActivity.FRAGMENT_MYTHIRTY) {
+                if (getBundleArguments().getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == AuthorHostActivity.FRAGMENT_MYTHIRTY) {
 
                 }
 
 
-            } else if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
+            } else if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
                 holder.llQuestionsOptions.setVisibility(View.VISIBLE);
                 holder.llAnswerContainer.setVisibility(View.VISIBLE);
                 holder.llEvaluationContainer.setVisibility(View.GONE);
@@ -112,8 +110,8 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
                     }
                 }
 
-                if (bundleArgument.getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION) ||
-                        bundleArgument.getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == AuthorHostActivity.FRAGMENT_MYTHIRTY) {
+                if (getBundleArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION) ||
+                        getBundleArguments().getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == AuthorHostActivity.FRAGMENT_MYTHIRTY) {
                     holder.llEvaluationContainer.setVisibility(View.VISIBLE);
                 } else {
                     holder.llEvaluationContainer.setVisibility(View.GONE);
@@ -125,7 +123,7 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
             holder.txtStudentAnswer.setText("");
             if (evaluationList != null) {
                 if (evaluationList.size() > 0 && position < evaluationList.size()) {
-                    if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
+                    if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
                         for (int j = 0; j < arrListQuestions.get(position).getAnswers().size(); j++) {
                             if (evaluationList.get(position).getStudentResponse().equalsIgnoreCase
                                     (arrListQuestions.get(position).getAnswers().get(j).getId())) {
@@ -134,7 +132,7 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
                                 break;
                             }
                         }
-                    } else if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
+                    } else if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
 
 
                     }
@@ -215,6 +213,10 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
         this.evaluationList = evaluationList;
         notifyDataSetChanged();
 
+    }
+
+    private Bundle getBundleArguments() {
+        return ((AuthorHostActivity) mContext).getBundle();
     }
 
 

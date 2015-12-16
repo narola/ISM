@@ -37,12 +37,13 @@ import com.ism.author.fragment.AddQuestionContainerFragment;
 import com.ism.author.fragment.AssignmentsSubmittorFragment;
 import com.ism.author.fragment.BooksFragment;
 import com.ism.author.fragment.CreateExamAssignmentContainerFragment;
+import com.ism.author.fragment.CreateExamFragment;
 import com.ism.author.fragment.ExamsFragment;
-import com.ism.author.fragment.ObjectiveAssignmentQuestionsFragment;
-import com.ism.author.fragment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.MyThirtyFragment;
+import com.ism.author.fragment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.OfficeFragment;
+import com.ism.author.fragment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.fragment.mydesk.MyDeskFragment;
 import com.ism.author.fragment.userprofile.AllMessageFragment;
 import com.ism.author.fragment.userprofile.AllNotificationFragment;
@@ -106,8 +107,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT = 7;
     public static final int FRAGMENT_ADDQUESTION_CONTAINER = 8;
     public static final int FRAGMENT_ASSIGNMENT_SUBMITTOR = 9;
-    public static final int FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS = 10;
-    public static final int FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS = 11;
+    public static final int FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS = 10;
+    public static final int FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER = 11;
     public static final int FRAGMENT_ALL_MESSAGE = 12;
     public static final int FRAGMENT_ALL_NOTIFICATION = 13;
     public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 14;
@@ -299,97 +300,97 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 case FRAGMENT_MYTHIRTY:
                     setBackStackFragmentKey(AppConstant.FRAGMENT_MYTHIRTY);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            MyThirtyFragment.newInstance(getBundle()), AppConstant.FRAGMENT_MYTHIRTY).commit();
+                            MyThirtyFragment.newInstance(), AppConstant.FRAGMENT_MYTHIRTY).commit();
                     break;
 
                 case FRAGMENT_ASSESSMENT:
                     setBackStackFragmentKey(AppConstant.FRAGMENT_ASSESSMENT);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            ExamsFragment.newInstance(getBundle()), AppConstant.FRAGMENT_ASSESSMENT).commit();
+                            ExamsFragment.newInstance(), AppConstant.FRAGMENT_ASSESSMENT).commit();
                     break;
 
                 case FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT:
-
                     setBackStackFragmentKey(AppConstant.FRAGMENT_CREATEEXAMCONTAINER);
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-//                            CreateExamAssignmentContainerFragment.newInstance(bundleArgument), AppConstant.FRAGMENT_CREATEEXAMCONTAINER).commit();
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            CreateExamAssignmentContainerFragment.newInstance(getBundle()), AppConstant.FRAGMENT_CREATEEXAMCONTAINER).commit();
-                    break;
-                case FRAGMENT_ADDQUESTION_CONTAINER:
+                            CreateExamAssignmentContainerFragment.newInstance(), AppConstant.FRAGMENT_CREATEEXAMCONTAINER).commit();
 
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-//                            AddQuestionContainerFragment.newInstance(bundleArgument)).commit();
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AddQuestionContainerFragment.newInstance(getBundle())).commit();
                     break;
-
 
                 case FRAGMENT_ASSIGNMENT_SUBMITTOR:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-//                            AssignmentsSubmittorFragment.newInstance(bundleArgument)).commit();
-
+                    setBackStackFragmentKey(AppConstant.FRAGMENT_ASSIGNMENT_SUBMITTOR);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AssignmentsSubmittorFragment.newInstance(getBundle())).commit();
+                            AssignmentsSubmittorFragment.newInstance(), AppConstant.FRAGMENT_ASSIGNMENT_SUBMITTOR).commit();
                     break;
 
-                case FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS:
-//                    mFragment = ObjectiveAssignmentQuestionsFragment.newInstance(bundleArgument);
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-//                            mFragment).commit();
-
-                    mFragment = ObjectiveAssignmentQuestionsFragment.newInstance(getBundle());
+                case FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS:
+                    setBackStackFragmentKey(AppConstant.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS);
+                    mFragment = ObjectiveAssignmentQuestionsFragment.newInstance();
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            mFragment).commit();
+                            mFragment, AppConstant.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS).commit();
                     break;
-                case FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-//                            SubjectiveAssignmentQuestionsContainerFragment.newInstance(bundleArgument)).commit();
 
+                case FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER:
+                    setBackStackFragmentKey(AppConstant.FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            SubjectiveAssignmentQuestionsContainerFragment.newInstance(getBundle())).commit();
+                            SubjectiveAssignmentQuestionsContainerFragment.newInstance(),
+                            AppConstant.FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER).commit();
+                    break;
+
+                case FRAGMENT_ADDQUESTION_CONTAINER:
+
+                    setBackStackFragmentKey(AppConstant.FRAGMENT_ADDQUESTION_CONTAINER);
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AddQuestionContainerFragment.newInstance(),
+                            AppConstant.FRAGMENT_ADDQUESTION_CONTAINER).commit();
+                    break;
+
+                case FRAGMENT_MY_FEEDS:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            MyFeedsFragment.newInstance()).commit();
+                    break;
+
+                case FRAGMENT_MY_BOOKS:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AssignmentsSubmittorFragment.BooksFragment.newInstance()).commit();
+                    break;
+
+                case FRAGMENT_FOLLOWERS:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            FollowersFragment.newInstance()).commit();
                     break;
 
                 case FRAGMENT_MY_ACTIVITY:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
                             MyActivityFragment.newInstance()).commit();
                     break;
-                case FRAGMENT_MY_BOOKS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AssignmentsSubmittorFragment.BooksFragment.newInstance()).commit();
-                    break;
-                case FRAGMENT_FOLLOWERS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            FollowersFragment.newInstance()).commit();
-                    break;
-                case FRAGMENT_MY_FEEDS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            MyFeedsFragment.newInstance()).commit();
-                    break;
+
+
                 case FRAGMENT_VIEW_PROFILE:
+
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
                             ViewProfileFragment.newInstance()).commit();
                     break;
-                case FRAGMENT_ALL_NOTIFICATION:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-//                            AllNotificationFragment.newInstance(bundleArgument)).commit();
 
+                case FRAGMENT_ALL_NOTIFICATION:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AllNotificationFragment.newInstance(getBundle())).commit();
+                            AllNotificationFragment.newInstance(bundleArgument)).commit();
+
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+//                            AllNotificationFragment.newInstance(getBundle())).commit();
                     break;
                 case FRAGMENT_ALL_MESSAGE:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-//                            AllMessageFragment.newInstance(bundleArgument)).commit();
-
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AllMessageFragment.newInstance(getBundle())).commit();
+                            AllMessageFragment.newInstance(bundleArgument)).commit();
+
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+//                            AllMessageFragment.newInstance(getBundle())).commit();
                     break;
                 case FRAGMENT_ALL_STUDYMATE_REQUEST:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-//                            AllStudymateRequestFragment.newInstance(bundleArgument)).commit();
-
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AllStudymateRequestFragment.newInstance(getBundle())).commit();
+                            AllStudymateRequestFragment.newInstance(bundleArgument)).commit();
+
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+//                            AllStudymateRequestFragment.newInstance(getBundle())).commit();
                     break;
 
             }
@@ -603,7 +604,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     loadControllerTopMenu(controllerTopMenuAssessment);
                     break;
 
-                case FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS:
+                case FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS:
 
 //                    imgHome.setActivated(false);
 //                    currentMainFragment = fragment;
@@ -616,7 +617,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
                     setTopBarValues(fragment, getResources().getColor(R.color.bg_office), false, true, false, controllerTopMenuTrial, false);
                     break;
-                case FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS:
+                case FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER:
                     imgHome.setActivated(false);
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_office;
@@ -707,10 +708,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 case FRAGMENT_ASSIGNMENT_SUBMITTOR:
                     imgOffice.setActivated(true);
                     break;
-                case FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS:
+                case FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS:
                     imgOffice.setActivated(true);
                     break;
-                case FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS:
+                case FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER:
                     imgOffice.setActivated(true);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     flFragmentContainerRight.setVisibility(View.VISIBLE);
@@ -852,7 +853,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 //
 //            loadFragmentInMainContainer(FRAGMENT_ASSESSMENT, null);
 //
-//        } else if (currentMainFragment == FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS) {
+//        } else if (currentMainFragment == FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS) {
 //
 //            if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_MYTHIRTY ||
 //                    OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL) {
@@ -863,7 +864,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 //            loadFragmentInRightContainer(FRAGMENT_HIGHSCORE, null);
 //
 //
-//        } else if (currentMainFragment == FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS) {
+//        } else if (currentMainFragment == FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER) {
 //
 //            llControllerLeft.setVisibility(View.VISIBLE);
 //            flFragmentContainerRight.setVisibility(View.VISIBLE);
@@ -925,6 +926,34 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 createExamAssignmentContainerFragment.onBackClick();
                 break;
 
+            case FRAGMENT_ASSIGNMENT_SUBMITTOR:
+
+                AssignmentsSubmittorFragment assignmentsSubmittorFragment = (AssignmentsSubmittorFragment)
+                        getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_ASSIGNMENT_SUBMITTOR);
+                assignmentsSubmittorFragment.onBackClick();
+                break;
+
+            case FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS:
+
+                ObjectiveAssignmentQuestionsFragment objectiveAssignmentQuestionsFragment = (ObjectiveAssignmentQuestionsFragment)
+                        getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS);
+                objectiveAssignmentQuestionsFragment.onBackClick();
+                break;
+
+            case FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER:
+
+                SubjectiveAssignmentQuestionsContainerFragment subjectiveAssignmentQuestionsContainerFragment = (SubjectiveAssignmentQuestionsContainerFragment)
+                        getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER);
+                subjectiveAssignmentQuestionsContainerFragment.onBackClick();
+                break;
+
+            case FRAGMENT_ADDQUESTION_CONTAINER:
+
+                AddQuestionContainerFragment addQuestionContainerFragment = (AddQuestionContainerFragment)
+                        getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_ADDQUESTION_CONTAINER);
+                addQuestionContainerFragment.onBackClick();
+                break;
+
         }
 
     }
@@ -934,6 +963,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private void handleTheActionButtonFragmentEvents() {
 
         if (currentMainFragment == FRAGMENT_MYTHIRTY || currentMainFragment == FRAGMENT_ASSESSMENT) {
+
+            getBundle().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, true);
             loadFragmentInMainContainer(FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT, getBundle());
         } else if (currentMainFragment == FRAGMENT_ADDQUESTION_CONTAINER) {
 

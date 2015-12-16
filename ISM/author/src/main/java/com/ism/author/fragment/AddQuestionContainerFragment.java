@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.ws.model.Questions;
 
@@ -29,9 +30,8 @@ public class AddQuestionContainerFragment extends Fragment {
     private View view;
     private FragmentListener fragListener;
 
-    public static AddQuestionContainerFragment newInstance(Bundle bundleArgument) {
+    public static AddQuestionContainerFragment newInstance() {
         AddQuestionContainerFragment addQuestionContainerFragment = new AddQuestionContainerFragment();
-        addQuestionContainerFragment.setArguments(bundleArgument);
         return addQuestionContainerFragment;
     }
 
@@ -92,9 +92,9 @@ public class AddQuestionContainerFragment extends Fragment {
 
     private void initGlobal() {
 
-        questionListFragment = new QuestionListFragment(this, getArguments());
-        previewQuestionFragment = new PreviewQuestionFragment(this, getArguments());
-        questionAddEditFragment = new QuestionAddEditFragment(this, getArguments());
+        questionListFragment = new QuestionListFragment(this);
+        previewQuestionFragment = new PreviewQuestionFragment(this);
+        questionAddEditFragment = new QuestionAddEditFragment(this);
 
         flAddquestionfragmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
         flAddquestionfragmentContainerRight = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
@@ -261,4 +261,12 @@ public class AddQuestionContainerFragment extends Fragment {
         }
     }
 
+
+    public void onBackClick() {
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ADDQUESTION_CONTAINER, getBundleArguments());
+    }
+
+    public Bundle getBundleArguments() {
+        return ((AuthorHostActivity) getActivity()).getBundle();
+    }
 }
