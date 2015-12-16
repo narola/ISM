@@ -65,7 +65,8 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         super.onCreate(savedInstanceState);
 
         if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, getActivity())) {
-            launchHostActivity();
+//            launchHostActivity();
+            launchProfileInfoActivity();
         } else if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity())) {
             launchProfileInfoActivity();
         } else {
@@ -483,7 +484,8 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                         PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, getActivity(), responseHandler.getUser().get(0).getFullName());
                         PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, getActivity(), responseHandler.getUser().get(0).getProfilePic());
 
-                        launchHostActivity();
+//                        launchHostActivity();
+                        launchProfileInfoActivity();
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {

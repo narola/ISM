@@ -3,14 +3,12 @@ package com.ism.author.activtiy;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,6 +42,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import realmhelper.StudentHelper;
+
 
 public class AuthorProfileInformationActivity extends Activity implements WebserviceWrapper.WebserviceResponse {
 
@@ -51,7 +51,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
     private static final String TAG = AuthorProfileInformationActivity.class.getSimpleName();
 
     private Spinner spGender, spCity, spCountry, spState;
-    private TextView txtSchoolGender, txtAcademicYear, txtNameSchool, txtDistrictOfSchool, txtProgramCourse, txtClass;
+
     private EditText etAge, etUserName, etNewPwd, etHomeAddress, etFirstName, etLastName,
             etEmailAddress, etCurrentPwd, etContactNo, etConfirmPwd, etDob;
     private ImageView imgDp;
@@ -67,8 +67,8 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
     private ArrayList<Cities> arrListCities;
     private Calendar calDob;
     private DatePickerDialog datePickerDob;
-    private AlertDialog dialogSchoolInfo;
     private ProgressGenerator progressGenerator;
+    private StudentHelper studentHelper;
 
     private String strUserId;
     private String strCurrentPassword;
@@ -114,21 +114,12 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
         etNewPwd = (EditText) findViewById(R.id.et_newpwd);
         etUserName = (EditText) findViewById(R.id.et_username);
         imgDp = (ImageView) findViewById(R.id.img_dp_post_creator);
-        txtSchoolGender = (TextView) findViewById(R.id.txt_schoolgender);
-        txtAcademicYear = (TextView) findViewById(R.id.txt_academicyear);
-        txtNameSchool = (TextView) findViewById(R.id.txt_nameofschool);
-        txtDistrictOfSchool = (TextView) findViewById(R.id.txt_districtofschool);
-        txtProgramCourse = (TextView) findViewById(R.id.txt_programcourse);
-        txtClass = (TextView) findViewById(R.id.txt_class);
         btnSubmit = (ProcessButton) findViewById(R.id.btn_submit);
         progCountry = (ProcessButton) findViewById(R.id.prog_country);
         progState = (ProcessButton) findViewById(R.id.prog_state);
         progCity = (ProcessButton) findViewById(R.id.prog_city);
 
         myTypeFace = new MyTypeFace(this);
-        ((TextView) findViewById(R.id.txt_youare_)).setTypeface(myTypeFace.getRalewayThin());
-        ((TextView) findViewById(R.id.txt_ifits_)).setTypeface(myTypeFace.getRalewayThin());
-        ((TextView) findViewById(R.id.txt_clickhere)).setTypeface(myTypeFace.getRalewayThin());
         ((TextView) findViewById(R.id.txt_uploadpic)).setTypeface(myTypeFace.getRalewayRegular());
         etAge.setTypeface(myTypeFace.getRalewayRegular());
         etContactNo.setTypeface(myTypeFace.getRalewayRegular());
@@ -141,12 +132,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
         etHomeAddress.setTypeface(myTypeFace.getRalewayRegular());
         etNewPwd.setTypeface(myTypeFace.getRalewayRegular());
         etUserName.setTypeface(myTypeFace.getRalewayRegular());
-        txtNameSchool.setTypeface(myTypeFace.getRalewayRegular());
-        txtDistrictOfSchool.setTypeface(myTypeFace.getRalewayRegular());
-        txtSchoolGender.setTypeface(myTypeFace.getRalewayRegular());
-        txtAcademicYear.setTypeface(myTypeFace.getRalewayRegular());
-        txtProgramCourse.setTypeface(myTypeFace.getRalewayRegular());
-        txtClass.setTypeface(myTypeFace.getRalewayRegular());
+
 
         inputValidator = new InputValidator(getActivity());
 
@@ -165,12 +151,6 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
         strAcademicYear = PreferenceData.getStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, getActivity());
         strRoleId = PreferenceData.getStringPrefs(PreferenceData.USER_ROLE_ID, getActivity());
 
-        txtNameSchool.setText(strSchoolName);
-        txtClass.setText(strClassName);
-        txtAcademicYear.setText(strAcademicYear);
-        txtDistrictOfSchool.setText(strSchoolDistrict);
-        txtSchoolGender.setText(strSchoolType);
-        txtProgramCourse.setText(strCourseName);
 
         if (Utility.isConnected(getActivity())) {
             callApiGetCountries();
@@ -294,58 +274,6 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
 
     public void onClickUploadImage(View v) {
         openGallary();
-    }
-
-
-    public void onClickHere(View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View dialogView = inflater.inflate(R.layout.dialog_request_schoolinfo, null);
-        final EditText etName = (EditText) dialogView.findViewById(R.id.et_name);
-        final EditText etEmail = (EditText) dialogView.findViewById(R.id.et_email);
-        final EditText etMessage = (EditText) dialogView.findViewById(R.id.et_message);
-        progRequestSchoolInfo = (ProcessButton) dialogView.findViewById(R.id.prog_request_schoolinfo);
-
-        builder.setView(dialogView)
-                .setTitle("Request for School information correction")
-                .setPositiveButton(R.string.strsubmit, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-
-                }).setNegativeButton(R.string.strcancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.setCancelable(false);
-        dialogSchoolInfo = builder.create();
-        dialogSchoolInfo.show();
-        btnDialogSubmit = dialogSchoolInfo.getButton(DialogInterface.BUTTON_POSITIVE);
-        btnDialogSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Utility.isConnected(getActivity())) {
-                    if (isInputsValidSchoolInfo()) {
-                        Attribute attribute = new Attribute();
-                        attribute.setName(etName.getText().toString().trim());
-                        attribute.setEmailAddress(etEmail.getText().toString().trim());
-                        attribute.setMessage(etMessage.getText().toString().trim());
-                        callApiRequestSchoolInfo(attribute);
-                    }
-                } else {
-                    Utility.toastOffline(getActivity());
-                }
-            }
-
-            private boolean isInputsValidSchoolInfo() {
-                return inputValidator.validateStringPresence(etName) &
-                        inputValidator.validateAllConstraintsEmail(etEmail) &
-                        inputValidator.validateStringPresence(etMessage);
-            }
-        });
     }
 
 
