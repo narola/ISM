@@ -144,7 +144,8 @@
 		<com.ism.scientificcalc.view.Calc
 			android:id="@+id/utility_scientific_calc"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"></com.ism.scientificcalc.view.Calc>
+			android:layout_height="match_parent"
+			android:layout_above="@+id/ll_controller_utility"></com.ism.scientificcalc.view.Calc>
 
 		<ViewStub
 			android:id="@+id/vs_whiteboard"

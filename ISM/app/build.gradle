@@ -42,10 +42,10 @@ dependencies {
     compile project(':scientificcalc')
     compile project(':whiteboard')
     compile project(':assistantwebview')
+    compile project(':roundedimageview')
     compile 'com.android.support:support-annotations:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
     compile 'com.android.support:support-v13:23.1.1'
     compile 'com.squareup.picasso:picasso:2.3.2'
 }

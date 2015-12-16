@@ -3,17 +3,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/color_gray_light"
-                tools:context=".fragment.tutorialGroup.ExamFragment">
+                tools:context="com.ism.fragment.ExamFragment">
 
 	<TextView
 		android:id="@+id/txt_header"
 		android:layout_width="match_parent"
-		android:layout_height="@dimen/header_white_height"
-		android:background="@drawable/bg_header_white"
+		android:layout_height="60dp"
+		android:background="@drawable/bg_exam_header"
 		android:padding="15dp"
-		android:text="Please Read Instructions Carefully"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="@dimen/d18dp"/>
+		android:textSize="@dimen/d18sp"/>
 
 	<LinearLayout
 		android:id="@+id/ll_instruct"
@@ -35,7 +34,7 @@
 			android:layout_marginRight="10dp"
 			android:text="Assessment No : 30"
 			android:textColor="@android:color/white"
-			android:textSize="@dimen/d18dp"/>
+			android:textSize="@dimen/d18sp"/>
 
 		<TextView
 			android:id="@+id/txt_subject"
@@ -44,7 +43,7 @@
 			android:layout_gravity="center_vertical"
 			android:text="ORGANIC CHEMISTRY"
 			android:textColor="@android:color/white"
-			android:textSize="@dimen/d20dp"
+			android:textSize="@dimen/d20sp"
 			android:textStyle="bold"/>
 	</LinearLayout>
 
@@ -119,14 +118,14 @@
 					android:paddingLeft="30dp"
 					android:paddingRight="30dp"
 					android:text="When parallel elements meet, which reaction occurs?\nline 2\nQuestion line 3\n\n\n\nHello"
-					android:textSize="@dimen/d20dp"/>
+					android:textSize="@dimen/d20sp"/>
 
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="30dp"
 					android:text="Options:"
-					android:textSize="@dimen/d18dp"
+					android:textSize="@dimen/d18sp"
 					android:textStyle="bold"/>
 
 				<RadioGroup
@@ -146,7 +145,7 @@
 						android:button="@drawable/bg_rb"
 						android:padding="5dp"
 						android:text="Option 1"
-						android:textSize="@dimen/d18dp"/>
+						android:textSize="@dimen/d18sp"/>
 
 					<RadioButton
 						android:id="@+id/rb_op2"
@@ -155,7 +154,7 @@
 						android:button="@drawable/bg_rb"
 						android:padding="5dp"
 						android:text="Option 2"
-						android:textSize="@dimen/d18dp"/>
+						android:textSize="@dimen/d18sp"/>
 
 					<RadioButton
 						android:id="@+id/rb_op3"
@@ -164,7 +163,7 @@
 						android:button="@drawable/bg_rb"
 						android:padding="5dp"
 						android:text="Option 3"
-						android:textSize="@dimen/d18dp"/>
+						android:textSize="@dimen/d18sp"/>
 
 					<RadioButton
 						android:id="@+id/rb_op4"
@@ -173,7 +172,7 @@
 						android:button="@drawable/bg_rb"
 						android:padding="5dp"
 						android:text="Option 4"
-						android:textSize="@dimen/d18dp"/>
+						android:textSize="@dimen/d18sp"/>
 
 					<RadioButton
 						android:id="@+id/rb_op5"
@@ -182,7 +181,7 @@
 						android:button="@drawable/bg_rb"
 						android:padding="5dp"
 						android:text="Option 5"
-						android:textSize="@dimen/d18dp"/>
+						android:textSize="@dimen/d18sp"/>
 
 					<RadioButton
 						android:id="@+id/rb_op6"
@@ -191,7 +190,7 @@
 						android:button="@drawable/bg_rb"
 						android:padding="5dp"
 						android:text="Option 6"
-						android:textSize="@dimen/d18dp"/>
+						android:textSize="@dimen/d18sp"/>
 				</RadioGroup>
 			</LinearLayout>
 		</ScrollView>
@@ -214,7 +213,7 @@
 				android:paddingRight="@dimen/button_padding_exam"
 				android:text="@string/review_later"
 				android:textColor="@android:color/white"
-				android:textSize="@dimen/d18dp"/>
+				android:textSize="@dimen/d18sp"/>
 
 			<Button
 				android:id="@+id/btn_clear_response"
@@ -227,7 +226,7 @@
 				android:paddingRight="@dimen/button_padding_exam"
 				android:text="@string/clear_response"
 				android:textColor="@android:color/white"
-				android:textSize="@dimen/d18dp"/>
+				android:textSize="@dimen/d18sp"/>
 
 			<Button
 				android:id="@+id/btn_skip"
@@ -239,7 +238,7 @@
 				android:paddingRight="@dimen/button_padding_exam"
 				android:text="@string/skip"
 				android:textColor="@android:color/white"
-				android:textSize="@dimen/d18dp"/>
+				android:textSize="@dimen/d18sp"/>
 
 			<Button
 				android:id="@+id/btn_save_n_next"
@@ -253,7 +252,7 @@
 				android:paddingRight="@dimen/button_padding_exam"
 				android:text="@string/save_n_next"
 				android:textColor="@android:color/white"
-				android:textSize="@dimen/d18dp"/>
+				android:textSize="@dimen/d18sp"/>
 		</RelativeLayout>
 	</RelativeLayout>
 

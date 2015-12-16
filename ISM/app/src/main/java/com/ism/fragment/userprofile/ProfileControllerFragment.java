@@ -655,4 +655,9 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 	    highlightLabel(fragmentId, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        fragListener.onFragmentResumed(HostActivity.FRAGMENT_PROFILE_CONTROLLER);
+    }
 }
