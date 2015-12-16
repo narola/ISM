@@ -30,7 +30,7 @@ public class Feeds {
     private String mediaType;
     private String link;
 
-    @JsonProperty("like")
+    @JsonProperty("self_like")
     public String getLike() {
         return this.like;
     }

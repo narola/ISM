@@ -190,7 +190,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 if (arrListSubject != null && position > 0) {
 
                     /*this is to check that question are of this exam*/
-                    if (arrListSubject.get(position - 1).getId().equals(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID))) {
+                    if (arrListSubject.get(position - 1).getId().equals(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID))) {
                         questionBankListAdapter.canAddToPreview = true;
                     } else {
                         questionBankListAdapter.canAddToPreview = false;
@@ -409,9 +409,9 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     }
                     Adapters.setUpSpinner(getActivity(), spQuestionlistSubject, subjects, Adapters.ADAPTER_SMALL);
 
-                    if (getArguments() != null) {
-                        Debug.e(TAG, "THE SUBJECT NAME IS" + getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
-                        spQuestionlistSubject.setSelection(subjects.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME)));
+                    if (getBundleArguments() != null) {
+                        Debug.e(TAG, "THE SUBJECT NAME IS" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
+                        spQuestionlistSubject.setSelection(subjects.indexOf(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME)));
                     }
 
 
@@ -507,10 +507,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void setQuestionData(ArrayList<Questions> questions) {
         questionBankListAdapter.addAll(questions);
-        filterResultsBasedOnSubjects(Integer.valueOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID)));
-        if (getArguments() != null) {
-            if (getArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
-                ArrayList<Questions> arrListExamQuestions = getArguments().
+        filterResultsBasedOnSubjects(Integer.valueOf(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID)));
+        if (getBundleArguments() != null) {
+            if (getBundleArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
+                ArrayList<Questions> arrListExamQuestions = getBundleArguments().
                         getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
                 updateQuestionStatusAfterSetDataOfExam(arrListExamQuestions);
             }
@@ -770,6 +770,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         tvNoQuestions.setVisibility(View.GONE);
         rvQuestionlist.setVisibility(View.VISIBLE);
     }
-
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 
 }

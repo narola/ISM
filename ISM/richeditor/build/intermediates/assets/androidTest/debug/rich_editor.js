@@ -233,6 +233,7 @@ else{
 img.setAttribute("align","left");
 }
 
+RE.callback();
 }
 
 RE.backuprange = function(){

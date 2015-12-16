@@ -97,7 +97,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
             @Override
             public void onClick(View v) {
 
-                getFragment().updateQuestionListviewAfterDeleteQuestionInPreview(arrListQuestions.get(position));
+                getBaseFragment().updateQuestionListviewAfterDeleteQuestionInPreview(arrListQuestions.get(position));
                 arrListQuestions.remove(arrListQuestions.get(position));
                 notifyDataSetChanged();
 
@@ -122,7 +122,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
     }
 
     private void openAddEditQuestionFragment(int position, Boolean isCopy) {
-        getFragment().setDataOnFragmentFlip(arrListQuestions.get(position), true, isCopy);
+        getBaseFragment().setDataOnFragmentFlip(arrListQuestions.get(position), true, isCopy);
     }
 
 
@@ -179,7 +179,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         return v;
     }
 
-    private AddQuestionContainerFragment getFragment() {
+    private AddQuestionContainerFragment getBaseFragment() {
         return (AddQuestionContainerFragment) mFragment;
     }
 

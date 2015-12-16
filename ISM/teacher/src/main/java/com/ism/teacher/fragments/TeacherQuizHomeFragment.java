@@ -61,7 +61,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     private List<String> arrListAssessment = new ArrayList<>();
 
     //Objects
-    Fragment mFragment;
+    public Fragment mFragment;
     AssignmentsAdapter assignmentsAdapter;
 
     private String examStartDate = "", examEndDate = "";
@@ -72,18 +72,24 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         this.mFragment = fragment;
     }
 
-    public TeacherQuizHomeFragment() {
+    public static TeacherQuizHomeFragment newInstance(Fragment fragment, Bundle bundleArguments) {
+        TeacherQuizHomeFragment teacherQuizHomeFragment = new TeacherQuizHomeFragment(fragment);
+        teacherQuizHomeFragment.setArguments(bundleArguments);
+
+        return teacherQuizHomeFragment;
     }
 
+    public TeacherQuizHomeFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_assignment_home, container, false);
 
         initGlobal(view);
-
         return view;
     }
+
 
     private void initGlobal(View view) {
         assignmentsAdapter = new AssignmentsAdapter(getActivity(), this);
@@ -302,7 +308,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
         if (Utility.isConnected(getActivity())) {
             try {
-                Utility.showSpinnerProgress(progAssignmentClass);
+                //   Utility.showSpinnerProgress(progAssignmentClass);
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_CLASSROOMS);
 
@@ -319,7 +325,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
         if (Utility.isConnected(getActivity())) {
             try {
-                Utility.showSpinnerProgress(progAssignmentSubject);
+                // Utility.showSpinnerProgress(progAssignmentSubject);
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_SUBJECT);
             } catch (Exception e) {
@@ -353,16 +359,27 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     @Override
     public void onResponse(int apicode, Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).hideProgress();
+
             switch (apicode) {
                 case WebConstants.GET_ALL_ASSIGNMENTS:
-                    onResponseGetAllAssignments(object);
+                    if (getActivity() != null && isAdded()) {
+                        ((TeacherHostActivity) getActivity()).hideProgress();
+                        onResponseGetAllAssignments(object);
+                    }
                     break;
                 case WebConstants.GET_CLASSROOMS:
-                    onResponseGetClassrooms(object, error);
+                    if (getActivity() != null && isAdded()) {
+                        ((TeacherHostActivity) getActivity()).hideProgress();
+                        onResponseGetClassrooms(object, error);
+
+                    }
                     break;
                 case WebConstants.GET_SUBJECT:
-                    onResponseGetSubjects(object, error);
+                    if (getActivity() != null && isAdded()) {
+                        ((TeacherHostActivity) getActivity()).hideProgress();
+                        onResponseGetSubjects(object, error);
+
+                    }
                     break;
             }
 
@@ -430,25 +447,50 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     private void onResponseGetAllAssignments(Object object) {
 
-        ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+        if (object != null) {
+            ResponseHandler responseHandler = (ResponseHandler) object;
+            if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-            arrayListAssignments.addAll(responseHandler.getExams());
-            assignmentsAdapter.addAll(arrayListAssignments);
-            Debug.e("assignment size",""+arrayListAssignments.size());
+                arrayListAssignments.addAll(responseHandler.getExams());
+                assignmentsAdapter.addAll(arrayListAssignments);
+                Debug.e("assignment size", "" + arrayListAssignments.size());
 
-            if (arrayListAssignments.size() == 0) {
-                tvNoAssignments.setVisibility(View.VISIBLE);
+                if (arrayListAssignments.size() == 0) {
+                    tvNoAssignments.setVisibility(View.VISIBLE);
+                } else {
+                    tvNoAssignments.setVisibility(View.GONE);
+
+                }
+
             } else {
-                tvNoAssignments.setVisibility(View.GONE);
 
+                Utility.showToast(getString(R.string.web_service_issue), getActivity());
             }
-
         } else {
-
-            Utility.showToast(getString(R.string.web_service_issue), getActivity());
+            Debug.e(TAG, "onResponseGetAllAssignment Exception : " + "response object may be returning null");
         }
+
     }
 
+    private TeacherOfficeFragment getFragment() {
+        return (TeacherOfficeFragment) mFragment;
+    }
+
+    public void loadOfficeSubmitter(Bundle args) {
+        getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER, args);
+    }
+
+
+    /**
+     * GetObjectiveAssignmentQuestionsFragment (to view questions)
+     * @param args
+     */
+    public void loadGetObjectiveAssignmentQuestionsFragment(Bundle args) {
+        getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW, args);
+    }
+
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 
 }

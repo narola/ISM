@@ -24,7 +24,13 @@ import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.ControllerTopMenuItem;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
+import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.ControllerTopSpinnerAdapter;
+import com.ism.teacher.adapters.MyStudentsAdapter;
+import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.fragments.AssignmentExamFragment;
+import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.StudentAttemptedFragment;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
@@ -56,7 +62,8 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
 
     private TextView txtsMenu[];
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom, controllerTopMenuAssessment, controllerTopMenuDesk, controllerTopMenuReportCard, currentControllerTopMenu;
+    public ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom, controllerTopMenuAssessment, controllerTopMenuDesk, controllerTopMenuReportCard, currentControllerTopMenu;
+
 
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_UPCOMING_EVENTS = 6;
@@ -80,6 +87,9 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     FragmentTransaction mFragmentTransaction;
     FragmentManager mFragmentManager;
+    Bundle fragmentBundle = new Bundle();
+
+    public ArrayList<ControllerTopMenuItem> updatedTopMenuItem = new ArrayList<>();
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -248,23 +258,23 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     }
 
-    public void loadFragmentInMainContainer(int fragment, Bundle fragmentArgument) {
+    public void loadFragmentInMainContainer(int mainfragment, Bundle fragmentArgument) {
         try {
-            switch (fragment) {
+            removeBundleArguments();
+            switch (mainfragment) {
                 case FRAGMENT_TEACHER_HOME:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TeacherHomeFragment.newInstance()).commit();
                     break;
 
                 case FRAGMENT_TEACHER_TUTORIAL_GROUP:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TeacherTutorialGroupFragment.newInstance()).commit();
-
                     break;
 
                 case FRAGMENT_TEACHER_OFFICE:
-                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance(FRAGMENT_TEACHER_OFFICE);
+                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance(FRAGMENT_TEACHER_OFFICE, fragmentArgument);
                     listenerHost = teacherOfficeFragment;
                     addTopicsListener = teacherOfficeFragment;
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment, AppConstant.FRAGMENT_TAG_TEACHER_OFFICE).commit();
                     break;
 
             }
@@ -337,7 +347,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     txtTitle.setVisibility(View.GONE);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_report_card);
                     txtAction.setTextColor(getResources().getColor(R.color.bg_report_card));
-                    rlAddPost.setVisibility(View.VISIBLE);
+                    rlAddPost.setVisibility(View.GONE);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     break;
                 case FRAGMENT_TEACHER_TUTORIAL_GROUP:
@@ -437,15 +447,21 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         try {
             if (view == imgBack) {
                 hideControllerTopControls();
-                for (int i = 0; i < currentControllerTopMenu.size(); i++) {
-                    txtsMenu[i].setTextColor(Color.WHITE);
-                    currentControllerTopMenu.get(i).setIsActive(false);
-                    startSlideAnimation(txtsMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
-                    txtsMenu[i].setVisibility(View.VISIBLE);
-                    onBackClick(currentMainFragment);
-                }
+//                for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+//                    txtsMenu[i].setTextColor(Color.WHITE);
+//                    currentControllerTopMenu.get(i).setIsActive(false);
+//                    startSlideAnimation(txtsMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
+//                    txtsMenu[i].setVisibility(View.VISIBLE);
+//                }
 
-            } else if (view == txtAction) {
+                onBackClick(currentMainFragment);
+
+            }
+
+            /**
+             * For loading the add (exam,and other add features from different frags)
+             */
+            else if (view == txtAction) {
 
                 switch (currentMainFragment) {
 
@@ -480,6 +496,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 }
                 if (!isActive) {
                     for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+
                         if (view == txtsMenu[i]) {
                             currentControllerTopMenu.get(i).setIsActive(true);
                             txtsMenu[i].setTextColor(getResources().getColor(currentMainFragmentBg));
@@ -507,10 +524,10 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                             }
 
                             /**
-                             * Menu item click event
+                             * Menu item click event for top bar text(notes,quiz,classwall....)
                              */
                             if (listenerHost != null) {
-                                listenerHost.onControllerMenuItemClicked(i);
+                                listenerHost.onControllerMenuItemClicked(i + 1);
                             }
 
 
@@ -528,10 +545,12 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     }
 
+
     private void hideControllerTopControls() {
         if (imgBack.getVisibility() == View.VISIBLE) {
             hideControllerTopBackButton();
         }
+
         if (txtAction.getVisibility() == View.VISIBLE) {
             hideControllerTopAction();
         }
@@ -539,8 +558,8 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
             hideControllerTopSpinner();
         }
 
-
     }
+
 
     private void hideControllerTopBackButton() {
         startSlideAnimation(imgBack, 0, -1000, 0, 0);
@@ -594,13 +613,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         progress_bar.setVisibility(View.INVISIBLE);
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        Log.e(TAG, "inside on resume host activity");
-//        loadFragmentInMainContainer(FRAGMENT_TEACHER_HOME, null);
-//
-//    }
 
     public void showRightContainerFragment() {
         flFragmentContainerRight.setVisibility(View.VISIBLE);
@@ -616,6 +628,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     public void showTxtAction() {
         txtAction.setVisibility(View.VISIBLE);
+        txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
     }
 
 
@@ -625,10 +638,164 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
             //On loading teacher office in main frag,automatically it will call
             //Teacher class wall(as per mockup_),first frag called inside TeacherOffice is classwall in initglobal
-            loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
+
+            int current_office_fragment;
+            current_office_fragment = TeacherOfficeFragment.getCurrentChildFragment();
+            TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+
+            /**
+             *  sending old fragment in onBack param(which we need to replace with new one)
+             */
+
+            switch (current_office_fragment) {
+                case TeacherOfficeFragment.FRAGMENT_QUIZ:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_QUIZ);
+                    break;
+
+                case TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
+                    break;
+
+//                case TeacherOfficeFragment.FRAGMENT_CLASSWALL:
+//                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
+//                    break;
+
+
+                case TeacherOfficeFragment.FRAGMENT_NOTES:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_NOTES);
+                    break;
+
+                case TeacherOfficeFragment.FRAGMENT_MARK_SCRIPT:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_MARK_SCRIPT);
+                    break;
+
+                case TeacherOfficeFragment.FRAGMENT_RESULTS:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_RESULTS);
+                    break;
+
+                case TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT);
+                    break;
+
+                case TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW);
+                    break;
+
+                case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER:
+
+                    // CreateExamAssignmentContainerFragment createExamContainer = (CreateExamAssignmentContainerFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_CREATE_EXAM_CONTAINER);
+                    //  createExamContainer.onBack(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
+
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW);
+                    break;
+
+                case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER_EDIT:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER_EDIT);
+
+                    break;
+
+            }
 
         }
 
     }
 
+    Bundle bundle = new Bundle();
+
+    public Bundle getBundle() {
+        return bundle;
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
+    public void showControllerTopBackButton() {
+        Utility.startSlideAnimation(imgBack, -100, 0, 0, 0);
+        imgBack.setVisibility(View.VISIBLE);
+    }
+
+
+    public void showSpinnerWithSubMenu(int index) {
+
+        switch (index) {
+            case AppConstant.INDEX_ALL_ASSIGNMENTS:
+                hideAllMainMenus();
+                showControllerTopBackButton();
+                startSlideAnimation(spSubmenu, -imgBack.getWidth(), 0, 0, 0);
+                spSubmenu.setVisibility(View.VISIBLE);
+                adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(index).getSubMenu(), TeacherHostActivity.this);
+                spSubmenu.setAdapter(adapterControllerTopSpinner);
+                break;
+
+        }
+    }
+
+
+    public void showAllMainMenus() {
+        for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+            txtsMenu[i].setTextColor(Color.WHITE);
+            currentControllerTopMenu.get(i).setIsActive(false);
+            startSlideAnimation(txtsMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
+            txtsMenu[i].setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hideAllMainMenus() {
+        for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+            txtsMenu[i].setVisibility(View.GONE);
+        }
+    }
+
+    private void removeBundleArguments() {
+
+        getBundle().remove(AssignmentExamFragment.ARG_IS_CREATE_EXAM);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ID);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_NAME);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_TOPIC_ID);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_BOOK_ID);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CATEGORY);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_TYPE);
+
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_MODE);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_DURATION);
+        getBundle().remove(AssignmentsAdapter.ARG_ASSIGNMENT_NO);
+
+
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CREATED_DATE);
+
+
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ATTEMPT_COUNT);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_INSTRUCTIONS);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ASSESSOR);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_START_DATE);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_START_TIME);
+
+
+        getBundle().remove(AssignmentsAdapter.ARG_FRAGMENT_TYPE);
+        getBundle().remove(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
+
+        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_ID);
+        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION);
+        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_PROFILE_PIC);
+        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_NAME);
+
+        getBundle().remove(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+        getBundle().remove(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY);
+        getBundle().remove(MyStudentsAdapter.ARG_ARR_LIST_STUDENTS);
+
+    }
 }

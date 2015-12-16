@@ -66,7 +66,7 @@ public class ResponseHandler {
     private ArrayList<UserActivitiy> userActivities;
     private ArrayList<AdminConfig> adminConfig;
     private ArrayList<Token> token;
-
+    private ArrayList<Comment> comment;
 
 
     @JsonProperty("message")
@@ -211,6 +211,15 @@ public class ResponseHandler {
 
     public void setComments(ArrayList<Comment> comments) {
         this.comments = comments;
+    }
+
+    @JsonProperty("comment")
+    public ArrayList<Comment> getComment() {
+        return this.comment;
+    }
+
+    public void setComment(ArrayList<Comment> comment) {
+        this.comment = comment;
     }
 
     @JsonProperty("studymates")

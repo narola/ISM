@@ -14,8 +14,10 @@ import com.ism.R;
 import com.ism.commonsource.utility.Utility;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
+import com.ism.utility.Debug;
 
-import io.realm.RealmResults;
+import java.util.List;
+
 import model.FeedComment;
 
 /**
@@ -26,7 +28,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     private static final String TAG = PostFeedCommentsAdapter.class.getSimpleName();
 
     Context context;
-    RealmResults<FeedComment> listOfComments;
+    List<FeedComment> listOfComments;
 
 
     @Override
@@ -40,14 +42,18 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        try{
         holder.txtCommenterUsername.setText(listOfComments.get(position).getCommentBy().getFullName());
         holder.txtCommenterComment.setText(listOfComments.get(position).getComment());
-        holder.txtCommentDuration.setText(Utility.getTimeDuration(listOfComments.get(position).getCommentBy().getCreatedDate()));
-        Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + listOfComments.get(position).getCommentBy().getProfilePicture(), holder.imgProfilePic, ISMStudent.options);
+        holder.txtCommentDuration.setText(Utility.getTimeDuration(listOfComments.get(position).getCreatedDate()));
+        Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + listOfComments.get(position).getCommentBy().getProfilePicture(), holder.imgProfilePic, ISMStudent.options);}
+        catch (Exception e){
+            Debug.i(TAG,"onBindViewHolder Exception : "+e.getLocalizedMessage());
+        }
     }
 
 
-    public void addAll(RealmResults<FeedComment> comments) {
+    public void addAll(List<FeedComment> comments) {
         try {
             listOfComments=comments;
             listOfComments.clear();
@@ -78,7 +84,6 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
             txtCommenterUsername = (TextView) itemView.findViewById(R.id.txt_commenter_username);
             txtCommenterComment = (TextView) itemView.findViewById(R.id.txt_commenter_comment);
-            txtCommentDuration = (TextView) itemView.findViewById(R.id.txt_comment_duration);
             txtCommentDuration = (TextView) itemView.findViewById(R.id.txt_comment_duration);
             imgProfilePic = (ImageView) itemView.findViewById(R.id.img_commenter_dp);
 

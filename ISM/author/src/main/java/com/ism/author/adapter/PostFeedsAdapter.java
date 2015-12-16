@@ -65,7 +65,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        Global.imageLoader.displayImage(WebConstants.HOST_IMAGES+arrListFeeds.get(position).getProfilePic(),
+        Global.imageLoader.displayImage(WebConstants.HOST_IMAGES + arrListFeeds.get(position).getProfilePic(),
                 holder.imgDpPostCreator, ISMAuthor.options);
         holder.txtPostCreaterName.setText(arrListFeeds.get(position).getFullName());
         holder.txtPostContent.setText(arrListFeeds.get(position).getFeedText());

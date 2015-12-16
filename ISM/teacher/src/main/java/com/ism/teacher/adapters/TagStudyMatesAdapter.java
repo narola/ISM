@@ -1,6 +1,7 @@
 package com.ism.teacher.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.teacher.R;
-import com.ism.teacher.model.Data;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.ws.model.Studymates;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -143,5 +144,9 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
         }
 
         notifyDataSetChanged();
+    }
+
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) context).getBundle();
     }
 }

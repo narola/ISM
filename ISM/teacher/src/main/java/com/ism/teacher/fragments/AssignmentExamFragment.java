@@ -558,9 +558,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
                 /*set exam id "0" if you are creating new and copy exam ,In case of edit set particular exam id*/
                 attribute.setExamId("0");
-                if (getArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
-                    if (!getArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
-                        attribute.setExamId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
+                if (getBundleArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                    if (!getBundleArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                        attribute.setExamId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
                     }
                 }
                 attribute.setExamName(etExamName.getText().toString());
@@ -598,7 +598,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 if (getExamType().equalsIgnoreCase("subject")) {
                     attribute.setTopicId("0");
                 } else {
-                    attribute.setTopicId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
+                    attribute.setTopicId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
                 }
 
                 attribute.setCorrectAnswerScore(getQuestionScoreValue());
@@ -626,7 +626,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         if (value.equalsIgnoreCase("subject")) {
             tbExamSelectexamfor.setChecked(true);
             Utility.invisibleView(llTopicSpinner);
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID, "0");
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID, "0");
         } else if (value.equals("topic")) {
             tbExamSelectexamfor.setChecked(false);
             Utility.showView(llTopicSpinner);
@@ -680,8 +680,8 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
                     }
                     Adapters.setUpSpinner(mContext, spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL);
-                    if (getArguments() != null) {
-                        spExamClassroom.setSelection(classrooms.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME)));
+                    if (getBundleArguments() != null) {
+                        spExamClassroom.setSelection(classrooms.indexOf(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME)));
                     }
 
 
@@ -713,8 +713,8 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                     }
                     Adapters.setUpSpinner(mContext, spExamSubjectname, subjects, Adapters.ADAPTER_NORMAL);
 
-                    if (getArguments() != null) {
-                        spExamSubjectname.setSelection(subjects.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME)));
+                    if (getBundleArguments() != null) {
+                        spExamSubjectname.setSelection(subjects.indexOf(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME)));
 
                     }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -745,11 +745,11 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
                     Adapters.setUpSpinner(mContext, spExamSubjecttopic, topics_name, Adapters.ADAPTER_NORMAL);
 
-                    if (getArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID).equalsIgnoreCase("0")) {
+                    if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID).equalsIgnoreCase("0")) {
                         spExamSubjecttopic.setSelection(1);
                     } else {
                         for (int i = 0; i < arrListTopic.size(); i++) {
-                            if (arrListTopic.get(i).getId().equalsIgnoreCase(getArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID))) {
+                            if (arrListTopic.get(i).getId().equalsIgnoreCase(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID))) {
                                 spExamSubjecttopic.setSelection(topics_name.indexOf(arrListTopic.get(i).getTopicName()));
                             }
                         }
@@ -777,7 +777,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utility.showToast(Utility.getString(R.string.msg_success_createexam, mContext), mContext);
                     btnExamSetquestion.setVisibility(View.VISIBLE);
-                    getArguments().putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+                    getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
                     setBundleArguments();
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -824,7 +824,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         } else if (v == btnExamSetquestion) {
             ((CreateExamAssignmentContainerFragment) fragmentContext).hideTopBar();
             getFragmentManager().beginTransaction().
-                    replace(R.id.fl_fragment_assignment_container, AddQuestionContainerFragment.newInstance(getArguments()))
+                    replace(R.id.fl_fragment_assignment_container, AddQuestionContainerFragment.newInstance(getBundleArguments()))
                     .commit();
         } else if (v == btnExamCancel) {
             backToTrialScreen();
@@ -835,51 +835,51 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     private void setBundleArguments() {
         try {
             //exam name
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_NAME, etExamName.getText().toString());
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_NAME, etExamName.getText().toString());
             //classroomid
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
                     Integer.parseInt(arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
 
 
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
                     arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getClassName() : 0));
             //subject id
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
                     Integer.parseInt(arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
 
             //topicid
-//            getArguments().putString(ARG_EXAM_TOPIC_ID, String.valueOf(spExamSubjecttopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
+//            getBundleArguments().putString(ARG_EXAM_TOPIC_ID, String.valueOf(spExamSubjecttopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
 //                    get(spExamSubjecttopic.getSelectedItemPosition() - 1).getId()) : 0));
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID, getArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID, getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
             //book id
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_BOOK_ID, "0");
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_BOOK_ID, "0");
             //subject/topic
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getExamType());
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getExamType());
             //ISMmock /wassce
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_CATEGORY, arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CATEGORY, arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
 
             //subject name
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME, arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName());
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME, arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName());
             //subjective/objective
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_MODE,
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_MODE,
                     arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
 
             //exam duration
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_DURATION,
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_DURATION,
                     arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
 
-            getArguments().putString(AssignmentsAdapter.ARG_ASSIGNMENT_NO, "0");
+            getBundleArguments().putString(AssignmentsAdapter.ARG_ASSIGNMENT_NO, "0");
             //pass percentage
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE, arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE, arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
 
             //exam created date
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_CREATED_DATE, etExamStartdate.getText().toString());
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CREATED_DATE, etExamStartdate.getText().toString());
 
-            getArguments().putBoolean(AssignmentsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE,
+            getBundleArguments().putBoolean(AssignmentsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE,
                     ((RadioButton) radioExamUsescore.getChildAt(0)).isChecked() ? true : false);
 
             //getQuestion score
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE,
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE,
                     arrListQuestionScore.get(spExamQuestionScore.getSelectedItemPosition()));
 
         } catch (Exception e) {
@@ -1030,5 +1030,10 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             return false;
         }
     }
+
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
+
 
 }

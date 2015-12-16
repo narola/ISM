@@ -50,7 +50,9 @@ public class RichEditor extends WebView {
         H3,
         H4,
         H5,
-        H6
+        H6,
+        JUSTIFYLEFT,
+        JUSTIFYRIGHT
     }
 
     public interface OnTextChangeListener {
@@ -167,7 +169,12 @@ public class RichEditor extends WebView {
         List<Type> types = new ArrayList<>();
         for (Type type : Type.values()) {
             if (TextUtils.indexOf(state, type.name()) != -1) {
-                types.add(type);
+                if(type.name().equals("JUSTIFYLEFT")||type.name().equals("JUSTIFYRIGHT")){
+                    callback(text);
+                }
+                else {
+                    types.add(type);
+                }
             }
         }
 

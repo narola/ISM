@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.teacher.R;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.model.PostFileModel;
 import com.squareup.picasso.Picasso;
 
@@ -42,7 +44,7 @@ public class PostFileAdapter extends BaseAdapter {
     }
 
     public PostFileAdapter() {
-       // this.inflater = LayoutInflater.from(context);
+       // this.inflater = LayoutInflater.from(mContext);
     }
 
     public ArrayList<PostFileModel> getArrayList() {
@@ -84,7 +86,7 @@ public class PostFileAdapter extends BaseAdapter {
                         .error(R.drawable.ic_launcher)
                         .placeholder(R.drawable.selector_loading)
                         .into(imageView);
-                // bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(arrayList.get(position).getStrFilePath()));
+                // bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), Uri.parse(arrayList.get(position).getStrFilePath()));
 
                 // imageView.setImageBitmap(bitmap);
 
@@ -129,6 +131,9 @@ public class PostFileAdapter extends BaseAdapter {
         });
         imgClose.setVisibility(View.VISIBLE);
         return convertView;
+    }
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) context).getBundle();
     }
 }
 

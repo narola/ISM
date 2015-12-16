@@ -43,9 +43,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
     @SuppressLint("ValidFragment")
-    public PreviewQuestionFragment(Fragment fragment, Bundle bundleArguments) {
+    public PreviewQuestionFragment(Fragment fragment) {
         this.mFragment = fragment;
-        this.setArguments(bundleArguments);
     }
 
 
@@ -173,7 +172,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 try {
                     ((AuthorHostActivity) getActivity()).showProgress();
                     Attribute attribute = new Attribute();
-                    attribute.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                    attribute.setExamId(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                     attribute.setQuestionIdList(getArrListQuestionId());
 
                     new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -287,7 +286,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
 
-    private AddQuestionContainerFragment getFragment() {
+    private AddQuestionContainerFragment getBaseFragment() {
         return (AddQuestionContainerFragment) mFragment;
     }
 

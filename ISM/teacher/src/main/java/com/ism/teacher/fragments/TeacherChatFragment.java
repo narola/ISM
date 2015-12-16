@@ -70,5 +70,8 @@ public class TeacherChatFragment extends Fragment {
         }
         fragListener = null;
     }
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 
 }
