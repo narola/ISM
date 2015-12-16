@@ -15,6 +15,8 @@ public class HtmlImageGetter implements Html.ImageGetter {
         this.width = width;
     }
 
+
+
     @Override
     public Drawable getDrawable(String source) {
 
