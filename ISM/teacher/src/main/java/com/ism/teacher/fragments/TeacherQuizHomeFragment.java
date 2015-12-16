@@ -1,6 +1,7 @@
 package com.ism.teacher.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -72,18 +73,32 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         this.mFragment = fragment;
     }
 
+    public static TeacherQuizHomeFragment newInstance(Fragment fragment, Bundle bundleArguments) {
+        TeacherQuizHomeFragment teacherQuizHomeFragment = new TeacherQuizHomeFragment(fragment);
+        teacherQuizHomeFragment.setArguments(bundleArguments);
+
+        return teacherQuizHomeFragment;
+    }
+
     public TeacherQuizHomeFragment() {
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (isAdded()) {
+
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_assignment_home, container, false);
 
         initGlobal(view);
-
         return view;
     }
+
 
     private void initGlobal(View view) {
         assignmentsAdapter = new AssignmentsAdapter(getActivity(), this);
@@ -302,7 +317,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
         if (Utility.isConnected(getActivity())) {
             try {
-                Utility.showSpinnerProgress(progAssignmentClass);
+             //   Utility.showSpinnerProgress(progAssignmentClass);
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_CLASSROOMS);
 
@@ -319,7 +334,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
         if (Utility.isConnected(getActivity())) {
             try {
-                Utility.showSpinnerProgress(progAssignmentSubject);
+               // Utility.showSpinnerProgress(progAssignmentSubject);
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_SUBJECT);
             } catch (Exception e) {
@@ -353,16 +368,27 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     @Override
     public void onResponse(int apicode, Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).hideProgress();
+
             switch (apicode) {
                 case WebConstants.GET_ALL_ASSIGNMENTS:
-                    onResponseGetAllAssignments(object);
+                    if (getActivity() != null && isAdded()) {
+                          ((TeacherHostActivity) getActivity()).hideProgress();
+                        onResponseGetAllAssignments(object);
+                    }
                     break;
                 case WebConstants.GET_CLASSROOMS:
-                    onResponseGetClassrooms(object, error);
+                    if (getActivity() != null && isAdded()) {
+                          ((TeacherHostActivity) getActivity()).hideProgress();
+                        onResponseGetClassrooms(object, error);
+
+                    }
                     break;
                 case WebConstants.GET_SUBJECT:
-                    onResponseGetSubjects(object, error);
+                    if (getActivity() != null && isAdded()) {
+                          ((TeacherHostActivity) getActivity()).hideProgress();
+                        onResponseGetSubjects(object, error);
+
+                    }
                     break;
             }
 
@@ -435,7 +461,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
             arrayListAssignments.addAll(responseHandler.getExams());
             assignmentsAdapter.addAll(arrayListAssignments);
-            Debug.e("assignment size",""+arrayListAssignments.size());
+            Debug.e("assignment size", "" + arrayListAssignments.size());
 
             if (arrayListAssignments.size() == 0) {
                 tvNoAssignments.setVisibility(View.VISIBLE);
@@ -450,7 +476,18 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         }
     }
 
-//    private TeacherOfficeFragment getFragment() {
-//        return (TeacherOfficeFragment) mFragment;
-//    }
+    private TeacherOfficeFragment getFragment() {
+        return (TeacherOfficeFragment) mFragment;
+    }
+
+    public void callOfficemethod(Bundle args) {
+        getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER, args);
+    }
+
+
+    public void onBackClick() {
+        ((TeacherHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_TAG_TEACHER_QUIZ, getArguments());
+    }
+
+
 }

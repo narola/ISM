@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.constants.AppConstant;
@@ -138,5 +139,8 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
         }
     }
 
-
+    public void onBackClick() {
+        ((TeacherHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_TAG_ASSIGNMENT_SUBMITTER, getArguments());
+    }
+//
 }

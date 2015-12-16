@@ -84,11 +84,11 @@ public class WebConstants {
     public static final String URL_ADD_COMMENT = URL_KINJAL_HOST + "AddComment";
     public static final String URL_TAG_FRIEND_IN_FEED = URL_KINJAL_HOST + "TagFriendInFeed";
     public static final String URL_LIKE_FEED = URL_KINJAL_HOST + "LikeFeed";
-    public static final String URL_GETCLASSROOMS = URL_KINJAL_HOST + "GetClassrooms";
-    public static final String URL_GETSUBJECT = URL_KINJAL_HOST + "GetSubject";
-    public static final String URL_GETTOPICS = URL_KINJAL_HOST + "GetTopics";
+    public static final String URL_GETCLASSROOMS = URL_KINJAL_HOST + "GetAllClassrooms";
+    public static final String URL_GETSUBJECT = URL_KINJAL_HOST + "GetAllSubjects";
+    public static final String URL_GETTOPICS = URL_KINJAL_HOST + "GetAllTopics";
     public static final String URL_CREATEASSIGNMENT = URL_KINJAL_HOST + "CreateAssignment";
-    public static final String URL_GET_COURSES = URL_KINJAL_HOST + "GetCourses";
+    public static final String URL_GET_COURSES = URL_KINJAL_HOST + "GetAllCourses";
     public static final String URL_CREATE_EXAM = URL_KINJAL_HOST + "CreateExam";
     public static final String URL_GET_QUESTION_BANK = URL_KINJAL_HOST + "GetQuestionBank";
     public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
@@ -116,7 +116,6 @@ public class WebConstants {
     public static final String URL_GET_ALL_HASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
     public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
 
-    public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
 
     //Question Add/Edit Functionality
     public static final String URL_HASHTAG = URL_KINJAL_HOST + "Hashtag";

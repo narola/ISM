@@ -54,6 +54,7 @@ public class AppConstant {
     /**
      * Managing Teacher office Fragment by using tags
      */
+    public static final String FRAGMENT_TAG_TEACHER_OFFICE = "teacher_office";
 
     public static final String FRAGMENT_TAG_TEACHER_CLASSWALL = "teacher_classwall";
     public static final String FRAGMENT_TAG_TEACHER_NOTES = "teacher_notes";
@@ -61,6 +62,9 @@ public class AppConstant {
     public static final String FRAGMENT_TAG_TEACHER_MARKSCRIPT = "teacher_markscript";
     public static final String FRAGMENT_TAG_TEACHER_RESULTS = "teacher_results";
     public static final String FRAGMENT_TAG_TEACHER_PROGRESS_REPORT = "teacher_progress_report";
+    public static final String FRAGMENT_TAG_ASSIGNMENT_SUBMITTER = "assignment_submitter";
+
+    public static final String FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION = "view_assignment_question";
 
 
     public static final int LIKE = 1;

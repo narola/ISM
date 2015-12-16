@@ -25,10 +25,12 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.ControllerTopMenuItem;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.ControllerTopSpinnerAdapter;
+import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.fragments.StudentAttemptedFragment;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
 import com.ism.teacher.fragments.TeacherOfficeFragment;
+import com.ism.teacher.fragments.TeacherQuizHomeFragment;
 import com.ism.teacher.fragments.TeacherTutorialGroupFragment;
 import com.ism.teacher.fragments.UpcomingEventsFragment;
 import com.ism.teacher.fragments.UserProfileFragment;
@@ -251,23 +253,22 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     }
 
-    public void loadFragmentInMainContainer(int fragment, Bundle fragmentArgument) {
+    public void loadFragmentInMainContainer(int mainfragment, Bundle fragmentArgument) {
         try {
-            switch (fragment) {
+            switch (mainfragment) {
                 case FRAGMENT_TEACHER_HOME:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TeacherHomeFragment.newInstance()).commit();
                     break;
 
                 case FRAGMENT_TEACHER_TUTORIAL_GROUP:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TeacherTutorialGroupFragment.newInstance()).commit();
-
                     break;
 
                 case FRAGMENT_TEACHER_OFFICE:
                     TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance(FRAGMENT_TEACHER_OFFICE, fragmentArgument);
                     listenerHost = teacherOfficeFragment;
                     addTopicsListener = teacherOfficeFragment;
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment, AppConstant.FRAGMENT_TAG_TEACHER_OFFICE).commit();
                     break;
 
             }
@@ -445,10 +446,16 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     currentControllerTopMenu.get(i).setIsActive(false);
                     startSlideAnimation(txtsMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
                     txtsMenu[i].setVisibility(View.VISIBLE);
-                    //onBackClick(currentMainFragment);
-                }
 
-            } else if (view == txtAction) {
+                }
+                onBackClick(currentMainFragment);
+
+            }
+
+            /**
+             * For loading the add (exam,and other add features from different frags)
+             */
+            else if (view == txtAction) {
 
                 switch (currentMainFragment) {
 
@@ -531,10 +538,12 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     }
 
+
     private void hideControllerTopControls() {
         if (imgBack.getVisibility() == View.VISIBLE) {
             hideControllerTopBackButton();
         }
+
         if (txtAction.getVisibility() == View.VISIBLE) {
             hideControllerTopAction();
         }
@@ -542,8 +551,8 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
             hideControllerTopSpinner();
         }
 
-
     }
+
 
     private void hideControllerTopBackButton() {
         startSlideAnimation(imgBack, 0, -1000, 0, 0);
@@ -614,6 +623,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         txtAction.setVisibility(View.VISIBLE);
     }
 
+    public static final int FRAGMENT_ASSIGNMENT_SUBMITTER = 7;
 
     private void onBackClick(int currentMainFragment) {
 
@@ -621,38 +631,64 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
             //On loading teacher office in main frag,automatically it will call
             //Teacher class wall(as per mockup_),first frag called inside TeacherOffice is classwall in initglobal
-            // loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
-
             int current_office_fragment;
             current_office_fragment = TeacherOfficeFragment.getCurrentChildFragment();
 
-            if (current_office_fragment == TeacherOfficeFragment.FRAGMENT_CLASSWALL) {
-                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
-            } else if (current_office_fragment == TeacherOfficeFragment.FRAGMENT_NOTES) {
-                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
-            } else if (current_office_fragment == TeacherOfficeFragment.FRAGMENT_MARK_SCRIPT) {
-                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
-            } else if (current_office_fragment == TeacherOfficeFragment.FRAGMENT_RESULTS) {
-                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
-            } else if (current_office_fragment == TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT) {
-                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
-            } else if (current_office_fragment == TeacherOfficeFragment.FRAGMENT_QUIZ) {
-                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
-            }
+            switch (current_office_fragment) {
+                case TeacherOfficeFragment.FRAGMENT_QUIZ:
+                    TeacherQuizHomeFragment teacherQuizHomeFragment = (TeacherQuizHomeFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_QUIZ);
+                    teacherQuizHomeFragment.onBackClick();
+                    break;
+                case TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER:
+                    TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
+                    break;
 
-//            else if(current_office_fragment==TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER)
-//            {
-//                Debug.e("from assignment submitter to test", "test");
-//                fragmentBundle.putInt(ARG_LOAD_FRAGMENT, TeacherOfficeFragment.FRAGMENT_QUIZ);
-//                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, fragmentBundle);
-//            }
+                case TeacherOfficeFragment.FRAGMENT_CLASSWALL:
+
+                case TeacherOfficeFragment.FRAGMENT_NOTES:
+
+                case TeacherOfficeFragment.FRAGMENT_MARK_SCRIPT:
+
+                case TeacherOfficeFragment.FRAGMENT_RESULTS:
+
+                case TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT:
+                    loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
+                    break;
+
+            }
 
         }
 
     }
+    /*This is to handle backstack for particular fragment */
+
+    /**
+     * @param fragmentName    =name of frag from which back done
+     * @param bundleArguments
+     */
+    public void handleBackClick(String fragmentName, Bundle bundleArguments) {
+
+        if (fragmentName.equals(AppConstant.FRAGMENT_TAG_TEACHER_QUIZ)) {
+            loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, bundleArguments);
+            getBundle().remove(fragmentName);
+        }
+    }
+
+    Bundle bundle = new Bundle();
+
+    public Bundle getBundle() {
+        return bundle;
+    }
+
 
     @Override
     public void onBackPressed() {
 
+    }
+
+    public void showControllerTopBackButton() {
+        Utility.startSlideAnimation(imgBack, -100, 0, 0, 0);
+        imgBack.setVisibility(View.VISIBLE);
     }
 }
