@@ -87,8 +87,8 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
         imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
 
         tvSubmittorTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvSubmittorTitle.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
-        assignmentSubmitterAdapter = new AssignmentSubmitterAdapter(getActivity(), getArguments());
+        tvSubmittorTitle.setText(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
+        assignmentSubmitterAdapter = new AssignmentSubmitterAdapter(getActivity());
 
         rvAssignmentSubmittorList.setHasFixedSize(true);
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -159,5 +159,7 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
 
     }
 
-
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 }

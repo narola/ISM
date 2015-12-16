@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.ism.fragment.AccordionFragment">
+    tools:mContext="com.ism.fragment.AccordionFragment">
 
     <com.ism.views.AccordionView
         android:id="@+id/accordion_view_notice"

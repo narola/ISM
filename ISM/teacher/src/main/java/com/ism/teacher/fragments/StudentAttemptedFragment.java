@@ -275,5 +275,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
         fragListener = null;
     }
 
-
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 }

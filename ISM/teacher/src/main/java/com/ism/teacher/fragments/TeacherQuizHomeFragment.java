@@ -1,7 +1,6 @@
 package com.ism.teacher.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -81,14 +80,6 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     }
 
     public TeacherQuizHomeFragment() {
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (isAdded()) {
-
-        }
     }
 
     @Override
@@ -498,5 +489,8 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW, args);
     }
 
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 
 }

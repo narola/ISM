@@ -24,8 +24,13 @@ import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.ControllerTopMenuItem;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
+import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.ControllerTopSpinnerAdapter;
+import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.fragments.AssignmentExamFragment;
+import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.StudentAttemptedFragment;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
@@ -255,6 +260,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     public void loadFragmentInMainContainer(int mainfragment, Bundle fragmentArgument) {
         try {
+            removeBundleArguments();
             switch (mainfragment) {
                 case FRAGMENT_TEACHER_HOME:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TeacherHomeFragment.newInstance()).commit();
@@ -650,9 +656,9 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
                     break;
 
-                case TeacherOfficeFragment.FRAGMENT_CLASSWALL:
-                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
-                    break;
+//                case TeacherOfficeFragment.FRAGMENT_CLASSWALL:
+//                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
+//                    break;
 
 
                 case TeacherOfficeFragment.FRAGMENT_NOTES:
@@ -671,12 +677,21 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT);
                     break;
 
-                case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER:
-                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
-                    break;
-
                 case TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW:
                     teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW);
+                    break;
+
+                case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER:
+
+                    // CreateExamAssignmentContainerFragment createExamContainer = (CreateExamAssignmentContainerFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_CREATE_EXAM_CONTAINER);
+                    //  createExamContainer.onBack(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
+
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW);
+                    break;
+
+                case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER_EDIT:
+                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER_EDIT);
+
                     break;
 
             }
@@ -732,5 +747,55 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         for (int i = 0; i < currentControllerTopMenu.size(); i++) {
             txtsMenu[i].setVisibility(View.GONE);
         }
+    }
+
+    private void removeBundleArguments() {
+
+        getBundle().remove(AssignmentExamFragment.ARG_IS_CREATE_EXAM);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ID);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_NAME);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_TOPIC_ID);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_BOOK_ID);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CATEGORY);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_TYPE);
+
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_MODE);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_DURATION);
+        getBundle().remove(AssignmentsAdapter.ARG_ASSIGNMENT_NO);
+
+
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CREATED_DATE);
+
+
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ATTEMPT_COUNT);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_INSTRUCTIONS);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ASSESSOR);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_START_DATE);
+        getBundle().remove(AssignmentsAdapter.ARG_EXAM_START_TIME);
+
+
+        getBundle().remove(AssignmentsAdapter.ARG_FRAGMENT_TYPE);
+        getBundle().remove(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
+
+        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_ID);
+        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION);
+        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_PROFILE_PIC);
+        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_NAME);
+
+        getBundle().remove(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+        getBundle().remove(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY);
+        getBundle().remove(MyStudentsAdapter.ARG_ARR_LIST_STUDENTS);
+
     }
 }

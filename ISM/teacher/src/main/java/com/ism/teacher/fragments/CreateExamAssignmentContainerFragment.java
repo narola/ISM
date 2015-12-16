@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.helper.MyTypeFace;
 
 
@@ -108,7 +109,8 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
          * setExamDetails(); in AssignmentExam is used to set data using passed args.
          */
 
-        if (getArguments() != null) {
+        if (getBundleArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)
+                && !getBundleArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
             initTab(1);
         } else {
             initTab(0);
@@ -133,10 +135,10 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         try {
             switch (fragment) {
                 case FRAGMENT_ASSIGNMENT_ACTIVITY:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance(getArguments())).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance(getBundleArguments())).commit();
                     break;
                 case FRAGMENT_ASSIGNMENT_EXAM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance(this, getActivity(), getArguments())).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance(this, getActivity(), getBundleArguments())).commit();
                     break;
             }
 
@@ -178,4 +180,7 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     }
 
 
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 }

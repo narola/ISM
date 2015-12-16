@@ -95,9 +95,9 @@ public class AddQuestionContainerFragment extends Fragment {
 
     private void initGlobal() {
 
-        questionListFragment = new QuestionListFragment(this, getArguments());
-        previewQuestionFragment = new PreviewQuestionFragment(this, getArguments());
-        questionAddEditFragment = new QuestionAddEditFragment(this, getArguments());
+        questionListFragment = new QuestionListFragment(this, getBundleArguments());
+        previewQuestionFragment = new PreviewQuestionFragment(this, getBundleArguments());
+        questionAddEditFragment = new QuestionAddEditFragment(this, getBundleArguments());
 
         fl_addquestionfragment_container_left = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
         fl_addquestionfragment_container_right = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
@@ -239,6 +239,8 @@ public class AddQuestionContainerFragment extends Fragment {
             previewQuestionFragment.addQuestionDataAfterAddQuestion(question);
         }
     }
-
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 
 }

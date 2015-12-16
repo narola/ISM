@@ -55,7 +55,7 @@ public class CustomSpinnerAdapter extends BaseAdapter {
     }
 
 //    public View getCustomView(int position, View convertView, ViewGroup parent) {
-//        LayoutInflater inflater = LayoutInflater.from(context);
+//        LayoutInflater inflater = LayoutInflater.from(mContext);
 //        View mySpinner = inflater.inflate(R.layout.custom_spinner, parent, false);
 //        TextView main_text = (TextView) mySpinner.findViewById(R.id.myspinner);
 //        main_text.setText(list[position]);
