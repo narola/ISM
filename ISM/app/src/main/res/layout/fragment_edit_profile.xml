@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/studymate_tab_bg"
     android:orientation="vertical"
-    tools:context="com.ism.fragment.userprofile.EditProfileFragment">
+    tools:context="com.ism.fragment.userProfile.EditProfileFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -18,6 +18,7 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
@@ -44,11 +45,8 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
     private FragmentListener fragListener;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
 
-    public static AssignmentsSubmittorFragment newInstance(Bundle bundleArgument) {
+    public static AssignmentsSubmittorFragment newInstance() {
         AssignmentsSubmittorFragment assignmentsSubmittorFragment = new AssignmentsSubmittorFragment();
-
-        assignmentsSubmittorFragment.setArguments(bundleArgument);
-
         return assignmentsSubmittorFragment;
     }
 
@@ -71,7 +69,7 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
         rvAssignmentSubmittorList = (RecyclerView) view.findViewById(R.id.rv_assignment_submittor_list);
-        assignmentSubmittorAdapter = new AssignmentSubmittorAdapter(getActivity(), getArguments());
+        assignmentSubmittorAdapter = new AssignmentSubmittorAdapter(getActivity());
 
         rvAssignmentSubmittorList.setHasFixedSize(true);
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -80,7 +78,7 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
         tvNoDataMsg.setTypeface(myTypeFace.getRalewayRegular());
         tvNoDataMsg.setVisibility(View.GONE);
         tvNoDataMsg.setText(getString(R.string.no_exam_submittor));
-        tvSubmittorTitle.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
+        tvSubmittorTitle.setText(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
 
         callApiGetExamSubmission();
 
@@ -93,7 +91,7 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
                 ((AuthorHostActivity) getActivity()).showProgress();
 
                 Attribute request = new Attribute();
-                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setExamId(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 request.setUserId(Global.strUserId);
                 request.setRole(Global.role);
 
@@ -214,7 +212,7 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
             try {
                 fragListener = (FragmentListener) activity;
                 if (fragListener != null) {
-                    fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_BOOKS);
+                    fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
                 }
             } catch (ClassCastException e) {
                 Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -226,12 +224,26 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
             super.onDetach();
             try {
                 if (fragListener != null) {
-                    fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_BOOKS);
+                    fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
                 }
             } catch (ClassCastException e) {
                 Debug.e(TAG, "onDetach Exception : " + e.toString());
             }
             fragListener = null;
         }
+    }
+
+    public void onBackClick() {
+
+        getBundleArguments().remove(AssignmentSubmittorAdapter.ARG_STUDENT_ID);
+        getBundleArguments().remove(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
+        getBundleArguments().remove(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC);
+        getBundleArguments().remove(AssignmentSubmittorAdapter.ARG_STUDENT_NAME);
+
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSIGNMENT_SUBMITTOR);
+    }
+
+    private Bundle getBundleArguments() {
+        return ((AuthorHostActivity) getActivity()).getBundle();
     }
 }

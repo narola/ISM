@@ -19,7 +19,7 @@ import com.ism.commonsource.utility.Utility;
 import com.ism.commonsource.view.ProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
-import com.ism.fragment.userprofile.ProfileControllerFragment;
+import com.ism.fragment.userProfile.ProfileControllerFragment;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;

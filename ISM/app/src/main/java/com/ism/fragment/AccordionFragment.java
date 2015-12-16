@@ -16,7 +16,7 @@ import com.ism.activity.HostActivity;
 import com.ism.adapter.HighScoreAdapter;
 import com.ism.adapter.NoticeAdapter;
 import com.ism.constant.WebConstants;
-import com.ism.fragment.userprofile.AllNoticeFragment;
+import com.ism.fragment.userProfile.AllNoticeFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.HighScoreSubject;
 import com.ism.object.Global;
@@ -39,7 +39,7 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
     private static final String TAG = AccordionFragment.class.getSimpleName();
 
     private View view;
-    private AccordionView accordionNotes;
+    private AccordionView accordionNotice;
     private ListView lvNotice, lvHighScore;
     private TextView txtViewAllNotice;
 
@@ -69,7 +69,7 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
     }
 
 	private void initGlobal(View v) {
-		accordionNotes = (AccordionView) v.findViewById(R.id.accordion_view_chat);
+		accordionNotice = (AccordionView) v.findViewById(R.id.accordion_view_notice);
 		lvNotice = (ListView) v.findViewById(R.id.lv_notice);
 		//lvEvents = (ListView) v.findViewById(R.id.lv_events);
 		lvHighScore = (ListView) v.findViewById(R.id.lv_highScore);
@@ -173,6 +173,7 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					arrListNotice = responseHandler.getNotices();
 					fillListNotice();
+					accordionNotice.toggleSection(0);
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetAllNotice Failed");
 				}

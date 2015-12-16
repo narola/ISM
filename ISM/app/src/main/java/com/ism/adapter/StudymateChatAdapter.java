@@ -1,25 +1,18 @@
 package com.ism.adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.ism.ISMStudent;
 import com.ism.R;
-import com.ism.commonsource.utility.Utility;
-import com.ism.commonsource.view.ProcessButton;
-import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
-import com.ism.fragment.userprofile.ProfileControllerFragment;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
-import com.ism.ws.model.StudymateRequest;
 import com.ism.ws.model.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;

@@ -22,7 +22,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="@dimen/d40dp"
 			android:layout_marginTop="@dimen/d40dp"
-			android:src="@drawable/ismtitle"/>
+			android:src="@drawable/img_logo_ism"/>
 
 		<LinearLayout
 			android:id="@+id/ll_login"

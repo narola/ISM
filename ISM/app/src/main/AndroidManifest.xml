@@ -72,7 +72,7 @@
             <!--</intent-filter>-->
         </activity>
         <activity
-            android:name=".fragment.userprofile.EditAboutMeDetailsActivity"
+            android:name=".fragment.userProfile.EditAboutMeDetailsActivity"
             android:screenOrientation="landscape"
              />
         <!--<intent-filter>

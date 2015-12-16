@@ -33,9 +33,8 @@ public class MyDeskFragment extends Fragment {
     private AuthorHostActivity activityHost;
     private TextView txtAdd;
 
-    public static MyDeskFragment newInstance(Bundle bundleArguments) {
+    public static MyDeskFragment newInstance() {
         MyDeskFragment myDeskFragment = new MyDeskFragment();
-        myDeskFragment.setArguments(bundleArguments);
         return myDeskFragment;
     }
 
@@ -151,6 +150,6 @@ public class MyDeskFragment extends Fragment {
 
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYDESK, getArguments());
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYDESK);
     }
 }

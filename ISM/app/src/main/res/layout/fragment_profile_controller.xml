@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_app_dark"
-    tools:context=".fragment.userprofile.ProfileControllerFragment">
+    tools:context=".fragment.userProfile.ProfileControllerFragment">
 
     <RelativeLayout
         android:id="@+id/rl_user"
@@ -18,7 +18,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
-            android:src="@drawable/userdp"
+            android:src="@drawable/img_default_dp"
             app:civ_border_color="#3C4A4D"
             app:civ_border_width="3dp" />
 

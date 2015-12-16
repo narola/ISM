@@ -49,9 +49,8 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     Fragment mFragment;
 
 
-    public SubjectiveQuestionsFragment(Fragment fragment, Bundle bundleArguments) {
+    public SubjectiveQuestionsFragment(Fragment fragment) {
         this.mFragment = fragment;
-        setArguments(bundleArguments);
     }
 
     @Override
@@ -171,7 +170,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setExamId(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
@@ -188,8 +187,8 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setStudentId(getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
+                request.setExamId(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setStudentId(getBaseFragment().getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {
@@ -279,7 +278,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private void loadNextStudentData() {
         isFromLeft = false;
-        int position = getBaseFragment().getArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
+        int position = getBaseFragment().getBundleArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
         if (position < arrListExamSubmittor.size() - 1) {
             position++;
             setStudentData(position);
@@ -288,10 +287,10 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private void loadPreviousStudentData() {
         isFromLeft = true;
-        int position = getBaseFragment().getArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
+        int position = getBaseFragment().getBundleArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
         if (position >= 1) {
             position--;
-            getBaseFragment().getArguments().putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
+            getBaseFragment().getBundleArguments().putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
             setStudentData(position);
         }
     }
@@ -317,7 +316,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     }
 
     public void loadStudentEvaluationData() {
-        if (getBaseFragment().getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID) != null) {
+        if (getBaseFragment().getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID) != null) {
             setQuestions();
             callAPiGetExamEvaluation();
             scrollToSpecificQuestion(0);
@@ -331,22 +330,22 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private void setTitleDetails() {
 
-        arrListExamSubmittor = getBaseFragment().getArguments().getParcelableArrayList(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
+        arrListExamSubmittor = getBaseFragment().getBundleArguments().getParcelableArrayList(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
 
         tvStudentEvalutionNo.setText(getActivity().getResources().getString(R.string.strevaluation) + " " +
-                (getBaseFragment().getArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION) + 1) + " " +
+                (getBaseFragment().getBundleArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION) + 1) + " " +
                 getActivity().getResources().getString(R.string.strof) + " " +
                 arrListExamSubmittor.size());
 
         imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                 imgStudentProfilePic, ISMAuthor.options);
 
-        tvStudentName.setText(getBaseFragment().getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME));
+        tvStudentName.setText(getBaseFragment().getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME));
         tvStudentRollNo.setText(getResources().getString(R.string.strrollno) + " " +
-                (getBaseFragment().getArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION) + 1));
+                (getBaseFragment().getBundleArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION) + 1));
         tvAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + " " +
-                getBaseFragment().getArguments().getInt(ExamsAdapter.ARG_EXAM_NO));
-        tvAssignmentTitle.setText(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
+                getBaseFragment().getBundleArguments().getInt(ExamsAdapter.ARG_EXAM_NO));
+        tvAssignmentTitle.setText(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
 
 
     }
@@ -361,14 +360,14 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
         if (responseObjGetAllExamQuestions != null) {
 
-            getArguments().putParcelableArrayList(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS, arrListQuestions);
-            getArguments().putString(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE, getString(R.string.strsubjective));
+            getBaseFragment().getBundleArguments().putParcelableArrayList(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS, arrListQuestions);
+            getBaseFragment().getBundleArguments().putString(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE, getString(R.string.strsubjective));
 
             ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
-                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getArguments());
+                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT));
 
             ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
-                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
+                    (AuthorHostActivity.FRAGMENT_HIGHSCORE));
 
         }
 
@@ -381,8 +380,13 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
             loadPreviousStudentData();
         } else if (v == llNextStudent) {
             loadNextStudentData();
-
-        } else if (v == imgEditExam || v == imgCopyExam) {
+        } else if (v == imgEditExam) {
+            getBaseFragment().getBundleArguments().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, false);
+            getBaseFragment().getBundleArguments().putBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY, false);
+            setExamQuestions();
+        } else if (v == imgCopyExam) {
+            getBaseFragment().getBundleArguments().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, false);
+            getBaseFragment().getBundleArguments().putBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY, true);
             setExamQuestions();
         }
     }

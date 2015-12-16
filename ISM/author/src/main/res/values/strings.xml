@@ -320,7 +320,7 @@
     <string name="strendofterm">EndOfTerm</string>
     <string name="strtutorial">Tutorial</string>
     <string name="strtrial">Trial</string>
-    <string name="strmy30">My30</string>
+    <string name="strmy30">My30th</string>
 
     <string-array name="examname">
         <item>Exam Category</item>

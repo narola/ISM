@@ -120,12 +120,12 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_LIKEFEED).execute(ResponseHandler.class, attribute);
                             break;
 
-                        case WebConstants.GETCLASSROOMS:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GETCLASSROOMS).execute(ResponseHandler.class, attribute);
+                        case WebConstants.GETALLCLASSROOMS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GETALLCLASSROOMS).execute(ResponseHandler.class, attribute);
                             break;
 
-                        case WebConstants.GETSUBJECT:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GETSUBJECT).execute(ResponseHandler.class, attribute);
+                        case WebConstants.GETALLSUBJECT:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GETALLSUBJECT).execute(ResponseHandler.class, attribute);
                             break;
 
                         case WebConstants.GETTOPICS:
@@ -140,8 +140,8 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_POSTFEED).execute(ResponseHandler.class, attribute);
                             break;
 
-                        case WebConstants.GETCOURSES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GETCOURSES).execute(ResponseHandler.class, attribute);
+                        case WebConstants.GETALLCOURSES:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GETALLCOURSES).execute(ResponseHandler.class, attribute);
                             break;
 
                         case WebConstants.CREATEEXAM:
