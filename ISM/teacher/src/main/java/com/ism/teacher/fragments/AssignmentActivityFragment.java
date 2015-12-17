@@ -451,6 +451,10 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
             backToTrialScreen();
         }
     }
+
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 }
 
 

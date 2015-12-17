@@ -28,10 +28,10 @@ import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Comment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.RealmResults;
 import model.FeedComment;
-import model.FeedLike;
 import model.Feeds;
 import model.User;
 import realmhelper.StudentHelper;
@@ -45,7 +45,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private static final String TAG = PostFeedsAdapter.class.getSimpleName();
 
     private Context context;
-    private RealmResults<model.Feeds> arrListFeeds;
+    private List<Feeds> arrListFeeds;
 
     private int addCommentFeedPosition = -1;
     private int tagFeedPosition = -1;
@@ -54,6 +54,8 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private Attribute attributeComments;
     private int feedLiked;
     private int totalLikes = -1;
+    private String strComment = "";
+    private FeedComment feedComment;
 
     public PostFeedsAdapter(Context context, RealmResults<model.Feeds> arrListFeeds) {
         this.context = context;
@@ -101,46 +103,48 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         try {
             Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrListFeeds.get(position).getFeedBy().getProfilePicture(), holder.imgDp, ISMStudent.options);
-//			imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgDp, ISMStudent.options);
             holder.txtName.setText(arrListFeeds.get(position).getFeedBy().getFullName());
             holder.txtPost.setText(arrListFeeds.get(position).getFeedText());
             holder.txtLikes.setText(String.valueOf(arrListFeeds.get(position).getTotalLike()) == null ? "0" : String.valueOf(arrListFeeds.get(position).getTotalLike()));
             holder.txtComments.setText(String.valueOf(arrListFeeds.get(position).getTotalComment()) == null ? "0" : String.valueOf(arrListFeeds.get(position).getTotalComment()));
 
-            if (addCommentFeedPosition != -1 && addCommentFeedPosition == position) {
-                holder.etComment.setText("");
-                addCommentFeedPosition = -1;
-            }
+//            if (addCommentFeedPosition != -1 && addCommentFeedPosition == position) {
+//                holder.etComment.setText("");
+//                addCommentFeedPosition = -1;
+//            }
             feedLiked = Integer.parseInt(arrListFeeds.get(position).getLike());
             holder.llComments.removeAllViews();
 
             if (arrListFeeds.get(position).getComments() != null) {
                 holder.txtViewAll.setVisibility(arrListFeeds.get(position).getTotalComment() > 2 ? View.VISIBLE : View.GONE);
-                for (int i = 0; i < arrListFeeds.get(position).getComments().size(); i++) {
+                int j = arrListFeeds.get(position).getComments().size() - 2;
+                if (j < 0) {
+                    j = 0;
+                }
+                for (int i = j; i < arrListFeeds.get(position).getComments().size(); i++) {
                     holder.llComments.addView(getCommentView(arrListFeeds.get(position).getComments().get(i)));
                 }
             }
-            totalLikes = arrListFeeds.get(position).getTotalLike();
             holder.imgLike.setActivated(arrListFeeds.get(position).getLike().equals("1"));
 
             holder.imgLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (feedLiked == 1) {
+                    Utility.showToast(context, "Feed position : " + position);
+                    Log.i(TAG, "Feed position :  : " + position);
+                    if (arrListFeeds.get(position).getLike().equals("1")) {
                         holder.imgLike.setActivated(false);
-                        feedLiked = 0;
-                        totalLikes-=1;
+                        totalLikes = arrListFeeds.get(position).getTotalLike() - 1;
                         //arrListFeeds.get(position).setLike("0");
                         // arrListFeeds.get(position).setTotalLike(arrListFeeds.get(position).getTotalLike() - 1);
                     } else {
                         //holder.txtLikes.setText(String.valueOf(arrListFeeds.get(position).getTotalLike()+1));
                         holder.imgLike.setActivated(true);
-                        feedLiked = 1;
-                        totalLikes+=1;
+                        totalLikes = arrListFeeds.get(position).getTotalLike() + 1;
                         //arrListFeeds.get(position).setLike("1");
                         //arrListFeeds.get(position).setTotalLike(arrListFeeds.get(position).getTotalLike() + 1);
                     }
-                    updateFeedLike(arrListFeeds.get(position).getFeedId(), feedLiked);
+                    updateFeedLike(arrListFeeds.get(position).getFeedId());
                 }
             });
 
@@ -172,10 +176,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             holder.btnComment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String comment = holder.etComment.getText().toString().trim();
-                    if (comment != null && comment.length() > 0) {
+                    strComment = holder.etComment.getText().toString().trim();
+                    if (strComment != null && strComment.length() > 0) {
                         if (Utility.isConnected(context)) {
-                            callApiComment(position, comment);
+                            addCommentFeedPosition = position;
+                            callApiComment(position);
+                            holder.etComment.setText("");
                         } else {
                             Utility.alertOffline(context);
                         }
@@ -185,19 +191,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         } catch (Exception e) {
             Log.e(TAG, "onBindViewHolder Exception : " + e.toString());
-        }
-    }
-
-    private void updateFeedLike(int feedId, int like) {
-        try {
-            Feeds feeds = new Feeds();
-            feeds.setTotalLike(totalLikes);
-            feeds.setFeedId(feedId);
-            studentHelper.updateFeedLikes(feeds,like);
-            arrListFeeds = studentHelper.getFeeds(-1);
-            notifyDataSetChanged();
-        } catch (Exception e) {
-            Debug.i(TAG, "updateFeedLike Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -226,13 +219,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         return view;
     }
 
-    private void callApiComment(int position, String comment) {
+    private void callApiComment(int position) {
         try {
             addCommentFeedPosition = position;
             attributeComments = new Attribute();
             attributeComments.setFeedId(String.valueOf(arrListFeeds.get(position).getFeedId()));
             attributeComments.setCommentBy(Global.strUserId);
-            attributeComments.setComment(comment);
+            attributeComments.setComment(strComment);
 
             new WebserviceWrapper(context, attributeComments, this).new WebserviceCaller()
                     .execute(WebConstants.ADD_COMMENT);
@@ -383,9 +376,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         try {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                ParseComment();
-                arrListFeeds.get(addCommentFeedPosition).setTotalComment(arrListFeeds.get(addCommentFeedPosition).getTotalComment() + 1);
-                notifyDataSetChanged();
+                saveComment(responseHandler.getComment().get(0).getCommentId());
             } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                 Toast.makeText(context, R.string.msg_failed_comment, Toast.LENGTH_LONG).show();
             }
@@ -394,14 +385,40 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         }
     }
 
-    private void ParseComment() {
-        // FeedComment comment
+    private void saveComment(int commentId) {
+        try {
+            Feeds feeds = studentHelper.getFeeds(arrListFeeds.get(addCommentFeedPosition).getFeedId()).get(0);
+            FeedComment feedComment = new FeedComment();
+            feedComment.setCommentBy(studentHelper.getUser(Integer.parseInt(Global.strUserId)));
+            feedComment.setComment(attributeComments.getComment());
+            feedComment.setFeedCommentId(commentId);
+            feedComment.setCreatedDate(Utility.getDateMySql());
+            feedComment.setFeed(feeds);
+            studentHelper.saveComments(feedComment);
+            studentHelper.updateTotalComments(feeds);
+            arrListFeeds = studentHelper.getFeeds(-1);
+            notifyDataSetChanged();
+        } catch (Exception e) {
+            Debug.i(TAG, "addCommentToDb Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void updateFeedLike(int feedId) {
+        try {
+            Feeds feeds = studentHelper.getFeeds(feedId).get(0);
+            studentHelper.updateFeedLikes(feeds);
+            arrListFeeds = studentHelper.getFeeds(-1);
+            notifyDataSetChanged();
+        } catch (Exception e) {
+            Debug.i(TAG, "updateFeedLike Exception : " + e.getLocalizedMessage());
+        }
     }
 
     private void ParseAllComments(ArrayList<Comment> comments) {
         try {
             if (comments.size() > 0) {
                 for (int i = 0; i < comments.size(); i++) {
+                    Feeds feeds = studentHelper.getFeeds(arrListFeeds.get(viewAllFeedId).getFeedId()).get(0);
                     FeedComment feedComment = new FeedComment();
                     feedComment.setFeedCommentId(Integer.parseInt(comments.get(i).getId()));
                     User user = new User();
@@ -410,33 +427,22 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                     user.setUserId(Integer.parseInt(comments.get(i).getCommentBy()));
                     studentHelper.saveUser(user);
                     feedComment.setCommentBy(user);
-                    model.Feeds feeds = new model.Feeds();
-                    feeds.setFeedId(arrListFeeds.get(viewAllFeedId).getFeedId());
                     feedComment.setFeed(feeds);
+                    feedComment.setCreatedDate(Utility.getDateFormateMySql(comments.get(i).getCreatedDate()));
                     feedComment.setComment(comments.get(i).getComment());
-                    studentHelper.FeedCommments(feedComment);
+                    studentHelper.saveComments(feedComment);
+                    Debug.i(TAG, "PaseAllComments : " + feedComment);
                 }
             }
             setUpData(studentHelper.getFeedComments(arrListFeeds.get(viewAllFeedId).getFeedId()));
 
         } catch (Exception e) {
-            Log.e(TAG, "ParseAllComments Exception : " + e.toString());
+            Log.e(TAG, "ParseAllComments Exception : " + e.getLocalizedMessage());
         }
     }
 
     public void setUpData(RealmResults<model.FeedComment> realmResult) {
         try {
-//            ArrayList<Comment> arrayList = new ArrayList<>();
-//            if (realmResult.size() > 0) {
-//                for (int i = 0; i < realmResult.size(); i++) {
-//                    Comment comment = new Comment();
-//                    comment.setFullName((realmResult.get(i).getCommentBy() == null ? realmResult.get(i).getCommentBy() + "" : realmResult.get(i).getCommentBy().getFullName()));
-//                    comment.setComment(realmResult.get(i).getComment());
-//                    comment.setProfilePic((realmResult.get(i).getCommentBy() == null ? realmResult.get(i).getCommentBy() + "" : realmResult.get(i).getCommentBy().getProfilePicture()));
-//                    comment.setId(String.valueOf(realmResult.get(i).getFeedCommentId()));
-//                    arrayList.add(comment);
-//                }
-//            }
             ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(context, realmResult);
             viewAllCommentsDialog.show();
         } catch (Exception e) {

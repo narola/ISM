@@ -70,4 +70,17 @@
     <color name="bg_discussion">#FFFFFF</color>
     <color name="pink">#EC8AC3</color>
     <color name="green_xlight">#B2D5D9</color>
+
+
+
+
+    <!-- Tutorial Group Friday Exam Colors -->
+
+    <color name="button_dark_start">#99CCCCCC</color>
+    <color name="button_dark_end">#00000000</color>
+	<color name="yellow">#FEBA01</color>
+	<color name="notation_not_answered">#D8DDE0</color>
+	<color name="bg_button_dark_pressed">#131619</color>
+
+    <!-- ################################# -->
 </resources>

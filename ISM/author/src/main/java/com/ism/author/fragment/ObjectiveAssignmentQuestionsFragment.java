@@ -136,10 +136,10 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
 
 
             ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
-                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getBundleArguments());
+                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT));
 
             ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
-                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
+                    (AuthorHostActivity.FRAGMENT_HIGHSCORE));
 
         }
 
@@ -312,7 +312,12 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
     }
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS, getBundleArguments());
+
+        getBundleArguments().remove(ARG_ARR_LIST_QUESTIONS);
+        getBundleArguments().remove(ARG_EXAM_TYPE);
+        getBundleArguments().remove(ARG_EXAM_ISCOPY);
+
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS);
     }
 
 

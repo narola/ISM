@@ -66,7 +66,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
 
     private void initGlobal() {
-        myDeskFragment = MyDeskFragment.newInstance(((AuthorHostActivity) getActivity()).getBundle());
+        myDeskFragment = MyDeskFragment.newInstance();
 
         txtUserName = (TextView) view.findViewById(R.id.txt_user_name);
         txtTotalBooks = (TextView) view.findViewById(R.id.txt_total_books);

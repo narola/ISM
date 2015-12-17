@@ -2,7 +2,7 @@
 Starting point of the app :
 ===========================
 /**
- *  In starting point of the app write the notes in context to app review:
+ *  In starting point of the app write the notes in mContext to app review:
  *  - if someone reviews your app then what is the main class to refer.
  */
 

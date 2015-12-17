@@ -109,22 +109,22 @@ public class OfficeFragment extends Fragment {
         switch (fragment) {
 
             case FRAGMENT_MY_DESK:
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK, null);
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
                 break;
 
             case FRAGMENT_GOTRENDING:
                 break;
 
             case FRAGMENT_TRIAL:
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MYTHIRTY, null);
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
                 break;
 
             case FRAGMENT_MYTHIRTY:
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MYTHIRTY, null);
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
                 break;
 
             case FRAGMENT_ASSESSMENT:
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT, null);
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT);
                 break;
 
 

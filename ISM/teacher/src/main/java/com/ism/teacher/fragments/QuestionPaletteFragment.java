@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.QuestionPaletteAdapter;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Evaluation;
@@ -83,5 +84,7 @@ public class QuestionPaletteFragment extends Fragment {
         }
     }
 
-
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 }

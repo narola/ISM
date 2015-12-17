@@ -173,7 +173,10 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     }
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_CREATEEXAMCONTAINER, getBundleArguments());
+
+        getBundleArguments().remove(CreateExamFragment.ARG_IS_CREATE_EXAM);
+
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_CREATEEXAMCONTAINER);
     }
 
     public Bundle getBundleArguments() {

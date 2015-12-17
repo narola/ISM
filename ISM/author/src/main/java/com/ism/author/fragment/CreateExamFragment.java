@@ -396,7 +396,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETCLASSROOMS);
+                        .execute(WebConstants.GETALLCLASSROOMS);
             } catch (Exception e) {
                 Debug.e(TAG + Utility.getString(R.string.strerrormessage, getActivity()), e.getLocalizedMessage());
             }
@@ -663,7 +663,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     public void onResponse(int apiCode, Object object, Exception error) {
         try {
             switch (apiCode) {
-                case WebConstants.GETCLASSROOMS:
+                case WebConstants.GETALLCLASSROOMS:
                     onResponseGetClassrooms(object, error);
                     break;
                 case WebConstants.GETBOOKSFORAUTHOR:
@@ -696,9 +696,9 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
                     }
                     Adapters.setUpSpinner(getActivity(), spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL);
-                    if (getBaseFragment().getBundleArguments() != null) {
-                        spExamClassroom.setSelection(classrooms.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME)));
-                    }
+//                    if (!getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
+                    spExamClassroom.setSelection(classrooms.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME)));
+//                    }
 
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -729,9 +729,10 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     }
                     Adapters.setUpSpinner(getActivity(), spExamBookname, authorBooks, Adapters.ADAPTER_NORMAL);
 
-                    if (getBaseFragment().getBundleArguments() != null) {
-                        spExamBookname.setSelection(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
-                    }
+
+//                    if (!getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
+                    spExamBookname.setSelection(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
+//                    }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
@@ -831,7 +832,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 if (getBaseFragment().getBundleArguments() != null) {
                     setBundleArguments();
                 }
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER, getBaseFragment().getBundleArguments());
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER);
                 break;
             case R.id.btn_exam_cancel:
                 getBaseFragment().onBackClick();

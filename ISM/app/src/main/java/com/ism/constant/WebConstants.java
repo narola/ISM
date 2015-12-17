@@ -64,6 +64,7 @@ public class WebConstants {
 	public static final int MANAGE_FAVOURITES = 60;
 	public static final int MANAGE_BOOK_LIBRARY = 61;
 	public static final int POSTFEED = 62;
+	public static final int LIKE_FEED =63 ;
 
 	/**
 	 *  URLs
@@ -76,12 +77,11 @@ public class WebConstants {
 //	public static final String HOST = "http://192.168.1.202/";                                              // SERVER
 //	public static final String HOST = "http://clientapp.narolainfotech.com/";                               // SERVER
 	public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
-
-//	private static final String DIR_PATH = "pg/ISM/WS_ISM/";    //  SERVER
+	//	private static final String DIR_PATH = "pg/ISM/WS_ISM/";    //  SERVER
 	private static final String DIR_PATH = "WS_ISM/";           //  KINJAL
 	private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
-	//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_Images/";
-	public static final String HOST_IMAGE_USER = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_Images/";
+	//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_images/";
+	public static final String HOST_IMAGE_USER = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
 
 	public static final String HOST_IMAGE_FEED = HOST + DIR_PATH + "images/feeds/";
 	public static final String HOST_IMAGE_USER_OLD = "http://192.168.1.202/pg/ISM/WS_ISM/";
@@ -122,8 +122,9 @@ public class WebConstants {
 	public static final String URL_UPLOAD_FEED_MEDIA = HOST_WS + "UploadMedia";
 	public static final String URL_REFRESH_TOKEN = HOST_WS + "RefreshToken";
 	public static final String URL_GET_ADMIN_CONFIG = HOST_WS + "GetAdminConfig";
-	public static final String URL_SEND_REQUEST_STUDYMATE = HOST_WS + "SendRequestToStudymate";
+	public static final String URL_LIKE_FEED = HOST_WS + "LikeFeed";
 
+	public static final String URL_SEND_REQUEST_STUDYMATE = HOST_WS + "SendRequestToStudymate";
 	/*
 	* edit profile
 	* */
@@ -137,8 +138,8 @@ public class WebConstants {
 	public static final String URL_MANAGE_BOOK_LIBRARY =  HOST_WS + "ManageBookLibrary";
 	public static final String URL_EDIT_PROFILE_PIC = " ";
 	public static final String URL_GET_BLOCKED_USER =  HOST_WS + "GetBlockedUser";
-	public static final String URL_UNBLOCK_USER =  HOST_WS + "UnBlockUser";
 
+	public static final String URL_UNBLOCK_USER =  HOST_WS + "UnBlockUser";
 	/**
 	 * Parameter value Constants
 	 */

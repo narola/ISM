@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Answers;
 import com.ism.teacher.ws.model.Evaluation;
@@ -214,5 +215,7 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
 
     }
 
-
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) mContext).getBundle();
+    }
 }

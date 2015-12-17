@@ -196,6 +196,8 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
             Debug.e(TAG, "onResponseGetAllFeeds Exception : " + e.toString());
         }
     }
-
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 
 }

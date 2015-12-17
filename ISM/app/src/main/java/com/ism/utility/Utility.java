@@ -6,6 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -14,6 +20,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -40,6 +47,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.Locale;
 
 /**
@@ -57,6 +65,8 @@ public class Utility {
     public static final SimpleDateFormat DATE_FORMAT_DISPLAY = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_DDMMMYY = new SimpleDateFormat("dd MMM yy", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_MMMDDYYYY = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+	private static StringBuilder mFormatBuilder = new StringBuilder();
+	private static Formatter mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
     private static InputMethodManager inputMethod;
 
     /**
@@ -175,10 +185,10 @@ public class Utility {
             builder.setMessage(message);
         }
         AlertDialog dialog = builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+	        @Override
+	        public void onClick(DialogInterface dialog, int which) {
 
-            }
+	        }
         }).create();
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();
@@ -209,10 +219,10 @@ public class Utility {
                 confirmationListener.onConfirmationResponse(requestId, true);
             }
         }).setNegativeButton(R.string.strcancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                confirmationListener.onConfirmationResponse(requestId, false);
-            }
+	        @Override
+	        public void onClick(DialogInterface dialog, int which) {
+		        confirmationListener.onConfirmationResponse(requestId, false);
+	        }
         }).create();
         dialog.setCancelable(cancelable);
 //        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
@@ -302,11 +312,11 @@ public class Utility {
      */
     public static void sortPostedOnAsc(ArrayList<Notice> arrListData) {
         Collections.sort(arrListData, new Comparator<Notice>() {
-            @Override
-            public int compare(Notice lData, Notice rData) {
-                int compare = lData.getPostedOn().compareTo(rData.getPostedOn());
-                return compare;
-            }
+	        @Override
+	        public int compare(Notice lData, Notice rData) {
+		        int compare = lData.getPostedOn().compareTo(rData.getPostedOn());
+		        return compare;
+	        }
         });
     }
 
@@ -542,5 +552,25 @@ public class Utility {
         }
 
     }
+
+	public static String stringForTime(int timeMs) {
+		int totalSeconds = timeMs / 1000;
+
+		int seconds = totalSeconds % 60;
+		int minutes = (totalSeconds / 60) % 60;
+		int hours   = totalSeconds / 3600;
+
+		mFormatBuilder.setLength(0);
+		if (hours > 0) {
+			return mFormatter.format("%d:%02d:%02d", hours, minutes, seconds).toString();
+		} else {
+			return mFormatter.format("%02d:%02d", minutes, seconds).toString();
+		}
+	}
+
+	public static String formatNumber(int number) {
+		mFormatBuilder.setLength(0);
+		return mFormatter.format("%02d", number).toString();
+	}
 
 }

@@ -5,14 +5,11 @@ import android.util.Log;
 
 import com.realm.ismrealm.RealmAdaptor;
 
-import java.util.Date;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.AdminConfig;
 import model.FeedComment;
 import model.FeedImage;
-import model.FeedLike;
 import model.Feeds;
 import model.User;
 
@@ -85,12 +82,7 @@ public class StudentHelper {
 
     public void saveFeeds(Feeds feeds) {
 
-        // remaining : to update feed with local id
-        Number localId = realm.where(Feeds.class).max("localId");
-        long newId = 0;
-        if (localId != null) {
-            newId = (long) localId + 1;
-        }
+        // remaining : to update feed with local id;
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(feeds);
         realm.commitTransaction();
@@ -99,100 +91,116 @@ public class StudentHelper {
     /**
      * if feedId is -1 then its return the all feeds
      * else return the single record of @param feedId
+     *
      * @param feedId
      * @return
      */
-    public RealmResults<Feeds> getFeeds(int feedId) {
-        realm.beginTransaction();
-        if (feedId != -1) {
-            feedsRealmResults = realm.where(Feeds.class).equalTo("feedId", feedId).findAll();
-        } else {
-            feedsRealmResults = realm.where(Feeds.class).findAll();
-        }
-        realm.commitTransaction();
+    public RealmResults<Feeds> getFeeds(final int feedId) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                if (feedId != -1) {
+                    feedsRealmResults = realm.where(Feeds.class).equalTo("feedId", feedId).findAll();
+                } else {
+                    feedsRealmResults = realm.where(Feeds.class).findAll();
+                }
+            }
+        });
+        Log.i(TAG, "getFeeds feedsRealmResults.size: " + feedsRealmResults.size());
         return feedsRealmResults;
     }
 
-//    public RealmResults<FeedImage> getFeedImages() {
-//        realm.beginTransaction();
-//        RealmResults<FeedImage> feedsRealmResults = realm.where(FeedImage.class).equalTo("feedImageId", "700").findAll();
-//        realm.commitTransaction();
-//        return feedsRealmResults;
-//    }
 
     /**
      * get the User
+     *
      * @param user_id
      * @return
      */
-    public User getUser(String user_id) {
+    public User getUser(int user_id) {
         realm.beginTransaction();
-        RealmResults<User> feedsRealmResults = realm.where(User.class).equalTo("userId", Integer.parseInt(user_id)).findAll();
+        RealmResults<User> feedsRealmResults = realm.where(User.class).equalTo("userId", user_id).findAll();
         realm.commitTransaction();
         return feedsRealmResults.get(0);
     }
 
-    /**
-     * store feed comment records
-     * @param feedComment
-     */
-    public void FeedCommments(FeedComment feedComment) {
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(feedComment);
-        realm.commitTransaction();
-    }
 
     /**
      * return the all the comments of @param feedId
+     *
      * @param feedId
      * @return
      */
     public RealmResults<FeedComment> getFeedComments(int feedId) {
         realm.beginTransaction();
-        RealmResults<FeedComment> feedsRealmResults = realm.where(FeedComment.class).equalTo("feed.feedId",feedId).findAll();
+        RealmResults<FeedComment> feedsRealmResults = realm.where(FeedComment.class).equalTo("feed.feedId", feedId).findAll();
+        Log.i(TAG, "all comments : " + feedsRealmResults);
+        Log.i(TAG, "getFeedComments feedsRealmResults.size: " + feedsRealmResults.size());
+
         realm.commitTransaction();
         return feedsRealmResults;
     }
 
-    /**
-     * store feedlike records
-     * @param feedLike
-     */
-    public void saveFeedLikes(FeedLike feedLike) {
+//    /**
+//     * store feedlike records
+//     *
+//     * @param feedLike
+//     */
+//    public void saveFeedLikes(FeedLike feedLike) {
+//        realm.beginTransaction();
+//        Number feedLikeId = realm.where(FeedLike.class).max("feedLikeId");
+//        long newId = 0;
+//        if (feedLikeId != null) {
+//            newId = (long) feedLikeId + 1;
+//        }
+//        feedLike.setFeedLikeId((int) newId);
+//        realm.copyToRealmOrUpdate(feedLike);
+//        realm.commitTransaction();
+//    }
+
+    public void updateFeedLikes(Feeds feeds) {
+        Feeds toUpdateFeeds = realm.where(Feeds.class).equalTo("feedId", feeds.getFeedId()).findFirst();
         realm.beginTransaction();
-        Number feedLikeId = realm.where(FeedLike.class).max("feedLikeId");
-        long newId = 0;
-        if (feedLikeId != null) {
-            newId = (long) feedLikeId + 1;
+        toUpdateFeeds.setLike(feeds.getLike().equals("0") ? "1" : "0");
+        toUpdateFeeds.setTotalLike(feeds.getLike().equals("0") ? feeds.getTotalLike() - 1 : feeds.getTotalLike() + 1);
+        toUpdateFeeds.setIsSync(feeds.isSync()==0?1:0);
+        Log.i(TAG, "updateFeedLikes : " + toUpdateFeeds.getLike() + "--" + toUpdateFeeds.getFeedId() + "--" + toUpdateFeeds.isSync());
+        realm.commitTransaction();
+    }
+
+    public void updateTotalComments(Feeds feeds) {
+        Feeds toUpdateFeeds = realm.where(Feeds.class).equalTo("feedId", feeds.getFeedId()).findFirst();
+        realm.beginTransaction();
+        toUpdateFeeds.setTotalComment(feeds.getTotalComment() + 1);
+        //toUpdateFeeds.getComments().add(feeds.getComments().get(0));
+        realm.commitTransaction();
+    }
+
+    public RealmResults<Feeds> getFeedLikes(boolean statusUpdation) {
+//    public RealmResults<Feeds> getFeedLikes(Date lastSynch, Date modified) {
+        realm.beginTransaction();
+        RealmResults<Feeds> feedsRealmResults = realm.where(Feeds.class).equalTo("isSync", 1).findAll();
+        Log.i(TAG, "getFeedLikes feedsRealmResults.size: " + feedsRealmResults.size());
+        if (statusUpdation) {
+            for (int i = 0; i < feedsRealmResults.size(); i++)
+                feedsRealmResults.get(i).setIsSync(0);
         }
-        feedLike.setFeedLikeId((int) newId);
-        realm.copyToRealmOrUpdate(feedLike);
-        realm.commitTransaction();
-    }
-
-    public void updateFeedLikes(Feeds feeds,int like) {
-        Feeds toUpdateFeeds=realm.where(Feeds.class).equalTo("feedId",feeds.getFeedId()).findFirst();
-        realm.beginTransaction();
-        toUpdateFeeds.setLike(String.valueOf(like));
-        toUpdateFeeds.setTotalLike(feeds.getTotalLike());
-        realm.commitTransaction();
-    }
-
-    public RealmResults<FeedLike> getFeedLikes(Date lastSynch, Date modified) {
-        realm.beginTransaction();
-        RealmResults<FeedLike> feedsRealmResults = realm.where(FeedLike.class).between("modifiedDate", lastSynch, modified).findAll();
         realm.commitTransaction();
         return feedsRealmResults;
     }
 
     /**
      * store feed related comments
+     *
      * @param feedComment
+     * @param
      */
     public void saveComments(FeedComment feedComment) {
         try {
+            Feeds feeds = feedComment.getFeed();
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(feedComment);
+            feeds.getComments().add(feedComment);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.i(TAG, "saveComments Exceptions : " + e.getLocalizedMessage());
@@ -201,15 +209,30 @@ public class StudentHelper {
 
     /**
      * store feed images
+     *
      * @param feedImage
      */
     public void saveFeedImages(FeedImage feedImage) {
         try {
+            Feeds feeds = feedImage.getFeed();
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(feedImage);
+            feeds.getFeedImages().add(feedImage);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.i(TAG, "saveFeedImages Exceptions : " + e.getLocalizedMessage());
         }
     }
+
+//    public void saveAllComments(FeedComment feedComment, int feedId) {
+//        try {
+//            Feeds toUpdateFeeds = realm.where(Feeds.class).equalTo("feedId", feedId).findFirst();
+//            realm.beginTransaction();
+//            realm.copyToRealmOrUpdate(feedComment);
+//            toUpdateFeeds.getComments().add(feedComment);
+//            realm.commitTransaction();
+//        } catch (Exception e) {
+//            Log.i(TAG, "saveAllComments Exceptions : " + e.getLocalizedMessage());
+//        }
+//    }
 }

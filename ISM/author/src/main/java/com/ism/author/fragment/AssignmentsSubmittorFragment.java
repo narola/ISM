@@ -234,7 +234,13 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
     }
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSIGNMENT_SUBMITTOR, getBundleArguments());
+
+        getBundleArguments().remove(AssignmentSubmittorAdapter.ARG_STUDENT_ID);
+        getBundleArguments().remove(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
+        getBundleArguments().remove(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC);
+        getBundleArguments().remove(AssignmentSubmittorAdapter.ARG_STUDENT_NAME);
+
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSIGNMENT_SUBMITTOR);
     }
 
     private Bundle getBundleArguments() {

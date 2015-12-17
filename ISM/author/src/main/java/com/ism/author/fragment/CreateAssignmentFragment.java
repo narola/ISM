@@ -176,7 +176,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETCLASSROOMS);
+                        .execute(WebConstants.GETALLCLASSROOMS);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -191,7 +191,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETSUBJECT);
+                        .execute(WebConstants.GETALLSUBJECT);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -311,10 +311,10 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
         try {
             switch (apiCode) {
-                case WebConstants.GETCLASSROOMS:
+                case WebConstants.GETALLCLASSROOMS:
                     onResponseGetClassrooms(object, error);
                     break;
-                case WebConstants.GETSUBJECT:
+                case WebConstants.GETALLSUBJECT:
                     onResponseGetSubjects(object, error);
                     break;
                 case WebConstants.GETTOPICS:

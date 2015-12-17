@@ -5,7 +5,7 @@
 			    android:layout_height="match_parent"
 			    android:background="@drawable/bg_white_border_gray_left"
                 android:paddingLeft="1dp"
-			    tools:context="com.ism.fragment.ChatFragment">
+			    tools:mContext="com.ism.fragment.ChatFragment">
 
     <com.ism.views.AccordionView
         android:id="@+id/accordion_view_chat"

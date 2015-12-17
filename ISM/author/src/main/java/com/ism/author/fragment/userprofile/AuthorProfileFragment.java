@@ -127,19 +127,19 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.txt_myfeeds:
-                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_FEEDS, null);
+                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_FEEDS);
                         break;
 //                    case R.id.txt_mybooks:
 //                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_BOOKS, null);
 //                        break;
                     case R.id.txt_followers:
-                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_FOLLOWERS, null);
+                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_FOLLOWERS);
                         break;
                     case R.id.txt_view_profile:
-                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_VIEW_PROFILE, null);
+                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_VIEW_PROFILE);
                         break;
                     case R.id.txt_myactivity:
-                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_ACTIVITY, null);
+                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_ACTIVITY);
                         break;
                 }
             }
@@ -246,10 +246,12 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
     }
 
     private void loadFragmentAllMessage(int position) {
-        Bundle bundleAllMessage = new Bundle();
-        bundleAllMessage.putParcelableArrayList(AllMessageFragment.ARG_ARR_LIST_MESSAGE, arrListMessage);
-        bundleAllMessage.putInt(AllMessageFragment.ARG_MESSAGE_POSITION, position);
-        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ALL_MESSAGE, bundleAllMessage);
+//        Bundle bundleAllMessage = new Bundle();
+//        bundleAllMessage.putParcelableArrayList(AllMessageFragment.ARG_ARR_LIST_MESSAGE, arrListMessage);
+//        bundleAllMessage.putInt(AllMessageFragment.ARG_MESSAGE_POSITION, position);
+        activityHost.getBundle().putParcelableArrayList(AllMessageFragment.ARG_ARR_LIST_MESSAGE, arrListMessage);
+        activityHost.getBundle().putInt(AllMessageFragment.ARG_MESSAGE_POSITION, position);
+        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ALL_MESSAGE);
     }
 
     private void showNotification() {
@@ -304,10 +306,13 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
     }
 
     private void loadFragmentAllNotification(int position) {
-        Bundle bundleAllNotification = new Bundle();
-        bundleAllNotification.putParcelableArrayList(AllNotificationFragment.ARG_ARR_LIST_NOTIFICATION, arrListNotification);
-        bundleAllNotification.putInt(AllNotificationFragment.ARG_NOTIFICATION_POSITION, position);
-        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ALL_NOTIFICATION, bundleAllNotification);
+//        Bundle bundleAllNotification = new Bundle();
+//        bundleAllNotification.putParcelableArrayList(AllNotificationFragment.ARG_ARR_LIST_NOTIFICATION, arrListNotification);
+//        bundleAllNotification.putInt(AllNotificationFragment.ARG_NOTIFICATION_POSITION, position);
+
+        activityHost.getBundle().putParcelableArrayList(AllNotificationFragment.ARG_ARR_LIST_NOTIFICATION, arrListNotification);
+        activityHost.getBundle().putInt(AllNotificationFragment.ARG_NOTIFICATION_POSITION, position);
+        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ALL_NOTIFICATION);
     }
 
     private void callApiGetNotifications() {
@@ -388,9 +393,11 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
     }
 
     private void loadFragmentAllStudymateRequest(int position) {
-        Bundle bundleAllStudymateRequest = new Bundle();
-        bundleAllStudymateRequest.putParcelableArrayList(AllStudymateRequestFragment.ARG_ARR_LIST_STUDYMATE_REQUEST, arrListStudyMateRequest);
-        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ALL_STUDYMATE_REQUEST, bundleAllStudymateRequest);
+//        Bundle bundleAllStudymateRequest = new Bundle();
+//        bundleAllStudymateRequest.putParcelableArrayList(AllStudymateRequestFragment.ARG_ARR_LIST_STUDYMATE_REQUEST, arrListStudyMateRequest);
+
+        activityHost.getBundle().putParcelableArrayList(AllStudymateRequestFragment.ARG_ARR_LIST_STUDYMATE_REQUEST, arrListStudyMateRequest);
+        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ALL_STUDYMATE_REQUEST);
     }
 
     public void onclickStudymateRequestView(int position) {
@@ -557,7 +564,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             }
             callApiUpdateReadStatus(WebConstants.STUDYMATE_REQUEST, recordIds);
         }
-        if (arrListStudyMateRequest.size()==0)
+        if (arrListStudyMateRequest.size() == 0)
             btnViewAll.setVisibility(View.GONE);
         else
             btnViewAll.setVisibility(View.VISIBLE);
@@ -612,7 +619,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
 
             callApiUpdateReadStatus(WebConstants.NOTIFICATION, recordIds);
         }
-        if (arrListNotification.size()==0)
+        if (arrListNotification.size() == 0)
             btnViewAll.setVisibility(View.GONE);
         else
             btnViewAll.setVisibility(View.VISIBLE);
@@ -649,7 +656,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
 
             callApiUpdateReadStatus(WebConstants.MESSAGES, recordIds);
         }
-        if (arrListMessage.size()==0)
+        if (arrListMessage.size() == 0)
             btnViewAll.setVisibility(View.GONE);
         else
             btnViewAll.setVisibility(View.VISIBLE);

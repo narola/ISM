@@ -146,7 +146,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         try {
             Attribute attribute = new Attribute();
 
-            if (getArguments() != null) {
+            if (getBundleArguments() != null) {
                 attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
                 attribute.setUserId(WebConstants.USER_ID_340);
                 attribute.setRole(WebConstants.TEACHER_ROLE_ID);
@@ -203,6 +203,8 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
 
     }
-
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 
 }
