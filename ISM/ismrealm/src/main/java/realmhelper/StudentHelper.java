@@ -10,7 +10,6 @@ import io.realm.RealmResults;
 import model.AdminConfig;
 import model.FeedComment;
 import model.FeedImage;
-import model.FeedLike;
 import model.Feeds;
 import model.User;
 
@@ -107,16 +106,10 @@ public class StudentHelper {
                 }
             }
         });
-
+        Log.i(TAG, "getFeeds feedsRealmResults.size: " + feedsRealmResults.size());
         return feedsRealmResults;
     }
 
-//    public RealmResults<FeedImage> getFeedImages() {
-//        realm.beginTransaction();
-//        RealmResults<FeedImage> feedsRealmResults = realm.where(FeedImage.class).equalTo("feedImageId", "700").findAll();
-//        realm.commitTransaction();
-//        return feedsRealmResults;
-//    }
 
     /**
      * get the User
@@ -131,16 +124,6 @@ public class StudentHelper {
         return feedsRealmResults.get(0);
     }
 
-    /**
-     * store feed comment records
-     *
-     * @param feedComment
-     */
-    public void FeedCommments(FeedComment feedComment) {
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(feedComment);
-        realm.commitTransaction();
-    }
 
     /**
      * return the all the comments of @param feedId
@@ -152,33 +135,36 @@ public class StudentHelper {
         realm.beginTransaction();
         RealmResults<FeedComment> feedsRealmResults = realm.where(FeedComment.class).equalTo("feed.feedId", feedId).findAll();
         Log.i(TAG, "all comments : " + feedsRealmResults);
+        Log.i(TAG, "getFeedComments feedsRealmResults.size: " + feedsRealmResults.size());
+
         realm.commitTransaction();
         return feedsRealmResults;
     }
 
-    /**
-     * store feedlike records
-     *
-     * @param feedLike
-     */
-    public void saveFeedLikes(FeedLike feedLike) {
-        realm.beginTransaction();
-        Number feedLikeId = realm.where(FeedLike.class).max("feedLikeId");
-        long newId = 0;
-        if (feedLikeId != null) {
-            newId = (long) feedLikeId + 1;
-        }
-        feedLike.setFeedLikeId((int) newId);
-        realm.copyToRealmOrUpdate(feedLike);
-        realm.commitTransaction();
-    }
+//    /**
+//     * store feedlike records
+//     *
+//     * @param feedLike
+//     */
+//    public void saveFeedLikes(FeedLike feedLike) {
+//        realm.beginTransaction();
+//        Number feedLikeId = realm.where(FeedLike.class).max("feedLikeId");
+//        long newId = 0;
+//        if (feedLikeId != null) {
+//            newId = (long) feedLikeId + 1;
+//        }
+//        feedLike.setFeedLikeId((int) newId);
+//        realm.copyToRealmOrUpdate(feedLike);
+//        realm.commitTransaction();
+//    }
 
     public void updateFeedLikes(Feeds feeds) {
-        //Feeds toUpdateFeeds = realm.where(Feeds.class).equalTo("feedId", feeds.getFeedId()).findFirst();
+        Feeds toUpdateFeeds = realm.where(Feeds.class).equalTo("feedId", feeds.getFeedId()).findFirst();
         realm.beginTransaction();
-        feeds.setLike(feeds.getLike().equals("0") ? "1" : "0");
-        feeds.setTotalLike(feeds.getLike().equals("0") ? feeds.getTotalLike() - 1 : feeds.getTotalLike() + 1);
-        feeds.setIsSync(1);
+        toUpdateFeeds.setLike(feeds.getLike().equals("0") ? "1" : "0");
+        toUpdateFeeds.setTotalLike(feeds.getLike().equals("0") ? feeds.getTotalLike() - 1 : feeds.getTotalLike() + 1);
+        toUpdateFeeds.setIsSync(feeds.isSync()==0?1:0);
+        Log.i(TAG, "updateFeedLikes : " + toUpdateFeeds.getLike() + "--" + toUpdateFeeds.getFeedId() + "--" + toUpdateFeeds.isSync());
         realm.commitTransaction();
     }
 
@@ -194,8 +180,9 @@ public class StudentHelper {
 //    public RealmResults<Feeds> getFeedLikes(Date lastSynch, Date modified) {
         realm.beginTransaction();
         RealmResults<Feeds> feedsRealmResults = realm.where(Feeds.class).equalTo("isSync", 1).findAll();
-        if(true) {
-            for(int i=0;i<feedsRealmResults.size();i++)
+        Log.i(TAG, "getFeedLikes feedsRealmResults.size: " + feedsRealmResults.size());
+        if (statusUpdation) {
+            for (int i = 0; i < feedsRealmResults.size(); i++)
                 feedsRealmResults.get(i).setIsSync(0);
         }
         realm.commitTransaction();
@@ -210,7 +197,7 @@ public class StudentHelper {
      */
     public void saveComments(FeedComment feedComment) {
         try {
-            Feeds feeds=feedComment.getFeed();
+            Feeds feeds = feedComment.getFeed();
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(feedComment);
             feeds.getComments().add(feedComment);
@@ -227,7 +214,7 @@ public class StudentHelper {
      */
     public void saveFeedImages(FeedImage feedImage) {
         try {
-            Feeds feeds=feedImage.getFeed();
+            Feeds feeds = feedImage.getFeed();
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(feedImage);
             feeds.getFeedImages().add(feedImage);

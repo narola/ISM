@@ -89,28 +89,6 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
         recyclerPostFeeds.addItemDecoration(itemDecoration);
 
         callApiGetAllFeeds();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                while (true) {
-                    try {
-                        Thread.sleep(10000);
-                        mHandler.post(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                // TODO Auto-generated method stub
-                                // Write your code here to update the UI.
-                                callApiLikeFeed();
-                            }
-                        });
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                    }
-                }
-            }
-        }).start();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             recyclerPostFeeds.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
@@ -141,7 +119,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     @Override
     public void onPause() {
         super.onPause();
-        //callApiLikeFeed();
+        callApiLikeFeed();
 
 
     }
@@ -151,16 +129,22 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
             if (Utility.isConnected(getActivity())) {
                 //activityHost.showProgress();
                 Attribute attribute = new Attribute();
+                ArrayList<String> likedId=new ArrayList<>();
+                ArrayList<String> unlikedId=new ArrayList<>();
                 RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes(false);
+                Debug.i(TAG,"realmResSyncFeedLikes size : "+studentHelper.getFeedLikes(false).size());
 //                RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes(Utility.getDateFormateMySql("2015-12-16 9:41:42"), Utility.getDateMySql());
                 if (realmResSyncFeedLikes.size() > 0) {
                     for (int i = 0; i < realmResSyncFeedLikes.size(); i++) {
                         if (realmResSyncFeedLikes.get(i).getLike().equals("1")) {
-                            attribute.getLikedId().add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
+                            likedId.add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
                         } else if (realmResSyncFeedLikes.get(i).getLike().equals("0")) {
                             attribute.getUnlikedId().add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
+                            unlikedId.add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
                         }
                     }
+                    attribute.setLikedId(likedId);
+                    attribute.setUnlikedId(unlikedId);
                     attribute.setUserId(Global.strUserId);
                     new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                             .execute(WebConstants.LIKE_FEED);
