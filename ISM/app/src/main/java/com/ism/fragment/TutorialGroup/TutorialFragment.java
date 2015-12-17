@@ -2,6 +2,7 @@ package com.ism.fragment.tutorialGroup;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,7 +57,6 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
     }
 
     public TutorialFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -151,7 +151,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 					}
 					break;
 				case FRAGMENT_FRI:
-					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance("")).commit();
+					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, TutorialFriAddQuestionFragment.newInstance()).commit();
 					break;
 				case FRAGMENT_SAT:
 					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, TutorialSatFragment.newInstance()).commit();

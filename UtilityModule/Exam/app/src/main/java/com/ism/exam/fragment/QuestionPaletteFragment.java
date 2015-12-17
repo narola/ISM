@@ -139,6 +139,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 			if (adpQuestionPalette != null) {
 				adpQuestionPalette.setQuestion(position);
 			}
+			gridQuestion.smoothScrollToPosition(position);
 		}
 	}
 

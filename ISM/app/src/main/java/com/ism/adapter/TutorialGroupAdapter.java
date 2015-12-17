@@ -1,6 +1,8 @@
 package com.ism.adapter;
 
 import android.content.Context;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,70 +11,71 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.object.MyTypeFace;
+import com.ism.model.TutorialGroupMemberTest;
+
+import java.util.ArrayList;
 
 /**
- * Created by c162 on 08/10/15.
+ * Created by c161 on 15/10/15.
  */
 public class TutorialGroupAdapter extends BaseAdapter {
 
-    private static final String TAG = TutorialGroupAdapter.class.getSimpleName();
+	private static final String TAG = TutorialGroupAdapter.class.getSimpleName();
+	private ArrayList<TutorialGroupMemberTest> arrListMembers;
+	private Context context;
+	private LayoutInflater inflater;
 
-    private Context context;
-    private LayoutInflater inflater;
-	private MyTypeFace myTypeFace;
+	public TutorialGroupAdapter(Context context, ArrayList<TutorialGroupMemberTest> arrListMembers) {
+		this.arrListMembers = arrListMembers;
+		this.context = context;
+		inflater = LayoutInflater.from(this.context);
+	}
 
-    public TutorialGroupAdapter(Context context) {
-        this.context = context;
-	    inflater = LayoutInflater.from(context);
-	    myTypeFace = new MyTypeFace(context);;
-    }
+	@Override
+	public int getCount() {
+		return arrListMembers.size();
+	}
 
-    @Override
-    public int getCount() {
-        return 4;
-    }
+	@Override
+	public Object getItem(int position) {
+		return arrListMembers.get(position);
+	}
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		ViewHolder holder;
+		if (convertView == null) {
+			convertView = inflater.inflate(R.layout.list_item_tutorial_group, parent, false);
+			holder = new ViewHolder();
+			holder.imgDp = (ImageView) convertView.findViewById(R.id.img_circle_dp);
+			holder.txtName = (TextView) convertView.findViewById(R.id.txt_name);
+			holder.imgNotification = (ImageView) convertView.findViewById(R.id.img_notification);
+			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+		}
 
+		try {
+			holder.txtName.setText(Html.fromHtml("<font color='#333333'>" + arrListMembers.get(position).getName() + "</font><br/><small><font color='#AEAEAE'>" + arrListMembers.get(position).getSchoolName() + "</font></small>"));
+//			Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.userdp);
+//			holder.imgDp.setImageBitmap(bitmap);
+//			holder.imgDp.setImageResource(R.drawable.userdp);
+		} catch (Exception e) {
+			Log.e(TAG, "getView Exception : " + e.toString());
+		}
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder viewHolder;
-        if (convertView == null) {
-            viewHolder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.row_tutorial_group, parent, false);
-            viewHolder.rawtg_txt_name = (TextView) convertView.findViewById(R.id.txt_studentName);
-            viewHolder.rawtg_txt_address = (TextView) convertView.findViewById(R.id.txt_address);
-            viewHolder.rawtg_txt_school = (TextView) convertView.findViewById(R.id.txt_school);
-            viewHolder.rawtg_txt_status = (TextView) convertView.findViewById(R.id.txt_status);
-            viewHolder.rawtg_img_dp = (ImageView) convertView.findViewById(R.id.img_dp_post_creator);
+		return convertView;
+	}
 
-            viewHolder.rawtg_txt_name.setTypeface(myTypeFace.getRalewayBold());
-            viewHolder.rawtg_txt_status.setTypeface(myTypeFace.getRalewaySemiBold());
-            viewHolder.rawtg_txt_address.setTypeface(myTypeFace.getRalewayRegular());
-            viewHolder.rawtg_txt_school.setTypeface(myTypeFace.getRalewayRegular());
+	class ViewHolder {
+		ImageView imgDp;
+		TextView txtName;
+		ImageView imgNotification;
+	}
 
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        return convertView;
-    }
-
-    public class ViewHolder {
-        TextView rawtg_txt_name;
-        TextView rawtg_txt_address;
-        ImageView rawtg_img_dp;
-        TextView rawtg_txt_school;
-        TextView rawtg_txt_status;
-    }
 }

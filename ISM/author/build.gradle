@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 21
     buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "com.ism.author"
-        minSdkVersion 21
-        targetSdkVersion 23
+        minSdkVersion 19
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
@@ -32,11 +32,11 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.picasso:picasso:2.3.2'
-    compile 'com.android.support:support-annotations:23.0.1'
-    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:support-annotations:21.+'
+    compile 'com.android.support:recyclerview-v7:+'
     compile project(':richtexteditor')
     compile files('libs/universal-image-loader-1.9.4.jar')
-    compile 'com.android.support:cardview-v7:23.0.1'
+    compile 'com.android.support:cardview-v7:+'
     compile project(':commonsource')
     compile project(':ismrealm')
     compile project(':ismsocket')

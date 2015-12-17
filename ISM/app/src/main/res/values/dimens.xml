@@ -92,4 +92,43 @@
     <dimen name="text_size_emptylist_message_medium">22sp</dimen>
     <dimen name="text_size_emptylist_message_large">25sp</dimen>
     <dimen name="controller_utility_height">50dp</dimen>
+    <dimen name="member_item_width">150dp</dimen>
+    <dimen name="dp_size_member_sunday">70dp</dimen>
+    <dimen name="margin_text_member_sunday">5dp</dimen>
+    <dimen name="text_school_member_sunday">16sp</dimen>
+    <dimen name="text_name_member_sunday">20sp</dimen>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Tutorial Group Exam dimensions-->
+    <dimen name="result_padding">20dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="question_palette_padding">5dp</dimen>
+    <dimen name="queston_palette_text_size">16sp</dimen>
+    <dimen name="notation_drawable_size">27dp</dimen>
+    <dimen name="notation_drawable_padding">10dp</dimen>
+    <dimen name="notation_vertical_padding">2dp</dimen>
+    <dimen name="button_dark_corner_radius">5dp</dimen>
+    <dimen name="button_dark_border_width">2dp</dimen>
+    <dimen name="score_text_padding">20dp</dimen>
+    <dimen name="score_spacing">10dp</dimen>
+    <dimen name="score_spacing_double">20dp</dimen>
+    <dimen name="score_title_text">20sp</dimen>
+    <dimen name="score_text">25sp</dimen>
 </resources>

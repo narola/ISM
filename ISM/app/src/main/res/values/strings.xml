@@ -364,4 +364,39 @@
 	<string name="msg_active_hours_finished">Active hours are finished!</string>
 	<string name="send">Send</string>
 	<string name="type_message">Type message...</string>
+
+
+	<!-- Tutorial Group Friday Exam Strings -->
+
+	<string name="read_instructions">Please Read Instructions Carefully</string>
+	<string name="assessment_no">Assessment No:</string>
+	<string name="choose_answer">Choose the correct answer for your Quesiton</string>
+	<string name="save">Save</string>
+	<string name="question_palette">Question palette</string>
+	<string name="legend">Legend:</string>
+	<string name="end_test">End test</string>
+	<string name="current_question">Current Question</string>
+	<string name="answered">Answered</string>
+	<string name="not_answered">Not Answered</string>
+	<string name="skipped">Skipped</string>
+	<string name="tutorial_group">Tutorial Group</string>
+	<string name="msg_end_test_unanswered">There are still some flagged, skipped or unattended questions.\n\nDo you want to attend them?</string>
+	<string name="msg_end_test">End test?</string>
+	<string name="cancel">Cancel</string>
+	<string name="attend">Attend</string>
+	<string name="active_comments">Active Comments :</string>
+	<string name="my_score">My Score :</string>
+	<string name="correct_answers">Correct Answers :</string>
+	<string name="incorrect_answers">Incorrect Answers :</string>
+	<string name="unattempted_questions">Unattempted Questions :</string>
+	<string name="total_time_spent">Total Time Spent :</string>
+	<string name="no">No</string>
+	<string name="click_view_answers">Click Here to View Answers</string>
+	<string name="make_score_public">Make My Score Public?</string>
+	<string name="view_evaluation">View Evaluation</string>
+	<string name="remaining">Remaining</string>
+	<string name="your_score_is">"YOUR SCORE IS : "</string>
+	<string name="upload_and_freeze">Upload and freeze</string>
+
+	<!-- ################################## -->
 </resources>

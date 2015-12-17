@@ -1,10 +1,13 @@
 package com.ism.activity;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -33,6 +36,7 @@ import com.ism.fragment.ChatFragment;
 import com.ism.fragment.ClassroomFragment;
 import com.ism.fragment.DeskFragment;
 import com.ism.fragment.ReportCardFragment;
+import com.ism.fragment.tutorialGroup.QuestionPaletteFragment;
 import com.ism.fragment.tutorialGroup.TutorialFragment;
 import com.ism.fragment.userProfile.AllMessageFragment;
 import com.ism.fragment.userProfile.AllNoticeFragment;
@@ -69,7 +73,7 @@ import realmhelper.StudentHelper;
 /**
  * Created by c161 on --/10/15.
  */
-public class HostActivity extends Activity implements FragmentListener, WebserviceWrapper.WebserviceResponse {
+public class HostActivity extends FragmentActivity implements FragmentListener, WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = HostActivity.class.getName();
 
@@ -410,6 +414,12 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     break;
                 case FRAGMENT_TUTORIAL:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance()).commit();
+	                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+	                fragmentTransaction.addToBackStack(QuestionPaletteFragment.class.getSimpleName());
+			        fragmentTransaction.replace(R.id.fl_fragment_container_right, QuestionPaletteFragment.newInstance()).commit();
+	                imgNotes.setActivated(false);
+	                imgStudyMates.setActivated(false);
+	                imgChat.setActivated(false);
                     break;
                 case FRAGMENT_CLASSROOM:
                     ClassroomFragment classroomFragment = ClassroomFragment.newInstance(FRAGMENT_CLASSROOM);
@@ -584,6 +594,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                 case FRAGMENT_TUTORIAL:
                     imgTutorial.setActivated(false);
                     loadControllerTopMenu(null);
+	                getFragmentManager().popBackStack(QuestionPaletteFragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     txtTitle.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_CLASSROOM:
@@ -640,7 +651,26 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         }
     }
 
-    private void loadControllerTopMenu(ArrayList<ControllerTopMenuItem> menu) {
+	@Override
+	public void onFragmentResumed(int fragment) {
+		try {
+			switch (fragment) {
+				case FRAGMENT_NOTES:
+					imgNotes.setActivated(true);
+					break;
+				case FRAGMENT_PROFILE_CONTROLLER:
+					imgStudyMates.setActivated(true);
+					break;
+				case FRAGMENT_CHAT:
+					imgChat.setActivated(true);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onFragmentDetached Exception : " + e.toString());
+		}
+	}
+
+	private void loadControllerTopMenu(ArrayList<ControllerTopMenuItem> menu) {
         try {
             currentControllerTopMenu = menu;
             if (menu == null) {
