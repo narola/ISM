@@ -72,7 +72,7 @@ public class StudymatesFragment extends Fragment implements HostActivity.HostLis
 
 		viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
-		adpStudymatesPager = new StudymatesPagerAdapter(activityHost.getFragmentManager());
+		adpStudymatesPager = new StudymatesPagerAdapter(activityHost.getSupportFragmentManager());
 		vpStudymates.setAdapter(adpStudymatesPager);
 		vpStudymates.setCurrentItem(currentFragment);
 		highlightCurrentVpItem(currentFragment);
