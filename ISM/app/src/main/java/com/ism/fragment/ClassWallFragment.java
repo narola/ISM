@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,6 +30,8 @@ import com.ism.ws.model.FeedImages;
 import com.ism.ws.model.Feeds;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.realm.RealmResults;
 import model.FeedComment;
@@ -87,6 +90,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
         recyclerPostFeeds.addItemDecoration(itemDecoration);
 
         callApiGetAllFeeds();
+        callApiFeedLikeTask();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             recyclerPostFeeds.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
@@ -117,7 +121,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     @Override
     public void onPause() {
         super.onPause();
-        callApiLikeFeed();
+        //callApiLikeFeed();
 
 
     }
@@ -125,21 +129,25 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     private void callApiLikeFeed() {
         try {
             if (Utility.isConnected(getActivity())) {
-                activityHost.showProgress();
+                //activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes();
+                RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes(false);
 //                RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes(Utility.getDateFormateMySql("2015-12-16 9:41:42"), Utility.getDateMySql());
-                for (int i = 0; i < realmResSyncFeedLikes.size(); i++) {
-                    if (realmResSyncFeedLikes.get(i).getLike().equals("1")) {
-                        attribute.getLikedId().add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
-                    } else if (realmResSyncFeedLikes.get(i).getLike().equals("0")) {
-                        attribute.getUnlikedId().add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
+                if (realmResSyncFeedLikes.size() > 0) {
+                    for (int i = 0; i < realmResSyncFeedLikes.size(); i++) {
+                        if (realmResSyncFeedLikes.get(i).getLike().equals("1")) {
+                            attribute.getLikedId().add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
+                        } else if (realmResSyncFeedLikes.get(i).getLike().equals("0")) {
+                            attribute.getUnlikedId().add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
+                        }
                     }
+                    attribute.setUserId(Global.strUserId);
+                    new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+                            .execute(WebConstants.LIKE_FEED);
+                    Debug.i(TAG, "callApiLikeFeed : record found to sync ");
+                } else {
+                    Debug.i(TAG, "callApiLikeFeed : zero record found to sync ");
                 }
-                attribute.setUserId(Global.strUserId);
-                Debug.i(TAG, "callApiLikeFeed attribtes : " + attribute);
-                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-                        .execute(WebConstants.LIKE_FEED);
             } else {
                 Utility.alertOffline(getActivity());
             }
@@ -147,6 +155,26 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
         } catch (Exception e) {
             Log.e(TAG, "callApiLikeFeed Exception : " + e.toString());
         }
+    }
+
+    public void callApiFeedLikeTask() {
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+        TimerTask doAsynchronousTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            callApiLikeFeed();
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(doAsynchronousTask, 0, 120000); //execute in every 50000 ms
     }
 
     public void callApiGetAllFeeds() {
@@ -190,6 +218,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     Log.e(TAG, "onResponseGetAllFeeds Success : " + responseHandler.getMessage());
+                    studentHelper.getFeedLikes(true);
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetAllFeeds Failed : " + responseHandler.getMessage());
                 }
