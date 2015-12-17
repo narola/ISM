@@ -164,20 +164,20 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         imgHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragmentInMainContainer(FRAGMENT_TEACHER_HOME, null);
+                loadFragmentInMainContainer(FRAGMENT_TEACHER_HOME);
             }
         });
         imgTutorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragmentInMainContainer(FRAGMENT_TEACHER_TUTORIAL_GROUP, null);
+                loadFragmentInMainContainer(FRAGMENT_TEACHER_TUTORIAL_GROUP);
             }
         });
 
         imgOffice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
+                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE);
             }
         });
 
@@ -254,12 +254,12 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         txtAction.setOnClickListener(onClickMenuItem);
 
 
-        loadFragmentInMainContainer(FRAGMENT_TEACHER_HOME, null);
+        loadFragmentInMainContainer(FRAGMENT_TEACHER_HOME);
         loadFragmentInRightContainer(FRAGMENT_UPCOMING_EVENTS);
 
     }
 
-    public void loadFragmentInMainContainer(int mainfragment, Bundle fragmentArgument) {
+    public void loadFragmentInMainContainer(int mainfragment) {
         try {
             removeBundleArguments();
             switch (mainfragment) {
@@ -272,7 +272,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     break;
 
                 case FRAGMENT_TEACHER_OFFICE:
-                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance(FRAGMENT_TEACHER_OFFICE, fragmentArgument);
+                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance(FRAGMENT_TEACHER_OFFICE);
                     listenerHost = teacherOfficeFragment;
                     addTopicsListener = teacherOfficeFragment;
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment, AppConstant.FRAGMENT_TAG_TEACHER_OFFICE).commit();
@@ -649,6 +649,10 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
             TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
 
             switch (current_office_fragment) {
+
+                case TeacherOfficeFragment.FRAGMENT_CLASSWALL:
+                    teacherOfficeFragment.onBackClick();
+                    break;
                 case TeacherOfficeFragment.FRAGMENT_QUIZ:
 
                     Debug.e(AppConstant.back_tag + "back click host", "from quiz");

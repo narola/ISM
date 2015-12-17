@@ -51,7 +51,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
     public static int current_office_fragment;
 
 
-    public static TeacherOfficeFragment newInstance(int fragment, Bundle bundleArguments) {
+    public static TeacherOfficeFragment newInstance(int fragment) {
         TeacherOfficeFragment teacherOfficeFragment = new TeacherOfficeFragment();
         Bundle args = new Bundle();
 
@@ -141,7 +141,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                 case FRAGMENT_QUIZ:
                     Debug.e(AppConstant.back_tag + "child added=>>>>>>>>>>>>>>>>>>>", AppConstant.FRAGMENT_TAG_TEACHER_QUIZ);
                     setBackStackFragmentKey(AppConstant.FRAGMENT_TAG_TEACHER_QUIZ);
-                    getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AllAssignmentsFragment.newInstance(this, null), AppConstant.FRAGMENT_TAG_TEACHER_QUIZ).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AllAssignmentsFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_QUIZ).commit();
                     ((TeacherHostActivity) getActivity()).showRightContainerFragment();
                     break;
 
@@ -222,6 +222,13 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
 
     public void onBackClick() {
         switch (current_office_fragment) {
+
+            case TeacherOfficeFragment.FRAGMENT_CLASSWALL:
+                loadFragment(TeacherOfficeFragment.FRAGMENT_CLASSWALL);
+                ((TeacherHostActivity) getActivity()).showRightContainerFragment();
+                ((TeacherHostActivity) getActivity()).showAllMainMenus();
+
+                break;
             case TeacherOfficeFragment.FRAGMENT_QUIZ:
                 removeAllAssignmentArguments();
                 handleBackClick(AppConstant.FRAGMENT_TAG_TEACHER_QUIZ);

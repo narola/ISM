@@ -1,6 +1,5 @@
 package com.ism.teacher.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
@@ -49,7 +47,6 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
     private EditText etAssignmentStartdate, etAssignmentEnddate;
     private Spinner spAssignmentSubject, spAssignmentClasswise, spAssignentAssessed;
     private ImageView imgToggleList;
-    private ActionProcessButton progAssignmentSubject, progAssignmentClass;
     private TextView tvNoAssignments;
 
     //Array list
@@ -66,16 +63,8 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
     private String examStartDate = "", examEndDate = "";
 
-    @SuppressLint("ValidFragment")
-    public AllAssignmentsFragment(Fragment fragment) {
-        // Required empty public constructor
-        this.mFragment = fragment;
-    }
-
-    public static AllAssignmentsFragment newInstance(Fragment fragment, Bundle bundleArguments) {
-        AllAssignmentsFragment allAssignmentsFragment = new AllAssignmentsFragment(fragment);
-        allAssignmentsFragment.setArguments(bundleArguments);
-
+    public static AllAssignmentsFragment newInstance() {
+        AllAssignmentsFragment allAssignmentsFragment = new AllAssignmentsFragment();
         return allAssignmentsFragment;
     }
 
@@ -103,10 +92,6 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
         spAssignmentClasswise = (Spinner) view.findViewById(R.id.sp_assignment_classwise);
         spAssignentAssessed = (Spinner) view.findViewById(R.id.sp_assignent_assessed);
         imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
-
-
-        progAssignmentSubject = (ActionProcessButton) view.findViewById(R.id.prog_assignment_subject);
-        progAssignmentClass = (ActionProcessButton) view.findViewById(R.id.prog_assignment_class);
 
         etAssignmentStartdate = (EditText) view.findViewById(R.id.et_assignment_startdate);
         etAssignmentEnddate = (EditText) view.findViewById(R.id.et_assignment_enddate);
@@ -392,7 +377,6 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
     private void onResponseGetClassrooms(Object object, Exception error) {
         try {
-            Utility.hideSpinnerProgress(progAssignmentClass);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -420,7 +404,6 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
     private void onResponseGetSubjects(Object object, Exception error) {
         try {
-            Utility.hideSpinnerProgress(progAssignmentSubject);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
