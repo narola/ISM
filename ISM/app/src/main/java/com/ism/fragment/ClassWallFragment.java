@@ -30,8 +30,6 @@ import com.ism.ws.model.FeedImages;
 import com.ism.ws.model.Feeds;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.realm.RealmResults;
 import model.FeedComment;
@@ -51,6 +49,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     private PostFeedsAdapter adpPostFeeds;
     private HostActivity activityHost;
     private StudentHelper studentHelper;
+    private Handler mHandler=new Handler();
 
     public static ClassWallFragment newInstance() {
         ClassWallFragment fragment = new ClassWallFragment();
@@ -90,7 +89,28 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
         recyclerPostFeeds.addItemDecoration(itemDecoration);
 
         callApiGetAllFeeds();
-        callApiFeedLikeTask();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                while (true) {
+                    try {
+                        Thread.sleep(10000);
+                        mHandler.post(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                // TODO Auto-generated method stub
+                                // Write your code here to update the UI.
+                                callApiLikeFeed();
+                            }
+                        });
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                }
+            }
+        }).start();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             recyclerPostFeeds.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
@@ -157,25 +177,25 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
         }
     }
 
-    public void callApiFeedLikeTask() {
-        final Handler handler = new Handler();
-        Timer timer = new Timer();
-        TimerTask doAsynchronousTask = new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    public void run() {
-                        try {
-                            callApiLikeFeed();
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                        }
-                    }
-                });
-            }
-        };
-        timer.schedule(doAsynchronousTask, 0, 120000); //execute in every 50000 ms
-    }
+//    public void callApiFeedLikeTask() {
+//        final Handler handler = new Handler();
+//        Timer timer = new Timer();
+//        TimerTask doAsynchronousTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                handler.post(new Runnable() {
+//                    public void run() {
+//                        try {
+//                            callApiLikeFeed();
+//                        } catch (Exception e) {
+//                            // TODO Auto-generated catch block
+//                        }
+//                    }
+//                });
+//            }
+//        };
+//        timer.schedule(doAsynchronousTask, 0, 120000); //execute in every 50000 ms
+//    }
 
     public void callApiGetAllFeeds() {
         try {

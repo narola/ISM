@@ -100,6 +100,7 @@
     <orderEntry type="module" module-name="scientificcalc" exported="" />
     <orderEntry type="module" module-name="ismrealm" exported="" />
     <orderEntry type="module" module-name="whiteboard" exported="" />
+    <orderEntry type="module" module-name="roundedimageview" exported="" />
     <orderEntry type="module" module-name="commonsource" exported="" />
   </component>
 </module>
