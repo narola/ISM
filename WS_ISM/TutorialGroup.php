@@ -51,7 +51,11 @@ class TutorialGroup
                 return $this->pingTutorialMate($postData);
             }
                 break;
-
+            case "AllocateTeacherToGroup":
+            {
+                return $this->allocateTeacherToGroup($postData);
+             }
+                break;
 
 
 		}
@@ -556,10 +560,10 @@ class TutorialGroup
     {
         $message ='';
         $status='';
-        $post=array();
+
         $data=array();
         $response=array();
-        //echo jddayofweek ( cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y")) , 1 ); exit; //monday
+
 
         $group_id = validateObject($postData, 'group_id', "");
         $group_id = addslashes($group_id);
@@ -582,30 +586,44 @@ class TutorialGroup
         if($isSecure==yes) {
 
             //$queryToGetGroups = "SELECT tutorial_groups.*,tutorial_group_topic_allocation.group_score,tutorial_group_topic_allocation.tutorial_topic_id FROM ". TABLE_TUTORIAL_GROUPS." tutorial_groups INNER JOIN ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation ON tutorial_group_topic_allocation.group_id=tutorial_groups.id  WHERE tutorial_groups.id=".$group_id." AND tutorial_groups.is_delete=0";
-            $selData="DISTINCT tutorial_group_topic_allocation.*,tutorial_topic.topic_name,topic_description,tutorial_topic.created_by,subjects.subject_name";
+
 
 
             if($day_no == null && $week_no == null)
             {
-                $day = time(); // or whatever unix timestamp, etc
-                $weekNum = date('W', $day) - date('W', strtotime(date('Y-m-01', $day))) + 1;
-                $week_no=$weekNum;
 
-//                        $time = time(); // or whenever
-//                        $week_of_the_month = ceil(date('d', $time)/7);
-                $condition=" AND tutorial_group_topic_allocation.week_no=".$week_no." AND tutorial_group_topic_allocation.is_delete=0";
+//                       $time = time(); // or whenever
+//                       $week_of_the_month = ceil(date('d', $time)/7);
+                $condition=" AND tutorial_group_topic_allocation.is_delete=0 ORDER BY id DESC LIMIT 14";
             }
-            elseif($day_no!=null)
+            elseif($day_no != null && $week_no==null)
             {
-                jddayofweek ( cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y")) , 1 ); exit; //monday
-                $weekNum = date('W', $day) - date('W', strtotime(date('Y-m-01', $day))) + 1;
-                $condition=" AND tutorial_group_topic_allocation.week_day='".jddayofweek."' AND  tutorial_group_topic_allocation.week_no=".$weekNum." AND tutorial_group_topic_allocation.is_delete=0";
+//                $day = time();
+//                $dayOfWeek = date( "w", date('Y-m-d'));
+//                $weekNum = date('W', $day) - date('W', strtotime(date('Y-m-01', $day))) + 1;
+
+                $condition=" AND  tutorial_group_topic_allocation.week_no=".$week_no."  AND tutorial_group_topic_allocation.week_day=".$day_no." AND tutorial_group_topic_allocation.is_delete=0";
 
             }
-            elseif($week_no != null)
+
+            elseif($week_no != null && $day_no == null)
             {
                 $condition=" AND week_no=".$week_no." AND tutorial_group_topic_allocation.is_delete=0";
             }
+            elseif($day_no != null && $week_no != null)
+            {
+                //$condition=" AND  tutorial_group_topic_allocation.week_no=".$week_no."  AND tutorial_group_topic_allocation.week_day=".$day_no." AND tutorial_group_topic_allocation.is_delete=0";
+                $condition=" AND  tutorial_group_topic_allocation.week_no=".$week_no." AND tutorial_group_topic_allocation.is_delete=0";
+            }
+
+//            else
+//            {
+//                $day = time();
+//                $weekNum = date('W', $day) - date('W', strtotime(date('Y-m-01', $day))) + 1;
+//                $condition=" AND week_no=".$weekNum." AND tutorial_group_topic_allocation.is_delete=0";
+//            }
+
+            $selData="DISTINCT tutorial_group_topic_allocation.*,tutorial_topic.topic_name,topic_description,tutorial_topic.created_by,subjects.subject_name";
 
             $queryToFetchTopics="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation
                          INNER JOIN ".TABLE_TUTORIAL_TOPIC." tutorial_topic ON tutorial_group_topic_allocation.tutorial_topic_id=tutorial_topic.id
@@ -618,61 +636,43 @@ class TutorialGroup
             if (mysqli_num_rows($resultToFetchTopics) > 0) {
 
                 while ($topicGroups = mysqli_fetch_assoc($resultToFetchTopics)) {
+                    $topic_discussion['tutorial_topic_id']=$topicGroups['tutorial_topic_id'];
+                    $topic_discussion['tutorial_topic']=$topicGroups['topic_name'];
+                    $topic_discussion['topic_description']=$topicGroups['topic_description'];
+                    $topic_discussion['assigned_by']=$topicGroups['created_by'];
+                    $topic_discussion['day_name']=$topicGroups['topic_day'];
+                    $topic_discussion['interface_type']=$topicGroups['interface_type'];
+                    $topic_discussion['created_date']=$topicGroups['assigned_time'];
+                    $topic_discussion['subject_name']=$topicGroups['subject_name'];
 
 
-                    $post['tutorial_topic']=$topicGroups['tutorial_topic'];
-                    $post['topic_description']=$topicGroups['topic_description'];
-                    $post['assigned_by']=$topicGroups['created_by'];
-                    $post['day_name']=$topicGroups['topic_day'];
-                    $post['interface_type']=$topicGroups['interface_type'];
-                    $post['created_date']=$topicGroups['assigned_time'];
-                    $post['subject_name']=$topicGroups['subject_name'];
+                    $queryToGetGroupScore="SELECT sum(group_score)  FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE group_id=".$group_id;
+                    $resultToGetGetGroupScore= mysqli_query($GLOBALS['con'], $queryToGetGroupScore) or $message = mysqli_error($GLOBALS['con']);
+                    $rowToGetGroupScore=mysqli_fetch_row($resultToGetGetGroupScore);
 
+                    $topic_discussion['group_score']=$rowToGetGroupScore[0];
 
-
-                    $queryToGetTotalComment="SELECT total_comments FROM ".TABLE_TUTORIAL_GROUP_MEMBER_SCORE." WHERE topic_id=".$topicGroups['tutorial_topic_id'];
+                    $queryToGetTotalComment="SELECT sum(total_comments) as 'active_comments',sum(score) as 'active_comments_score' FROM ".TABLE_TUTORIAL_GROUP_MEMBER_SCORE." WHERE topic_id=".$topicGroups['tutorial_topic_id'];
                     $resultToGetTotalComment= mysqli_query($GLOBALS['con'], $queryToGetTotalComment) or $message = mysqli_error($GLOBALS['con']);
                     $rowToGetTotalComments=mysqli_fetch_row($resultToGetTotalComment);
 
-                    $post['total_active_comments']=$rowToGetTotalComments[0];
-                    $post['group_score']=$topicGroups['group_score'];
+                    $topic_discussion['total_active_comments']=$rowToGetTotalComments[0];
+                    $topic_discussion['total_active_comments_score']=$rowToGetTotalComments[1];
 
-
-
-                   if($day_no == null && $week_no == null)
-                    {
-                        $day = time(); // or whatever unix timestamp, etc
-                        $weekNum = date('W', $day) - date('W', strtotime(date('Y-m-01', $day))) + 1;
-                        $week_no=$weekNum;
-
-//                        $time = time(); // or whenever
-//                        $week_of_the_month = ceil(date('d', $time)/7);
-                        $condition=" AND week_no=".$week_no;
-                    }
-                    elseif($day_no!=null)
-                    {
-                        jddayofweek ( cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y")) , 1 ); exit; //monday
-                        $weekNum = date('W', $day) - date('W', strtotime(date('Y-m-01', $day))) + 1;
-                        $condition=" AND week_day='".jddayofweek."' AND AND week_no=".$weekNum;
-
-                    }
-                    elseif($week_no != null)
-                    {
-                         $condition=" AND week_no=".$week_no;
-                    }
 
                     $selData="tutorial_group_discussion.*,users.full_name,users.profile_pic";
 
                      $queryToFetchMembers="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_DISCUSSION." tutorial_group_discussion
                          INNER JOIN ".TABLE_USERS." users ON tutorial_group_discussion.sender_id=users.id
-                         WHERE tutorial_group_discussion.group_id=".$group_id. $condition." AND tutorial_group_discussion.is_delete=0 ";//ORDER BY ". $user_id;
+                         WHERE tutorial_group_discussion.group_id=".$group_id. " AND tutorial_group_discussion.tutorial_topic_id=".$topicGroups['tutorial_topic_id']." AND tutorial_group_discussion.is_delete=0 ";//ORDER BY ". $user_id;
                     $resultToFetchMembers = mysqli_query($GLOBALS['con'], $queryToFetchMembers) or $message = mysqli_error($GLOBALS['con']);
 
-
+                    $discussion_text=array();
                     if (mysqli_num_rows($resultToFetchMembers) > 0) {
                         while ($members = mysqli_fetch_assoc($resultToFetchMembers)) {
-
                             $groupMembers=array();
+
+                            $groupMembers['tutorial_topic_id']=$members['tutorial_topic_id'];
                             $groupMembers['comment']=$members['message'];
                             $groupMembers['user_id']=$members['sender_id'];
                             $groupMembers['full_name']=$members['full_name'];
@@ -680,21 +680,25 @@ class TutorialGroup
                             $groupMembers['comment_timestamp']=$members['created_date'];
                             $groupMembers['message_type']=$members['message_type'];
                             $groupMembers['media_link']=$members['media_link'];
-                            $post['discussion'][]=$groupMembers;
+
+                            $discussion_text[]=$groupMembers;
+
                         }
 
+                        $topic_discussion['discussion']=$discussion_text;
                         $status=SUCCESS;
                         $message="Group history retrieved";
                     }
+
                     else
                     {
                         $status=SUCCESS;
                         $message=DEFAULT_NO_RECORDS;
 
                     }
-
-                    $data[]=$post;
+                    $data[]=$topic_discussion;
                 }
+
             }
             else
             {
@@ -753,7 +757,7 @@ class TutorialGroup
                         $post['group_profile_pic']=$groups['group_profile_pic'];
                         $post['group_name']=$groups['group_name'];
 
-                         $queryToGetTotalComment="SELECT total_comments FROM ".TABLE_TUTORIAL_GROUP_MEMBER_SCORE." WHERE topic_id=".$groups['tutorial_topic_id'];
+                         $queryToGetTotalComment="SELECT sum(total_comments) FROM ".TABLE_TUTORIAL_GROUP_MEMBER_SCORE." WHERE topic_id=".$groups['tutorial_topic_id'];
                          $resultToGetTotalComment= mysqli_query($GLOBALS['con'], $queryToGetTotalComment) or $message = mysqli_error($GLOBALS['con']);
                          $rowToGetTotalComments=mysqli_fetch_row($resultToGetTotalComment);
 
@@ -872,6 +876,150 @@ class TutorialGroup
         $response['status'] =$status;
         $response['message'] =$message;
         $response['ping_tutorial_mate']=$post;
+        return $response;
+
+    }
+
+
+    public function allocateTeacherToGroup($postData)
+    {
+        $message ='';
+        $status='';
+        $post=array();
+        $data=array();
+        $response=array();
+
+        $group_id = validateObject($postData, 'group_id', "");
+        $group_id = addslashes($group_id);
+
+        $tutorial_topic_id = validateObject($postData, 'tutorial_topic_id', "");
+        $tutorial_topic_id = addslashes($tutorial_topic_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+            $queryToGetSubjects = "SELECT * FROM ". TABLE_TUTORIAL_TOPIC." WHERE topic_id=".$tutorial_topic_id." AND is_delete=0";
+            $resultToGetSubjects = mysqli_query($GLOBALS['con'], $queryToGetSubjects) or $message = mysqli_error($GLOBALS['con']);
+
+            if(mysqli_num_rows($resultToGetSubjects)>0)
+            {
+                while($subjects=mysqli_fetch_assoc($resultToGetSubjects))
+                {
+                    $getSubjectsId[]=$subjects['subject_id'];
+                    $queryToGetTeachers = "SELECT * FROM ". TABLE_TEACHER_SUBJECT_INFO." WHERE subject_id=".$subjects['subject_id']." AND is_delete=0";
+                    $resultToGetTeachers = mysqli_query($GLOBALS['con'], $queryToGetTeachers) or $message = mysqli_error($GLOBALS['con']);
+
+                    if(mysqli_num_rows($resultToGetTeachers)>0)
+                    {
+                        while($teachers=mysqli_fetch_assoc($resultToGetTeachers))
+                        {
+                            $getTeacherId[]=$teachers['user_id'];
+
+                            $queryToChkRecordExist = "SELECT * FROM ". TABLE_TUTORIAL_TOPIC_EXAM." WHERE tutorial_topic_id=".$tutorial_topic_id." AND tutorial_group_id=".$group_id." allocated_teacher_id=".$teachers['user_id']." AND is_delete=0";
+                            $resultToChkRecordExist = mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
+
+                            if(mysqli_num_rows($resultToChkRecordExist)>0)
+                            {
+                                $message=RECORD_ALREADY_EXIST;
+                                $status=SUCCESS;
+                            }
+                            else
+                            {
+                                $exam_id = validateObject ($postData , 'exam_id', "");
+                                $exam_id = addslashes($exam_id);
+
+                                $user_id = validateObject ($postData , 'user_id', "");
+                                $user_id = addslashes($user_id);
+
+                                $exam_assessor = validateObject ($postData , 'exam_assessor', "");
+                                $exam_assessor = addslashes($exam_assessor);
+
+                                $exam_name = validateObject ($postData , 'exam_name', "");
+                                $exam_name = addslashes($exam_name);
+
+                                $classroom_id = validateObject ($postData , 'classroom_id', "");
+                                $classroom_id = addslashes($classroom_id);
+
+                                $passing_percent = validateObject ($postData , 'passing_percent', "");
+                                $passing_percent = addslashes($passing_percent);
+
+                                $subject_id = validateObject ($postData , 'subject_id', "");
+                                $subject_id = addslashes($subject_id);
+
+                                $topic_id = validateObject ($postData , 'topic_id', "");
+                                $topic_id = addslashes($topic_id);
+
+                                $exam_mode = validateObject ($postData , 'exam_mode', "");
+                                $exam_mode = addslashes($exam_mode);
+
+                                $book_id = validateObject ($postData , 'book_id', "");
+                                $book_id = addslashes($book_id);
+
+                                $exam_type = validateObject ($postData , 'exam_type', "");
+                                $exam_type = addslashes($exam_type);
+
+                                $exam_category = validateObject ($postData , 'exam_category', "");
+                                $exam_category = addslashes($exam_category);
+
+                                $exam_duration = validateObject ($postData , 'exam_duration', "");
+                                $exam_duration= addslashes($exam_duration);
+
+                                $exam_start_date = validateObject ($postData , 'exam_start_date', "");
+                                $exam_start_date = addslashes($exam_start_date);
+
+                                $exam_start_time = validateObject ($postData , 'exam_start_time', "");
+                                $exam_start_time = addslashes($exam_start_time);
+
+                                $exam_instruction = validateObject ($postData , 'exam_instruction', "");
+                                $exam_instruction = addslashes($exam_instruction);
+
+                                $declare_results = validateObject ($postData , 'declare_results', "");
+                                $declare_results = addslashes($declare_results);
+
+                                $attempt_count = validateObject ($postData , 'attempt_count', "");
+                                $attempt_count = addslashes($attempt_count);
+
+                                $negative_marking = validateObject ($postData , 'negative_marking', "");
+                                $negative_marking = addslashes($negative_marking);
+
+                                $negative_mark_value = validateObject ($postData , 'negative_mark_value', "");
+                                $negative_mark_value = addslashes($negative_mark_value);
+
+                                $random_question = validateObject ($postData , 'random_question', "");
+                                $random_question = addslashes($random_question);
+
+                                $use_question_score = validateObject ($postData , 'use_question_score', "");
+                                $use_question_score = addslashes($use_question_score);
+
+                                $correct_answer_score = validateObject ($postData , 'correct_answer_score', "");
+                                $correct_answer_score = addslashes($correct_answer_score);
+
+
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['allocate_teacher_to_group']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
         return $response;
 
     }

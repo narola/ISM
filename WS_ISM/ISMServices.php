@@ -119,6 +119,9 @@ switch ($_REQUEST['Service'])
     case "SetMyExamPrivacySettings":
     case "GetFridayExamEvaluation";
     case "SubmitStudentObjectiveResponse":
+    case "GetSundayExamQuestion":
+    case "AskQuestionToAuthor":
+    case "FollowQuestion":
     {
         include_once 'ExamFunctions.php';
         $exam = new ExamFunctions();
@@ -158,6 +161,7 @@ switch ($_REQUEST['Service'])
     case "GetGroupHistory":
     case "GetGroupProfile":
     case "PingTutorialMate":
+    case "AllocateTeacherToGroup";
     {
         include_once 'TutorialGroup.php';
         $tutorialGroup = new TutorialGroup();

@@ -767,7 +767,7 @@ class ProfileFunctions
                     $insertAcademicField = "`user_id`, `school_id`, `classroom_id`, `school_classroom_id`, `academic_year`, `joining_year`, `joining_class`, `course_id`";
                     $insertAcademicValue = "'" . $user_id . "', '" . $school_id . "','" . $classroom_id . "','" . $school_classroom_id . "','" . $academic_year . "','" . date('M,Y') . "','" . $classroom_id . "','" . $course_id . "'";
 
-                    $queryAcademic = "INSERT INTO " . TABLE_STUDENT_PROFILE . "(" . $insertAcademicField . ") values (" . $insertAcademicValue . ")";
+                    echo $queryAcademic = "INSERT INTO " . TABLE_STUDENT_PROFILE . "(" . $insertAcademicField . ") values (" . $insertAcademicValue . ")";
                     $resultAcademic = mysqli_query($GLOBALS['con'], $queryAcademic) or $message = mysqli_error($GLOBALS['con']);
 
                 } else if ($role_id == 3) {
