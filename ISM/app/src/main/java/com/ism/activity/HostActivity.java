@@ -33,17 +33,17 @@ import com.ism.fragment.ChatFragment;
 import com.ism.fragment.ClassroomFragment;
 import com.ism.fragment.DeskFragment;
 import com.ism.fragment.ReportCardFragment;
-import com.ism.fragment.TutorialFragment;
-import com.ism.fragment.userprofile.AllMessageFragment;
-import com.ism.fragment.userprofile.AllNoticeFragment;
-import com.ism.fragment.userprofile.AllNotificationFragment;
-import com.ism.fragment.userprofile.EditProfileFragment;
-import com.ism.fragment.userprofile.GeneralSettingsFragment;
-import com.ism.fragment.userprofile.MyActivityFragment;
-import com.ism.fragment.userprofile.MyFeedsFragment;
-import com.ism.fragment.userprofile.MyWalletFragment;
-import com.ism.fragment.userprofile.ProfileControllerFragment;
-import com.ism.fragment.userprofile.StudymatesFragment;
+import com.ism.fragment.tutorialGroup.TutorialFragment;
+import com.ism.fragment.userProfile.AllMessageFragment;
+import com.ism.fragment.userProfile.AllNoticeFragment;
+import com.ism.fragment.userProfile.AllNotificationFragment;
+import com.ism.fragment.userProfile.EditProfileFragment;
+import com.ism.fragment.userProfile.GeneralSettingsFragment;
+import com.ism.fragment.userProfile.MyActivityFragment;
+import com.ism.fragment.userProfile.MyFeedsFragment;
+import com.ism.fragment.userProfile.MyWalletFragment;
+import com.ism.fragment.userProfile.ProfileControllerFragment;
+import com.ism.fragment.userProfile.StudymatesFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.ControllerTopMenuItem;
 import com.ism.object.Global;
@@ -238,19 +238,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         progHost = (ActionProcessButton) findViewById(R.id.prog_host);
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, HostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, HostActivity.this);
-        Debug.i(TAG,"User Image : "+WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this));
+        Debug.i(TAG, "User Image : " + WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this));
 	    Global.strProfilePic = WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
 //        Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
 
-	    Log.e(TAG, "Access Key : " + WebConstants.ACCESS_KEY);
-	    Log.e(TAG, "Secret Key : " + WebConstants.SECRET_KEY);
-
 	    if (Utility.isConnected(HostActivity.this)) {
-		    /*if (Global.strSecretKey == null) {
-			    callApiRefreshToken();
-		    }*/
             callApiGetAllBadgesCount();
             callApiGetGeneralSettingPreferences();
             callApiForGetUserPreference();
@@ -383,18 +377,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         txtAction.setOnClickListener(onClickMenuItem);
 
     }
-
-    /*private void callApiRefreshToken() {
-        try {
-            Attribute attribute = new Attribute();
-	        attribute.setUsername(WebConstants.ACCESS_KEY);
-
-            new WebserviceWrapper(getApplicationContext(), attribute, HostActivity.this).new WebserviceCaller()
-                    .execute(WebConstants.REFRESH_TOKEN);
-        } catch (Exception e) {
-            Log.e(TAG, "callApiRefreshToken Exception : " + e.toString());
-        }
-    }*/
 
     private void callApiGetGeneralSettingPreferences() {
         try {
@@ -891,31 +873,11 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 		        case WebConstants.GET_ALL_BADGES_COUNT:
 			        onResponseGetAllBadges(object, error);
 			        break;
-		        /*case WebConstants.REFRESH_TOKEN:
-			        onResponseRefreshToken(object, error);
-			        break;*/
 	        }
         } catch (Exception e) {
             Log.e(TAG, "On response Exception : " + e.getLocalizedMessage());
         }
     }
-
-	/*private void onResponseRefreshToken(Object object, Exception error) {
-		try {
-			if (object != null) {
-				ResponseHandler responseHandler = (ResponseHandler) object;
-				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-					PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, this, responseHandler.getToken().get(0).getTokenName());
-				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-					Log.e(TAG, "onResponseRefreshToken failed");
-				}
-			} else if (error != null) {
-				Log.e(TAG, "onResponseRefreshToken api Exception :" + error.toString());
-			}
-		} catch (Exception e) {
-			Log.e(TAG, "onResponseRefreshToken Exception :" + e.toString());
-		}
-	}*/
 
 	private void onResponseGetAllPreference(Object object, Exception error) {
         try {

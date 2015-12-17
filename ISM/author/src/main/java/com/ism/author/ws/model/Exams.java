@@ -9,28 +9,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Exams {
 
-    private String totalQuestion;
-    private String classroomName;
-    private String examMode;
+
     private String examId;
-    private String classroomId;
-    private String averageScore;
     private String examName;
-    private String subjectId;
-    private String subjectName;
-    private String duration;
-    private String evaluationStatus;
-    private String passPercentage;
-    private String examType;
-    private String examCategory;
-    private String totalStudentAttempted;
+    private String classroomId;
+    private String classroomName;
     private String totalStudent;
+    private String subjectId;
     private String bookId;
     private String bookName;
+    private String totalStudentAttempted;
+    private String examType;
+    private String examCategory;
+    private String examMode;
+    private String passPercentage;
+    private String duration;
+    private String attemptCount;
+    private String examInstructions;
+    private String randomQuestion;
+    private String negativeMarking;
+    private String negativeMarkValue;
+    private String useQuestionScore;
+    private String correctAnswerScore;
+    private String declareResults;
+    private String examAssessor;
+    private String examStartDate;
+    private String examStartTime;
+    private String totalQuestion;
+    private String evaluationStatus;
+    private String averageScore;
     private String totalAssessed;
     private String totalUnAssessed;
     private String examCreatedDate;
-
 
 
     @JsonProperty("total_question")
@@ -103,15 +113,6 @@ public class Exams {
 
     public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
-    }
-
-    @JsonProperty("subject_name")
-    public String getSubjectName() {
-        return this.subjectName;
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
     }
 
     @JsonProperty("duration")
@@ -227,5 +228,114 @@ public class Exams {
         return this;
     }
 
+    @JsonProperty("attempt_count")
+    public String getAttemptCount() {
+        return attemptCount;
+    }
+
+    public Exams setAttemptCount(String attemptCount) {
+        this.attemptCount = attemptCount;
+        return this;
+    }
+
+    @JsonProperty("exam_instructions")
+    public String getExamInstructions() {
+        return examInstructions;
+    }
+
+    public Exams setExamInstructions(String examInstructions) {
+        this.examInstructions = examInstructions;
+        return this;
+    }
+
+    @JsonProperty("random_question")
+    public String getRandomQuestion() {
+        return randomQuestion;
+    }
+
+    public Exams setRandomQuestion(String randomQuestion) {
+        this.randomQuestion = randomQuestion;
+        return this;
+    }
+
+    @JsonProperty("negative_marking")
+    public String getNegativeMarking() {
+        return negativeMarking;
+    }
+
+    public Exams setNegativeMarking(String negativeMarking) {
+        this.negativeMarking = negativeMarking;
+        return this;
+    }
+
+    @JsonProperty("negative_mark_value")
+    public String getNegativeMarkValue() {
+        return negativeMarkValue;
+    }
+
+    public Exams setNegativeMarkValue(String negativeMarkValue) {
+        this.negativeMarkValue = negativeMarkValue;
+        return this;
+    }
+
+    @JsonProperty("use_question_score")
+    public String getUseQuestionScore() {
+        return useQuestionScore;
+    }
+
+    public Exams setUseQuestionScore(String useQuestionScore) {
+        this.useQuestionScore = useQuestionScore;
+        return this;
+    }
+
+    @JsonProperty("correct_answer_score")
+    public String getCorrectAnswerScore() {
+        return correctAnswerScore;
+    }
+
+    public Exams setCorrectAnswerScore(String correctAnswerScore) {
+        this.correctAnswerScore = correctAnswerScore;
+        return this;
+    }
+
+    @JsonProperty("exam_start_time")
+    public String getExamStartTime() {
+        return examStartTime;
+    }
+
+    public Exams setExamStartTime(String examStartTime) {
+        this.examStartTime = examStartTime;
+        return this;
+    }
+
+    @JsonProperty("exam_start_date")
+    public String getExamStartDate() {
+        return examStartDate;
+    }
+
+    public Exams setExamStartDate(String examStartDate) {
+        this.examStartDate = examStartDate;
+        return this;
+    }
+
+    @JsonProperty("exam_assessor")
+    public String getExamAssessor() {
+        return examAssessor;
+    }
+
+    public Exams setExamAssessor(String examAssessor) {
+        this.examAssessor = examAssessor;
+        return this;
+    }
+
+    @JsonProperty("declare_results")
+    public String getDeclareResults() {
+        return declareResults;
+    }
+
+    public Exams setDeclareResults(String declareResults) {
+        this.declareResults = declareResults;
+        return this;
+    }
 
 }

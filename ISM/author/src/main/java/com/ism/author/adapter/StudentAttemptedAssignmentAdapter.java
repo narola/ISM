@@ -32,17 +32,14 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
     private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
     private LayoutInflater inflater;
-    private Bundle bundleArgument;
 
 
-    public StudentAttemptedAssignmentAdapter(Context mContext, Bundle bundleArgument) {
+    public StudentAttemptedAssignmentAdapter(Context mContext) {
         this.mContext = mContext;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         myTypeFace = new MyTypeFace(mContext);
         inflater = LayoutInflater.from(mContext);
-        this.bundleArgument = bundleArgument;
-
     }
 
     @Override
@@ -56,7 +53,7 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
 
-//        try {
+        try {
 
         imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                 holder.imgUserPic, ISMAuthor.options);
@@ -70,8 +67,8 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
 //            holder.txtStudentSchool.setText(arrListExamSubmittor.get(position).getSchoolName());
         holder.txtStudentMarks.setText(arrListExamSubmittor.get(position).getEvaluationScore());
 
-        if (bundleArgument.containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_ID)) {
-            if (bundleArgument.getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
+        if (getBundleArguments().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_ID)) {
+            if (getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
                 holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.fragment_background_color));
                 holder.txt_bottom_line.setBackgroundColor(mContext.getResources().getColor(R.color.color_blue));
             } else {
@@ -93,9 +90,9 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
         });
 
 //
-//        } catch (Exception e) {
-//            Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());
-//        }
+        } catch (Exception e) {
+            Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());
+        }
 
     }
 
@@ -140,13 +137,18 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
     }
 
     public void setBundleArgument(int position) {
-        bundleArgument.putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
-        bundleArgument.putString(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
+        getBundleArguments().putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
+        getBundleArguments().putString(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
                 arrListExamSubmittor.get(position).getStudentProfilePic());
-        bundleArgument.putString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME,
+        getBundleArguments().putString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME,
                 arrListExamSubmittor.get(position).getStudentName());
-        bundleArgument.putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID,
+        getBundleArguments().putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID,
                 arrListExamSubmittor.get(position).getStudentId());
         notifyDataSetChanged();
+    }
+
+
+    private Bundle getBundleArguments() {
+        return ((AuthorHostActivity) mContext).getBundle();
     }
 }

@@ -35,6 +35,7 @@
     <string name="strifitisnotyourschool">If it\'s not your school.</string>
     <string name="strnameofschool">Name of School</string>
     <string name="strclass">Class</string>
+    <string name="strclassroom">Class Room</string>
     <string name="stracademicyear">Academic Year</string>
     <string name="strdistrictofschool">District of School</string>
     <string name="strprogramcourse">Program/ Course</string>
@@ -66,6 +67,7 @@
     <string name="strunasssessed">Unassessed</string>
     <string name="strassignmenttype">Assignment Type :</string>
     <string name="stravgscore">Avrage Score</string>
+    <string name="strquestionscore">Question Score</string>
     <string name="strpercent">%</string>
     <string name="strrollno">Roll No :</string>
     <string name="title_activity_author_host">AuthorHostActivity</string>
@@ -136,12 +138,15 @@
     <string name="strnotifystudent">Notify Student Via SMS</string>
     <string name="strexaminstruction">Exam Instruction</string>
     <string name="strdeclareresults">Declare Results :</string>
-    <string name="strnegativemarking">Negative Marking :</string>
+    <string name="strnegativemarkingcolon">Negative Marking :</string>
+    <string name="strnegativemarking">Negative Marking</string>
     <string name="strrandomquestion">Random Question :</string>
     <string name="strusescore">Use Score From Questions :</string>
     <string name="strscorevalue">Question Score Value :</string>
     <string name="strnegativemark">Question Negative Mark :</string>
     <string name="streditexam">Edit</string>
+    <string name="strcopyexam">Copy</string>
+    <string name="strscheduleexam">Schedule</string>
     <string name="stryes">Yes</string>
     <string name="strno">No</string>
     <string name="strsetquestion">set question</string>
@@ -315,7 +320,7 @@
     <string name="strendofterm">EndOfTerm</string>
     <string name="strtutorial">Tutorial</string>
     <string name="strtrial">Trial</string>
-    <string name="strmy30">My30</string>
+    <string name="strmy30">My30th</string>
 
     <string-array name="examname">
         <item>Exam Category</item>

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ism.fragment.userprofile.AboutMeFragment">
+    tools:context="com.ism.fragment.userProfile.AboutMeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                         android:layout_height="170dp"
                         android:layout_centerHorizontal="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/userdp" />
+                        android:src="@drawable/img_default_dp" />
 
                     <ImageView
                         android:id="@+id/img_profile_edit"

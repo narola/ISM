@@ -35,7 +35,7 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 27/11/15.
  */
-public class AllMessageFragment extends Fragment implements  WebserviceWrapper.WebserviceResponse ,AuthorHostActivity.HostListenerAllMessage {
+public class AllMessageFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, AuthorHostActivity.HostListenerAllMessage {
 
     private static final String TAG = AllMessageFragment.class.getSimpleName();
 
@@ -56,9 +56,8 @@ public class AllMessageFragment extends Fragment implements  WebserviceWrapper.W
     private int positionMessage;
     private boolean isReadStatusUpdated = false;
 
-    public static AllMessageFragment newInstance(Bundle bundleArgument) {
+    public static AllMessageFragment newInstance() {
         AllMessageFragment fragment = new AllMessageFragment();
-        fragment.setArguments(bundleArgument);
         return fragment;
     }
 
@@ -123,11 +122,11 @@ public class AllMessageFragment extends Fragment implements  WebserviceWrapper.W
         }
         lvAllMessage.setVisibility(View.VISIBLE);
         txtHeader.setVisibility(View.VISIBLE);
-	    if (Utility.isConnected(activityHost)) {
-		    callApiUpdateReadStatus();
-	    } else {
-		    Utility.alertOffline(activityHost);
-	    }
+        if (Utility.isConnected(activityHost)) {
+            callApiUpdateReadStatus();
+        } else {
+            Utility.alertOffline(activityHost);
+        }
     }
 
     private void showMessageDetails(int position) {
@@ -212,6 +211,7 @@ public class AllMessageFragment extends Fragment implements  WebserviceWrapper.W
     public void onControllerTopBackClick() {
         showMessageList();
     }
+
     private void onResponseUpdateReadStatus(Object object, Exception error) {
         try {
             if (object != null) {

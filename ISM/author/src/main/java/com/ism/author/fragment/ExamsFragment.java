@@ -22,6 +22,7 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
@@ -284,7 +285,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             try {
 
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETCLASSROOMS);
+                        .execute(WebConstants.GETALLCLASSROOMS);
 
             } catch (Exception e) {
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -322,7 +323,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                     onResponseGetAllExams(object, error);
                     break;
 
-                case WebConstants.GETCLASSROOMS:
+                case WebConstants.GETALLCLASSROOMS:
                     onResponseGetClassrooms(object, error);
                     break;
 
@@ -452,6 +453,42 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         }
         fragListener = null;
     }
+    /*remove the arguments which are not necessary here*/
+
+    public void onBackClick() {
+
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_ID);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_NAME);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_ID);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_BOOK_ID);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_BOOK_NAME);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CATEGORY);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_MODE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_DURATION);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_ATTEMPT_COUNT);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_INSTRUCTIONS);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_ASSESSOR);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_START_DATE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_START_TIME);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_CREATED_DATE);
+        getBundleArguments().remove(ExamsAdapter.ARG_EXAM_NO);
+        getBundleArguments().remove(ExamsAdapter.ARG_FRAGMENT_TYPE);
+        getBundleArguments().remove(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
 
 
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ASSESSMENT);
+    }
+
+
+    public Bundle getBundleArguments() {
+        return ((AuthorHostActivity) getActivity()).getBundle();
+    }
 }

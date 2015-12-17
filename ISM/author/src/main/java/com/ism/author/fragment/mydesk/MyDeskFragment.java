@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
 
@@ -33,8 +34,8 @@ public class MyDeskFragment extends Fragment {
     private TextView txtAdd;
 
     public static MyDeskFragment newInstance() {
-        MyDeskFragment frag = new MyDeskFragment();
-        return frag;
+        MyDeskFragment myDeskFragment = new MyDeskFragment();
+        return myDeskFragment;
     }
 
     public MyDeskFragment() {
@@ -147,4 +148,8 @@ public class MyDeskFragment extends Fragment {
         fragListener = null;
     }
 
+
+    public void onBackClick() {
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYDESK);
+    }
 }

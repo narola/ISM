@@ -35,9 +35,8 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
     private static final String TAG = StudentAttemptedAssignmentFragment.class.getSimpleName();
     private View view;
 
-    public static StudentAttemptedAssignmentFragment newInstance(Bundle bundleArguments) {
+    public static StudentAttemptedAssignmentFragment newInstance() {
         StudentAttemptedAssignmentFragment studentAttemptedAssignmentFragment = new StudentAttemptedAssignmentFragment();
-        studentAttemptedAssignmentFragment.setArguments(bundleArguments);
         return studentAttemptedAssignmentFragment;
     }
 
@@ -64,7 +63,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
         myTypeFace = new MyTypeFace(getActivity());
         tvTitleStudentattempted = (TextView) view.findViewById(R.id.tv_title_studentattempted);
         rvStudentattemptedList = (RecyclerView) view.findViewById(R.id.rv_studentattempted_list);
-        studentAttemptedAssignmentAdapter = new StudentAttemptedAssignmentAdapter(getActivity(), getArguments());
+        studentAttemptedAssignmentAdapter = new StudentAttemptedAssignmentAdapter(getActivity());
         rvStudentattemptedList.setAdapter(studentAttemptedAssignmentAdapter);
         rvStudentattemptedList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -79,7 +78,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                request.setExamId(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 request.setUserId(Global.strUserId);
                 request.setRole(Global.role);
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -129,4 +128,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
         }
     }
 
+    private Bundle getBundleArguments() {
+        return ((AuthorHostActivity) getActivity()).getBundle();
+    }
 }

@@ -29,12 +29,12 @@ public class WebConstants {
     public static final int GETSTUDYMATES = 10;
     public static final int TAGFRIENDINFEED = 11;
     public static final int LIKEFEED = 12;
-    public static final int GETCLASSROOMS = 13;
-    public static final int GETSUBJECT = 14;
+    public static final int GETALLCLASSROOMS = 13;
+    public static final int GETALLSUBJECT = 14;
     public static final int GETTOPICS = 15;
     public static final int CREATEASSIGNMENT = 16;
     public static final int POSTFEED = 17;
-    public static final int GETCOURSES = 18;
+    public static final int GETALLCOURSES = 18;
     public static final int CREATEEXAM = 19;
     public static final int GETQUESTIONBANK = 20;
     public static final int GETALLEXAM = 21;
@@ -83,12 +83,12 @@ public class WebConstants {
     public static final String URL_TAGFRIENDINFEED = URL_KINJAL_HOST + "TagFriendInFeed";
     public static final String URL_GETALLCOMMENTS = URL_KINJAL_HOST + "GetAllComments";
     public static final String URL_LIKEFEED = URL_KINJAL_HOST + "LikeFeed";
-    public static final String URL_GETCLASSROOMS = URL_KINJAL_HOST + "GetClassrooms";
-    public static final String URL_GETSUBJECT = URL_KINJAL_HOST + "GetSubject";
+    public static final String URL_GETALLCLASSROOMS = URL_KINJAL_HOST + "GetAllClassrooms";
+    public static final String URL_GETALLSUBJECT = URL_KINJAL_HOST + "GetAllSubjects";
     public static final String URL_GETTOPICS = URL_KINJAL_HOST + "GetTopics";
     public static final String URL_CREATEASSIGNMENT = URL_KINJAL_HOST + "CreateAssignment";
     public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
-    public static final String URL_GETCOURSES = URL_KINJAL_HOST + "GetCourses";
+    public static final String URL_GETALLCOURSES = URL_KINJAL_HOST + "GetAllCourses";
     public static final String URL_GETBOOKSFORAUTHOR = URL_KINJAL_HOST + "GetBooksForAuthor";
     public static final String URL_UPLOADMEDIAFORQUESTION = URL_KINJAL_HOST + "UploadMediaForQuestion";
 
@@ -145,6 +145,6 @@ public class WebConstants {
 
     /*Image Url Constants*/
 
-    public static final String QUESTION_IMAGES = "http://192.168.1.147/WS_ISM/question_images/";
+    public static final String QUESTION_IMAGES = "http://192.168.1.147/WS_ISM/Images/questions_images/";
 }
 

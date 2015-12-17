@@ -13,7 +13,7 @@
 		android:layout_marginLeft="@dimen/post_dp_margin"
 		android:layout_marginRight="7dp"
 		android:contentDescription="@string/app_name"
-		android:src="@drawable/userdp"/>
+		android:src="@drawable/img_default_dp"/>
 
 	<TextView
 		android:id="@+id/txt_name"

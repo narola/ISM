@@ -265,7 +265,6 @@ public class AccordionView extends LinearLayout {
      */
     public void setChildVisibility(int position, int visibility) {
         assertWrappedChildrenPosition(position);
-
         sectionContainers[position].setVisibility(visibility);
     }
 

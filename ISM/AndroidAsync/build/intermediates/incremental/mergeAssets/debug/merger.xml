@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/AndroidAsync/src/main/assets"/></dataSet><dataSet config="debug"><source path="/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/AndroidAsync/src/debug/assets"/></dataSet></merger>
+<<<<<<< HEAD
+<merger version="3"><dataSet config="main"><source path="/Volumes/DATA/Projects/Android_Project/ISM/git/ISM/ISM/AndroidAsync/src/main/assets"/></dataSet><dataSet config="debug"><source path="/Volumes/DATA/Projects/Android_Project/ISM/git/ISM/ISM/AndroidAsync/src/debug/assets"/></dataSet></merger>
+=======
+<merger version="3"><dataSet config="main"><source path="/Volumes/Data/ISM_github/ISM/ISM/AndroidAsync/src/main/assets"/></dataSet><dataSet config="debug"><source path="/Volumes/Data/ISM_github/ISM/ISM/AndroidAsync/src/debug/assets"/></dataSet></merger>
+>>>>>>> 8f26699ff05a986121245d82a0060726232a5f35

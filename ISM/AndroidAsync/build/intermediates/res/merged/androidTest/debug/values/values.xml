@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/AndroidAsync/test/res/values/strings.xml -->
+<<<<<<< HEAD
+    <!-- From: file:/Volumes/DATA/Projects/Android_Project/ISM/git/ISM/ISM/AndroidAsync/test/res/values/strings.xml -->
+=======
+    <!-- From: file:/Volumes/Data/ISM_github/ISM/ISM/AndroidAsync/test/res/values/strings.xml -->
+>>>>>>> 8f26699ff05a986121245d82a0060726232a5f35
     <eat-comment/>
     <string name="app_name">AndroidAsyncTestTest</string>
 </resources>
