@@ -15,9 +15,12 @@ import android.widget.TextView;
 import com.ism.teacher.ISMTeacher;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.activity.TeacherHostActivity;
+import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
+import com.ism.teacher.fragments.TeacherOfficeFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.model.Examsubmittor;
@@ -37,11 +40,11 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
     ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<>();
     MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
-    String exam_mode = "";
+    // String exam_mode = "";
     public static String EXAM_OBJECTIVE = "objective";
     public static String EXAM_SUBJECTIVE = "subjective";
     String examid = "";
-    private Bundle bundleArgument;
+//    private Bundle bundleArgument;
 
     FragmentManager fragmentManager;
 
@@ -51,17 +54,16 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
     public static String ARG_STUDENT_NAME = "studentName";
 
 
-    public AssignmentSubmitterAdapter(Context mContext, Bundle bundleArgument) {
+    public AssignmentSubmitterAdapter(Context mContext) {
         this.mContext = mContext;
-        this.bundleArgument = bundleArgument;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(this.mContext));
         myTypeFace = new MyTypeFace(mContext);
 
-        if (bundleArgument != null) {
-            examid = bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_ID);
-            exam_mode = bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_MODE);
-        }
+//        if (bundleArgument != null) {
+//            examid = bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_ID);
+//            exam_mode = bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_MODE);
+//        }
         //Get FragmentManager
         fragmentManager = ((Activity) mContext).getFragmentManager();
     }
@@ -118,22 +120,22 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
             @Override
             public void onClick(View view) {
 
-                bundleArgument.putString(ARG_STUDENT_ID, arrListExamSubmittor.get(position).getStudentId());
-                bundleArgument.putInt(ARG_STUDENT_POSITION, position);
-                bundleArgument.putString(ARG_STUDENT_PROFILE_PIC, arrListExamSubmittor.get(position).getStudentProfilePic());
-                bundleArgument.putString(ARG_STUDENT_NAME, arrListExamSubmittor.get(position).getStudentName());
-                bundleArgument.putString(AssignmentsAdapter.ARG_EXAM_TYPE,bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_TYPE));
+                getBundleArguments().putString(ARG_STUDENT_ID, arrListExamSubmittor.get(position).getStudentId());
+                getBundleArguments().putInt(ARG_STUDENT_POSITION, position);
+                getBundleArguments().putString(ARG_STUDENT_PROFILE_PIC, arrListExamSubmittor.get(position).getStudentProfilePic());
+                getBundleArguments().putString(ARG_STUDENT_NAME, arrListExamSubmittor.get(position).getStudentName());
+                getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
 
-                bundleArgument.putBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
+                getBundleArguments().putBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
 
                 /**
                  * For objective Questions
                  * Call  GetObjectiveAssignmentQuestionsFragment
                  */
 
-                if (exam_mode.equalsIgnoreCase(EXAM_OBJECTIVE)) {
-
-                    fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(bundleArgument)).commit();
+                if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(EXAM_OBJECTIVE)) {
+                    TeacherOfficeFragment.current_fragment = TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW;
+                    fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(getBundleArguments()), AppConstant.FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION).commit();
                 }
 
                 /**
@@ -142,9 +144,9 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
                  * Students,Subjective Ques with evaluation and palette of answers
                  */
 
-                else if (exam_mode.equalsIgnoreCase(EXAM_SUBJECTIVE)) {
+                else if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(EXAM_SUBJECTIVE)) {
 
-                    fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(bundleArgument)).commit();
+                    fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(getBundleArguments())).commit();
                 }
             }
         });
@@ -168,5 +170,8 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
         return arrListExamSubmittor.size();
     }
 
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) mContext).getBundle();
+    }
 
 }

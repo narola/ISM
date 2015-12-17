@@ -143,6 +143,7 @@ public class ControllerTopMenuItem {
 
     /**
      * For loading  teacher office main menu at top
+     *
      * @param mContext
      * @return
      */
@@ -169,5 +170,16 @@ public class ControllerTopMenuItem {
         return menu;
     }
 
+
+    public static ArrayList<ControllerTopMenuItem> getOnlyAssignmentFromOffice(Context mContext) {
+        ArrayList<ControllerTopMenuItem> menu = null;
+        try {
+            menu = new ArrayList<ControllerTopMenuItem>();
+            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.assignments), null, null));
+        } catch (Exception e) {
+            Log.e(TAG, "getOnlyAssignmentException : " + e.toString());
+        }
+        return menu;
+    }
 
 }

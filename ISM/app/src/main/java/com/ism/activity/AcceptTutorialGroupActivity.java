@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.ism.ISMStudent;
 import com.ism.R;
-import com.ism.adapter.TutorialGroupAdapter;
+import com.ism.adapter.AcceptTutorialGroupAdapter;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
@@ -81,7 +81,7 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 	                                + ", " + PreferenceData.getStringPrefs(PreferenceData.USER_COURSE_NAME, AcceptTutorialGroupActivity.this));
 
         gridTutorialGroup = (GridView) findViewById(R.id.gv_groupMember);
-        gridTutorialGroup.setAdapter(new TutorialGroupAdapter(AcceptTutorialGroupActivity.this));
+        gridTutorialGroup.setAdapter(new AcceptTutorialGroupAdapter(AcceptTutorialGroupActivity.this));
 
 	    strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AcceptTutorialGroupActivity.this);
 	    strGroupId = PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, AcceptTutorialGroupActivity.this);

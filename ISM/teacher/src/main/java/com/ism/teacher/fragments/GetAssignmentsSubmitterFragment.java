@@ -1,9 +1,11 @@
 package com.ism.teacher.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.constants.AppConstant;
@@ -47,11 +50,20 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
     public GetAssignmentsSubmitterFragment() {
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            ((TeacherHostActivity) getActivity()).hideTxtAction();
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onAttach Exception : " + e.toString());
+        }
+    }
     public static GetAssignmentsSubmitterFragment newInstance(Bundle bundleArguments) {
         GetAssignmentsSubmitterFragment getAssignmentsSubmitterFragment = new GetAssignmentsSubmitterFragment();
         getAssignmentsSubmitterFragment.setArguments(bundleArguments);
 
-        Debug.e("test topic id",bundleArguments.getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
+        Debug.e("test topic id", bundleArguments.getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
         return getAssignmentsSubmitterFragment;
     }
 
@@ -64,6 +76,7 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
         return view;
     }
 
+
     private void initGlobal(View view) {
 
         myTypeFace = new MyTypeFace(getActivity());
@@ -74,8 +87,8 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
         imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
 
         tvSubmittorTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvSubmittorTitle.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
-        assignmentSubmitterAdapter = new AssignmentSubmitterAdapter(getActivity(), getArguments());
+        tvSubmittorTitle.setText(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
+        assignmentSubmitterAdapter = new AssignmentSubmitterAdapter(getActivity());
 
         rvAssignmentSubmittorList.setHasFixedSize(true);
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -121,22 +134,32 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
 
     private void onResponseGetAllExamSubmission(Object object) {
 
-        ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+        if(object!=null)
+        {
+            ResponseHandler responseHandler = (ResponseHandler) object;
+            if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-            arrayListAssignments.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
-            assignmentSubmitterAdapter.addAll(arrayListAssignments);
+                arrayListAssignments.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
+                assignmentSubmitterAdapter.addAll(arrayListAssignments);
 
-            if (arrayListAssignments.size() == 0) {
-                Utility.showView(tvNoSubmissions);
+                if (arrayListAssignments.size() == 0) {
+                    Utility.showView(tvNoSubmissions);
+                } else {
+                    Utility.hideView(tvNoSubmissions);
+                }
             } else {
-                Utility.hideView(tvNoSubmissions);
-            }
-        } else {
 
-            Utility.showToast(getString(R.string.web_service_issue), getActivity());
+                Utility.showToast(getString(R.string.web_service_issue), getActivity());
+            }
         }
+        else
+        {
+            Debug.e(TAG, "onResponseGetAllSubmission Exception : " + "response object may be returning null");
+        }
+
     }
 
-
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 }

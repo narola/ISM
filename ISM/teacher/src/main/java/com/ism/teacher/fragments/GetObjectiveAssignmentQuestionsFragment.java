@@ -1,5 +1,6 @@
 package com.ism.teacher.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.GetObjectiveAssignmentQuestionsAdapter;
+import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.helper.Attribute;
@@ -48,7 +50,6 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     ResponseHandler responseObjGetAllExamQuestions = null;
 
     public static String ARG_ARR_LIST_QUESTIONS = "arrListQuestions";
-   // public static String ARG_EXAM_TYPE = "examType";
     public static String ARG_EXAM_ISCOPY = "examIsCopy";
 
 
@@ -60,6 +61,12 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     public GetObjectiveAssignmentQuestionsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((TeacherHostActivity)getActivity()).hideTxtAction();
     }
 
     @Override
@@ -103,7 +110,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         imgEditExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getArguments().putBoolean(ARG_EXAM_ISCOPY, false);
+                getBundleArguments().putBoolean(ARG_EXAM_ISCOPY, false);
                 setExamQuestions();
             }
         });
@@ -111,7 +118,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         imgCopyExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getArguments().putBoolean(ARG_EXAM_ISCOPY, true);
+                getBundleArguments().putBoolean(ARG_EXAM_ISCOPY, true);
                 setExamQuestions();
             }
         });
@@ -122,16 +129,15 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private void setExamQuestions() {
 
         if (responseObjGetAllExamQuestions != null) {
-            getArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
+            getBundleArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
 
-            Debug.i("test exam type get objec assign Ques",getArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
-            getArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
-
-
+            Debug.i("test exam type get objec assign Ques",getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
+            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
 
 //            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
 //                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
-            getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, CreateExamAssignmentContainerFragment.newInstance(getArguments())).commit();
+            TeacherOfficeFragment.current_fragment=TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER_EDIT;
+            getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, CreateExamAssignmentContainerFragment.newInstance(getBundleArguments()), AppConstant.FRAGMENT_TAG_CREATE_EXAM_CONTAINER_FOR_EDIT_COPY).commit();
 
         }
 
@@ -143,12 +149,13 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
             try {
                 ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setExamId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
+                request.setExamId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
 //                request.setExamId("9");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_QUESTIONS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+                ((TeacherHostActivity) getActivity()).hideProgress();
             }
         } else {
             Utility.toastOffline(getActivity());
@@ -162,8 +169,8 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
             try {
                 ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
-                request.setExamId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
-                request.setStudentId(getArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID));
+                request.setExamId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
+                request.setStudentId(getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID));
 
 //                request.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
 //                request.setStudentId(WebConstants.STUDENT_ID_202_OBJECCTIVE);
@@ -209,7 +216,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                         Utility.showView(tvNoQuestions);
                     }
 
-                    if (getArguments().getBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                    if (getBundleArguments().getBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                         callAPiGetExamEvaluation();
                     }
 
@@ -246,27 +253,31 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     private void setAssignmentDetails() {
 
-        if (getArguments() != null) {
-            Debug.e("objective test", getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE));
+        if (getBundleArguments() != null) {
+            Debug.e("objective test", getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE));
             tvObjectiveAssignmentSubject.setText(getActivity().getResources().getString(R.string.strsubject) + ": ");
 
-            if (getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME) != null) {
-                tvObjectiveAssignmentSubject.append(Utility.getSpannableString(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME), getResources().getColor(R.color.bg_assessment)));
+            if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME) != null) {
+                tvObjectiveAssignmentSubject.append(Utility.getSpannableString(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME), getResources().getColor(R.color.bg_assessment)));
             }
             tvObjectiveAssignmentClass.setText(getActivity().getResources().getString(R.string.strclass) + ": ");
-            if (getArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME) != null) {
-                tvObjectiveAssignmentClass.append(Utility.getSpannableString(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME), getResources().getColor(R.color.bg_assessment)));
+            if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME) != null) {
+                tvObjectiveAssignmentClass.append(Utility.getSpannableString(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME), getResources().getColor(R.color.bg_assessment)));
             }
         }
         tvObjectiveAssignmentNo.setText(getActivity().getResources().getString(R.string.strassignmentno) + ": 1");
-        tvObjectiveAssignmentTitle.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
+        tvObjectiveAssignmentTitle.setText(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
         tvObjectiveAssignmentDate.setText(getActivity().getResources().getString(R.string.strassignmentdatecolon) + " " +
-                Utility.getFormattedDate("dd-MMM-yyyy", getArguments().getString(AssignmentsAdapter.ARG_EXAM_CREATED_DATE)));
+                Utility.getFormattedDate("dd-MMM-yyyy", getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CREATED_DATE)));
 
     }
 
     public void loadStudentEvaluationData() {
         callAPiGetExamEvaluation();
+    }
+
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
     }
 }
 

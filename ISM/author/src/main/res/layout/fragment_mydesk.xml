@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/desk_tab_bg"
     android:orientation="vertical"
-    tools:context="com.ism">
+    tools:mContext="com.ism">
 
     <RelativeLayout
         android:layout_width="match_parent"

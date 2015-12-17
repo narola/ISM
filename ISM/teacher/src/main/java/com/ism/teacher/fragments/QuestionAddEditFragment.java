@@ -187,7 +187,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 if (position == 1 || position == 2) {
                     llAddMcqanswer.setVisibility(View.GONE);
                     tvAddquestionAnswer.setVisibility(View.VISIBLE);
-                    if (getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
+                    if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(true);
                     } else {
@@ -197,7 +197,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 } else if (position == 3) {
                     llAddMcqanswer.setVisibility(View.VISIBLE);
                     tvAddquestionAnswer.setVisibility(View.VISIBLE);
-                    if (getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
+                    if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(false);
                     } else {
@@ -721,14 +721,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
                 Debug.e(TAG, "The user id is::" + WebConstants.USER_ID_370);
                 Debug.e(TAG, "The question text is::" + etAddquestionTitle.getText().toString());
-                Debug.e(TAG, "The subject id is::" + getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID));
-                Debug.e(TAG, "The question score is::" + getArguments().getString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
+                Debug.e(TAG, "The subject id is::" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID));
+                Debug.e(TAG, "The question score is::" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
                 Debug.e(TAG, "The question format is::" + getQuestionFormat());
                 Debug.e(TAG, "The evaluation notes is::" + etEvaluationNote1.getText().toString());
                 Debug.e(TAG, "The solution  is::" + etEvaluationNote2.getText().toString());
-                Debug.e(TAG, "The topic id  is::" + getArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
-                Debug.e(TAG, "The classroom id  is::" + getArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
-                Debug.e(TAG, "The book id  is::" + getArguments().getString(AssignmentsAdapter.ARG_EXAM_BOOK_ID));
+                Debug.e(TAG, "The topic id  is::" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
+                Debug.e(TAG, "The classroom id  is::" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
+                Debug.e(TAG, "The book id  is::" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_BOOK_ID));
 
                 Attribute attribute = new Attribute();
                 attribute.setUserId(WebConstants.USER_ID_370);
@@ -743,14 +743,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     attribute.setQuestionid("0");
                 }
                 attribute.setQuestionText(etAddquestionTitle.getText().toString());
-                attribute.setSubjectId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID));
-                attribute.setQuestionScore(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
+                attribute.setSubjectId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID));
+                attribute.setQuestionScore(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
                 attribute.setQuestionFormat(getQuestionFormat());
                 attribute.setEvaluationNotes(etEvaluationNote1.getText().toString());
                 attribute.setSolution(etEvaluationNote2.getText().toString());
-                attribute.setTopicId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
-                attribute.setClassroomId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
-                attribute.setBookId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_BOOK_ID));
+                attribute.setTopicId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
+                attribute.setClassroomId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
+                attribute.setBookId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_BOOK_ID));
 
 //                attribute.setTags(arrListTags);
 
@@ -952,13 +952,13 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             question.setEvaluationNotes(etEvaluationNote1.getText().toString());
             question.setSolution(etEvaluationNote2.getText().toString());
 
-            if (getArguments() != null) {
-                question.setTopicId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
-                question.setSubjectId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID));
-                question.setSubjectName(getArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
-                question.setClassroomId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
-                question.setBookId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_BOOK_ID));
-                question.setQuestionScore(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
+            if (getBundleArguments() != null) {
+                question.setTopicId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
+                question.setSubjectId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID));
+                question.setSubjectName(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
+                question.setClassroomId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
+                question.setBookId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_BOOK_ID));
+                question.setQuestionScore(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
             }
             ArrayList<Tags> arrListTags = new ArrayList<Tags>();
             List<HashTagsModel> list = tagsView.getObjects();
@@ -1085,5 +1085,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         photoPickerIntent.setType("video/*");
         startActivityForResult(photoPickerIntent, SELECT_VIDEO);
 
+    }
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
     }
 }

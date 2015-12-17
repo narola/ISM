@@ -24,7 +24,6 @@
 		android:textSize="40sp"/>
 
 	<LinearLayout
-		android:id="@+id/ll_instruct"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_below="@id/txt_score"
@@ -39,11 +38,12 @@
 		<RelativeLayout
 			android:id="@+id/rl_score"
 			android:layout_width="0dp"
-			android:layout_height="wrap_content"
+			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:background="@drawable/bgwhite_bordergray"
 			android:padding="1dp"
-			android:layout_marginRight="@dimen/result_padding">
+			android:layout_marginRight="@dimen/result_padding"
+			android:paddingBottom="@dimen/score_spacing_double">
 
 			<TextView
 				android:id="@+id/txt_correct"

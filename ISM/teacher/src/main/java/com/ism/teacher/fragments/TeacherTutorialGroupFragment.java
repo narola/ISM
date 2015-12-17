@@ -72,4 +72,8 @@ public class TeacherTutorialGroupFragment extends Fragment {
         fragListener = null;
     }
 
+
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 }

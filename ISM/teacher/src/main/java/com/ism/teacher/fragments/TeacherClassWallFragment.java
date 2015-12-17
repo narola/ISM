@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ism.teacher.R;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.interfaces.FragmentListener;
 
 
@@ -69,4 +70,7 @@ public class TeacherClassWallFragment extends Fragment {
 		fragListener = null;
 	}
 
+	private Bundle getBundleArguments() {
+		return ((TeacherHostActivity) getActivity()).getBundle();
+	}
 }

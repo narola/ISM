@@ -54,6 +54,7 @@ public class AppConstant {
     /**
      * Managing Teacher office Fragment by using tags
      */
+    public static final String FRAGMENT_TAG_TEACHER_OFFICE = "teacher_office";
 
     public static final String FRAGMENT_TAG_TEACHER_CLASSWALL = "teacher_classwall";
     public static final String FRAGMENT_TAG_TEACHER_NOTES = "teacher_notes";
@@ -61,9 +62,28 @@ public class AppConstant {
     public static final String FRAGMENT_TAG_TEACHER_MARKSCRIPT = "teacher_markscript";
     public static final String FRAGMENT_TAG_TEACHER_RESULTS = "teacher_results";
     public static final String FRAGMENT_TAG_TEACHER_PROGRESS_REPORT = "teacher_progress_report";
+    public static final String FRAGMENT_TAG_ASSIGNMENT_SUBMITTER = "assignment_submitter";
+
+    public static final String FRAGMENT_TAG_CREATE_EXAM_CONTAINER = "create_exam";
+    public static final String FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION = "view_assignment_question";
+
+
+    public static final String FRAGMENT_TAG_CREATE_EXAM_CONTAINER_FOR_EDIT_COPY = "create_exam_edit_copy";
 
 
     public static final int LIKE = 1;
     public static final int DISLIKE = 0;
+
+
+    /**
+     * Index of text menus on the top of teacher office
+     */
+
+    public static final int INDEX_CLASSWALL=0;
+    public static final int INDEX_NOTES=1;
+    public static final int INDEX_ALL_ASSIGNMENTS=2;
+    public static final int INDEX_MARKSCRIPT=3;
+    public static final int INDEX_RESULTS=4;
+    public static final int INDEX_PROGRESS_REPORT=5;
 
 }

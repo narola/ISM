@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_teacher_login"
     android:gravity="center"
-    tools:context="com.ism.author.activtiy.AuthorLoginActivity">
+    tools:mContext="com.ism.author.activtiy.AuthorLoginActivity">
 
     <LinearLayout
         android:layout_width="@dimen/login_box_width"
