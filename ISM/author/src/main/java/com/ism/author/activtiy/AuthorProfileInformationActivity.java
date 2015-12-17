@@ -1,7 +1,6 @@
 package com.ism.author.activtiy;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,7 +23,6 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.InputValidator;
 import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
@@ -55,7 +53,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
     private EditText etAge, etUserName, etNewPwd, etHomeAddress, etFirstName, etLastName,
             etEmailAddress, etCurrentPwd, etContactNo, etConfirmPwd, etDob;
     private ImageView imgDp;
-    private ProcessButton btnSubmit, progCountry, progState, progCity, progRequestSchoolInfo;
+    private ProcessButton btnSubmit, progCountry, progState, progCity;
     private Button btnDialogSubmit;
 
     private MyTypeFace myTypeFace;
@@ -276,21 +274,6 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
         openGallary();
     }
 
-
-    private void callApiRequestSchoolInfo(Attribute attribute) {
-        try {
-            btnDialogSubmit.setEnabled(false);
-            progRequestSchoolInfo.setProgress(1);
-            progRequestSchoolInfo.setVisibility(View.VISIBLE);
-            progressGenerator.start(progRequestSchoolInfo);
-            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-                    .execute(WebConstants.REQUESTSCHOOLINFO);
-        } catch (Exception e) {
-            Debug.e(TAG, "callApiRequestSchoolInfo Exception : " + e.toString());
-        }
-    }
-
-
     private void callApiRegisterUser() {
         try {
             btnSubmit.setProgress(1);
@@ -507,41 +490,9 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                 case WebConstants.REGISTERUSER:
                     onResponseRegisterUser(object, error);
                     break;
-                case WebConstants.REQUESTSCHOOLINFO:
-                    onResponseRequestSchoolInfo(object, error);
-                    break;
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponse Exception : " + e.toString());
-        }
-    }
-
-    private void onResponseRequestSchoolInfo(Object object, Exception error) {
-        try {
-            if (btnDialogSubmit != null) {
-                btnDialogSubmit.setEnabled(true);
-            }
-            if (progRequestSchoolInfo != null) {
-                progRequestSchoolInfo.setProgress(100);
-                progRequestSchoolInfo.setVisibility(View.INVISIBLE);
-            }
-            if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    if (dialogSchoolInfo != null) {
-                        dialogSchoolInfo.dismiss();
-                    }
-
-                    Utils.showToast(getString(R.string.msg_school_info_request_sent), getActivity());
-                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
-                }
-            } else if (error != null) {
-                Debug.e(TAG, "onResponseRequestSchoolInfo api Exception : " + error.toString());
-            }
-        } catch (Exception e) {
-            Debug.e(TAG, "onResponseRequestSchoolInfo Exception : " + e.toString());
         }
     }
 
