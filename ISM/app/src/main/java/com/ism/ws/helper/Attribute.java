@@ -1,7 +1,5 @@
 package com.ism.ws.helper;
 
-import android.util.Log;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -92,6 +90,9 @@ public class Attribute {
     private ArrayList<String> favResourceId;
     private ArrayList<String> removeBookId;
     private ArrayList<String> addBookId;
+    private ArrayList<String> likedId=new ArrayList<>();
+	private ArrayList<String> unlikedId=new ArrayList<>();
+
     private String studymateId;
     private String videoThumbnail;
     private String feedBy;
@@ -724,4 +725,24 @@ public class Attribute {
 	public void setSchoolClassroomId(int schoolClassroomId) {
 		this.schoolClassroomId = schoolClassroomId;
 	}
+
+	@JsonProperty("unliked_id")
+	public ArrayList<String> getUnlikedId() {
+		return unlikedId;
+	}
+
+	public void setUnlikedId(ArrayList<String> unlikedId) {
+		this.unlikedId = unlikedId;
+	}
+
+	public ArrayList<String> getLikedId() {
+		return likedId;
+	}
+
+	@JsonProperty("liked_id")
+	public void setLikedId(ArrayList<String> likedId) {
+		this.likedId = likedId;
+	}
+
+
 }

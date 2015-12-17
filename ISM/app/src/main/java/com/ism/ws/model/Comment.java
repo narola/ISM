@@ -17,6 +17,7 @@ public class Comment {
     private String fullName;
     private String profilePic;
     private String createdDate;
+    private int commentId;
 
     @JsonProperty("id")
     public String getId() {
@@ -72,4 +73,13 @@ public class Comment {
         this.createdDate = createdDate;
     }
 
+    public void setCommentId(int commentId) {
+        this.commentId = commentId;
+    }
+
+    @JsonProperty("comment_id")
+    public int getCommentId() {
+
+        return commentId;
+    }
 }

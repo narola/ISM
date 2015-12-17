@@ -33,7 +33,7 @@ public class Feeds {
 	private ArrayList<Comment> comments;
 	private ArrayList<FeedImages> feedImages;
 
-	@JsonProperty("like")
+	@JsonProperty("self_like")
     public String getLike() {
         return this.like;
     }
