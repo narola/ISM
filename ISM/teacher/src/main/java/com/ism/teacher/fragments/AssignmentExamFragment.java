@@ -434,7 +434,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_DURATION)));
 
             /*we cant change the exam mode and subject for that particular exam if it once created*/
-        if (getArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+        if (getArguments().getBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
 
             btnExamSetquestion.setVisibility(View.GONE);
             btnExamSave.setVisibility(View.VISIBLE);
@@ -558,8 +558,8 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
                 /*set exam id "0" if you are creating new and copy exam ,In case of edit set particular exam id*/
                 attribute.setExamId("0");
-                if (getBundleArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
-                    if (!getBundleArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                if (getBundleArguments().containsKey(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                    if (!getBundleArguments().getBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
                         attribute.setExamId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
                     }
                 }

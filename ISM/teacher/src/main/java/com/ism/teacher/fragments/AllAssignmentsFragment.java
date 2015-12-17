@@ -39,9 +39,9 @@ import java.util.List;
  * This class used to display the list of assignments.
  * We have the option to filter those results.
  */
-public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class AllAssignmentsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
-    private static final String TAG = TeacherQuizHomeFragment.class.getSimpleName();
+    private static final String TAG = AllAssignmentsFragment.class.getSimpleName();
 
     //Views
     private View view;
@@ -67,19 +67,19 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     private String examStartDate = "", examEndDate = "";
 
     @SuppressLint("ValidFragment")
-    public TeacherQuizHomeFragment(Fragment fragment) {
+    public AllAssignmentsFragment(Fragment fragment) {
         // Required empty public constructor
         this.mFragment = fragment;
     }
 
-    public static TeacherQuizHomeFragment newInstance(Fragment fragment, Bundle bundleArguments) {
-        TeacherQuizHomeFragment teacherQuizHomeFragment = new TeacherQuizHomeFragment(fragment);
-        teacherQuizHomeFragment.setArguments(bundleArguments);
+    public static AllAssignmentsFragment newInstance(Fragment fragment, Bundle bundleArguments) {
+        AllAssignmentsFragment allAssignmentsFragment = new AllAssignmentsFragment(fragment);
+        allAssignmentsFragment.setArguments(bundleArguments);
 
-        return teacherQuizHomeFragment;
+        return allAssignmentsFragment;
     }
 
-    public TeacherQuizHomeFragment() {
+    public AllAssignmentsFragment() {
     }
 
     @Override
@@ -464,7 +464,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
             } else {
 
-                Utility.showToast(getString(R.string.web_service_issue), getActivity());
+                Utility.showToast(responseHandler.getMessage(), getActivity());
             }
         } else {
             Debug.e(TAG, "onResponseGetAllAssignment Exception : " + "response object may be returning null");
@@ -476,21 +476,9 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         return (TeacherOfficeFragment) mFragment;
     }
 
-    public void loadOfficeSubmitter(Bundle args) {
-        getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER, args);
-    }
-
-
-    /**
-     * GetObjectiveAssignmentQuestionsFragment (to view questions)
-     * @param args
-     */
-    public void loadGetObjectiveAssignmentQuestionsFragment(Bundle args) {
-        getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW, args);
-    }
-
     private Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }
+
 
 }

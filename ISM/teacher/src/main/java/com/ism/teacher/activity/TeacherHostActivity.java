@@ -23,6 +23,7 @@ import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.ControllerTopMenuItem;
+import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
 import com.ism.teacher.adapters.AssignmentsAdapter;
@@ -30,7 +31,7 @@ import com.ism.teacher.adapters.ControllerTopSpinnerAdapter;
 import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.fragments.AssignmentExamFragment;
-import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
+import com.ism.teacher.fragments.ObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.StudentAttemptedFragment;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
@@ -303,7 +304,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
             }
 
         } catch (Exception e) {
-            Log.i(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
+            Log.i(TAG, "loadFragmentInRightContainer Exception : " + e.toString());
 
         }
 
@@ -447,15 +448,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         try {
             if (view == imgBack) {
                 hideControllerTopControls();
-//                for (int i = 0; i < currentControllerTopMenu.size(); i++) {
-//                    txtsMenu[i].setTextColor(Color.WHITE);
-//                    currentControllerTopMenu.get(i).setIsActive(false);
-//                    startSlideAnimation(txtsMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
-//                    txtsMenu[i].setVisibility(View.VISIBLE);
-//                }
-
                 onBackClick(currentMainFragment);
-
             }
 
             /**
@@ -601,12 +594,20 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         view.startAnimation(slideOutAnimation);
     }
 
+    /**
+     * Show progress of ActionProcessButton
+     */
+
     public void showProgress() {
         progress_bar.setProgress(1);
         progress_bar.setEnabled(false);
         progress_bar.setVisibility(View.VISIBLE);
         progressGenerator.start(progress_bar);
     }
+
+    /**
+     * Hide progress of ActionProcessButton
+     */
 
     public void hideProgress() {
         progress_bar.setProgress(100);
@@ -631,67 +632,66 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
     }
 
+    /**
+     * Handle the back click in TeacherOfficeFragment
+     *
+     * @param currentMainFragment Based on the currentMainFragment i.e active fragment inside Teacher Office Fragment
+     */
+
 
     private void onBackClick(int currentMainFragment) {
 
         if (currentMainFragment == FRAGMENT_TEACHER_OFFICE) {
 
-            //On loading teacher office in main frag,automatically it will call
-            //Teacher class wall(as per mockup_),first frag called inside TeacherOffice is classwall in initglobal
+            int current_office_fragment = TeacherOfficeFragment.getCurrentChildFragment();
+            Debug.e(AppConstant.back_tag + "current_child_fragment=>>>>>>>>>>>>>>>>>>>", "" + current_office_fragment);
 
-            int current_office_fragment;
-            current_office_fragment = TeacherOfficeFragment.getCurrentChildFragment();
             TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
-
-            /**
-             *  sending old fragment in onBack param(which we need to replace with new one)
-             */
 
             switch (current_office_fragment) {
                 case TeacherOfficeFragment.FRAGMENT_QUIZ:
-                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_QUIZ);
+
+                    Debug.e(AppConstant.back_tag + "back click host", "from quiz");
+                    teacherOfficeFragment.onBackClick();
                     break;
 
                 case TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER:
-                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
+                    Debug.e(AppConstant.back_tag + "back click host", "from submitter");
+                    teacherOfficeFragment.onBackClick();
                     break;
 
-//                case TeacherOfficeFragment.FRAGMENT_CLASSWALL:
-//                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
-//                    break;
-
-
                 case TeacherOfficeFragment.FRAGMENT_NOTES:
-                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_NOTES);
+                    Debug.e(AppConstant.back_tag + "back click host", "from notes");
+                    teacherOfficeFragment.onBackClick();
                     break;
 
                 case TeacherOfficeFragment.FRAGMENT_MARK_SCRIPT:
-                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_MARK_SCRIPT);
+                    Debug.e(AppConstant.back_tag + "back click host", "from script");
+                    teacherOfficeFragment.onBackClick();
                     break;
 
                 case TeacherOfficeFragment.FRAGMENT_RESULTS:
-                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_RESULTS);
+                    Debug.e(AppConstant.back_tag + "back click host", "from results");
+                    teacherOfficeFragment.onBackClick();
                     break;
 
                 case TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT:
-                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT);
+                    Debug.e(AppConstant.back_tag + "back click host", "from progress report");
+                    teacherOfficeFragment.onBackClick();
                     break;
 
-                case TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW:
-                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW);
+                case TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW:
+                    Debug.e(AppConstant.back_tag + "back click host", "from objective questions view");
+                    teacherOfficeFragment.onBackClick();
+                    break;
+                case TeacherOfficeFragment.FRAGMENT_SUBJECTIVE_QUESTIONS:
+                    Debug.e(AppConstant.back_tag + "back click host", "from subjective view");
+                    teacherOfficeFragment.onBackClick();
                     break;
 
                 case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER:
-
-                    // CreateExamAssignmentContainerFragment createExamContainer = (CreateExamAssignmentContainerFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_CREATE_EXAM_CONTAINER);
-                    //  createExamContainer.onBack(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
-
-                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW);
-                    break;
-
-                case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER_EDIT:
-                    teacherOfficeFragment.onBack(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER_EDIT);
-
+                    Debug.e(AppConstant.back_tag + "back click host", "from create exam container");
+                    teacherOfficeFragment.onBackClick();
                     break;
 
             }
@@ -712,14 +712,21 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     }
 
+    /**
+     * Show the back button where required
+     */
     public void showControllerTopBackButton() {
         Utility.startSlideAnimation(imgBack, -100, 0, 0, 0);
         imgBack.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Controls which option to show or hide on top bar(with back arrow)
+     *
+     * @param index
+     */
 
     public void showSpinnerWithSubMenu(int index) {
-
         switch (index) {
             case AppConstant.INDEX_ALL_ASSIGNMENTS:
                 hideAllMainMenus();
@@ -729,10 +736,12 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(index).getSubMenu(), TeacherHostActivity.this);
                 spSubmenu.setAdapter(adapterControllerTopSpinner);
                 break;
-
         }
     }
 
+    /**
+     * This will show all six text on menu (classwall,notes,quiz,reports....
+     */
 
     public void showAllMainMenus() {
         for (int i = 0; i < currentControllerTopMenu.size(); i++) {
@@ -743,15 +752,22 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         }
     }
 
+    /**
+     * hide all the six text of menu
+     */
     public void hideAllMainMenus() {
         for (int i = 0; i < currentControllerTopMenu.size(); i++) {
             txtsMenu[i].setVisibility(View.GONE);
         }
     }
 
+    /**
+     * Remove all the bundle arguments
+     */
     private void removeBundleArguments() {
 
         getBundle().remove(AssignmentExamFragment.ARG_IS_CREATE_EXAM);
+
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_ID);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_NAME);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID);
@@ -762,17 +778,12 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_BOOK_ID);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_CATEGORY);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_TYPE);
-
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_MODE);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_DURATION);
         getBundle().remove(AssignmentsAdapter.ARG_ASSIGNMENT_NO);
-
-
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_CREATED_DATE);
-
-
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_ATTEMPT_COUNT);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_INSTRUCTIONS);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
@@ -783,8 +794,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_ASSESSOR);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_START_DATE);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_START_TIME);
-
-
         getBundle().remove(AssignmentsAdapter.ARG_FRAGMENT_TYPE);
         getBundle().remove(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
 
@@ -793,8 +802,8 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_PROFILE_PIC);
         getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_NAME);
 
-        getBundle().remove(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
-        getBundle().remove(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY);
+        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY);
         getBundle().remove(MyStudentsAdapter.ARG_ARR_LIST_STUDENTS);
 
     }

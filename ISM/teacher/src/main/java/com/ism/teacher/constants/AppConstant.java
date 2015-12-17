@@ -9,6 +9,8 @@ import java.io.File;
  */
 public class AppConstant {
 
+    public static final String back_tag="BACK==";
+
     //Pick from Gallery
     public static final int REQUEST_CODE_PICK_FROM_GALLERY = 1;
     public static final int REQUEST_CODE_ADD_POST = 2;
@@ -69,6 +71,7 @@ public class AppConstant {
 
 
     public static final String FRAGMENT_TAG_CREATE_EXAM_CONTAINER_FOR_EDIT_COPY = "create_exam_edit_copy";
+    public static final String FRAGMENT_TAG_SUBJECTIVE_QUESTIONS = "subjective_questions";
 
 
     public static final int LIKE = 1;
