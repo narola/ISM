@@ -14,16 +14,24 @@ class Author extends ADMIN_Controller {
 	public function index(){
 		$order = '';
 		$this->data['page_title'] = 'Authors';
+		$where['where'][TBL_USERS.'.is_delete']=FALSE;
+		$where['where'][TBL_ROLES.'.role_name']='author';
 
-		if(!empty($_GET['author']) || !empty($_GET['order']) ){
+		if(!empty($_GET['q']) || !empty($_GET['author']) || !empty($_GET['order']) ){
 
+			if (!empty($_GET['q'])) {$q = replace_invalid_chars($this->input->get('q'));}
 			if( !empty($_GET['author']) ) { $author = $this->input->get('author'); }	
 			if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }		
 
 
 			$str = '';
 
-			if(!empty($author)){ $where['like'][TBL_USERS.'.full_name'] = $author; $str.='&author='.$author; }							
+			if(!empty($author)){ $where['like'][TBL_USERS.'.full_name'] = $author; $str.='&author='.$author; }	
+			if (!empty($q)) {
+                $where['like'][TBL_USERS . '.full_name'] = $q;
+                $where['like'][TBL_BOOKS . '.book_name'] = $q;
+                $str.='&q=' . $q;
+            }
 
 			if($order == 'name_asc'){ $order = TBL_USERS.".full_name asc"; $str.='&order=name_asc';  }
 			if($order == 'name_desc'){ $order = TBL_USERS.".full_name desc"; $str.='&order=name_desc'; }
@@ -38,18 +46,29 @@ class Author extends ADMIN_Controller {
 	
 		}else{
 			
-			$where['where'][TBL_USERS.'.is_delete']=FALSE;
-			$where['where'][TBL_ROLES.'.role_name']='author';
-			
 			$config['base_url']	 = base_url().'admin/author/index';
 			$offset = $this->uri->segment(4);
 		}
 
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 2;
-		$config['total_rows'] = select(TBL_USERS,TBL_USERS.'.id',$where,array('count'=>TRUE,'join'=>array(array('table' => TBL_ROLES,
-								    				'condition' => TBL_ROLES.".id = ".TBL_USERS.".role_id",
-								    				))));
+		$config['total_rows'] = select(TBL_USERS,TBL_USERS.'.id',$where,array('count'=>TRUE,
+										'join'=>array(
+											array(
+												'table' => TBL_ROLES,
+							    				'condition' => TBL_ROLES.".id = ".TBL_USERS.".role_id"
+							    				),
+							    				array(
+												'table' => TBL_AUTHOR_BOOK,
+							    				'condition' => TBL_AUTHOR_BOOK.".user_id = ".TBL_USERS.".id"
+							    				),
+							    				array(
+												'table' => TBL_BOOKS,
+							    				'condition' => TBL_BOOKS.".id = ".TBL_AUTHOR_BOOK.".book_id"
+							    				),	
+											)
+										)
+								);
 		$config['per_page'] = 15;
 
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
@@ -98,7 +117,7 @@ class Author extends ADMIN_Controller {
 											)
 								);
 		$authors_ids = array_column($authors, 'id');
-		
+
 		// get the books under each author
 		$author_books = array();
 		foreach ($authors_ids as $author_id) {

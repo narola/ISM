@@ -46,6 +46,16 @@
                             </select>
                         </div>
                         
+                        <div class="form-group no_effect search_input">
+                            <input type="text" name="q" id="q" class="form-control" placeholder="Search" >
+                            
+                            <?php if(!empty($_GET['q'])) { ?>
+                                <a onclick="filter_data_reverse()" style="cursor:pointer">X</a>
+                            <?php }else { ?>
+                                <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                            <?php } ?>
+
+                        </div>
                         
                     </div>
                 </div>
@@ -147,4 +157,40 @@
     jQuery(document).ready(function($) {
         $(".js-example-basic-single").select2({ placeholder: "Select Author"});   
     });
+    function filter_data() {
+        
+        var q = $('#q').val();
+        var author = $('#author').val();
+        var order = $('#order').val();
+        
+        if (q == '') {$('#q').removeAttr('name');}
+        if (author == '') {$('#author').removeAttr('name');}
+        if(order == ''){  $('#order').removeAttr('name'); }
+
+        $('#filter').submit();
+    }
+
+    $("#filter").submit(function (event) {
+        
+        var q = $('#q').val();
+        var author = $('#author').val();
+        var order = $('#order').val();
+
+        if (q == '') {$('#q').removeAttr('name');}
+        if (author == '') { $('#author').removeAttr('name'); }
+        if(order == ''){  $('#order').removeAttr('name'); }
+
+    });
+
+    <?php if(!empty($_GET['order'])) { ?>
+        $('#order').val('<?php echo $_GET["order"];?>');    
+    <?php } ?>
+
+    <?php if (!empty($_GET['q'])) { ?>
+            $('#q').val('<?php echo $_GET["q"]; ?>');
+    <?php } ?>
+
+    <?php if (!empty($_GET['author'])) { ?>
+            $('#author').val('<?php echo $_GET["author"]; ?>');
+    <?php } ?>
 </script>

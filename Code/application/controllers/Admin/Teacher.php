@@ -10,7 +10,9 @@ class Teacher extends ADMIN_Controller {
         parent::__construct();
 	}
 
-	// function to list down the teachers 
+	/**
+	 * [index - function to list down the teachers]
+	 */
 	public function index(){
 		$this->data['page_title'] = 'Teachers';
 
