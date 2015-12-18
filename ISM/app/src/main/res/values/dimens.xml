@@ -131,4 +131,6 @@
     <dimen name="score_spacing_double">20dp</dimen>
     <dimen name="score_title_text">20sp</dimen>
     <dimen name="score_text">25sp</dimen>
+    <dimen name="text_option">18sp</dimen>
+    <dimen name="height_createquestion_lable">75dp</dimen>
 </resources>

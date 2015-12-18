@@ -71,7 +71,7 @@ public class QuestionPaletteFragment extends Fragment {
 
 
 //    private Bundle getBundleArgument() {
-//        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getBundleArgument();
+//        return ((SubjectiveQuestionsContainerFragment) mFragment).getBundleArgument();
 //
 //    }
 

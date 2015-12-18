@@ -18,7 +18,7 @@ import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
+import com.ism.teacher.fragments.SubjectiveQuestionsContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.helper.Attribute;
@@ -218,12 +218,12 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
     }
 
 //    private Bundle getBundleArgument() {
-//        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getArguments();
+//        return ((SubjectiveQuestionsContainerFragment) mFragment).getArguments();
 //
 //    }
 
-    private GetSubjectiveAssignmentQuestionsFragment getFragmnet() {
-        return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
+    private SubjectiveQuestionsContainerFragment getFragmnet() {
+        return (SubjectiveQuestionsContainerFragment) mFragment;
     }
 
 

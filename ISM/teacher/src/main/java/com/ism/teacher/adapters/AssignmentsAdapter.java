@@ -1,6 +1,8 @@
 package com.ism.teacher.adapters;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.fragments.TeacherQuizHomeFragment;
+import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.fragments.AllAssignmentsFragment;
+import com.ism.teacher.fragments.TeacherOfficeFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Exams;
 
@@ -69,10 +72,13 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
     public static String ARG_EXAM_START_TIME = "examStartTime";
     public static String ARG_FRAGMENT_TYPE = "fragmentType";
 
+    FragmentManager fragmentManager;
+
     public AssignmentsAdapter(Context context, Fragment fragment) {
         this.mContext = context;
         this.mFragment = fragment;
         myTypeFace = new MyTypeFace(context);
+        fragmentManager = ((Activity) mContext).getFragmentManager();
 
     }
 
@@ -149,17 +155,13 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             @Override
             public void onClick(View view) {
 
-
-                //getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER, bundleAssignmentDetails);
                 setBundleArguments(position);
                 getBundleArguments().putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
 
-                getFragment().loadOfficeSubmitter(getBundleArguments());
+                TeacherOfficeFragment teacherOfficeFragment=(TeacherOfficeFragment)fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+                teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
 
-//                mFragment.getFragmentManager().beginTransaction().
-//                        replace(R.id.fl_teacher_office_home,
-//                                GetAssignmentsSubmitterFragment.newInstance(bundleAssignmentDetails), AppConstant.FRAGMENT_TAG_ASSIGNMENT_SUBMITTER).commit();
-
+              //  getFragment().loadOfficeSubmitter(getBundleArguments());
             }
         });
 
@@ -170,11 +172,10 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
                 setBundleArguments(position);
                 getBundleArguments().putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
 
-                getFragment().loadGetObjectiveAssignmentQuestionsFragment(getBundleArguments());
+                TeacherOfficeFragment teacherOfficeFragment=(TeacherOfficeFragment)fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+                teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW);
 
-//                mFragment.getFragmentManager().beginTransaction().
-//                        replace(R.id.fl_teacher_office_home,
-//                                GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails), AppConstant.FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION).commit();
+                //getFragment().loadGetObjectiveAssignmentQuestionsFragment(getBundleArguments());
 
             }
         });
@@ -183,9 +184,6 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
     public void setBundleArguments(int position) {
         getBundleArguments().putString(ARG_EXAM_ID, arrayListAssignments.get(position).getExamId());
-
-        Debug.e("test","exam_id:"+arrayListAssignments.get(position).getExamId());
-
         getBundleArguments().putString(ARG_EXAM_NAME, arrayListAssignments.get(position).getExamName());
         getBundleArguments().putString(ARG_EXAM_CLASSROOM_ID, arrayListAssignments.get(position).getClassroomId());
         getBundleArguments().putString(ARG_EXAM_CLASSROOM_NAME, arrayListAssignments.get(position).getClassroomName());
@@ -236,8 +234,8 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
     }
 
 
-    private TeacherQuizHomeFragment getFragment() {
-        return (TeacherQuizHomeFragment) mFragment;
+    private AllAssignmentsFragment getFragment() {
+        return (AllAssignmentsFragment) mFragment;
     }
 
     private Bundle getBundleArguments() {
