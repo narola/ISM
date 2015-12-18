@@ -1,4 +1,4 @@
-package com.ism.author.adapter;
+package com.ism.author.adapter.userprofile;
 
 import android.app.AlertDialog;
 import android.content.Context;

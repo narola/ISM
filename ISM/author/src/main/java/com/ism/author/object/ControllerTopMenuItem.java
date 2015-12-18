@@ -74,6 +74,19 @@ public class ControllerTopMenuItem {
         return menu;
     }
 
+    //Go trading main
+    public static ArrayList<ControllerTopMenuItem> getMenuGoTrading(Context mContext) {
+        ArrayList<ControllerTopMenuItem> menu = null;
+        try {
+            menu = new ArrayList<ControllerTopMenuItem>();
+            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.strgotrending), mContext.getString(R.string.strPast), null));
+        } catch (Exception e) {
+            Debug.e(TAG, "getMenuGoTrading Exception : " + e.toString());
+        }
+        return menu;
+    }
+
+
     public static ArrayList<ControllerTopMenuItem> getMenuMyThirty(Context mContext) {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
@@ -139,6 +152,18 @@ public class ControllerTopMenuItem {
 
         } catch (Exception e) {
             Debug.e(TAG, "getMenuTrialSubMenu Exception : " + e.toString());
+        }
+        return menu;
+    }
+
+    public static ArrayList<ControllerTopMenuItem> getMenuGoTradingSubMenu(Context mContext) {
+        ArrayList<ControllerTopMenuItem> menu = null;
+        try {
+            menu = new ArrayList<ControllerTopMenuItem>();
+            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.strgotrending), null, null));
+
+        } catch (Exception e) {
+            Debug.e(TAG, "getMenuGoTradingSubMenu Exception : " + e.toString());
         }
         return menu;
     }
