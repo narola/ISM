@@ -1,6 +1,5 @@
 package com.ism.teacher.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
@@ -39,9 +37,9 @@ import java.util.List;
  * This class used to display the list of assignments.
  * We have the option to filter those results.
  */
-public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class AllAssignmentsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
-    private static final String TAG = TeacherQuizHomeFragment.class.getSimpleName();
+    private static final String TAG = AllAssignmentsFragment.class.getSimpleName();
 
     //Views
     private View view;
@@ -49,7 +47,6 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     private EditText etAssignmentStartdate, etAssignmentEnddate;
     private Spinner spAssignmentSubject, spAssignmentClasswise, spAssignentAssessed;
     private ImageView imgToggleList;
-    private ActionProcessButton progAssignmentSubject, progAssignmentClass;
     private TextView tvNoAssignments;
 
     //Array list
@@ -66,20 +63,12 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     private String examStartDate = "", examEndDate = "";
 
-    @SuppressLint("ValidFragment")
-    public TeacherQuizHomeFragment(Fragment fragment) {
-        // Required empty public constructor
-        this.mFragment = fragment;
+    public static AllAssignmentsFragment newInstance() {
+        AllAssignmentsFragment allAssignmentsFragment = new AllAssignmentsFragment();
+        return allAssignmentsFragment;
     }
 
-    public static TeacherQuizHomeFragment newInstance(Fragment fragment, Bundle bundleArguments) {
-        TeacherQuizHomeFragment teacherQuizHomeFragment = new TeacherQuizHomeFragment(fragment);
-        teacherQuizHomeFragment.setArguments(bundleArguments);
-
-        return teacherQuizHomeFragment;
-    }
-
-    public TeacherQuizHomeFragment() {
+    public AllAssignmentsFragment() {
     }
 
     @Override
@@ -103,10 +92,6 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         spAssignmentClasswise = (Spinner) view.findViewById(R.id.sp_assignment_classwise);
         spAssignentAssessed = (Spinner) view.findViewById(R.id.sp_assignent_assessed);
         imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
-
-
-        progAssignmentSubject = (ActionProcessButton) view.findViewById(R.id.prog_assignment_subject);
-        progAssignmentClass = (ActionProcessButton) view.findViewById(R.id.prog_assignment_class);
 
         etAssignmentStartdate = (EditText) view.findViewById(R.id.et_assignment_startdate);
         etAssignmentEnddate = (EditText) view.findViewById(R.id.et_assignment_enddate);
@@ -392,7 +377,6 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     private void onResponseGetClassrooms(Object object, Exception error) {
         try {
-            Utility.hideSpinnerProgress(progAssignmentClass);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -420,7 +404,6 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     private void onResponseGetSubjects(Object object, Exception error) {
         try {
-            Utility.hideSpinnerProgress(progAssignmentSubject);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -464,7 +447,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
             } else {
 
-                Utility.showToast(getString(R.string.web_service_issue), getActivity());
+                Utility.showToast(responseHandler.getMessage(), getActivity());
             }
         } else {
             Debug.e(TAG, "onResponseGetAllAssignment Exception : " + "response object may be returning null");
@@ -476,21 +459,9 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         return (TeacherOfficeFragment) mFragment;
     }
 
-    public void loadOfficeSubmitter(Bundle args) {
-        getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER, args);
-    }
-
-
-    /**
-     * GetObjectiveAssignmentQuestionsFragment (to view questions)
-     * @param args
-     */
-    public void loadGetObjectiveAssignmentQuestionsFragment(Bundle args) {
-        getFragment().loadFragment(TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW, args);
-    }
-
     private Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }
+
 
 }

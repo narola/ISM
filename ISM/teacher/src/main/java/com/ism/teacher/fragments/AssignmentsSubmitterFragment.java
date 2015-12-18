@@ -31,9 +31,9 @@ import java.util.ArrayList;
 /**
  * Created by c161 on --/10/15.
  */
-public class GetAssignmentsSubmitterFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class AssignmentsSubmitterFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
-    private static final String TAG = GetAssignmentsSubmitterFragment.class.getSimpleName();
+    private static final String TAG = AssignmentsSubmitterFragment.class.getSimpleName();
 
     //Views
     private RecyclerView rvAssignmentSubmittorList;
@@ -47,7 +47,7 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
     AssignmentSubmitterAdapter assignmentSubmitterAdapter;
     MyTypeFace myTypeFace;
 
-    public GetAssignmentsSubmitterFragment() {
+    public AssignmentsSubmitterFragment() {
     }
 
     @Override
@@ -59,12 +59,10 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
             Log.e(TAG, "onAttach Exception : " + e.toString());
         }
     }
-    public static GetAssignmentsSubmitterFragment newInstance(Bundle bundleArguments) {
-        GetAssignmentsSubmitterFragment getAssignmentsSubmitterFragment = new GetAssignmentsSubmitterFragment();
-        getAssignmentsSubmitterFragment.setArguments(bundleArguments);
+    public static AssignmentsSubmitterFragment newInstance() {
+        AssignmentsSubmitterFragment assignmentsSubmitterFragment = new AssignmentsSubmitterFragment();
 
-        Debug.e("test topic id", bundleArguments.getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
-        return getAssignmentsSubmitterFragment;
+        return assignmentsSubmitterFragment;
     }
 
     @Override
@@ -162,4 +160,5 @@ public class GetAssignmentsSubmitterFragment extends Fragment implements Webserv
     private Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }
+
 }

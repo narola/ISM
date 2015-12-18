@@ -88,15 +88,24 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
         studentHelper = new StudentHelper(getActivity());
         recyclerPostFeeds.addItemDecoration(itemDecoration);
 
-        callApiGetAllFeeds();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            recyclerPostFeeds.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    Debug.i(TAG, "Scroll : " + scrollX);
-                }
-            });
+
+        if (Utility.isConnected(getActivity())) {
+            callApiGetAllFeeds();
+        } else {
+            Utility.alertOffline(getActivity());
+            setUpData(studentHelper.getFeeds(-1));
         }
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+//            recyclerPostFeeds.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+//                @Override
+//                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//                    Debug.i(TAG, "Scroll : " + scrollX);
+//                }
+//            });
+//        }
+
+
+
         rlNewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

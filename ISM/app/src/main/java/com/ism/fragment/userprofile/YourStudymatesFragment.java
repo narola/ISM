@@ -1,6 +1,6 @@
 package com.ism.fragment.userProfile;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;

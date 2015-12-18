@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -72,7 +73,7 @@ import realmhelper.StudentHelper;
 /**
  * Created by c161 on --/10/15.
  */
-public class HostActivity extends Activity implements FragmentListener, WebserviceWrapper.WebserviceResponse {
+public class HostActivity extends FragmentActivity implements FragmentListener, WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = HostActivity.class.getName();
 
@@ -412,10 +413,11 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, homeFragment).commit();
                     break;
                 case FRAGMENT_TUTORIAL:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance()).commit();
+	                QuestionPaletteFragment questionPaletteFragment = QuestionPaletteFragment.newInstance();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance(questionPaletteFragment)).commit();
 	                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 	                fragmentTransaction.addToBackStack(QuestionPaletteFragment.class.getSimpleName());
-			        fragmentTransaction.replace(R.id.fl_fragment_container_right, QuestionPaletteFragment.newInstance()).commit();
+			        fragmentTransaction.replace(R.id.fl_fragment_container_right, questionPaletteFragment).commit();
 	                imgNotes.setActivated(false);
 	                imgStudyMates.setActivated(false);
 	                imgChat.setActivated(false);
@@ -1017,11 +1019,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
 	public interface AddToLibraryListner {
         public void onAddToLibrary(String id);
-        public void onRemoveFromLibrary(String id );
+        public void onRemoveFromLibrary(String id);
     }
+
     public void setListenerResizeView(ResizeView resizeListView) {
         this.resizeListView = resizeListView;
     }
+
     public void setListenerAddToLibrary(AddToLibraryListner addToLibraryListner) {
         this.addToLibraryListner = addToLibraryListner;
     }
@@ -1052,4 +1056,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

@@ -151,7 +151,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 			}
 			int timeSpent = (intExamDurationMilli - intTimeLeft) / 60000;
 			fragExam.getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ResultFragment.newInstance(arrListQuestions, fragExam.isShowGraph(), timeSpent)).commit();
-			getFragmentManager().beginTransaction().remove(this).commit();
+//			getFragmentManager().beginTransaction().remove(this).commit();
 		} catch (Exception e) {
 			Log.e(TAG, "end Exception : " + e.toString());
 		}

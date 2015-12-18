@@ -32,10 +32,10 @@ import java.util.ArrayList;
  * At top this frag displays book name,class and assignment related details.
  * This fragment contains the list of objective questions list below.
  */
-public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class ObjectiveAssignmentQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 
-    private static final String TAG = GetObjectiveAssignmentQuestionsFragment.class.getSimpleName();
+    private static final String TAG = ObjectiveAssignmentQuestionsFragment.class.getSimpleName();
     private View view;
     private MyTypeFace myTypeFace;
 
@@ -51,22 +51,22 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     public static String ARG_ARR_LIST_QUESTIONS = "arrListQuestions";
     public static String ARG_EXAM_ISCOPY = "examIsCopy";
+    public static String ARG_EXAM_TYPE = "examType";
 
 
-    public static GetObjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArguments) {
-        GetObjectiveAssignmentQuestionsFragment getObjectiveAssignmentQuestionsFragment = new GetObjectiveAssignmentQuestionsFragment();
-        getObjectiveAssignmentQuestionsFragment.setArguments(bundleArguments);
-        return getObjectiveAssignmentQuestionsFragment;
+    public static ObjectiveAssignmentQuestionsFragment newInstance() {
+        ObjectiveAssignmentQuestionsFragment objectiveAssignmentQuestionsFragment = new ObjectiveAssignmentQuestionsFragment();
+        return objectiveAssignmentQuestionsFragment;
     }
 
-    public GetObjectiveAssignmentQuestionsFragment() {
+    public ObjectiveAssignmentQuestionsFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((TeacherHostActivity)getActivity()).hideTxtAction();
+        ((TeacherHostActivity) getActivity()).hideTxtAction();
     }
 
     @Override
@@ -110,6 +110,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         imgEditExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getBundleArguments().putBoolean(AssignmentExamFragment.ARG_IS_CREATE_EXAM, false);
                 getBundleArguments().putBoolean(ARG_EXAM_ISCOPY, false);
                 setExamQuestions();
             }
@@ -118,11 +119,11 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         imgCopyExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getBundleArguments().putBoolean(AssignmentExamFragment.ARG_IS_CREATE_EXAM, false);
                 getBundleArguments().putBoolean(ARG_EXAM_ISCOPY, true);
                 setExamQuestions();
             }
         });
-
 
     }
 
@@ -130,14 +131,13 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
         if (responseObjGetAllExamQuestions != null) {
             getBundleArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
-
-            Debug.i("test exam type get objec assign Ques",getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
             getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
 
 //            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
 //                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
-            TeacherOfficeFragment.current_fragment=TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER_EDIT;
-            getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, CreateExamAssignmentContainerFragment.newInstance(getBundleArguments()), AppConstant.FRAGMENT_TAG_CREATE_EXAM_CONTAINER_FOR_EDIT_COPY).commit();
+
+            TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+            teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
 
         }
 
@@ -211,8 +211,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                     getObjectiveAssignmentQuestionsAdapter.addAll(arrListQuestions);
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
 
-                    if(arrListQuestions.size()==0)
-                    {
+                    if (arrListQuestions.size() == 0) {
                         Utility.showView(tvNoQuestions);
                     }
 

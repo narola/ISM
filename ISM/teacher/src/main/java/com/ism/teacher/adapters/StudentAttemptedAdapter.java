@@ -134,7 +134,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                     if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
                         responseObjectEval = responseHandler;
 //                        GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, mContext, fragment, responseObjectEval);
-//                        GetObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
+//                        ObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
 //                        getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
                     }
                 } else {

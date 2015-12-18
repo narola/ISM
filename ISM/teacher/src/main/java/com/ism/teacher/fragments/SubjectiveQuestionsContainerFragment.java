@@ -20,27 +20,27 @@ import java.util.ArrayList;
 /**
  * This fragment is a container of three frags
  * GetStudents=retrieve list of students attempted
- * GetSubjectiveQuestionsFragment show list of all subjective questions
+ * SubjectiveQuestionsFragment show list of all subjective questions
  * QuestionPaletteFragment shows list of all question evaluation status.
  */
-public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
-    private static final String TAG = GetSubjectiveAssignmentQuestionsFragment.class.getSimpleName();
+public class SubjectiveQuestionsContainerFragment extends Fragment {
+    private static final String TAG = SubjectiveQuestionsContainerFragment.class.getSimpleName();
     private View view;
     private FrameLayout flGetsubjectiveAssignmentContainerLeft, flGetsubjectiveAssignmentContainerMiddle, flGetsubjectiveAssignmentContainerRight;
 
     //new code
     public GetStudentsFragment getStudentsFragment;
-    public GetSubjectiveQuestionsFragment getSubjectiveQuestionsFragment;
+    public SubjectiveQuestionsFragment subjectiveQuestionsFragment;
     public QuestionPaletteFragment questionPaletteFragment;
 
-    public GetSubjectiveAssignmentQuestionsFragment() {
+    public SubjectiveQuestionsContainerFragment() {
     }
 
 
-    public static GetSubjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArguments) {
-        GetSubjectiveAssignmentQuestionsFragment getSubjectiveAssignmentQuestionsFragment = new GetSubjectiveAssignmentQuestionsFragment();
-        getSubjectiveAssignmentQuestionsFragment.setArguments(bundleArguments);
-        return getSubjectiveAssignmentQuestionsFragment;
+    public static SubjectiveQuestionsContainerFragment newInstance(Bundle bundleArguments) {
+        SubjectiveQuestionsContainerFragment subjectiveQuestionsContainerFragment = new SubjectiveQuestionsContainerFragment();
+        subjectiveQuestionsContainerFragment.setArguments(bundleArguments);
+        return subjectiveQuestionsContainerFragment;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
     private void initGlobal(View view) {
 
         getStudentsFragment = GetStudentsFragment.newInstance(this,getBundleArguments());
-        getSubjectiveQuestionsFragment = new GetSubjectiveQuestionsFragment(this, getBundleArguments());
+        subjectiveQuestionsFragment = new SubjectiveQuestionsFragment(this);
         questionPaletteFragment = new QuestionPaletteFragment(this);
 
 
@@ -80,7 +80,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
         //new code starts
 
         getChildFragmentManager().beginTransaction().replace(R.id.fl_getsubjective_assignment_container_left, getStudentsFragment).commit();
-        getChildFragmentManager().beginTransaction().replace(R.id.fl_getsubjective_assignment_container_middle, getSubjectiveQuestionsFragment).commit();
+        getChildFragmentManager().beginTransaction().replace(R.id.fl_getsubjective_assignment_container_middle, subjectiveQuestionsFragment).commit();
         getChildFragmentManager().beginTransaction().replace(R.id.fl_getsubjective_assignment_container_right, questionPaletteFragment).commit();
 
     }
@@ -88,7 +88,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
 
     /*this is to load data for student evaluation*/
     public void loadStudentEvaluationData(String studentId) {
-        getSubjectiveQuestionsFragment.loadStudentEvaluationData();
+        subjectiveQuestionsFragment.loadStudentEvaluationData();
     }
 
 
@@ -104,7 +104,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
 
     /*this is to scroll to specific question content on the click of question palette*/
     public void scrollToSpecificQuestion(int position) {
-        getSubjectiveQuestionsFragment.scrollToSpecificQuestion(position);
+        subjectiveQuestionsFragment.scrollToSpecificQuestion(position);
     }
 
 
@@ -118,7 +118,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
         flGetsubjectiveAssignmentContainerRight.setVisibility(View.VISIBLE);
     }
 
-    private Bundle getBundleArguments() {
+    public Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }
 }

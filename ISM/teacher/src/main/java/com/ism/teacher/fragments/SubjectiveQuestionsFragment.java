@@ -23,6 +23,7 @@ import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.adapters.SubjectiveQuestionListAdapter;
+import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.views.CircleImageView;
@@ -40,21 +41,20 @@ import java.util.ArrayList;
 /**
  * List of subjective questions
  */
-public class GetSubjectiveQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
+public class SubjectiveQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
-    private static final String TAG = GetSubjectiveQuestionsFragment.class.getSimpleName();
+    private static final String TAG = SubjectiveQuestionsFragment.class.getSimpleName();
 
 
     private View view;
     Fragment mFragment;
 
 
-    public GetSubjectiveQuestionsFragment() {
+    public SubjectiveQuestionsFragment() {
     }
 
-    public GetSubjectiveQuestionsFragment(Fragment fragment, Bundle bundleArguments) {
+    public SubjectiveQuestionsFragment(Fragment fragment) {
         this.mFragment = fragment;
-        setArguments(bundleArguments);
     }
 
     @Override
@@ -365,8 +365,8 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     }
 
 
-    private GetSubjectiveAssignmentQuestionsFragment getBaseFragment() {
-        return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
+    private SubjectiveQuestionsContainerFragment getBaseFragment() {
+        return (SubjectiveQuestionsContainerFragment) mFragment;
 
     }
 
@@ -379,7 +379,13 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         } else if (v == llNextStudent) {
             loadNextStudentData();
 
-        } else if (v == imgEditExam || v == imgCopyExam) {
+        } else if (v == imgEditExam) {
+            getBaseFragment().getBundleArguments().putBoolean(AssignmentExamFragment.ARG_IS_CREATE_EXAM, false);
+            getBaseFragment().getBundleArguments().putBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY, false);
+            setExamQuestions();
+        } else if (v == imgCopyExam) {
+            getBaseFragment().getBundleArguments().putBoolean(AssignmentExamFragment.ARG_IS_CREATE_EXAM, false);
+            getBaseFragment().getBundleArguments().putBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY, true);
             setExamQuestions();
         }
     }
@@ -388,7 +394,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
         if (responseObjGetAllExamQuestions != null) {
 
-            getBundleArguments().putParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS, arrListQuestions);
+            getBundleArguments().putParcelableArrayList(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS, arrListQuestions);
             getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getString(R.string.strsubjective));
 
 //            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
@@ -397,12 +403,16 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 //            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
 //                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
 
-            mFragment.getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
-                    CreateExamAssignmentContainerFragment.newInstance(getBundleArguments())).commit();
+            TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) mFragment.getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+            teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
+
+//            mFragment.getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
+//                    CreateExamAssignmentContainerFragment.newInstance()).commit();
 
         }
 
     }
+
     private Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }

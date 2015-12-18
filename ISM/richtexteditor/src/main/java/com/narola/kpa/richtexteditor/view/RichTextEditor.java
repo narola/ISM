@@ -1,11 +1,12 @@
 package com.narola.kpa.richtexteditor.view;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+
+
 import android.util.AttributeSet;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -66,12 +67,12 @@ public class RichTextEditor extends LinearLayout {
      */
     public interface RichTextListener {
         /**
-         * open Image picker from {@link AppCompatActivity}
+         * open Image picker from {@link android.app.Activity}
          */
         public void imagePicker();
 
         /**
-         * open video picker from {@link AppCompatActivity}
+         * open video picker from {@link android.app.Activity}
          */
         public void videoPicker();
 
@@ -342,7 +343,7 @@ public class RichTextEditor extends LinearLayout {
     }
 
     /**
-     * insert Image to rich text editor coming from {@link AppCompatActivity}
+     * insert Image to rich text editor coming from {@link android.app.Activity}
      */
     public void insertImage(String path) {
 
@@ -351,7 +352,7 @@ public class RichTextEditor extends LinearLayout {
     }
 
     /**
-     * insert Video to rich text editor coming from {@link AppCompatActivity}
+     * insert Video to rich text editor coming from {@link android.app.Activity}
      */
     public void insertVideo(String path) {
 
