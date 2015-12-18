@@ -4,13 +4,15 @@
              android:layout_height="match_parent"
              android:orientation="vertical"
              android:gravity="center"
+              android:paddingBottom="50dp"
+              android:background="@drawable/bg_saturday"
              tools:mContext=".fragment.tutorialGroup.TutorialSatFragment">
 
 	<ImageView
 		android:layout_width="130dp"
 		android:layout_height="130dp"
 		android:layout_centerHorizontal="true"
-		android:src="@drawable/img_default_dp"/>
+		android:src="@drawable/img_smile"/>
 
 	<TextView
 		android:id="@+id/txt_message"
@@ -19,5 +21,13 @@
 		android:layout_marginTop="10dp"
 		android:gravity="center"
 		android:textSize="30sp"
-		android:text="Good to see you here!\nSeems you are looking for an assignment.\nBut it's Saturday and it's funday-\nso no assignment."/>
+		android:textColor="@color/bg_app_dark"
+		android:text="Good to see you here!\nSeems you are looking for an assignment."/>
+
+	<TextView
+		android:id="@+id/txt_message2"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:textSize="30sp"/>
 </LinearLayout>

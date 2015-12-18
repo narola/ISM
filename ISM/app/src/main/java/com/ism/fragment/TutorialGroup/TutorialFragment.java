@@ -36,6 +36,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
     private FragmentListener fragListener;
     private View.OnClickListener listenerOnWeekDayClick;
 	private TutorialDiscussionFragment fragTutorialDiscussion;
+	private ExamFragment.ExamListener listenerExam;
 
 	public static final int MON = 0;
 	public static final int TUE = 1;
@@ -51,8 +52,9 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 	private static int intCurrentFragment = -1;
 	private static int intCurrentDay = -1;
 
-    public static TutorialFragment newInstance() {
+    public static TutorialFragment newInstance(ExamFragment.ExamListener examListener) {
         TutorialFragment fragmentTutorial = new TutorialFragment();
+	    fragmentTutorial.setExamListener(examListener);
         return fragmentTutorial;
     }
 
@@ -151,7 +153,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 					}
 					break;
 				case FRAGMENT_FRI:
-					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, TutorialFriAddQuestionFragment.newInstance()).commit();
+					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, TutorialFriAddQuestionFragment.newInstance(listenerExam)).commit();
 					break;
 				case FRAGMENT_SAT:
 					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, TutorialSatFragment.newInstance()).commit();
@@ -197,4 +199,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 		setWeekDaySelection(dayId);
 	}
 
+	public void setExamListener(ExamFragment.ExamListener examListener) {
+		listenerExam = examListener;
+	}
 }

@@ -412,10 +412,11 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, homeFragment).commit();
                     break;
                 case FRAGMENT_TUTORIAL:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance()).commit();
+	                QuestionPaletteFragment questionPaletteFragment = QuestionPaletteFragment.newInstance();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance(questionPaletteFragment)).commit();
 	                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 	                fragmentTransaction.addToBackStack(QuestionPaletteFragment.class.getSimpleName());
-			        fragmentTransaction.replace(R.id.fl_fragment_container_right, QuestionPaletteFragment.newInstance()).commit();
+			        fragmentTransaction.replace(R.id.fl_fragment_container_right, questionPaletteFragment).commit();
 	                imgNotes.setActivated(false);
 	                imgStudyMates.setActivated(false);
 	                imgChat.setActivated(false);
@@ -1017,11 +1018,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
 	public interface AddToLibraryListner {
         public void onAddToLibrary(String id);
-        public void onRemoveFromLibrary(String id );
+        public void onRemoveFromLibrary(String id);
     }
+
     public void setListenerResizeView(ResizeView resizeListView) {
         this.resizeListView = resizeListView;
     }
+
     public void setListenerAddToLibrary(AddToLibraryListner addToLibraryListner) {
         this.addToLibraryListner = addToLibraryListner;
     }
@@ -1052,4 +1055,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

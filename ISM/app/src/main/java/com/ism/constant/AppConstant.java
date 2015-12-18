@@ -30,6 +30,7 @@ public class AppConstant {
     public static final String RalewaySemiBoldItalic = "Raleway-SemiBoldItalic.ttf";
     public static final String RalewayThin = "Raleway-Thin.ttf";
     public static final String RalewayThinItalic = "Raleway-ThinItalic.ttf";
+    public static final String SchadowBT = "SchadowBT.ttf";
 
     /**
      *  Directory paths
