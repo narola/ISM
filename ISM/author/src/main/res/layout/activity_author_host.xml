@@ -72,14 +72,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:background="#323941"
                 android:gravity="center"
                 android:paddingLeft="@dimen/controller_menu_text_padding"
                 android:paddingRight="@dimen/controller_menu_text_padding"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/controller_top_menu_text_size"
                 android:visibility="gone" />
-
+            <!--android:background="#323941"-->
         </RelativeLayout>
 
         <LinearLayout

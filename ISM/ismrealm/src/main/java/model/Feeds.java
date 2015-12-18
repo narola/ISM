@@ -27,8 +27,11 @@ public class Feeds extends RealmObject {
     private int isSync;
     private String like;
     ////private String profilePic;
-    private RealmList<FeedComment> comments=new RealmList<>();
-    private RealmList<FeedImage> feedImages=new RealmList<>();
+
+
+    private RealmList<FeedComment> comments=new RealmList<FeedComment>();
+    private RealmList<FeedImage> feedImages=new RealmList<FeedImage>();
+
 
 //    public int getId() {
 //        return id;

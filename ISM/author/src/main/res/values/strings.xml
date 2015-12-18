@@ -202,6 +202,7 @@
     <string name="add_book">Add Book</string>
     <string name="strAddpost">Add Post</string>
     <string name="strAddNew">Add New</string>
+    <string name="strPast">PAST</string>
     <string name="strcorrect_answer">Correct Answer :</string>
     <string name="stranswer">Answer :</string>
     <string name="strevoluations_notes">Evoluations Notes :</string>

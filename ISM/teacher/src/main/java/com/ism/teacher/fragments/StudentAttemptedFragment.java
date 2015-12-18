@@ -197,12 +197,12 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 //                // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
 //
 //                getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(responseObjQuestions, getActivity(), this, null);
-//                GetObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
-//                GetObjectiveAssignmentQuestionsFragment.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-//                GetObjectiveAssignmentQuestionsFragment.txtBookNameValue.setText(responseObjQuestions.getExamQuestions().get(0).getBookName());
-//                GetObjectiveAssignmentQuestionsFragment.txtClassName.setText(responseObjQuestions.getExamQuestions().get(0).getClassName());
-//                GetObjectiveAssignmentQuestionsFragment.txtExamDateValue.setText(Utility.getFormattedDate("dd-MMM-yyyy", responseObjQuestions.getExamQuestions().get(0).getCreatedDate()));
-//                GetObjectiveAssignmentQuestionsFragment.txtExamName.setText(responseObjQuestions.getExamQuestions().get(0).getExamName());
+//                ObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
+//                ObjectiveAssignmentQuestionsFragment.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                ObjectiveAssignmentQuestionsFragment.txtBookNameValue.setText(responseObjQuestions.getExamQuestions().get(0).getBookName());
+//                ObjectiveAssignmentQuestionsFragment.txtClassName.setText(responseObjQuestions.getExamQuestions().get(0).getClassName());
+//                ObjectiveAssignmentQuestionsFragment.txtExamDateValue.setText(Utility.getFormattedDate("dd-MMM-yyyy", responseObjQuestions.getExamQuestions().get(0).getCreatedDate()));
+//                ObjectiveAssignmentQuestionsFragment.txtExamName.setText(responseObjQuestions.getExamQuestions().get(0).getExamName());
 //                questionsID = new ArrayList<>();
 //                for (int i = 0; i < responseObjQuestions.getExamQuestions().get(0).getQuestions().size(); i++) {
 //                    questionsID.add(responseObjQuestions.getExamQuestions().get(0).getQuestions().get(i).getQuestionId());
@@ -240,7 +240,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 //            if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
 //                responseObjectEval = responseHandler;
 //                GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, getActivity(), this, responseObjectEval);
-//                GetObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
+//                ObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
 //                getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
 //            }
 //        } else {

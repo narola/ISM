@@ -36,11 +36,11 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shadow_grey_small_size" />
 
-                <com.ism.commonsource.view.ActionProcessButton
-                    android:id="@+id/prog_assignment_subject"
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:visibility="invisible" />
+                <!--<com.ism.commonsource.view.ActionProcessButton-->
+                <!--android:id="@+id/prog_assignment_subject"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="5dp"-->
+                <!--android:visibility="invisible" />-->
             </LinearLayout>
             <!-- Second spinner-->
             <LinearLayout
@@ -55,12 +55,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shadow_grey_small_size" />
-
-                <com.ism.commonsource.view.ActionProcessButton
-                    android:id="@+id/prog_assignment_class"
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:visibility="invisible" />
             </LinearLayout>
 
             <!-- Third spinner-->
@@ -77,11 +71,6 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shadow_grey_small_size" />
 
-                <com.ism.commonsource.view.ActionProcessButton
-                    android:id="@+id/prog_assignment_assessed"
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:visibility="invisible" />
             </LinearLayout>
 
             <!-- Fourth image-->

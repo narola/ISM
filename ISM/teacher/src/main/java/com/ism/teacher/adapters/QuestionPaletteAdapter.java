@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
+import com.ism.teacher.fragments.SubjectiveQuestionsContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.QuestionPalette;
 import com.ism.teacher.ws.model.Questions;
@@ -138,8 +138,8 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
         }
     }
 
-    private GetSubjectiveAssignmentQuestionsFragment getBaseFragment() {
-        return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
+    private SubjectiveQuestionsContainerFragment getBaseFragment() {
+        return (SubjectiveQuestionsContainerFragment) mFragment;
     }
 
     private Bundle getBundleArguments() {

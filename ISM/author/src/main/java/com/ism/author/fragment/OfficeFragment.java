@@ -113,6 +113,7 @@ public class OfficeFragment extends Fragment {
                 break;
 
             case FRAGMENT_GOTRENDING:
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GOTRENDING);
                 break;
 
             case FRAGMENT_TRIAL:

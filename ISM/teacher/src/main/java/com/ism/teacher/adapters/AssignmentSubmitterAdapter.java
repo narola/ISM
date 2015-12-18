@@ -18,8 +18,6 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
-import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.TeacherOfficeFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.views.CircleImageView;
@@ -39,17 +37,15 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
     Context mContext;
     ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<>();
     MyTypeFace myTypeFace;
+
     private ImageLoader imageLoader;
-    // String exam_mode = "";
     public static String EXAM_OBJECTIVE = "objective";
     public static String EXAM_SUBJECTIVE = "subjective";
-    String examid = "";
-//    private Bundle bundleArgument;
 
     FragmentManager fragmentManager;
 
-    public static String ARG_STUDENT_ID = "studenId";
-    public static String ARG_STUDENT_POSITION = "studenPosition";
+    public static String ARG_STUDENT_ID = "studentId";
+    public static String ARG_STUDENT_POSITION = "studentPosition";
     public static String ARG_STUDENT_PROFILE_PIC = "studentProfilePic";
     public static String ARG_STUDENT_NAME = "studentName";
 
@@ -60,10 +56,6 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
         imageLoader.init(ImageLoaderConfiguration.createDefault(this.mContext));
         myTypeFace = new MyTypeFace(mContext);
 
-//        if (bundleArgument != null) {
-//            examid = bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_ID);
-//            exam_mode = bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_MODE);
-//        }
         //Get FragmentManager
         fragmentManager = ((Activity) mContext).getFragmentManager();
     }
@@ -130,23 +122,29 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
 
                 /**
                  * For objective Questions
-                 * Call  GetObjectiveAssignmentQuestionsFragment
+                 * Call  ObjectiveAssignmentQuestionsFragment
                  */
 
                 if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(EXAM_OBJECTIVE)) {
-                    TeacherOfficeFragment.current_fragment = TeacherOfficeFragment.FRAGMENT_GET_OBJECTIVE_QUESTIONS_VIEW;
-                    fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(getBundleArguments()), AppConstant.FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION).commit();
+
+//                    TeacherOfficeFragment.current_office_fragment = TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW;
+                    TeacherOfficeFragment teacherOfficeFragment=(TeacherOfficeFragment)fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+                    teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW);
+                 //   fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, ObjectiveAssignmentQuestionsFragment.newInstance(getBundleArguments()), AppConstant.FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION).commit();
                 }
 
                 /**
                  * For subjective Questions
-                 * Call  GetSubjectiveAssignmentQuestionsFragment divided into three parts
+                 * Call  SubjectiveQuestionsContainerFragment divided into three parts
                  * Students,Subjective Ques with evaluation and palette of answers
                  */
 
                 else if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(EXAM_SUBJECTIVE)) {
 
-                    fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(getBundleArguments())).commit();
+                    TeacherOfficeFragment teacherOfficeFragment=(TeacherOfficeFragment)fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+                    teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_SUBJECTIVE_QUESTIONS);
+
+                    //fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, SubjectiveQuestionsContainerFragment.newInstance(getBundleArguments()),AppConstant.FRAGMENT_TAG_SUBJECTIVE_QUESTIONS).commit();
                 }
             }
         });
