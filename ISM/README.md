@@ -1,3 +1,8 @@
+#**MINIMUM SDK REQUIRED**
+===================================
+##4.4 (Kitkat)
 
-<h1><font color = "red"><u><b>MINIMUM SDK</b></u></font></h1>
+
+
+
 
