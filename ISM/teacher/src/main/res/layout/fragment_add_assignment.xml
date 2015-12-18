@@ -44,7 +44,7 @@
                 android:paddingTop="@dimen/d5dp"
                 android:text="@string/strsave"
                 android:textAllCaps="true"
-                android:textColor="@color/color_white"
+                android:textColor="@color/white"
                 android:textSize="@dimen/d20dp" />
 
             <Button
@@ -59,7 +59,7 @@
                 android:paddingTop="@dimen/d5dp"
                 android:text="@string/strcancel"
                 android:textAllCaps="true"
-                android:textColor="@color/color_white"
+                android:textColor="@color/white"
                 android:textSize="@dimen/d20dp" />
 
 

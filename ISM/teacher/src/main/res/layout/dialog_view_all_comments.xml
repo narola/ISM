@@ -23,7 +23,7 @@
             android:paddingBottom="@dimen/d10dp"
             android:paddingTop="@dimen/d10dp"
             android:text="@string/strcomments"
-            android:textColor="@color/color_white"
+            android:textColor="@color/white"
             android:textSize="@dimen/d40dp"
             android:textStyle="bold" />
 
@@ -43,7 +43,7 @@
             android:paddingTop="@dimen/d10dp"
             android:text="@string/strclose"
             android:textAllCaps="true"
-            android:textColor="@color/color_white"
+            android:textColor="@color/white"
             android:textSize="@dimen/d40dp"
             android:textStyle="bold" />
 

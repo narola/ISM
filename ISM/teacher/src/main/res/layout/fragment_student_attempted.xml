@@ -17,12 +17,12 @@
         android:text="@string/strStudentAttempted"
         android:textAllCaps="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/d20sp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_white" />
+        android:background="@color/white" />
 </LinearLayout>

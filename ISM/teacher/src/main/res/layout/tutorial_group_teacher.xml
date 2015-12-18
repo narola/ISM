@@ -359,6 +359,6 @@
         android:background="@color/color_blue"
         android:padding="10dp"
         android:text="Schedule Exam"
-        android:textColor="@color/color_white" />
+        android:textColor="@color/white" />
 
 </LinearLayout>

@@ -192,6 +192,10 @@
     <string name="strprofileinformation">PROFILE INFORMATION</string>
     <string name="stremailaddress">Email Address</string>
     <string name="strgender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="str_firstname">First Name</string>
+    <string name="str_lastname">Last Name</string>
     <string name="strfullname">Full Name</string>
     <string name="strhomeaddress">Home Address</string>
     <string name="strstate">State</string>
@@ -203,6 +207,7 @@
     <string name="struploadprofilepicture">UPLOAD PROFILE PICTURE</string>
 
     <string name="strschoolinformation">SCHOOL INFORMATION</string>
+    <string name="strworkprofileinformation">WORK PROFILE INFORMATION</string>
     <string name="stryouareregisteredforfollowingschool">You are registered for following school.</string>
     <string name="strifitisnotyourschool">If it\'s not your school.</string>
     <string name="strnameofschool">Name of School</string>
@@ -219,6 +224,9 @@
     <string name="strconfirmpwd">Confirm Password</string>
     <string name="strsubmit">Submit</string>
     <string name="strcancel">Cancel</string>
+
+    <string name="str_education">Education</string>
+    <string name="str_specialization">Specialization</string>
 
     <string-array name="list">
         <item>1</item>
