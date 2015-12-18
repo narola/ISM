@@ -12,15 +12,30 @@ dependencies {
 ```
 ###**STYLE**
 ******************
-Mainly it is using `AppTheme.Base` and it will override this theme in `value-v21` style for so we can use `Material Theme` also 
-in 5.0 (Android-Lolipop).
+Mainly it is using `AppTheme.Base` and it will override this theme in `values-v21` style for so we can use `Material Theme` also 
+in 5.0 (Android-Lollipop).
 
-* value > support below lollipop
+* values                      `support below lollipop`
     * style.xml
-* value-v21  > for lollipop
+* values-v21                 `for lollipop`
     * style.xml
 
- 
+`values`
+```xml
+<style name="AppTheme" parent="AppTheme.Base"/>
+<style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+<item..../>
+</style>
+```
+`values-v21`
+```xml
+<style name="AppTheme" parent="AppTheme.Base">
+        <!-- Customize your theme here. -->
+</style>
+```
+
+
+**Note:: You will find this structure in commonsource module**
 
 
 
