@@ -65,7 +65,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        Global.imageLoader.displayImage(WebConstants.HOST_IMAGES + arrListFeeds.get(position).getProfilePic(),
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrListFeeds.get(position).getProfilePic(),
                 holder.imgDpPostCreator, ISMAuthor.options);
         holder.txtPostCreaterName.setText(arrListFeeds.get(position).getFullName());
         holder.txtPostContent.setText(arrListFeeds.get(position).getFeedText());
@@ -297,7 +297,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         txtCommenterComment.setText(commentList.getComment());
         txtCommentDuration.setText("5 min");
 
-        Global.imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", imgCommenterDp, ISMAuthor.options);
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES+commentList.getProfileLink(), imgCommenterDp, ISMAuthor.options);
 
         return v;
     }

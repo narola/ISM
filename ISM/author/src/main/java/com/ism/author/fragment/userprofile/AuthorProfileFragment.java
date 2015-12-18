@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
@@ -24,9 +25,9 @@ import com.ism.author.R;
 import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.adapter.MessageAdapter;
-import com.ism.author.adapter.NotificationAdapter;
-import com.ism.author.adapter.StudymateRequestAdapter;
+import com.ism.author.adapter.userprofile.MessageAdapter;
+import com.ism.author.adapter.userprofile.NotificationAdapter;
+import com.ism.author.adapter.userprofile.StudymateRequestAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
@@ -73,6 +74,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
     private MessageAdapter adpMessage;
     private TextView txtEmpty;
     private PopupWindow popupFriendRequest;
+    private RelativeLayout rrViewProfile;
 
     public static AuthorProfileFragment newInstance() {
         AuthorProfileFragment fragAuthorProfile = new AuthorProfileFragment();
@@ -106,8 +108,9 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         imgNotification = (ImageView) view.findViewById(R.id.img_notification);
         imgMessage = (ImageView) view.findViewById(R.id.img_message);
         imgStudymatesRequest = (ImageView) view.findViewById(R.id.img_friend_request);
+        rrViewProfile = (RelativeLayout) view.findViewById(R.id.rr_view_profile);
 
-        txtUserName.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtUserName.setTypeface(Global.myTypeFace.getRalewayMedium());
         txtstudymatesRequest.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtNotification.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtMessageNo.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -141,6 +144,10 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                     case R.id.txt_myactivity:
                         activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_ACTIVITY);
                         break;
+                    case R.id.rr_view_profile:
+                    case R.id.txt_user_name:
+                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
+                        break;
                 }
             }
         };
@@ -167,6 +174,8 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         //txtMyBooks.setOnClickListener(onClickLabel);
         txtMyFeeds.setOnClickListener(onClickLabel);
         txtMyActivity.setOnClickListener(onClickLabel);
+        txtUserName.setOnClickListener(onClickLabel);
+        rrViewProfile.setOnClickListener(onClickLabel);
         imgNotification.setOnClickListener(onClickNotificationItems);
         imgMessage.setOnClickListener(onClickNotificationItems);
         imgStudymatesRequest.setOnClickListener(onClickNotificationItems);
