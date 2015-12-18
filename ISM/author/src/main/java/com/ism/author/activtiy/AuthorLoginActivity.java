@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -23,28 +25,38 @@ import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
+import com.ism.author.broadcastReceiver.NetworkStatusReceiver;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.interfaces.NetworkStateListener;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.AdminConfig;
 import com.ism.author.ws.model.Cities;
 import com.ism.author.ws.model.Countries;
 import com.ism.author.ws.model.States;
+import com.ism.commonsource.utility.AESHelper;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
+import com.realm.ismrealm.RealmAdaptor;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import realmhelper.AuthorHelper;
 
 /**
  * this is the class for user login.
  */
-public class AuthorLoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse {
+public class AuthorLoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse, NetworkStateListener {
 
     private static final String TAG = AuthorLoginActivity.class.getSimpleName();
-    EditText etPwd, etUserid;
+
+    EditText etPwd, etUserName;
     private Spinner spCountry, spState, spCity;
+    private LinearLayout llLogin;
     private ActionProcessButton btnLogin, progForgotPwd, progRequestCredentials, progCountry, progState, progCity;
     private Button btnForgotPwdSubmit, btnCredentialsSubmit;
 
@@ -57,36 +69,77 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
     private AlertDialog dialogCredentials;
     private ProgressGenerator progressGenerator;
     private AlertDialog dialogForgotPassword;
+    private MyTypeFace myTypeFace;
+    private AuthorHelper authorHelper;
 
     private String strValidationMsg;
+    private boolean isRememberMe;
+    private boolean isRememberMeFirstLogin;
+    private boolean isAdminConfigSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_author_login);
 
-        if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, getActivity())) {
-            launchHostActivity();
-        } else if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity())) {
-            launchProfileInfoActivity();
+        authorHelper = new AuthorHelper(getActivity());
+
+        isAdminConfigSet = false;
+        isRememberMe = PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, getActivity());
+        isRememberMeFirstLogin = PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity());
+
+
+        NetworkStatusReceiver.setNetworkStateListener(this);
+
+        if (Utility.isConnected(this)) {
+            initializeData();
         } else {
-            setContentView(R.layout.activity_author_login);
-            initGlobal();
+            Utility.alertOffline(this);
         }
 
     }
 
+    private void initializeData() {
+
+        if (isRememberMe || isRememberMeFirstLogin) {
+            WebConstants.ACCESS_KEY = PreferenceData.getStringPrefs(PreferenceData.ACCESS_KEY, this);
+            WebConstants.SECRET_KEY = PreferenceData.getStringPrefs(PreferenceData.SECRET_KEY, this);
+            callApiGetAdminConfig();
+        } else {
+            PreferenceData.clearWholePreference(this);
+            PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, WebConstants.NO_USERNAME);
+            WebConstants.ACCESS_KEY = WebConstants.NO_USERNAME;
+            WebConstants.SECRET_KEY = null;
+            callApiRefreshToken();
+        }
+    }
+
+
+    private void resumeApp() {
+        if (isRememberMe) {
+            launchHostActivity();
+        } else if (isRememberMeFirstLogin) {
+            launchProfileInfoActivity();
+        } else {
+            initGlobal();
+        }
+    }
 
     private void initGlobal() {
-
-        MyTypeFace myTypeFace = new MyTypeFace(this);
+        myTypeFace = new MyTypeFace(this);
         btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
         etPwd = (EditText) findViewById(R.id.et_pwd);
-        etUserid = (EditText) findViewById(R.id.et_userid);
-        etUserid.setText("twinkle");
-        etPwd.setText("narola21");
-        etUserid.setTypeface(myTypeFace.getRalewayRegular());
-        etPwd.setTypeface(myTypeFace.getRalewayRegular());
+        etUserName = (EditText) findViewById(R.id.et_userid);
+        llLogin = (LinearLayout) findViewById(R.id.ll_login);
 
+        showLoginLayout();
+
+//        etUserName.setText("twinkle");
+//        etPwd.setText("narola21");
+
+
+        etUserName.setTypeface(myTypeFace.getRalewayRegular());
+        etPwd.setTypeface(myTypeFace.getRalewayRegular());
         ((TextView) findViewById(R.id.txt_donothave)).setTypeface(myTypeFace.getRalewayRegular());
         ((TextView) findViewById(R.id.txt_clickhere)).setTypeface(myTypeFace.getRalewayRegular());
         ((TextView) findViewById(R.id.txt_forgotpwd)).setTypeface(myTypeFace.getRalewayRegular());
@@ -97,24 +150,32 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         arrListDefalt.add(getString(R.string.select));
 
         progressGenerator = new ProgressGenerator();
+        RealmAdaptor.getInstance(this);
     }
 
 
+    private void showLoginLayout() {
+        llLogin.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
+        llLogin.setVisibility(View.VISIBLE);
+        findViewById(R.id.img_logo).startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
+    }
+
     public void onClickLogin(View view) {
         if (Utility.isConnected(getActivity())) {
-            /*if (strValidationMsg == null || strValidationMsg.equals("")) {
-                strValidationMsg = "1";
-				btnLogin.setProgress(1);
-				progressGenerator.start(btnLogin);
-			} else {
-				strValidationMsg = "";
-				btnLogin.setProgress(100);
-			}*/
             if (isInputsValid()) {
-                callApiAuthenticateUser();
+                btnLogin.setProgress(1);
+                btnLogin.setEnabled(false);
+                progressGenerator.start(btnLogin);
+
+                String globalPassword = authorHelper.getGlobalPassword();
+                if (globalPassword != null) {
+                    WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, etUserName.getText().toString().trim());
+                    PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, getActivity(), WebConstants.ACCESS_KEY);
+                    callApiRefreshToken();
+                }
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
     }
 
@@ -152,20 +213,16 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                         callApiForgotPassword(etEmail.getText().toString().trim());
                     }
                 } else {
-                    Utility.toastOffline(getActivity());
+                    Utility.alertOffline(getActivity());
                 }
             }
         });
     }
 
-    private boolean isInputsValid() {
-        return inputValidator.validateStringPresence(etUserid) &
-                (inputValidator.validateStringPresence(etPwd) && inputValidator.validatePasswordLength(etPwd));
-    }
 
     public void onClickHere(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View dialogView = inflater.inflate(R.layout.dialog_request_credentials, null);
         final EditText etFirstName = (EditText) dialogView.findViewById(R.id.et_firstname);
@@ -185,7 +242,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         if (Utility.isConnected(getActivity())) {
             callApiGetCountries();
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
 
         spCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -193,9 +250,9 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (arrListCountries != null && position > 0) {
                     if (Utility.isConnected(getActivity())) {
-                        callApiGetStates(Integer.parseInt(arrListCountries.get(position - 1).getId()));
+                        callApiGetStates(arrListCountries.get(position - 1).getId());
                     } else {
-                        Utility.toastOffline(getActivity());
+                        Utility.alertOffline(getActivity());
                     }
                 } else {
                     Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, Adapters.ADAPTER_NORMAL);
@@ -215,7 +272,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                     if (Utility.isConnected(getActivity())) {
                         callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
                     } else {
-                        Utility.toastOffline(getActivity());
+                        Utility.alertOffline(getActivity());
                     }
                 } else {
                     Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, Adapters.ADAPTER_NORMAL);
@@ -258,14 +315,14 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                         attribute.setHomeAddress(etHomeAddress.getText().toString().trim());
                         attribute.setSchoolName(etSchoolName.getText().toString().trim());
                         attribute.setContactNumber(etContactNo.getText().toString().trim());
-                        attribute.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
+                        attribute.setCountryId(spCountry.getSelectedItemPosition() > 0 ? arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId() : "0");
                         attribute.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
                         attribute.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
 
                         callApiRequestCredentials(attribute);
                     }
                 } else {
-                    Utility.toastOffline(getActivity());
+                    Utility.alertOffline(getActivity());
                 }
             }
 
@@ -281,6 +338,11 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         });
     }
 
+
+    private boolean isInputsValid() {
+        return inputValidator.validateStringPresence(etUserName) &
+                (inputValidator.validateStringPresence(etPwd) && inputValidator.validatePasswordLength(etPwd));
+    }
 
     private boolean checkOtherInputs() {
         strValidationMsg = "";
@@ -331,7 +393,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         }
     }
 
-    private void callApiGetStates(int countryId) {
+    private void callApiGetStates(String countryId) {
         try {
             progState.setVisibility(View.VISIBLE);
             progState.setProgress(1);
@@ -374,25 +436,6 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         }
     }
 
-
-    private void callApiAuthenticateUser() {
-        try {
-            btnLogin.setProgress(1);
-            btnLogin.setEnabled(false);
-            progressGenerator.start(btnLogin);
-            btnLogin.setEnabled(false);
-            Attribute attribute = new Attribute();
-            attribute.setUsername(etUserid.getText().toString().trim());
-            attribute.setPassword(etPwd.getText().toString().trim());
-
-            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-                    .execute(WebConstants.LOGIN);
-
-        } catch (Exception e) {
-            Debug.e(TAG, "callApiAuthenticateUser Exception : " + e.getLocalizedMessage());
-        }
-    }
-
     private void callApiForgotPassword(String email) {
         try {
             btnForgotPwdSubmit.setEnabled(false);
@@ -410,6 +453,46 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         }
     }
 
+    private void callApiAuthenticateUser() {
+        try {
+            Attribute attribute = new Attribute();
+            attribute.setUsername(etUserName.getText().toString().trim());
+            attribute.setPassword(etPwd.getText().toString().trim());
+//			requestObject.setUsername("twinkle");
+//			requestObject.setPassword("narola21");
+
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+                    .execute(WebConstants.LOGIN);
+
+        } catch (Exception e) {
+            Log.e(TAG, "callApiAuthenticateUser Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void callApiGetAdminConfig() {
+        try {
+            Attribute attribute = new Attribute();
+            attribute.setRole("All");
+            attribute.setLastSyncDate(PreferenceData.getStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, getActivity(), ""));
+
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+                    .execute(WebConstants.GETADMINCONFIG);
+        } catch (Exception e) {
+            Log.e(TAG, "callApiAuthenticateUser Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void callApiRefreshToken() {
+        try {
+            Attribute attribute = new Attribute(WebConstants.ACCESS_KEY);
+            new WebserviceWrapper(getApplicationContext(), attribute, this).new WebserviceCaller()
+                    .execute(WebConstants.REFRESH_TOKEN);
+        } catch (Exception e) {
+            Log.e(TAG, "callApiRefreshToken Exception : " + e.toString());
+        }
+    }
+
+
     private void launchProfileInfoActivity() {
         Utility.launchIntent(getActivity(), AuthorProfileInformationActivity.class);
         finish();
@@ -422,9 +505,11 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
     @Override
     public void onResponse(int apiCode, Object object, Exception error) {
-
         try {
             switch (apiCode) {
+                case WebConstants.GETADMINCONFIG:
+                    onResponseGetAdminConfig(object, error);
+                    break;
                 case WebConstants.LOGIN:
                     onResponseLogin(object, error);
                     break;
@@ -443,83 +528,94 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                 case WebConstants.REQUESTCREDENTIALS:
                     onResponseCredentials(object, error);
                     break;
+                case WebConstants.REFRESH_TOKEN:
+                    onResponseRefreshToken(object, error);
+                    break;
             }
         } catch (Exception e) {
-            Debug.e(TAG, "onResponse Exception : " + e.toString());
+            Log.e(TAG, "onResponse Exception : " + e.toString());
         }
-
     }
 
-    private void onResponseLogin(Object object, Exception error) {
+
+    private void onResponseGetAdminConfig(Object object, Exception error) {
         try {
-            btnLogin.setProgress(100);
-            btnLogin.setEnabled(true);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                    ArrayList<AdminConfig> arrListAdminConfig = responseHandler.getAdminConfig();
+                    Log.e(TAG, "admin config size : " + arrListAdminConfig.size());
 
-                    if (responseHandler.getUser().get(0).getUserId() == null) {
-
-                        PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity(), ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, getActivity(), responseHandler.getUser().get(0).getCredentialId());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, getActivity(), etPwd.getText().toString().trim());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_ID, getActivity(), responseHandler.getUser().get(0).getSchoolId());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, getActivity(), responseHandler.getUser().get(0).getSchoolName());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, getActivity(), responseHandler.getUser().get(0).getDistrictName());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_TYPE, getActivity(), responseHandler.getUser().get(0).getSchoolType());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_ID, getActivity(), responseHandler.getUser().get(0).getClassId());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, getActivity(), responseHandler.getUser().get(0).getClassName());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_ID, getActivity(), responseHandler.getUser().get(0).getCourseId());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, getActivity(), responseHandler.getUser().get(0).getCourseName());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, getActivity(), responseHandler.getUser().get(0).getAcademicYear());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, getActivity(), responseHandler.getUser().get(0).getRoleId());
-
-                        launchProfileInfoActivity();
-
-                    } else {
-
-                        PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, getActivity(), ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_ID, getActivity(), responseHandler.getUser().get(0).getUserId());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, getActivity(), responseHandler.getUser().get(0).getFullName());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, getActivity(), responseHandler.getUser().get(0).getProfilePic());
-
-                        launchHostActivity();
+                    if (arrListAdminConfig != null && arrListAdminConfig.size() > 0) {
+                        for (AdminConfig config : arrListAdminConfig) {
+                            model.AdminConfig adminConfig = new model.AdminConfig();
+                            adminConfig.setConfigKey(config.getConfigKey());
+                            adminConfig.setConfigValue(config.getConfigValue());
+                            authorHelper.saveAdminConfig(adminConfig);
+                        }
+                        PreferenceData.setStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, getActivity(),
+                                Utility.formatDateMySql(Calendar.getInstance().getTime()));
+                        isAdminConfigSet = true;
                     }
+                    resumeApp();
 
-                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(getActivity().getString(R.string.msg_invalid_username_password), getActivity());
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Log.e(TAG, "onResponseGetAdminConfig Failed");
                 }
             } else if (error != null) {
-                Debug.e(TAG, "onResponseLogin api Exception : " + error.toString());
+                Log.e(TAG, "onResponseGetAdminConfig api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Debug.e(TAG, "onResponseLogin Exception : " + e.toString());
+            Log.e(TAG, "onResponseGetAdminConfig Exception : " + e.toString());
         }
     }
 
-
-    private void onResponseForgotPassword(Object object, Exception error) {
+    private void onResponseRefreshToken(Object object, Exception error) {
         try {
-            if (btnForgotPwdSubmit != null) {
-                btnForgotPwdSubmit.setEnabled(true);
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                    PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, this, responseHandler.getToken().get(0).getTokenName());
+                    WebConstants.SECRET_KEY = responseHandler.getToken().get(0).getTokenName();
+                    if (isAdminConfigSet) {
+                        callApiAuthenticateUser();
+                    } else {
+                        callApiGetAdminConfig();
+                    }
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Log.e(TAG, "onResponseRefreshToken failed");
+                }
+            } else if (error != null) {
+                Log.e(TAG, "onResponseRefreshToken api Exception :" + error.toString());
             }
-            if (progForgotPwd != null) {
-                progForgotPwd.setProgress(100);
-                progForgotPwd.setVisibility(View.INVISIBLE);
-            }
+        } catch (Exception e) {
+            Log.e(TAG, "onResponseRefreshToken Exception :" + e.toString());
+        }
+    }
+
+    private void onResponseCountries(Object object, Exception error) {
+        try {
+            progCountry.setProgress(100);
+            progCountry.setVisibility(View.INVISIBLE);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    Utils.showToast(getActivity().getString(R.string.password_sent), getActivity());
-                    dialogForgotPassword.dismiss();
+                    arrListCountries = new ArrayList<Countries>();
+                    arrListCountries.addAll(responseHandler.getCountries());
+                    List<String> countries = new ArrayList<String>();
+                    countries.add(getString(R.string.select));
+                    for (Countries country : arrListCountries) {
+                        countries.add(country.getCountryName());
+                    }
+                    Adapters.setUpSpinner(getActivity(), spCountry, countries, Adapters.ADAPTER_NORMAL);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(getActivity().getString(R.string.email_not_found), getActivity());
+                    Debug.e(TAG, "onResponseCountries Failed");
                 }
             } else if (error != null) {
-                Debug.e(TAG, "onResponseForgotPassword api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseCountries api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Debug.e(TAG, "onResponseForgotPassword Exception : " + e.toString());
+            Debug.e(TAG, "onResponseCountries Exception : " + e.toString());
         }
     }
 
@@ -549,29 +645,29 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         }
     }
 
-    private void onResponseCountries(Object object, Exception error) {
+    private void onResponseCities(Object object, Exception error) {
         try {
-            progCountry.setProgress(100);
-            progCountry.setVisibility(View.INVISIBLE);
+            progCity.setProgress(100);
+            progCity.setVisibility(View.INVISIBLE);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListCountries = new ArrayList<Countries>();
-                    arrListCountries.addAll(responseHandler.getCountries());
-                    List<String> countries = new ArrayList<String>();
-                    countries.add(getString(R.string.select));
-                    for (Countries country : arrListCountries) {
-                        countries.add(country.getCountryName());
+                    arrListCities = new ArrayList<Cities>();
+                    arrListCities.addAll(responseHandler.getCities());
+                    List<String> cities = new ArrayList<String>();
+                    cities.add(getString(R.string.select));
+                    for (Cities city : arrListCities) {
+                        cities.add(city.getCityName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spCountry, countries, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spCity, cities, Adapters.ADAPTER_NORMAL);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Debug.e(TAG, "onResponseCountries Failed");
+                    Debug.e(TAG, "onResponseCities Failed");
                 }
             } else if (error != null) {
-                Debug.e(TAG, "onResponseCountries api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseCities api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Debug.e(TAG, "onResponseCountries Exception : " + e.toString());
+            Debug.e(TAG, "onResponseCities Exception : " + e.toString());
         }
     }
 
@@ -603,34 +699,85 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
     }
 
 
-    private void onResponseCities(Object object, Exception error) {
+    private void onResponseForgotPassword(Object object, Exception error) {
         try {
-            progCity.setProgress(100);
-            progCity.setVisibility(View.INVISIBLE);
+            if (btnForgotPwdSubmit != null) {
+                btnForgotPwdSubmit.setEnabled(true);
+            }
+            if (progForgotPwd != null) {
+                progForgotPwd.setProgress(100);
+                progForgotPwd.setVisibility(View.INVISIBLE);
+            }
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListCities = new ArrayList<Cities>();
-                    arrListCities.addAll(responseHandler.getCities());
-                    List<String> cities = new ArrayList<String>();
-                    cities.add(getString(R.string.select));
-                    for (Cities city : arrListCities) {
-                        cities.add(city.getCityName());
-                    }
-                    Adapters.setUpSpinner(getActivity(), spCity, cities, Adapters.ADAPTER_NORMAL);
+                    Utils.showToast(getActivity().getString(R.string.password_sent), getActivity());
+                    dialogForgotPassword.dismiss();
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Debug.e(TAG, "onResponseCities Failed");
+                    Utils.showToast(getActivity().getString(R.string.email_not_found), getActivity());
                 }
             } else if (error != null) {
-                Debug.e(TAG, "onResponseCities api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseForgotPassword api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Debug.e(TAG, "onResponseCities Exception : " + e.toString());
+            Debug.e(TAG, "onResponseForgotPassword Exception : " + e.toString());
         }
     }
 
 
+    private void onResponseLogin(Object object, Exception error) {
+        try {
+            btnLogin.setProgress(100);
+            btnLogin.setEnabled(true);
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+
+                    if (responseHandler.getUser().get(0).getUserId() == null) {
+
+                        PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity(), ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, getActivity(), responseHandler.getUser().get(0).getCredentialId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, getActivity(), etPwd.getText().toString().trim());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, getActivity(), responseHandler.getUser().get(0).getRoleId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, getActivity(), responseHandler.getUser().get(0).getRoleId());
+                        launchProfileInfoActivity();
+
+                    } else {
+
+                        PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, getActivity(), ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_ID, getActivity(), responseHandler.getUser().get(0).getUserId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, getActivity(), responseHandler.getUser().get(0).getFullName());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, getActivity(), responseHandler.getUser().get(0).getProfilePic());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_NAME, this, etUserName.getText().toString().trim());
+
+                        launchHostActivity();
+                    }
+
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Utils.showToast(getString(R.string.msg_wrong_username_password), getActivity());
+                }
+            } else if (error != null) {
+                Log.e(TAG, "onResponseLogin api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onResponseLogin Exception : " + e.toString());
+        }
+    }
+
     private Context getActivity() {
         return AuthorLoginActivity.this;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        authorHelper.destroy();
+    }
+
+    @Override
+    public void onNetworkStateChange() {
+        if (Utility.isConnected(this)) {
+            initializeData();
+        }
     }
 }

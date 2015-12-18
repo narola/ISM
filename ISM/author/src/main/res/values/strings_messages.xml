@@ -62,8 +62,10 @@
     <string name="msg_success_editquestion">Question edited successfully.</string>
     <string name="msg_success_sethashtag">HashTags Added Successfully.</string>
     <string name="msg_success_imgupload_question">Image Successfully added to Question.</string>
+    <string name="msg_success_imgupload_profilepic">Profile pick added successfully.</string>
     <string name="msg_validation_addsubjective_question">You cant add Objective Question in Subjective Exam.</string>
     <string name="msg_validation_addobjective_question">You cant add Subjective Question in Objective Exam.</string>
+    <string name="msg_wrong_username_password">YUsername or Password is wrong!</string>
     <string name="msg_validation_add_question">You cant add another book question in this book exam.</string>
     <string name="question_add_success">Question Added Successfully.</string>
     <string name="question_edit_success">Question Edited Successfully.</string>
@@ -72,6 +74,7 @@
 
     <string name="msg_help_add_advance_question">By Clicking On Advance You could be able to add formatted text containing image,various scientific symbols and many options to format text </string>
     <string name="msg_evaluate_question">Please evaluate the last question to scroll to next.</string>
+    <string name="msg_server_connection">Can\'t connect to server!</string>
 
 
 </resources>

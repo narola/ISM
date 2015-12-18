@@ -54,6 +54,10 @@ public class WebConstants {
     public static final int UPLOADMEDIAFORQUESTION = 35;
     public static final int UPLOADFEEDMEDIA = 36;
     public static final int UPLOAD_FEED_MEDIA = 37;
+    public static final int UPLOADPROFILEIMAGES = 38;
+    public static final int GETADMINCONFIG = 39;
+    public static final int REFRESH_TOKEN = 40;
+
 
     //user settings preferences
     public static final int GENERAL_SETTING_PREFERENCES = 51;
@@ -68,7 +72,11 @@ public class WebConstants {
     public static final int GET_BOOKS_FOR_USER = 60;
     public static final int MANAGE_FAVOURITES = 61;
     public static final int MANAGE_BOOK_LIBRARY = 62;
+
+
     /*webservice url*/
+    public static final String URL_GETADMINCONFIG = URL_KINJAL_HOST + "GetAdminConfig";
+    public static final String URL_REFRESHTOKEN = URL_KINJAL_HOST + "RefreshToken";
     public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
     public static final String URL_FORGOTPASSWORD = URL_KINJAL_HOST + "ForgotPassword";
     public static final String URL_REQUESTCREDENTIALS = URL_KINJAL_HOST + "RequestForCredentials";
@@ -91,6 +99,7 @@ public class WebConstants {
     public static final String URL_GETALLCOURSES = URL_KINJAL_HOST + "GetAllCourses";
     public static final String URL_GETBOOKSFORAUTHOR = URL_KINJAL_HOST + "GetBooksForAuthor";
     public static final String URL_UPLOADMEDIAFORQUESTION = URL_KINJAL_HOST + "UploadMediaForQuestion";
+    public static final String URL_UPLOADPROFILEIMAGES = URL_KINJAL_HOST + "UploadProfileImages";
 
     public static final String URL_UPLOAD_FEED_MEDIA = URL_KINJAL_HOST + "UploadMedia";
     public static final String URL_CREATEEXAM = URL_KINJAL_HOST + "CreateExam";
@@ -146,5 +155,12 @@ public class WebConstants {
     /*Image Url Constants*/
 
     public static final String QUESTION_IMAGES = "http://192.168.1.147/WS_ISM/Images/questions_images/";
+
+    /**
+     * Parameter value Variables
+     */
+    public static String SECRET_KEY;
+    public static String ACCESS_KEY;
+    public static final String NO_USERNAME = "nousername";
 }
 

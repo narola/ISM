@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,23 +31,21 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utility;
-import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
 import com.ism.author.adapter.ExamsAdapter;
-import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.AddQuestionContainerFragment;
 import com.ism.author.fragment.AssignmentsSubmittorFragment;
 import com.ism.author.fragment.BooksFragment;
-import com.ism.author.fragment.CreateExamAssignmentContainerFragment;
-import com.ism.author.fragment.CreateExamFragment;
 import com.ism.author.fragment.ExamsFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.OfficeFragment;
 import com.ism.author.fragment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.fragment.TrialFragment;
+import com.ism.author.fragment.createexam.CreateExamAssignmentContainerFragment;
+import com.ism.author.fragment.createexam.CreateExamFragment;
 import com.ism.author.fragment.gotrading.GoTrendingFragment;
 import com.ism.author.fragment.gotrading.PastFragment;
 import com.ism.author.fragment.mydesk.MyDeskFragment;
@@ -97,8 +96,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private HostListenerAllNotification listenerHostAllNotification;
     private HostListenerAllMessage listenerHostAllMessage;
     private ArrayList<ControllerTopMenuItem> controllerTopMenuTrial, currentControllerTopMenu, controllerTopMenuMyThirty,
-
-    controllerTopMenuAssessment, controllerTopMenuMyDesk, controllerTopMenuBooks, controllerTopMenuGoTrading,controllerTopSubMenuGoTrading;
+            controllerTopMenuAssessment, controllerTopMenuMyDesk, controllerTopMenuBooks ,controllerTopMenuGoTrading,controllerTopSubMenuGoTrading;
     /*
     * these are the fragments for the main fragment.
     * */
@@ -193,6 +191,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
     }
 
+
     private void inigGlobal() {
 //        IOSocketHandler.ConnectSocket();
 
@@ -200,13 +199,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         Global.myTypeFace = new MyTypeFace(getApplicationContext());
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
-//        Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
-//        Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
-//        Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
-
-        Global.strUserId = "52";
-        Global.strFullName = "Chirag Mistry";
-        Global.strProfilePic = WebConstants.USER_IMAGES + "user_52/_dev_chirag.png";
+        Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
+        Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
+        Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
 
         mFragmentManager = getFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
@@ -235,6 +230,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         controllerTopMenuMyDesk = ControllerTopMenuItem.getMenuMyDesk(AuthorHostActivity.this);
         controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(AuthorHostActivity.this);
         controllerTopMenuBooks = ControllerTopMenuItem.getMenuBooks(AuthorHostActivity.this);
+        controllerTopMenuMyThirty = ControllerTopMenuItem.getMenuMyThirty(AuthorHostActivity.this);
         controllerTopMenuGoTrading = ControllerTopMenuItem.getMenuGoTrading(AuthorHostActivity.this);
         controllerTopSubMenuGoTrading = ControllerTopMenuItem.getMenuGoTradingSubMenu(AuthorHostActivity.this);
 
@@ -934,61 +930,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     /*to handle back click events*/
     private void onBackClick(int currentMainFragment) {
 
-//        if (currentMainFragment == FRAGMENT_TRIAL || currentMainFragment == FRAGMENT_ASSESSMENT
-//                || currentMainFragment == FRAGMENT_GOTRENDING || currentMainFragment == FRAGMENT_MY_DESK) {
-//
-//            loadFragmentInMainContainer(FRAGMENT_OFFICE, null);
-//            loadFragmentInRightContainer(FRAGMENT_HIGHSCORE, null);
-//
-//        } else if (currentMainFragment == FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT) {
-//            if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL ||
-//                    OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL) {
-//                loadFragmentInMainContainer(FRAGMENT_TRIAL, null);
-//
-//            } else if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_ASSESSMENT) {
-//
-//                loadFragmentInMainContainer(FRAGMENT_ASSESSMENT, null);
-//            }
-//            loadFragmentInRightContainer(FRAGMENT_HIGHSCORE, null);
-//
-//
-//        } else if (currentMainFragment == FRAGMENT_ASSIGNMENT_SUBMITTOR) {
-//
-//            loadFragmentInMainContainer(FRAGMENT_ASSESSMENT, null);
-//
-//        } else if (currentMainFragment == FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS) {
-//
-//            if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL ||
-//                    OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL) {
-//                loadFragmentInMainContainer(FRAGMENT_TRIAL, null);
-//            } else if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_ASSESSMENT) {
-//                loadFragmentInMainContainer(FRAGMENT_ASSESSMENT, null);
-//            }
-//            loadFragmentInRightContainer(FRAGMENT_HIGHSCORE, null);
-//
-//
-//        } else if (currentMainFragment == FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER) {
-//
-//            llControllerLeft.setVisibility(View.VISIBLE);
-//            flFragmentContainerRight.setVisibility(View.VISIBLE);
-//            loadFragmentInMainContainer(FRAGMENT_ASSESSMENT, null);
-//
-//        } else if (currentMainFragment == FRAGMENT_ADDQUESTION_CONTAINER) {
-//
-//            flFragmentContainerRight.setVisibility(View.VISIBLE);
-//            loadFragmentInMainContainer(FRAGMENT_TRIAL, null);
-//
-//        } else if (currentMainFragment == FRAGMENT_ALL_NOTIFICATION) {
-//
-//            listenerHostAllNotification.onControllerTopBackClick();
-//
-//        } else if (currentMainFragment == FRAGMENT_ALL_MESSAGE) {
-//
-//            listenerHostAllMessage.onControllerTopBackClick();
-//
-//        }
-
-
         /*This is the new code for backstack management*/
 
         Debug.e(TAG, "The current Main fragment is:::" + currentMainFragment);
@@ -1093,9 +1034,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_office);
         txtAction.setTextColor(getResources().getColor(R.color.color_blue));
         txtTitle.setTextColor(currentMainFragmentBgColor);
-
         loadControllerTopMenu(menu);
-
         if (isActionButtonVisible) {
             txtAction.setVisibility(View.VISIBLE);
         } else {
@@ -1188,6 +1127,11 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     }
 
     public void logOut(View view) {
+
+        PreferenceData.clearWholePreference(getActivity());
+        Intent intentLogin = new Intent(getActivity(), AuthorLoginActivity.class);
+        startActivity(intentLogin);
+        finish();
     }
 
     private Activity getActivity() {
@@ -1309,46 +1253,72 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     /*This is to handle backstack for particular fragment */
 
     public void handleBackClick(String fragmentName) {
-        loadFragmentInMainContainer(getBundle().getInt(fragmentName));
-        getBundle().remove(fragmentName);
+
+        if (fragmentName != AppConstant.FRAGMENT_ADDQUESTION_CONTAINER) {
+            loadFragmentInMainContainer(getBundle().getInt(fragmentName));
+            getBundle().remove(fragmentName);
+        } else {
+            /*here load main assessment fragment because in copy new exam get created so we cant load previous fragments with previus exam data*/
+            if (getBundle().getBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                /*here load assessment fragment in case of copy exam*/
+                loadFragmentInMainContainer(FRAGMENT_ASSESSMENT);
+                removeBundleArguments();
+
+            } else {
+                loadFragmentInMainContainer(getBundle().getInt(fragmentName));
+                getBundle().remove(fragmentName);
+            }
+
+        }
+
     }
 
     private void removeBundleArguments() {
 
-        getBundle().remove(CreateExamFragment.ARG_IS_CREATE_EXAM);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_ID);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_NAME);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_ID);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_BOOK_ID);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_BOOK_NAME);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_CATEGORY);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_MODE);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_DURATION);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_ATTEMPT_COUNT);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_INSTRUCTIONS);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_ASSESSOR);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_START_DATE);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_START_TIME);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_CREATED_DATE);
-        getBundle().remove(ExamsAdapter.ARG_EXAM_NO);
-        getBundle().remove(ExamsAdapter.ARG_FRAGMENT_TYPE);
-        getBundle().remove(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
-        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_ID);
-        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
-        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC);
-        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_NAME);
-        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
-        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE);
-        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY);
-        getBundle().remove(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
+        getBundle().clear();
+
+
+//        if (getBundle().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_ID)) {
+//            Utils.showToast("VALUE IS THERE", getActivity());
+//        } else {
+//            Utils.showToast("VALUE IS NOT THERE", getActivity());
+//        }
+
+//        getBundle().remove(CreateExamFragment.ARG_IS_CREATE_EXAM);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_ID);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_NAME);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_ID);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_BOOK_ID);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_BOOK_NAME);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_CATEGORY);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_MODE);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_DURATION);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_ATTEMPT_COUNT);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_INSTRUCTIONS);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_ASSESSOR);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_START_DATE);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_START_TIME);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_CREATED_DATE);
+//        getBundle().remove(ExamsAdapter.ARG_EXAM_NO);
+//        getBundle().remove(ExamsAdapter.ARG_FRAGMENT_TYPE);
+//        getBundle().remove(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
+//        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_ID);
+//        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
+//        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC);
+//        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_NAME);
+//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE);
+//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY);
+//        getBundle().remove(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
+
 
     }
 }
