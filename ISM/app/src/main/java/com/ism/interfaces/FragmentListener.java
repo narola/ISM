@@ -6,4 +6,5 @@ package com.ism.interfaces;
 public interface FragmentListener {
     public void onFragmentAttached(int fragment);
     public void onFragmentDetached(int fragment);
+    public void onFragmentResumed(int fragment);
 }

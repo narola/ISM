@@ -68,8 +68,8 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
 
     private void initGlobal(View view) {
 
-        getStudentsFragment = GetStudentsFragment.newInstance(this,getArguments());
-        getSubjectiveQuestionsFragment = new GetSubjectiveQuestionsFragment(this, getArguments());
+        getStudentsFragment = GetStudentsFragment.newInstance(this,getBundleArguments());
+        getSubjectiveQuestionsFragment = new GetSubjectiveQuestionsFragment(this, getBundleArguments());
         questionPaletteFragment = new QuestionPaletteFragment(this);
 
 
@@ -118,5 +118,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
         flGetsubjectiveAssignmentContainerRight.setVisibility(View.VISIBLE);
     }
 
-
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 }

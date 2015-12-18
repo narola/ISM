@@ -88,8 +88,6 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
         isRememberMe = PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this);
         isRememberMeFirstLogin = PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, LoginActivity.this);
 
-        launchProfileInfoActivity();
-
         NetworkStatusReceiver.setNetworkStateListener(this);
 
         if (Utility.isConnected(this)) {

@@ -13,6 +13,7 @@
       <module fileurl="file://$PROJECT_DIR$/ismsocket/ismsocket.iml" filepath="$PROJECT_DIR$/ismsocket/ismsocket.iml" />
       <module fileurl="file://$PROJECT_DIR$/richeditor/richeditor.iml" filepath="$PROJECT_DIR$/richeditor/richeditor.iml" />
       <module fileurl="file://$PROJECT_DIR$/richtexteditor/richtexteditor.iml" filepath="$PROJECT_DIR$/richtexteditor/richtexteditor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/roundedimageview/roundedimageview.iml" filepath="$PROJECT_DIR$/roundedimageview/roundedimageview.iml" />
       <module fileurl="file://$PROJECT_DIR$/scientificcalc/scientificcalc.iml" filepath="$PROJECT_DIR$/scientificcalc/scientificcalc.iml" />
       <module fileurl="file://$PROJECT_DIR$/teacher/teacher.iml" filepath="$PROJECT_DIR$/teacher/teacher.iml" />
       <module fileurl="file://$PROJECT_DIR$/whiteboard/whiteboard.iml" filepath="$PROJECT_DIR$/whiteboard/whiteboard.iml" />

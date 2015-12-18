@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_white"
     android:orientation="horizontal"
-    tools:context="com.ism.fragment.userProfile.AboutMeFragment">
+    tools:mContext="com.ism.fragment.userProfile.AboutMeFragment">
 
     <LinearLayout
         android:layout_width="250dp"

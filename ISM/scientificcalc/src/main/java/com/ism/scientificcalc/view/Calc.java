@@ -161,8 +161,6 @@ public class Calc extends LinearLayout {
         OPERATORS_BASIC = SUBTRACT + ADD + MULTIPLY + DIVIDE;
         OPERATORS_ALL = OPERATORS_BASIC + PERCENTAGE + CARET;
 
-        Log.e(TAG, "density : " + getResources().getString(R.string.density));
-
     }
 
     @Override

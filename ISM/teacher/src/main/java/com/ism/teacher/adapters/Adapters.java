@@ -20,7 +20,7 @@ public class Adapters {
     private static final String TAG = Adapters.class.getSimpleName();
 
     /**
-     * @param context
+     * @param mContext
      * @param spinner
      * @param strArr
      */

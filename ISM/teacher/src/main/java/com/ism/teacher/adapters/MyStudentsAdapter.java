@@ -53,12 +53,12 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
     public static String ARG_ARR_LIST_STUDENTS = "arrListStudents";
     private LayoutInflater inflater;
 
-//    public MyStudentsAdapter(ResponseHandler resObjStudentAttempted, Context context, Fragment fragment) {
+//    public MyStudentsAdapter(ResponseHandler resObjStudentAttempted, Context mContext, Fragment fragment) {
 //        this.resObjStudentAttempted = resObjStudentAttempted;
 //        this.mFragment = fragment;
-//        this.mContext = context;
+//        this.mContext = mContext;
 //        imageLoader = ImageLoader.getInstance();
-//        myTypeFace = new MyTypeFace(context);
+//        myTypeFace = new MyTypeFace(mContext);
 //    }
 
 
@@ -78,7 +78,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
             this.arrayListStudents.clear();
             this.arrayListStudents.addAll(examSubmittor);
             this.copyListOfStudents = examSubmittor;
-            getBundleArgument().putParcelableArrayList(ARG_ARR_LIST_STUDENTS, examSubmittor);
+            getBundleArguments().putParcelableArrayList(ARG_ARR_LIST_STUDENTS, examSubmittor);
 
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
@@ -126,7 +126,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
             imageLoader.displayImage(WebConstants.USER_IMAGES + arrayListStudents.get(position).getStudentProfilePic(), holder.imgStudentPic, ISMTeacher.options);
 
-            if (getBundleArgument().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID).equals(arrayListStudents.get(position).getStudentId())) {
+            if (getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID).equals(arrayListStudents.get(position).getStudentId())) {
                 holder.txtStudentName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
             } else {
                 holder.txtStudentName.setTextColor(mContext.getResources().getColor(R.color.color_gray));
@@ -205,27 +205,29 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
     public void setBundleArgument(int position) {
 
-        getBundleArgument().putInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION, position);
-        getBundleArgument().putString(AssignmentSubmitterAdapter.ARG_STUDENT_PROFILE_PIC,
+        getBundleArguments().putInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION, position);
+        getBundleArguments().putString(AssignmentSubmitterAdapter.ARG_STUDENT_PROFILE_PIC,
                 arrayListStudents.get(position).getStudentProfilePic());
-        getBundleArgument().putString(AssignmentSubmitterAdapter.ARG_STUDENT_NAME,
+        getBundleArguments().putString(AssignmentSubmitterAdapter.ARG_STUDENT_NAME,
                 arrayListStudents.get(position).getStudentName());
-        getBundleArgument().putString(AssignmentSubmitterAdapter.ARG_STUDENT_ID,
+        getBundleArguments().putString(AssignmentSubmitterAdapter.ARG_STUDENT_ID,
                 arrayListStudents.get(position).getStudentId());
 
         notifyDataSetChanged();
 
     }
 
-
-    private Bundle getBundleArgument() {
-        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getArguments();
-
-    }
+//    private Bundle getBundleArgument() {
+//        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getArguments();
+//
+//    }
 
     private GetSubjectiveAssignmentQuestionsFragment getFragmnet() {
         return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
     }
 
 
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) mContext).getBundle();
+    }
 }

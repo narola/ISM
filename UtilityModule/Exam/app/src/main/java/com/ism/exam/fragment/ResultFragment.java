@@ -136,7 +136,7 @@ public class ResultFragment extends Fragment {
 
 		if (isShowGraph) {
 			rlResultGraph.setVisibility(View.VISIBLE);
-			btnViewEvaluation.setVisibility(View.GONE);
+//			btnViewEvaluation.setVisibility(View.GONE);
 			SubjectScoreAdapter adpScore = new SubjectScoreAdapter(getActivity(), SubjectScore.getSubjectScore());
 			lvGraph.setAdapter(adpScore);
 		}

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_graylight"
     android:orientation="vertical"
-    tools:context="com.ism.author.activtiy.AuthorProfileInformationActivity">
+    tools:mContext="com.ism.author.activtiy.AuthorProfileInformationActivity">
 
     <include layout="@layout/custom_actionbar" />
 
@@ -95,17 +95,38 @@
                                     android:textColorHint="@color/color_text_hint" />
                             </LinearLayout>
 
-                            <EditText
-                                android:id="@+id/et_emailAdd"
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:layout_marginRight="@dimen/d5dp"
                                 android:layout_weight="2"
-                                android:background="@drawable/selector"
-                                android:hint="@string/stremailaddress"
-                                android:inputType="textPersonName"
-                                android:padding="15sp"
-                                android:textColorHint="@color/color_text_hint" />
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/et_emailAdd"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginRight="@dimen/d5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/selector"
+                                    android:hint="@string/stremailaddress"
+                                    android:inputType="textPersonName"
+                                    android:padding="15sp"
+                                    android:textColorHint="@color/color_text_hint" />
+
+                                <EditText
+                                    android:id="@+id/et_education"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginRight="@dimen/d5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/selector"
+                                    android:hint="@string/streducation"
+                                    android:inputType="textPersonName"
+                                    android:padding="15sp"
+                                    android:textColorHint="@color/color_text_hint" />
+                            </LinearLayout>
+
 
                             <LinearLayout
                                 android:layout_width="match_parent"

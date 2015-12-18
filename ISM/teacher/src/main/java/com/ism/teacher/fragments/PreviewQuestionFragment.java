@@ -100,7 +100,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
             if (arrListQuestions.size() > 0) {
                 try {
                     Attribute attribute = new Attribute();
-                    attribute.setExamId(getArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
+                    attribute.setExamId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
                     attribute.setQuestionIdList(getArrListQuestionId());
 
                     new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -244,4 +244,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         return (AddQuestionContainerFragment) mFragment;
     }
 
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 }

@@ -208,7 +208,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
-                            android:background="@drawable/btn_close"
+                            android:background="@drawable/btn_close_blue"
                             android:visibility="visible" />
 
                     </RelativeLayout>

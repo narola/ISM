@@ -3,6 +3,7 @@ package com.ism.teacher.adapters;
 import android.app.Fragment;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Evaluation;
 import com.ism.teacher.ws.model.Questions;
@@ -240,5 +242,9 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     @Override
     public int getItemCount() {
         return arrayListSubjectiveQuestions.size();
+    }
+
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) context).getBundle();
     }
 }

@@ -228,6 +228,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         controllerTopMenuMyDesk = ControllerTopMenuItem.getMenuMyDesk(AuthorHostActivity.this);
         controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(AuthorHostActivity.this);
         controllerTopMenuBooks = ControllerTopMenuItem.getMenuBooks(AuthorHostActivity.this);
+        controllerTopMenuMyThirty = ControllerTopMenuItem.getMenuMyThirty(AuthorHostActivity.this);
 
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
         txtTitle = (TextView) findViewById(R.id.txt_title);
@@ -509,6 +510,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
                 case FRAGMENT_TRIAL:
                     ArrayList<ControllerTopMenuItem> menu_trial = null;
+
                     if (OfficeFragment.CURRENT_OFFICE_FRAGMENT == OfficeFragment.FRAGMENT_TRIAL) {
                         menu_trial = controllerTopMenuTrial;
                     } else {
@@ -1239,6 +1241,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private void removeBundleArguments() {
 
         getBundle().clear();
+
+
 //        if (getBundle().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_ID)) {
 //            Utils.showToast("VALUE IS THERE", getActivity());
 //        } else {

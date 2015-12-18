@@ -169,4 +169,12 @@ public class ChatFragment extends Fragment implements WebserviceWrapper.Webservi
 			lvStudymates.setAdapter(adpStudymateChat);
 		}
 	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.e(TAG, "onResume");
+		fragListener.onFragmentResumed(HostActivity.FRAGMENT_CHAT);
+	}
+
 }

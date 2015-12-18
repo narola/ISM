@@ -45,6 +45,7 @@ public class WebserviceConnector {
         Response ret = null;
         try {
             URLConnection connection = new URL(url).openConnection();
+            connection.setRequestProperty("User-Agent", "android");
             connection.setDoOutput(true); // Triggers POST.
 //			connection.setRequestProperty("Accept-Charset", charset);
 //			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
@@ -146,7 +147,7 @@ public class WebserviceConnector {
             List<String> response = multipart.finish();
             Debug.e(TAG, "SERVER REPLIED:");
             for (String line : response) {
-                Debug.e(TAG, "Upload Question Image Response:::" + line);
+                Debug.e(TAG, "Upload Media Response:::" + line);
                 responseString = line;
             }
 

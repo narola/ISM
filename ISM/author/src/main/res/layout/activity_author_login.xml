@@ -5,133 +5,142 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_teacher_login"
     android:gravity="center"
-    tools:context="com.ism.author.activtiy.AuthorLoginActivity">
+    tools:mContext="com.ism.author.activtiy.AuthorLoginActivity">
 
     <LinearLayout
         android:layout_width="@dimen/login_box_width"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/d60dp"
-        android:layout_marginLeft="@dimen/d60dp"
-        android:layout_marginRight="@dimen/d60dp"
         android:layout_marginTop="@dimen/d50dp"
         android:background="@drawable/background_transparent"
+        android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/img_logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/d40dp"
             android:layout_marginTop="@dimen/d40dp"
             android:src="@drawable/ism_title_blue" />
 
-        <EditText
-            android:id="@+id/et_userid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/d50dp"
-            android:layout_marginRight="@dimen/d50dp"
-            android:layout_marginTop="@dimen/d30dp"
-            android:background="@drawable/background_edittext"
-            android:gravity="center"
-            android:hint="@string/username"
-            android:inputType="text"
-            android:singleLine="true"
-            android:textColor="@color/color_white"
-            android:textColorHint="@color/color_white"
-            android:textSize="@dimen/d20dp" />
-
-        <EditText
-            android:id="@+id/et_pwd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/d50dp"
-            android:layout_marginRight="@dimen/d50dp"
-            android:layout_marginTop="@dimen/d20dp"
-            android:background="@drawable/background_edittext"
-            android:gravity="center"
-            android:hint="@string/strenterpassword"
-            android:inputType="textPassword"
-            android:singleLine="true"
-            android:textColor="@color/color_white"
-            android:textColorHint="@color/color_white"
-            android:textSize="@dimen/d20dp" />
-
-        <CheckBox
-            android:id="@+id/chk_rememberme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/d20dp"
-            android:button="@drawable/custom_checkbox"
-            android:checked="true"
-            android:padding="@dimen/d10dp"
-            android:text="@string/strrememberme"
-            android:textColor="@color/color_gray1"
-            android:textSize="@dimen/d18dp" />
-
-        <com.ism.commonsource.view.ActionProcessButton
-            android:id="@+id/btn_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/d20dp"
-            android:drawablePadding="@dimen/d10dp"
-            android:drawableRight="@drawable/arrow"
-            android:gravity="center"
-            android:onClick="onClickLogin"
-            android:paddingLeft="@dimen/d90dp"
-            android:paddingRight="@dimen/d90dp"
-            android:text="@string/strlogin"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/d20dp"
-            app:pb_colorComplete="@color/color_dark_gray"
-            app:pb_colorNormal="@color/color_dark_gray"
-            app:pb_colorPressed="@color/color_dark_gray"
-            app:pb_colorProgress="@color/purple_progress"
-            app:pb_cornerRadius="@dimen/d5dp"
-            app:pb_textComplete="@string/strlogin"
-            app:pb_textProgress="@string/processing" />
-
-        <TextView
-            android:id="@+id/txt_forgotpwd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/d70dp"
-            android:gravity="center"
-            android:onClick="onClickForgotPassword"
-            android:text="@string/strforgotpwd"
-            android:textColor="@color/color_black"
-            android:textSize="@dimen/d18dp" />
 
         <LinearLayout
+            android:id="@+id/ll_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/d20dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <TextView
-                android:id="@+id/txt_donothave"
+
+            <EditText
+                android:id="@+id/et_userid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d50dp"
+                android:layout_marginRight="@dimen/d50dp"
+                android:layout_marginTop="@dimen/d30dp"
+                android:background="@drawable/background_edittext"
+                android:gravity="center"
+                android:hint="@string/username"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textColor="@color/color_white"
+                android:textColorHint="@color/color_white"
+                android:textSize="@dimen/d20dp" />
+
+            <EditText
+                android:id="@+id/et_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d50dp"
+                android:layout_marginRight="@dimen/d50dp"
+                android:layout_marginTop="@dimen/d20dp"
+                android:background="@drawable/background_edittext"
+                android:gravity="center"
+                android:hint="@string/strenterpassword"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColor="@color/color_white"
+                android:textColorHint="@color/color_white"
+                android:textSize="@dimen/d20dp" />
+
+            <CheckBox
+                android:id="@+id/chk_rememberme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="@string/strdonothavecredentials"
-                android:textColor="@color/color_gray"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/d20dp"
+                android:button="@drawable/custom_checkbox"
+                android:checked="true"
+                android:padding="@dimen/d10dp"
+                android:text="@string/strrememberme"
+                android:textColor="@color/color_gray1"
                 android:textSize="@dimen/d18dp" />
 
-            <TextView
-                android:id="@+id/txt_clickhere"
+            <com.ism.commonsource.view.ActionProcessButton
+                android:id="@+id/btn_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:onClick="onClickHere"
-                android:paddingLeft="@dimen/d5dp"
-                android:text="@string/strclickhereu"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/d20dp"
+                android:drawablePadding="@dimen/d10dp"
+                android:drawableRight="@drawable/arrow"
+                android:gravity="center"
+                android:onClick="onClickLogin"
+                android:paddingLeft="@dimen/d90dp"
+                android:paddingRight="@dimen/d90dp"
+                android:text="@string/strlogin"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/d20dp"
+                app:pb_colorComplete="@color/color_dark_gray"
+                app:pb_colorNormal="@color/color_dark_gray"
+                app:pb_colorPressed="@color/color_dark_gray"
+                app:pb_colorProgress="@color/purple_progress"
+                app:pb_cornerRadius="@dimen/d5dp"
+                app:pb_textComplete="@string/strlogin"
+                app:pb_textProgress="@string/processing" />
+
+            <TextView
+                android:id="@+id/txt_forgotpwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d70dp"
+                android:gravity="center"
+                android:onClick="onClickForgotPassword"
+                android:text="@string/strforgotpwd"
                 android:textColor="@color/color_black"
                 android:textSize="@dimen/d18dp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_donothave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/strdonothavecredentials"
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/d18dp" />
+
+                <TextView
+                    android:id="@+id/txt_clickhere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:onClick="onClickHere"
+                    android:paddingLeft="@dimen/d5dp"
+                    android:text="@string/strclickhereu"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/d18dp" />
+
+            </LinearLayout>
+
         </LinearLayout>
-
-
     </LinearLayout>
 </RelativeLayout>

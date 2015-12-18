@@ -3,6 +3,7 @@ package com.ism.teacher.adapters;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.AddQuestionContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
@@ -70,7 +72,9 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvQuestionNo, tvQuestionCategory, tvQuestionCreatedby, tvQuestion, tvQuestionAns;
+        // ExpandableTextView tvQuestion;
+        //TextView expandable_text;
+        TextView tvQuestionNo, tvQuestionCategory, tvQuestionCreatedby, tvQuestionAns, tvQuestion;
         LinearLayout llQuestionAnswers;
         ImageView imgDropdownViewAnswer, imgQuestionEdit, imgQuestionCopy, imgQuestionAddtofavourite;
         CheckBox chkSelectQuestion;
@@ -78,9 +82,11 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         public ViewHolder(View itemView) {
             super(itemView);
 
+            //  expandable_text = (TextView) itemView.findViewById(R.id.expandable_text);
             tvQuestionNo = (TextView) itemView.findViewById(R.id.tv_question_no);
             tvQuestionCategory = (TextView) itemView.findViewById(R.id.tv_question_category);
             tvQuestionCreatedby = (TextView) itemView.findViewById(R.id.tv_question_createdby);
+            //tvQuestion = (ExpandableTextView) itemView.findViewById(R.id.tv_question);
             tvQuestion = (TextView) itemView.findViewById(R.id.tv_question);
             tvQuestionAns = (TextView) itemView.findViewById(R.id.tv_question_ans);
 
@@ -115,9 +121,25 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                 mContext.getResources().getColor(R.color.color_green)));
 
 
+//        holder.expandable_text.setTypeface(myTypeFace.getRalewayRegular());
         holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
+
+
         holder.tvQuestion.setText(Utility.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
+//        makeTextViewResizable( holder.tvQuestion, 6, "View More", true);
+
+//        if(holder.tvQuestion.getLineCount()>6)
+//        {
+//            makeTextViewResizable( holder.tvQuestion, 6, "View More", true);
+//        }
+
+//        holder.tvQuestion.setOnExpandStateChangeListener(new ExpandableTextView.OnExpandStateChangeListener() {
+//            @Override
+//            public void onExpandStateChanged(TextView textView, boolean isExpanded) {
+//               // Toast.makeText(mContext, isExpanded ? "Expanded" : "Collapsed", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         holder.imgDropdownViewAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,7 +195,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                     if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strquestionformatmcq))) {
 
-                        if (getFragment().getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                        if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
                                 (mContext.getString(R.string.strobjective))) {
                             isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                         } else {
@@ -183,7 +205,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                     } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
                             (mContext.getString(R.string.strquestionformatdescriptive))) {
 
-                        if (getFragment().getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                        if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
                                 (mContext.getString(R.string.strsubjective))) {
                             isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                         } else {
@@ -193,7 +215,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                     } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
                             (mContext.getString(R.string.strquestionformatfillups))) {
-                        if (getFragment().getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                        if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
                                 (mContext.getString(R.string.strsubjective))) {
                             isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                         } else {
@@ -238,6 +260,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         }
 
     }
+
 
     private void openAddEditQuestionFragment(int position, Boolean isCopy) {
         getFragment().setDataOnFragmentFlip(arrListQuestions.get(position), true, isCopy);
@@ -306,5 +329,9 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
         }
         return isPresent;
+    }
+
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) mContext).getBundle();
     }
 }

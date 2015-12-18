@@ -258,4 +258,9 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 		}
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		fragListener.onFragmentResumed(HostActivity.FRAGMENT_NOTES);
+	}
 }

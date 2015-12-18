@@ -1,5 +1,6 @@
 package com.ism.teacher.ws.helper;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -15,6 +16,7 @@ public class WebserviceWrapper {
 
     private Object attribute;
     private WebserviceResponse webserviceResponse;
+    private Activity activity;
 
 
     public interface WebserviceResponse {
@@ -25,7 +27,7 @@ public class WebserviceWrapper {
         this.attribute = attribute;
         webserviceResponse = listener;
 //        this.webserviceResponse = listener;
-
+        activity = (Activity) context;
     }
 
     public WebserviceWrapper(Context context, Object attribute) {
@@ -177,8 +179,12 @@ public class WebserviceWrapper {
 
         @Override
         protected void onPostExecute(Object o) {
-            webserviceResponse.onResponse(API_METHOD_NAME, o, null);
-            super.onPostExecute(o);
+            if (activity != null) {
+                webserviceResponse.onResponse(API_METHOD_NAME, o, null);
+                super.onPostExecute(o);
+
+            }
+
         }
     }
 

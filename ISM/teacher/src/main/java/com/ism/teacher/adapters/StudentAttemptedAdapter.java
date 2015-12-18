@@ -2,6 +2,7 @@ package com.ism.teacher.adapters;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
         inflater = LayoutInflater.from(context);
         myTypeFace = new MyTypeFace(context);
         imageLoader = ImageLoader.getInstance();
-        //imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+        //imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
 
     }
 
@@ -132,7 +133,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
                         responseObjectEval = responseHandler;
-//                        GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseObjectEval);
+//                        GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, mContext, fragment, responseObjectEval);
 //                        GetObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
 //                        getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
                     }
@@ -170,5 +171,9 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                 Debug.i(TAG, "ViewHolder Exceptions :" + e.toString());
             }
         }
+    }
+
+    private Bundle getBundleArguments() {
+        return ((TeacherHostActivity) context).getBundle();
     }
 }
