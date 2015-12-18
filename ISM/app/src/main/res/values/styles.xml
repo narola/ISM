@@ -1,31 +1,41 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Material.Light">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:windowContentOverlay">@null</item>
+	<style name="AppTheme" parent="AppTheme.Base"/>
 
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-	<style name="AppDialogTheme" parent="android:Theme.Material.Light.Dialog.Alert">
-		<item name="android:colorPrimary">@color/colorPrimary</item>
-		<item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="android:colorAccent">@color/colorAccent</item>
+	<style name="AppTheme.NoActionBar">
+		<item name="android:windowActionBar">false</item>
+		<item name="android:windowNoTitle">true</item>
 	</style>
 
-    <style name="DialogOpenAnimation">
-        <item name="android:windowEnterAnimation">@anim/popup_appear</item>
-        <item name="android:windowExitAnimation">@anim/popup_disappear</item>
-    </style>
-    <style name="TwoWayViewBase">
-        <item name="android:background">#999999</item>
-    </style>
-    <style name="TwoWayView" parent="TwoWayViewBase">
-        <item name="android:orientation">horizontal</item>
-        <item name="android:scrollbars">horizontal</item>
-    </style>
+	<style name="AppDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+	</style>
+
+	<style name="DialogOpenAnimation">
+		<item name="android:windowEnterAnimation">@anim/popup_appear</item>
+		<item name="android:windowExitAnimation">@anim/popup_disappear</item>
+	</style>
+
+    <declare-styleable name="ProcessButton">
+        <attr name="pb_textProgress" format="string" />
+        <attr name="pb_textComplete" format="string" />
+        <attr name="pb_textError" format="string" />
+        <attr name="pb_colorProgress" format="color" />
+        <attr name="pb_colorComplete" format="color" />
+        <attr name="pb_colorError" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="FlatButton">
+        <attr name="pb_colorPressed" format="color" />
+        <attr name="pb_colorNormal" format="color" />
+        <attr name="pb_cornerRadius" format="dimension" />
+    </declare-styleable>
 </resources>

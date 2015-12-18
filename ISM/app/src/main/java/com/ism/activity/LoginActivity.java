@@ -545,6 +545,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 							model.AdminConfig adminConfig = new model.AdminConfig();
 							adminConfig.setConfigKey(config.getConfigKey());
 							adminConfig.setConfigValue(config.getConfigValue());
+							adminConfig.setValueUnit(config.getValueUnit());
 							studentHelper.saveAdminConfig(adminConfig);
 						}
 						PreferenceData.setStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, LoginActivity.this,

@@ -1,24 +1,4 @@
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppTheme.Base"/>
-        <!-- Customize your theme here. -->
-
-
-    <style name="AppTheme.Base" parent="Theme.AppCompat">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
-
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
-
-
     <declare-styleable name="ProcessButton">
         <attr name="pb_textProgress" format="string" />
         <attr name="pb_textComplete" format="string" />

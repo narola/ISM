@@ -79,6 +79,27 @@ public class StudentHelper {
         }
     }
 
+    public AdminConfig getActiveHoursStartTime() {
+        RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
+                .equalTo("configKey", "activeHoursStartTime")
+                .findAll();
+        if (adminConfigs != null && adminConfigs.size() > 0) {
+            return adminConfigs.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public AdminConfig getActiveHoursEndTime() {
+        RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
+		        .equalTo("configKey", "activeHoursEndTime")
+                .findAll();
+        if (adminConfigs != null && adminConfigs.size() > 0) {
+            return adminConfigs.get(0);
+        } else {
+            return null;
+        }
+    }
 
     public void saveFeeds(Feeds feeds) {
 
