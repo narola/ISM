@@ -20,14 +20,14 @@ in 5.0 (Android-Lollipop).
 * values-v21                 `for lollipop`
     * style.xml
 
-`values`
+**`values`**
 ```xml
 <style name="AppTheme" parent="AppTheme.Base"/>
 <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
 <item..../>
 </style>
 ```
-`values-v21`
+**`values-v21`**
 ```xml
 <style name="AppTheme" parent="AppTheme.Base">
         <!-- Customize your theme here. -->
@@ -35,7 +35,7 @@ in 5.0 (Android-Lollipop).
 ```
 
 
-**Note:: You will find this structure in commonsource module**
+**Note:: You will find this structure in *commonsource* module**
 
 
 
