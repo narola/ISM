@@ -8,6 +8,7 @@ public class MediaUploadAttribute {
     private String paramName;
     private String paramValue;
     private String fileName;
+    
 
     public String getParamValue() {
         return paramValue;

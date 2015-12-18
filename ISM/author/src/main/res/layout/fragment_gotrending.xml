@@ -1,13 +1,214 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:mContext="com.ism.author.fragment.HomeFragment">
+    android:orientation="horizontal"
+    tools:mContext="com.ism.author.fragment.gotrading.GoTrendingFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="This is GoTrending Fragment" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/txt_questions_most_follower"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shadow_separator"
+            android:gravity="center"
+            android:padding="24dp"
+            android:text="Question Most Follow"
+            android:textColor="@color/color_blue"
+            android:textSize="20sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/txt_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/d20sp"
+            android:text="No record found!"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/bg_white_border_gray"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_your_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_blue"
+            android:gravity="center"
+            android:padding="@dimen/d20dp"
+            android:text="Your Answer"
+            android:textColor="@color/color_white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txt_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_your_answer"
+            android:layout_marginLeft="@dimen/d10dp"
+            android:layout_marginTop="@dimen/d15dp"
+            android:text="26th Oct 2015"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/d15sp" />
+
+        <TextView
+            android:id="@+id/txt_total_followers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_your_answer"
+            android:layout_marginLeft="@dimen/d10dp"
+            android:layout_marginRight="@dimen/d10dp"
+            android:layout_marginTop="@dimen/d15dp"
+            android:layout_toRightOf="@id/txt_date"
+            android:gravity="right"
+            android:text="50 followers"
+            android:textColor="@color/color_red"
+            android:textSize="@dimen/d15sp" />
+
+        <LinearLayout
+            android:id="@+id/ll_questions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_date"
+            android:layout_margin="@dimen/d10dp"
+            android:background="@drawable/bg_white_border_gray"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.5"
+                android:orientation="vertical">
+
+                <com.ism.author.views.CircleImageView
+                    android:id="@+id/img_user_dp"
+                    android:layout_width="@dimen/d70dp"
+                    android:layout_height="@dimen/d70dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/d10dp"
+                    android:layout_marginRight="@dimen/d10dp"
+                    android:layout_marginTop="@dimen/d10dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/userdp" />
+
+                <TextView
+                    android:id="@+id/txt_creator_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/d5dp"
+                    android:text="Adam Stanger"
+                    android:textColor="@color/color_red"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/txt_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d10dp"
+                android:layout_marginTop="@dimen/d15dp"
+                android:layout_toRightOf="@id/ll_user"
+                android:layout_weight="1"
+                android:text="Jackson JSR-310 module fails to  deserialize simplest offsetDatetime format?"
+                android:textColor="@color/color_blue"
+                android:textSize="@dimen/d20sp" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_answer"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_below="@+id/ll_questions"
+            android:layout_margin="@dimen/d10dp"
+            android:background="@drawable/bg_edit_text"
+            android:gravity="left|top"
+            android:inputType="textMultiLine"
+            android:padding="10dp" />
+
+        <ImageView
+            android:id="@+id/img_attachment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_answer"
+            android:layout_marginLeft="@dimen/d10dp"
+            android:src="@drawable/link"
+            android:visibility="gone" />
+
+        <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="@dimen/d10dp"-->
+        <!--android:id="@+id/img_attachment"-->
+        <!--android:layout_below="@+id/et_answer"-->
+        <!--android:src="@drawable/link" />-->
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_answer"
+            android:layout_marginLeft="@dimen/d10dp"
+            android:layout_toRightOf="@+id/img_attachment"
+            android:background="@color/divider_light"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="@dimen/d70dp"
+                android:src="@drawable/img" />
+
+            <TextView
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/d10dp"
+                android:text="File name"
+                android:textColor="@color/bg_app_dark" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/d5dp"
+                android:src="@drawable/close_x" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/et_answer"
+            android:layout_below="@+id/et_answer"
+            android:background="@drawable/btn_green"
+            android:paddingBottom="@dimen/d10dp"
+            android:paddingLeft="@dimen/d30dp"
+            android:paddingRight="@dimen/d30dp"
+            android:paddingTop="@dimen/d10dp"
+            android:text="@string/strsave"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d18sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -184,7 +184,7 @@ public class StudentHelper {
         realm.beginTransaction();
         toUpdateFeeds.setLike(feeds.getLike().equals("0") ? "1" : "0");
         toUpdateFeeds.setTotalLike(feeds.getLike().equals("0") ? feeds.getTotalLike() - 1 : feeds.getTotalLike() + 1);
-        toUpdateFeeds.setIsSync(feeds.isSync()==0?1:0);
+        toUpdateFeeds.setIsSync(feeds.isSync() == 0 ? 1 : 0);
         Log.i(TAG, "updateFeedLikes : " + toUpdateFeeds.getLike() + "--" + toUpdateFeeds.getFeedId() + "--" + toUpdateFeeds.isSync());
         realm.commitTransaction();
     }

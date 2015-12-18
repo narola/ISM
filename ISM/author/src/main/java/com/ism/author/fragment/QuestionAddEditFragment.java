@@ -4,14 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -111,6 +109,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
     private static int QUESTIONSCORE_INERVAL = 1, QUESTIONSCORE_STARTVALUE = 1, QUESTIONSCORE_ENDVALUE = 5;
+    Uri selectedUri = null;
 
 
     @Override
@@ -242,7 +241,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     //intiGlobalEnds
 
-    Uri selectedUri = null;
 
 //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -296,7 +294,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         try {
                             if (addQuestionTextDialog != null && addQuestionTextDialog.isShowing()) {
                                 final Uri imageUri = returnedIntent.getData();
-                                String imgPath = getRealPathFromURI(imageUri);
+                                String imgPath = Utility.getRealPathFromURI(imageUri, getActivity());
                                 addQuestionTextDialog.insertImage(imgPath);
                             } else {
                                 imgSelectImage.setImageURI(selectedUri);
@@ -315,7 +313,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                             if (addQuestionTextDialog != null && addQuestionTextDialog.isShowing()) {
 
                                 final Uri videoUri = returnedIntent.getData();
-                                String videoPath = getRealPathFromURI(videoUri);
+                                String videoPath = Utility.getRealPathFromURI(videoUri, getActivity());
                                 addQuestionTextDialog.insertVideo(videoPath);
                             } else {
                                 MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
@@ -648,19 +646,19 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         return isAnswerSelect;
     }
 
-    private String getRealPathFromURI(Uri contentURI) {
-        String result;
-        Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) { // Source is Dropbox or other similar local file path
-            result = contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = cursor.getString(idx);
-            cursor.close();
-        }
-        return result;
-    }
+//    private String getRealPathFromURI(Uri contentURI) {
+//        String result;
+//        Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
+//        if (cursor == null) { // Source is Dropbox or other similar local file path
+//            result = contentURI.getPath();
+//        } else {
+//            cursor.moveToFirst();
+//            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+//            result = cursor.getString(idx);
+//            cursor.close();
+//        }
+//        return result;
+//    }
 
     AddQuestionTextDialog addQuestionTextDialog;
 
@@ -992,9 +990,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     }
 
                     if (selectedUri != null) {
-                        Debug.e(TAG, "Thefile path is:" + getRealPathFromURI(selectedUri));
+                        Debug.e(TAG, "Thefile path is:" + Utility.getRealPathFromURI(selectedUri, getActivity()));
                         callApiUploadMediaForQuestion(responseHandler.getQuestion().get(0).getQuestionId(), AppConstant.MEDIATYPE_IMAGE,
-                                getRealPathFromURI(selectedUri));
+                                Utility.getRealPathFromURI(selectedUri, getActivity()));
                     }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());

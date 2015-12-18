@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rr_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f5f5f5"
+    android:orientation="vertical">
+
+    <com.ism.author.views.CircleImageView
+        android:id="@+id/img_user_dp"
+        android:layout_width="@dimen/d100dp"
+        android:layout_height="@dimen/d100dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/d10dp"
+        android:layout_marginLeft="@dimen/d20dp"
+        android:layout_marginRight="@dimen/d10dp"
+        android:layout_marginTop="@dimen/d10dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/userdp" />
+
+    <TextView
+        android:id="@+id/txt_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/d10dp"
+        android:layout_toRightOf="@+id/img_user_dp"
+        android:text="name"
+        android:textSize="@dimen/d20sp" />
+
+    <TextView
+        android:id="@+id/txt_school_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_name"
+        android:layout_toRightOf="@+id/img_user_dp"
+        android:text="name"
+        android:textSize="@dimen/d20sp" />
+
+    <TextView
+        android:id="@+id/txt_live_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_school_name"
+        android:layout_toRightOf="@+id/img_user_dp"
+        android:text="name"
+        android:textSize="@dimen/d20sp" />
+
+    <TextView
+        android:id="@+id/txt_total_following"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_live_from"
+        android:layout_toRightOf="@+id/img_user_dp"
+        android:text="name"
+        android:textColor="@color/color_green"
+        android:textSize="@dimen/d18sp" />
+
+    <TextView
+        android:id="@+id/txt_following"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="@dimen/d30dp"
+        android:background="@drawable/btn_blue"
+        android:paddingBottom="@dimen/d10dp"
+        android:paddingLeft="@dimen/d30dp"
+        android:paddingRight="@dimen/d30dp"
+        android:paddingTop="@dimen/d10dp"
+        android:text="Following"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/d20dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/img_user_dp"
+        android:background="@color/divider_light"/>
+</RelativeLayout>
