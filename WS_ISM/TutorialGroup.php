@@ -5,6 +5,7 @@
  * Date: 20/10/15
  */
 include_once 'SendEmail.php';
+include_once 'ExamFunctions.php';
 
 class TutorialGroup
 {
@@ -646,6 +647,17 @@ class TutorialGroup
                     $topic_discussion['subject_name']=$topicGroups['subject_name'];
 
 
+                    $queryForCurrentDay="SELECT * FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE created_date='now()' AND group_id=".$group_id." AND is_delete=0";
+                    $resultForCurrentDay=mysqli_query($GLOBALS['con'], $queryForCurrentDay) or $message = mysqli_error($GLOBALS['con']);
+                    if(mysqli_num_rows($resultForCurrentDay)>0)
+                    {
+                        $topic_discussion['is_current_day']="yes";
+                    }
+                    else{
+                        $topic_discussion['is_current_day']="no";
+                    }
+
+
                     $queryToGetGroupScore="SELECT sum(group_score)  FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE group_id=".$group_id;
                     $resultToGetGetGroupScore= mysqli_query($GLOBALS['con'], $queryToGetGroupScore) or $message = mysqli_error($GLOBALS['con']);
                     $rowToGetGroupScore=mysqli_fetch_row($resultToGetGetGroupScore);
@@ -883,11 +895,11 @@ class TutorialGroup
 
     public function allocateTeacherToGroup($postData)
     {
-        $message ='';
-        $status='';
-        $post=array();
-        $data=array();
-        $response=array();
+        $message = '';
+        $status = '';
+        $post = array();
+        $data = array();
+        $response = array();
 
         $group_id = validateObject($postData, 'group_id', "");
         $group_id = addslashes($group_id);
@@ -901,131 +913,239 @@ class TutorialGroup
         $access_key = validateObject($postData, 'access_key', "");
         $access_key = addslashes($access_key);
 
-        $security=new SecurityFunctions();
-        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+        $security = new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key, $secret_key);
 
-        if($isSecure==yes) {
-            $queryToGetSubjects = "SELECT * FROM ". TABLE_TUTORIAL_TOPIC." WHERE topic_id=".$tutorial_topic_id." AND is_delete=0";
+        if ($isSecure == yes) {
+            $queryToGetSubjects = "SELECT * FROM " . TABLE_TUTORIAL_TOPIC . " WHERE topic_id=" . $tutorial_topic_id . " AND is_delete=0 group by subject_id";
             $resultToGetSubjects = mysqli_query($GLOBALS['con'], $queryToGetSubjects) or $message = mysqli_error($GLOBALS['con']);
 
-            if(mysqli_num_rows($resultToGetSubjects)>0)
-            {
-                while($subjects=mysqli_fetch_assoc($resultToGetSubjects))
-                {
-                    $getSubjectsId[]=$subjects['subject_id'];
-                    $queryToGetTeachers = "SELECT * FROM ". TABLE_TEACHER_SUBJECT_INFO." WHERE subject_id=".$subjects['subject_id']." AND is_delete=0";
+            if (mysqli_num_rows($resultToGetSubjects) > 0) {
+                while ($subjects = mysqli_fetch_assoc($resultToGetSubjects)) {
+                    $getSubjectsId[] = $subjects['subject_id'];
+                    $queryToGetTeachers = "SELECT * FROM " . TABLE_TEACHER_SUBJECT_INFO . " WHERE subject_id=" . $subjects['subject_id'] . " AND is_delete=0 group by user_id";
                     $resultToGetTeachers = mysqli_query($GLOBALS['con'], $queryToGetTeachers) or $message = mysqli_error($GLOBALS['con']);
 
-                    if(mysqli_num_rows($resultToGetTeachers)>0)
-                    {
-                        while($teachers=mysqli_fetch_assoc($resultToGetTeachers))
-                        {
-                            $getTeacherId[]=$teachers['user_id'];
-
-                            $queryToChkRecordExist = "SELECT * FROM ". TABLE_TUTORIAL_TOPIC_EXAM." WHERE tutorial_topic_id=".$tutorial_topic_id." AND tutorial_group_id=".$group_id." allocated_teacher_id=".$teachers['user_id']." AND is_delete=0";
+                    if (mysqli_num_rows($resultToGetTeachers) > 0) {
+                        while ($teachers = mysqli_fetch_assoc($resultToGetTeachers)) {
+                            $getTeacherId[] = $teachers['user_id'];
+                            //print_r($getTeacherId);
+                            $queryToChkRecordExist = "SELECT * FROM " . TABLE_TUTORIAL_TOPIC_EXAM . " WHERE tutorial_topic_id=" . $tutorial_topic_id . " AND tutorial_group_id=" . $group_id . " AND allocated_teacher_id=" . $teachers['user_id'] . " AND is_delete=0";
+                            // echo $queryToChkRecordExist; exit;
                             $resultToChkRecordExist = mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
 
-                            if(mysqli_num_rows($resultToChkRecordExist)>0)
-                            {
-                                $message=RECORD_ALREADY_EXIST;
-                                $status=SUCCESS;
+                            if (mysqli_num_rows($resultToChkRecordExist) > 0) {
+                                $message = RECORD_ALREADY_EXIST;
+                                $status = SUCCESS;
                             }
                             else
                             {
-                                $exam_id = validateObject ($postData , 'exam_id', "");
+                                $exam_id = validateObject($postData, 'exam_id', "");
                                 $exam_id = addslashes($exam_id);
 
-                                $user_id = validateObject ($postData , 'user_id', "");
-                                $user_id = addslashes($user_id);
-
-                                $exam_assessor = validateObject ($postData , 'exam_assessor', "");
-                                $exam_assessor = addslashes($exam_assessor);
-
-                                $exam_name = validateObject ($postData , 'exam_name', "");
+                                $exam_name = validateObject($postData, 'exam_name', "");
                                 $exam_name = addslashes($exam_name);
 
-                                $classroom_id = validateObject ($postData , 'classroom_id', "");
+                                $classroom_id = validateObject($postData, 'classroom_id', "");
                                 $classroom_id = addslashes($classroom_id);
 
-                                $passing_percent = validateObject ($postData , 'passing_percent', "");
+                                $passing_percent = validateObject($postData, 'passing_percent', "");
                                 $passing_percent = addslashes($passing_percent);
 
-                                $subject_id = validateObject ($postData , 'subject_id', "");
-                                $subject_id = addslashes($subject_id);
-
-                                $topic_id = validateObject ($postData , 'topic_id', "");
-                                $topic_id = addslashes($topic_id);
-
-                                $exam_mode = validateObject ($postData , 'exam_mode', "");
+                                $exam_mode = validateObject($postData, 'exam_mode', "");
                                 $exam_mode = addslashes($exam_mode);
 
-                                $book_id = validateObject ($postData , 'book_id', "");
+                                $subject_id = validateObject($postData, 'subject_id', "");
+                                $subject_id = addslashes($subject_id);
+
+                                $book_id = validateObject($postData, 'book_id', "");
                                 $book_id = addslashes($book_id);
 
-                                $exam_type = validateObject ($postData , 'exam_type', "");
+                                $exam_type = validateObject($postData, 'exam_type', "");
                                 $exam_type = addslashes($exam_type);
 
-                                $exam_category = validateObject ($postData , 'exam_category', "");
+                                $exam_category = validateObject($postData, 'exam_category', "");
                                 $exam_category = addslashes($exam_category);
 
-                                $exam_duration = validateObject ($postData , 'exam_duration', "");
-                                $exam_duration= addslashes($exam_duration);
+                                $exam_duration = validateObject($postData, 'exam_duration', "");
+                                $exam_duration = addslashes($exam_duration);
 
-                                $exam_start_date = validateObject ($postData , 'exam_start_date', "");
+                                $exam_start_date = validateObject($postData, 'exam_start_date', "");
                                 $exam_start_date = addslashes($exam_start_date);
 
-                                $exam_start_time = validateObject ($postData , 'exam_start_time', "");
+                                $exam_start_time = validateObject($postData, 'exam_start_time', "");
                                 $exam_start_time = addslashes($exam_start_time);
 
-                                $exam_instruction = validateObject ($postData , 'exam_instruction', "");
+                                $exam_instruction = validateObject($postData, 'exam_instruction', "");
                                 $exam_instruction = addslashes($exam_instruction);
 
-                                $declare_results = validateObject ($postData , 'declare_results', "");
+                                $declare_results = validateObject($postData, 'declare_results', "");
                                 $declare_results = addslashes($declare_results);
 
-                                $attempt_count = validateObject ($postData , 'attempt_count', "");
+                                $attempt_count = validateObject($postData, 'attempt_count', "");
                                 $attempt_count = addslashes($attempt_count);
 
-                                $negative_marking = validateObject ($postData , 'negative_marking', "");
+                                $negative_marking = validateObject($postData, 'negative_marking', "");
                                 $negative_marking = addslashes($negative_marking);
 
-                                $negative_mark_value = validateObject ($postData , 'negative_mark_value', "");
+                                $negative_mark_value = validateObject($postData, 'negative_mark_value', "");
                                 $negative_mark_value = addslashes($negative_mark_value);
 
-                                $random_question = validateObject ($postData , 'random_question', "");
+                                $random_question = validateObject($postData, 'random_question', "");
                                 $random_question = addslashes($random_question);
 
-                                $use_question_score = validateObject ($postData , 'use_question_score', "");
+                                $use_question_score = validateObject($postData, 'use_question_score', "");
                                 $use_question_score = addslashes($use_question_score);
 
-                                $correct_answer_score = validateObject ($postData , 'correct_answer_score', "");
+                                $correct_answer_score = validateObject($postData, 'correct_answer_score', "");
                                 $correct_answer_score = addslashes($correct_answer_score);
 
+                                /*$examPostParamClass = new stdClass();
+                                $examClass = new ExamFunctions();
+
+
+                                $examPostParamClass->exam_id = $exam_id;
+                                $examPostParamClass->exam_name = $exam_name;
+                                $examPostParamClass->user_id = $teachers['user_id'];
+                                $examPostParamClass->exam_assessor = $teachers['user_id'];
+                                $examPostParamClass->classroom_id = $classroom_id;
+                                $examPostParamClass->passing_percent = $passing_percent;
+                                $examPostParamClass->exam_mode = $exam_mode;
+                                $examPostParamClass->subject_id = $subject_id;
+                                $examPostParamClass->attempt_count = $attempt_count;
+                                $examPostParamClass->exam_type = $exam_type;
+                                $examPostParamClass->exam_category = $exam_category;
+                                $examPostParamClass->book_id = $book_id;
+                                $examPostParamClass->exam_duration = $exam_duration;
+                                $examPostParamClass->exam_start_date = $exam_start_date;
+                                $examPostParamClass->exam_start_time = $exam_start_time;
+                                $examPostParamClass->exam_instruction = $exam_instruction;
+                                $examPostParamClass->declare_results = $declare_results;
+                                $examPostParamClass->negative_marking = $negative_marking;
+                                $examPostParamClass->negative_mark_value = $negative_mark_value;
+                                $examPostParamClass->random_question = $random_question;
+                                $examPostParamClass->use_question_score = $use_question_score;
+                                $examPostParamClass->correct_answer_score = $correct_answer_score;
+                                $examPostParamClass->topic_id = $tutorial_topic_id;*/
+
+
+                                //==================================== Create Exam ====================================
+                                //print_r($examPostParamClass); exit;
+                                $insertExamFields = "`created_by`,`exam_name`, `book_id`,`classroom_id`, `subject_id`, `topic_id`, `exam_type`, `exam_category`, `exam_mode`, `pass_percentage`, `duration`, `instructions`, `negative_marking`,`negative_mark_value`,`use_question_score`,`correct_answer_score`, `random_question`, `declare_results`,`attempt_count`";
+                                $insertExamValues = "".$teachers['user_id'] . ",'" . $exam_name . "'," . $book_id . "," . $classroom_id . "," . $subjects['subject_id'] . "," . $tutorial_topic_id . ",'" . $exam_type . "','" . $exam_category . "','" . $exam_mode . "'," . $passing_percent . "," . $exam_duration . ",'" . $exam_instruction . "','" . $negative_marking . "'," . $negative_mark_value . ",'".$use_question_score."',".$correct_answer_score.",'" . $random_question . "','" . $declare_results . "'," . $attempt_count;
+
+
+                                $query = "INSERT INTO " . TABLE_EXAMS . "(" . $insertExamFields . ") VALUES (" . $insertExamValues . ")";
+                                //echo $query; exit;
+                                $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                                if ($result) {
+                                    $getExamId = mysqli_insert_id($GLOBALS['con']);
+                                    if ($exam_start_date != null and $exam_start_time != null) {
+                                        $insertExamScheduleFields = "`exam_id`, `schedule_by`, `exam_assessor`, `start_date`, `start_time`, `school_classroom_id`";
+                                        $insertExamScheduleValues = "" . $post['exam_id'] . "," . $teachers['user_id'] . "," . $teachers['user_id'] . ",'" . $exam_start_date . "','" . $exam_start_time . "'," . $classroom_id;
+                                        $queryInsertExamSchedule = "INSERT INTO ". TABLE_EXAM_SCHEDULE."(" . $insertExamScheduleFields . ") VALUES (" . $insertExamScheduleValues . ")";
+                                        $resultExamSchedule = mysqli_query($GLOBALS['con'], $queryInsertExamSchedule) or $message = mysqli_error($GLOBALS['con']);
+                                        // echo $queryInsertExamSchedule; exit;
+                                        if ($resultExamSchedule) {
+
+                                            $status = SUCCESS;
+                                            $message="Exam created and scheduled";
+                                        } else {
+                                            $status = SUCCESS;
+                                            $message="Exam is created but not scheduled";
+                                        }
+                                    }
+                                    else{
+                                        $status = SUCCESS;
+                                        $message="Exam created";
+                                    }
+
+                                } else {
+
+                                    $status = FAILED;
+                                    $message="Exam is not created and scheduled";
+                                }
+
+
+
+                                //====================================Exam Created====================================
+
+
+                                if($getExamId) {
+
+                                    $status = SUCCESS;
+                                    $message = "exam is created";
+
+                                    //$chkRecordExist="SELECT * FROM ".TABLE_TUTORIAL_TOPIC_EXAM." WHERE tutorial_topic_id=".$tutorial_topic_id." AND tutorial_group_id=".$group_id." AND exam_id=".$getExamId." AND ";
+
+                                    $insertFields = "tutorial_topic_id,tutorial_group_id,exam_id,exam_type,allocated_teacher_id";
+                                    $insertValues = "" . $tutorial_topic_id . ", " . $group_id . ", " . $getExamId . ", 'group'," . $teachers['user_id'];
+
+                                    $query = "INSERT INTO " . TABLE_TUTORIAL_TOPIC_EXAM . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                                    //echo $query; exit;
+                                    $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                                    if ($result) {
+
+                                        $queryToGetTeacherProfile = "SELECT users.*,teacher_profile.education FROM " . TABLE_USERS . " users JOIN " . TABLE_TEACHER_PROFILE . " teacher_profile ON teacher_profile.user_id=users.id WHERE teacher_profile.user_id=" . $teachers['user_id'] . " AND  teacher_profile.is_delete=0 AND users.is_delete=0";
+                                        $resultToGetTeacherProfile = mysqli_query($GLOBALS['con'], $queryToGetTeacherProfile) or $message = mysqli_error($GLOBALS['con']);
+
+                                        if (mysqli_num_rows($resultToGetTeacherProfile) > 0) {
+                                            while ($teacher = mysqli_fetch_assoc($resultToGetTeacherProfile)) {
+                                                $profile = array();
+                                                $profile['teacher_id'] = $teachers['user_id'];
+                                                $profile['teacher_name'] = $teachers['full_name'];
+                                                $profile['teacher_pic'] = $teachers['profile_pic'];
+                                                $profile['education'] = $teachers['education'];
+                                                $profile['exam_id'] = $getExamId;
+                                                $profile['tutorial_topic_id'] = $tutorial_topic_id;
+
+                                                $post[] = $profile;
+                                            }
+                                            $status = SUCCESS;
+                                            $message = "Teacher is allocated and exam is also created";
+                                        } else {
+                                            $status = FAILED;
+                                            $message = "Record not found ";
+                                        }
+                                        $data[]=$post;
+                                    }
+                                    else {
+
+                                        $status = FAILED;
+                                        $message = "failed to insert topic exam";
+                                        $data[]=array();
+                                    }
+                                }
+                                else
+                                {
+                                    $status = FAILED;
+                                    $message = "exam id is not get";
+                                    $data[]=array();
+                                }
 
                             }
                         }
                     }
+
                 }
+
+
+            } else {
+                $status = FAILED;
+                $message = MALICIOUS_SOURCE;
             }
+            $response['teacher'] = $data;
+            $response['message'] = $message;
+            $response['status'] = $status;
 
-
+            return $response;
 
         }
-        else
-        {
-            $status=FAILED;
-            $message = MALICIOUS_SOURCE;
-        }
-        $response['allocate_teacher_to_group']=$data;
-        $response['message'] = $message;
-        $response['status'] = $status;
 
-        return $response;
 
     }
-
-
-
 
 }
 

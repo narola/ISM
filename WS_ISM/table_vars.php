@@ -89,6 +89,8 @@ define("TABLE_TEACHER_PROFILE",   "teacher_profile");
 define("TABLE_TEACHER_SUBJECT_INFO",   "teacher_subject_info");
 define("TABLE_TOPICS",   "topics");
 define("TABLE_TRENDING_QUESTION","trending_question");
+define("TABLE_TRENDING_QUESTION_COMMENT","trending_question_comment");
+define("TABLE_TRENDING_QUESTION_FOLLOWER","trending_question_follower");
 define("TABLE_TOKENS",   "tokens");
 define("TABLE_TUTORIAL_GROUP_DISCUSSION",   "tutorial_group_discussion");
 define("TABLE_TUTORIAL_GROUP_MEMBER",   "tutorial_group_member");

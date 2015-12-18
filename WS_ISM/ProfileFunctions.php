@@ -3158,18 +3158,14 @@ class ProfileFunctions
              {
                 $condition = " and `modified_date` > '" . $last_sync_date . "'";
             }
-            $query = "SELECT config_key,config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE  scope='" . $role . "' and is_delete=0". $condition;
+            $query = "SELECT config_key,config_value,value_unit FROM " . TABLE_ADMIN_CONFIG . " WHERE  scope='" . $role . "' and is_delete=0". $condition;
             //echo $query;
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
             if (mysqli_num_rows($result)) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $post['config_key'] = $row['config_key'];
-                    $post['config_value'] = $row['config_value'];
-
-                    $data[]=$post;
+                    $data[]=$row;
                 }
-
 
                 $status = SUCCESS;
             }

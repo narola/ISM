@@ -30,6 +30,7 @@ class ExamFunctions
                 return $this->setQuestionsForExam($postData);//done
             }
                 break;
+
             case "GetQuestionBank":
             {
                 return $this->getQuestionBank($postData);//done
@@ -165,6 +166,30 @@ class ExamFunctions
             case "FollowQuestion":
             {
                 return $this->followQuestion($postData);
+            }
+                break;
+
+            case "GetTrendingQuestions":
+            {
+                return $this->getTrendingQuestions($postData);
+            }
+                break;
+
+            case "SubmitTrendingAnswer":
+            {
+                return $this->submitTrendingAnswer($postData);
+            }
+                break;
+
+            case "AddTrendingQuestionComment":
+            {
+                return $this->addTrendingQuestionComment($postData);
+            }
+                break;
+
+            case "GetTrendingQuestionDetail":
+            {
+                return $this->getTrendingQuestionDetail($postData);
             }
                 break;
 
@@ -1981,7 +2006,9 @@ class ExamFunctions
                                             $status = FAILED;
                                             $message = "";
                                         }
-                                    } else {
+                                    }
+                                    else
+                                    {
 
                                         $insertChoiceFields = "`question_id`,`choice_text`,`is_right`";
                                         $insertChoiceValues = "" . $questionId . ",'" . $row->choice_text . "'," . (int)$row->is_right;
@@ -2012,7 +2039,6 @@ class ExamFunctions
 
                                         $insertQuestionQuery = "INSERT INTO " . TABLE_ANSWER_CHOICES . "(" . $insertChoiceFields . ") VALUES( " . $insertChoiceValues . ")";
                                         $resultQuestionQuery = mysqli_query($GLOBALS['con'], $insertQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
-
 
                                         if ($resultQuestionQuery) {
                                             $answer_ids[] = mysqli_insert_id($GLOBALS['con']);
@@ -3276,7 +3302,8 @@ class ExamFunctions
 
         if($isSecure==yes) {
 
-               $insertFields = "`question_by`,`question_text`, `question_for`";
+
+                $insertFields = "`question_by`,`question_text`, `question_for`";
                 $insertValues = "".$user_id . ",'" . $question_text . "'," . $author_id ;
 
                 $query = "INSERT INTO " . TABLE_TRENDING_QUESTION . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
@@ -3339,23 +3366,49 @@ class ExamFunctions
 
         if($isSecure==yes) {
 
-            $queryToChkRecordExist="SELECT * FROM ".TABLE_TRENDING_QUESTION." WHERE id= ".$question_id." AND question_by=".$user_id." AND is_delete=0";
+            $queryToChkRecordExist="SELECT * FROM ".TABLE_TRENDING_QUESTION." WHERE id= ".$question_id." AND is_delete=0";
             $resultToChkRecordExist=mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
 
             if(mysqli_num_rows($resultToChkRecordExist)>0) {
                 $updateField = "follower_count=(follower_count+1) ";
 
-                $queryToUpdate = "UPDATE " . TABLE_TRENDING_QUESTION . " SET " . $updateField . " WHERE id= " . $question_id . " AND question_by=" . $user_id . " AND is_delete=0";
+                $queryToUpdate = "UPDATE " . TABLE_TRENDING_QUESTION . " SET " . $updateField . " WHERE id= " . $question_id . " AND is_delete=0";
                 $resultToUpdate = mysqli_query($GLOBALS['con'], $queryToUpdate) or $message = mysqli_error($GLOBALS['con']);
-
 
                 if ($resultToUpdate) {
                     $status = SUCCESS;
-                    $message = "question followed”";
+                    $message = "question followed";
                 } else {
 
                     $status = FAILED;
                     $message = "failed to follow question";
+                }
+
+                $queryToChkRecrdExist = "SELECT * FROM " . TABLE_TRENDING_QUESTION_FOLLOWER . " WHERE trending_question_id=" . $question_id . " AND follower_id=" . $user_id . " AND is_delete=0";
+                $resultToChkRecrdExist = mysqli_query($GLOBALS['con'], $queryToChkRecrdExist) or $message = mysqli_error($GLOBALS['con']);
+
+
+                if (mysqli_num_rows($resultToChkRecrdExist) > 0) {
+                    $status = SUCCESS;
+                    $message = RECORD_ALREADY_EXIST;
+                } else {
+
+
+                    $insertFields = "`trending_question_id`,`follower_id`";
+                    $insertValues = "" . $question_id . "," . $user_id;
+
+                    $queryInsert = "INSERT INTO " . TABLE_TRENDING_QUESTION_FOLLOWER . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                    $resultInsert = mysqli_query($GLOBALS['con'], $queryInsert) or $message = mysqli_error($GLOBALS['con']);
+
+                    if ($resultInsert) {
+                        $status = SUCCESS;
+                        $message = "question followed";
+                    } else {
+
+                        $status = FAILED;
+                        $message = "failed to follow question";
+                    }
+
                 }
 
             }
@@ -3377,6 +3430,324 @@ class ExamFunctions
         return $response;
     }
 
+
+    /*
+    * getTrendingQuestions
+    */
+    public function getTrendingQuestions ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+        $role = validateObject ($postData , 'role', "");
+        $role = addslashes($role);
+
+        $author_id = validateObject ($postData , 'author_id', "");
+        $author_id = addslashes($author_id);
+
+        $check_slot = validateObject ($postData , 'check_slot', "");
+        $check_slot = addslashes($check_slot);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+            if($role==4)
+            {
+
+                if($check_slot=="yes")
+                {
+                     $queryToGetQuestion="SELECT * FROM ".TABLE_TRENDING_QUESTION." WHERE `answer_text` IS NULL and `question_for`=".$author_id. " and is_delete=0 ORDER BY created_date DESC";
+                }
+                else{
+                    $queryToGetQuestion="SELECT * FROM ".TABLE_TRENDING_QUESTION." WHERE `answer_text` IS NULL and `question_for`=".$author_id. " GROUP BY `created_date` HAVING `follower_count` <= (select max(follower_count) as 'count' FROM `trending_question` WHERE `question_for`=".$author_id. " ) ORDER BY follower_count DESC LIMIT 3";
+                }
+
+                $resultToGetQuestion=mysqli_query($GLOBALS['con'], $queryToGetQuestion) or $message = mysqli_error($GLOBALS['con']);
+
+                if(mysqli_num_rows($resultToGetQuestion)>0)
+                {
+                    while($row=mysqli_fetch_assoc($resultToGetQuestion))
+                    {
+                       $questionInfo=array();
+                        $questionInfo['trending_id']=$row['id'];
+                        $questionInfo['question_text']=$row['question_text'];
+                        $questionInfo['follower_count']=$row['follower_count'];
+                        $questionInfo['total_comment']=$row['total_comment'];
+                        $questionInfo['posted_on']=$row['created_date'];
+
+                        $selectProfile="SELECT * FROM ".TABLE_USERS." WHERE id=".$row['question_by']." AND is_delete=0";
+                        $resultProfile=mysqli_query($GLOBALS['con'], $selectProfile) or $message = mysqli_error($GLOBALS['con']);
+                        $rowForProfile=mysqli_fetch_row($resultProfile);
+
+
+                        $questionInfo['posted_by_user_id']=$row['question_by'];
+                        $questionInfo['posted_by_username']=$rowForProfile[5];
+                        $questionInfo['posted_by_pic']=$rowForProfile[6];
+
+                        $post[]=$questionInfo;
+                    }
+                    //$data[]=$post;
+                    $status=SUCCESS;
+                    $message = "";
+                }
+                else{
+                    $status=SUCCESS;
+                    $message = DEFAULT_NO_RECORDS;
+                }
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['trending_question']=$post;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+
+
+    /*
+     * submitTrendingAnswer
+     */
+    public function submitTrendingAnswer ($postData)
+    {
+        $message='';
+        $status='';
+        $response=array();
+
+        $author_id = validateObject ($postData , 'author_id', "");
+        $author_id = addslashes($author_id);
+
+        $question_id = validateObject ($postData , 'question_id', "");
+        $question_id = addslashes($question_id);
+
+        $answer_text = validateObject ($postData , 'answer_text', "");
+        $answer_text = addslashes($answer_text);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $queryToChkRecordExist="SELECT * FROM ".TABLE_TRENDING_QUESTION." WHERE id= ".$question_id." AND question_for=".$author_id." AND is_delete=0";
+            $resultToChkRecordExist=mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
+
+            if(mysqli_num_rows($resultToChkRecordExist)>0) {
+                $updateField = "answer_text = '".$answer_text."'";
+
+                $queryToUpdate = "UPDATE " . TABLE_TRENDING_QUESTION . " SET " . $updateField . " WHERE id = ".$question_id." AND question_for=".$author_id." AND is_delete=0";
+                $resultToUpdate = mysqli_query($GLOBALS['con'], $queryToUpdate) or $message = mysqli_error($GLOBALS['con']);
+
+                if ($resultToUpdate) {
+                    $status = SUCCESS;
+                    $message = "question is answered";
+                } else {
+
+                    $status = FAILED;
+                    $message = "failed to update answer";
+                }
+
+//                $rowToFetchRecord=mysqli_fetch_row($resultToChkRecordExist);
+//
+//                $insertFields = "`notification_to`,`notification_text`,`notification_from`,`navigate_to`";
+//                $insertValues = "" . $rowToFetchRecord['3'] . ",''" .$author_id.",";
+//                $queryInsert = "INSERT INTO " . TABLE_USER_NOTIFICATION . "(" . $insertFields . ") VALUES (" . $insertValues . ")"; //
+//                $resultInsert = mysqli_query($GLOBALS['con'], $queryInsert) or $message = mysqli_error($GLOBALS['con']);
+//
+            }
+            else
+            {
+
+                $status=SUCCESS;
+                $message=DEFAULT_NO_RECORDS;
+            }
+            $data = array();
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['submit_trending_answer']=$data;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+
+
+    /*
+   * addTrendingQuestionComment
+   */
+    public function addTrendingQuestionComment ($postData)
+    {
+        $message='';
+        $status='';
+        $response=array();
+        $data=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $question_id = validateObject ($postData , 'question_id', "");
+        $question_id = addslashes($question_id);
+
+        $comment_text = validateObject ($postData , 'comment_text', "");
+        $comment_text = addslashes($comment_text);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $queryToChkRecordExist="SELECT * FROM ".TABLE_TRENDING_QUESTION_COMMENT." WHERE trending_question_id= ".$question_id." AND is_delete=0";
+            $resultToChkRecordExist=mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
+
+
+                $insertFields = "`trending_question_id`,`comment_text`,`comment_by`";
+                $insertValues ="".$question_id.",'".$comment_text."',".$user_id;
+
+                $queryInsert = "INSERT INTO " . TABLE_TRENDING_QUESTION_COMMENT . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                $resultInsert = mysqli_query($GLOBALS['con'], $queryInsert) or $message = mysqli_error($GLOBALS['con']);
+
+                if ($resultInsert)
+                {
+                    $data['comment_id']=mysqli_insert_id($GLOBALS['con']);
+                    $status = SUCCESS;
+                    $message = "comment added";
+                }
+                else
+                {
+                    $status = FAILED;
+                    $message = "failed to add comment";
+                }
+
+
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['comment added'][]=$data;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+
+
+    /*
+    * getTrendingQuestionDetail
+    */
+    public function getTrendingQuestionDetail ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+
+        $question_id = validateObject ($postData , 'question_id', "");
+        $question_id = addslashes($question_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $queryToGetQuestion = "SELECT trending_question.*,users.full_name,users.profile_pic FROM " . TABLE_TRENDING_QUESTION . " trending_question INNER JOIN ".TABLE_USERS." users ON trending_question.question_by=users.id WHERE trending_question.id=".$question_id." and trending_question.is_delete=0";
+            $resultToGetQuestion = mysqli_query($GLOBALS['con'], $queryToGetQuestion) or $message = mysqli_error($GLOBALS['con']);
+
+            $questionInfo=array();
+            if (mysqli_num_rows($resultToGetQuestion) > 0) {
+                while ($row = mysqli_fetch_assoc($resultToGetQuestion)) {
+
+                    $questionInfo['trending_id'] = $row['id'];
+                    $questionInfo['question_text'] = $row['question_text'];
+                    $questionInfo['follower_count'] = $row['follower_count'];
+                    $questionInfo['total_comment'] = $row['total_comment'];
+                    $questionInfo['posted_on'] = $row['created_date'];
+                    $questionInfo['posted_by_user_id'] = $row['question_by'];
+                    $questionInfo['posted_by_username'] = $row['full_name'];
+                    $questionInfo['posted_by_pic'] = $row['profile_pic'];
+
+
+
+                    $queryToGetComments = "SELECT comment.*,users.full_name,users.profile_pic FROM " . TABLE_TRENDING_QUESTION_COMMENT . " comment INNER JOIN ".TABLE_USERS." users ON comment.comment_by=users.id WHERE comment.trending_question_id=" . $question_id . " AND comment.is_delete=0";
+                    $resultToGetComments  = mysqli_query($GLOBALS['con'], $queryToGetComments) or $message = mysqli_error($GLOBALS['con']);
+                    $allComments=array();
+                    if(mysqli_num_rows($resultToGetComments))
+                    {
+                        while($comments=mysqli_fetch_assoc($resultToGetComments))
+                        {
+                            $allComments['comment_id']=$comments['id'];
+                            $allComments['comment_text']=$comments['comment_text'];
+                            $allComments['comment_by']=$comments['comment_by'];
+                            $allComments['username']=$comments['full_name'];
+                            $allComments['profile_pic']=$comments['profile_pic'];
+
+                            $allTotalComments[]=$allComments;
+                        }
+                    }
+                    $questionInfo['comment']=$allTotalComments;
+
+
+                    $post[] = $questionInfo;
+                }
+
+                //$data[]=$post;
+                $status = SUCCESS;
+                $message = "";
+            } else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+                $post=array();
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['trending_question']=$post;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
 
 }
 

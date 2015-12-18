@@ -122,6 +122,10 @@ switch ($_REQUEST['Service'])
     case "GetSundayExamQuestion":
     case "AskQuestionToAuthor":
     case "FollowQuestion":
+    case "GetTrendingQuestions":
+    case "SubmitTrendingAnswer":
+    case "AddTrendingQuestionComment":
+    case "GetTrendingQuestionDetail":
     {
         include_once 'ExamFunctions.php';
         $exam = new ExamFunctions();

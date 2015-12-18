@@ -264,7 +264,7 @@ class TutorialGroup
 
         if($isSecure==yes) {
 
-            $query = "SELECT `id`, `badge_name`, `badge_description` FROM ".TABLE_BADGES ." WHERE is_delete=0";
+            $query = "SELECT badges.`id` as 'badge_id', badges.`badge_name`, badges.`badge_description`,badges.`badge_award`,badges.`badge_category_id`,badge_category.badge_category_name FROM ".TABLE_BADGES ." badges INNER JOIN ".TABLE_BADGE_CATEGORY." badge_category ON badges.badge_category_id= badge_category.id WHERE badges.is_delete=0";
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
             // echo $query;
             if (mysqli_num_rows($result)) {
