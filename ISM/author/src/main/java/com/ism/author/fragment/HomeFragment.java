@@ -140,7 +140,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
             try {
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
-                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GETALLFEEDS);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());

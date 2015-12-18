@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/d10dp"
+            android:id="@+id/rr_view_profile"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
@@ -49,8 +50,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/d10dp"
             android:paddingLeft="@dimen/d5dp"
+            android:layout_marginBottom="@dimen/d20dp"
+            android:layout_marginLeft="@dimen/d10dp"
+            android:layout_marginRight="@dimen/d10dp"
             android:text="@string/strtest"
             android:id="@+id/txt_user_name"
             android:textAllCaps="true"

@@ -1,7 +1,6 @@
 package realmhelper;
 
 
-
 import android.content.Context;
 
 import com.realm.ismrealm.RealmAdaptor;
@@ -18,22 +17,20 @@ public class UserHelper {
     User user;
 
     /**
-     *
-     *
      * @param user
      * @param context
      */
-     public UserHelper(User user,Context context){
+    public UserHelper(User user, Context context) {
 
-         realm = RealmAdaptor.getInstance(context);
-         this.user = user;
+        realm = RealmAdaptor.getInstance(context);
+        this.user = user;
 
-     }
+    }
 
     /**
      * use to save user data in ISM database.
      */
-    public void saveUser(){
+    public void saveUser() {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(user);
         realm.commitTransaction();

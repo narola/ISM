@@ -5,65 +5,65 @@ package com.ism.constant;
  */
 public class WebConstants {
 
-	/**
-	 *  Api IDs
-	 */
-	public static final int LOGIN = 1;
-	public static final int FORGOT_PASSWORD = 2;
-	public static final int REQUEST_CREDENTIALS = 3;
-	public static final int GET_COUNTRIES = 4;
-	public static final int GET_STATES = 5;
-	public static final int GET_CITIES = 6;
-	public static final int REGISTER_USER = 7;
-	public static final int REQUEST_SCHOOL_INFO = 8;
-	public static final int ALLOCATE_TUTORIAL_GROUP = 9;
-	public static final int ACCEPT_TUTORIAL_GROUP = 10;
-	public static final int GET_ALL_FEEDS = 11;
-	public static final int ADD_COMMENT = 12;
-	public static final int GET_ALL_COMMENTS = 13;
-	public static final int GET_ALL_STUDYMATES = 14;
-	public static final int TAG_STUDY_MATES = 15;
-	public static final int GET_ALL_NOTICES = 16;
-	public static final int GET_NOTIFICATION = 17;
-	public static final int GET_MESSAGES = 18;
-	public static final int GET_STUDYMATE_REQUEST = 19;
-	public static final int GET_ALL_BADGES_COUNT = 20;
-	public static final int RESPOND_TO_REQUEST = 21;
-	public static final int UPDATE_READ_STATUS = 22;
-	public static final int GET_HIGH_SCORERS = 23;
-	public static final int UPLOAD_PROFILE_PIC = 24;
-	public static final int GET_WALLET_SUMMARY = 25;
-	public static final int GENERATE_VOUCHER = 26;
-	public static final int GET_MY_FEEDS = 27;
-	public static final int GET_ALL_STUDYMATES_WITH_DETAILS = 28;
-	public static final int GET_ALL_RECOMMENDED_STUDYMATES = 29;
-	public static final int GET_MY_ACTIVITY = 30;
-	public static final int UPLOAD_FEED_MEDIA = 31;
-	public static final int GET_ADMIN_CONFIG = 32;
-	public static final int REFRESH_TOKEN = 33;
-	public static final int SEND_REQUEST_STUDYMATE = 34;
+    /**
+     * Api IDs
+     */
+    public static final int LOGIN = 1;
+    public static final int FORGOT_PASSWORD = 2;
+    public static final int REQUEST_CREDENTIALS = 3;
+    public static final int GET_COUNTRIES = 4;
+    public static final int GET_STATES = 5;
+    public static final int GET_CITIES = 6;
+    public static final int REGISTER_USER = 7;
+    public static final int REQUEST_SCHOOL_INFO = 8;
+    public static final int ALLOCATE_TUTORIAL_GROUP = 9;
+    public static final int ACCEPT_TUTORIAL_GROUP = 10;
+    public static final int GET_ALL_FEEDS = 11;
+    public static final int ADD_COMMENT = 12;
+    public static final int GET_ALL_COMMENTS = 13;
+    public static final int GET_ALL_STUDYMATES = 14;
+    public static final int TAG_STUDY_MATES = 15;
+    public static final int GET_ALL_NOTICES = 16;
+    public static final int GET_NOTIFICATION = 17;
+    public static final int GET_MESSAGES = 18;
+    public static final int GET_STUDYMATE_REQUEST = 19;
+    public static final int GET_ALL_BADGES_COUNT = 20;
+    public static final int RESPOND_TO_REQUEST = 21;
+    public static final int UPDATE_READ_STATUS = 22;
+    public static final int GET_HIGH_SCORERS = 23;
+    public static final int UPLOAD_PROFILE_PIC = 24;
+    public static final int GET_WALLET_SUMMARY = 25;
+    public static final int GENERATE_VOUCHER = 26;
+    public static final int GET_MY_FEEDS = 27;
+    public static final int GET_ALL_STUDYMATES_WITH_DETAILS = 28;
+    public static final int GET_ALL_RECOMMENDED_STUDYMATES = 29;
+    public static final int GET_MY_ACTIVITY = 30;
+    public static final int UPLOAD_FEED_MEDIA = 31;
+    public static final int GET_ADMIN_CONFIG = 32;
+    public static final int REFRESH_TOKEN = 33;
+    public static final int SEND_REQUEST_STUDYMATE = 34;
 
 
-	//general settings
+    //general settings
 
-	public static final int MANAGE_GENERAL_SETTINGS = 71;
-	public static final int GENERAL_SETTING_PREFERENCES = 72;
-	public static final int GET_USER_PREFERENCES=73;
-	public static final int BLOCK_USER = 74;
-	public static final int UNBLOCK_USER = 74;
-	public static final int BLOCKED_USER = 75;
+    public static final int MANAGE_GENERAL_SETTINGS = 71;
+    public static final int GENERAL_SETTING_PREFERENCES = 72;
+    public static final int GET_USER_PREFERENCES = 73;
+    public static final int BLOCK_USER = 74;
+    public static final int UNBLOCK_USER = 74;
+    public static final int BLOCKED_USER = 75;
 
-	//edit profiles
+    //edit profiles
 
-	public static final int GET_BOOKS_FOR_USER = 54;
-	public static final int GET_ABOUT_ME = 55;
-	public static final int EDIT_ABOUT_ME = 56;
-	public static final int GET_ROLEMODEL_FOR_USER = 57;
-	public static final int GET_PASTTIME_FOR_USER = 58;
-	public static final int GET_MOVIES_FOR_USER = 59;
-	public static final int MANAGE_FAVOURITES = 60;
-	public static final int MANAGE_BOOK_LIBRARY = 61;
-	public static final int POSTFEED = 62;
+    public static final int GET_BOOKS_FOR_USER = 54;
+    public static final int GET_ABOUT_ME = 55;
+    public static final int EDIT_ABOUT_ME = 56;
+    public static final int GET_ROLEMODEL_FOR_USER = 57;
+    public static final int GET_PASTTIME_FOR_USER = 58;
+    public static final int GET_MOVIES_FOR_USER = 59;
+    public static final int MANAGE_FAVOURITES = 60;
+    public static final int MANAGE_BOOK_LIBRARY = 61;
+    public static final int POSTFEED = 62;
 	public static final int LIKE_FEED =63 ;
 
 	/**
@@ -76,10 +76,11 @@ public class WebConstants {
 
 //	public static final String HOST = "http://192.168.1.202/";                                              // SERVER
 //	public static final String HOST = "http://clientapp.narolainfotech.com/";                               // SERVER
-	public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
-	//	private static final String DIR_PATH = "pg/ISM/WS_ISM/";    //  SERVER
-	private static final String DIR_PATH = "WS_ISM/";           //  KINJAL
-	private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
+    public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
+
+    //	private static final String DIR_PATH = "pg/ISM/WS_ISM/";    //  SERVER
+    private static final String DIR_PATH = "WS_ISM/";           //  KINJAL
+    private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
 	//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_images/";
 	public static final String HOST_IMAGE_USER = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
 

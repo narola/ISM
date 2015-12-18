@@ -13,7 +13,7 @@ public class MyTypeFace {
 	Typeface RalewayBlack, RalewayBlackItalic, RalewayBold, RalewayBoldItalic,
 			RalewayExtraBold, RalewayExtraBoldItalic, RalewayExtraLight, RalewayExtraLightItalic,
 			RalewayItalic, RalewayLight, RalewayLightItalic, RalewayMedium, RalewayMediumItalic, RalewayRegular,
-			RalewaySemiBold, RalewaySemiBoldItalic, RalewayThin, RalewayThinItalic;
+			RalewaySemiBold, RalewaySemiBoldItalic, RalewayThin, RalewayThinItalic, SchadowBT;
 
 	Context context;
 
@@ -40,6 +40,7 @@ public class MyTypeFace {
 		RalewaySemiBoldItalic = setCustomFont(AppConstant.RalewaySemiBoldItalic);
 		RalewayThin = setCustomFont(AppConstant.RalewayThin);
 		RalewayThinItalic = setCustomFont(AppConstant.RalewayThinItalic);
+		SchadowBT = setCustomFont(AppConstant.SchadowBT);
 	}
 
 	public Typeface setCustomFont(String fontType) {
@@ -191,5 +192,13 @@ public class MyTypeFace {
 
 	public void setRalewayThinItalic(Typeface ralewayThinItalic) {
 		RalewayThinItalic = ralewayThinItalic;
+	}
+
+	public Typeface getSchadowBT() {
+		return SchadowBT;
+	}
+
+	public void setSchadowBT(Typeface schadowBT) {
+		SchadowBT = schadowBT;
 	}
 }

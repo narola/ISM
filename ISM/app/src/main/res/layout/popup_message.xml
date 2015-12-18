@@ -16,6 +16,7 @@
 			android:layout_height="wrap_content"
 			android:text="@string/no_message_available"
 			android:textSize="@dimen/text_size_emptylist_message_small"
+			android:textColor="@android:color/black"
 			android:layout_centerInParent="true"/>
 
 		<ListView

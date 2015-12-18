@@ -397,6 +397,25 @@
 	<string name="remaining">Remaining</string>
 	<string name="your_score_is">"YOUR SCORE IS : "</string>
 	<string name="upload_and_freeze">Upload and freeze</string>
+	<string name="msg_saturday"><![CDATA[<font color=\'#DD524B\'>But it\'s Saturday and it\'s funday-</font><br><font color=\'#1CC4A3\'>so no assignment.</font>]]></string>
+	<string name="friday_internal_exam">Friday Internal exam</string>
+	<string name="help">Help</string>
+	<string name="question_for_tutorialmate">Question for Tutorialmate</string>
+	<string name="step1"><![CDATA[<b>step 1</b>&nbsp;&nbsp;&nbsp;&nbsp;]]></string>
+	<string name="create_question">Create Question</string>
+	<string name="step2"><![CDATA[<b>step 2</b>&nbsp;&nbsp;&nbsp;&nbsp;]]></string>
+	<string name="set_options">Set Options</string>
+	<string name="step3"><![CDATA[<b>step 3</b>&nbsp;&nbsp;&nbsp;&nbsp;]]></string>
+	<string name="preview_question">Preview Question</string>
+	<string name="step4"><![CDATA[<b>step 4</b>&nbsp;&nbsp;&nbsp;&nbsp;]]></string>
+	<string name="upload">Upload</string>
+	<string name="hint_type_question">Type question here</string>
+	<string name="option1">Option 1</string>
+	<string name="option2">Option 2</string>
+	<string name="option3">Option 3</string>
+	<string name="option4">Option 4</string>
+	<string name="options_lable">Options:</string>
+	<string name="upload_question_msg">Your question is ready for tutorial studymate.</string>
 
 	<!-- ################################## -->
 </resources>

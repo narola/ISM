@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.ism.author.R;
 import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.adapter.MessageAdapter;
+import com.ism.author.adapter.userprofile.MessageAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;

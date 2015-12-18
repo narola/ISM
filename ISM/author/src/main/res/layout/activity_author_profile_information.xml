@@ -29,7 +29,8 @@
                 android:layout_marginBottom="@dimen/d10dp"
                 android:layout_marginTop="@dimen/d10dp"
                 android:background="@color/color_white"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -94,17 +95,38 @@
                                     android:textColorHint="@color/color_text_hint" />
                             </LinearLayout>
 
-                            <EditText
-                                android:id="@+id/et_emailAdd"
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:layout_marginRight="@dimen/d5dp"
                                 android:layout_weight="2"
-                                android:background="@drawable/selector"
-                                android:hint="@string/stremailaddress"
-                                android:inputType="textPersonName"
-                                android:padding="15sp"
-                                android:textColorHint="@color/color_text_hint" />
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/et_emailAdd"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginRight="@dimen/d5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/selector"
+                                    android:hint="@string/stremailaddress"
+                                    android:inputType="textPersonName"
+                                    android:padding="15sp"
+                                    android:textColorHint="@color/color_text_hint" />
+
+                                <EditText
+                                    android:id="@+id/et_education"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginRight="@dimen/d5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/selector"
+                                    android:hint="@string/streducation"
+                                    android:inputType="textPersonName"
+                                    android:padding="15sp"
+                                    android:textColorHint="@color/color_text_hint" />
+                            </LinearLayout>
+
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -288,178 +310,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/d10dp"
-                android:layout_marginTop="@dimen/d10dp"
-                android:background="@color/color_white"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/d10dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_blue"
-                    android:drawableLeft="@drawable/schoolinfo"
-                    android:drawablePadding="@dimen/d5dp"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/d10dp"
-                    android:text="@string/strschoolinformation"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d20dp"
-                    android:layout_marginRight="@dimen/d20dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/d10dp"
-                        android:layout_weight="3"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/txt_youare_"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingBottom="@dimen/d10dp"
-                            android:paddingLeft="@dimen/d10dp"
-                            android:paddingRight="@dimen/d5dp"
-                            android:paddingTop="@dimen/d10dp"
-                            android:text="@string/stryouareregisteredforfollowingschool"
-                            android:textColor="@color/color_black"
-                            android:textSize="@dimen/d18dp" />
-
-                        <TextView
-                            android:id="@+id/txt_clickhere"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:onClick="onClickHere"
-                            android:paddingBottom="@dimen/d10dp"
-                            android:paddingLeft="0dp"
-                            android:paddingRight="@dimen/d5dp"
-                            android:paddingTop="@dimen/d10dp"
-                            android:text="@string/strclickhere"
-                            android:textColor="@color/color_blue"
-                            android:textSize="@dimen/d18dp" />
-
-                        <TextView
-                            android:id="@+id/txt_ifits_"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingBottom="@dimen/d10dp"
-                            android:paddingLeft="0dp"
-                            android:paddingRight="@dimen/d5dp"
-                            android:paddingTop="@dimen/d10dp"
-                            android:text="@string/strifitisnotyourschool"
-                            android:textColor="@color/color_black"
-                            android:textSize="@dimen/d18dp" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/txt_nameofschool"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="@dimen/d5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/selector"
-                            android:gravity="center_vertical"
-                            android:hint="@string/strnameofschool"
-                            android:padding="15sp"
-                            android:textColorHint="@color/color_text_hint"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/txt_class"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="@dimen/d5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/selector"
-                            android:gravity="center_vertical"
-                            android:hint="@string/strclass"
-                            android:padding="15sp"
-                            android:textColorHint="@color/color_text_hint"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/txt_academicyear"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="@dimen/d5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/selector"
-                            android:gravity="center_vertical"
-                            android:hint="@string/stracademicyear"
-                            android:padding="15sp"
-                            android:textColorHint="@color/color_text_hint"
-                            android:textSize="20sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/txt_schoolgender"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/d5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/spinner_selector"
-                            android:gravity="center_vertical"
-                            android:hint="@string/strgender"
-                            android:padding="@dimen/d20dp"
-                            android:textColorHint="@color/color_text_hint"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/txt_districtofschool"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="@dimen/d5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/selector"
-                            android:gravity="center_vertical"
-                            android:hint="@string/strdistrictofschool"
-                            android:padding="15sp"
-                            android:textColorHint="@color/color_text_hint"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/txt_programcourse"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/d5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/spinner_selector"
-                            android:gravity="center_vertical"
-                            android:hint="@string/strprogramcourse"
-                            android:padding="@dimen/d20dp"
-                            android:textColorHint="@color/color_text_hint"
-                            android:textSize="20sp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -467,7 +317,6 @@
                 android:layout_marginBottom="@dimen/d10dp"
                 android:layout_marginTop="@dimen/d10dp"
                 android:background="@color/color_white"
-
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/d10dp">
 

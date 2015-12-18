@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.ism.author.R;
 import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.adapter.StudymateRequestAdapter;
+import com.ism.author.adapter.userprofile.StudymateRequestAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
