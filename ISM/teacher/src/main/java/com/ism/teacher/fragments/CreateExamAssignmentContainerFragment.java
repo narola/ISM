@@ -32,9 +32,8 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     private View view;
     private MyTypeFace myTypeFace;
 
-    public static CreateExamAssignmentContainerFragment newInstance(Bundle bundleArgument) {
+    public static CreateExamAssignmentContainerFragment newInstance() {
         CreateExamAssignmentContainerFragment createExamAssignmentContainerFragment = new CreateExamAssignmentContainerFragment();
-        createExamAssignmentContainerFragment.setArguments(bundleArgument);
         return createExamAssignmentContainerFragment;
     }
 
@@ -109,11 +108,10 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
          * setExamDetails(); in AssignmentExam is used to set data using passed args.
          */
 
-        if (getBundleArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)
-                && !getBundleArguments().getBoolean(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
-            initTab(1);
-        } else {
+        if (getBundleArguments().getBoolean(AssignmentExamFragment.ARG_IS_CREATE_EXAM)) {
             initTab(0);
+        } else {
+            initTab(1);
         }
 
     }

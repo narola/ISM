@@ -509,9 +509,9 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         questionBankListAdapter.addAll(questions);
         filterResultsBasedOnSubjects(Integer.valueOf(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID)));
         if (getBundleArguments() != null) {
-            if (getBundleArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
+            if (getBundleArguments().containsKey(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
                 ArrayList<Questions> arrListExamQuestions = getBundleArguments().
-                        getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+                        getParcelableArrayList(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
                 updateQuestionStatusAfterSetDataOfExam(arrListExamQuestions);
             }
         }

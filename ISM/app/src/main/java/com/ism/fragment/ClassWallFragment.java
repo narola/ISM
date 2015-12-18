@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -48,6 +49,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     private PostFeedsAdapter adpPostFeeds;
     private HostActivity activityHost;
     private StudentHelper studentHelper;
+    private Handler mHandler=new Handler();
 
     public static ClassWallFragment newInstance() {
         ClassWallFragment fragment = new ClassWallFragment();
@@ -86,15 +88,24 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
         studentHelper = new StudentHelper(getActivity());
         recyclerPostFeeds.addItemDecoration(itemDecoration);
 
-        callApiGetAllFeeds();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            recyclerPostFeeds.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    Debug.i(TAG, "Scroll : " + scrollX);
-                }
-            });
+
+        if (Utility.isConnected(getActivity())) {
+            callApiGetAllFeeds();
+        } else {
+            Utility.alertOffline(getActivity());
+            setUpData(studentHelper.getFeeds(-1));
         }
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+//            recyclerPostFeeds.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+//                @Override
+//                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//                    Debug.i(TAG, "Scroll : " + scrollX);
+//                }
+//            });
+//        }
+
+
+
         rlNewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,21 +136,31 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     private void callApiLikeFeed() {
         try {
             if (Utility.isConnected(getActivity())) {
-                activityHost.showProgress();
+                //activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes();
+                ArrayList<String> likedId=new ArrayList<>();
+                ArrayList<String> unlikedId=new ArrayList<>();
+                RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes(false);
+                Debug.i(TAG,"realmResSyncFeedLikes size : "+studentHelper.getFeedLikes(false).size());
 //                RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes(Utility.getDateFormateMySql("2015-12-16 9:41:42"), Utility.getDateMySql());
-                for (int i = 0; i < realmResSyncFeedLikes.size(); i++) {
-                    if (realmResSyncFeedLikes.get(i).getLike().equals("1")) {
-                        attribute.getLikedId().add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
-                    } else if (realmResSyncFeedLikes.get(i).getLike().equals("0")) {
-                        attribute.getUnlikedId().add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
+                if (realmResSyncFeedLikes.size() > 0) {
+                    for (int i = 0; i < realmResSyncFeedLikes.size(); i++) {
+                        if (realmResSyncFeedLikes.get(i).getLike().equals("1")) {
+                            likedId.add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
+                        } else if (realmResSyncFeedLikes.get(i).getLike().equals("0")) {
+                            attribute.getUnlikedId().add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
+                            unlikedId.add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
+                        }
                     }
+                    attribute.setLikedId(likedId);
+                    attribute.setUnlikedId(unlikedId);
+                    attribute.setUserId(Global.strUserId);
+                    new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+                            .execute(WebConstants.LIKE_FEED);
+                    Debug.i(TAG, "callApiLikeFeed : record found to sync ");
+                } else {
+                    Debug.i(TAG, "callApiLikeFeed : zero record found to sync ");
                 }
-                attribute.setUserId(Global.strUserId);
-                Debug.i(TAG, "callApiLikeFeed attribtes : " + attribute);
-                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-                        .execute(WebConstants.LIKE_FEED);
             } else {
                 Utility.alertOffline(getActivity());
             }
@@ -148,6 +169,26 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
             Log.e(TAG, "callApiLikeFeed Exception : " + e.toString());
         }
     }
+
+//    public void callApiFeedLikeTask() {
+//        final Handler handler = new Handler();
+//        Timer timer = new Timer();
+//        TimerTask doAsynchronousTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                handler.post(new Runnable() {
+//                    public void run() {
+//                        try {
+//                            callApiLikeFeed();
+//                        } catch (Exception e) {
+//                            // TODO Auto-generated catch block
+//                        }
+//                    }
+//                });
+//            }
+//        };
+//        timer.schedule(doAsynchronousTask, 0, 120000); //execute in every 50000 ms
+//    }
 
     public void callApiGetAllFeeds() {
         try {
@@ -190,6 +231,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     Log.e(TAG, "onResponseGetAllFeeds Success : " + responseHandler.getMessage());
+                    studentHelper.getFeedLikes(true);
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetAllFeeds Failed : " + responseHandler.getMessage());
                 }

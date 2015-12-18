@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -72,7 +73,7 @@ import realmhelper.StudentHelper;
 /**
  * Created by c161 on --/10/15.
  */
-public class HostActivity extends Activity implements FragmentListener, WebserviceWrapper.WebserviceResponse {
+public class HostActivity extends FragmentActivity implements FragmentListener, WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = HostActivity.class.getName();
 
