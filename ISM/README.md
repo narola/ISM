@@ -15,10 +15,10 @@ dependencies {
 Mainly it is using `AppTheme.Base` and it will override this theme in `value-v21` style for so we can use `Material Theme` also 
 in 5.0 (Android-Lolipop).
 
-*value > support below lollipop
-    *style.xml
-*value-v21  > for lollipop
-    *style.xml
+* value > support below lollipop
+    * style.xml
+* value-v21  > for lollipop
+    * style.xml
 
  
 
