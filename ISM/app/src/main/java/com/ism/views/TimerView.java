@@ -2,6 +2,7 @@ package com.ism.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -54,6 +55,11 @@ public class TimerView extends RelativeLayout {
 	public void setTotalTimeMin(int totalTime) {
 		intTotalTimeMilli = totalTime * 60 * 1000;
 		progTime.setMax(totalTime * 60);
+	}
+
+	public void setTotalTimeMilli(long totalTime) {
+		intTotalTimeMilli = (int) totalTime;
+		progTime.setMax((int) totalTime);
 	}
 
 	public void setTimeMilli(int timeMilli) {

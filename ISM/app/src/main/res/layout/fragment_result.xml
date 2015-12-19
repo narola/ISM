@@ -192,28 +192,6 @@
 				android:text="@string/no"
 				android:textSize="@dimen/d18sp"
 				android:textColor="@android:color/white"/>
-
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="2dp"
-				android:background="@color/color_gray_light"
-				android:layout_marginTop="@dimen/score_spacing"
-				android:layout_below="@id/btn_yes"/>
-
-			<Button
-				android:id="@+id/btn_view_evaluation"
-				android:layout_width="match_parent"
-				android:layout_height="50dp"
-				android:layout_below="@id/btn_yes"
-				android:layout_marginTop="@dimen/score_spacing_double"
-				android:layout_marginLeft="@dimen/score_spacing_double"
-				android:layout_marginRight="@dimen/score_spacing_double"
-				android:layout_marginBottom="@dimen/score_spacing"
-				android:background="@drawable/bg_button_blue"
-				android:textSize="@dimen/d18sp"
-				android:text="@string/view_evaluation"
-				android:textColor="@android:color/white"/>
-
 		</RelativeLayout>
 
 		<RelativeLayout
