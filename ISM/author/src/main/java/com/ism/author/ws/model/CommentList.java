@@ -14,7 +14,7 @@ public class CommentList {
     private String commentBy;
     private String comment;
     private String fullName;
-    private String profileLink;
+    private String profilePic;
 
 
     @JsonProperty("created_date")
@@ -62,13 +62,13 @@ public class CommentList {
         this.fullName = fullName;
     }
 
-    @JsonProperty("profile_link")
-    public String getProfileLink() {
-        return this.profileLink;
+    @JsonProperty("profile_pic")
+    public String getProfilePic() {
+        return this.profilePic;
     }
 
-    public void setProfileLink(String profileLink) {
-        this.profileLink = profileLink;
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
 
 

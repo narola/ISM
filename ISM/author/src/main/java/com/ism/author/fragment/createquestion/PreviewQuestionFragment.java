@@ -1,4 +1,4 @@
-package com.ism.author.fragment;
+package com.ism.author.fragment.createquestion;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -19,7 +19,7 @@ import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.PreviewQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -54,7 +54,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     private PreviewQuestionListAdapter previewQuestionListAdapter;
     //    RecyclerListAdapter adapter;
     public ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
-    MyTypeFace myTypeFace;
 
     //this is for the movable recyclerview.
     private ItemTouchHelper mItemTouchHelper;
@@ -70,10 +69,9 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
 
         tvPreviewQuestionlistTitle = (TextView) view.findViewById(R.id.tv_previewquestion_title);
-        tvPreviewQuestionlistTitle.setTypeface(myTypeFace.getRalewayRegular());
+        tvPreviewQuestionlistTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvPreviewQuestionlistFreeze = (TextView) view.findViewById(R.id.tv_preview_questionlist_freeze);
         tvPreviewTotalQuestionTitle = (TextView) view.findViewById(R.id.tv_preview_total_question_title);
         tvPreviewTotalQuestionNo = (TextView) view.findViewById(R.id.tv_preview_total_question_no);
@@ -81,15 +79,15 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         tvPreviewTotalScoreNo = (TextView) view.findViewById(R.id.tv_preview_total_score_no);
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
 
-        tvPreviewQuestionlistFreeze.setTypeface(myTypeFace.getRalewayRegular());
-        tvPreviewTotalQuestionTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvPreviewTotalQuestionNo.setTypeface(myTypeFace.getRalewayBold());
-        tvPreviewTotalScoreTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvPreviewTotalScoreNo.setTypeface(myTypeFace.getRalewayBold());
+        tvPreviewQuestionlistFreeze.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvPreviewTotalQuestionTitle.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvPreviewTotalQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvPreviewTotalScoreTitle.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvPreviewTotalScoreNo.setTypeface(Global.myTypeFace.getRalewayBold());
 
         tvPreviewTotalQuestionNo.setText("0");
         tvPreviewTotalScoreNo.setText("0");
-        tvNoDataMsg.setTypeface(myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvNoDataMsg.setVisibility(View.GONE);
         tvNoDataMsg.setText(getString(R.string.no_preview_questions));
 
@@ -123,36 +121,24 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         arrListQuestions.addAll(arrListExamQuestions);
         previewQuestionListAdapter.addAll(this.arrListQuestions);
 
-        for (Questions question : arrListExamQuestions) {
-            totalScore += Integer.parseInt(question.getQuestionScore());
-            totalQuestions += 1;
-        }
 
+        if (getBaseFragment().getBundleArguments().getBoolean(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE)) {
+            for (Questions question : arrListExamQuestions) {
+                totalScore += Integer.parseInt(question.getQuestionScore());
+                totalQuestions += 1;
+            }
+        } else {
+            Debug.e(TAG, "THE QUESTION SCORE VALUE IS:::" + getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
+
+            totalScore = Integer.parseInt(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE)) * arrListExamQuestions.size();
+            totalQuestions = arrListExamQuestions.size();
+
+        }
         UpdateQuestionInfo();
     }
 
     int totalQuestions = 0;
     int totalScore = 0;
-
-//    int totalQuestions = Integer.parseInt(tvPreviewTotalQuestionNo.getText().toString());
-//    int totalScore = Integer.parseInt(tvPreviewTotalScoreNo.getText().toString());
-
-//    public void UpdateQuestionInfo(Boolean isAdd, int noOfQuestion, int questionScore) {
-//
-//        /*if is add true the increase the total question and total score value other wise decreament it*/
-//        if (isAdd) {
-//            totalQuestions += noOfQuestion;
-//            totalScore += questionScore;
-//
-//        } else {
-//            totalQuestions -= noOfQuestion;
-//            totalScore -= questionScore;
-//        }
-//
-//        tvPreviewTotalQuestionNo.setText(String.valueOf(totalQuestions));
-//        tvPreviewTotalScoreNo.setText(String.valueOf(totalScore));
-//
-//    }
 
     public void UpdateQuestionInfo() {
         if (totalQuestions > 0) {
@@ -204,7 +190,13 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         if (arrListQuestionsToAdd.size() > 0) {
             for (int i = 0; i < arrListQuestionsToAdd.size(); i++) {
                 arrListQuestions.add(arrListQuestionsToAdd.get(i));
-                totalScore += Integer.parseInt(arrListQuestions.get(i).getQuestionScore());
+
+                if (getBaseFragment().getBundleArguments().getBoolean(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE)) {
+                    totalScore += Integer.parseInt(arrListQuestions.get(i).getQuestionScore());
+                } else {
+                    totalScore += Integer.parseInt(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
+                }
+
                 totalQuestions += 1;
             }
             Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS" + arrListQuestions.size());
@@ -216,7 +208,13 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     public void updateQuestionInfoAfterDelete(int questionScore) {
         totalQuestions -= 1;
-        totalScore -= questionScore;
+
+
+        if (getBaseFragment().getBundleArguments().getBoolean(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE)) {
+            totalScore -= questionScore;
+        } else {
+            totalScore -= Integer.parseInt(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
+        }
         UpdateQuestionInfo();
     }
 
@@ -268,8 +266,15 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         if (!isQuestionPresent && isChecked) {
             addQuestionDataAfterAddQuestion(updatedQuestionData);
         } else {
-            totalScore -= Integer.parseInt(prevQuestionData.getQuestionScore());
-            totalScore += Integer.parseInt(updatedQuestionData.getQuestionScore());
+
+            if (getBaseFragment().getBundleArguments().getBoolean(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE)) {
+                totalScore -= Integer.parseInt(prevQuestionData.getQuestionScore());
+                totalScore += Integer.parseInt(updatedQuestionData.getQuestionScore());
+            } else {
+                totalScore -= Integer.parseInt(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
+                totalScore += Integer.parseInt(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
+            }
+
             UpdateQuestionInfo();
         }
     }
@@ -280,7 +285,14 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         previewQuestionListAdapter.addAll(arrListQuestions);
         previewQuestionListAdapter.notifyDataSetChanged();
         totalQuestions += 1;
-        totalScore += Integer.parseInt(question.getQuestionScore());
+
+
+        if (getBaseFragment().getBundleArguments().getBoolean(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE)) {
+            totalScore += Integer.parseInt(question.getQuestionScore());
+        } else {
+            totalScore += Integer.parseInt(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
+        }
+
         UpdateQuestionInfo();
 
     }

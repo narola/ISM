@@ -16,7 +16,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.object.Global;
 
 /**
  * Created by c166 on 28/10/15.
@@ -27,7 +27,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     private static final String TAG = CreateExamAssignmentContainerFragment.class.getSimpleName();
     private View view;
     private FragmentListener fragListener;
-    private MyTypeFace myTypeFace;
 
 
     public static CreateExamAssignmentContainerFragment newInstance() {
@@ -59,7 +58,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
 
         flTabActivity = (FrameLayout) view.findViewById(R.id.fl_tab_activity);
         flTabExam = (FrameLayout) view.findViewById(R.id.fl_tab_exam);
@@ -70,8 +68,8 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         imgSepTabActivity = (ImageView) view.findViewById(R.id.img_sep_tab_activity);
         imgSepTabExam = (ImageView) view.findViewById(R.id.img_sep_tab_exam);
 
-        tvTabActivity.setTypeface(myTypeFace.getRalewayRegular());
-        tvTabExam.setTypeface(myTypeFace.getRalewayRegular());
+        tvTabActivity.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvTabExam.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         flTabActivity.setOnClickListener(new View.OnClickListener() {

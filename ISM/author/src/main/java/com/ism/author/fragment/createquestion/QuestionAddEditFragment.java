@@ -1,15 +1,17 @@
-package com.ism.author.fragment;
+package com.ism.author.fragment.createquestion;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -45,7 +47,6 @@ import com.ism.author.constant.WebConstants;
 import com.ism.author.dialog.AddQuestionTextDialog;
 import com.ism.author.model.HashTagsModel;
 import com.ism.author.object.Global;
-import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.MediaUploadAttribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -58,21 +59,28 @@ import com.ism.author.ws.model.Tags;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import jp.wasabeef.richeditor.RichEditor;
 
 
 /**
  * Created by c166 on 31/10/15.
  */
 public class QuestionAddEditFragment extends Fragment implements TokenCompleteTextView.TokenListener, View.OnClickListener,
-        WebserviceWrapper.WebserviceResponse, AddQuestionTextDialog.SelectMediaListener, AddQuestionTextDialog.AddTextListener {
+        WebserviceWrapper.WebserviceResponse, AddQuestionTextDialog.SelectMediaListener, AddQuestionTextDialog.AddTextListener, RichEditor.OnTextChangeListener {
 
     private static final String TAG = QuestionAddEditFragment.class.getSimpleName();
     private View view;
     Fragment mFragment;
-    private String htmlText;
 
     public QuestionAddEditFragment() {
     }
@@ -85,7 +93,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     /*these is for the tag add functionality.*/
     /*for hashtag you have to manage "hashtagname:hashtagid:status" structure if insert hashtag status=1 and if delete hashtag status=0 */
     /*if you create new hashtag sent hashtag id 0 otherwise tag id get from api*/
-    private ContactsCompletionView tagsView;
+    private ContactsCompletionView tagsView = null;
     private HashTagsModel[] tags;
     private ArrayAdapter<HashTagsModel> tagsAdapter;
     private List<HashTagsModel> listOfDeletedHashTag = new ArrayList<HashTagsModel>();
@@ -102,7 +110,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private LinearLayout llAddMcqanswer, llAddQuestionscore;
     private RelativeLayout rlSelectImage;
 
-    MyTypeFace myTypeFace;
     private InputValidator inputValidator;
     private Boolean isAddMore = false;
 
@@ -110,6 +117,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
     private static int QUESTIONSCORE_INERVAL = 1, QUESTIONSCORE_STARTVALUE = 1, QUESTIONSCORE_ENDVALUE = 5;
     Uri selectedUri = null;
+    String mediaType;
 
 
     @Override
@@ -121,7 +129,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
         inputValidator = new InputValidator(getActivity());
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
@@ -144,17 +151,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         tvAddquestionAdvance.setPaintFlags(tvAddquestionAdvance.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
 
-        tvAddquestionHeader.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvAddquestionType.setTypeface(myTypeFace.getRalewayBold());
-        tvAddquestionCategory.setTypeface(myTypeFace.getRalewayBold());
-        tvEvaluationNote1.setTypeface(myTypeFace.getRalewayRegular());
-        tvEvaluationNote2.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionSave.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionSaveAddmore.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionGotoquestionbank.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionAdvance.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionScore.setTypeface(myTypeFace.getRalewayBold());
+        tvAddquestionHeader.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionTitle.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvAddquestionType.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvAddquestionCategory.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvEvaluationNote1.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvEvaluationNote2.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionSave.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionSaveAddmore.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionGotoquestionbank.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionAdvance.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionScore.setTypeface(Global.myTypeFace.getRalewayBold());
 
         imgSelectImage = (ImageView) view.findViewById(R.id.img_select_image);
         imgPlay = (ImageView) view.findViewById(R.id.img_play);
@@ -172,10 +179,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         etEvaluationNote2 = (EditText) view.findViewById(R.id.et_evaluation_note2);
 
 
-        etAddquestionTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionAnswer.setTypeface(myTypeFace.getRalewayRegular());
-        etEvaluationNote1.setTypeface(myTypeFace.getRalewayRegular());
-        etEvaluationNote2.setTypeface(myTypeFace.getRalewayRegular());
+        etAddquestionTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etEvaluationNote1.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etEvaluationNote2.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         spAddquestionType = (Spinner) view.findViewById(R.id.sp_addquestion_type);
         spExamQuestionScore = (Spinner) view.findViewById(R.id.sp_exam_question_score);
@@ -189,7 +196,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         rlSelectImage.setOnClickListener(this);
 
         chkAddquestionPreview = (CheckBox) view.findViewById(R.id.chk_addquestion_preview);
-        chkAddquestionPreview.setTypeface(myTypeFace.getRalewayRegular());
+        chkAddquestionPreview.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         arrListQuestionType = new ArrayList<String>();
         arrListQuestionType.add(getString(R.string.strquestiontype));
@@ -324,11 +331,47 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
                             }
 
-//                        richText.insertVideo(videoPath);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
 
+                    }
+                    break;
+
+                case AppConstant.REQUEST_CODE_PICK_FROM_GALLERY:
+
+                    if (returnedIntent != null) {
+                        selectedUri = returnedIntent.getData();
+                        String[] columns = {MediaStore.Images.Media.DATA,
+                                MediaStore.Images.Media.MIME_TYPE};
+                        Cursor cursor = getActivity().getContentResolver().query(selectedUri, columns, null, null, null);
+                        cursor.moveToFirst();
+
+                        int mimeTypeColumnIndex = cursor.getColumnIndex(columns[1]);
+                        String mimeType = cursor.getString(mimeTypeColumnIndex);
+                        cursor.close();
+
+                        if (mimeType.startsWith("image")) {
+                            try {
+                                mediaType = AppConstant.MEDIATYPE_IMAGE;
+                                imgSelectImage.setImageURI(selectedUri);
+                                imgPlay.setVisibility(View.GONE);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else if (mimeType.startsWith("video")) {
+                            try {
+                                mediaType = AppConstant.MEDIATYPE_VIDEO;
+                                MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+                                mMediaMetadataRetriever.setDataSource(getActivity(), selectedUri);
+                                Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+                                imgSelectImage.setImageBitmap(bitmap);
+                                imgPlay.setVisibility(View.VISIBLE);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }
                     }
                     break;
             }
@@ -374,8 +417,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         etAddquestionTitle.setText("");
         tvAddquestionAnswer.setText("");
         llAddMcqanswer.removeAllViews();
-        if (tagsView.getObjects().size() > 0) {
-            tagsView.clear();
+        if (tagsView != null) {
+            if (tagsView.getObjects().size() > 0) {
+                tagsView.clear();
+            }
         }
         etEvaluationNote1.setText("");
         etEvaluationNote2.setText("");
@@ -390,8 +435,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         chkAddquestionPreview.setChecked(false);
 
         spAddquestionType.setSelection(1);
+        spExamQuestionScore.setSelection(1);
         imageValidationQuestionType.setVisibility(View.GONE);
-
     }
 
     /*this method is for inflating views for addquestion*/
@@ -646,19 +691,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         return isAnswerSelect;
     }
 
-//    private String getRealPathFromURI(Uri contentURI) {
-//        String result;
-//        Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
-//        if (cursor == null) { // Source is Dropbox or other similar local file path
-//            result = contentURI.getPath();
-//        } else {
-//            cursor.moveToFirst();
-//            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-//            result = cursor.getString(idx);
-//            cursor.close();
-//        }
-//        return result;
-//    }
 
     AddQuestionTextDialog addQuestionTextDialog;
 
@@ -672,7 +704,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     callApiCreateQuestion();
                 }
                 break;
-
             case R.id.tv_addquestion_save_addmore:
 //            if (getBaseFragment().getIsSetQuestionData() && !getBaseFragment().getIsCopy()) {
 //                Debug.e(TAG, "QUESTION EDIT CALLED");
@@ -693,11 +724,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
             case R.id.rl_select_image:
 
-//            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//            intent.setType("*/*");
-//            startActivityForResult(intent, 1);
+//                openImage();
 
-                openImage();
+                /**
+                 * code to pick source from gallery.
+                 */
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("video/*, images/*");
+                startActivityForResult(intent, AppConstant.REQUEST_CODE_PICK_FROM_GALLERY);
                 break;
 
             case R.id.tv_addquestion_gotoquestionbank:
@@ -765,7 +799,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             ((AuthorHostActivity) getActivity()).showProgress();
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), new Attribute(), (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLHASHTAG);
             } catch (Exception e) {
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -869,6 +903,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         }
 
     }
+
 
     private void callApiUploadMediaForQuestion(String questionId, String mediaType, String fileName) {
 //        new MediaUploader(getActivity()).new MediaUploaderCaller().execute(fileName);
@@ -991,7 +1026,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
                     if (selectedUri != null) {
                         Debug.e(TAG, "Thefile path is:" + Utility.getRealPathFromURI(selectedUri, getActivity()));
-                        callApiUploadMediaForQuestion(responseHandler.getQuestion().get(0).getQuestionId(), AppConstant.MEDIATYPE_IMAGE,
+                        callApiUploadMediaForQuestion(responseHandler.getQuestion().get(0).getQuestionId(), mediaType,
                                 Utility.getRealPathFromURI(selectedUri, getActivity()));
                     }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -1202,5 +1237,53 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             arrListQuestionScore.add(String.valueOf(i));
         }
     }
+
+
+    String htmlText;
+    String Text;
+    ArrayList<String> imageSources = new ArrayList<String>();
+
+
+    @Override
+    public void onTextChange(String text) {
+
+
+    }
+
+
+    public void addImage(View view) {
+        imageSources.clear();
+        XmlPullParserFactory factory = null;
+        try {
+            factory = XmlPullParserFactory.newInstance();
+
+            XmlPullParser xpp = factory.newPullParser();
+            Text = Text.replace("&nbsp;", " ");
+            xpp.setInput(new StringReader(Text));
+            int eventType = xpp.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+
+                if (eventType == XmlPullParser.START_TAG && "img".equals(xpp.getName())) {
+                    //found an image start tag, extract the attribute 'src' from here..
+                    String path = xpp.getAttributeValue(0).replace("file://", "");
+                    imageSources.add(path);
+                }
+                eventType = xpp.next();
+            }
+
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void callApiCreateQuestionWithImages() {
+
+
+    }
+
 }
 

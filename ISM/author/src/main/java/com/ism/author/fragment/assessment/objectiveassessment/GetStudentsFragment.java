@@ -1,4 +1,4 @@
-package com.ism.author.fragment;
+package com.ism.author.fragment.assessment.objectiveassessment;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -23,8 +23,8 @@ import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.object.Global;
-import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -50,7 +50,6 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private TextView tvTitleMystudents;
     private RecyclerView rvMystudentList;
     private MyStudentListAdapter myStudentListAdapter;
-    private MyTypeFace myTypeFace;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
 
     @Override
@@ -63,7 +62,6 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
 
         imgSearchMystudents = (ImageView) view.findViewById(R.id.img_search_mystudents);
         etSearchMystudents = (EditText) view.findViewById(R.id.et_search_mystudents);
@@ -73,8 +71,8 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         rvMystudentList.setAdapter(myStudentListAdapter);
         rvMystudentList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        etSearchMystudents.setTypeface(myTypeFace.getRalewayRegular());
-        tvTitleMystudents.setTypeface(myTypeFace.getRalewayRegular());
+        etSearchMystudents.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvTitleMystudents.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         callApiGetExamSubmission();
 
@@ -145,13 +143,13 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
 
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
-                Attribute request = new Attribute();
-                request.setExamId(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setUserId(Global.strUserId);
-                request.setRole(Global.role);
+                Attribute attribute = new Attribute();
+                attribute.setExamId(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                attribute.setUserId(Global.strUserId);
+                attribute.setRole(Global.role);
 
 
-                new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMSUBMISSION);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
