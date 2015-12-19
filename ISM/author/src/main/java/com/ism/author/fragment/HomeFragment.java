@@ -22,6 +22,7 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.activtiy.PostFeedActivity;
 import com.ism.author.adapter.PostFeedsAdapter;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
@@ -123,12 +124,28 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         fragListener = null;
     }
 
-    private void onAttachFileClick(View view) {
+//    private void onAttachFileClick(View view) {
+//
+//        if (view == llPost || view == etWritePost) {
+//            Intent intent = new Intent(getActivity(), PostFeedActivity.class);
+//            startActivity(intent);
+//
+//        }
+//
+//    }
 
+    private void onAttachFileClick(View view) {
         if (view == llPost || view == etWritePost) {
             Intent intent = new Intent(getActivity(), PostFeedActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, AppConstant.REQUEST_CODE_ADD_POST);
 
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == AppConstant.REQUEST_CODE_ADD_POST) {
+            callApiGetAllPostFeeds();
         }
 
     }

@@ -15,8 +15,8 @@ import android.widget.Toast;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
-import com.ism.author.fragment.SubjectiveQuestionsFragment;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveQuestionsFragment;
+import com.ism.author.object.Global;
 import com.ism.author.ws.model.Evaluation;
 import com.ism.author.ws.model.Questions;
 
@@ -31,7 +31,6 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
     private Context mContext;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
-    private MyTypeFace myTypeFace;
     private LayoutInflater inflater;
     private Fragment mFragment;
 
@@ -39,7 +38,6 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     public SubjectiveQuestionListAdapter(Context mContext, Fragment mFragment) {
         this.mContext = mContext;
         inflater = LayoutInflater.from(mContext);
-        myTypeFace = new MyTypeFace(mContext);
         this.mFragment = mFragment;
     }
 
@@ -55,21 +53,21 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
         try {
 
-            holder.tvSubjectiveQuestionNo.setTypeface(myTypeFace.getRalewayBold());
-            holder.tvSubjectiveQuestionScore.setTypeface(myTypeFace.getRalewayBold());
-            holder.tvSubjectiveQuestionComment.setTypeface(myTypeFace.getRalewayBold());
+            holder.tvSubjectiveQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
+            holder.tvSubjectiveQuestionScore.setTypeface(Global.myTypeFace.getRalewayBold());
+            holder.tvSubjectiveQuestionComment.setTypeface(Global.myTypeFace.getRalewayBold());
 
-            holder.tvSubjectiveQuestion.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvSubjectiveQuestionAnsTitle.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvSubjectiveQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvSubjectiveQuesEvaluationNotesTitle.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvSubjectiveQuesEvaluationNotes.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvScoreExcellent.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvScoreGood.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvScoreFair.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvScoreAverage.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvScorePoor.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvScoreIncorrect.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvSubjectiveQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvSubjectiveQuestionAnsTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvSubjectiveQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvSubjectiveQuesEvaluationNotesTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvSubjectiveQuesEvaluationNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvScoreExcellent.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvScoreGood.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvScoreFair.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvScoreAverage.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvScorePoor.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvScoreIncorrect.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
             holder.tvSubjectiveQuestionNo.setText(mContext.getResources().getString(R.string.strquestion) + " : " + (position + 1));

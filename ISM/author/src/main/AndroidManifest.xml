@@ -25,17 +25,6 @@
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-
-        <activity
-            android:name=".activtiy.AuthorHostActivity"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,6 +36,18 @@
             android:name="com.ism.author.activtiy.AuthorProfileInformationActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".activtiy.AuthorHostActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
 
         <activity
             android:name=".activtiy.PostFeedActivity"

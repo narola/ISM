@@ -8,7 +8,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.object.Global;
 
 import java.util.List;
 
@@ -23,7 +23,6 @@ public class Adapters {
     static Integer layout;
 
     public static void setUpSpinner(final Context context, Spinner spinner, List<String> strArr, int ADAPTER_TYPE) {
-        final MyTypeFace myTypeFace = new MyTypeFace(context);
 
         if (ADAPTER_TYPE == ADAPTER_SMALL) {
 
@@ -38,7 +37,7 @@ public class Adapters {
 
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getView(position, convertView, parent);
-                textView.setTypeface(myTypeFace.getRalewayRegular());
+                textView.setTypeface(Global.myTypeFace.getRalewayRegular());
                 if (position == 0) {
                     textView.setTextColor(context.getResources().getColor(R.color.color_text_hint));
                     return textView;
@@ -50,7 +49,7 @@ public class Adapters {
 
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getDropDownView(position, convertView, parent);
-                textView.setTypeface(myTypeFace.getRalewayRegular());
+                textView.setTypeface(Global.myTypeFace.getRalewayRegular());
                 textView.setCompoundDrawables(null, null, null, null);
 
                 if (position == 0) {

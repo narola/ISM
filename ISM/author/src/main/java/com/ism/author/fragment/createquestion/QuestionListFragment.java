@@ -1,4 +1,4 @@
-package com.ism.author.fragment;
+package com.ism.author.fragment.createquestion;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -15,6 +15,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,8 +28,8 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.QuestionBankListAdapter;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.fragment.assessment.objectiveassessment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.author.object.Global;
-import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -66,8 +67,9 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private RecyclerView rvQuestionlist;
     private QuestionBankListAdapter questionBankListAdapter;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
-    private MyTypeFace myTypeFace;
     private ImageView imgSearchQuestions;
+    private RelativeLayout rlSortQuestionBank;
+    public boolean isSorted = false;
 
 
     @Override
@@ -79,7 +81,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
         imgSearchQuestions = (ImageView) view.findViewById(R.id.img_search_questions);
         imgSearchQuestions.setOnClickListener(this);
 
@@ -93,7 +94,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         tvQuestionlistAddNewQuestion = (TextView) view.findViewById(R.id.tv_questionlist_add_new_question);
         tvQuestionlistAddPreview = (TextView) view.findViewById(R.id.tv_questionlist_add_preview);
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
-        tvNoDataMsg.setTypeface(myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvNoDataMsg.setVisibility(View.GONE);
         tvNoDataMsg.setText(getString(R.string.no_questions_in_questionbank));
 
@@ -103,12 +104,16 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         rvQuestionlist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        etSearchQuestions.setTypeface(myTypeFace.getRalewayRegular());
-        tvQuestionlistTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvQuestionlistAddNewQuestion.setTypeface(myTypeFace.getRalewayRegular());
-        tvQuestionlistAddPreview.setTypeface(myTypeFace.getRalewayRegular());
+        etSearchQuestions.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvQuestionlistTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvQuestionlistAddNewQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvQuestionlistAddPreview.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvQuestionlistAddNewQuestion.setOnClickListener(this);
         tvQuestionlistAddPreview.setOnClickListener(this);
+
+
+        rlSortQuestionBank = (RelativeLayout) view.findViewById(R.id.rl_sort_question_bank);
+        rlSortQuestionBank.setOnClickListener(this);
 
 
         arrListFilter = new ArrayList<String>();
@@ -181,6 +186,12 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position >= 1) {
+
+                    if (position == 1) {
+                        isSorted = true;
+                    } else if (position == 2) {
+                        isSorted = false;
+                    }
                     sortQuestions(position);
                 }
             }
@@ -381,6 +392,15 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     Utility.showSoftKeyboard(etSearchQuestions, getActivity());
                 }
                 break;
+
+            case R.id.rl_sort_question_bank:
+                if (!isSorted) {
+                    spQuestionlistSort.setSelection(1);
+                } else {
+                    spQuestionlistSort.setSelection(2);
+                }
+                break;
+
 
         }
     }

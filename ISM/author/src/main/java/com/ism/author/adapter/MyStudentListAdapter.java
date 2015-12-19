@@ -15,8 +15,8 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.fragment.SubjectiveAssignmentQuestionsContainerFragment;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveAssignmentQuestionsContainerFragment;
+import com.ism.author.object.Global;
 import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.model.Examsubmittor;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -32,7 +32,6 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
     private static final String TAG = MyStudentListAdapter.class.getSimpleName();
     private Context mContext;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
-    private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
     private Fragment mFragment;
     private LayoutInflater inflater;
@@ -45,7 +44,6 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
         this.mFragment = mFragment;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
-        myTypeFace = new MyTypeFace(mContext);
         inflater = LayoutInflater.from(mContext);
 
     }
@@ -65,8 +63,8 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
 
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                     holder.imgStudentProfilePic, ISMAuthor.options);
-            holder.tvStudentName.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvStudentRollNo.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvStudentName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvStudentRollNo.setTypeface(Global.myTypeFace.getRalewayRegular());
             holder.tvStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
             holder.tvStudentRollNo.setText(mContext.getResources().getString(R.string.strrollno) + (position + 1));
 

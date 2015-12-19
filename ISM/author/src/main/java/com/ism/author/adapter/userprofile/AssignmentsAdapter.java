@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.object.Global;
 import com.ism.author.ws.helper.ResponseHandler;
 
 
@@ -22,12 +22,11 @@ public class AssignmentsAdapter extends BaseAdapter {
     LayoutInflater inflater;
     ResponseHandler data;
     Fragment fragment;
-    private MyTypeFace myTypeFace;
+
 
     public AssignmentsAdapter(Context context, Fragment fragment) {
         this.context = context;
         this.fragment = fragment;
-        myTypeFace = new MyTypeFace(context);
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -72,17 +71,17 @@ public class AssignmentsAdapter extends BaseAdapter {
             // holder.txtExamType.setBackgroundResource(questionData.getOfficeTabTitleImages()[position]);
 
             // holder.txtViewAll.setText("Exam Type : " + data.getExams().get(position).getExamType());
-            holder.txtViewAll.setTypeface(myTypeFace.getRalewayThin());
+            holder.txtViewAll.setTypeface(Global.myTypeFace.getRalewayThin());
 
             // holder.txtBookName.setText(data.getExams().get(position).getTotalStudent() + " Student");
-            holder.txtBookName.setTypeface(myTypeFace.getRalewayBold());
+            holder.txtBookName.setTypeface(Global.myTypeFace.getRalewayBold());
 
             // holder.txtAssignmentOne.setText(data.getExams().get(position).getTotalStudentAttempted());
-            holder.txtAssignmentOne.setTypeface(myTypeFace.getRalewayBold());
+            holder.txtAssignmentOne.setTypeface(Global.myTypeFace.getRalewayBold());
 
             // holder.txtAssignmentTwo.setText(data.getExams().get(position).getAverageScore() + "%");
-            holder.txtAssignmentTwo.setTypeface(myTypeFace.getRalewayThin());
-            holder.txtAssignmentThree.setTypeface(myTypeFace.getRalewayThin());
+            holder.txtAssignmentTwo.setTypeface(Global.myTypeFace.getRalewayThin());
+            holder.txtAssignmentThree.setTypeface(Global.myTypeFace.getRalewayThin());
             // holder.txtAssignmentThree.setText(data.getExams().get(position).getAverageScore() + "%");
 
 //            convertView.setOnClickListener(new View.OnClickListener() {

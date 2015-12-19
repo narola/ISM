@@ -1,4 +1,4 @@
-package com.ism.author.fragment;
+package com.ism.author.fragment.assessment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -22,7 +22,6 @@ import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
-import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -41,7 +40,6 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
     private ImageView imgToggleList;
     private RecyclerView rvAssignmentSubmittorList;
     private AssignmentSubmittorAdapter assignmentSubmittorAdapter;
-    private MyTypeFace myTypeFace;
     private FragmentListener fragListener;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
 
@@ -63,8 +61,6 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
     }
 
     private void initGlobal() {
-        myTypeFace = new MyTypeFace(getActivity());
-
         tvSubmittorTitle = (TextView) view.findViewById(R.id.tv_submittor_title);
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
@@ -74,8 +70,8 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
         rvAssignmentSubmittorList.setHasFixedSize(true);
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rvAssignmentSubmittorList.setAdapter(assignmentSubmittorAdapter);
-        tvSubmittorTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvNoDataMsg.setTypeface(myTypeFace.getRalewayRegular());
+        tvSubmittorTitle.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvNoDataMsg.setVisibility(View.GONE);
         tvNoDataMsg.setText(getString(R.string.no_exam_submittor));
         tvSubmittorTitle.setText(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
