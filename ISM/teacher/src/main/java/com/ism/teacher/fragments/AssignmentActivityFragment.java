@@ -21,7 +21,6 @@ import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.CreateAssignmentRequest;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -127,7 +126,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
                                                @Override
                                                public void onClick(View v) {
                                                    if (isInputsValid()) {
-                                                       callApiCreateAssignment();
+                                                       //callApiCreateAssignment();
                                                    }
 
 
@@ -243,35 +242,36 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
     }
 
-    private void callApiCreateAssignment() {
-
-        if (Utility.isInternetConnected(getActivity())) {
-
-            try {
-
-                CreateAssignmentRequest createAssignmentRequest = new CreateAssignmentRequest();
-                createAssignmentRequest.setUser_id(WebConstants.USER_ID_370);
-                createAssignmentRequest.setSubmission_date(strDob);
-                createAssignmentRequest.setClassroom_id(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
-                        get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0);
-                createAssignmentRequest.setSubject_id(spActivitySubject.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
-                        get(spActivitySubject.getSelectedItemPosition() - 1).getId()) : 0);
-
-                if (arrListTopic.size() > 1) {
-                    createAssignmentRequest.setTopic_id(spActivityTopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
-                            get(spActivityTopic.getSelectedItemPosition() - 1).getId()) : 0);
-                }
-                createAssignmentRequest.setAssignment_text(strAssignmenttext);
-                new WebserviceWrapper(getActivity(), createAssignmentRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.CREATE_ASSIGNMENT);
-            } catch (Exception e) {
-//                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-            }
-        } else {
-            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
-        }
-
-    }
+//    private void callApiCreateAssignment() {
+//
+//        if (Utility.isInternetConnected(getActivity())) {
+//
+//            try {
+//
+//                Attribute attribute=new Attribute();
+//
+//                attribute.setUser_id(WebConstants.USER_ID_370);
+//                attribute.setSubmission_date(strDob);
+//                attribute.setClassroom_id(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
+//                        get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0);
+//                attribute.setSubject_id(spActivitySubject.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
+//                        get(spActivitySubject.getSelectedItemPosition() - 1).getId()) : 0);
+//
+//                if (arrListTopic.size() > 1) {
+//                    attribute.setTopic_id(spActivityTopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
+//                            get(spActivityTopic.getSelectedItemPosition() - 1).getId()) : 0);
+//                }
+//                attribute.setAssignment_text(strAssignmenttext);
+//                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+//                        .execute(WebConstants.CREATE_ASSIGNMENT);
+//            } catch (Exception e) {
+////                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+//            }
+//        } else {
+//            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+//        }
+//
+//    }
 
     private String strValidationMsg;
 
@@ -445,7 +445,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     public void onClick(View v) {
         if (v == btnActivitySave) {
             if (isInputsValid()) {
-                callApiCreateAssignment();
+                //callApiCreateAssignment();
             }
         } else if (v == btnActivityCancel) {
             backToTrialScreen();

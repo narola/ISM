@@ -28,6 +28,7 @@
     <string name="registration_failed">Registration failed</string>
     <string name="msg_email_exists">Email id already exists.</string>
     <string name="msg_username_exists">Username already exists.</string>
+    <string name="msg_wrong_username_password">Username or Password is wrong!</string>
 
     <!-- All assignments-->
     <string name="straverage_score">Average Score</string>
@@ -205,6 +206,7 @@
     <string name="strcontactnumber">Contact Number</string>
     <string name="strage">Age</string>
     <string name="struploadprofilepicture">UPLOAD PROFILE PICTURE</string>
+    <string name="msg_validation_set_dp"><![CDATA[> Please set your Profile picture.]]></string>
 
     <string name="strschoolinformation">SCHOOL INFORMATION</string>
     <string name="strworkprofileinformation">WORK PROFILE INFORMATION</string>
@@ -227,6 +229,10 @@
 
     <string name="str_education">Education</string>
     <string name="str_specialization">Specialization</string>
+    <string name="msg_offline">You are offline!\nPlease check your internet connection.</string>
+    <string name="connectivity_problem">Connectivity problem!</string>
+    <string name="msg_server_connection">Can\'t connect to server!</string>
+    <string name="msg_success_sent_credential">Request for credentials sent to admin successfully.</string>
 
     <string-array name="list">
         <item>1</item>
@@ -286,7 +292,6 @@
     <string name="straddnew">ADD NEW</string>
     <string name="group_name">"Group Name : "</string>
     <string name="ok">Ok</string>
-    <string name="msg_offline">You are offline!\nPlease check your internet connection.</string>
     <string name="msg_failed_comment">Failed to post comment!, please try again.</string>
 
     <string-array name="filtertype">
@@ -404,6 +409,7 @@
     <string name="stradvance">Advance</string>
     <string name="strtypetext">Type Text</string>
     <string name="strdone">Done</string>
+    <string name="msg_success_imgupload_profilepic">Profile picture added successfully.</string>
     <string name="msg_help_add_advance_question">By Clicking On Advance You could be able to add formatted text containing image,various scientific symbols and many options to format text </string>
     <string name="strtotalquestions">Total Questions:</string>
 

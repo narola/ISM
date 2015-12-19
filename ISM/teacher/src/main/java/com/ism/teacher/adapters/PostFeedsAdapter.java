@@ -16,13 +16,13 @@ import android.widget.Toast;
 
 import com.ism.teacher.ISMTeacher;
 import com.ism.teacher.R;
+import com.ism.teacher.Utility.PreferenceData;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.dialog.TagStudyMatesDialog;
 import com.ism.teacher.dialog.ViewAllCommentsDialog;
-import com.ism.teacher.helper.PreferenceData;
 import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;

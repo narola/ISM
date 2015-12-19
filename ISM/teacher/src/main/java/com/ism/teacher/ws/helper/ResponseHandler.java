@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.teacher.model.Data;
+import com.ism.teacher.ws.model.AdminConfig;
 import com.ism.teacher.ws.model.Cities;
 import com.ism.teacher.ws.model.Classrooms;
 import com.ism.teacher.ws.model.CommentList;
@@ -23,8 +24,10 @@ import com.ism.teacher.ws.model.Questions;
 import com.ism.teacher.ws.model.States;
 import com.ism.teacher.ws.model.Studymates;
 import com.ism.teacher.ws.model.Subjects;
+import com.ism.teacher.ws.model.Token;
 import com.ism.teacher.ws.model.Topics;
 import com.ism.teacher.ws.model.User;
+import com.ism.teacher.ws.model.UserImages;
 
 import java.util.ArrayList;
 
@@ -98,6 +101,9 @@ public class ResponseHandler {
     private ArrayList<Questions> questionBanks;
     private ArrayList<HashTags> tags;
     private ArrayList<Question> question;
+    private UserImages userImages;
+    private ArrayList<Token> token;
+    private ArrayList<AdminConfig> adminConfig;
 
     @JsonProperty("question_bank")
     public ArrayList<Questions> getQuestionBanks() {
@@ -313,6 +319,35 @@ public class ResponseHandler {
 
     public void setFeedImages(ArrayList<Feeds> feedImages) {
         this.feedImages = feedImages;
+    }
+
+    @JsonProperty("user_images")
+    public UserImages getUserImages() {
+        return this.userImages;
+    }
+
+    public void setUserImages(UserImages userImages) {
+        this.userImages = userImages;
+    }
+
+
+    @JsonProperty("token")
+    public ArrayList<Token> getToken() {
+        return this.token;
+    }
+
+    public void setToken(ArrayList<Token> token) {
+        this.token = token;
+    }
+
+
+    @JsonProperty("admin_config")
+    public ArrayList<AdminConfig> getAdminConfig() {
+        return this.adminConfig;
+    }
+
+    public void setAdminConfig(ArrayList<AdminConfig> adminConfig) {
+        this.adminConfig = adminConfig;
     }
 }
 
