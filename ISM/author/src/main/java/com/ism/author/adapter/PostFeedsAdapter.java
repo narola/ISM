@@ -121,6 +121,8 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             @Override
             public void onClick(View v) {
                 String comment = holder.etWriteComment.getText().toString().trim();
+
+
                 if (comment != null && comment.length() > 0) {
                     callApiAddComment(position, comment);
                 }
@@ -297,7 +299,8 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         txtCommenterComment.setText(commentList.getComment());
         txtCommentDuration.setText("5 min");
 
-        Global.imageLoader.displayImage(WebConstants.USER_IMAGES+commentList.getProfileLink(), imgCommenterDp, ISMAuthor.options);
+
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + commentList.getProfilePic(), imgCommenterDp, ISMAuthor.options);
 
         return v;
     }
@@ -308,9 +311,16 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 addCommentFeedPosition = position;
                 Attribute attribute = new Attribute();
                 attribute.setFeedId(arrListFeeds.get(position).getFeedId());
-//                attribute.setCommentBy(WebConstants.TEST_USER_ID);
                 attribute.setCommentBy(Global.strUserId);
                 attribute.setComment(comment);
+
+
+                if (arrListFeeds.get(position).getCommentList().size() < 2) {
+                    CommentList commentToAdd = new CommentList();
+                    commentToAdd.setComment(comment);
+                    arrListFeeds.get(position).getCommentList().add(commentToAdd);
+                }
+
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.ADDCOMMENT);
@@ -420,10 +430,29 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         try {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+
+                Utils.showToast(getActivity().getString(R.string.msg_success_comment_add), getActivity());
                 arrListFeeds.get(addCommentFeedPosition).
                         setTotalComment("" + (Integer.parseInt(arrListFeeds.get(addCommentFeedPosition).getTotalComment()) + 1));
+
+
+                if (arrListFeeds.get(addCommentFeedPosition).getCommentList().size() <= 2) {
+
+                    CommentList addedComment = arrListFeeds.get(addCommentFeedPosition).getCommentList().
+                            get(arrListFeeds.get(addCommentFeedPosition).getCommentList().size() - 1);
+
+                    addedComment.setId(arrListFeeds.get(addCommentFeedPosition).getFeedId());
+                    addedComment.setCommentBy(Global.strUserId);
+                    addedComment.setFullName(Global.strFullName);
+                    addedComment.setProfilePic(Global.strProfilePic);
+                }
+
                 notifyDataSetChanged();
+
+                Utils.showToast(getActivity().getString(R.string.msg_success_comment_add), getActivity());
             } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+
+                arrListFeeds.get(addCommentFeedPosition).getCommentList().remove(arrListFeeds.get(addCommentFeedPosition).getCommentList().size() - 1);
                 Utils.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
             }
         } catch (Exception e) {
@@ -453,6 +482,8 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 if (responseHandler.getStudymates().size() > 0) {
                     TagUserDialog tagUserDialog = new TagUserDialog(getActivity(), responseHandler.getStudymates(), this);
                     tagUserDialog.show();
+                } else {
+                    Utils.showToast(getActivity().getString(R.string.msg_no_studymates), getActivity());
                 }
             } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                 Utils.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());

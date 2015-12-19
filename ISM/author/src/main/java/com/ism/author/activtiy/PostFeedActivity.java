@@ -303,10 +303,11 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             //delete video or audio or image if capture
         } else if (v == txtPost) {
             hideKeyboard();
-            if(etSayIt.getText().toString().length()!=0){
-                callPostFeed();}
-            else{
-                Utility.showToast(this,"Please Write any message to post your feed!");
+
+            if (etSayIt.getText().toString().length() != 0) {
+                callPostFeed();
+            } else {
+                Utility.showToast(this, getString(R.string.msg_empty_post));
             }
         }
     }
@@ -351,7 +352,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 
             }
         } catch (Exception e) {
-            Log.e(TAG + "callPostFeed Exception :", e.getLocalizedMessage() + "");
+            Log.e(TAG + "callPostFeed Exception:", e.getLocalizedMessage() + "");
         }
     }
 
@@ -570,7 +571,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 //
 //    }
 
-//    private void dismissProgressDialog() {
+    //    private void dismissProgressDialog() {
 //        if (pd != null) {
 //            pd.dismiss();
 //        }
@@ -594,8 +595,10 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         if (object != null) {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+
+                Utility.showToast(this, getString(R.string.msg_success_post_feed));
                 feed_id = responseHandler.getFeed().get(0).getFeedId();
-                if (arrayList != null) {
+                if (arrayList != null && arrayList.size() != 0) {
                     for (int i = 0; i < arrayList.size(); i++) {
                         if (arrayList.get(i).getStrFileType().equals("video")) {
                             mediaType = "video";

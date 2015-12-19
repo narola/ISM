@@ -58,7 +58,7 @@ public class WebConstants {
     public static final int UPLOADPROFILEIMAGES = 38;
     public static final int GETADMINCONFIG = 39;
     public static final int REFRESH_TOKEN = 40;
-
+    public static final int GET_HIGH_SCORERS = 41;
 
     //user settings preferences
     public static final int GENERAL_SETTING_PREFERENCES = 51;

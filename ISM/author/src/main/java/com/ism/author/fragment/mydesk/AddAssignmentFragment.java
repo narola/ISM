@@ -24,10 +24,8 @@ public class AddAssignmentFragment extends Fragment {
     private static final String TAG = AddAssignmentFragment.class.getSimpleName();
 
     private View view;
-
     private FragmentListener fragListener;
-    private TextView txtAssignmentInfo, txtSave, txtAssignments;
-    private int currentFragment = -1;
+    private TextView txtAssignmentInfo, txtSave;
     private AuthorHostActivity activityHost;
     private TextView txtCancel;
     private RichTextEditor richtexteditor;

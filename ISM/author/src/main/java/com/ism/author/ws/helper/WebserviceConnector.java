@@ -45,6 +45,7 @@ public class WebserviceConnector {
         Response ret = null;
         try {
             URLConnection connection = new URL(url).openConnection();
+            connection.setRequestProperty("User-Agent", "android");
             connection.setDoOutput(true); // Triggers POST.
 //			connection.setRequestProperty("Accept-Charset", charset);
 //			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
@@ -56,7 +57,7 @@ public class WebserviceConnector {
                 if (request != null) {
                     // writer.writeValueAsString( request );
                     jsonObject = writer.writeValueAsString(request);
-                    Log.i(TAG, "JSON OBJECT : " + jsonObject + "");
+                    Log.i(TAG, "REQUEST JSON OBJECT : " + jsonObject + "");
                 }
 
 
@@ -64,7 +65,7 @@ public class WebserviceConnector {
             try (OutputStream output = connection.getOutputStream()) {
                 output.write(jsonObject.getBytes());
             } catch (Exception error) {
-                Log.i(TAG, "JSON OBJECT  Write: " + jsonObject + "");
+                Log.i(TAG, "JSON OBJECT  Write Exception: " + error.getLocalizedMessage() + "");
             }
 
 

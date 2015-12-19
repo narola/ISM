@@ -124,6 +124,10 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETSTUDYMATES).execute(ResponseHandler.class, attribute);
                                 break;
 
+                            case WebConstants.GET_HIGH_SCORERS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_HIGH_SCORERS).execute(ResponseHandler.class, attribute);
+                                break;
+
                             case WebConstants.TAGFRIENDINFEED:
                                 responseObject = new WebserviceConnector(WebConstants.URL_TAGFRIENDINFEED).execute(ResponseHandler.class, attribute);
                                 break;

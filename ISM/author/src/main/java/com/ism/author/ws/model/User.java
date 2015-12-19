@@ -38,6 +38,26 @@ public class User {
     private String totalBadgesEarned;
 
     private String totalQuestionsAnswered;
+    private String examScore;
+    private String subjectName;
+
+    @JsonProperty("subject_name")
+    public String getSubjectName() {
+        return this.subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    @JsonProperty("exam_score")
+    public String getExamScore() {
+        return this.examScore;
+    }
+
+    public void setExamScore(String examScore) {
+        this.examScore = examScore;
+    }
 
     @JsonProperty("education")
     public String getEducation() {
