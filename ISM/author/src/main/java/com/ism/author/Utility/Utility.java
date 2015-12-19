@@ -35,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.Locale;
 
 /**
@@ -42,10 +43,22 @@ import java.util.Locale;
  */
 public class Utility {
 
+    private static final String TAG = Utility.class.getSimpleName();
+
+
+    private static AlertDialog dialogOffline;
+    private static AlertDialog dialogServerAlert;
+
+    public static final SimpleDateFormat DATE_FORMAT_MY_SQL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_DISPLAY = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-    private static final String TAG = Utility.class.getSimpleName();
-    private static AlertDialog dialogOffline;
+    public static final SimpleDateFormat DATE_FORMAT_DDMMMYY = new SimpleDateFormat("dd MMM yy", Locale.getDefault());
+    public static final SimpleDateFormat DATE_FORMAT_MMMDDYYYY = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+
+    private static StringBuilder mFormatBuilder = new StringBuilder();
+    private static Formatter mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
+    private static InputMethodManager inputMethod;
+
 
     /**
      * Krunal Panchal
@@ -363,6 +376,7 @@ public class Utility {
             Log.e(TAG, "showToast Exception : " + e.toString());
         }
     }
+
     /*
     * Arti Patel
     * */
@@ -370,6 +384,52 @@ public class Utility {
         SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         return curFormater.format(calendar.getTime());
+    }
+
+
+    /**
+     * Krunal Panchal
+     * Alert server can't connect
+     *
+     * @param context
+     */
+    public static void alertServerNotConnected(Context context) {
+        if (dialogServerAlert == null || !dialogServerAlert.isShowing()) {
+            dialogServerAlert = alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
+        }
+    }
+
+    /**
+     * Krunal Panchal
+     * Format date to pass in api with MySql format.
+     *
+     * @param date
+     * @return
+     */
+    public static String formatDateMySql(Date date) {
+        return DATE_FORMAT_MY_SQL.format(date);
+    }
+
+    /**
+     * get the file path from the URI
+     *
+     * @param contentURI
+     * @param mContext
+     * @return
+     */
+
+    public static String getRealPathFromURI(Uri contentURI, Context mContext) {
+        String result;
+        Cursor cursor = mContext.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 
 }

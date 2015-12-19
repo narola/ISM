@@ -4,6 +4,7 @@ package com.ism.author.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.author.ws.model.AdminConfig;
 import com.ism.author.ws.model.AuthorBook;
 import com.ism.author.ws.model.Badges;
 import com.ism.author.ws.model.Books;
@@ -29,11 +30,14 @@ import com.ism.author.ws.model.States;
 import com.ism.author.ws.model.StudymateRequest;
 import com.ism.author.ws.model.Studymates;
 import com.ism.author.ws.model.Subjects;
+import com.ism.author.ws.model.Token;
 import com.ism.author.ws.model.Topics;
 import com.ism.author.ws.model.TrendingQuestion;
 import com.ism.author.ws.model.User;
+import com.ism.author.ws.model.UserImages;
 
 import java.util.ArrayList;
+
 
 /**
  * Created by c166 on 23/10/15.
@@ -105,6 +109,9 @@ public class ResponseHandler {
     private ArrayList<Question> question;
     private ArrayList<HashTags> tags;
     private ArrayList<AuthorBook> authorBook;
+    private ArrayList<Token> token;
+    private ArrayList<AdminConfig> adminConfig;
+    private UserImages userImages;
     FileUploadResponse fileUploadResponse;
 
     @JsonProperty("feeds")
@@ -380,5 +387,36 @@ public class ResponseHandler {
         this.fileUploadResponse = fileUploadResponse;
         return this;
     }
+
+
+    @JsonProperty("token")
+    public ArrayList<Token> getToken() {
+        return this.token;
+    }
+
+    public void setToken(ArrayList<Token> token) {
+        this.token = token;
+    }
+
+
+    @JsonProperty("admin_config")
+    public ArrayList<AdminConfig> getAdminConfig() {
+        return this.adminConfig;
+    }
+
+    public void setAdminConfig(ArrayList<AdminConfig> adminConfig) {
+        this.adminConfig = adminConfig;
+    }
+
+    @JsonProperty("user_images")
+    public UserImages getUserImages() {
+        return this.userImages;
+    }
+
+    public void setUserImages(UserImages userImages) {
+        this.userImages = userImages;
+    }
+
+
 }
 

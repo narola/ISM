@@ -413,7 +413,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, homeFragment).commit();
                     break;
                 case FRAGMENT_TUTORIAL:
-	                QuestionPaletteFragment questionPaletteFragment = QuestionPaletteFragment.newInstance();
+	                QuestionPaletteFragment questionPaletteFragment = QuestionPaletteFragment.newInstance(true);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance(questionPaletteFragment)).commit();
 	                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 	                fragmentTransaction.addToBackStack(QuestionPaletteFragment.class.getSimpleName());

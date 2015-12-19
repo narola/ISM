@@ -36,8 +36,8 @@
 
 	<RelativeLayout
 		android:id="@+id/rl_tutorialmate_question"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_width="600dp"
+		android:layout_height="wrap_content"
 		android:layout_below="@id/rl_header"
 		android:background="@drawable/bg_white_border_gray"
 		android:layout_centerInParent="true"
@@ -59,7 +59,7 @@
 
 		<LinearLayout
 			android:id="@+id/ll_options"
-			android:layout_width="350dp"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/txt_title"
 			android:orientation="vertical">
@@ -139,6 +139,7 @@
 				android:background="@drawable/bg_edit_gray"/>
 
 			<View
+				android:id="@+id/view_indicator"
 				android:layout_width="30dp"
 				android:layout_height="79dp"
 				android:layout_marginTop="-2dp"
@@ -416,13 +417,11 @@
 				android:textColor="@color/white"
 				android:layout_marginTop="50dp"
 				android:layout_below="@id/txt_upload_msg"
-				android:layout_gravity="center_horizontal"
 				android:paddingLeft="20dp"
 				android:paddingRight="20dp"
 				android:textSize="20sp"
 				android:background="@drawable/bg_button_green_light"
-				android:layout_centerHorizontal="true"
-				android:layout_alignParentRight="true"/>
+				android:layout_centerHorizontal="true"/>
 
 			<View
 				android:layout_width="30dp"
