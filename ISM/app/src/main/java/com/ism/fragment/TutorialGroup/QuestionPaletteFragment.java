@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,15 @@ import com.ism.model.QuestionObjectiveTest;
 import com.ism.model.TutorialGroupMemberTest;
 import com.ism.views.TimerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import model.AdminConfig;
+import realmhelper.StudentHelper;
 
 /**
  * Created by c161 on 14/10/15.
@@ -49,12 +58,15 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	private ArrayList<QuestionObjectiveTest> arrListQuestions;
 	private TutorialGroupAdapter adpTutorialGroup;
 	private ArrayList<TutorialGroupMemberTest> arrListMembers;
+	private StudentHelper studentHelper;
 
 	private int intTimeLeft;
-	private int intExamDurationMilli;
+	private long longExamDurationMilli;
+	private boolean setActiveHours;
 
-	public static QuestionPaletteFragment newInstance() {
+	public static QuestionPaletteFragment newInstance(boolean setActiveHours) {
 		QuestionPaletteFragment fragment = new QuestionPaletteFragment();
+		fragment.setActiveHours = setActiveHours;
 		return fragment;
 	}
 
@@ -82,6 +94,60 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 		btnEndTest = (Button) view.findViewById(R.id.btn_end_test);
 		timerViewExam = (TimerView) view.findViewById(R.id.timer_exam);
 
+		studentHelper = new StudentHelper(getActivity());
+
+		if (setActiveHours) {
+			Calendar cal = Calendar.getInstance();
+//			cal.set(Calendar.HOUR, 11);
+//			cal.set(Calendar.MINUTE, 10);
+//			cal.set(Calendar.AM_PM, Calendar.AM);
+			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+				try {
+					AdminConfig configStartTime = studentHelper.getActiveHoursStartTime();
+					SimpleDateFormat DATE_FORMAT_TIME = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+					Calendar calStartTime = Calendar.getInstance();
+					String startTime = configStartTime.getConfigValue() + " " + configStartTime.getValueUnit();
+//					String startTime = "11:21 am";
+					Date date = DATE_FORMAT_TIME.parse(startTime);
+					calStartTime.set(Calendar.HOUR_OF_DAY, date.getHours());
+					calStartTime.set(Calendar.MINUTE, date.getMinutes());
+
+					if (cal.after(calStartTime)) {
+						AdminConfig configEndTime = studentHelper.getActiveHoursEndTime();
+						String endTime = configEndTime.getConfigValue() + " " + configEndTime.getValueUnit();
+//						String endTime = "02:15 pm";
+						Date endDate = DATE_FORMAT_TIME.parse(endTime);
+
+						Calendar calEndTime = Calendar.getInstance();
+						calEndTime.set(Calendar.HOUR_OF_DAY, endDate.getHours());
+						calEndTime.set(Calendar.MINUTE, endDate.getMinutes());
+
+						if (cal.before(calEndTime)) {
+							longExamDurationMilli = calEndTime.getTimeInMillis() - cal.getTimeInMillis();
+							timerViewExam.setTotalTimeMilli(longExamDurationMilli);
+							timerExam = new CountDownTimer(longExamDurationMilli, 1000) {
+
+								@Override
+								public void onTick(long millisUntilFinished) {
+									intTimeLeft = (int) millisUntilFinished;
+									timerViewExam.setTimeMilli(intTimeLeft);
+								}
+
+								@Override
+								public void onFinish() {
+									timerViewExam.setTimeMilli(0);
+									end();
+								}
+							};
+							timerExam.start();
+						}
+					}
+				} catch (ParseException e) {
+					Log.e(TAG, "date parsing Exception : " + e.toString());
+				}
+			}
+		}
+
 		arrListMembers = TutorialGroupMemberTest.getTutorialGroupMembers();
 		adpTutorialGroup = new TutorialGroupAdapter(getActivity(), arrListMembers);
 		lvTutorialGroup.setAdapter(adpTutorialGroup);
@@ -102,9 +168,9 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	@Override
 	public void startTest(ArrayList<QuestionObjectiveTest> questions, ExamFragment examFragment) {
 		try {
-			intExamDurationMilli = examFragment.getExamDurationMinutes() * 60 * 1000;
+			/*longExamDurationMilli = examFragment.getExamDurationMinutes() * 60 * 1000;
 			timerViewExam.setTotalTimeMin(examFragment.getExamDurationMinutes());
-			timerExam = new CountDownTimer( intExamDurationMilli, 1000) {
+			timerExam = new CountDownTimer(longExamDurationMilli, 1000) {
 				@Override
 				public void onTick(long millisUntilFinished) {
 					intTimeLeft = (int) millisUntilFinished;
@@ -117,7 +183,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 					end();
 				}
 			};
-			timerExam.start();
+			timerExam.start();*/
 			fragExam = examFragment;
 			lvTutorialGroup.setVisibility(View.GONE);
 			rlQuestionPalette.setVisibility(View.VISIBLE);
@@ -149,7 +215,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 				arrListQuestions.get(i).setIsReviewLater(false);
 				arrListQuestions.get(i).setIsSkipped(false);
 			}
-			int timeSpent = (intExamDurationMilli - intTimeLeft) / 60000;
+			int timeSpent = (int) ((longExamDurationMilli - intTimeLeft) / 60000);
 			fragExam.getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ResultFragment.newInstance(arrListQuestions, fragExam.isShowGraph(), timeSpent)).commit();
 //			getFragmentManager().beginTransaction().remove(this).commit();
 		} catch (Exception e) {

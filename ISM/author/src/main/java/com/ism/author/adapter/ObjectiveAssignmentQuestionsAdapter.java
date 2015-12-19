@@ -15,7 +15,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.object.Global;
 import com.ism.author.ws.model.Answers;
 import com.ism.author.ws.model.Evaluation;
 import com.ism.author.ws.model.Questions;
@@ -30,14 +30,12 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
     private static final String TAG = ObjectiveAssignmentQuestionsAdapter.class.getSimpleName();
     private Context mContext;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
-    private MyTypeFace myTypeFace;
     private LayoutInflater inflater;
 
 
     public ObjectiveAssignmentQuestionsAdapter(Context context) {
         this.mContext = context;
         inflater = LayoutInflater.from(context);
-        myTypeFace = new MyTypeFace(context);
     }
 
     @Override
@@ -51,20 +49,20 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
     public void onBindViewHolder(ViewHolder holder, int position) {
         try {
 
-            holder.txtQuestionNo.setTypeface(myTypeFace.getRalewayBold());
-            holder.txtQuestionText.setTypeface(myTypeFace.getRalewayRegular());
-            holder.txtCorrectAnswer.setTypeface(myTypeFace.getRalewayBold());
-            holder.txtAnswer.setTypeface(myTypeFace.getRalewayRegular());
-            holder.txtStudentnameAnswer.setTypeface(myTypeFace.getRalewayBold());
-            holder.txtStudentAnswer.setTypeface(myTypeFace.getRalewayRegular());
-            holder.txtEvoluationsNotes.setTypeface(myTypeFace.getRalewayBold());
-            holder.txtSolution.setTypeface(myTypeFace.getRalewayBold());
+            holder.txtQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
+            holder.txtQuestionText.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.txtCorrectAnswer.setTypeface(Global.myTypeFace.getRalewayBold());
+            holder.txtAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.txtStudentnameAnswer.setTypeface(Global.myTypeFace.getRalewayBold());
+            holder.txtStudentAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.txtEvoluationsNotes.setTypeface(Global.myTypeFace.getRalewayBold());
+            holder.txtSolution.setTypeface(Global.myTypeFace.getRalewayBold());
 
-            holder.etEvoluationsNotes.setTypeface(myTypeFace.getRalewayRegular());
-            holder.etSolution.setTypeface(myTypeFace.getRalewayRegular());
+            holder.etEvoluationsNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.etSolution.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             holder.txtQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
-            holder.txtQuestionNo.setTypeface(myTypeFace.getRalewayBold());
+            holder.txtQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
             holder.txtQuestionNo.setPaintFlags(holder.txtQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             holder.txtQuestionText.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
@@ -200,7 +198,7 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
         View v;
         v = layoutInflater.inflate(R.layout.row_mcq_question_answer, null, false);
         TextView tvMcqQuestionAns = (TextView) v.findViewById(R.id.tv_mcq_question_ans);
-        tvMcqQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
+        tvMcqQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvMcqQuestionAns.setText(Utils.formatHtml(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
 
         return v;

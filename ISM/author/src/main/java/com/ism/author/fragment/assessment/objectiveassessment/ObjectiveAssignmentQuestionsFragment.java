@@ -1,4 +1,4 @@
-package com.ism.author.fragment;
+package com.ism.author.fragment.assessment.objectiveassessment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -24,7 +24,7 @@ import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.createexam.CreateExamFragment;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -41,7 +41,6 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
 
     private static final String TAG = ObjectiveAssignmentQuestionsFragment.class.getSimpleName();
     private View view;
-    private MyTypeFace myTypeFace;
     private FragmentListener fragListener;
 
     private TextView tvObjectiveAssignmentSubject, tvObjectiveAssignmentClass, tvObjectiveAssignmentNo, tvObjectiveAssignmentTitle,
@@ -76,7 +75,6 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
 
         tvObjectiveAssignmentSubject = (TextView) view.findViewById(R.id.tv_objective_assignment_subject);
         tvObjectiveAssignmentClass = (TextView) view.findViewById(R.id.tv_objective_assignment_class);
@@ -89,13 +87,13 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         imgEditExam = (ImageView) view.findViewById(R.id.img_edit_exam);
         imgCopyExam = (ImageView) view.findViewById(R.id.img_copy_exam);
 
-        tvObjectiveAssignmentSubject.setTypeface(myTypeFace.getRalewayRegular());
-        tvObjectiveAssignmentClass.setTypeface(myTypeFace.getRalewayRegular());
-        tvObjectiveAssignmentNo.setTypeface(myTypeFace.getRalewayRegular());
-        tvObjectiveAssignmentTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvObjectiveAssignmentDateTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvObjectiveAssignmentDate.setTypeface(myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setTypeface(myTypeFace.getRalewayRegular());
+        tvObjectiveAssignmentSubject.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvObjectiveAssignmentClass.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvObjectiveAssignmentNo.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvObjectiveAssignmentTitle.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvObjectiveAssignmentDateTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvObjectiveAssignmentDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvNoDataMsg.setVisibility(View.GONE);
         tvNoDataMsg.setText(getString(R.string.no_exam_questions));
 
@@ -150,9 +148,9 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
-                Attribute request = new Attribute();
-                request.setExamId(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setExamId(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -169,10 +167,10 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
-                Attribute request = new Attribute();
-                request.setExamId(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setStudentId(getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
-                new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setExamId(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
+                attribute.setStudentId(getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());

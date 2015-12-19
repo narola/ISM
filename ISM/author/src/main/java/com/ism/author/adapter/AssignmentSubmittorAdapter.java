@@ -15,7 +15,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.object.Global;
 import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.model.Examsubmittor;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -31,7 +31,6 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
     private static final String TAG = AssignmentSubmittorAdapter.class.getSimpleName();
     private Context mContext;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
-    private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
     private LayoutInflater inflater;
 
@@ -45,7 +44,6 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
         this.mContext = mContext;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(this.mContext));
-        myTypeFace = new MyTypeFace(mContext);
         inflater = LayoutInflater.from(mContext);
     }
 
@@ -62,12 +60,12 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         try {
-            holder.tvAssignmentSubmittorName.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvAssignmentSubmittorRollno.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvAssignmentSubmissionDate.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvSubmissionDate.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvAssessmentStatus.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvStatus.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvAssignmentSubmittorName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvAssignmentSubmittorRollno.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvAssignmentSubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvSubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvAssessmentStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                     holder.imgAssignmentSubmittorDp, ISMAuthor.options);

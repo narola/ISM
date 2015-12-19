@@ -37,7 +37,6 @@ public class ResultFragment extends Fragment {
 	private Button btnViewAnswers;
 	private Button btnYes;
 	private Button btnNo;
-	private Button btnViewEvaluation;
 	private Button btnViewEvaluationGraph;
 	private ListView lvGraph;
 
@@ -90,7 +89,6 @@ public class ResultFragment extends Fragment {
 		btnViewAnswers = (Button) view.findViewById(R.id.btn_answers);
 		btnYes = (Button) view.findViewById(R.id.btn_yes);
 		btnNo = (Button) view.findViewById(R.id.btn_no);
-		btnViewEvaluation = (Button) view.findViewById(R.id.btn_view_evaluation);
 		btnViewEvaluationGraph = (Button) view.findViewById(R.id.btn_view_evaluation_graph);
 		lvGraph = (ListView) view.findViewById(R.id.lv_result_graph);
 
@@ -120,13 +118,6 @@ public class ResultFragment extends Fragment {
 			}
 		});
 
-		btnViewEvaluation.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
-
 		btnViewEvaluationGraph.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -136,7 +127,6 @@ public class ResultFragment extends Fragment {
 
 		if (isShowGraph) {
 			rlResultGraph.setVisibility(View.VISIBLE);
-//			btnViewEvaluation.setVisibility(View.GONE);
 			SubjectScoreAdapter adpScore = new SubjectScoreAdapter(getActivity(), SubjectScoreTest.getSubjectScore());
 			lvGraph.setAdapter(adpScore);
 		}

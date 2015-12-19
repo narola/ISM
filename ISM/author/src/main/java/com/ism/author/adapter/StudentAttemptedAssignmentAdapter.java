@@ -13,7 +13,7 @@ import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.object.Global;
 import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.model.Examsubmittor;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -29,7 +29,7 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
     private static final String TAG = StudentAttemptedAssignmentAdapter.class.getSimpleName();
     private Context mContext;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
-    private MyTypeFace myTypeFace;
+
     private ImageLoader imageLoader;
     private LayoutInflater inflater;
 
@@ -38,7 +38,6 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
         this.mContext = mContext;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
-        myTypeFace = new MyTypeFace(mContext);
         inflater = LayoutInflater.from(mContext);
     }
 
@@ -55,39 +54,39 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
 
         try {
 
-        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
-                holder.imgUserPic, ISMAuthor.options);
+            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
+                    holder.imgUserPic, ISMAuthor.options);
 
-        holder.txtStudentName.setTypeface(myTypeFace.getRalewayBold());
-        holder.txtStudentSchool.setTypeface(myTypeFace.getRalewayRegular());
-        holder.txtStudentMarks.setTypeface(myTypeFace.getRalewayRegular());
-        holder.txtStudentClass.setTypeface(myTypeFace.getRalewayRegular());
+            holder.txtStudentName.setTypeface(Global.myTypeFace.getRalewayBold());
+            holder.txtStudentSchool.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.txtStudentMarks.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.txtStudentClass.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-        holder.txtStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
+            holder.txtStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
 //            holder.txtStudentSchool.setText(arrListExamSubmittor.get(position).getSchoolName());
-        holder.txtStudentMarks.setText(arrListExamSubmittor.get(position).getEvaluationScore());
+            holder.txtStudentMarks.setText(arrListExamSubmittor.get(position).getEvaluationScore());
 
-        if (getBundleArguments().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_ID)) {
-            if (getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
-                holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.fragment_background_color));
-                holder.txt_bottom_line.setBackgroundColor(mContext.getResources().getColor(R.color.color_blue));
-            } else {
-                holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.color_white));
-                holder.txt_bottom_line.setBackgroundColor(mContext.getResources().getColor(R.color.border_gray));
+            if (getBundleArguments().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_ID)) {
+                if (getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
+                    holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.fragment_background_color));
+                    holder.txt_bottom_line.setBackgroundColor(mContext.getResources().getColor(R.color.color_blue));
+                } else {
+                    holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.color_white));
+                    holder.txt_bottom_line.setBackgroundColor(mContext.getResources().getColor(R.color.border_gray));
+                }
             }
-        }
 
-        holder.llMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            holder.llMain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
                     /*this is to select the current student*/
-                setBundleArgument(position);
-                notifyDataSetChanged();
-                ((AuthorHostActivity) mContext).loadStudentEvaluationData();
+                    setBundleArgument(position);
+                    notifyDataSetChanged();
+                    ((AuthorHostActivity) mContext).loadStudentEvaluationData();
 
-            }
-        });
+                }
+            });
 
 //
         } catch (Exception e) {

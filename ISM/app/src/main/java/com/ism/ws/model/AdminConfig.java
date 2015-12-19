@@ -13,6 +13,7 @@ public class AdminConfig {
 	
     private String configValue;
     private String configKey;
+    private String valueUnit;
 
     @JsonProperty("config_value")
     public String getConfigValue() {
@@ -32,4 +33,12 @@ public class AdminConfig {
         this.configKey = configKey;
     }
 
+    @JsonProperty("value_unit")
+    public String getValueUnit() {
+        return valueUnit;
+    }
+
+    public void setValueUnit(String valueUnit) {
+        this.valueUnit = valueUnit;
+    }
 }

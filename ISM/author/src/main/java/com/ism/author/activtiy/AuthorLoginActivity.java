@@ -28,7 +28,7 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.broadcastReceiver.NetworkStatusReceiver;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.NetworkStateListener;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -69,7 +69,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
     private AlertDialog dialogCredentials;
     private ProgressGenerator progressGenerator;
     private AlertDialog dialogForgotPassword;
-    private MyTypeFace myTypeFace;
+
     private AuthorHelper authorHelper;
 
     private String strValidationMsg;
@@ -126,7 +126,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
     }
 
     private void initGlobal() {
-        myTypeFace = new MyTypeFace(this);
+
         btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
         etPwd = (EditText) findViewById(R.id.et_pwd);
         etUserName = (EditText) findViewById(R.id.et_userid);
@@ -138,11 +138,11 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 //        etPwd.setText("narola21");
 
 
-        etUserName.setTypeface(myTypeFace.getRalewayRegular());
-        etPwd.setTypeface(myTypeFace.getRalewayRegular());
-        ((TextView) findViewById(R.id.txt_donothave)).setTypeface(myTypeFace.getRalewayRegular());
-        ((TextView) findViewById(R.id.txt_clickhere)).setTypeface(myTypeFace.getRalewayRegular());
-        ((TextView) findViewById(R.id.txt_forgotpwd)).setTypeface(myTypeFace.getRalewayRegular());
+        etUserName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etPwd.setTypeface(Global.myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_donothave)).setTypeface(Global.myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_clickhere)).setTypeface(Global.myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_forgotpwd)).setTypeface(Global.myTypeFace.getRalewayRegular());
 
         inputValidator = new InputValidator(getActivity());
 
@@ -386,7 +386,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             progCountry.setVisibility(View.VISIBLE);
             progCountry.setProgress(1);
             progressGenerator.start(progCountry);
-            new WebserviceWrapper(getActivity(), null, this).new WebserviceCaller()
+            new WebserviceWrapper(getActivity(), new Attribute(), this).new WebserviceCaller()
                     .execute(WebConstants.GETCOUNTRIES);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());

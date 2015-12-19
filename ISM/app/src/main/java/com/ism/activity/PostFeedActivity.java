@@ -303,10 +303,10 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             //delete video or audio or image if capture
         } else if (v == txtPost) {
             hideKeyboard();
-            if(etSayIt.getText().toString().length()!=0){
-            callPostFeed();}
-            else{
-                Utility.showToast(this,"Please Write any message to post your feed!");
+            if (etSayIt.getText().toString().length() != 0) {
+                callPostFeed();
+            } else {
+                Utility.showToast(this, "Please Write any message to post your feed!");
             }
         }
     }

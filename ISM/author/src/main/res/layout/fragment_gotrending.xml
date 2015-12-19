@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:mContext="com.ism.author.fragment.gotrading.GoTrendingFragment">
+    tools:mContext="com.ism.author.fragment.gotrending.GoTrendingFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

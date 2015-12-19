@@ -1,4 +1,4 @@
-package com.ism.author.fragment;
+package com.ism.author.fragment.assessment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -26,7 +26,6 @@ import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
-import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -50,7 +49,6 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private ExamsAdapter examsAdapter;
     private ArrayList<Exams> arrListExams = new ArrayList<Exams>();
     private ArrayList<Exams> copyListExams = new ArrayList<>();
-    private MyTypeFace myTypeFace;
     private FragmentListener fragListener;
     private Spinner spExamAuthorBooks, spExamClass, spExamEvaluationStatus;
     private ImageView imgToggleList;
@@ -80,7 +78,6 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     private void initGlobal() {
-        myTypeFace = new MyTypeFace(getActivity());
 
         rvExamsList = (RecyclerView) view.findViewById(R.id.rv_exams_list);
         examsAdapter = new ExamsAdapter(getActivity());
@@ -104,12 +101,12 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         etExamEnddate = (EditText) view.findViewById(R.id.et_exam_startTime);
 
 
-        txtSubmissionDate.setTypeface(myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setTypeface(myTypeFace.getRalewayRegular());
+        txtSubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvNoDataMsg.setVisibility(View.GONE);
         tvNoDataMsg.setText(getString(R.string.no_exams));
-        etExamStartdate.setTypeface(myTypeFace.getRalewayRegular());
-        etExamEnddate.setTypeface(myTypeFace.getRalewayRegular());
+        etExamStartdate.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etExamEnddate.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         etExamStartdate.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -265,11 +262,11 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
-                Attribute request = new Attribute();
-                request.setUserId(Global.strUserId);
-                request.setRole(Global.role);
-                request.setExamCategory("");
-                new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setUserId(Global.strUserId);
+                attribute.setRole(Global.role);
+                attribute.setExamCategory("");
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLASSIGNMENTS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -284,7 +281,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         if (Utility.isConnected(getActivity())) {
             try {
 
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), new Attribute(), (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLCLASSROOMS);
 
             } catch (Exception e) {

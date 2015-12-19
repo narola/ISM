@@ -23,7 +23,6 @@ import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.Global;
-import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -65,7 +64,6 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     private List<String> arrListDefalt;
     private String strSubmissionDate;
 
-    private MyTypeFace myTypeFace;
     private InputValidator inputValidator;
 
     private RichTextEditor rteTrialActivity;
@@ -81,7 +79,6 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
         inputValidator = new InputValidator(getActivity());
 
         tvActivityTitle = (TextView) view.findViewById(R.id.tv_activity_title);
@@ -104,18 +101,18 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         spActivityTopic = (Spinner) view.findViewById(R.id.sp_activity_topic);
 
 
-        tvActivityTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivityAssignmentname.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivityCoursename.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivityClass.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivitySubject.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivitySubmissiondate.setTypeface(myTypeFace.getRalewayRegular());
-        etActivitySubmissionDate.setTypeface(myTypeFace.getRalewayRegular());
-        etActivityAssignmentname.setTypeface(myTypeFace.getRalewayRegular());
-        etActivityCoursename.setTypeface(myTypeFace.getRalewayRegular());
-        btnActivitySave.setTypeface(myTypeFace.getRalewayRegular());
-        btnActivityCancel.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivityTopic.setTypeface(myTypeFace.getRalewayRegular());
+        tvActivityTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityAssignmentname.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityCoursename.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityClass.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivitySubject.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivitySubmissiondate.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etActivitySubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etActivityAssignmentname.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etActivityCoursename.setTypeface(Global.myTypeFace.getRalewayRegular());
+        btnActivitySave.setTypeface(Global.myTypeFace.getRalewayRegular());
+        btnActivityCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityTopic.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         btnActivitySave.setOnClickListener(this);
@@ -175,7 +172,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), new Attribute(), (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLCLASSROOMS);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -190,7 +187,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), new Attribute(), (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLSUBJECT);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
