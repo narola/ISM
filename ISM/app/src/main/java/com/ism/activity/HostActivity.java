@@ -129,7 +129,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     public static final int FRAGMENT_ALL_MESSAGE = 16;
     public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 17;
     public static final int FRAGMENT_EDIT_PROFILE = 18;
-    private int currentMainFragment;
+    private int currentMainFragment = -1;
     private int currentRightFragment;
     private int currentMainFragmentBg;
     private ArrayList<NotificationSetting> arrayListNotificationSettings = new ArrayList<>();
@@ -408,33 +408,45 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
-                    ClassroomFragment homeFragment = ClassroomFragment.newInstance(FRAGMENT_HOME);
-                    listenerHost = homeFragment;
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, homeFragment).commit();
+                    if (currentMainFragment != fragment) {
+                        ClassroomFragment homeFragment = ClassroomFragment.newInstance(FRAGMENT_HOME);
+                        listenerHost = homeFragment;
+                        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, homeFragment).commit();
+                    }
                     break;
                 case FRAGMENT_TUTORIAL:
-	                QuestionPaletteFragment questionPaletteFragment = QuestionPaletteFragment.newInstance(true);
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance(questionPaletteFragment)).commit();
-	                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-	                fragmentTransaction.addToBackStack(QuestionPaletteFragment.class.getSimpleName());
-			        fragmentTransaction.replace(R.id.fl_fragment_container_right, questionPaletteFragment).commit();
-	                imgNotes.setActivated(false);
-	                imgStudyMates.setActivated(false);
-	                imgChat.setActivated(false);
+	                if (currentMainFragment != fragment) {
+		                QuestionPaletteFragment questionPaletteFragment = QuestionPaletteFragment.newInstance(true);
+		                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance(questionPaletteFragment)).commit();
+		                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		                fragmentTransaction.addToBackStack(QuestionPaletteFragment.class.getSimpleName());
+		                fragmentTransaction.replace(R.id.fl_fragment_container_right, questionPaletteFragment).commit();
+		                imgNotes.setActivated(false);
+		                imgStudyMates.setActivated(false);
+		                imgChat.setActivated(false);
+	                }
                     break;
                 case FRAGMENT_CLASSROOM:
-                    ClassroomFragment classroomFragment = ClassroomFragment.newInstance(FRAGMENT_CLASSROOM);
-                    listenerHost = classroomFragment;
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, classroomFragment).commit();
+	                if (currentMainFragment != fragment) {
+		                ClassroomFragment classroomFragment = ClassroomFragment.newInstance(FRAGMENT_CLASSROOM);
+		                listenerHost = classroomFragment;
+		                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, classroomFragment).commit();
+	                }
                     break;
                 case FRAGMENT_ASSESSMENT:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AssessmentFragment.newInstance()).commit();
+	                if (currentMainFragment != fragment) {
+		                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AssessmentFragment.newInstance()).commit();
+	                }
                     break;
                 case FRAGMENT_DESK:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, DeskFragment.newInstance()).commit();
+	                if (currentMainFragment != fragment) {
+		                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, DeskFragment.newInstance()).commit();
+	                }
                     break;
                 case FRAGMENT_REPORT_CARD:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ReportCardFragment.newInstance()).commit();
+	                if (currentMainFragment != fragment) {
+		                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ReportCardFragment.newInstance()).commit();
+	                }
                     break;
                 case FRAGMENT_NOTES:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, AccordionFragment.newInstance()).commit();
