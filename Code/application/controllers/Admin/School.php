@@ -18,7 +18,7 @@ class School extends ADMIN_Controller {
     /* ---------------------------- School Module Start -------------------------------------------- */
 
     /**
-     * function index() have all users listing using codeigniter pagination limit of 15 users per page
+     * function index() have all schools listing using codeigniter pagination limit of 15 users per page
      *
      * */
     public function index() {

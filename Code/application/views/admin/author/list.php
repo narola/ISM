@@ -157,6 +157,10 @@
     jQuery(document).ready(function($) {
         $(".js-example-basic-single").select2({ placeholder: "Select Author"});   
     });
+    function filter_data_reverse(){
+        $('#q').removeAttr('name');
+        $('#filter').submit();        
+    }
     function filter_data() {
         
         var q = $('#q').val();

@@ -23,13 +23,12 @@ class Author extends ADMIN_Controller {
 			if( !empty($_GET['author']) ) { $author = $this->input->get('author'); }	
 			if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }		
 
-
 			$str = '';
 
-			if(!empty($author)){ $where['like'][TBL_USERS.'.full_name'] = $author; $str.='&author='.$author; }	
+			if(!empty($author)){ $where['like'][TBL_USERS.'.id'] = $author; $str.='&author='.$author; }
 			if (!empty($q)) {
                 $where['like'][TBL_USERS . '.full_name'] = $q;
-                $where['like'][TBL_BOOKS . '.book_name'] = $q;
+                // $where['like'][TBL_BOOKS . '.book_name'] = $q;
                 $str.='&q=' . $q;
             }
 
@@ -53,22 +52,23 @@ class Author extends ADMIN_Controller {
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 2;
 		$config['total_rows'] = select(TBL_USERS,TBL_USERS.'.id',$where,array('count'=>TRUE,
-										'join'=>array(
-											array(
-												'table' => TBL_ROLES,
-							    				'condition' => TBL_ROLES.".id = ".TBL_USERS.".role_id"
-							    				),
-							    				array(
-												'table' => TBL_AUTHOR_BOOK,
-							    				'condition' => TBL_AUTHOR_BOOK.".user_id = ".TBL_USERS.".id"
-							    				),
-							    				array(
-												'table' => TBL_BOOKS,
-							    				'condition' => TBL_BOOKS.".id = ".TBL_AUTHOR_BOOK.".book_id"
-							    				),	
-											)
+									'join'=>array(
+										array(
+											'table' => TBL_ROLES,
+						    				'condition' => TBL_ROLES.".id = ".TBL_USERS.".role_id"
+						    				),
+						    				array(
+											'table' => TBL_AUTHOR_BOOK,
+						    				'condition' => TBL_AUTHOR_BOOK.".user_id = ".TBL_USERS.".id"
+						    				),
+						    				array(
+											'table' => TBL_BOOKS,
+						    				'condition' => TBL_BOOKS.".id = ".TBL_AUTHOR_BOOK.".book_id"
+						    				),	
 										)
+									)
 								);
+		
 		$config['per_page'] = 15;
 
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
@@ -96,25 +96,20 @@ class Author extends ADMIN_Controller {
 	  	$config['last_tag_open'] = '<li>';
 	  	$config['last_tag_close'] = '</li>';
 
-
-
 		// get the authors 
 		$authors = select(TBL_USERS,TBL_USERS.'.id,'.TBL_USERS.'.full_name',
-										array('where'=>array(
-											TBL_ROLES.'.role_name'=>'author',
-											TBL_USERS.'.is_delete'=>0
-											)),
-										array(
-											'order_by'=>$order,
-            								'limit' => $config['per_page'],
-            								'offset' => $offset,
-											'join'=> array(
-													array(
-								    				'table' => TBL_ROLES,
-								    				'condition' => TBL_ROLES.".id = ".TBL_USERS.".role_id",
-								    				),
-												)
-											)
+								$where,
+								array(
+									'order_by'=>$order,
+    								'limit' => $config['per_page'],
+    								'offset' => $offset,
+									'join'=> array(
+											array(
+						    				'table' => TBL_ROLES,
+						    				'condition' => TBL_ROLES.".id = ".TBL_USERS.".role_id",
+						    				),
+										)
+									)
 								);
 		$authors_ids = array_column($authors, 'id');
 
@@ -122,32 +117,32 @@ class Author extends ADMIN_Controller {
 		$author_books = array();
 		foreach ($authors_ids as $author_id) {
 			$author = select(TBL_USERS, TBL_USERS.'.id,'.TBL_USERS.'.full_name,'.TBL_USERS.'.profile_pic,'.TBL_USERS.'.user_status,'.TBL_AUTHOR_PROFILE.'.education',
-										array('where'=>array(TBL_USERS.'.id'=> $author_id)),
-										array(
-											'single'=>true,
-											'join'=>array(
-													array(
-									    				'table' => TBL_AUTHOR_PROFILE,
-									    				'condition' => TBL_AUTHOR_PROFILE.".user_id = ".TBL_USERS.".id",
-								    				)
-												)
-											)
-										);
+								array('where'=>array(TBL_USERS.'.id'=> $author_id)),
+								array(
+									'single'=>true,
+									'join'=>array(
+											array(
+							    				'table' => TBL_AUTHOR_PROFILE,
+							    				'condition' => TBL_AUTHOR_PROFILE.".user_id = ".TBL_USERS.".id",
+						    				)
+										)
+									)
+								);
 			$array['author'] = $author;
 			$books = select(TBL_AUTHOR_BOOK,TBL_BOOKS.'.id,'.TBL_BOOKS.'.book_name,'.TBL_BOOKS.'.front_cover_image',
-										array('where'=>array(
-											TBL_AUTHOR_BOOK.'.user_id'=> $author_id,
-											)
-										),
-										array('join'=> array(
-												array(
-								    				'table' => TBL_BOOKS,
-								    				'condition' => TBL_BOOKS.".id = ".TBL_AUTHOR_BOOK.".book_id",
-							    				)
-							    			),
-										'limit'=>4
-										)
-									);
+								array('where'=>array(
+									TBL_AUTHOR_BOOK.'.user_id'=> $author_id,
+									)
+								),
+								array('join'=> array(
+										array(
+						    				'table' => TBL_BOOKS,
+						    				'condition' => TBL_BOOKS.".id = ".TBL_AUTHOR_BOOK.".book_id",
+					    				)
+					    			),
+								'limit'=>4
+								)
+							);
 			$array['books'] = $books;
 			$author_books[] = $array;
 		}
