@@ -12,6 +12,8 @@ define("USER_PROFILE_PICTURE",  'images/users_images/');
 
 define("QUESTION_IMAGE",  'images/questions_images/');
 
+define("SUB_QUESTION_IMAGE",  'images/question_sub_images/');
+
 define("PASTTIME_IMAGE",  'images/pasttimes_images/');
 
 define("PASTTIME_IMAGE",  'images/pasttimes_images/');

@@ -126,6 +126,9 @@ switch ($_REQUEST['Service'])
     case "SubmitTrendingAnswer":
     case "AddTrendingQuestionComment":
     case "GetTrendingQuestionDetail":
+    case "GetPastTrendingQuestion":
+    case "UploadSubQuestionImages":
+    case "PublishResults":
     {
         include_once 'ExamFunctions.php';
         $exam = new ExamFunctions();

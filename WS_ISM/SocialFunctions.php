@@ -1712,7 +1712,8 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
 
 
             $resultToGetSubjectId=mysqli_query($GLOBALS['con'], $selectToGetSubjectId) or $message = mysqli_error($GLOBALS['con']);
-
+            $subject=array();
+            $subjectQuestions=array();
             $post=array();
             if (mysqli_num_rows($resultToGetSubjectId) > 0) {
 
@@ -1727,7 +1728,7 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
                     $questions['subject_name'] = $rowQuestion['subject_name'];
                     $questions['solution'] = $rowQuestion['solution'];
 
-                    /*  $choice = array();
+                     $choice = array();
                       if ($rowQuestion['question_format'] == 'MCQ') {
                           $queryGetChoice = "SELECT `id`, `question_id`, `choice_text`, `is_right`, `image_link`, `audio_link`, `video_link` FROM " . TABLE_ANSWER_CHOICES . " WHERE `question_id`=" . $rowQuestion['id'] . " AND is_delete=0 ";
                           $resultGetChoice = mysqli_query($GLOBALS['con'], $queryGetChoice) or $message = mysqli_error($GLOBALS['con']);
@@ -1741,14 +1742,26 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
                           }
                       } else {
                           $questions['answers'] = $choice;
-                      }*/
+                      }
 
 
-                    $post[] = $questions;
+                    //Group By Subjects
+                    if(sizeof($subject)==0){
+                        $subject=$questions['subject_name'];
+                    }
+                    else{
+                        if(in_array($questions['subject_name'],$subject,true)){
 
+                        }else{
+                            $subject=$questions['subject_name'];
+                        }
+                    }
+
+                    $subjectQuestions[$questions['subject_name']][]=$questions;
                 }
 
-                $data[]=$post;
+                //$post[] = $subjectQuestions;
+                $data[]=$subjectQuestions;
                 $status = SUCCESS;
                 $message = REQUEST_ACCEPTED;
             }

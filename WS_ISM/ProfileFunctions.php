@@ -612,23 +612,32 @@ class ProfileFunctions
                             } else if ($status == 0) {
                                 $post = array();
                                 //$queryData="SELECT * FROM `auto_generated_credential` t1 INNER JOIN `schools`t2 INNER JOIN `courses`t3 ON t1.school_id=t2.id and t1.course_id=t3.id where `username`='WJL91RU473'";
-                                $post['credential_id'] = $val['id'];
-                                $post['school_id'] = $val['school_id'];
-                                $post['role_id'] = $val['role_id'];
-                                $post['class_id'] = $val['classroom_id'];
-                                $post['course_id'] = $val['course_id'];
+                                 $post['credential_id'] = $val['id'];
+                                 $post['role_id'] = $val['role_id'];
+                                 $post['academic_year'] = $val['academic_year'];
 
-                                $post['academic_year'] = $val['academic_year'];
-                                $querySchool = "select school.school_name,school.school_type,course.course_name,district. district_name, class.class_name from courses course INNER JOIN classrooms class INNER JOIN districts district INNER JOIN schools school on school.district_id=district.id where course.id=" . $val['course_id'] . " and school.id=" . $val['school_id'] . " and class.id=" . $val['classroom_id'] . " limit 1";
-                                $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
-                                if (mysqli_num_rows($resultSchool)) {
-                                    $valSchool = mysqli_fetch_assoc($resultSchool);
-                                    $post['school_name'] = $valSchool['school_name'];
-                                    $post['course_name'] = $valSchool['course_name'];
-                                    $post['district_name'] = $valSchool['district_name'];
-                                    $post['class_name'] = $valSchool['class_name'];
-                                    $post['school_type'] = $valSchool['school_type'];
-                                }
+                                $geSchool="SELECT school.school_name,school.school_type,district.district_name FROM ".TABLE_SCHOOLS." school JOIN ".TABLE_DISTRICTS." district ON school.district_id=district.id WHERE school.id=".$val['school_id'];
+                                $resultToGetSchool=mysqli_query($GLOBALS['con'], $geSchool) or $message = mysqli_error($GLOBALS['con']);
+                                $rowToGetSchoolName=mysqli_fetch_row($resultToGetSchool);
+
+                                $post['school_id'] = $val['school_id'];
+                                $post['school_name'] = $rowToGetSchoolName[0];
+                                $post['school_type'] = $rowToGetSchoolName[1];
+                                $post['district_name'] = $rowToGetSchoolName[2];
+
+                                $geCourse="SELECT course_name FROM ".TABLE_COURSES." WHERE id=".$val['course_id'];
+                                $resultToGetCourse=mysqli_query($GLOBALS['con'], $geCourse) or $message = mysqli_error($GLOBALS['con']);
+                                $rowToGetCourseName=mysqli_fetch_row($resultToGetCourse);
+                                $post['course_id'] = $val['course_id'];
+                                $post['course_name'] = $rowToGetCourseName[0];
+
+                                $geClassroom="SELECT class_name FROM ".TABLE_CLASSROOMS." WHERE id=".$val['course_id'];
+                                $resultToGetClassRoom=mysqli_query($GLOBALS['con'], $geClassroom) or $message = mysqli_error($GLOBALS['con']);
+                                $rowToGetClassroomName=mysqli_fetch_row($resultToGetClassRoom);
+                                $post['class_id'] = $val['classroom_id'];
+                                $post['class_name'] = $rowToGetClassroomName[0];
+
+
                                 $status = SUCCESS;
                                 $message = CREDENTIALS_EXITST;
 
@@ -783,7 +792,7 @@ class ProfileFunctions
                     $insertTeacherField = "`user_id`, `specialization`, `education`";
                     $insertTeacherValue = "'" . $user_id . "','" . $specialization . "','" . $education . "'";
 
-                    $queryTeacher = "INSERT INTO " . TABLE_TEACHER_PROFILE . "(" . $insertTeacherField . ") values (" . $insertTeacherValue . ")";
+                    echo $queryTeacher = "INSERT INTO " . TABLE_TEACHER_PROFILE . "(" . $insertTeacherField . ") values (" . $insertTeacherValue . ")";
                     $resultTeacher = mysqli_query($GLOBALS['con'], $queryTeacher) or $message = mysqli_error($GLOBALS['con']);
 
 

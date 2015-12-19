@@ -193,6 +193,24 @@ class ExamFunctions
             }
                 break;
 
+            case "GetPastTrendingQuestion":
+            {
+                return $this->getPastTrendingQuestion($postData);
+            }
+                break;
+
+            case "UploadSubQuestionImages":
+            {
+                return $this->uploadSubQuestionImages($postData);
+            }
+                break;
+
+            case "PublishResults":
+            {
+                return $this->publishResults($postData);
+            }
+                break;
+
         }
     }
 
@@ -3466,10 +3484,10 @@ class ExamFunctions
 
                 if($check_slot=="yes")
                 {
-                     $queryToGetQuestion="SELECT * FROM ".TABLE_TRENDING_QUESTION." WHERE `answer_text` IS NULL and `question_for`=".$author_id. " and is_delete=0 ORDER BY created_date DESC";
+                     $queryToGetQuestion="SELECT * FROM ".TABLE_TRENDING_QUESTION." WHERE `question_for`=".$author_id. " and is_delete=0 ORDER BY created_date DESC";
                 }
                 else{
-                    $queryToGetQuestion="SELECT * FROM ".TABLE_TRENDING_QUESTION." WHERE `answer_text` IS NULL and `question_for`=".$author_id. " GROUP BY `created_date` HAVING `follower_count` <= (select max(follower_count) as 'count' FROM `trending_question` WHERE `question_for`=".$author_id. " ) ORDER BY follower_count DESC LIMIT 3";
+                     $queryToGetQuestion="SELECT * FROM ".TABLE_TRENDING_QUESTION." WHERE `answer_text` IS NULL and `question_for`=".$author_id. " GROUP BY `created_date` HAVING `follower_count` <= (select max(follower_count) as 'count' FROM `trending_question` WHERE `question_for`=".$author_id. " ) ORDER BY follower_count DESC LIMIT 3";
                 }
 
                 $resultToGetQuestion=mysqli_query($GLOBALS['con'], $queryToGetQuestion) or $message = mysqli_error($GLOBALS['con']);
@@ -3697,6 +3715,7 @@ class ExamFunctions
 
                     $questionInfo['trending_id'] = $row['id'];
                     $questionInfo['question_text'] = $row['question_text'];
+                    $questionInfo['answer_text'] = $row['answer_text'];
                     $questionInfo['follower_count'] = $row['follower_count'];
                     $questionInfo['total_comment'] = $row['total_comment'];
                     $questionInfo['posted_on'] = $row['created_date'];
@@ -3706,7 +3725,7 @@ class ExamFunctions
 
 
 
-                    $queryToGetComments = "SELECT comment.*,users.full_name,users.profile_pic FROM " . TABLE_TRENDING_QUESTION_COMMENT . " comment INNER JOIN ".TABLE_USERS." users ON comment.comment_by=users.id WHERE comment.trending_question_id=" . $question_id . " AND comment.is_delete=0";
+                    echo $queryToGetComments = "SELECT comment.*,users.full_name,users.profile_pic FROM " . TABLE_TRENDING_QUESTION_COMMENT . " comment INNER JOIN ".TABLE_USERS." users ON comment.comment_by=users.id WHERE comment.trending_question_id=" . $question_id . " AND comment.is_delete=0";
                     $resultToGetComments  = mysqli_query($GLOBALS['con'], $queryToGetComments) or $message = mysqli_error($GLOBALS['con']);
                     $allComments=array();
                     if(mysqli_num_rows($resultToGetComments))
@@ -3749,6 +3768,287 @@ class ExamFunctions
         return $response;
     }
 
+
+    /*
+   * getPastTrendingQuestion
+   */
+    public function getPastTrendingQuestion ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+        $role = validateObject ($postData , 'role', "");
+        $role = addslashes($role);
+
+        $author_id = validateObject ($postData , 'author_id', "");
+        $author_id = addslashes($author_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+            if($role==4)
+            {
+                $queryToGetQuestion="SELECT * FROM ".TABLE_TRENDING_QUESTION." WHERE  `question_for`=".$author_id. "  ORDER BY `created_date` DESC ";
+                $resultToGetQuestion=mysqli_query($GLOBALS['con'], $queryToGetQuestion) or $message = mysqli_error($GLOBALS['con']);
+
+                if(mysqli_num_rows($resultToGetQuestion)>0)
+                {
+                    while($row=mysqli_fetch_assoc($resultToGetQuestion))
+                    {
+                        $questionInfo=array();
+                        $questionInfo['trending_id']=$row['id'];
+                        $questionInfo['question_text']=$row['question_text'];
+                        $questionInfo['answer_text']=$row['answer_text'];
+                        $questionInfo['follower_count']=$row['follower_count'];
+                        $questionInfo['total_comment']=$row['total_comment'];
+                        $questionInfo['posted_on']=$row['created_date'];
+
+                        $selectProfile="SELECT * FROM ".TABLE_USERS." WHERE id=".$row['question_by']." AND is_delete=0";
+                        $resultProfile=mysqli_query($GLOBALS['con'], $selectProfile) or $message = mysqli_error($GLOBALS['con']);
+                        $rowForProfile=mysqli_fetch_row($resultProfile);
+
+
+                        $questionInfo['posted_by_user_id']=$row['question_by'];
+                        $questionInfo['posted_by_username']=$rowForProfile[5];
+                        $questionInfo['posted_by_pic']=$rowForProfile[6];
+
+                        $post[]=$questionInfo;
+                    }
+                    //$data[]=$post;
+                    $status=SUCCESS;
+                    $message = "";
+                }
+                else{
+                    $status=SUCCESS;
+                    $message = DEFAULT_NO_RECORDS;
+                }
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['trending_question']=$post;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+
+
+
+    /*
+    * uploadSubQuestionImages
+    */
+    public function uploadSubQuestionImages($postData)
+    {
+        $status='';
+        $mediaName = '';
+        $created_date = date("Ymd-His");
+        $reponse=array();
+
+        $question_id=$_POST['question_id'];
+
+        $secret_key = $_POST['secret_key'];
+        $access_key = $_POST['access_key'];
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $question_media_dir = "question_" . $question_id . "/";
+
+                $mediaName = "_test_IMAGE_" . $created_date . ".png";
+
+                $numberofimages =  $_POST['numberofimages'];
+
+
+                $text =  $_POST['htmlText'];
+                //echo $text;
+                preg_match_all('/<img[^>]+>/i',$text, $result);
+
+                $img = array();
+
+                foreach($result as $img_tag)
+                {
+
+                    foreach($img_tag as $img_tag1) {
+                        // print_r($img_tag1);
+
+                        preg_match_all('/(src)=("[^"]*")/i', $img_tag1, $img[$img_tag1]);
+                    }
+                }
+
+
+                $img2 = array();
+                $value = 0;
+                foreach($img as $img1) {
+                    // print_r($img_tag1);
+                    $img2[$value]=$img1[2][0];
+                    $value++;
+
+                }
+
+
+                for ($i = 0; $i < $numberofimages; $i++) {
+
+                    $dir = SUB_QUESTION_IMAGE . $question_media_dir;
+
+                    if (!is_dir(SUB_QUESTION_IMAGE . $question_media_dir)) {
+                          mkdir(SUB_QUESTION_IMAGE . $question_media_dir, 0777);
+                    }
+
+                     $uploadFile = $dir . $_FILES[$i]['name'];
+
+                    //echo "key". $key = array_search("\"file:///storage/emulated/0/Download/01.jpeg\"", $img2,true);
+
+                    $oldString ="";
+
+
+                    foreach($img2 as $key=>$value){
+//        if("show_me_" == substr($key,0,8)){
+//            $number = substr($key,strrpos($key,'_'));
+//            // do whatever you need to with $number...
+//        }
+
+                        if (strpos($value,$_FILES[$i]['name']) !== false) {
+                            $oldString = $value;
+                            //echo "value ".$oldString;
+                        }
+
+
+                    }
+
+                    //$matches = array_filter($img2, function($var) use ($searchword) { return preg_match("/\b$searchword\b/i", $var); });
+                     //print_r($matches);
+                    //echo $img2[$key];
+                     //echo "path=".$filePath = realpath($_FILES["file"]["tmp_name"]);
+                    // print_r($_FILES[$i]['name']);
+                    if(isset($_FILES[$i]['tmp_name']))
+                    {
+                        //echo "coming";
+                        if (!move_uploaded_file($_FILES[$i]['tmp_name'], $uploadFile))
+                        {
+                            //print_r($_FILES);
+                            $status=FAILED;
+                            $message = FAILED_TO_UPLOAD_MEDIA;
+                        }
+                        else{
+                            //echo "ready";
+
+                            $text =  str_replace($oldString,"\"http://192.168.1.147/WS_ISM/images/question_sub_images/".$_FILES[$i]['name']."\"",$text);
+                            $htmlTextOfImages[]=$text;
+
+                            $status=SUCCESS;
+                            $message = "successfully uploaded";
+                        }
+                    }
+
+                }
+
+               // echo "text=".$text;
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $data['question_id']=$question_id;
+        $data['images_text']=$htmlTextOfImages;
+
+        $response['upload_question']=$data;
+        $response['status']=$status;;
+        $response['message']=$message;
+        return $response;
+    }
+
+
+    /*
+        * publishResults
+    */
+    public function publishResults ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $exam_id = validateObject ($postData , 'exam_id', "");
+        $exam_id = addslashes($exam_id);
+
+        $student_id = validateObject ($postData , 'student_id', "");
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            if($student_id!=null)
+            {
+                foreach($student_id as $single_student) {
+
+                    $queryToChkRecordExist = "SELECT * FROM " . TABLE_STUDENT_EXAM_SCORE . " WHERE  `exam_id`=" . $exam_id . " AND user_id=" . $single_student . " AND is_delete=0";
+                    $resultToChkRecordExist = mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
+
+                    if (mysqli_num_rows($resultToChkRecordExist) > 0) {
+
+                        $updateQuery="UPDATE ".TABLE_STUDENT_EXAM_SCORE." SET publish_result_status='published' WHERE  `exam_id`=" . $exam_id . " AND user_id=" . $single_student . " AND is_delete=0";
+                        $updateResult = mysqli_query($GLOBALS['con'], $updateQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                        if($updateResult)
+                        {
+                            $status = SUCCESS;
+                            $message = "Result has been published";
+                        }
+                        else
+                        {
+                            $status = FAILED;
+                            $message = "";
+                        }
+
+                    }
+                    else {
+                        $status = SUCCESS;
+                        $message = DEFAULT_NO_RECORDS;
+                    }
+                }
+            }
+
+
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['trending_question']=$post;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
 }
 
 

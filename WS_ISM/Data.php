@@ -315,12 +315,13 @@ class TutorialGroup
 
         if($isSecure==yes) {
 
-            $query = "SELECT `id`, `banner_title` FROM ".TABLE_BANNERSN ." WHERE is_delete=0";
+            $selData="banners.id,banners.banner_title,banners.banner_category_id,banner_category.category_name,banners.total_views,banners.total_clicks,banners.added_by,banners.added_on,banners.banner_validity,banners.banner_type,banners.image_link,banners.banner_status,banners.banner_description,banners.owner_name,banners.owner_email_id,banners.owner_contact_no";
+            $query = "SELECT ".$selData." FROM ".TABLE_BANNERS ." banners LEFT JOIN ".TABLE_BANNER_CATEGORY." banner_category ON banners.banner_category_id=banner_category.id WHERE banners.is_delete=0";
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
             // echo $query;
             if (mysqli_num_rows($result)) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $data[] = $row;
+                    $data[]=$row;
                 }
                 $status = SUCCESS;
 
@@ -363,7 +364,8 @@ class TutorialGroup
 
         if($isSecure==yes) {
 
-            $query = "SELECT `id`, `course_name` FROM ".TABLE_COURSES ." WHERE is_delete=0";
+            $query = "SELECT c.`id`, c.`course_name`,c.`course_degree`,c.`course_nickname`,c.`course_details`,c.`course_type`,c.`course_duration`,c.`is_semester`,c.`course_category_id`,category.course_category_name FROM ".TABLE_COURSES ." c JOIN ".TABLE_COURSE_CATEGORY. " category ON c.course_category_id=category.id WHERE c.is_delete=0";
+            //$query = "SELECT `id`, `course_name`,`course_degree`,`course_nickname`,`course_details`,`course_type`,`course_duration`,`is_semester` FROM ".TABLE_COURSES ." WHERE is_delete=0";
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
             // echo $query;
             if (mysqli_num_rows($result)) {
@@ -461,10 +463,10 @@ class TutorialGroup
         $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
         if($isSecure==yes) {
-
-            $query = "SELECT `id`, `topic_name`, `topic_description` FROM ".TABLE_TOPICS ." where is_delete=0";
+            $query = "SELECT topic.`id`, topic.`topic_name`, topic.`topic_description`,topic.`subject_id`,subject.`subject_name` FROM ".TABLE_TOPICS ." topic JOIN ".TABLE_SUBJECTS." subject ON topic.subject_id=subject.id where topic.is_delete=0";
+           // $query = "SELECT `id`, `topic_name`, `topic_description` FROM ".TABLE_TOPICS ." where is_delete=0";
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
-            // echo $query;
+             //echo $query;
             if (mysqli_num_rows($result)) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     $data[] = $row;
