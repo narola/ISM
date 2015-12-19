@@ -32,14 +32,14 @@ import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.AddQuestionContainerFragment;
 import com.ism.author.fragment.AssignmentsSubmittorFragment;
 import com.ism.author.fragment.BooksFragment;
-import com.ism.author.fragment.CreateExamAssignmentContainerFragment;
-import com.ism.author.fragment.CreateExamFragment;
 import com.ism.author.fragment.ExamsFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.OfficeFragment;
 import com.ism.author.fragment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.fragment.TrialFragment;
+import com.ism.author.fragment.createexam.CreateExamAssignmentContainerFragment;
+import com.ism.author.fragment.createexam.CreateExamFragment;
 import com.ism.author.fragment.gotrending.GoTrendingFragment;
 import com.ism.author.fragment.gotrending.PastFragment;
 import com.ism.author.fragment.mydesk.AddAssignmentFragment;
@@ -202,13 +202,13 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         Global.myTypeFace = new MyTypeFace(getApplicationContext());
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
-//        Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
-//        Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
-//        Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
+        Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
+        Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
+        Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
 
-        Global.strUserId = "52";
-        Global.strFullName = "Chirag Mistry";
-        Global.strProfilePic = WebConstants.USER_IMAGES + "user_52/_dev_chirag.png";
+//        Global.strUserId = "52";
+//        Global.strFullName = "Chirag Mistry";
+//        Global.strProfilePic = WebConstants.USER_IMAGES + "user_52/_dev_chirag.png";
 
         mFragmentManager = getFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();

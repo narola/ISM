@@ -3,6 +3,7 @@ package com.ism.author.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.ws.model.AnswerChoices;
 import com.ism.author.ws.model.Answers;
 import com.ism.author.ws.model.Tags;
@@ -18,13 +19,14 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Attribute {
 
-
+    private String education;
     private String schoolName;
     private String homeAddress;
     private int cityId;
     private String lastname;
     private String firstname;
     private int stateId;
+    private int schoolClassroomId;
     private int countryId;
     private String contactNumber;
     private String emailAddress;
@@ -74,7 +76,6 @@ public class Attribute {
     private List<String> images;
     private String postedOn;
     private String videoThumbnail;
-    private String role;
     private String examId;
     private String taggedBy;
     private String studentId;
@@ -117,6 +118,42 @@ public class Attribute {
 
     public ArrayList<String> getUnfavoriteResourceId() {
         return this.unfavoriteResourceId;
+    }
+
+    private String secretKey;
+    private String accessKey;
+    private String role;
+    private String lastSyncDate;
+    private int credentialId;
+
+    public Attribute() {
+        setAccessKey(WebConstants.ACCESS_KEY);
+        setSecretKey(WebConstants.SECRET_KEY);
+    }
+
+
+    public Attribute(String accessKey) {
+        setAccessKey(accessKey);
+    }
+
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    @JsonProperty("secret_key")
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    @JsonProperty("access_key")
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
     }
 
 
@@ -1041,6 +1078,43 @@ public class Attribute {
 
     public void setAnswerText(String answerText) {
         this.answerText = answerText;
+    }
+
+    @JsonProperty("last_sync_date")
+    public String getLastSyncDate() {
+        return lastSyncDate;
+    }
+
+    public void setLastSyncDate(String lastSyncDate) {
+        this.lastSyncDate = lastSyncDate;
+    }
+
+
+    public int getCredentialId() {
+        return credentialId;
+    }
+
+    @JsonProperty("credential_id")
+    public void setCredentialId(int credentialId) {
+        this.credentialId = credentialId;
+    }
+
+    public int getSchoolClassroomId() {
+        return schoolClassroomId;
+    }
+
+    @JsonProperty("school_classroom_id")
+    public void setSchoolClassroomId(int schoolClassroomId) {
+        this.schoolClassroomId = schoolClassroomId;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    @JsonProperty("education")
+    public void setEducation(String education) {
+        this.education = education;
     }
 }
 
