@@ -98,50 +98,49 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 
 		if (setActiveHours) {
 			Calendar cal = Calendar.getInstance();
-			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
+//			cal.set(Calendar.HOUR, 11);
+//			cal.set(Calendar.MINUTE, 10);
+//			cal.set(Calendar.AM_PM, Calendar.AM);
+			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
 				try {
 					AdminConfig configStartTime = studentHelper.getActiveHoursStartTime();
 					SimpleDateFormat DATE_FORMAT_TIME = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
 					Calendar calStartTime = Calendar.getInstance();
 					String startTime = configStartTime.getConfigValue() + " " + configStartTime.getValueUnit();
-					Log.e(TAG, "startTime : " + startTime);
+//					String startTime = "11:21 am";
 					Date date = DATE_FORMAT_TIME.parse(startTime);
-					Log.e(TAG, "date hours : " + date.getHours());
-					calStartTime.set(Calendar.HOUR, date.getHours());
+					calStartTime.set(Calendar.HOUR_OF_DAY, date.getHours());
 					calStartTime.set(Calendar.MINUTE, date.getMinutes());
-					calStartTime.set(Calendar.AM_PM, studentHelper.getActiveHoursEndTime().getValueUnit().equals("am") ? Calendar.AM : Calendar.PM);
 
 					if (cal.after(calStartTime)) {
 						AdminConfig configEndTime = studentHelper.getActiveHoursEndTime();
 						String endTime = configEndTime.getConfigValue() + " " + configEndTime.getValueUnit();
-						Log.e(TAG, "endTime : " + endTime);
+//						String endTime = "02:15 pm";
 						Date endDate = DATE_FORMAT_TIME.parse(endTime);
-						Log.e(TAG, "date hours : " + endDate.getHours());
 
 						Calendar calEndTime = Calendar.getInstance();
-						calEndTime.set(Calendar.HOUR, endDate.getHours());
+						calEndTime.set(Calendar.HOUR_OF_DAY, endDate.getHours());
 						calEndTime.set(Calendar.MINUTE, endDate.getMinutes());
-						calEndTime.set(Calendar.AM_PM, studentHelper.getActiveHoursEndTime().getValueUnit().equals("am") ? Calendar.AM : Calendar.PM);
 
-						Log.e(TAG, "start time : " + calStartTime.getTime());
-						Log.e(TAG, "end time : " + calEndTime.getTime());
+						if (cal.before(calEndTime)) {
+							longExamDurationMilli = calEndTime.getTimeInMillis() - cal.getTimeInMillis();
+							timerViewExam.setTotalTimeMilli(longExamDurationMilli);
+							timerExam = new CountDownTimer(longExamDurationMilli, 1000) {
 
-						longExamDurationMilli = calEndTime.getTimeInMillis() - cal.getTimeInMillis();
-						timerViewExam.setTotalTimeMilli(longExamDurationMilli);
-						timerExam = new CountDownTimer(longExamDurationMilli, 1000) {
-							@Override
-							public void onTick(long millisUntilFinished) {
-								intTimeLeft = (int) millisUntilFinished;
-								timerViewExam.setTimeMilli(intTimeLeft);
-							}
+								@Override
+								public void onTick(long millisUntilFinished) {
+									intTimeLeft = (int) millisUntilFinished;
+									timerViewExam.setTimeMilli(intTimeLeft);
+								}
 
-							@Override
-							public void onFinish() {
-								timerViewExam.setTimeMilli(0);
-								end();
-							}
-						};
-						timerExam.start();
+								@Override
+								public void onFinish() {
+									timerViewExam.setTimeMilli(0);
+									end();
+								}
+							};
+							timerExam.start();
+						}
 					}
 				} catch (ParseException e) {
 					Log.e(TAG, "date parsing Exception : " + e.toString());

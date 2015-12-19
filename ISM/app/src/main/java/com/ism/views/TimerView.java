@@ -59,7 +59,7 @@ public class TimerView extends RelativeLayout {
 
 	public void setTotalTimeMilli(long totalTime) {
 		intTotalTimeMilli = (int) totalTime;
-		progTime.setMax((int) totalTime);
+		progTime.setMax((int) (totalTime / 1000));
 	}
 
 	public void setTimeMilli(int timeMilli) {
