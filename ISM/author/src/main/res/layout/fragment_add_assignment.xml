@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_graylight"
+    android:orientation="vertical"
+    tools:mContext="com.ism.author.fragment.mydesk.AddAssignmentFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d70dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/shadow_separator"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_assignment_info"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/d10dp"
+            android:background="@drawable/bg_tab_my_desk"
+            android:gravity="center"
+            android:padding="@dimen/d10dp"
+            android:text="Assignment Information"
+            android:textSize="@dimen/d25sp" />
+
+        <TextView
+            android:id="@+id/txt_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/d10dp"
+            android:layout_toLeftOf="@+id/txt_cancel"
+            android:background="@drawable/btn_green"
+            android:gravity="center"
+            android:paddingBottom="@dimen/d5dp"
+            android:paddingLeft="@dimen/d20dp"
+            android:paddingRight="@dimen/d20dp"
+            android:paddingTop="@dimen/d5dp"
+            android:text="@string/strsave"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d20sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/txt_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/d10dp"
+            android:background="@drawable/btn_cancel"
+            android:gravity="center"
+            android:paddingBottom="@dimen/d5dp"
+            android:paddingLeft="@dimen/d20dp"
+            android:paddingRight="@dimen/d20dp"
+            android:paddingTop="@dimen/d5dp"
+            android:text="@string/strcancel"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d20sp"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/d5dp"-->
+    <!--android:background="@drawable/shadow_separator" />-->
+
+    <LinearLayout
+        android:id="@+id/fl_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_assignment_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/d10dp"
+            android:layout_weight="1"
+
+            android:textSize="@dimen/d20dp"
+            android:background="@drawable/bg_edit_gray"
+            android:hint="Assignment Name"
+            android:padding="@dimen/d10dp" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/sp_course_name"
+            android:layout_margin="@dimen/d10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_edit_gray" />
+
+    </LinearLayout>
+
+    <com.narola.kpa.richtexteditor.view.RichTextEditor
+        android:id="@+id/richtexteditor"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/d10dp"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:layout_height="@dimen/rich_text_editor_height"></com.narola.kpa.richtexteditor.view.RichTextEditor>
+</LinearLayout>

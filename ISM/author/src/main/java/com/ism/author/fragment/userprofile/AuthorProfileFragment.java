@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
@@ -138,9 +138,9 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                     case R.id.txt_followers:
                         activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_FOLLOWERS);
                         break;
-                    case R.id.txt_view_profile:
-                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_VIEW_PROFILE);
-                        break;
+//                    case R.id.txt_view_profile:
+//                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_VIEW_PROFILE);
+//                        break;
                     case R.id.txt_myactivity:
                         activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_ACTIVITY);
                         break;
@@ -183,6 +183,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
 
 
     }
+
 
     private void highlightNotificationIcon(int imgId) {
         for (int i = 0; i < arrImgNotificationIcon.length; i++) {
@@ -338,7 +339,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             }
 
         } catch (Exception e) {
-            Log.e(TAG, "callApiGetNotifications Exception : " + e.toString());
+            Debug.e(TAG, "callApiGetNotifications Exception : " + e.toString());
         }
     }
 
@@ -355,7 +356,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                 Utility.alertOffline(activityHost);
             }
         } catch (Exception e) {
-            Log.e(TAG, "callApiGetMessages Exception : " + e.toString());
+            Debug.e(TAG, "callApiGetMessages Exception : " + e.toString());
         }
     }
 
@@ -429,7 +430,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             }
 
         } catch (Exception e) {
-            Log.e(TAG, "callApiGetStudymateRequests Exception : " + e.toString());
+            Debug.e(TAG, "callApiGetStudymateRequests Exception : " + e.toString());
         }
     }
 
@@ -445,7 +446,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                 fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_PROFILE_CONTROLLER);
             }
         } catch (ClassCastException e) {
-            Log.i(TAG, "onAttach Exception : " + e.toString());
+            Debug.i(TAG, "onAttach Exception : " + e.toString());
         }
     }
 
@@ -457,7 +458,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                 fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_PROFILE_CONTROLLER);
             }
         } catch (ClassCastException e) {
-            Log.i(TAG, "onDetach Exception : " + e.toString());
+            Debug.i(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
     }
@@ -482,9 +483,10 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                 txtFollowers.setTextColor(textColor);
                 txtFollowers.setEnabled(!attached);
                 break;
-            case AuthorHostActivity.FRAGMENT_VIEW_PROFILE:
+            case AuthorHostActivity.FRAGMENT_MY_DESK:
                 txtViewProfile.setText(attached ? Html.fromHtml("<u>" + activityHost.getString(R.string.strviewprofile) + "</u>") : activityHost.getString(R.string.strviewprofile));
                 txtViewProfile.setEnabled(!attached);
+                rrViewProfile.setEnabled(!attached);
                 break;
         }
     }
@@ -522,7 +524,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                     break;
             }
         } catch (Exception e) {
-            Log.e(TAG, "onResponse Exception : " + e.toString());
+            Debug.e(TAG, "onResponse Exception : " + e.toString());
         }
     }
 
@@ -531,15 +533,15 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Log.e(TAG, "onResponseUpdateReadStatus success");
+                    Debug.e(TAG, "onResponseUpdateReadStatus success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Log.e(TAG, "onResponseUpdateReadStatus failed");
+                    Debug.e(TAG, "onResponseUpdateReadStatus failed");
                 }
             } else if (error != null) {
-                Log.e(TAG, "onResponseUpdateReadStatus api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseUpdateReadStatus api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Log.e(TAG, "onResponseUpdateReadStatus Exception : " + e.toString());
+            Debug.e(TAG, "onResponseUpdateReadStatus Exception : " + e.toString());
         }
     }
 
@@ -549,17 +551,17 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Log.e(TAG, "onResponseGetStudymateRequest success");
+                    Debug.e(TAG, "onResponseGetStudymateRequest success");
                     arrListStudyMateRequest = responseHandler.getStudymateRequest();
                     fillListStudymate();
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Log.e(TAG, "onResponseGetStudymateRequest Failed");
+                    Debug.e(TAG, "onResponseGetStudymateRequest Failed");
                 }
             } else if (error != null) {
-                Log.e(TAG, "onResponseGetStudymateRequest api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseGetStudymateRequest api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Log.e(TAG, "onResponseGetStudymateRequest Exception : " + e.toString());
+            Debug.e(TAG, "onResponseGetStudymateRequest Exception : " + e.toString());
         }
     }
 
@@ -593,7 +595,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                 Utility.alertOffline(activityHost);
             }
         } catch (Exception e) {
-            Log.e(TAG, "callApiUpdateReadStatus Exception : " + e.toString());
+            Debug.e(TAG, "callApiUpdateReadStatus Exception : " + e.toString());
         }
     }
 
@@ -603,17 +605,17 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Log.e(TAG, "onResponseGetNotification success");
+                    Debug.e(TAG, "onResponseGetNotification success");
                     arrListNotification = responseHandler.getNotification();
                     fillListNotification();
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Log.e(TAG, "onResponseGetNotification Failed");
+                    Debug.e(TAG, "onResponseGetNotification Failed");
                 }
             } else if (error != null) {
-                Log.e(TAG, "onResponseGetNotification api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseGetNotification api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Log.e(TAG, "onResponseGetNotification Exception : " + e.toString());
+            Debug.e(TAG, "onResponseGetNotification Exception : " + e.toString());
         }
     }
 
@@ -640,17 +642,17 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Log.e(TAG, "onResponseGetMessages success");
+                    Debug.e(TAG, "onResponseGetMessages success");
                     arrListMessage = responseHandler.getMessages();
                     fillListMessage();
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Log.e(TAG, "onResponseGetMessages Failed");
+                    Debug.e(TAG, "onResponseGetMessages Failed");
                 }
             } else if (error != null) {
-                Log.e(TAG, "onResponseGetMessages api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseGetMessages api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Log.e(TAG, "onResponseGetMessages Exception : " + e.toString());
+            Debug.e(TAG, "onResponseGetMessages Exception : " + e.toString());
         }
     }
 

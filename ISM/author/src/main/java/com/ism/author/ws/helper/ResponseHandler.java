@@ -30,6 +30,7 @@ import com.ism.author.ws.model.StudymateRequest;
 import com.ism.author.ws.model.Studymates;
 import com.ism.author.ws.model.Subjects;
 import com.ism.author.ws.model.Topics;
+import com.ism.author.ws.model.TrendingQuestion;
 import com.ism.author.ws.model.User;
 
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ public class ResponseHandler {
     private ArrayList<Message> messages;
     private ArrayList<Books> books;
     private ArrayList<Feeds> feedImages;
+    private ArrayList<TrendingQuestion> trendingQuestions;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -347,6 +349,15 @@ public class ResponseHandler {
 
     public void setAuthorBook(ArrayList<AuthorBook> authorBook) {
         this.authorBook = authorBook;
+    }
+
+    @JsonProperty("trending_question")
+    public ArrayList<TrendingQuestion> getTrendingQuestions() {
+        return this.trendingQuestions;
+    }
+
+    public void setTrendingQuestions(ArrayList<TrendingQuestion> trendingQuestions) {
+        this.trendingQuestions = trendingQuestions;
     }
 
 

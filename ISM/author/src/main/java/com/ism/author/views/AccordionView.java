@@ -126,7 +126,7 @@ public class AccordionView extends LinearLayout {
 
         FontUtils.setCustomFont(view, AccordionView.this.getContext().getAssets());
 
-        // -- support for no fold button
+        // -- support for checkSlotNo fold button
         if (headerFoldButton == 0) {
             return view;
         }

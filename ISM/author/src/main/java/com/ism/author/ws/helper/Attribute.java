@@ -111,6 +111,9 @@ public class Attribute {
     private String resourceName;
     private ArrayList<String> unfavoriteResourceId;
     private ArrayList<String> favResourceId;
+    private String authorId;
+    private String checkSlot;
+    private String answerText;
 
     public ArrayList<String> getUnfavoriteResourceId() {
         return this.unfavoriteResourceId;
@@ -525,14 +528,14 @@ public class Attribute {
         return studentId;
     }
 
-//    public ArrayList<String> getQuestionId() {
-//        return this.questionId;
-//    }
-//
-//    @JsonProperty("question_id")
-//    public void setQuestionId(ArrayList<String> questionId) {
-//        this.questionId = questionId;
-//    }
+    public String getCheckSlot() {
+        return this.checkSlot;
+    }
+
+    @JsonProperty("check_slot")
+    public void setCheckSlot(String checkSlot) {
+        this.checkSlot = checkSlot;
+    }
 
     @JsonProperty("email_id")
     public void setEmailId(String emailId) {
@@ -1022,6 +1025,22 @@ public class Attribute {
         return this;
     }
 
+    @JsonProperty("author_id")
+    public String getAuthorId() {
+        return authorId;
+    }
 
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
+    }
+
+    @JsonProperty("answer_text")
+    public String getAnswerText() {
+        return answerText;
+    }
+
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
+    }
 }
 

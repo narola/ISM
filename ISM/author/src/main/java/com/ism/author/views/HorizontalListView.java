@@ -709,7 +709,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
             View child = mAdapter.getView(mRightViewAdapterIndex, getRecycledView(mRightViewAdapterIndex), this);
             addAndMeasureChild(child, INSERT_AT_END_OF_LIST);
 
-            // If first view, then no divider to the left of it, otherwise add the space for the divider width
+            // If first view, then checkSlotNo divider to the left of it, otherwise add the space for the divider width
             rightEdge += (mRightViewAdapterIndex == 0 ? 0 : mDividerWidth) + child.getMeasuredWidth();
 
             // Check if we are running low on questionData so we can tell listeners to go get more
@@ -724,7 +724,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
             View child = mAdapter.getView(mLeftViewAdapterIndex, getRecycledView(mLeftViewAdapterIndex), this);
             addAndMeasureChild(child, INSERT_AT_START_OF_LIST);
 
-            // If first view, then no divider to the left of it
+            // If first view, then checkSlotNo divider to the left of it
             leftEdge -= mLeftViewAdapterIndex == 0 ? child.getMeasuredWidth() : mDividerWidth + child.getMeasuredWidth();
 
             // If on a clean edge then just remove the child, otherwise remove the divider as well
@@ -786,7 +786,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
      *
      * @param x X-coordinate
      * @param y Y-coordinate
-     * @return The index of the child that contains the coordinates. If no child is found then returns -1
+     * @return The index of the child that contains the coordinates. If checkSlotNo child is found then returns -1
      */
     private int getChildIndex(final int x, final int y) {
         int childCount = getChildCount();

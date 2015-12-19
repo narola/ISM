@@ -126,7 +126,7 @@ public class WebserviceConnector {
 
         try {
             MultipartUtility multipart = new MultipartUtility(requestURL, charset);
-            /*No header so no need to add it*/
+            /*No header so checkSlotNo need to add it*/
 
 //            multipart.addHeaderField("User-Agent", "CodeJava");
 //            multipart.addHeaderField("Test-Header", "Header-Value");
@@ -146,7 +146,7 @@ public class WebserviceConnector {
             List<String> response = multipart.finish();
             Debug.e(TAG, "SERVER REPLIED:");
             for (String line : response) {
-                Debug.e(TAG, "Upload Question Image Response:::" + line);
+                Debug.e(TAG, "Upload Files Response:::" + line);
                 responseString = line;
             }
 

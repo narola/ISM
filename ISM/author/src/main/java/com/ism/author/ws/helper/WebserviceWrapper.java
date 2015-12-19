@@ -232,6 +232,18 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_UPLOAD_FEED_MEDIA).uploadMedia(ResponseHandler.class,
                                     (Attribute) attribute);
                             break;
+                        case WebConstants.GET_TRENDING_QUESTIONS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GETTRENDINGQUESTIONS).execute(ResponseHandler.class,
+                                     attribute);
+                            break;
+                        case WebConstants.GET_PAST_QUESTIONS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GETPASTQUESTIONS).execute(ResponseHandler.class,
+                                     attribute);
+                            break;
+                        case WebConstants.SUBMIT_TRENDING_ANSWER:
+                            responseObject = new WebserviceConnector(WebConstants.URL_SUBMIT_TRENDING_ANSWER).execute(ResponseHandler.class,
+                                     attribute);
+                            break;
                     }
                 }
             } catch (Exception e) {

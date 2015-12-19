@@ -537,7 +537,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
     public void openGallary() {
         Intent intent = new Intent();
 
-        // Show only images, no videos or anything else
+        // Show only images, checkSlotNo videos or anything else
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
 

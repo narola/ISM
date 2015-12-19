@@ -5,23 +5,16 @@ package com.ism.author.activtiy;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,8 +40,9 @@ import com.ism.author.fragment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.OfficeFragment;
 import com.ism.author.fragment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.fragment.TrialFragment;
-import com.ism.author.fragment.gotrading.GoTrendingFragment;
-import com.ism.author.fragment.gotrading.PastFragment;
+import com.ism.author.fragment.gotrending.GoTrendingFragment;
+import com.ism.author.fragment.gotrending.PastFragment;
+import com.ism.author.fragment.mydesk.AddAssignmentFragment;
 import com.ism.author.fragment.mydesk.MyDeskFragment;
 import com.ism.author.fragment.userprofile.AllMessageFragment;
 import com.ism.author.fragment.userprofile.AllNotificationFragment;
@@ -59,7 +53,6 @@ import com.ism.author.fragment.userprofile.HighScoreFragment;
 import com.ism.author.fragment.userprofile.MyActivityFragment;
 import com.ism.author.fragment.userprofile.MyFeedsFragment;
 import com.ism.author.fragment.userprofile.StudentAttemptedAssignmentFragment;
-import com.ism.author.fragment.userprofile.ViewProfileFragment;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.ControllerTopMenuItem;
 import com.ism.author.object.Global;
@@ -98,7 +91,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private HostListenerAllMessage listenerHostAllMessage;
     private ArrayList<ControllerTopMenuItem> controllerTopMenuTrial, currentControllerTopMenu, controllerTopMenuMyThirty,
 
-    controllerTopMenuAssessment, controllerTopMenuMyDesk, controllerTopMenuBooks, controllerTopMenuGoTrading,controllerTopSubMenuGoTrading;
+    controllerTopMenuAssessment, controllerTopMenuMyDesk, controllerTopMenuBooks, controllerTopMenuGoTrading, controllerTopSubMenuGoTrading;
     /*
     * these are the fragments for the main fragment.
     * */
@@ -118,6 +111,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_ALL_NOTIFICATION = 13;
     public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 14;
     public static final int FRAGMENT_PAST = 15;
+    public static final int FRAGMENT_ADD_ASSIGNMENT = 16;
 
 
     //these are the right side fragments
@@ -128,9 +122,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
     public static final int FRAGMENT_MY_FEEDS = 35;
     public static final int FRAGMENT_FOLLOWERS = 36;
-//    public static final int FRAGMENT_MY_BOOKS = 38;
+    //    public static final int FRAGMENT_MY_BOOKS = 38;
     public static final int FRAGMENT_MY_ACTIVITY = 37;
-    public static final int FRAGMENT_VIEW_PROFILE = 39;
+    //    public static final int FRAGMENT_VIEW_PROFILE = 39;
     private InputMethodManager inputMethod;
 
     public static int currentMainFragment;
@@ -139,6 +133,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private ActionProcessButton progress_bar;
     private ProgressGenerator progressGenerator;
     private BooksListner booksListner;
+    private HostListenerTrending listenerHostTrending;
 
 
     public interface HostListenerProfileController {
@@ -148,6 +143,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
         public void onSubFragmentDetached(int fragmentId);
         //  public void onControllerMenuItemClicked(int position);
+    }
+
+    public interface HostListenerTrending {
+        public void onViewSelect(int position);
     }
 
     public interface BooksListner {
@@ -174,6 +173,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
     public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
         this.listenerHostAllNotification = listenerHostAllNotification;
+    }
+    public void setListenerHostTrending(HostListenerTrending listenerHostTrending) {
+        this.listenerHostTrending = listenerHostTrending;
     }
 
     public void setListenerHostAllMessage(HostListenerAllMessage listenerHostAllMessage) {
@@ -312,6 +314,13 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                             MyDeskFragment.newInstance(), AppConstant.FRAGMENT_MYDESK).commit();
                     break;
 
+                case FRAGMENT_ADD_ASSIGNMENT:
+
+                    setBackStackFragmentKey(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AddAssignmentFragment.newInstance(), AppConstant.FRAGMENT_ADD_ASSIGNMENT).commit();
+                    break;
+
                 case FRAGMENT_TRIAL:
 
                     setBackStackFragmentKey(AppConstant.FRAGMENT_TRIAL);
@@ -401,12 +410,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                             MyActivityFragment.newInstance()).commit();
                     break;
 
-
-                case FRAGMENT_VIEW_PROFILE:
-
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            ViewProfileFragment.newInstance()).commit();
-                    break;
 
                 case FRAGMENT_ALL_NOTIFICATION:
 
@@ -520,8 +523,20 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
 
                 case FRAGMENT_MY_DESK:
-                    setTopBarValues(fragment, getResources().getColor(R.color.bg_office), false, true, false, controllerTopMenuMyDesk, true);
+                    setTopBarValues(fragment, getResources().getColor(R.color.bg_office), false, true, false, controllerTopMenuMyDesk, false);
 
+                    llControllerLeft.setVisibility(View.VISIBLE);
+                    flFragmentContainerRight.setVisibility(View.VISIBLE);
+                    if (currentRightFragment != FRAGMENT_PROFILE_CONTROLLER) {
+                        loadFragmentInRightContainer(FRAGMENT_PROFILE_CONTROLLER);
+                    }
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
+
+                    break;
+
+                case FRAGMENT_ADD_ASSIGNMENT:
+                   // setTopBarValues(fragment, getResources().getColor(R.color.bg_office), false, true, false, controllerTopMenuMyDesk, false);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     flFragmentContainerRight.setVisibility(View.VISIBLE);
 //                    if (currentRightFragment != FRAGMENT_HIGHSCORE) {
@@ -689,7 +704,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
 
                 case FRAGMENT_MY_ACTIVITY:
-
+                    setTopBarValues(fragment, getResources().getColor(R.color.color_blue), false, false, false, null, false);
                     currentMainFragment = fragment;
                     listenerHostProfileController.onSubFragmentAttached(fragment);
                     break;
@@ -701,25 +716,25 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 //                    break;
 
                 case FRAGMENT_FOLLOWERS:
-                    setTopBarValues(fragment, getResources().getColor(R.color.color_blue), false, false, false, null, true);
-                    //currentMainFragment = fragment;
-                    //listenerHostProfileController.onSubFragmentAttached(fragment);
-                    break;
-
-                case FRAGMENT_MY_FEEDS:
-                   setTopBarValues(fragment, getResources().getColor(R.color.color_blue), false, false, false, null, true);
-                    llControllerLeft.setVisibility(View.VISIBLE);
-                    flFragmentContainerRight.setVisibility(View.VISIBLE);
-//                    currentMainFragment = fragment;
-//                    listenerHostProfileController.onSubFragmentAttached(fragment);
-                    break;
-
-                case FRAGMENT_VIEW_PROFILE:
-
-                    imgOffice.setActivated(true);
+                    setTopBarValues(fragment, getResources().getColor(R.color.color_blue), false, false, false, null, false);
                     currentMainFragment = fragment;
                     listenerHostProfileController.onSubFragmentAttached(fragment);
                     break;
+
+                case FRAGMENT_MY_FEEDS:
+                    setTopBarValues(fragment, getResources().getColor(R.color.color_blue), false, false, false, null, false);
+                    // llControllerLeft.setVisibility(View.VISIBLE);
+                    //flFragmentContainerRight.setVisibility(View.VISIBLE);
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
+                    break;
+
+//                case FRAGMENT_VIEW_PROFILE:
+//
+//                   // imgOffice.setActivated(true);
+//                    currentMainFragment = fragment;
+//                    listenerHostProfileController.onSubFragmentAttached(fragment);
+//                    break;
 
                 case FRAGMENT_ALL_NOTIFICATION:
 
@@ -766,6 +781,12 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
 
                 case FRAGMENT_MY_DESK:
+                    imgOffice.setActivated(true);
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+
+                    break;
+
+                case FRAGMENT_ADD_ASSIGNMENT:
                     imgOffice.setActivated(true);
                     break;
 
@@ -828,10 +849,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     listenerHostProfileController.onSubFragmentDetached(fragment);
                     break;
 
-                case FRAGMENT_VIEW_PROFILE:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
+//                case FRAGMENT_VIEW_PROFILE:
+//                    currentMainFragment = fragment;
+//                    listenerHostProfileController.onSubFragmentDetached(fragment);
+//                    break;
 
                 case FRAGMENT_ALL_NOTIFICATION:
                     hideControllerTopBackButton();
@@ -1005,6 +1026,11 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             case FRAGMENT_MY_DESK:
                 MyDeskFragment myDeskFragment = (MyDeskFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_MYDESK);
                 myDeskFragment.onBackClick();
+                break;
+
+            case FRAGMENT_ADD_ASSIGNMENT:
+                AddAssignmentFragment addAssignmentFragment = (AddAssignmentFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
+                addAssignmentFragment.onBackClick();
                 break;
 
             case FRAGMENT_GOTRENDING:
@@ -1206,43 +1232,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public void hideProgress() {
         progress_bar.setProgress(100);
         progress_bar.setVisibility(View.INVISIBLE);
-    }
-
-
-    public void popupDisplay() {
-
-        PopupWindow popupWindow = new PopupWindow(getActivity());
-
-        // inflate your layout or dynamically add view
-        LayoutInflater inflater = (LayoutInflater) getActivity()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View view = inflater.inflate(R.layout.row_trial, null);
-        popupWindow = new PopupWindow(view, 400,
-                ViewGroup.LayoutParams.MATCH_PARENT, true);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setTouchable(true);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        popupWindow.setTouchInterceptor(customPopUpTouchListenr);
-        popupWindow.showAtLocation(view, Gravity.LEFT, 0, 0);
-
-
-    }
-
-    View.OnTouchListener customPopUpTouchListenr = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View arg0, MotionEvent arg1) {
-            Debug.d("POPUP", "Touch false");
-            return false;
-        }
-
-    };
-
-    public void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 
 
