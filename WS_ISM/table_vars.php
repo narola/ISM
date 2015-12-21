@@ -81,6 +81,7 @@ define("TABLE_SURVEYS",   "surveys");
 define("TABLE_SYSTEM_MODULE",   "system_module");
 define("TABLE_TAG_BOOK_ASSIGNMENT",   "tag_book_assignment");
 define("TABLE_TAGS",   "tags");
+define("TABLE_TAGS_ASSIGNMENT",   "tags_assignment");
 define("TABLE_TAGS_BOOK",   "tags_book");
 define("TABLE_TAGS_FORUM_QUESTION",   "tags_forum_question");
 define("TABLE_TAGS_LECTURE",   "tags_lecture");

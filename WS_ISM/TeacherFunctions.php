@@ -64,6 +64,24 @@ class TeacherFunctions
             }
                 break;
 
+            case "GetClasswallFeeds":
+            {
+                return $this->getClasswallFeeds($postData);//done
+            }
+                break;
+
+            case "GetAllAssignment":
+            {
+                return $this->getAllAssignment($postData);//done
+            }
+                break;
+
+            case "GetAssignmentByBook":
+            {
+                return $this->getAssignmentByBook($postData);//done
+            }
+                break;
+
         }
     }
     /*
@@ -645,8 +663,14 @@ class TeacherFunctions
 //        $submission_date = validateObject ($postData , 'submission_date', "");
 //        $submission_date = addslashes($submission_date);
 
-//        $assignment_type = validateObject ($postData , 'assignment_type', "");
-//        $assignment_type = addslashes($assignment_type);
+        $assignment_name = validateObject ($postData , 'assignment_name', "");
+        $assignment_name = addslashes($assignment_name);
+
+        $assignment_type = validateObject ($postData , 'assignment_type', "");
+        $assignment_type = addslashes($assignment_type);
+
+        $book_id = validateObject ($postData , 'book_id', "");
+        $book_id = addslashes($book_id);
 
         $topic_id = validateObject ($postData , 'topic_id', "");
         $topic_id = addslashes($topic_id);
@@ -666,8 +690,12 @@ class TeacherFunctions
         if($isSecure==yes) {
 
 
-            $insertFields = "`assignment_by`, `description`, `classroom_id`, `subject_id`, `topic_id`";
-            $insertValues = $user_id . ",'" . $assignment_text . "'," . $classroom_id . "," . $subject_id . "," . $topic_id;
+            if(book_id !=0)
+            {
+
+            }
+            $insertFields = "`assignment_name`,`assignment_type`,`assignment_by`, `description`, `classroom_id`, `subject_id`, `topic_id`,`book_id`";
+            $insertValues =  "'".$assignment_name. "','". $assignment_type. "',". $user_id . ",'" . $assignment_text . "'," . $classroom_id . "," . $subject_id . "," . $topic_id. ",". $book_id;
             $query = "INSERT INTO " . TABLE_ASSIGNMENTS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
             $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
             //echo $query;
@@ -691,6 +719,255 @@ class TeacherFunctions
         $response['message']=$message;
         $response['status']=$status;
         $response['assignment']=$data;
+
+        return $response;
+    }
+
+    public function getClasswallFeeds ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $classroom_id = validateObject($postData, 'classroom_id', "");
+        $classroom_id = addslashes($classroom_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $getFields = "classwall.id,classwall.created_date,users.profile_pic,classwall.wall_post,classwall.post_by,users.full_name";
+            $queryGetPost = "SELECT " . $getFields . " FROM " . TABLE_CLASSWALL . " classwall
+            INNER JOIN ".TABLE_SCHOOL_CLASSROOM." school_classroom ON classwall.classroom_id=school_classroom.id
+            INNER JOIN " . TABLE_USERS . " users on classwall.post_by=users.id WHERE school_classroom.`classroom_id`=" . $classroom_id . " AND classwall.is_delete=0 AND users.is_delete=0";
+            $resultGetPost = mysqli_query($GLOBALS['con'], $queryGetPost) or $message = mysqli_error($GLOBALS['con']);
+            //echo $queryGetPost;
+            if (mysqli_num_rows($resultGetPost)) {
+                while ($val = mysqli_fetch_assoc($resultGetPost)) {
+                    $post = array();
+                    $post['classwall_id'] = $val['id'];
+                    $post['classwall_feed'] = $val['wall_post'];
+                    $post['post_by_id'] = $val['post_by'];
+                    $post['post_by_user'] = $val['full_name'];
+                    $post['post_user_pic'] = $val['profile_pic'];
+                    $post['posted_on'] = $val['created_date'];
+
+                    $data[] = $post;
+                }
+                $status = SUCCESS;
+                $message = "Successfully";
+            } else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+
+        $response['classwall_feeds']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
+    }
+
+    /*
+     * getAllAssignment
+     */
+    public function getAllAssignment ($postData)
+    {
+        $data=array();
+        $response=array();
+        $post=array();
+        $message='';
+        $status='';
+
+
+        $classroom_id = validateObject ($postData , 'classroom_id', "");
+        $classroom_id = addslashes($classroom_id);
+
+        $subject_id = validateObject ($postData , 'subject_id', "");
+        $subject_id = addslashes($subject_id);
+
+        $topic_id = validateObject ($postData , 'topic_id', "");
+        $topic_id = addslashes($topic_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $getFields="assignment.*,subject.subject_name,classroom.class_name,topic.topic_name,book.book_name,users.full_name";
+            $query="SELECT ".$getFields." FROM ".TABLE_ASSIGNMENTS." assignment
+             LEFT JOIN ".TABLE_SUBJECTS." subject ON assignment.subject_id=subject.id
+             LEFT JOIN ".TABLE_CLASSROOMS." classroom ON assignment.classroom_id=classroom.id
+             LEFT JOIN ".TABLE_TOPICS." topic ON assignment.topic_id=topic.id
+             LEFT JOIN ".TABLE_BOOKS." book ON assignment.book_id=book.id
+             LEFT JOIN ".TABLE_AUTHOR_BOOK." author_book ON book.id=author_book.book_id
+             LEFT JOIN ".TABLE_USERS." users ON author_book.user_id=users.id
+             WHERE assignment.classroom_id=".$classroom_id." OR assignment.subject_id=".$subject_id." OR assignment.topic_id=".$topic_id." AND assignment.is_delete=0";
+            $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
+            //echo $query;
+            $assignments=array();
+            if (mysqli_num_rows($result)) {
+
+                while($row=mysqli_fetch_assoc($result))
+                {
+                    $assignments['assignment_id']=$row['id'];
+                    $assignments['assignment_name']=$row['assignment_name'];
+                    $assignments['assignment_text']=$row['description'];
+                    $assignments['book_id']=$row['book_id'];
+                    $assignments['book_name']=$row['book_name'];
+                    $assignments['author_name']=$row['full_name'];
+                    $assignments['subject_id']=$row['subject_id'];
+                    $assignments['subject_name']=$row['subject_name'];
+                    $assignments['created_by']=$row['assignment_by'];
+                    $assignments['topic_id']=$row['topic_id'];
+                    $assignments['topic_name']=$row['topic_name'];
+                    $assignments['classroom_id']=$row['classroom_id'];
+                    $assignments['classroom_name']=$row['class_name'];
+
+
+                    $tags = array();
+                    $tagQuery = "SELECT tags.id as 'tag_id',tags.tag_name FROM ".TABLE_TAGS." tags JOIN ".TABLE_TAGS_ASSIGNMENT." tag_assignment ON tags.id=tag_assignment.tag_id WHERE tag_assignment.assignment_id=".$row['id'] ." and tags.is_delete=0 and tag_assignment.is_delete=0";
+                    $tagResult = mysqli_query($GLOBALS['con'], $tagQuery) or $message = mysqli_error($GLOBALS['con']);
+                    if (mysqli_num_rows($tagResult)>0) {
+
+                        while ($rowGetTags = mysqli_fetch_assoc($tagResult)) {
+                            $tags[] = $rowGetTags;
+
+                        }
+                        $assignments['assignment_tags'] = $tags;
+                    }
+                    else {
+                        $assignments['assignment_tags'] = $tags;
+                    }
+
+                    $post[]=$assignments;
+                }
+                $status = SUCCESS;
+                $message = "Assignments listed";
+                //$data[] = $post;
+            } else {
+               // $post = array();
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+
+
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['message']=$message;
+        $response['status']=$status;
+        $response['assignment']=$post;
+
+        return $response;
+    }
+
+
+    /*
+    * getAssignmentByBook
+    */
+    public function getAssignmentByBook ($postData)
+    {
+        $data=array();
+        $response=array();
+        $post=array();
+        $message='';
+        $status='';
+
+
+        $book_id = validateObject ($postData , 'book_id', "");
+        $book_id = addslashes($book_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $getFields="assignment.*,book.book_name,users.full_name";
+            $query="SELECT ".$getFields." FROM ".TABLE_ASSIGNMENTS." assignment
+             LEFT JOIN ".TABLE_BOOKS." book ON assignment.book_id=book.id
+             LEFT JOIN ".TABLE_AUTHOR_BOOK." author_book ON book.id=author_book.book_id
+             LEFT JOIN ".TABLE_USERS." users ON author_book.user_id=users.id
+             WHERE assignment.book_id=".$book_id." AND assignment.is_delete=0";
+            $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
+            //echo $query;
+            $assignments=array();
+            if (mysqli_num_rows($result)) {
+
+                while($row=mysqli_fetch_assoc($result))
+                {
+                    $assignments['assignment_id']=$row['id'];
+                    $assignments['assignment_name']=$row['assignment_name'];
+                    $assignments['assignment_text']=$row['description'];
+                    $assignments['book_id']=$row['book_id'];
+                    $assignments['book_name']=$row['book_name'];
+                    $assignments['author_name']=$row['full_name'];
+                    $assignments['created_by']=$row['assignment_by'];
+
+
+                    $tags = array();
+                    $tagQuery = "SELECT tags.id as 'tag_id',tags.tag_name FROM ".TABLE_TAGS." tags JOIN ".TABLE_TAGS_ASSIGNMENT." tag_assignment ON tags.id=tag_assignment.tag_id WHERE tag_assignment.assignment_id=".$row['id'] ." and tags.is_delete=0 and tag_assignment.is_delete=0";
+                    $tagResult = mysqli_query($GLOBALS['con'], $tagQuery) or $message = mysqli_error($GLOBALS['con']);
+                    if (mysqli_num_rows($tagResult)>0) {
+
+                        while ($rowGetTags = mysqli_fetch_assoc($tagResult)) {
+                            $tags[] = $rowGetTags;
+
+                        }
+                        $assignments['assignment_tags'] = $tags;
+                    }
+                    else {
+                        $assignments['assignment_tags'] = $tags;
+                    }
+
+                    $post[]=$assignments;
+                }
+                $status = SUCCESS;
+                $message = "Assignments listed";
+                //$data[] = $post;
+            } else {
+                // $post = array();
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+
+
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['message']=$message;
+        $response['status']=$status;
+        $response['assignment']=$post;
 
         return $response;
     }

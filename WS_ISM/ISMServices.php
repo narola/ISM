@@ -89,6 +89,9 @@ switch ($_REQUEST['Service'])
     case "SubmitNotes":
     case "UploadMediaNotes":
     case "CreateAssignment":
+    case "GetClasswallFeeds":
+    case "GetAllAssignment":
+    case "GetAssignmentByBook":
     {
         include_once 'TeacherFunctions.php';
         $teacher = new TeacherFunctions();

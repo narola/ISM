@@ -503,8 +503,8 @@ class TutorialGroup
                          INNER JOIN ".TABLE_TUTORIAL_TOPIC." tutorial_topic ON tutorial_group_topic_allocation.tutorial_topic_id=tutorial_topic.id
                          INNER JOIN ".TABLE_SUBJECTS." subjects ON tutorial_topic.subject_id=subjects.id
                          WHERE group_id=".$group_id." AND week_no = ".$week_no ." AND tutorial_group_topic_allocation.is_delete=0";
-//AND (".$day_no." >= 1 AND ".$day_no." <= 7)
-                        //(".$day_no." >= 1 AND ".$day_no." <= 7)
+                        //AND (".$day_no." >= 1 AND ".$day_no." <= 7)
+
                         $resultToFetchTopics = mysqli_query($GLOBALS['con'], $queryToFetchTopics) or $message = mysqli_error($GLOBALS['con']);
                        // $post=array();
 

@@ -1468,6 +1468,7 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
                 $arrayTagsIDDelete[] = $arraySeparateKeyValue[2];
             }
             //  print_r($arrayTagsID); print_r($arrayTagsName);print_r($arrayTagsIDDelete); exit;
+          //  $arrayTagsIDDelete[1] means add tag in table and $arrayTagsIDDelete[0] means remove tag from table
 
             if ($hashtag_data != null) {
 
@@ -1566,9 +1567,9 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
                         else
                         {
 
-                            $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i] . " AND is_delete=0";
+                            $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i] ;//. " AND is_delete=0";
                             $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
-
+                            //echo $selectQuery; exit;
                             if (mysqli_num_rows($resultQuery) == 0) {
 
                                 $insertFields = "`tag_id`,`" . $resource_name . "`";
@@ -1584,9 +1585,21 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
                                     $status = FAILED;
                                     $message = "";
                                 }
-                            } else {
-                                $status = SUCCESS;
-                                $message = RECORD_ALREADY_EXIST;
+                            }
+                            else
+                            {
+                                $queryToDeleteRecord = "UPDATE " . $table . " SET is_delete=0 WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i];
+                                // echo $queryToDeleteRecord; exit;
+                                $resultToDeleteRecord = mysqli_query($GLOBALS['con'], $queryToDeleteRecord) or $message = mysqli_error($GLOBALS['con']);
+
+
+                                if ($resultToDeleteRecord) {
+                                    $status = SUCCESS;
+                                    $message = "again resource hash tag";
+                                } else {
+                                    $status = FAILED;
+                                    $message = "again failed to resource hash tag";
+                                }
                             }
 
                         }
