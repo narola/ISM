@@ -33,8 +33,6 @@ import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.ism.teacher.ws.model.Evaluation;
 import com.ism.teacher.ws.model.Examsubmittor;
 import com.ism.teacher.ws.model.Questions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -70,16 +68,12 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     private RecyclerView rvSubjectiveQuestionsList;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private SubjectiveQuestionListAdapter subjectiveQuestionListAdapter;
-    private ImageLoader imageLoader;
     private LinearLayoutManager mLayoutManager;
     private LinearLayout llPrevStudent, llNextStudent;
     private RelativeLayout rlBottomEvaluationTab;
     private ImageView imgEditExam, imgCopyExam;
 
     private void initGlobal() {
-
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
         imgEditExam = (ImageView) view.findViewById(R.id.img_edit_exam);
         imgCopyExam = (ImageView) view.findViewById(R.id.img_copy_exam);
@@ -349,7 +343,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
                 getActivity().getResources().getString(R.string.strof) + " " +
                 arrListExamSubmittor.size());
 
-        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
+        Global.imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                 imgStudentProfilePic, ISMTeacher.options);
 
         tvStudentName.setText(getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_NAME));

@@ -60,9 +60,8 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     private InputValidator inputValidator;
 
 
-    public static AssignmentActivityFragment newInstance(Bundle bundleArgument) {
+    public static AssignmentActivityFragment newInstance() {
         AssignmentActivityFragment assignmentActivityFragment = new AssignmentActivityFragment();
-        assignmentActivityFragment.setArguments(bundleArgument);
         return assignmentActivityFragment;
     }
 

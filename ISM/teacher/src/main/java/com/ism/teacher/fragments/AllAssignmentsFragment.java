@@ -96,7 +96,6 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
         etAssignmentStartdate = (EditText) view.findViewById(R.id.et_assignment_startdate);
         etAssignmentEnddate = (EditText) view.findViewById(R.id.et_assignment_enddate);
 
-
         arrListAssessment = Arrays.asList(getResources().getStringArray(R.array.assignment_status));
 
         Adapters.setUpSpinner(getActivity(), spAssignentAssessed, arrListAssessment, Adapters.ADAPTER_SMALL);

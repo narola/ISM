@@ -130,10 +130,10 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         try {
             switch (fragment) {
                 case FRAGMENT_ASSIGNMENT_ACTIVITY:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance(getBundleArguments())).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_ASSIGNMENT_EXAM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance(this, getActivity(), getBundleArguments())).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance(this, getActivity())).commit();
                     break;
             }
 
@@ -175,7 +175,7 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     }
 
 
-    private Bundle getBundleArguments() {
+    public Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }
 }

@@ -83,6 +83,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     private ArrayList<Classrooms> arrListClassRooms;
     private ArrayList<Subjects> arrListSubject;
     public List<String> arrListQuestionScore;
+    private Fragment mFragment;
 
     /**
      * Fragment Args
@@ -94,20 +95,12 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         // Required empty public constructor
     }
 
-    public static AssignmentExamFragment newInstance(Fragment fragment, Context mContext, Bundle bundleArgument) {
+    public static AssignmentExamFragment newInstance(Fragment fragment, Context mContext) {
         AssignmentExamFragment assignmentExamFragment = new AssignmentExamFragment();
-
-        if (bundleArgument != null) {
-            assignmentExamFragment.setArguments(bundleArgument);
-            assignmentExamFragment.getArguments().putBoolean(ARG_IS_CREATE_EXAM, false);
-        } else {
-            Bundle bundle = new Bundle();
-            bundle.putBoolean(ARG_IS_CREATE_EXAM, true);
-            assignmentExamFragment.setArguments(bundle);
-        }
 
         assignmentExamFragment.mContext = mContext;
         assignmentExamFragment.fragmentContext = fragment;
+        assignmentExamFragment.mFragment = fragment;
         return assignmentExamFragment;
     }
 
@@ -393,7 +386,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
         //For New Exam
 
-        if (getArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
+        if (getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
             btnExamSetquestion.setVisibility(View.GONE);
             btnExamSave.setVisibility(View.VISIBLE);
 
@@ -411,6 +404,10 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         callApiGetSubjects();
 
 
+    }
+
+    private CreateExamAssignmentContainerFragment getBaseFragment() {
+        return (CreateExamAssignmentContainerFragment) mFragment;
     }
 
     private void getQuestionScoreSpinnerValues() {

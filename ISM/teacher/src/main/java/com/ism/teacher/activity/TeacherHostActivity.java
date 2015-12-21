@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
@@ -73,19 +74,19 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
 
     public static final int FRAGMENT_HOME = 0;
-    public static final int FRAGMENT_UPCOMING_EVENTS = 6;
-    public static final int FRAGMENT_TEACHER_CHAT = 7;
-    public static final int FRAGMENT_USER_PROFILE = 8;
-    public static final int FRAGMENT_TEACHER_HOME = 9;
-    public static final int FRAGMENT_TEACHER_TUTORIAL_GROUP = 10;
-    public static final int FRAGMENT_TEACHER_OFFICE = 11;
-    public static final int FRAGMENT_STUDENT_ATTEMPTED = 12;
+    public static final int FRAGMENT_UPCOMING_EVENTS = 1;
+    public static final int FRAGMENT_TEACHER_CHAT = 2;
+    public static final int FRAGMENT_USER_PROFILE = 3;
+    public static final int FRAGMENT_TEACHER_HOME = 4;
+    public static final int FRAGMENT_TEACHER_TUTORIAL_GROUP = 5;
+    public static final int FRAGMENT_TEACHER_OFFICE = 6;
+    public static final int FRAGMENT_STUDENT_ATTEMPTED = 7;
 
     public static int currentMainFragment;
     public static int currentRightFragment;
     private int currentMainFragmentBg;
 
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuOffice, controllerTopMenuQuiz;
+    private ArrayList<ControllerTopMenuItem> controllerTopMenuOffice, controllerTopMenuTutorial;
     private HostListener listenerHost;
     private AddTopicsListener addTopicsListener;
 
@@ -94,9 +95,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     FragmentTransaction mFragmentTransaction;
     FragmentManager mFragmentManager;
-    Bundle fragmentBundle = new Bundle();
-
-    public ArrayList<ControllerTopMenuItem> updatedTopMenuItem = new ArrayList<>();
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -172,7 +170,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
         //control for office side bar menu
         controllerTopMenuOffice = ControllerTopMenuItem.getMenuTeacherOffice(TeacherHostActivity.this);
-        controllerTopMenuQuiz = ControllerTopMenuItem.getMenuDesk(TeacherHostActivity.this);
+        controllerTopMenuTutorial = ControllerTopMenuItem.getMenuTutorialGroup(TeacherHostActivity.this);
 
 
         imgHome.setOnClickListener(new View.OnClickListener() {
@@ -367,13 +365,21 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     break;
                 case FRAGMENT_TEACHER_TUTORIAL_GROUP:
                     currentMainFragment = fragment;
+                    currentMainFragmentBg = R.color.bg_tutorial;
+                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_tutorial);
                     imgTutorial.setActivated(true);
-                    loadControllerTopMenu(null);
+                    imgHome.setActivated(false);
+                    loadControllerTopMenu(controllerTopMenuTutorial);
                     txtTitle.setVisibility(View.GONE);
-                    txtAddPost.setText("PAST");
-                    rlAddPost.setVisibility(View.VISIBLE);
+                    txtAction.setVisibility(View.VISIBLE);
+                    txtAction.setText(getResources().getString(R.string.str_past));
+                    txtAction.setTextColor(getResources().getColor(R.color.bg_tutorial));
+                    rlAddPost.setVisibility(View.GONE);
                     llControllerLeft.setVisibility(View.VISIBLE);
+                    showControllerTopBackButton();
+
                     break;
+
                 case FRAGMENT_TEACHER_OFFICE:
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_classroom;
@@ -489,6 +495,10 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                                 }
                                 break;
                         }
+                        break;
+
+                    case FRAGMENT_TEACHER_TUTORIAL_GROUP:
+                        Toast.makeText(TeacherHostActivity.this, "From Tutorial Group", Toast.LENGTH_SHORT).show();
                         break;
                 }
 
@@ -655,66 +665,74 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     private void onBackClick(int currentMainFragment) {
 
-        if (currentMainFragment == FRAGMENT_TEACHER_OFFICE) {
 
-            int current_office_fragment = TeacherOfficeFragment.getCurrentChildFragment();
-            Debug.e(AppConstant.back_tag + "current_child_fragment=>>>>>>>>>>>>>>>>>>>", "" + current_office_fragment);
+        switch (currentMainFragment) {
+            case FRAGMENT_TEACHER_OFFICE:
 
-            TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+                int current_office_fragment = TeacherOfficeFragment.getCurrentChildFragment();
+                Debug.e(AppConstant.back_tag + "current_child_fragment=>>>>>>>>>>>>>>>>>>>", "" + current_office_fragment);
 
-            switch (current_office_fragment) {
+                TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
 
-                case TeacherOfficeFragment.FRAGMENT_CLASSWALL:
-                    teacherOfficeFragment.onBackClick();
-                    break;
-                case TeacherOfficeFragment.FRAGMENT_QUIZ:
+                switch (current_office_fragment) {
 
-                    Debug.e(AppConstant.back_tag + "back click host", "from quiz");
-                    teacherOfficeFragment.onBackClick();
-                    break;
+                    case TeacherOfficeFragment.FRAGMENT_CLASSWALL:
+                        teacherOfficeFragment.onBackClick();
+                        break;
+                    case TeacherOfficeFragment.FRAGMENT_QUIZ:
 
-                case TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER:
-                    Debug.e(AppConstant.back_tag + "back click host", "from submitter");
-                    teacherOfficeFragment.onBackClick();
-                    break;
+                        Debug.e(AppConstant.back_tag + "back click host", "from quiz");
+                        teacherOfficeFragment.onBackClick();
+                        break;
 
-                case TeacherOfficeFragment.FRAGMENT_NOTES:
-                    Debug.e(AppConstant.back_tag + "back click host", "from notes");
-                    teacherOfficeFragment.onBackClick();
-                    break;
+                    case TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER:
+                        Debug.e(AppConstant.back_tag + "back click host", "from submitter");
+                        teacherOfficeFragment.onBackClick();
+                        break;
 
-                case TeacherOfficeFragment.FRAGMENT_MARK_SCRIPT:
-                    Debug.e(AppConstant.back_tag + "back click host", "from script");
-                    teacherOfficeFragment.onBackClick();
-                    break;
+                    case TeacherOfficeFragment.FRAGMENT_NOTES:
+                        Debug.e(AppConstant.back_tag + "back click host", "from notes");
+                        teacherOfficeFragment.onBackClick();
+                        break;
 
-                case TeacherOfficeFragment.FRAGMENT_RESULTS:
-                    Debug.e(AppConstant.back_tag + "back click host", "from results");
-                    teacherOfficeFragment.onBackClick();
-                    break;
+                    case TeacherOfficeFragment.FRAGMENT_MARK_SCRIPT:
+                        Debug.e(AppConstant.back_tag + "back click host", "from script");
+                        teacherOfficeFragment.onBackClick();
+                        break;
 
-                case TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT:
-                    Debug.e(AppConstant.back_tag + "back click host", "from progress report");
-                    teacherOfficeFragment.onBackClick();
-                    break;
+                    case TeacherOfficeFragment.FRAGMENT_RESULTS:
+                        Debug.e(AppConstant.back_tag + "back click host", "from results");
+                        teacherOfficeFragment.onBackClick();
+                        break;
 
-                case TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW:
-                    Debug.e(AppConstant.back_tag + "back click host", "from objective questions view");
-                    teacherOfficeFragment.onBackClick();
-                    break;
-                case TeacherOfficeFragment.FRAGMENT_SUBJECTIVE_QUESTIONS:
-                    Debug.e(AppConstant.back_tag + "back click host", "from subjective view");
-                    teacherOfficeFragment.onBackClick();
-                    break;
+                    case TeacherOfficeFragment.FRAGMENT_PROGRESS_REPORT:
+                        Debug.e(AppConstant.back_tag + "back click host", "from progress report");
+                        teacherOfficeFragment.onBackClick();
+                        break;
 
-                case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER:
-                    Debug.e(AppConstant.back_tag + "back click host", "from create exam container");
-                    teacherOfficeFragment.onBackClick();
-                    break;
+                    case TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW:
+                        Debug.e(AppConstant.back_tag + "back click host", "from objective questions view");
+                        teacherOfficeFragment.onBackClick();
+                        break;
+                    case TeacherOfficeFragment.FRAGMENT_SUBJECTIVE_QUESTIONS:
+                        Debug.e(AppConstant.back_tag + "back click host", "from subjective view");
+                        teacherOfficeFragment.onBackClick();
+                        break;
 
-            }
+                    case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER:
+                        Debug.e(AppConstant.back_tag + "back click host", "from create exam container");
+                        teacherOfficeFragment.onBackClick();
+                        break;
 
+                }
+                break;
+
+
+            case TeacherHostActivity.FRAGMENT_TEACHER_TUTORIAL_GROUP:
+                Debug.e(AppConstant.back_tag, "back from tutorila group");
+                break;
         }
+
 
     }
 

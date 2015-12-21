@@ -65,16 +65,16 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
     }
 
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getBundleArguments() != null) {
-            fragment = getArguments().getInt(ARG_FRAGMENT);
-            if (fragListener != null) {
-                fragListener.onFragmentAttached(fragment);
-            }
-        }
-    }
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        if (getBundleArguments() != null) {
+//            fragment = getArguments().getInt(ARG_FRAGMENT);
+//            if (fragListener != null) {
+//                fragListener.onFragmentAttached(fragment);
+//            }
+//        }
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,7 +94,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
         super.onAttach(activity);
         try {
             fragListener = (FragmentListener) activity;
-            fragListener.onFragmentAttached(fragment);
+            fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_TEACHER_OFFICE);
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
         }
@@ -105,7 +105,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(fragment);
+                fragListener.onFragmentDetached(TeacherHostActivity.FRAGMENT_TEACHER_OFFICE);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
