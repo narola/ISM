@@ -792,7 +792,7 @@ class ProfileFunctions
                     $insertTeacherField = "`user_id`, `specialization`, `education`";
                     $insertTeacherValue = "'" . $user_id . "','" . $specialization . "','" . $education . "'";
 
-                    echo $queryTeacher = "INSERT INTO " . TABLE_TEACHER_PROFILE . "(" . $insertTeacherField . ") values (" . $insertTeacherValue . ")";
+                    $queryTeacher = "INSERT INTO " . TABLE_TEACHER_PROFILE . "(" . $insertTeacherField . ") values (" . $insertTeacherValue . ")";
                     $resultTeacher = mysqli_query($GLOBALS['con'], $queryTeacher) or $message = mysqli_error($GLOBALS['con']);
 
 

@@ -93,7 +93,7 @@ class ExamFunctions
                 
 			case "GetHighScorers":
 			{
-                return $this->getHighScorers($postData);//in progress
+                return $this->getHighScorers($postData);//done
             }
                 break;
 
@@ -2045,7 +2045,9 @@ class ExamFunctions
                                         }
                                     }
 
-                                } else {
+                                }
+                                else
+                                {
 
                                     $queryToChkRecordExist = "SELECT * FROM " . TABLE_ANSWER_CHOICES . " WHERE question_id=" . $question_id . " AND is_delete=0";
                                     $resultToChkRecordExist = mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
@@ -3876,7 +3878,7 @@ class ExamFunctions
 
 
                 $text =  $_POST['htmlText'];
-                //echo $text;
+               // echo $text;
                 preg_match_all('/<img[^>]+>/i',$text, $result);
 
                 $img = array();
@@ -3885,8 +3887,6 @@ class ExamFunctions
                 {
 
                     foreach($img_tag as $img_tag1) {
-                        // print_r($img_tag1);
-
                         preg_match_all('/(src)=("[^"]*")/i', $img_tag1, $img[$img_tag1]);
                     }
                 }
@@ -3912,42 +3912,30 @@ class ExamFunctions
 
                      $uploadFile = $dir . $_FILES[$i]['name'];
 
-                    //echo "key". $key = array_search("\"file:///storage/emulated/0/Download/01.jpeg\"", $img2,true);
-
                     $oldString ="";
 
 
                     foreach($img2 as $key=>$value){
-//        if("show_me_" == substr($key,0,8)){
-//            $number = substr($key,strrpos($key,'_'));
-//            // do whatever you need to with $number...
-//        }
 
                         if (strpos($value,$_FILES[$i]['name']) !== false) {
                             $oldString = $value;
                             //echo "value ".$oldString;
                         }
-
-
                     }
 
-                    //$matches = array_filter($img2, function($var) use ($searchword) { return preg_match("/\b$searchword\b/i", $var); });
-                     //print_r($matches);
-                    //echo $img2[$key];
-                     //echo "path=".$filePath = realpath($_FILES["file"]["tmp_name"]);
-                    // print_r($_FILES[$i]['name']);
                     if(isset($_FILES[$i]['tmp_name']))
                     {
                         //echo "coming";
                         if (!move_uploaded_file($_FILES[$i]['tmp_name'], $uploadFile))
                         {
-                            //print_r($_FILES);
+                            print_r($_FILES);
+                            $htmlTextOfImages[]=$uploadFile;
                             $status=FAILED;
                             $message = FAILED_TO_UPLOAD_MEDIA;
                         }
                         else{
                             //echo "ready";
-
+                            // $client_server_path="http://clientapp.narolainfotech.com/pg/ISM/WS_ISM";
                             $text =  str_replace($oldString,"\"http://192.168.1.147/WS_ISM/images/question_sub_images/".$_FILES[$i]['name']."\"",$text);
                             $htmlTextOfImages[]=$text;
 
@@ -3957,7 +3945,6 @@ class ExamFunctions
                     }
 
                 }
-
                // echo "text=".$text;
         }
         else
@@ -4017,7 +4004,11 @@ class ExamFunctions
                         $updateQuery="UPDATE ".TABLE_STUDENT_EXAM_SCORE." SET publish_result_status='published' WHERE  `exam_id`=" . $exam_id . " AND user_id=" . $single_student . " AND is_delete=0";
                         $updateResult = mysqli_query($GLOBALS['con'], $updateQuery) or $message = mysqli_error($GLOBALS['con']);
 
-                        if($updateResult)
+                        $updateQueryForExam="UPDATE ".TABLE_EXAMS." SET declare_results='yes' WHERE  `id`=" . $exam_id . " AND is_delete=0";
+                        $updateResultForExam = mysqli_query($GLOBALS['con'], $updateQueryForExam) or $message = mysqli_error($GLOBALS['con']);
+
+
+                        if($updateResult && $updateResultForExam)
                         {
                             $status = SUCCESS;
                             $message = "Result has been published";
@@ -4027,16 +4018,14 @@ class ExamFunctions
                             $status = FAILED;
                             $message = "";
                         }
-
                     }
-                    else {
+                    else
+                    {
                         $status = SUCCESS;
                         $message = DEFAULT_NO_RECORDS;
                     }
                 }
             }
-
-
         }
         else
         {

@@ -1368,21 +1368,8 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
         //echo $encrypted_username=$sec->encrypt($username,"sandip");
 
 
-        // 32 byte binary blob
-        $aes256Key = hash("SHA256", $secerectkey[0], true);
 
-
-        // for good entropy (for MCRYPT_RAND)
-        srand((double) microtime() * 1000000);
-        // generate random iv
-        $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
-
-
-        $security=new SecurityFunctions();
-        $crypted = $security->fnEncrypt($username, $aes256Key);
-
-
-        $data['encrypted']=$crypted;
+        $data['encrypted']=$encrypted_username;
         //$newClear = $this->fnDecrypt($crypted, $aes256Key);
 
 
@@ -1409,22 +1396,10 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
         $secerectkey=mysqli_fetch_row($result);
         //$secerectkey="1234567891234567";
         $sec=new Security();
-        echo $encrypted_username=$sec->decrypt($username,$secerectkey[0]);
-
-        // 32 byte binary blob
-        $aes256Key = hash("SHA256", $secerectkey[0], true);
-
-        // for good entropy (for MCRYPT_RAND)
-        //srand((double) microtime() * 1000000);
-        // generate random iv
-        $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
-
-        $security=new SecurityFunctions();
-        //$newClear = $this->fnDecrypt($_POST['username'], $aes256Key);
-        $newClear = $security->fnDecrypt($username, $aes256Key);
+        echo $decrypted_username=$sec->decrypt($username,$secerectkey[0]);
 
 
-        $data['decrpted']=$newClear;
+        $data['decrpted']=$decrypted_username;
 
         $response['data']=$data;
         $response['message'] = $message;
@@ -1709,7 +1684,6 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
             INNER JOIN ".TABLE_QUESTIONS." questions ON questions.id=user_favorite_question.question_id
             INNER JOIN " . TABLE_SUBJECTS . " subjects ON subjects.id=questions.subject_id
             WHERE user_favorite_question.user_id=".$user_id." and user_favorite_question.is_delete=0 GROUP BY questions.id,questions.subject_id ";
-
 
             $resultToGetSubjectId=mysqli_query($GLOBALS['con'], $selectToGetSubjectId) or $message = mysqli_error($GLOBALS['con']);
             $subject=array();

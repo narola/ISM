@@ -497,16 +497,17 @@ class TutorialGroup
                     }
                     if($groups['group_cycle']=='ongoing'){
 
-                        $selData="tutorial_group_topic_allocation.*,tutorial_topic.topic_name,topic_description,tutorial_topic.created_by,subjects.subject_name";
+                        $selData="tutorial_group_topic_allocation.*,tutorial_topic.topic_name,topic_description,tutorial_topic.created_by,subjects.subject_name,tutorial_topic.topic_day";
 
-                          $queryToFetchTopics="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation
+                        $queryToFetchTopics="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation
                          INNER JOIN ".TABLE_TUTORIAL_TOPIC." tutorial_topic ON tutorial_group_topic_allocation.tutorial_topic_id=tutorial_topic.id
                          INNER JOIN ".TABLE_SUBJECTS." subjects ON tutorial_topic.subject_id=subjects.id
-                         WHERE group_id=".$group_id." AND week_no = ".$week_no ." AND (".$day_no." >= 1 AND ".$day_no." <= 7) AND tutorial_group_topic_allocation.is_delete=0";
-
+                         WHERE group_id=".$group_id." AND week_no = ".$week_no ." AND tutorial_group_topic_allocation.is_delete=0";
+//AND (".$day_no." >= 1 AND ".$day_no." <= 7)
                         //(".$day_no." >= 1 AND ".$day_no." <= 7)
                         $resultToFetchTopics = mysqli_query($GLOBALS['con'], $queryToFetchTopics) or $message = mysqli_error($GLOBALS['con']);
                        // $post=array();
+
                         if (mysqli_num_rows($resultToFetchTopics) > 0) {
                             while ($topicGroups = mysqli_fetch_assoc($resultToFetchTopics)) {
                                 $post['tutorial_topic']=$topicGroups['topic_name'];
@@ -514,8 +515,21 @@ class TutorialGroup
                                 $post['assigned_by']=$topicGroups['created_by'];
                                 $post['day_name']=$topicGroups['topic_day'];
                                 $post['interface_type']=$topicGroups['interface_type'];
-                                $post['created_date']=$topicGroups['assigned_time'];
+                                $post['assigned_time']=$topicGroups['created_date'];
                                 $post['subject_name']=$topicGroups['subject_name'];
+
+                                $queryForCurrentDay="SELECT * FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE created_date='now()' AND group_id=".$group_id." AND is_delete=0";
+                                $resultForCurrentDay=mysqli_query($GLOBALS['con'], $queryForCurrentDay) or $message = mysqli_error($GLOBALS['con']);
+                                if(mysqli_num_rows($resultForCurrentDay)>0)
+                                {
+                                    $post['is_current_day']="yes";
+                                }
+                                else{
+                                    $post['is_current_day']="no";
+                                }
+
+
+
                                 $data[]=$post;
                             }
 
