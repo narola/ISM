@@ -57,6 +57,7 @@ public class WebConstants {
     public static final int UPLOADPROFILEIMAGES = 38;
     public static final int GETADMINCONFIG = 39;
     public static final int REFRESH_TOKEN = 40;
+    public static final int UPLOADSUBQUESTIONIMAGES = 41;
 
 
     //user settings preferences
@@ -136,6 +137,7 @@ public class WebConstants {
     public static final String URL_GET_BOOKS_FOR_USER = URL_KINJAL_HOST + "GetBooksForUser";
     public static final String URL_MANAGE_FAVOURITES = URL_KINJAL_HOST + "ManageFavorite";
     public static final String URL_MANAGE_BOOK_LIBRARY = URL_KINJAL_HOST + "ManageBookLibrary";
+    public static final String URL_UPLOADSUBQUESTIONIMAGES = URL_KINJAL_HOST + "UploadSubQuestionImages";
 
     /*status for apisuccess ans apifailed*/
     public static final String SUCCESS = "success";

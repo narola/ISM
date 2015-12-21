@@ -10,9 +10,11 @@ import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -49,6 +51,7 @@ import com.ism.author.model.HashTagsModel;
 import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.MediaUploadAttribute;
+import com.ism.author.ws.helper.MultipartUtility;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.AnswerChoices;
@@ -63,20 +66,19 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jp.wasabeef.richeditor.RichEditor;
-
 
 /**
  * Created by c166 on 31/10/15.
  */
 public class QuestionAddEditFragment extends Fragment implements TokenCompleteTextView.TokenListener, View.OnClickListener,
-        WebserviceWrapper.WebserviceResponse, AddQuestionTextDialog.SelectMediaListener, AddQuestionTextDialog.AddTextListener, RichEditor.OnTextChangeListener {
+        WebserviceWrapper.WebserviceResponse, AddQuestionTextDialog.SelectMediaListener, AddQuestionTextDialog.AddTextListener {
 
     private static final String TAG = QuestionAddEditFragment.class.getSimpleName();
     private View view;
@@ -307,7 +309,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                                 imgSelectImage.setImageURI(selectedUri);
                                 imgPlay.setVisibility(View.GONE);
                             }
-
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -740,9 +741,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
             case R.id.tv_addquestion_advance:
 
-                String htmlText = Html.toHtml(etAddquestionTitle.getText());
+                htmlText = Html.toHtml(etAddquestionTitle.getText());
                 htmlText = htmlText.replace("<p dir=\"ltr\"><img", "<img");
                 htmlText = htmlText.replace(".png\"></p>", ".png\">");
+
                 addQuestionTextDialog = new AddQuestionTextDialog(getActivity(), (AddQuestionTextDialog.SelectMediaListener) this,
                         (AddQuestionTextDialog.AddTextListener) this, htmlText);
                 addQuestionTextDialog.show();
@@ -940,6 +942,54 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         }
     }
 
+
+    //static data for testing
+    private void callApiUploadSubQuestionImages(String questionId) {
+
+        if (Utility.isConnected(getActivity())) {
+            ((AuthorHostActivity) getActivity()).showProgress();
+            try {
+                Attribute attribute = new Attribute();
+                MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
+                questionIdParam.setParamName("question_id");
+                questionIdParam.setParamValue("231");
+
+                MediaUploadAttribute noOfImagesParam = new MediaUploadAttribute();
+                noOfImagesParam.setParamName("numberofimages");
+                questionIdParam.setParamValue(String.valueOf(imageSources.size()));
+
+
+                htmlText = Html.toHtml(etAddquestionTitle.getText());
+                htmlText = htmlText.replace("<p dir=\"ltr\"><img", "<img");
+                htmlText = htmlText.replace(".png\"></p>", ".png\">");
+
+
+                MediaUploadAttribute htmlTextParam = new MediaUploadAttribute();
+                noOfImagesParam.setParamName("htmlText");
+                questionIdParam.setParamValue(htmlText);
+
+                attribute.getArrListParam().add(questionIdParam);
+                attribute.getArrListParam().add(noOfImagesParam);
+                attribute.getArrListParam().add(htmlTextParam);
+
+
+                for (int i = 0; i < imageSources.size(); i++) {
+                    MediaUploadAttribute mediaFileParam = new MediaUploadAttribute();
+                    mediaFileParam.setParamName("" + i);
+                    mediaFileParam.setFileName(imageSources.get(i));
+                    attribute.getArrListFile().add(mediaFileParam);
+                }
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.UPLOADSUBQUESTIONIMAGES);
+            } catch (Exception e) {
+                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(getActivity());
+        }
+    }
+
+
     private String getQuestionFormat() {
         String questionFormat = "";
         int spPosition = spAddquestionType.getSelectedItemPosition();
@@ -983,11 +1033,18 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     break;
 
                 case WebConstants.SETHASHTAG:
+
                     onResponseSetHashTag(object, error);
                     break;
 
                 case WebConstants.UPLOADMEDIAFORQUESTION:
+
                     onResponseUploadMediaForQuestion(object, error);
+                    break;
+
+                case WebConstants.UPLOADSUBQUESTIONIMAGES:
+
+                    onResponseUploadSubQuestionImages(object, error);
                     break;
             }
         } catch (Exception e) {
@@ -1199,6 +1256,30 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
 
+    private void onResponseUploadSubQuestionImages(Object object, Exception error) {
+        try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    Debug.e(TAG, "The Image url is::" + responseHandler.getUploadQuestion().getImagesText() + " question id is: " +
+                            responseHandler.getUploadQuestion().getQuestionId());
+
+                    Utils.showToast(getString(R.string.msg_success_question_imgupload), getActivity());
+
+
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseUploadMediaForQuestion api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseUploadMediaForQuestion Exception : " + e.toString());
+        }
+    }
+
+
     private void openImage() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
@@ -1244,13 +1325,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     ArrayList<String> imageSources = new ArrayList<String>();
 
 
-    @Override
-    public void onTextChange(String text) {
-
-
-    }
-
-
     public void addImage(View view) {
         imageSources.clear();
         XmlPullParserFactory factory = null;
@@ -1280,10 +1354,33 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     }
 
-    private void callApiCreateQuestionWithImages() {
+    private class sendImages extends AsyncTask<Void, Void, Void> {
 
+        @Override
+        protected Void doInBackground(Void... params) {
+            String charset = "UTF-8";
+            try {
+                MultipartUtility multipart = new MultipartUtility("http://52.77.253.33:8085//WisperMessanger/WisperMessanger/ClearMessages.php", charset);
+                multipart.addFormField("numberofimages", "" + imageSources.size());
+                multipart.addFormField("htmlText", "" + Text);
+                for (int i = 0; i < imageSources.size(); i++) {
+                    // Debug.i(TAG,"File path : "+mediaUploadAttribute.getArrListFile().get(i).getFileName());
+                    multipart.addFilePart("" + i,
+                            new File(imageSources.get(i)));
+                }
 
+                List<String> response = multipart.finish();
+                for (String line : response) {
+                    htmlText = line;
+                    Log.e(TAG, "THE REPLAY FROM SERVER IS::" + line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
+
 
 }
 

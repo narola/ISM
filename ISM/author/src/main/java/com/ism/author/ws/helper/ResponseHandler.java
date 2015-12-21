@@ -32,6 +32,7 @@ import com.ism.author.ws.model.Studymates;
 import com.ism.author.ws.model.Subjects;
 import com.ism.author.ws.model.Token;
 import com.ism.author.ws.model.Topics;
+import com.ism.author.ws.model.UploadQuestion;
 import com.ism.author.ws.model.User;
 import com.ism.author.ws.model.UserImages;
 
@@ -111,6 +112,7 @@ public class ResponseHandler {
     private ArrayList<AdminConfig> adminConfig;
     private UserImages userImages;
     FileUploadResponse fileUploadResponse;
+    private UploadQuestion uploadQuestion;
 
     @JsonProperty("feeds")
     public ArrayList<Feeds> getFeeds() {
@@ -404,6 +406,16 @@ public class ResponseHandler {
 
     public void setUserImages(UserImages userImages) {
         this.userImages = userImages;
+    }
+
+
+    @JsonProperty("upload_question_images")
+    public UploadQuestion getUploadQuestion() {
+        return this.uploadQuestion;
+    }
+
+    public void setUploadQuestion(UploadQuestion uploadQuestion) {
+        this.uploadQuestion = uploadQuestion;
     }
 
 

@@ -258,6 +258,10 @@ public class WebserviceWrapper {
                             case WebConstants.GETADMINCONFIG:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETADMINCONFIG).execute(ResponseHandler.class, attribute);
                                 break;
+
+                            case WebConstants.UPLOADSUBQUESTIONIMAGES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_UPLOADSUBQUESTIONIMAGES).uploadMedia(ResponseHandler.class, attribute);
+                                break;
                         }
                     }
                 }
