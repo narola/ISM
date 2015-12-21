@@ -585,7 +585,6 @@
                         android:background="@color/color_white"
                         android:gravity="center_vertical"
                         android:padding="@dimen/d10dp"
-                        android:autoText="true"
                         android:textAlignment="gravity"
                         android:textSize="@dimen/d20sp" />
 

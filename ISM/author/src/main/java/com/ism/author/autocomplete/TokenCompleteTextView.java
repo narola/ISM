@@ -374,7 +374,7 @@ public abstract class TokenCompleteTextView<T> extends MultiAutoCompleteTextView
     abstract protected View getViewForObject(T object);
 
     /**
-     * Provides a default completion when the user hits , and there is no item in the completion
+     * Provides a default completion when the user hits , and there is checkSlotNo item in the completion
      * list
      *
      * @param completionText the current text we are completing against
@@ -828,7 +828,7 @@ public abstract class TokenCompleteTextView<T> extends MultiAutoCompleteTextView
     }
 
     /**
-     * Remove an object from the token list. Will remove duplicates or do nothing if no object
+     * Remove an object from the token list. Will remove duplicates or do nothing if checkSlotNo object
      * present in the view.
      *
      * @param object object to remove, may be null or not in the view
@@ -978,7 +978,7 @@ public abstract class TokenCompleteTextView<T> extends MultiAutoCompleteTextView
         post(new Runnable() {
             @Override
             public void run() {
-                // If there's no text, we're already empty
+                // If there's checkSlotNo text, we're already empty
                 Editable text = getText();
                 if (text == null) return;
 
@@ -1379,7 +1379,7 @@ public abstract class TokenCompleteTextView<T> extends MultiAutoCompleteTextView
     public boolean canDeleteSelection(int beforeLength) {
         if (objects.size() < 1) return true;
 
-        // if beforeLength is 1, we either have no selection or the call is coming from OnKey Event.
+        // if beforeLength is 1, we either have checkSlotNo selection or the call is coming from OnKey Event.
         // In these scenarios, getSelectionStart() will return the correct value.
 
         int endSelection = getSelectionEnd();
@@ -1389,12 +1389,12 @@ public abstract class TokenCompleteTextView<T> extends MultiAutoCompleteTextView
         TokenImageSpan[] spans = text.getSpans(0, text.length(), TokenImageSpan.class);
 
         // Iterate over all tokens and allow the deletion
-        // if there are no tokens not removable in the selection
+        // if there are checkSlotNo tokens not removable in the selection
         for (TokenImageSpan span : spans) {
             int startTokenSelection = text.getSpanStart(span);
             int endTokenSelection = text.getSpanEnd(span);
 
-            // moving on, no need to check this token
+            // moving on, checkSlotNo need to check this token
             if (isTokenRemovable(span.token)) continue;
 
             if (startSelection == endSelection) {

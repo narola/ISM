@@ -315,7 +315,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                         attribute.setHomeAddress(etHomeAddress.getText().toString().trim());
                         attribute.setSchoolName(etSchoolName.getText().toString().trim());
                         attribute.setContactNumber(etContactNo.getText().toString().trim());
-                        attribute.setCountryId(spCountry.getSelectedItemPosition() > 0 ? arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId() : "0");
+                        attribute.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
                         attribute.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
                         attribute.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
 
@@ -399,7 +399,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             progState.setProgress(1);
             progressGenerator.start(progState);
             Attribute attribute = new Attribute();
-            attribute.setCountryId(countryId);
+            attribute.setCountryId(Integer.parseInt(countryId));
 
             new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GETSTATES);
@@ -575,8 +575,9 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, this, responseHandler.getToken().get(0).getTokenName());
                     WebConstants.SECRET_KEY = responseHandler.getToken().get(0).getTokenName();
+                    PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, this, responseHandler.getToken().get(0).getTokenName());
+
                     if (isAdminConfigSet) {
                         callApiAuthenticateUser();
                     } else {

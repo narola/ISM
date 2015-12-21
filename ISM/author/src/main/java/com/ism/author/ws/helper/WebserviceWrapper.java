@@ -124,6 +124,10 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETSTUDYMATES).execute(ResponseHandler.class, attribute);
                                 break;
 
+                            case WebConstants.GET_HIGH_SCORERS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_HIGH_SCORERS).execute(ResponseHandler.class, attribute);
+                                break;
+
                             case WebConstants.TAGFRIENDINFEED:
                                 responseObject = new WebserviceConnector(WebConstants.URL_TAGFRIENDINFEED).execute(ResponseHandler.class, attribute);
                                 break;
@@ -257,6 +261,18 @@ public class WebserviceWrapper {
                                 break;
                             case WebConstants.GETADMINCONFIG:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETADMINCONFIG).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_TRENDING_QUESTIONS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GETTRENDINGQUESTIONS).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+                            case WebConstants.GET_PAST_QUESTIONS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GETPASTQUESTIONS).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+                            case WebConstants.SUBMIT_TRENDING_ANSWER:
+                                responseObject = new WebserviceConnector(WebConstants.URL_SUBMIT_TRENDING_ANSWER).execute(ResponseHandler.class,
+                                        attribute);
                                 break;
                         }
                     }

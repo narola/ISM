@@ -101,7 +101,7 @@
             android:layout_marginTop="@dimen/d10dp"
             android:text="Jackson JSR-310 module fails to  deserialize simplest offsetDatetime format?Jackson JSR-310 module fails to  deserialize simplest offsetDatetime format?"
             android:textColor="#A4A4A4"
-            android:textSize="@dimen/d18sp" />
+            android:textSize="@dimen/d16sp" />
 
     </RelativeLayout>
     <!--<TextView-->
