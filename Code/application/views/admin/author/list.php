@@ -12,7 +12,7 @@
   <!--//breadcrumb-->
   <!--filter-->
   <form method="get" id="filter">
-    <div class="filter group_filter admin_controls box_body">
+    <div class="filter order_authors admin_controls box_body">
        <div class="col-sm-12">
            <div class="form-group select">
             <select onchange="filter_data()" class="form-control js-example-basic-single" id="author" name="author">
@@ -46,8 +46,8 @@
                             </select>
                         </div>
                         
-                        <div class="form-group no_effect search_input">
-                            <input type="text" name="q" id="q" class="form-control" placeholder="Type Author Name here" >
+                        <div class="form-group no_effect search_input search_author">
+                            <input type="text" name="q" id="q" class="form-control" placeholder="Type Author Name/Education" >
                             
                             <?php if(!empty($_GET['q'])) { ?>
                             <a onclick="filter_data_reverse()" style="cursor:pointer">X</a>
