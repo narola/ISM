@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -26,11 +27,14 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.InputValidator;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.MyTypeFace;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.MediaUploadAttribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
+import com.ism.teacher.ws.model.Cities;
+import com.ism.teacher.ws.model.Countries;
+import com.ism.teacher.ws.model.States;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,7 +49,7 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
     private static final String TAG = TeacherProfileInformation.class.getSimpleName();
 
     //Views
-    private Spinner spGender;
+    private Spinner spGender, spCity, spCountry, spState;
     private Button btnCancel;
     private EditText etFirstnameTeacher, etLastnameTeacher, etEmailAddressTeacher, etHomeAddressTeacher,
             etContactNumberTeacher, etSpecializaton, etEducation,
@@ -69,6 +73,11 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
     //Array List
     private List<String> arrListGender;
     private List<String> arrListDefalt;
+
+    private ArrayList<Countries> arrListCountries;
+    private ArrayList<States> arrListStates;
+    private ArrayList<Cities> arrListCities;
+
     private int PICK_IMAGE_REQUEST = 1;
     Uri selectedUri = null;
 
@@ -88,6 +97,9 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
     private void initView() {
 
         inputValidator = new InputValidator(TeacherProfileInformation.this);
+        spCity = (Spinner) findViewById(R.id.sp_city);
+        spCountry = (Spinner) findViewById(R.id.sp_country);
+        spState = (Spinner) findViewById(R.id.sp_state);
 
         imgTeacherProfilePic = (ImageView) findViewById(R.id.img_teacher_profile_pic);
         tvClickhere = (TextView) findViewById(R.id.txt_clickhere);
@@ -118,6 +130,12 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
         btnSubmit = (ProcessButton) findViewById(R.id.btn_submit);
 
         spGender = (Spinner) findViewById(R.id.sp_gender_teacher);
+        arrListDefalt = new ArrayList<>();
+        arrListDefalt.add(getString(R.string.select));
+
+        Adapters.setUpSpinner(getActivity(), spCountry, arrListDefalt, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, Adapters.ADAPTER_NORMAL);
 
         arrListGender = new ArrayList<>();
         arrListGender.add(getString(R.string.strgender));
@@ -125,8 +143,6 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
         arrListGender.add(getString(R.string.female));
         Adapters.setUpSpinner(TeacherProfileInformation.this, spGender, arrListGender, Adapters.ADAPTER_NORMAL);
 
-        arrListDefalt = new ArrayList<>();
-        arrListDefalt.add(getString(R.string.select));
 
         myTypeFace = new MyTypeFace(this);
         progressGenerator = new ProgressGenerator();
@@ -134,6 +150,13 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
         retrieveFromPrefernces();
 
         applyFontsOnViews();
+
+        if (Utility.isConnected(getActivity())) {
+            callApiGetCountries();
+        } else {
+            Utility.alertOffline(getActivity());
+        }
+
 
         etDobTeacher.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -145,6 +168,81 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
             }
         });
 
+
+        spCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (arrListCountries != null && position > 0) {
+                    if (Utility.isConnected(getActivity())) {
+                        callApiGetStates(Integer.parseInt(arrListCountries.get(position - 1).getId()));
+                    } else {
+                        Utility.toastOffline(getActivity());
+                    }
+                } else {
+                    Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (arrListStates != null && position > 0) {
+                    if (Utility.isConnected(getActivity())) {
+                        callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
+                    } else {
+                        Utility.toastOffline(getActivity());
+                    }
+                } else {
+                    Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
+
+    private void callApiGetCountries() {
+        try {
+            new WebserviceWrapper(getActivity(), new Attribute(), this).new WebserviceCaller()
+                    .execute(WebConstants.GET_COUNTRIES);
+        } catch (Exception e) {
+            Debug.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void callApiGetStates(int countryId) {
+        try {
+            Attribute attribute = new Attribute();
+
+            attribute.setCountryId(String.valueOf(countryId));
+
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+                    .execute(WebConstants.GET_STATES);
+        } catch (Exception e) {
+            Debug.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void callApiGetCities(int stateId) {
+        try {
+            Attribute attribute = new Attribute();
+            attribute.setStateId(stateId);
+
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+                    .execute(WebConstants.GET_CITIES);
+        } catch (Exception e) {
+            Debug.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
+        }
     }
 
     private void retrieveFromPrefernces() {
@@ -179,17 +277,6 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
 
     public void onClickSubmit(View view) {
         if (Utility.isConnected(TeacherProfileInformation.this)) {
-
-//			PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
-//					PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
-//			PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
-//			PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, "141");
-//			PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, ProfileInformationActivity.this, "Krunal Panchal");
-//			PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, "user_374/logo_test.png");
-//
-//			Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
-//			startActivity(intentWelcome);
-//			finish();
 
             if (isInputsValid()) {
 
@@ -238,17 +325,16 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
 
             Attribute attribute = new Attribute();
             attribute.setCredentialId(Integer.parseInt(strUserCredentialId));
-            Debug.e(TAG+"credentail id in attrib",strUserCredentialId);
+            Debug.e(TAG + "credentail id in attrib", strUserCredentialId);
             attribute.setEmailAddress(etEmailAddressTeacher.getText().toString().trim());
             attribute.setPassword(etNewPassword.getText().toString().trim());
             attribute.setFirstname(etFirstnameTeacher.getText().toString().trim());
             attribute.setLastname(etLastnameTeacher.getText().toString().trim());
             attribute.setBirthdate(strDob);
 
-            attribute.setCityId(0);
-            attribute.setStateId(0);
-            attribute.setCountryId(String.valueOf(0));
-
+            attribute.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
+            attribute.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
+            attribute.setCountryId(spCountry.getSelectedItemPosition() > 0 ? arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId() : "0");
             attribute.setDeviceToken(Utility.getDeviceTokenId(getActivity()));
             attribute.setGender(arrListGender.get(spGender.getSelectedItemPosition()));
             attribute.setUsername(etUsername.getText().toString().trim());
@@ -384,12 +470,39 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
     private boolean checkOtherInputs() {
         strValidationMsg = "";
 //        if (isDpSet() & isGenderSet() & isSetDob()) {
-        if (isGenderSet() & isSetDob()) {
+        if (isGenderSet() & isSetDob() & isCountrySet() & isStateSet() & isCitySet()) {
             return true;
 
         } else {
             Utility.alert(TeacherProfileInformation.this, null, strValidationMsg);
             Debug.e(TAG, "false");
+            return false;
+        }
+    }
+
+    private boolean isCitySet() {
+        if (arrListCities != null && arrListCities.size() == 0 || spCity.getSelectedItemPosition() > 0) {
+            return true;
+        } else {
+            strValidationMsg += getString(R.string.msg_validation_city);
+            return false;
+        }
+    }
+
+    private boolean isStateSet() {
+        if (arrListStates != null && arrListStates.size() == 0 || spState.getSelectedItemPosition() > 0) {
+            return true;
+        } else {
+            strValidationMsg += getString(R.string.msg_validation_state);
+            return false;
+        }
+    }
+
+    private boolean isCountrySet() {
+        if (arrListCountries != null && spCountry.getSelectedItemPosition() > 0) {
+            return true;
+        } else {
+            strValidationMsg += getString(R.string.msg_validation_country);
             return false;
         }
     }
@@ -428,6 +541,15 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
     public void onResponse(int apiCode, Object object, Exception error) {
         try {
             switch (apiCode) {
+                case WebConstants.GET_COUNTRIES:
+                    onResponseCountries(object, error);
+                    break;
+                case WebConstants.GET_STATES:
+                    onResponseStates(object, error);
+                    break;
+                case WebConstants.GET_CITIES:
+                    onResponseCities(object, error);
+                    break;
                 case WebConstants.REGISTERUSER:
                     onResponseRegisterUser(object, error);
                     break;
@@ -437,6 +559,79 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponse Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseCities(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListCities = new ArrayList<Cities>();
+                    arrListCities.addAll(responseHandler.getCities());
+                    List<String> cities = new ArrayList<String>();
+                    cities.add(getString(R.string.strcity));
+                    for (Cities city : arrListCities) {
+                        cities.add(city.getCityName());
+                    }
+                    Adapters.setUpSpinner(getActivity(), spCity, cities, Adapters.ADAPTER_NORMAL);
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Debug.e(TAG, "onResponseCities Failed");
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseCities api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseCities Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseStates(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListStates = new ArrayList<States>();
+                    arrListStates.addAll(responseHandler.getStates());
+                    List<String> states = new ArrayList<String>();
+                    states.add(getString(R.string.strstate));
+                    for (States state : arrListStates) {
+                        states.add(state.getStateName());
+                    }
+                    Adapters.setUpSpinner(getActivity(), spState, states, Adapters.ADAPTER_NORMAL);
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Debug.e(TAG, "onResponseStates Failed");
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseCountries api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseStates Exception : " + e.toString());
+        }
+    }
+
+
+    private void onResponseCountries(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListCountries = new ArrayList<Countries>();
+                    arrListCountries.addAll(responseHandler.getCountries());
+                    List<String> countries = new ArrayList<String>();
+                    countries.add(getString(R.string.strcountry));
+                    for (Countries country : arrListCountries) {
+                        countries.add(country.getCountryName());
+                    }
+                    Adapters.setUpSpinner(getActivity(), spCountry, countries, Adapters.ADAPTER_NORMAL);
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Debug.e(TAG, "onResponseCountries Failed");
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseCountries api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseCountries Exception : " + e.toString());
         }
     }
 

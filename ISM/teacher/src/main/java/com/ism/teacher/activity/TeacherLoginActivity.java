@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ import com.ism.teacher.broadcastReceiver.NetworkStateListener;
 import com.ism.teacher.broadcastReceiver.NetworkStatusReceiver;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.InputValidator;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.MyTypeFace;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -62,6 +63,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
     private Button btnForgotPwdSubmit, btnCredentialsSubmit;
     private Spinner spCountry, spState, spCity;
     private LinearLayout llLogin;
+    private ImageView img_logo;
 
 
     //Array List
@@ -75,7 +77,6 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
     private ProgressGenerator progressGenerator;
     private AlertDialog dialogForgotPassword;
     private String strValidationMsg;
-
 
 
     /**
@@ -96,7 +97,6 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
         isAdminConfigSet = false;
         isRememberMe = PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, getActivity());
         isRememberMeFirstLogin = PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity());
-
 
         NetworkStatusReceiver.setNetworkStateListener(this);
 
@@ -133,6 +133,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             initGlobal();
         }
     }
+
     private void initGlobal() {
         MyTypeFace myTypeFace = new MyTypeFace(TeacherLoginActivity.this);
         inputValidator = new InputValidator(TeacherLoginActivity.this);
@@ -145,8 +146,8 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
         etTeacherPassword = (EditText) findViewById(R.id.et_teacher_password);
         chkRememberme = (CheckBox) findViewById(R.id.chk_rememberme);
 
-
         llLogin = (LinearLayout) findViewById(R.id.ll_login);
+        img_logo = (ImageView) findViewById(R.id.img_logo);
 
         showLoginLayout();
 
@@ -165,9 +166,9 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
     }
 
     private void showLoginLayout() {
-        llLogin.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
+        llLogin.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up));
         llLogin.setVisibility(View.VISIBLE);
-        findViewById(R.id.img_logo).startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
+        img_logo.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up));
     }
 
     public void onClickLogin(View view) {
@@ -175,7 +176,6 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             if (isInputsValid()) {
                 btnLogin.setProgress(1);
                 btnLogin.setEnabled(false);
-//                progressGenerator.start(btnLogin);
 
                 String globalPassword = teacherHelper.getGlobalPassword();
                 if (globalPassword != null) {
@@ -395,7 +395,6 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
     }
 
 
-
     private void callApiGetCountries() {
         try {
             progCountry.setVisibility(View.VISIBLE);
@@ -504,8 +503,6 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             Log.e(TAG, "callApiRefreshToken Exception : " + e.toString());
         }
     }
-
-
 
 
     @Override

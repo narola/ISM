@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.richeditor.Formula;
 import com.ism.teacher.richeditor.GridAdaptor;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
@@ -32,7 +32,6 @@ public class AddQuestionTextDialog extends Dialog implements View.OnClickListene
     private Context mContext;
     private TextView tvDialogAddTextTitle, tvDialogAddTextDone, tvDialogAddTextClose;
     private RichTextEditor rteDialogAddText;
-    private MyTypeFace myTypeFace;
     private RelativeLayout layoutRich;
     private Formula formula;
     private SelectMediaListener selectMediaListener;
@@ -62,13 +61,12 @@ public class AddQuestionTextDialog extends Dialog implements View.OnClickListene
 
     private void initializeDialog() {
 
-        myTypeFace = new MyTypeFace(mContext);
         tvDialogAddTextTitle = (TextView) findViewById(R.id.tv_dialog_add_text_title);
         tvDialogAddTextDone = (TextView) findViewById(R.id.tv_dialog_add_text_done);
         tvDialogAddTextClose = (TextView) findViewById(R.id.tv_dialog_add_text_close);
-        tvDialogAddTextTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvDialogAddTextDone.setTypeface(myTypeFace.getRalewayRegular());
-        tvDialogAddTextClose.setTypeface(myTypeFace.getRalewayRegular());
+        tvDialogAddTextTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvDialogAddTextDone.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvDialogAddTextClose.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvDialogAddTextDone.setOnClickListener(this);
         tvDialogAddTextClose.setOnClickListener(this);
 

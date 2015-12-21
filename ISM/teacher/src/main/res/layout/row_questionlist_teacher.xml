@@ -51,12 +51,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/d5dp"
+            android:ellipsize="end"
+            android:maxLines="6"
+            android:singleLine="false"
             android:text="@string/strquestion"
             android:textColor="@color/color_question"
             android:textSize="@dimen/d22sp" />
-
-
-
 
         <LinearLayout
             android:id="@+id/ll_question_answers"
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:background="@drawable/dropdown_open" />
+                android:src="@drawable/image_dropdown_open_close" />
 
             <ImageView
                 android:layout_width="match_parent"

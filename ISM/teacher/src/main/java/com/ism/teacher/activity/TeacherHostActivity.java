@@ -24,12 +24,14 @@ import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.ControllerTopMenuItem;
 import com.ism.teacher.Utility.Debug;
+import com.ism.teacher.Utility.PreferenceData;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.ControllerTopSpinnerAdapter;
 import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.AssignmentExamFragment;
 import com.ism.teacher.fragments.ObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.StudentAttemptedFragment;
@@ -40,6 +42,10 @@ import com.ism.teacher.fragments.TeacherTutorialGroupFragment;
 import com.ism.teacher.fragments.UpcomingEventsFragment;
 import com.ism.teacher.fragments.UserProfileFragment;
 import com.ism.teacher.interfaces.FragmentListener;
+import com.ism.teacher.object.Global;
+import com.ism.teacher.object.MyTypeFace;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -110,6 +116,14 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     }
 
     private void initGlobal() {
+
+
+        Global.myTypeFace = new MyTypeFace(getApplicationContext());
+        Global.imageLoader = ImageLoader.getInstance();
+        Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
+        Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, TeacherHostActivity.this);
+        Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, TeacherHostActivity.this);
+        Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, TeacherHostActivity.this);
 
         mFragmentManager = getFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();

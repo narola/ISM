@@ -16,13 +16,12 @@ import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.ism.teacher.ws.model.Examsubmittor;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
@@ -34,8 +33,6 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     private Context context;
     Fragment fragment;
     LayoutInflater inflater;
-    private static MyTypeFace myTypeFace;
-    ImageLoader imageLoader;
     private static String TAG = StudentAttemptedAdapter.class.getSimpleName();
     private int lastSelected = -1;
     private String studentName;
@@ -46,9 +43,6 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
         this.context = context;
         this.fragment = fragment;
         inflater = LayoutInflater.from(context);
-        myTypeFace = new MyTypeFace(context);
-        imageLoader = ImageLoader.getInstance();
-        //imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
 
     }
 
@@ -74,7 +68,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
             } else {
                 viewholder.lLMain.setBackgroundResource(R.drawable.bg_student_attempted_unselected);
             }
-            imageLoader.displayImage(WebConstants.USER_IMAGES + arrayList.get(position).getStudentProfilePic(), viewholder.imgUserPic, ISMTeacher.options);
+            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrayList.get(position).getStudentProfilePic(), viewholder.imgUserPic, ISMTeacher.options);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -163,10 +157,10 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                 txtSchoolName = (TextView) convertView.findViewById(R.id.txt_student_school);
                 txtScore = (TextView) convertView.findViewById(R.id.txt_student_marks);
                 lLMain = (LinearLayout) convertView.findViewById(R.id.ll_main);
-                txtStudentName.setTypeface(myTypeFace.getRalewaySemiBold());
-                txtSchoolName.setTypeface(myTypeFace.getRalewayRegular());
-                txtClass.setTypeface(myTypeFace.getRalewayRegular());
-                txtScore.setTypeface(myTypeFace.getRalewayBold());
+                txtStudentName.setTypeface(Global.myTypeFace.getRalewaySemiBold());
+                txtSchoolName.setTypeface(Global.myTypeFace.getRalewayRegular());
+                txtClass.setTypeface(Global.myTypeFace.getRalewayRegular());
+                txtScore.setTypeface(Global.myTypeFace.getRalewayBold());
             } catch (Exception e) {
                 Debug.i(TAG, "ViewHolder Exceptions :" + e.toString());
             }

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.QuestionPaletteAdapter;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.model.Evaluation;
 import com.ism.teacher.ws.model.QuestionPalette;
 import com.ism.teacher.ws.model.Questions;
@@ -33,10 +33,10 @@ public class QuestionPaletteFragment extends Fragment {
     private TextView tvQuestionPaletteTitle, tvLegend, tvQuesPaletteAssessed, tvQuesPaletteNotAttempted,
             tvQuesPaletteUnassessed;
     private RecyclerView rvQuestionpaletteList;
-    private MyTypeFace myTypeFace;
     private ArrayList<Evaluation> arrListEvaluation = new ArrayList<Evaluation>();
     private QuestionPaletteAdapter questionPaletteAdapter;
 
+    public QuestionPaletteFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,8 +46,6 @@ public class QuestionPaletteFragment extends Fragment {
     }
 
     private void initGlobal() {
-
-        myTypeFace = new MyTypeFace(getActivity());
 
         tvQuestionPaletteTitle = (TextView) view.findViewById(R.id.tv_question_palette_title);
         tvLegend = (TextView) view.findViewById(R.id.tv_legend);
@@ -60,11 +58,11 @@ public class QuestionPaletteFragment extends Fragment {
         rvQuestionpaletteList.setLayoutManager(new GridLayoutManager(getActivity(), 5));
 
 
-        tvQuestionPaletteTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvLegend.setTypeface(myTypeFace.getRalewayBold());
-        tvQuesPaletteAssessed.setTypeface(myTypeFace.getRalewayRegular());
-        tvQuesPaletteNotAttempted.setTypeface(myTypeFace.getRalewayRegular());
-        tvQuesPaletteUnassessed.setTypeface(myTypeFace.getRalewayRegular());
+        tvQuestionPaletteTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvLegend.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvQuesPaletteAssessed.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvQuesPaletteNotAttempted.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvQuesPaletteUnassessed.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
     }

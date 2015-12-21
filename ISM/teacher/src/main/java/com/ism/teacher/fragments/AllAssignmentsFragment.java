@@ -294,7 +294,8 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
         if (Utility.isConnected(getActivity())) {
             try {
                 //   Utility.showSpinnerProgress(progAssignmentClass);
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_CLASSROOMS);
 
             } catch (Exception e) {
@@ -311,7 +312,8 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
         if (Utility.isConnected(getActivity())) {
             try {
                 // Utility.showSpinnerProgress(progAssignmentSubject);
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_SUBJECT);
             } catch (Exception e) {
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());

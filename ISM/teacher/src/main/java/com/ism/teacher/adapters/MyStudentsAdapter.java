@@ -19,7 +19,7 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.SubjectiveQuestionsContainerFragment;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -38,7 +38,6 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
     Fragment mFragment;
     Context mContext;
     ImageLoader imageLoader;
-    public static MyTypeFace myTypeFace;
 
     private int lastSelected = -1;
     ResponseHandler resObjStudentAttempted;
@@ -68,7 +67,6 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
         this.mFragment = mFragment;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
-        myTypeFace = new MyTypeFace(mContext);
         inflater = LayoutInflater.from(mContext);
 
     }
@@ -113,8 +111,8 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
             llMyStudentsContainer = (LinearLayout) itemView.findViewById(R.id.ll_mystudent_container);
 
-            txtStudentName.setTypeface(myTypeFace.getRalewayRegular());
-            txtStudentRollno.setTypeface(myTypeFace.getRalewayRegular());
+            txtStudentName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtStudentRollno.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         }
     }
@@ -124,7 +122,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
         try {
             holder.txtStudentName.setText(arrayListStudents.get(position).getStudentName());
 
-            imageLoader.displayImage(WebConstants.USER_IMAGES + arrayListStudents.get(position).getStudentProfilePic(), holder.imgStudentPic, ISMTeacher.options);
+            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrayListStudents.get(position).getStudentProfilePic(), holder.imgStudentPic, ISMTeacher.options);
 
             if (getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID).equals(arrayListStudents.get(position).getStudentId())) {
                 holder.txtStudentName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));

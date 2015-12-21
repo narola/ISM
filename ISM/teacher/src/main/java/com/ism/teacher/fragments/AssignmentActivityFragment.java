@@ -20,7 +20,7 @@ import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.InputValidator;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -57,7 +57,6 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     private Calendar calDob;
     private String strDob="", strAssignmenttext = "",strSubmissionDate="";
     private long lngMaxDob;
-    MyTypeFace myTypeFace;
     private InputValidator inputValidator;
 
 
@@ -82,7 +81,6 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
         inputValidator = new InputValidator(getActivity());
 
         tvActivityTitle = (TextView) view.findViewById(R.id.tv_activity_title);
@@ -108,18 +106,18 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
 
 
-        tvActivityTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivityAssignmentname.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivityCoursename.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivityClass.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivitySubject.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivitySubmissiondate.setTypeface(myTypeFace.getRalewayRegular());
-        etActivitySubmissionDate.setTypeface(myTypeFace.getRalewayRegular());
-        etActivityAssignmentname.setTypeface(myTypeFace.getRalewayRegular());
-        etActivityCoursename.setTypeface(myTypeFace.getRalewayRegular());
-        btnActivitySave.setTypeface(myTypeFace.getRalewayRegular());
-        btnActivityCancel.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivityTopic.setTypeface(myTypeFace.getRalewayRegular());
+        tvActivityTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityAssignmentname.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityCoursename.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityClass.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivitySubject.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivitySubmissiondate.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etActivitySubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etActivityAssignmentname.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etActivityCoursename.setTypeface(Global.myTypeFace.getRalewayRegular());
+        btnActivitySave.setTypeface(Global.myTypeFace.getRalewayRegular());
+        btnActivityCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityTopic.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         btnActivitySave.setOnClickListener(new View.OnClickListener() {

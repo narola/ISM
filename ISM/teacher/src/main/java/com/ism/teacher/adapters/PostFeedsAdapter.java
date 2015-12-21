@@ -23,6 +23,7 @@ import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.dialog.TagStudyMatesDialog;
 import com.ism.teacher.dialog.ViewAllCommentsDialog;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -30,8 +31,6 @@ import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.ism.teacher.ws.model.CommentList;
 import com.ism.teacher.ws.model.FeedImages;
 import com.ism.teacher.ws.model.Feeds;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -47,7 +46,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     Fragment fragment;
     View.OnClickListener viewAllCommetsListener;
     String likePrefData, unlikePrefData;
-    private ImageLoader imageLoader;
     private LayoutInflater inflater;
 
 
@@ -56,10 +54,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     public PostFeedsAdapter(Context mContext) {
         this.mContext = mContext;
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         inflater = LayoutInflater.from(mContext);
-
     }
 
 
@@ -154,14 +149,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             imgPlay = (ImageView) itemView.findViewById(R.id.img_play);
         }
 
-
     }
 
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
-        imageLoader.displayImage(WebConstants.USER_IMAGES + arrListFeeds.get(position).getProfilePic(), holder.imgDpPostCreator, ISMTeacher.options);
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrListFeeds.get(position).getProfilePic(),
+                holder.imgDpPostCreator, ISMTeacher.options);
 
         holder.txtUsernamePostCreator.setText(arrListFeeds.get(position).getFullName());
         holder.txtPostContent.setText(arrListFeeds.get(position).getFeedText());
@@ -288,7 +282,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             holder.imgPlay.setVisibility(View.VISIBLE);
 
             Log.i(TAG, WebConstants.FEED_MEDIA + arrListFeeds.get(position).getVideoThumbnail() + "");
-            imageLoader.displayImage(WebConstants.FEED_MEDIA + arrListFeeds.get(position).getVideoThumbnail(), holder.imgVideo, ISMTeacher.options);
+            Global.imageLoader.displayImage(WebConstants.FEED_MEDIA + arrListFeeds.get(position).getVideoThumbnail(), holder.imgVideo, ISMTeacher.options);
 
         }
         //audio
@@ -305,7 +299,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             feedImages = arrListFeeds.get(position).getFeedImages();
             for (int i = 0; i < feedImages.size(); i++) {
                 Log.i(TAG, WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink() + "");
-                imageLoader.displayImage(WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink(), holder.imgImage, ISMTeacher.options);
+                Global.imageLoader.displayImage(WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink(), holder.imgImage, ISMTeacher.options);
 
             }
 
@@ -402,7 +396,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         txtCommenterComment.setText(commentList.getComment());
         txtCommentDuration.setText(commentList.getCommentBy());
 
-        imageLoader.displayImage(WebConstants.USER_IMAGES + commentList.getProfileLink(),
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + commentList.getProfileLink(),
                 img_dp_commenter, ISMTeacher.options);
 
 
