@@ -1,36 +1,36 @@
 <div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
-            	<!--breadcrumb-->
-           		<div class="page_header">
-                	<div class="col-sm-12">
-                    	<ol class="breadcrumb">
-                          <li><a href="#">Manage</a></li>
-                          <li><a href="#">book</a></li>
-                          <li class="active">Authors</li>
-                        </ol>
-                    </div>
-                </div>
-                <!--//breadcrumb-->
-                <!--filter-->
-                <form method="get" id="filter">
-                <div class="filter group_filter admin_controls box_body">
-                	<div class="col-sm-12">
-                    	<div class="form-group select">
-                            <select onchange="filter_data()" class="form-control js-example-basic-single" id="author" name="author">
-                                <option selected value=""> Select Author</option>
-                                  <?php 
-                                      if(!empty($authors_list)) {
-                                        foreach($authors_list as $author) { 
-                                      ?>
-                                      <option value="<?php echo $author['id']; ?>" <?php echo set_select('author', $author['id']); ?> >
-                                            <?php echo $author['full_name']; ?>
-                                      </option>
-                                  <?php } }else{ ?>
-                                  <option disabled > No Author Found</option>  
-                                  <?php } ?> 
-                          </select>
+   <!--breadcrumb-->
+   <div class="page_header">
+       <div class="col-sm-12">
+           <ol class="breadcrumb">
+              <li><a href="#">Manage</a></li>
+              <li><a href="#">book</a></li>
+              <li class="active">Authors</li>
+          </ol>
+      </div>
+  </div>
+  <!--//breadcrumb-->
+  <!--filter-->
+  <form method="get" id="filter">
+    <div class="filter group_filter admin_controls box_body">
+       <div class="col-sm-12">
+           <div class="form-group select">
+            <select onchange="filter_data()" class="form-control js-example-basic-single" id="author" name="author">
+                <option selected value=""> Select Author</option>
+                <?php 
+                if(!empty($authors_list)) {
+                    foreach($authors_list as $author) { 
+                      ?>
+                      <option value="<?php echo $author['id']; ?>" <?php echo set_select('author', $author['id']); ?> >
+                        <?php echo $author['full_name']; ?>
+                    </option>
+                    <?php } }else{ ?>
+                    <option disabled > No Author Found</option>  
+                    <?php } ?> 
+                </select>
 
-                           
-                        </div>
+
+            </div>
                         <!-- <div class="form-group">
                             <select class="form-control">
                                 <option>Select tags</option>
@@ -47,12 +47,12 @@
                         </div>
                         
                         <div class="form-group no_effect search_input">
-                            <input type="text" name="q" id="q" class="form-control" placeholder="Search" >
+                            <input type="text" name="q" id="q" class="form-control" placeholder="Type Author Name here" >
                             
                             <?php if(!empty($_GET['q'])) { ?>
-                                <a onclick="filter_data_reverse()" style="cursor:pointer">X</a>
+                            <a onclick="filter_data_reverse()" style="cursor:pointer">X</a>
                             <?php }else { ?>
-                                <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                            <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
                             <?php } ?>
 
                         </div>
@@ -60,66 +60,66 @@
                     </div>
                 </div>
             </form>
-                <!--//filter-->
-                <!--button div-->
-                
-                <!--//button-div-->
-                <!--row table-->
-                <div class="tabel_view">
-                	<div class="col-sm-12">
-                    	<div class="table-responsive">
-                        	<table id="table_author" class="table table-striped table-bordered table_user">
-                           		<thead>
-                                    <tr>
-                                        <th style="width: 50px;"></th>
-                                        <th style="">Author Name</th>
-                                       	<th>Education</th>
-                                        <th style="width:350px;">Books</th>
-                                        <th>Status</th>
-                                        <th style="width:180px;">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+            <!--//filter-->
+            <!--button div-->
 
-                                    <?php if(!empty($author_books)){
-                                        foreach ($author_books as $author) { ?>
-                                            
-                                    <tr>
-                                        <td class="checkbox_td">
-                                            <div class="squaredThree">
-                                                <input type="checkbox" name="check[]" value="<?php echo $author['author']['id']; ?>">
-                                                <label for="squaredThree"></label>
-                                            </div>
-                                        </td>
-                                        <td class="username">
-                                            <div class="chat_img_holder">
-                                                <img class="mCS_img_loaded" src="uploads/<?php echo $author['author']['profile_pic']; ?>" 
-                                       onerror="this.src='assets/images/avatar.png'">
-                                            </div>
-                                            <h4><?php echo $author['author']['full_name']; ?></h4>
-                                            
-                                        </td>
-                                        <td><?php echo $author['author']['education']; ?></td>
-                                        <td>
-                                            <div class="booklist_tab clearfix">
+            <!--//button-div-->
+            <!--row table-->
+            <div class="tabel_view">
+               <div class="col-sm-12">
+                   <div class="table-responsive">
+                       <table id="table_author" class="table table-striped table-bordered table_user">
+                           <thead>
+                            <tr>
+                                <th style="width: 50px;"></th>
+                                <th style="">Author Name</th>
+                                <th>Education</th>
+                                <th style="width:350px;">Books</th>
+                                <th>Status</th>
+                                <th style="width:180px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <?php if(!empty($author_books)){
+                                foreach ($author_books as $author) { ?>
+
+                                <tr>
+                                    <td class="checkbox_td">
+                                        <div class="squaredThree">
+                                            <input type="checkbox" name="check[]" value="<?php echo $author['author']['id']; ?>">
+                                            <label for="squaredThree"></label>
+                                        </div>
+                                    </td>
+                                    <td class="username">
+                                        <div class="chat_img_holder">
+                                            <img class="mCS_img_loaded" src="uploads/<?php echo $author['author']['profile_pic']; ?>" 
+                                            onerror="this.src='assets/images/avatar.png'">
+                                        </div>
+                                        <h4><?php echo $author['author']['full_name']; ?></h4>
+
+                                    </td>
+                                    <td><?php echo $author['author']['education']; ?></td>
+                                    <td>
+                                        <div class="booklist_tab clearfix">
                                             <ul>
-                                            <?php if(!empty($author['books'])){ 
-                                                foreach ($author['books'] as $book){ ?>
-                                                     
-                                                <li>
-                                                <div class="book_holder">
-                                                    <a href="admin/book/book_detail/<?php echo $book['id']; ?>"><img class="img-responsive" data-toggle="tooltip" data-placement="bottom" title="<?php echo $book['book_name']; ?>" src="assets/<?php echo $book['front_cover_image']; ?>" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'"></a>
-                                                </div>
-                                                </li>
-                                                
-                                                <?php } ?>
-                                                <a class="view_books pull-right btn-xs btn" href="admin/book/view_all/<?php echo $author['author']['id']; ?>">View All</a>
-                                            <?php } else{
-                                                echo 'No books belongs to this author.';
-                                            }
+                                                <?php if(!empty($author['books'])){ 
+                                                    foreach ($author['books'] as $book){ ?>
 
-                                             ?>
-                                            </ul>
+                                                    <li>
+                                                        <div class="book_holder">
+                                                            <a href="admin/book/book_detail/<?php echo $book['id']; ?>"><img class="img-responsive" data-toggle="tooltip" data-placement="bottom" title="<?php echo $book['book_name']; ?>" src="assets/<?php echo $book['front_cover_image']; ?>" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'"></a>
+                                                        </div>
+                                                    </li>
+
+                                                    <?php } ?>
+                                                    <a class="view_books pull-right btn-xs btn" href="admin/book/view_all/<?php echo $author['author']['id']; ?>">View All</a>
+                                                    <?php } else{
+                                                        echo 'No books belongs to this author.';
+                                                    }
+
+                                                    ?>
+                                                </ul>
 
                                             </div>
                                         </td>
@@ -139,62 +139,62 @@
                                             <a class="icon icon_chat" href="#"></a>
                                         </td>
                                     </tr>
-                                <?php } ?>
-                            <?php } ?>
+                                    <?php } ?>
+                                    <?php } ?>
                                 </tbody>
-                           	</table>
+                            </table>
                         </div>
                         <nav  class="text-center">
 
-                <?php echo $this->pagination->create_links(); ?>
+                            <?php echo $this->pagination->create_links(); ?>
 
-            </nav>
+                        </nav>
                     </div>
                 </div>
                 <!--//row table-->
-</div>
-<script type="text/javascript">
-    jQuery(document).ready(function($) {
-        $(".js-example-basic-single").select2({ placeholder: "Select Author"});   
-    });
-    function filter_data_reverse(){
-        $('#q').removeAttr('name');
-        $('#filter').submit();        
-    }
-    function filter_data() {
-        
-        var q = $('#q').val();
-        var author = $('#author').val();
-        var order = $('#order').val();
-        
-        if (q == '') {$('#q').removeAttr('name');}
-        if (author == '') {$('#author').removeAttr('name');}
-        if(order == ''){  $('#order').removeAttr('name'); }
+            </div>
+            <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                $(".js-example-basic-single").select2({ placeholder: "Select Author"});   
+            });
+            function filter_data_reverse(){
+                $('#q').removeAttr('name');
+                $('#filter').submit();        
+            }
+            function filter_data() {
 
-        $('#filter').submit();
-    }
+                var q = $('#q').val();
+                var author = $('#author').val();
+                var order = $('#order').val();
 
-    $("#filter").submit(function (event) {
-        
-        var q = $('#q').val();
-        var author = $('#author').val();
-        var order = $('#order').val();
+                if (q == '') {$('#q').removeAttr('name');}
+                if (author == '') {$('#author').removeAttr('name');}
+                if(order == ''){  $('#order').removeAttr('name'); }
 
-        if (q == '') {$('#q').removeAttr('name');}
-        if (author == '') { $('#author').removeAttr('name'); }
-        if(order == ''){  $('#order').removeAttr('name'); }
+                $('#filter').submit();
+            }
 
-    });
+            $("#filter").submit(function (event) {
 
-    <?php if(!empty($_GET['order'])) { ?>
-        $('#order').val('<?php echo $_GET["order"];?>');    
-    <?php } ?>
+                var q = $('#q').val();
+                var author = $('#author').val();
+                var order = $('#order').val();
 
-    <?php if (!empty($_GET['q'])) { ?>
-            $('#q').val('<?php echo $_GET["q"]; ?>');
-    <?php } ?>
+                if (q == '') {$('#q').removeAttr('name');}
+                if (author == '') { $('#author').removeAttr('name'); }
+                if(order == ''){  $('#order').removeAttr('name'); }
 
-    <?php if (!empty($_GET['author'])) { ?>
-            $('#author').val('<?php echo $_GET["author"]; ?>');
-    <?php } ?>
-</script>
+            });
+
+            <?php if(!empty($_GET['order'])) { ?>
+                $('#order').val('<?php echo $_GET["order"];?>');    
+                <?php } ?>
+
+                <?php if (!empty($_GET['q'])) { ?>
+                    $('#q').val('<?php echo $_GET["q"]; ?>');
+                    <?php } ?>
+
+                    <?php if (!empty($_GET['author'])) { ?>
+                        $('#author').val('<?php echo $_GET["author"]; ?>');
+                        <?php } ?>
+                        </script>

@@ -11,7 +11,7 @@
                 </div>
                 <!--//breadcrumb-->
                 <!--filter-->
-                <div class="filter  group_filter">
+                <!-- <div class="filter  group_filter">
                 	<div class="col-sm-12">
                     	<div class="form-group">
                             <select class="form-control">
@@ -33,7 +33,7 @@
                         </div>
                         
                     </div>
-                </div>
+                </div> -->
              
 
                 <!--//filter-->

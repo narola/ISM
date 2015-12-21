@@ -21,7 +21,7 @@
                 	<label>Book Name</label>
                     <input type="text" class="form-control" name="book_name" placeholder="Book Name">
                 </div>                     
-              
+
             <div class="form-group authors col-sm-12 col-md-6 col-lg-8 padding_r15_" >
                 <label> Select Author </label>
 

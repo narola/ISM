@@ -11,9 +11,10 @@
                 </div>
                 <!--//breadcrumb-->
                 <!--filter-->
+                <form method="get" id="filter">
                 <div class="filter  group_filter">
                 	<div class="col-sm-12">
-                    	<div class="form-group">
+                    	<!-- <div class="form-group">
                             <select class="form-control">
                                 <option>Select Author</option>
                             </select>
@@ -27,11 +28,21 @@
                             <select class="form-control">
                                 <option>Sort by</option>
                             </select>
+                        </div> -->
+                        
+                        <div class="form-group no_effect search_input">
+                            <input type="text" name="q" id="q" class="form-control" placeholder="Search" >
+                            
+                            <?php if(!empty($_GET['q'])) { ?>
+                                <a onclick="filter_data_reverse()" style="cursor:pointer">X</a>
+                            <?php }else { ?>
+                                <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                            <?php } ?>
+
                         </div>
-                        
-                        
                     </div>
                 </div>
+              </form>
                 <!--//filter-->
                 <!--button div-->
                 
@@ -66,3 +77,27 @@
                 </div>
                <!--//row table-->
             </div>
+            <script type="text/javascript">
+            jQuery(document).ready(function($) {
+              function filter_data_reverse(){
+                $('#q').removeAttr('name');
+                $('#filter').submit();        
+              }
+            });
+
+    function filter_data() {
+        var q = $('#q').val();
+        if (q == '') {$('#q').removeAttr('name');}
+        $('#filter').submit();
+    }
+
+    $("#filter").submit(function (event) {
+        var q = $('#q').val();
+        if (q == '') {$('#q').removeAttr('name');}
+    });
+
+    <?php if (!empty($_GET['q'])) { ?>
+            $('#q').val('<?php echo $_GET["q"]; ?>');
+    <?php } ?>
+
+            </script>
