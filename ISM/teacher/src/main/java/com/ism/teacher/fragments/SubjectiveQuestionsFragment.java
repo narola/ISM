@@ -25,7 +25,7 @@ import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.adapters.SubjectiveQuestionListAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -33,8 +33,6 @@ import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.ism.teacher.ws.model.Evaluation;
 import com.ism.teacher.ws.model.Examsubmittor;
 import com.ism.teacher.ws.model.Questions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -68,20 +66,14 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     private TextView tvStudentName, tvStudentRollNo, tvAssignmentNo, tvAssignmentTitle, tvSubjectiveScore, tvSubjectiveMarks,
             tvStudentEvalutionNo;
     private RecyclerView rvSubjectiveQuestionsList;
-    private MyTypeFace myTypeFace;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private SubjectiveQuestionListAdapter subjectiveQuestionListAdapter;
-    private ImageLoader imageLoader;
     private LinearLayoutManager mLayoutManager;
     private LinearLayout llPrevStudent, llNextStudent;
     private RelativeLayout rlBottomEvaluationTab;
     private ImageView imgEditExam, imgCopyExam;
 
     private void initGlobal() {
-
-        myTypeFace = new MyTypeFace(getActivity());
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
         imgEditExam = (ImageView) view.findViewById(R.id.img_edit_exam);
         imgCopyExam = (ImageView) view.findViewById(R.id.img_copy_exam);
@@ -106,13 +98,13 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         rvSubjectiveQuestionsList.setLayoutManager(mLayoutManager);
 
 
-        tvStudentName.setTypeface(myTypeFace.getRalewayBold());
-        tvStudentRollNo.setTypeface(myTypeFace.getRalewayRegular());
-        tvAssignmentNo.setTypeface(myTypeFace.getRalewayRegular());
-        tvAssignmentTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvSubjectiveScore.setTypeface(myTypeFace.getRalewayRegular());
-        tvSubjectiveMarks.setTypeface(myTypeFace.getRalewayBold());
-        tvStudentEvalutionNo.setTypeface(myTypeFace.getRalewayRegular());
+        tvStudentName.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvStudentRollNo.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAssignmentNo.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAssignmentTitle.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvSubjectiveScore.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvSubjectiveMarks.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvStudentEvalutionNo.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         rvSubjectiveQuestionsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -156,11 +148,11 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         if (Utility.isConnected(getActivity())) {
             try {
                 ((TeacherHostActivity) getActivity()).showProgress();
-                Attribute request = new Attribute();
+                Attribute attribute = new Attribute();
 //                request.setExamId(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
+                attribute.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
                 Debug.e(TAG, "The exam ID is::" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
-                new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_QUESTIONS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -175,11 +167,11 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         if (Utility.isConnected(getActivity())) {
             try {
                 ((TeacherHostActivity) getActivity()).showProgress();
-                Attribute request = new Attribute();
-                request.setExamId(getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID));
-                request.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
+                Attribute attribute = new Attribute();
+                attribute.setExamId(getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID));
+                attribute.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
 //                request.setStudentId("1");
-                new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_EVALUATIONS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -351,7 +343,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
                 getActivity().getResources().getString(R.string.strof) + " " +
                 arrListExamSubmittor.size());
 
-        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
+        Global.imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                 imgStudentProfilePic, ISMTeacher.options);
 
         tvStudentName.setText(getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_NAME));

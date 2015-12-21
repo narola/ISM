@@ -22,8 +22,6 @@ import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.User;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -32,7 +30,7 @@ import java.util.Date;
 public class AboutMeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private View view;
-    private TextView txtUserName, txtTotalBooks, txtSocial, txtTotalPost, txtTotalFollowing, txtPost, txtAssignment, txtAcademic, txtTotalAssignment, txtExam, txtTotalExam, txtExcellence, txtFavQuestions, txtBadgesEarned, txtQueAsked, txtTotalBadgesEarned, txtTotalQueAsked, txtTotalFavQuestions, txtYourAmbition, txtAboutMe, txtEducation;
+    private TextView txtUserName, txtTotalBooks, txtSocial, txtTotalPost, txtTotalFollowing, txtPost, txtAssignment, txtAcademic, txtTotalAssignment, txtExam, txtTotalExam, txtExcellence, txtFavQuestions, txtBadgesEarned, txtTotalBadgesEarned, txtTotalFavQuestions,  txtEducation;
     private static String TAG = AboutMeFragment.class.getSimpleName();
     private AuthorHostActivity activityHost;
     MyDeskFragment myDeskFragment;
@@ -178,55 +176,63 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     }
 
 
-    //used for changed date format in 14th May 2015
-    private String dateFormat(String birthdate) {
-        try {
-            String strDob = birthdate;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-            convertedDate = new Date();
-            convertedDate = dateFormat.parse(birthdate);
-            System.out.println(convertedDate);
-            SimpleDateFormat format = new SimpleDateFormat("dd");
-            String date = format.format(convertedDate);
-
-            Debug.i(TAG, "Date :" + date);
-
-            if (date.endsWith("1") && !date.endsWith("11"))
-                format = new SimpleDateFormat("dd'st' MMMM yyyy");
-            else if (date.endsWith("2") && !date.endsWith("12"))
-                format = new SimpleDateFormat("dd'nd' MMMM yyyy");
-            else if (date.endsWith("3") && !date.endsWith("13"))
-                format = new SimpleDateFormat("dd'rd' MMMM yyyy");
-            else
-                format = new SimpleDateFormat("dd'th' MMMM yyyy");
-            Debug.i(TAG, "Date Formated:" + format.format(convertedDate));
-            return format.format(convertedDate);
-        } catch (ParseException e) {
-            Debug.i(TAG, "dateFormat ParseException : " + e.getLocalizedMessage());
-            return null;
-        } catch (Exception e) {
-            Debug.i(TAG, "dateFormat Exceptions : " + e.getLocalizedMessage());
-            return null;
-        }
-
-
-    }
-
     private void setUpData(User data) {
         try {
             txtUserName.setText(data.getUsername());
             txtEducationName.setText(data.getEducation());
-            txtBirthdate.setText(dateFormat(data.getBirthdate()));
-            txtTotalAssignment.setText(data.getTotalAssignment());
-            txtAboutAuthorDetails.setText(data.getAboutAuthor());
-            txtTotalExam.setText(data.getTotalExams());
-            txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
-            txtTotalQueAnswered.setText(data.getTotalQuestionsAnswered());
-            txtTotalFavQuestions.setText(data.getTotalFavoriteQuestions());
-            txtTotalFollowers.setText(data.getTotalFollowers());
-            txtTotalFollowing.setText(data.getTotalFollowing());
-            txtTotalPost.setText(data.getTotalPost());
-            txtTotalBooks.setText(data.getTotalBooks());
+            txtBirthdate.setText(com.ism.commonsource.utility.Utility.DateFormat(data.getBirthdate()));
+
+            if(data.getTotalAssignment()==null)
+                txtTotalAssignment.setText("0");
+            else
+                txtTotalAssignment.setText(data.getTotalAssignment());
+
+            if(data.getAboutAuthor()==null)
+                txtAboutAuthorDetails.setText("No inforamation available!");
+            else
+                txtAboutAuthorDetails.setText(data.getAboutAuthor());
+
+            if(data.getTotalBadgesEarned()==null)
+                txtTotalBadgesEarned.setText("0");
+            else
+                txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
+
+            if(data.getTotalExams()==null)
+                txtTotalExam.setText("0");
+            else
+                txtTotalExam.setText(data.getTotalExams());
+
+
+            if(data.getTotalPost()==null)
+                txtTotalPost.setText("0");
+            else
+                txtTotalPost.setText(data.getTotalPost());
+
+            if(data.getTotalQuestionsAnswered()==null)
+                txtTotalQueAnswered.setText("0");
+            else
+                txtTotalQueAnswered.setText(data.getTotalQuestionsAnswered());
+
+            if(data.getTotalBooks()==null)
+                txtTotalBooks.setText("0");
+            else
+                txtTotalBooks.setText(data.getTotalBooks());
+
+            if(data.getTotalFollowers()==null)
+                txtTotalFollowers.setText("0");
+            else
+                txtTotalFollowers.setText(data.getTotalFollowers());
+
+            if(data.getTotalFavoriteQuestions()==null)
+                txtTotalFavQuestions.setText("0");
+            else
+                txtTotalFavQuestions.setText(data.getTotalFavoriteQuestions());
+
+            if(data.getTotalFollowing()==null)
+                txtTotalFollowing.setText("0");
+            else
+                txtTotalFollowing.setText(data.getTotalFollowing());
+
             txtAboutAuhtor.setText("ABOUT " + data.getUsername().toUpperCase());
 //            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + data.getProfilePic(), imgProfilePic, ISMAuthor.options);
             Global.imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMAuthor.options);

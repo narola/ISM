@@ -2,12 +2,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_white_border_gray"
     tools:mContext="com.ism.author.fragment.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rv_list"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="This is High Score Fragment" />
-
+        android:gravity="center"
+        android:visibility="gone"
+        android:textSize="@dimen/d20sp"
+        android:id="@+id/txt_empty"
+        android:text="No record found!"/>
 </FrameLayout>

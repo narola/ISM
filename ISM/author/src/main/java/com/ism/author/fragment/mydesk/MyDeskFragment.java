@@ -77,6 +77,10 @@ public class MyDeskFragment extends Fragment {
                         loadFragment(FRAGMENT_ASSIGNMENTS);
                     }
                     break;
+                    case R.id.txt_add: {
+                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADD_ASSIGNMENT);
+                    }
+                    break;
                 }
                 selected(v);
             }
@@ -85,6 +89,7 @@ public class MyDeskFragment extends Fragment {
         txtAboutMe.setOnClickListener(onClick);
         txtBooks.setOnClickListener(onClick);
         txtAssignments.setOnClickListener(onClick);
+        txtAdd.setOnClickListener(onClick);
     }
 
     private void selected(View v) {

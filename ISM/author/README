@@ -1,0 +1,60 @@
+
+Starting point of the app :
+===========================
+/**
+ *  In starting point of the app write the notes in mContext to app review:
+ *  - if someone reviews your app then what is the main class to refer.
+ */
+
+- Get initial security token first and then get andmin configuration data from server. And the proceed with login procedure.
+
+
+
+
+Special notes :
+=================
+/**
+ *  Special notes:
+ *  - sometimes we make some adjustment in the code which we call as "patiya". In such case note it in special note section either on the same page of your file or in readme. file.
+ *  - anything that you feel that someone who reviews code might not understand should be noted in readme file.
+ */
+
+- ######
+
+
+
+
+Library used :
+==============
+/**
+ *  In this section note the libraries we are using and why we are using. Format for single library should be as per below:
+ *  1) <Library name>:
+ *     <purpose or usage>
+ *     <source or github link>: This can be any reference project or any url.
+ *     <self developed>: "yes" or "no".
+ *     <developed or integrated by>:
+ */
+
+1) support_recyclerview-v7 :
+    Use             : used to implement list representation containing heavy list items.
+    Source          : AndroidSDK > Android Support Library
+    Self developed  : No
+    Developed by    : Google Android Team
+
+2) support_cardview-v7 :
+    Use             : used to implement .
+    Source          : AndroidSDK > Android Support Library
+    Self developed  : No
+    Developed by    : Google Android Team
+
+3) support_v4 :
+    Use             : used to implement .
+    Source          : AndroidSDK > Android Support Library
+    Self developed  : No
+    Developed by    : Google Android Team
+
+4) support_v13 :
+    Use             : used to implement FragmentStatePagerAdapter.
+    Source          : AndroidSDK > Android Support Library
+    Self developed  : No
+    Developed by    : Google Android Team

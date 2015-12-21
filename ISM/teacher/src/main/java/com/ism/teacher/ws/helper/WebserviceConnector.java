@@ -45,10 +45,11 @@ public class WebserviceConnector {
         Response ret = null;
         try {
             URLConnection connection = new URL(url).openConnection();
+            connection.setRequestProperty("User-Agent", "android");
             connection.setDoOutput(true); // Triggers POST.
 //			connection.setRequestProperty("Accept-Charset", charset);
 //			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
-
+            Log.i(TAG, "api : " + url + "");
             ObjectWriter writer = getMapper().writer();
             String jsonObject = "";
             if (request != null) {
@@ -118,7 +119,7 @@ public class WebserviceConnector {
         return mapper;
     }
 
-        public <Response> Response uploadMedia(Class<Response> responseType, Attribute mediaUploadAttribute) {
+    public <Response> Response uploadMedia(Class<Response> responseType, Attribute mediaUploadAttribute) {
         String charset = "UTF-8";
         String requestURL = url;
         String responseString = null;
@@ -139,7 +140,6 @@ public class WebserviceConnector {
 
             /*This is to add file content*/
             for (int i = 0; i < mediaUploadAttribute.getArrListFile().size(); i++) {
-                Debug.i(TAG, "File path : " + mediaUploadAttribute.getArrListFile().get(i).getFileName());
                 multipart.addFilePart(mediaUploadAttribute.getArrListFile().get(i).getParamName(),
                         new File(mediaUploadAttribute.getArrListFile().get(i).getFileName()));
             }
@@ -153,7 +153,7 @@ public class WebserviceConnector {
 
             ret = getMapper().readValue(responseString, responseType);
         } catch (IOException ex) {
-            Debug.i(TAG,"uploadMedia  IOException : "+ex.getLocalizedMessage());
+            System.err.println(ex);
         }
         return ret;
 

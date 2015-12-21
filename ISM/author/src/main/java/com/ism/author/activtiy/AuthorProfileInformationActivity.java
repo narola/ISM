@@ -305,7 +305,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             attribute.setBirthdate(strDob);
             attribute.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
             attribute.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
-            attribute.setCountryId(spCountry.getSelectedItemPosition() > 0 ? arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId() : "0");
+            attribute.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
             attribute.setDeviceToken(Utility.getDeviceTokenId(getActivity()));
             attribute.setGender(arrListGender.get(spGender.getSelectedItemPosition()));
             attribute.setUsername(etUserName.getText().toString().trim());
@@ -376,7 +376,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             progressGenerator.start(progState);
             Attribute attribute = new Attribute();
 
-            attribute.setCountryId(String.valueOf(countryId));
+            attribute.setCountryId(countryId);
 
             new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GETSTATES);

@@ -20,8 +20,7 @@ import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.InputValidator;
-import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.CreateAssignmentRequest;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -58,13 +57,11 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     private Calendar calDob;
     private String strDob="", strAssignmenttext = "",strSubmissionDate="";
     private long lngMaxDob;
-    MyTypeFace myTypeFace;
     private InputValidator inputValidator;
 
 
-    public static AssignmentActivityFragment newInstance(Bundle bundleArgument) {
+    public static AssignmentActivityFragment newInstance() {
         AssignmentActivityFragment assignmentActivityFragment = new AssignmentActivityFragment();
-        assignmentActivityFragment.setArguments(bundleArgument);
         return assignmentActivityFragment;
     }
 
@@ -83,7 +80,6 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
         inputValidator = new InputValidator(getActivity());
 
         tvActivityTitle = (TextView) view.findViewById(R.id.tv_activity_title);
@@ -109,25 +105,25 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
 
 
-        tvActivityTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivityAssignmentname.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivityCoursename.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivityClass.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivitySubject.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivitySubmissiondate.setTypeface(myTypeFace.getRalewayRegular());
-        etActivitySubmissionDate.setTypeface(myTypeFace.getRalewayRegular());
-        etActivityAssignmentname.setTypeface(myTypeFace.getRalewayRegular());
-        etActivityCoursename.setTypeface(myTypeFace.getRalewayRegular());
-        btnActivitySave.setTypeface(myTypeFace.getRalewayRegular());
-        btnActivityCancel.setTypeface(myTypeFace.getRalewayRegular());
-        tvActivityTopic.setTypeface(myTypeFace.getRalewayRegular());
+        tvActivityTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityAssignmentname.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityCoursename.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityClass.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivitySubject.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivitySubmissiondate.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etActivitySubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etActivityAssignmentname.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etActivityCoursename.setTypeface(Global.myTypeFace.getRalewayRegular());
+        btnActivitySave.setTypeface(Global.myTypeFace.getRalewayRegular());
+        btnActivityCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityTopic.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         btnActivitySave.setOnClickListener(new View.OnClickListener() {
                                                @Override
                                                public void onClick(View v) {
                                                    if (isInputsValid()) {
-                                                       callApiCreateAssignment();
+                                                       //callApiCreateAssignment();
                                                    }
 
 
@@ -243,35 +239,36 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
     }
 
-    private void callApiCreateAssignment() {
-
-        if (Utility.isInternetConnected(getActivity())) {
-
-            try {
-
-                CreateAssignmentRequest createAssignmentRequest = new CreateAssignmentRequest();
-                createAssignmentRequest.setUser_id(WebConstants.USER_ID_370);
-                createAssignmentRequest.setSubmission_date(strDob);
-                createAssignmentRequest.setClassroom_id(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
-                        get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0);
-                createAssignmentRequest.setSubject_id(spActivitySubject.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
-                        get(spActivitySubject.getSelectedItemPosition() - 1).getId()) : 0);
-
-                if (arrListTopic.size() > 1) {
-                    createAssignmentRequest.setTopic_id(spActivityTopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
-                            get(spActivityTopic.getSelectedItemPosition() - 1).getId()) : 0);
-                }
-                createAssignmentRequest.setAssignment_text(strAssignmenttext);
-                new WebserviceWrapper(getActivity(), createAssignmentRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.CREATE_ASSIGNMENT);
-            } catch (Exception e) {
-//                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-            }
-        } else {
-            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
-        }
-
-    }
+//    private void callApiCreateAssignment() {
+//
+//        if (Utility.isInternetConnected(getActivity())) {
+//
+//            try {
+//
+//                Attribute attribute=new Attribute();
+//
+//                attribute.setUser_id(WebConstants.USER_ID_370);
+//                attribute.setSubmission_date(strDob);
+//                attribute.setClassroom_id(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
+//                        get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0);
+//                attribute.setSubject_id(spActivitySubject.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
+//                        get(spActivitySubject.getSelectedItemPosition() - 1).getId()) : 0);
+//
+//                if (arrListTopic.size() > 1) {
+//                    attribute.setTopic_id(spActivityTopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
+//                            get(spActivityTopic.getSelectedItemPosition() - 1).getId()) : 0);
+//                }
+//                attribute.setAssignment_text(strAssignmenttext);
+//                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+//                        .execute(WebConstants.CREATE_ASSIGNMENT);
+//            } catch (Exception e) {
+////                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+//            }
+//        } else {
+//            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+//        }
+//
+//    }
 
     private String strValidationMsg;
 
@@ -445,7 +442,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     public void onClick(View v) {
         if (v == btnActivitySave) {
             if (isInputsValid()) {
-                callApiCreateAssignment();
+                //callApiCreateAssignment();
             }
         } else if (v == btnActivityCancel) {
             backToTrialScreen();

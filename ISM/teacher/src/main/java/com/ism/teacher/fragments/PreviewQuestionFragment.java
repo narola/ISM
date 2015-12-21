@@ -17,7 +17,7 @@ import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.PreviewQuestionListAdapter;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -49,7 +49,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     public RecyclerView rvPreviewquestionlist;
     private PreviewQuestionListAdapter previewQuestionListAdapter;
     public ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
-    MyTypeFace myTypeFace;
 
     //this is for the movable recyclerview.
 
@@ -65,19 +64,17 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
     private void initGlobal() {
-        myTypeFace = new MyTypeFace(getActivity());
-
         tv_total_questions = (TextView) view.findViewById(R.id.tv_total_questions);
         tv_total_score = (TextView) view.findViewById(R.id.tv_total_score);
-        tv_total_questions.setTypeface(myTypeFace.getRalewayRegular());
-        tv_total_score.setTypeface(myTypeFace.getRalewayRegular());
+        tv_total_questions.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tv_total_score.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         tvNoQuestions = (TextView) view.findViewById(R.id.tv_no_questions);
         tvPreviewQuestionlistTitle = (TextView) view.findViewById(R.id.tv_questionlist_title);
         tvPreviewQuestionlistFreeze = (TextView) view.findViewById(R.id.tv_freeze_question);
 
-        tvPreviewQuestionlistTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvNoQuestions.setTypeface(myTypeFace.getRalewayBold());
+        tvPreviewQuestionlistTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoQuestions.setTypeface(Global.myTypeFace.getRalewayBold());
 
 
         rvPreviewquestionlist = (RecyclerView) view.findViewById(R.id.rv_previewquestionlist);

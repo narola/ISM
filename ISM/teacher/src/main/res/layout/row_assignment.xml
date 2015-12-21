@@ -38,7 +38,7 @@
                     android:singleLine="true"
                     android:text="@string/strtest"
                     android:textAllCaps="true"
-                    android:textColor="@color/color_white"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/d17sp"
                     android:textStyle="bold" />
 
@@ -54,7 +54,7 @@
                     android:background="@drawable/btn_dark_grey"
                     android:singleLine="false"
                     android:text="@string/strtest"
-                    android:textColor="@color/color_white"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/d15sp" />
 
             </RelativeLayout>

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_white">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
             android:padding="@dimen/d5dp"
             android:text="@string/strmystudents"
             android:textAllCaps="true"
-            android:textColor="@color/color_white"
+            android:textColor="@color/white"
             android:textSize="@dimen/d18dp" />
 
         <android.support.v7.widget.RecyclerView

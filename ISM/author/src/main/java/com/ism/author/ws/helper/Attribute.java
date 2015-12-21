@@ -27,7 +27,7 @@ public class Attribute {
     private String firstname;
     private int stateId;
     private int schoolClassroomId;
-    private String countryId;
+    private int countryId;
     private String contactNumber;
     private String emailAddress;
     private String name;
@@ -112,6 +112,9 @@ public class Attribute {
     private String resourceName;
     private ArrayList<String> unfavoriteResourceId;
     private ArrayList<String> favResourceId;
+    private String authorId;
+    private String checkSlot;
+    private String answerText;
 
     public ArrayList<String> getUnfavoriteResourceId() {
         return this.unfavoriteResourceId;
@@ -562,14 +565,14 @@ public class Attribute {
         return studentId;
     }
 
-//    public ArrayList<String> getQuestionId() {
-//        return this.questionId;
-//    }
-//
-//    @JsonProperty("question_id")
-//    public void setQuestionId(ArrayList<String> questionId) {
-//        this.questionId = questionId;
-//    }
+    public String getCheckSlot() {
+        return this.checkSlot;
+    }
+
+    @JsonProperty("check_slot")
+    public void setCheckSlot(String checkSlot) {
+        this.checkSlot = checkSlot;
+    }
 
     @JsonProperty("email_id")
     public void setEmailId(String emailId) {
@@ -635,12 +638,12 @@ public class Attribute {
         this.stateId = stateId;
     }
 
-    public String getCountryId() {
+    public int getCountryId() {
         return this.countryId;
     }
 
     @JsonProperty("country_id")
-    public void setCountryId(String countryId) {
+    public void setCountryId(int countryId) {
         this.countryId = countryId;
     }
 
@@ -1059,6 +1062,24 @@ public class Attribute {
         return this;
     }
 
+    @JsonProperty("author_id")
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
+    }
+
+    @JsonProperty("answer_text")
+    public String getAnswerText() {
+        return answerText;
+    }
+
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
+    }
+
     @JsonProperty("last_sync_date")
     public String getLastSyncDate() {
         return lastSyncDate;
@@ -1078,7 +1099,6 @@ public class Attribute {
         this.credentialId = credentialId;
     }
 
-
     public int getSchoolClassroomId() {
         return schoolClassroomId;
     }
@@ -1095,7 +1115,6 @@ public class Attribute {
     @JsonProperty("education")
     public void setEducation(String education) {
         this.education = education;
-
     }
 }
 

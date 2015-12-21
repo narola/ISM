@@ -58,7 +58,7 @@
                         android:background="@drawable/btn_green"
                         android:text="@string/strsave"
                         android:textAllCaps="true"
-                        android:textColor="@color/color_white"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/d20sp" />
 
                     <Button
@@ -69,7 +69,7 @@
                         android:background="@drawable/btn_setquestion_assignment"
                         android:text="@string/strsetquestion"
                         android:textAllCaps="true"
-                        android:textColor="@color/color_white"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/d20sp"
                         android:visibility="gone" />
 
@@ -81,7 +81,7 @@
                         android:background="@drawable/btn_cancel_assignment"
                         android:text="@string/strcancel"
                         android:textAllCaps="true"
-                        android:textColor="@color/color_white"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/d20sp" />
                 </LinearLayout>
             </RelativeLayout>

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 
 
 /**
@@ -30,7 +30,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
     private static final String TAG = CreateExamAssignmentContainerFragment.class.getSimpleName();
     private View view;
-    private MyTypeFace myTypeFace;
 
     public static CreateExamAssignmentContainerFragment newInstance() {
         CreateExamAssignmentContainerFragment createExamAssignmentContainerFragment = new CreateExamAssignmentContainerFragment();
@@ -64,8 +63,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
-
         //to hide the topbar_assignment
         ll_topbar_assignment = (LinearLayout) view.findViewById(R.id.ll_topbar_assignment);
 
@@ -78,8 +75,8 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         img_sep_tab_activity = (ImageView) view.findViewById(R.id.img_sep_tab_activity);
         img_sep_tab_exam = (ImageView) view.findViewById(R.id.img_sep_tab_exam);
 
-        tv_tab_activity.setTypeface(myTypeFace.getRalewayRegular());
-        tv_tab_exam.setTypeface(myTypeFace.getRalewayRegular());
+        tv_tab_activity.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tv_tab_exam.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         fl_tab_activity.setOnClickListener(new View.OnClickListener() {
@@ -133,10 +130,10 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         try {
             switch (fragment) {
                 case FRAGMENT_ASSIGNMENT_ACTIVITY:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance(getBundleArguments())).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_ASSIGNMENT_EXAM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance(this, getActivity(), getBundleArguments())).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance(this, getActivity())).commit();
                     break;
             }
 
@@ -178,7 +175,7 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     }
 
 
-    private Bundle getBundleArguments() {
+    public Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }
 }

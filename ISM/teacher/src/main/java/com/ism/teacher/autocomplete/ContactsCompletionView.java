@@ -14,8 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.HashTagsModel;
+import com.ism.teacher.object.Global;
+import com.ism.teacher.object.MyTypeFace;
 
 import java.util.Random;
 
@@ -29,7 +30,6 @@ import java.util.Random;
  */
 public class ContactsCompletionView extends TokenCompleteTextView<HashTagsModel> {
 
-    private MyTypeFace myTypeFace;
 
     public ContactsCompletionView(Context context) {
         super(context);
@@ -57,7 +57,7 @@ public class ContactsCompletionView extends TokenCompleteTextView<HashTagsModel>
         LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         LinearLayout view = (LinearLayout) l.inflate(R.layout.tag_layout, (ViewGroup) ContactsCompletionView.this.getParent(), false);
         ((TextView) view.findViewById(R.id.tv_tag_name)).setText(hashTagsModel.getTagName());
-        ((TextView) view.findViewById(R.id.tv_tag_name)).setTypeface(myTypeFace.getRalewayRegular());
+        ((TextView) view.findViewById(R.id.tv_tag_name)).setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         Drawable background = ((TextView) view.findViewById(R.id.tv_tag_name)).getBackground();
@@ -89,7 +89,7 @@ public class ContactsCompletionView extends TokenCompleteTextView<HashTagsModel>
     }
 
     private void initTypeFace(Context context) {
-        myTypeFace = new MyTypeFace(context);
+        Global.myTypeFace = new MyTypeFace(context);
     }
 
 }
