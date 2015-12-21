@@ -1,0 +1,356 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:background="@color/gray_light"
+                tools:context=".fragment.tutorialGroup.ExamEvaluationFragment">
+
+	<TextView
+		android:id="@+id/txt_header"
+		android:layout_width="match_parent"
+		android:layout_height="60dp"
+		android:background="@drawable/bg_header_white"
+		android:gravity="center_vertical"
+		android:paddingLeft="20dp"
+		android:text="@string/question_hour_evaluation"
+		android:textColor="@color/bg_app_dark"
+		android:textSize="25sp"/>
+
+	<RelativeLayout
+		android:id="@+id/rl_question"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@id/txt_header"
+		android:layout_above="@+id/ll_studymates"
+		android:layout_margin="10dp"
+		android:background="@color/border_table"
+		android:padding="1dp">
+
+		<RelativeLayout
+			android:id="@+id/rl_header"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="1dp"
+			android:background="@color/gray_light"
+			android:paddingRight="10dp">
+
+			<TextView
+				android:id="@+id/txt_header_question"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerVertical="true"
+				android:paddingLeft="20dp"
+				android:text="Quesiton : 1"
+				android:textColor="@color/green"
+				android:textSize="18sp"/>
+
+			<ImageView
+				android:id="@+id/img_previous"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerVertical="true"
+				android:layout_marginRight="5dp"
+				android:layout_toLeftOf="@+id/img_next"
+				android:src="@drawable/ic_previous_green"/>
+
+			<ImageView
+				android:id="@+id/img_next"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:layout_centerVertical="true"
+				android:src="@drawable/ic_next_green"/>
+		</RelativeLayout>
+
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_below="@id/rl_header"
+			android:background="@android:color/white">
+
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:paddingLeft="20dp"
+				android:paddingRight="20dp">
+
+				<TextView
+					android:id="@+id/txt_question"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="@drawable/bg_white_border_gray_bottom"
+					android:paddingTop="10dp"
+					android:paddingBottom="10dp"
+					android:paddingLeft="5dp"
+					android:paddingRight="5dp"
+					android:text="When parallel elements meet, which reaction occurs?"
+					android:textColor="@color/bg_app_dark"
+					android:textSize="25sp"/>
+
+				<TextView
+					android:id="@+id/txt_your_answer"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/txt_question"
+					android:layout_marginTop="10dp"
+					android:paddingLeft="5dp"
+					android:text="@string/your_answer"
+					android:textColor="@color/bg_app_dark"
+					android:textSize="17sp"/>
+
+				<TextView
+					android:id="@+id/txt_correct_answer"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/txt_your_answer"
+					android:layout_marginBottom="5dp"
+					android:background="@drawable/bg_white_border_gray_bottom"
+					android:paddingLeft="5dp"
+					android:paddingBottom="10dp"
+					android:text="@string/correct_answer"
+					android:textColor="@color/bg_app_dark"
+					android:textSize="17sp"/>
+
+				<TextView
+					android:id="@+id/txt_solution"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/txt_correct_answer"
+					android:layout_marginLeft="5dp"
+					android:layout_marginTop="10dp"
+					android:text="@string/solution"
+					android:textColor="@color/bg_app_dark"
+					android:textSize="18sp"/>
+
+				<TextView
+					android:id="@+id/txt_solution_content"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_below="@id/txt_solution"
+					android:layout_marginLeft="5dp"
+					android:text="(X + 5)2"
+					android:textColor="@color/bg_app_dark"
+					android:textSize="18sp"/>
+			</RelativeLayout>
+		</ScrollView>
+	</RelativeLayout>
+
+	<LinearLayout
+		android:id="@+id/ll_studymates"
+		android:layout_width="match_parent"
+		android:layout_height="180dp"
+		android:orientation="horizontal"
+		android:background="@color/bg_layout_tutorialmate_answers"
+		android:layout_alignParentBottom="true">
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:padding="5dp"
+			android:orientation="vertical">
+
+			<com.ism.views.CircleImageView
+				android:id="@+id/img_tutorialmate_dp1"
+				android:layout_width="match_parent"
+				android:layout_height="100dp"
+				android:layout_gravity="center"
+				android:src="@drawable/img_default_dp"
+				app:civ_border_width="4dp"
+				app:civ_border_color="@color/white"/>
+
+			<TextView
+				android:id="@+id/txt_tutorialmate_name1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:textSize="20sp"
+				android:text="Adam Ross"
+				android:gravity="center"
+				android:textColor="@color/bg_app_dark"/>
+
+			<TextView
+				android:id="@+id/txt_answered_option1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:textSize="18sp"
+				android:text="Answer : A"
+				android:gravity="center"
+				android:textColor="@color/bg_app_dark"/>
+		</LinearLayout>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="@color/border_layout_tutorialmate_answers"
+			android:layout_marginTop="20dp"></View>
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:padding="5dp"
+			android:orientation="vertical">
+
+			<com.ism.views.CircleImageView
+				android:id="@+id/img_tutorialmate_dp2"
+				android:layout_width="match_parent"
+				android:layout_height="100dp"
+				android:layout_gravity="center"
+				android:src="@drawable/img_default_dp"
+				app:civ_border_width="4dp"
+				app:civ_border_color="@color/white"/>
+
+			<TextView
+				android:id="@+id/txt_tutorialmate_name2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:textSize="20sp"
+				android:text="Adam Ross"
+				android:gravity="center"
+				android:textColor="@color/bg_app_dark"/>
+
+			<TextView
+				android:id="@+id/txt_answered_option2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:textSize="18sp"
+				android:text="Answer : A"
+				android:gravity="center"
+				android:textColor="@color/bg_app_dark"/>
+		</LinearLayout>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="@color/border_layout_tutorialmate_answers"
+			android:layout_marginTop="20dp"></View>
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:padding="5dp"
+			android:orientation="vertical">
+
+			<com.ism.views.CircleImageView
+				android:id="@+id/img_tutorialmate_dp3"
+				android:layout_width="match_parent"
+				android:layout_height="100dp"
+				android:layout_gravity="center"
+				android:src="@drawable/img_default_dp"
+				app:civ_border_width="4dp"
+				app:civ_border_color="@color/white"/>
+
+			<TextView
+				android:id="@+id/txt_tutorialmate_name3"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:textSize="20sp"
+				android:text="Adam Ross"
+				android:gravity="center"
+				android:textColor="@color/bg_app_dark"/>
+
+			<TextView
+				android:id="@+id/txt_answered_option3"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:textSize="18sp"
+				android:text="Answer : A"
+				android:gravity="center"
+				android:textColor="@color/bg_app_dark"/>
+		</LinearLayout>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="@color/border_layout_tutorialmate_answers"
+			android:layout_marginTop="20dp"></View>
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:padding="5dp"
+			android:orientation="vertical">
+
+			<com.ism.views.CircleImageView
+				android:id="@+id/img_tutorialmate_dp4"
+				android:layout_width="match_parent"
+				android:layout_height="100dp"
+				android:layout_gravity="center"
+				android:src="@drawable/img_default_dp"
+				app:civ_border_width="4dp"
+				app:civ_border_color="@color/white"/>
+
+			<TextView
+				android:id="@+id/txt_tutorialmate_name4"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:textSize="20sp"
+				android:text="Adam Ross"
+				android:gravity="center"
+				android:textColor="@color/bg_app_dark"/>
+
+			<TextView
+				android:id="@+id/txt_answered_option4"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:textSize="18sp"
+				android:text="Answer : A"
+				android:gravity="center"
+				android:textColor="@color/bg_app_dark"/>
+		</LinearLayout>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="@color/border_layout_tutorialmate_answers"
+			android:layout_marginTop="20dp"></View>
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:padding="5dp"
+			android:orientation="vertical">
+
+			<com.ism.views.CircleImageView
+				android:id="@+id/img_tutorialmate_dp5"
+				android:layout_width="match_parent"
+				android:layout_height="100dp"
+				android:layout_gravity="center"
+				android:src="@drawable/img_default_dp"
+				app:civ_border_width="4dp"
+				app:civ_border_color="@color/white"/>
+
+			<TextView
+				android:id="@+id/txt_tutorialmate_name5"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:textSize="20sp"
+				android:text="Adam Ross"
+				android:gravity="center"
+				android:textColor="@color/bg_app_dark"/>
+
+			<TextView
+				android:id="@+id/txt_answered_option5"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:textSize="18sp"
+				android:text="Answer : A"
+				android:gravity="center"
+				android:textColor="@color/bg_app_dark"/>
+		</LinearLayout>
+	</LinearLayout>
+</RelativeLayout>
