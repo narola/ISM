@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
-import com.ism.author.fragment.SubjectiveAssignmentQuestionsContainerFragment;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveAssignmentQuestionsContainerFragment;
+import com.ism.author.object.Global;
 import com.ism.author.ws.model.QuestionPalette;
 import com.ism.author.ws.model.Questions;
 
@@ -26,14 +26,12 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
     private Context mContext;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private ArrayList<QuestionPalette> arrListQuestionPalette = new ArrayList<QuestionPalette>();
-    private MyTypeFace myTypeFace;
     private Fragment mFragment;
     private LayoutInflater inflater;
 
     public QuestionPaletteAdapter(Context mContext, Fragment mFragment) {
         this.mContext = mContext;
         this.mFragment = mFragment;
-        myTypeFace = new MyTypeFace(mContext);
         inflater = LayoutInflater.from(mContext);
     }
 
@@ -50,7 +48,7 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
 
         try {
             holder.tvQuestionStatus.setText("" + (position + 1));
-            holder.tvQuestionStatus.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvQuestionStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
             setQuestionStatus(holder.tvQuestionStatus, getQuestionStatus(arrListQuestions.get(position).getQuestionId()));

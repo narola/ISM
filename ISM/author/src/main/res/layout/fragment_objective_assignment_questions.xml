@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_white"
     android:orientation="vertical"
-    tools:mContext="com.ism.author.fragment.ObjectiveAssignmentQuestionsFragment">
+    tools:mContext="com.ism.author.fragment.assessment.objectiveassessment.ObjectiveAssignmentQuestionsFragment">
 
 
     <LinearLayout

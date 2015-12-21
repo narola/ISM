@@ -21,8 +21,8 @@
 
             <com.ism.author.views.CircleImageView
                 android:id="@+id/img_user_dp"
-                android:layout_width="@dimen/d70dp"
-                android:layout_height="@dimen/d70dp"
+                android:layout_width="@dimen/d60dp"
+                android:layout_height="@dimen/d60dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/d10dp"
                 android:layout_marginRight="@dimen/d10dp"
@@ -36,10 +36,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/d5dp"
-                android:padding="@dimen/d5dp"
                 android:text="Adam Stanger"
+                android:layout_marginLeft="@dimen/d5dp"
+                android:layout_marginRight="@dimen/d5dp"
+                android:layout_marginBottom="@dimen/d5dp"
                 android:textColor="@color/color_red"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -54,7 +56,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/d10dp"
-                android:layout_marginTop="@dimen/d15dp"
+                android:layout_marginTop="@dimen/d10dp"
+                android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
                 android:text="Jackson JSR-310 module fails to  deserialize simplest offsetDatetime format?"
                 android:textColor="#6F7581"
@@ -66,10 +69,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_question"
                 android:layout_marginLeft="@dimen/d10dp"
-                android:layout_marginTop="@dimen/d15dp"
+                android:layout_marginTop="@dimen/d10dp"
                 android:text="26th Oct 2015"
                 android:layout_marginBottom="@dimen/d5dp"
-                android:textColor="#9BA2AA"
+                android:textColor="#6e7173"
                 android:textSize="@dimen/d16sp" />
 
             <TextView
@@ -80,7 +83,7 @@
                 android:layout_marginLeft="@dimen/d10dp"
                 android:layout_marginRight="@dimen/d10dp"
                 android:layout_marginBottom="@dimen/d5dp"
-                android:layout_marginTop="@dimen/d15dp"
+                android:layout_marginTop="@dimen/d10dp"
                 android:layout_toRightOf="@id/txt_date"
                 android:gravity="right"
                 android:text="50 followers"

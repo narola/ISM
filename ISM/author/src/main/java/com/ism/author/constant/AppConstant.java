@@ -10,6 +10,9 @@ import java.io.File;
 public class AppConstant {
 
 
+    //Pick from Gallery
+    public static final int REQUEST_CODE_PICK_FROM_GALLERY = 10;
+    public static final int REQUEST_CODE_ADD_POST = 2;
     /*all fonts*/
 
     public static final String RalewayBlack = "Raleway-Black.ttf";
@@ -60,4 +63,5 @@ public class AppConstant {
     public static final String FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER = "fragmentSubjectiveAssignmentQuestionsContainer";
     public static final String FRAGMENT_ADDQUESTION_CONTAINER = "fragmentAddQuestionContainer";
     public static final String FRAGMENT_PAST = "fragmentPast";
+    public static final String FRAGMENT_ADD_ASSIGNMENT = "fragmentAddAssignment";
 }

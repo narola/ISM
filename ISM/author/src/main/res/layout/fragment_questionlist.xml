@@ -92,17 +92,33 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_questionlist_title"
+
+        <RelativeLayout
+            android:id="@+id/rl_sort_question_bank"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/bg_app_dark"
-            android:gravity="center"
-            android:padding="@dimen/d5dp"
-            android:text="@string/strquestionbank"
-            android:textAllCaps="true"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/d15dp" />
+            android:background="@color/bg_app_dark">
+
+            <TextView
+                android:id="@+id/tv_questionlist_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@color/bg_app_dark"
+                android:gravity="center"
+                android:padding="@dimen/d5dp"
+                android:text="@string/strquestionbank"
+                android:textAllCaps="true"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/d15dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_sort" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

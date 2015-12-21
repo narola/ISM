@@ -15,6 +15,7 @@ public class Global {
     public static int intApiCounter = 0;
     public static ImageLoader imageLoader;
     public static String role = "4";
+    public static String checkSlotNo ="yes";
 
     public Realm getRealmInstance() {
         return Realm.getDefaultInstance();

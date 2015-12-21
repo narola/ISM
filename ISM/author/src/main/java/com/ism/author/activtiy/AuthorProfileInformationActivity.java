@@ -25,7 +25,7 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.MediaUploadAttribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -55,7 +55,6 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
     private ImageView imgDp;
     private ProcessButton btnSubmit, progCountry, progState, progCity;
 
-    private MyTypeFace myTypeFace;
     private InputValidator inputValidator;
     private List<String> arrListGender;
     private List<String> arrListDefalt;
@@ -111,20 +110,19 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
 
         authorHelper = new AuthorHelper(this);
 
-        myTypeFace = new MyTypeFace(this);
-        ((TextView) findViewById(R.id.txt_uploadpic)).setTypeface(myTypeFace.getRalewayRegular());
-        etAge.setTypeface(myTypeFace.getRalewayRegular());
-        etContactNo.setTypeface(myTypeFace.getRalewayRegular());
-        etConfirmPwd.setTypeface(myTypeFace.getRalewayRegular());
-        etCurrentPwd.setTypeface(myTypeFace.getRalewayRegular());
-        etDob.setTypeface(myTypeFace.getRalewayRegular());
-        etEmailAddress.setTypeface(myTypeFace.getRalewayRegular());
-        etFirstName.setTypeface(myTypeFace.getRalewayRegular());
-        etLastName.setTypeface(myTypeFace.getRalewayRegular());
-        etHomeAddress.setTypeface(myTypeFace.getRalewayRegular());
-        etNewPwd.setTypeface(myTypeFace.getRalewayRegular());
-        etUserName.setTypeface(myTypeFace.getRalewayRegular());
-        etEducation.setTypeface(myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_uploadpic)).setTypeface(Global.myTypeFace.getRalewayRegular());
+        etAge.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etContactNo.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etConfirmPwd.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etCurrentPwd.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etDob.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etEmailAddress.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etFirstName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etLastName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etHomeAddress.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etNewPwd.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etUserName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etEducation.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         inputValidator = new InputValidator(getActivity());
@@ -307,7 +305,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             attribute.setBirthdate(strDob);
             attribute.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
             attribute.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
-            attribute.setCountryId(spCountry.getSelectedItemPosition() > 0 ? arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId() : "0");
+            attribute.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
             attribute.setDeviceToken(Utility.getDeviceTokenId(getActivity()));
             attribute.setGender(arrListGender.get(spGender.getSelectedItemPosition()));
             attribute.setUsername(etUserName.getText().toString().trim());
@@ -378,7 +376,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             progressGenerator.start(progState);
             Attribute attribute = new Attribute();
 
-            attribute.setCountryId(String.valueOf(countryId));
+            attribute.setCountryId(countryId);
 
             new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GETSTATES);
