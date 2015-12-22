@@ -994,7 +994,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         try {
             showProgress();
             Attribute requestObject = new Attribute();
-            requestObject.setUserId("1");
+            requestObject.setUserId(Global.strUserId);
             new WebserviceWrapper(this, requestObject, this).new WebserviceCaller().execute(WebConstants.GET_USER_PREFERENCES);
         } catch (Exception e) {
             Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());

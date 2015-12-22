@@ -3,18 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fragment_background_color"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
-
-    <GridView
-        android:id="@+id/gridview"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:numColumns="3"
-        android:layout_margin="20dp"
-        android:verticalSpacing="20dp"
-        android:horizontalSpacing="20dp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_assignments_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="@dimen/d10dp" />
+
+        <include
+            layout="@layout/include_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 
 
 </LinearLayout>

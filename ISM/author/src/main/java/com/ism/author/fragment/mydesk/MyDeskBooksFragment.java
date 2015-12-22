@@ -1,6 +1,5 @@
 package com.ism.author.fragment.mydesk;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -39,7 +38,6 @@ import java.util.ArrayList;
 public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, AuthorHostActivity.BooksListner {
     private static final String TAG = MyDeskBooksFragment.class.getSimpleName();
     private View view;
-    private AuthorHostActivity activityHost;
     public RecyclerView listViewFavBooks;
     FavoriteBooksAdapter favoriteBooksAdapter;
     private ArrayList<BookData> arrayListFavBooks;
@@ -115,13 +113,10 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
         etFavSearch = (EditText) view.findViewById(R.id.et_search_fav);
         imgSuggestedSearch = (ImageView) view.findViewById(R.id.img_search_suggested);
         etSuggestedSearch = (EditText) view.findViewById(R.id.et_search_suggested);
-//        rrInvisibleLayout = (RelativeLayout) view.findViewById(R.//id.rr_invisible_layout);
-        //set typeface
         txtFavEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtSuggestedEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtFavBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtSuggestedBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         txtFavEmpty.setText(R.string.no_books_available);
         txtSuggestedEmpty.setText(R.string.no_books_available);
         listViewFavBooks = (RecyclerView) view.findViewById(R.id.lv_fav_books);
@@ -131,19 +126,6 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
         layoutManagerSuggested = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         listViewSuggestedBooks.setLayoutManager(layoutManagerSuggested);
 
-//        etSuggestedSearch.setFocusableInTouchMode(true);
-//        etSuggestedSearch.requestFocus();
-//        etSuggestedSearch.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if (keyCode == KeyEvent.KEYCODE_BACK) {
-//                    Debug.i(TAG, "back");
-//                    return true;
-//                }
-//                Debug.i(TAG, "keyevents");
-//                return false;
-//            }
-//        });
         callApiGetBooksForUser();
         onClicks();
 
@@ -155,7 +137,6 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
             imgNextFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utility.showToast(getActivity(), "Next");
                     listViewFavBooks.getLayoutManager().smoothScrollToPosition(listViewFavBooks, null, layoutManagerFav.findLastCompletelyVisibleItemPosition() + 1);
                 }
 
@@ -164,7 +145,6 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
             imgPrevFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utility.showToast(getActivity(), "Previous");
                     listViewFavBooks.getLayoutManager().smoothScrollToPosition(listViewFavBooks, null, layoutManagerFav.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerFav.findFirstCompletelyVisibleItemPosition() - 1 : 0);
                 }
             });
@@ -172,7 +152,6 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
             imgNextSuggested.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utility.showToast(getActivity(), "Next");
                     listViewSuggestedBooks.getLayoutManager().smoothScrollToPosition(listViewSuggestedBooks, null, layoutManagerSuggested.findLastCompletelyVisibleItemPosition() + 1);
 
                 }
@@ -181,7 +160,6 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
             imgPrevSuggested.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utility.showToast(getActivity(), "Previous");
                     listViewSuggestedBooks.getLayoutManager().smoothScrollToPosition(listViewSuggestedBooks, null, layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() - 1 : 0);
                 }
             });
@@ -204,7 +182,6 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (!hasFocus) {
                         Utility.hideKeyboard(getActivity(), getView());
-                        // rrInvisibleLayout.setVisibility(View.GONE);
                     }
                 }
             });
@@ -257,10 +234,8 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
         // Checks whether a hardware keyboard is available
         if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO) {
             Toast.makeText(getActivity(), "keyboard visible", Toast.LENGTH_SHORT).show();
-            //rrInvisibleLayout.setVisibility(View.VISIBLE);
         } else if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES) {
             Toast.makeText(getActivity(), "keyboard hidden", Toast.LENGTH_SHORT).show();
-            // rrInvisibleLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -269,11 +244,8 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
             if (etSuggestedSearch.getVisibility() == View.VISIBLE) {
                 etSuggestedSearch.setVisibility(View.GONE);
                 Utility.hideKeyboard(getActivity(), getView());
-                // rrInvisibleLayout.setVisibility(View.GONE);
-                // setUpSuggestedList(arrayListSuggestedBooks);
                 etSuggestedSearch.setText("");
             } else {
-                //rrInvisibleLayout.setVisibility(View.VISIBLE);
                 Utility.startSlideAnimation(etSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
                 Utility.startSlideAnimation(imgSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
                 etSuggestedSearch.setVisibility(View.VISIBLE);
@@ -309,7 +281,6 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
         try {
             for (int i = 0; i < arrayList.size(); i++) {
                 if (arrayList.get(i).getBookName().toString().toLowerCase().contains(charSequence.toString().toLowerCase())) {
-//            if (arrayList.get(i).getAuthorName().toString().toLowerCase().contains(charSequence.toString().toLowerCase())|| arrayList.get(i).getBookName().toString().toLowerCase().contains(charSequence.toString().toLowerCase())) {
                     bookDatas.add(arrayList.get(i));
                 }
             }
@@ -322,7 +293,7 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
     public void callApiGetBooksForUser() {
         try {
             if (Utility.isConnected(getActivity())) {
-                activityHost.showProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
@@ -336,7 +307,7 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
 
     private void onResponseManageLibrary(Object object, Exception error) {
         try {
-            activityHost.hideProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
@@ -355,7 +326,7 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
 
     private void onResponseUserBooks(Object object, Exception error) {
         try {
-            activityHost.hideProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
@@ -419,25 +390,6 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
         }
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            activityHost = (AuthorHostActivity) activity;
-            //   activityHost.setListenerHostAboutMe(this);
-        } catch (ClassCastException e) {
-            Debug.e(TAG, "onAttach Exception : " + e.toString());
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        try {
-        } catch (ClassCastException e) {
-            Debug.e(TAG, "onDetach Exception : " + e.toString());
-        }
-    }
 
     @Override
     public void onAddToFav(int addToFavItem) {
@@ -487,7 +439,6 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
     private void callApiAddResourceToFav() {
         try {
             if (Utility.isConnected(getActivity())) {
-                activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 if (arrayListFav == null)
@@ -514,7 +465,7 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
     private void callApiManageLibrary() {
         try {
             if (Utility.isConnected(getActivity())) {
-                activityHost.showProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 attribute.setAddBookId(arrayListAddBooksToLibrary);
@@ -531,7 +482,7 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
 
     private void onResponseAddResourceToFavorite(Object object, Exception error) {
         try {
-            activityHost.hideProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 Debug.i(TAG, "Response object :" + object);
                 ResponseHandler responseHandler = (ResponseHandler) object;
@@ -979,3 +930,4 @@ public class MyDeskBooksFragment extends Fragment implements WebserviceWrapper.W
 //
 //    }
 //}
+

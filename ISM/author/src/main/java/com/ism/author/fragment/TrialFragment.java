@@ -93,7 +93,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
                 }
 //                request.setExamCategory("");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETALLASSIGNMENTS);
+                        .execute(WebConstants.GETALLEXAMS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -108,7 +108,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
 
         try {
             switch (apiCode) {
-                case WebConstants.GETALLASSIGNMENTS:
+                case WebConstants.GETALLEXAMS:
                     onResponseGetAllExams(object, error);
                     break;
             }

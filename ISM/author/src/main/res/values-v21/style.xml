@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<style name="AppTheme.Base" parent="android:Theme.Material.Light">
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowActionBar">false</item>
+		<item name="android:windowFullscreen">false</item>
+		<item name="android:windowContentOverlay">@null</item>
+
+		<item name="android:colorPrimary">@color/color_blue</item>
+		<item name="android:colorPrimaryDark">@color/cpb_blue_dark</item>
+		<item name="android:colorAccent">@color/color_blue</item>
+	</style>
+
+	<style name="AppDialogTheme" parent="android:Theme.Material.Light.Dialog.Alert">
+		<item name="android:colorPrimary">@color/color_blue</item>
+		<item name="android:colorPrimaryDark">@color/cpb_blue_dark</item>
+		<item name="android:colorAccent">@color/color_blue</item>
+	</style>
+
+	<style name="DialogOpenAnimation">
+		<item name="android:windowEnterAnimation">@anim/popup_appear</item>
+		<item name="android:windowExitAnimation">@anim/popup_disappear</item>
+	</style>
+</resources>

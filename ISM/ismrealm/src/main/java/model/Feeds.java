@@ -12,6 +12,7 @@ import io.realm.annotations.PrimaryKey;
  * Relationship with {@link User}
  */
 public class Feeds extends RealmObject {
+
     @PrimaryKey
     private int feedId;
     private User feedBy;
@@ -29,8 +30,8 @@ public class Feeds extends RealmObject {
     ////private String profilePic;
 
 
-    private RealmList<FeedComment> comments=new RealmList<FeedComment>();
-    private RealmList<FeedImage> feedImages=new RealmList<FeedImage>();
+    private RealmList<FeedComment> comments = new RealmList<FeedComment>();
+    private RealmList<FeedImage> feedImages = new RealmList<FeedImage>();
 
 
 //    public int getId() {

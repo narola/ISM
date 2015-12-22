@@ -85,7 +85,8 @@ public class AddQuestionTextDialog extends Dialog implements View.OnClickListene
     public void onClick(View v) {
 
         if (v == tvDialogAddTextDone) {
-            addTextListener.SetText(rteDialogAddText.getHtml());
+//            addTextListener.SetText(rteDialogAddText.getHtml());
+            addTextListener.SetText(Text);
             dismiss();
         } else if (v == tvDialogAddTextClose) {
             dismiss();

@@ -28,7 +28,7 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.broadcastReceiver.NetworkStatusReceiver;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.NetworkStateListener;
-import com.ism.author.object.Global;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -76,6 +76,8 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
     private boolean isRememberMe;
     private boolean isRememberMeFirstLogin;
     private boolean isAdminConfigSet;
+
+    private MyTypeFace myTypeFace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +129,8 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
     private void initGlobal() {
 
+        myTypeFace = new MyTypeFace(this);
+
         btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
         etPwd = (EditText) findViewById(R.id.et_pwd);
         etUserName = (EditText) findViewById(R.id.et_userid);
@@ -138,11 +142,11 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 //        etPwd.setText("narola21");
 
 
-        etUserName.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etPwd.setTypeface(Global.myTypeFace.getRalewayRegular());
-        ((TextView) findViewById(R.id.txt_donothave)).setTypeface(Global.myTypeFace.getRalewayRegular());
-        ((TextView) findViewById(R.id.txt_clickhere)).setTypeface(Global.myTypeFace.getRalewayRegular());
-        ((TextView) findViewById(R.id.txt_forgotpwd)).setTypeface(Global.myTypeFace.getRalewayRegular());
+        etUserName.setTypeface(myTypeFace.getRalewayRegular());
+        etPwd.setTypeface(myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_donothave)).setTypeface(myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_clickhere)).setTypeface(myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_forgotpwd)).setTypeface(myTypeFace.getRalewayRegular());
 
         inputValidator = new InputValidator(getActivity());
 
@@ -544,7 +548,11 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     ArrayList<AdminConfig> arrListAdminConfig = responseHandler.getAdminConfig();
-                    Log.e(TAG, "admin config size : " + arrListAdminConfig.size());
+                    Debug.e(TAG, "admin config size : " + arrListAdminConfig.size());
+
+                    if (arrListAdminConfig != null) {
+                        authorHelper.clearTableData(model.AdminConfig.class);
+                    }
 
                     if (arrListAdminConfig != null && arrListAdminConfig.size() > 0) {
                         for (AdminConfig config : arrListAdminConfig) {

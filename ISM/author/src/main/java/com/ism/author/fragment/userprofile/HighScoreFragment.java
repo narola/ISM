@@ -17,6 +17,7 @@ import com.ism.author.adapter.HighScoreAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.HighScoreSubject;
+import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -59,8 +60,9 @@ public class HighScoreFragment extends Fragment implements WebserviceWrapper.Web
     }
 
     private void initGlobal() {
-        lvHighScore = (ListView) view.findViewById(R.id.lv_highScore);
+        lvHighScore = (ListView) view.findViewById(R.id.list_view);
         txtEmpty = (TextView) view.findViewById(R.id.txt_empty);
+        lvHighScore.setEmptyView(txtEmpty);
         if (Utility.isConnected(activityHost)) {
             callApiGetHighScorers();
         } else {
@@ -99,9 +101,9 @@ public class HighScoreFragment extends Fragment implements WebserviceWrapper.Web
         try {
             activityHost.showProgress();
             Attribute attribute = new Attribute();
-//            attribute.setUserId(Global.strUserId);
+            attribute.setUserId(Global.strUserId);
 //            attribute.setRoleId(Global.role);
-            attribute.setUserId("1");
+//            attribute.setUserId("1");
             attribute.setRoleId("student");
 
             new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
@@ -164,7 +166,7 @@ public class HighScoreFragment extends Fragment implements WebserviceWrapper.Web
                         arrListHighScoreSubject.add(highScoreSubject);
                     }
                 }
-                adpHighScorers = new HighScoreAdapter(activityHost, arrListHighScoreSubject);
+                adpHighScorers = new HighScoreAdapter(getActivity(), arrListHighScoreSubject);
                 lvHighScore.setAdapter(adpHighScorers);
             } else {
                 Log.e(TAG, "high scorers list null");
