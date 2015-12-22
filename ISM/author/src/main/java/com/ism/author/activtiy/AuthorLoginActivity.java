@@ -29,8 +29,6 @@ import com.ism.author.broadcastReceiver.NetworkStatusReceiver;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.NetworkStateListener;
 import com.ism.author.object.MyTypeFace;
-import com.ism.author.object.Global;
-import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -553,7 +551,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                     Debug.e(TAG, "admin config size : " + arrListAdminConfig.size());
 
                     if (arrListAdminConfig != null) {
-                        authorHelper.clearAdminConfigData();
+                        authorHelper.clearTableData(model.AdminConfig.class);
                     }
 
                     if (arrListAdminConfig != null && arrListAdminConfig.size() > 0) {

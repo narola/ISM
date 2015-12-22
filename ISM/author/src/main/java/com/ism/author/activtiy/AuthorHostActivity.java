@@ -1124,7 +1124,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 break;
             case R.id.img_high_score:
                 loadFragmentInRightContainer(FRAGMENT_HIGHSCORE);
-                if(currentMainFragment!=FRAGMENT_HOME)
+                if (currentMainFragment != FRAGMENT_HOME)
                     loadFragmentInMainContainer(FRAGMENT_HOME);
                 break;
         }

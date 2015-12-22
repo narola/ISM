@@ -160,7 +160,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
                 }
                 notifyDataSetChanged();
-                insertFeedLikeData(position, holder.imgPostLike.isSelected() ? 1 : 0);
+                insertUpdateLikeFeedData(position, holder.imgPostLike.isSelected() ? 1 : 0);
 
 
             }
@@ -174,29 +174,29 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         //video
         if (arrListFeeds.get(position).getVideoThumbnail() != "") {
 
-           // holder.imgVideo.setVisibility(View.VISIBLE);
-           // holder.imgPlay.setVisibility(View.VISIBLE);
-           // holder.rlImage.addView(getMediaFilesView(arrListFeeds.get(position).getVideoThumbnail(), PostFeedActivity.VIDEO));
+            // holder.imgVideo.setVisibility(View.VISIBLE);
+            // holder.imgPlay.setVisibility(View.VISIBLE);
+            // holder.rlImage.addView(getMediaFilesView(arrListFeeds.get(position).getVideoThumbnail(), PostFeedActivity.VIDEO));
             Log.i(TAG, WebConstants.FEED_MEDIA_KINJAL + arrListFeeds.get(position).getVideoThumbnail() + "");
             //Global.imageLoader.displayImage(WebConstants.FEED_MEDIA_KINJAL + arrListFeeds.get(position).getVideoThumbnail(), holder.imgVideo, ISMAuthor.options);
 
         }
         //audio
         if (arrListFeeds.get(position).getAudioLink() != "") {
-          //  holder.rlImage.addView(getMediaFilesView(arrListFeeds.get(position).getAudioLink(), PostFeedActivity.AUDIO));
-           // holder.imgAudio.setVisibility(View.VISIBLE);
+            //  holder.rlImage.addView(getMediaFilesView(arrListFeeds.get(position).getAudioLink(), PostFeedActivity.AUDIO));
+            // holder.imgAudio.setVisibility(View.VISIBLE);
         }
         // images
         if (arrListFeeds.get(position).getFeedImages().size() != 0) {
 
-           // holder.imgImage.setVisibility(View.VISIBLE);
+            // holder.imgImage.setVisibility(View.VISIBLE);
 
             ArrayList<FeedImages> feedImages = new ArrayList<FeedImages>();
             feedImages = arrListFeeds.get(position).getFeedImages();
             for (int i = 0; i < feedImages.size(); i++) {
                 Log.i(TAG, WebConstants.FEED_MEDIA_KINJAL + feedImages.get(i).getImageLink() + "");
-              //  Global.imageLoader.displayImage(WebConstants.FEED_MEDIA_KINJAL + feedImages.get(i).getImageLink(), holder.imgImage, ISMAuthor.options);
-               // holder.rlImage.addView(getMediaFilesView(feedImages.get(i).getImageLink(), PostFeedActivity.IMAGE));
+                //  Global.imageLoader.displayImage(WebConstants.FEED_MEDIA_KINJAL + feedImages.get(i).getImageLink(), holder.imgImage, ISMAuthor.options);
+                // holder.rlImage.addView(getMediaFilesView(feedImages.get(i).getImageLink(), PostFeedActivity.IMAGE));
             }
 
         }
@@ -495,8 +495,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     }
 
 
-    private void insertFeedLikeData(int position, int isLike) {
-
+    private void insertUpdateLikeFeedData(int position, int isLike) {
         FeedLike feedLike = new FeedLike();
 
         User user = new User();
@@ -504,40 +503,42 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         user.setFullName(Global.strFullName);
         user.setProfilePicture(Global.strProfilePic);
 
+
+//        model.Feeds feed = new model.Feeds();
+//        feed.setFeedId(Integer.valueOf(arrListFeeds.get(position).getFeedId()));
+//
+//        User feedCreater = new User();
+//        feedCreater.setUserId(Integer.valueOf(arrListFeeds.get(position).getFeedBy()));
+//        feedCreater.setFullName(arrListFeeds.get(position).getFullName());
+//        feedCreater.setProfilePicture(arrListFeeds.get(position).getProfilePic());
+//
+//        feed.setFeedBy(feedCreater);
+//        feed.setFeedText(arrListFeeds.get(position).getFeedText());
+//        feed.setVideoLink(arrListFeeds.get(position).getVideoLink());
+//        feed.setVideoThumbnail(arrListFeeds.get(position).getVideoThumbnail());
+//        feed.setAudioLink(arrListFeeds.get(position).getAudioLink());
+//        feed.setTotalLike(Integer.valueOf(arrListFeeds.get(position).getTotalLike()));
+//        feed.setTotalComment(Integer.valueOf(arrListFeeds.get(position).getTotalComment()));
+//        feed.setPostedOn(null);
+//        feed.setCreatedDate(null);
+//        feed.setModifiedDate(null);
+//        feed.setModifiedDate(null);
+//        feed.setIsSync(0);
+//        feed.setLike("0");
+//        feed.setComments(null);
+//        feed.setFeedImages(null);
+
+
         feedLike.setLikeBy(user);
-
-        model.Feeds feed = new model.Feeds();
-        feed.setFeedId(Integer.valueOf(arrListFeeds.get(position).getFeedId()));
-
-        User feedCreater = new User();
-        feedCreater.setUserId(Integer.valueOf(arrListFeeds.get(position).getFeedBy()));
-        feedCreater.setFullName(arrListFeeds.get(position).getFullName());
-        feedCreater.setProfilePicture(arrListFeeds.get(position).getProfilePic());
-
-        feed.setFeedBy(feedCreater);
-        feed.setFeedText(arrListFeeds.get(position).getFeedText());
-        feed.setVideoLink(arrListFeeds.get(position).getVideoLink());
-        feed.setVideoThumbnail(arrListFeeds.get(position).getVideoThumbnail());
-        feed.setAudioLink(arrListFeeds.get(position).getAudioLink());
-        feed.setTotalLike(Integer.valueOf(arrListFeeds.get(position).getTotalLike()));
-        feed.setTotalComment(Integer.valueOf(arrListFeeds.get(position).getTotalComment()));
-        feed.setPostedOn(null);
-        feed.setCreatedDate(null);
-        feed.setModifiedDate(null);
-        feed.setModifiedDate(null);
-        feed.setIsSync(0);
-        feed.setLike("0");
-        feed.setComments(null);
-        feed.setFeedImages(null);
-
-
-        feedLike.setFeed(feed);
+        feedLike.setFeed(null);
         feedLike.setCreatedDate(null);
         feedLike.setModifiedDate(null);
         feedLike.setIsLiked(isLike);
         feedLike.setIsSync(false);
+        feedLike.setFeedId(arrListFeeds.get(position).getFeedId());
+        feedLike.setUserId(Global.strUserId);
 
-        Global.authorHelper.insertLikeFeedData(feedLike);
+        Global.authorHelper.insertUpdateLikeFeedData(feedLike);
     }
 
 }

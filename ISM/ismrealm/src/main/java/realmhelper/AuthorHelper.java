@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.realm.ismrealm.RealmAdaptor;
 
+import java.util.ArrayList;
+
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -18,7 +20,7 @@ public class AuthorHelper {
 
     private static final String TAG = AuthorHelper.class.getSimpleName();
 
-    Realm realm;
+    public Realm realm;
 
     public AuthorHelper(Context context) {
         realm = RealmAdaptor.getInstance(context);
@@ -67,53 +69,147 @@ public class AuthorHelper {
 
 
     /**
-     * Clear admin config data
+     * Method to clear table data
+     *
+     * @param className
      */
-    public void clearAdminConfigData() {
-
+    public void clearTableData(Class className) {
         try {
-            RealmQuery<AdminConfig> query = realm.where(AdminConfig.class);
-            Log.e(TAG, "The no of records in config table is" + query.findAll().size());
-
+            RealmQuery<AdminConfig> realmQuery = realm.where(className);
             realm.beginTransaction();
-            realm.clear(AdminConfig.class);
+            realm.clear(className);
             realm.commitTransaction();
-
         } catch (Exception e) {
-            Log.e(TAG, "clearAdminConfigData Exception : " + e.toString());
+            Log.e(TAG, "clearTableData Exception : " + e.toString());
         }
     }
+
+    /**
+     * Method to get the total records of table.
+     *
+     * @param className
+     */
+    public void getTotalRecordsInTable(Class className) {
+        try {
+            RealmQuery<AdminConfig> realmQuery = realm.where(className);
+
+            Log.e(TAG, "The Total No Of records in " + className.getSimpleName() + " table are::::" + realmQuery.findAll().size());
+
+        } catch (Exception e) {
+            Log.e(TAG, "clearTableData Exception : " + e.toString());
+        }
+    }
+
 
     /**
      * Method to insert feedLike data and its sync value.
      *
      * @param feedLike
      */
-    public void insertLikeFeedData(FeedLike feedLike) {
-
+    public void insertUpdateLikeFeedData(FeedLike feedLike) {
         try {
-            Number feedLikeId = realm.where(FeedLike.class).max("feedLikeId");
-            long newId = 0;
-            if (feedLikeId != null) {
-                newId = (long) feedLikeId + 1;
+            FeedLike isRecordExist = realm.where(FeedLike.class)
+                    .equalTo("feedId", feedLike.getFeedId()).equalTo("userId", feedLike.getUserId()).findFirst();
+
+            if (isRecordExist == null) {
+                Number feedLikeId = realm.where(FeedLike.class).max("feedLikeId");
+                long newId = 0;
+                if (feedLikeId != null) {
+                    newId = (long) feedLikeId + 1;
+                }
+                feedLike.setFeedLikeId((int) newId);
             }
+
             realm.beginTransaction();
-            feedLike.setFeedLikeId((int) newId);
             realm.copyToRealmOrUpdate(feedLike);
             realm.commitTransaction();
 
 
             Log.e(TAG, "The no of records in likeFeed table is" + realm.where(FeedLike.class).findAll().size());
         } catch (Exception e) {
-            Log.e(TAG, "insertLikeFeedData Exception : " + e.toString());
+            Log.e(TAG, "insertUpdateLikeFeedData Exception : " + e.toString());
         }
+    }
+
+
+    /**
+     * Method to update sync status after successfully update data at server side.
+     *
+     * @param arrListLikeFeedId
+     * @param arrListUnlikeFeedId
+     * @param strUserId
+     */
+    public void updateSyncStatusForFeeds(ArrayList<String> arrListLikeFeedId, ArrayList<String> arrListUnlikeFeedId, String strUserId) {
+
+        if (arrListLikeFeedId.size() > 0) {
+            for (String feedId : arrListLikeFeedId) {
+                model.FeedLike feedLike = realm.where(model.FeedLike.class)
+                        .equalTo("feedId", feedId).equalTo("userId", strUserId).findFirst();
+                realm.beginTransaction();
+                feedLike.setIsSync(true);
+                realm.copyToRealmOrUpdate(feedLike);
+                realm.commitTransaction();
+            }
+        }
+        if (arrListUnlikeFeedId.size() > 0) {
+            for (String feedId : arrListUnlikeFeedId) {
+                model.FeedLike feedLike = realm.where(model.FeedLike.class)
+                        .equalTo("feedId", feedId).equalTo("userId", strUserId).findFirst();
+                realm.beginTransaction();
+                feedLike.setIsSync(true);
+                realm.copyToRealmOrUpdate(feedLike);
+                realm.commitTransaction();
+            }
+        }
+    }
+
+
+    public void updateSyncStatusForFeedsAsychrounsly(final ArrayList<String> arrListLikeFeedId, final ArrayList<String> arrListUnlikeFeedId, final String strUserId) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+
+
+            @Override
+            public void execute(Realm bgRealm) {
+                if (arrListLikeFeedId.size() > 0) {
+                    for (String feedId : arrListLikeFeedId) {
+                        model.FeedLike feedLike = realm.where(model.FeedLike.class)
+                                .equalTo("feedId", feedId).equalTo("userId", strUserId).findFirst();
+                        realm.beginTransaction();
+                        feedLike.setIsSync(true);
+                        realm.copyToRealmOrUpdate(feedLike);
+                        realm.commitTransaction();
+                    }
+                }
+                if (arrListUnlikeFeedId.size() > 0) {
+                    for (String feedId : arrListUnlikeFeedId) {
+                        model.FeedLike feedLike = realm.where(model.FeedLike.class)
+                                .equalTo("feedId", feedId).equalTo("userId", strUserId).findFirst();
+                        realm.beginTransaction();
+                        feedLike.setIsSync(true);
+                        realm.copyToRealmOrUpdate(feedLike);
+                        realm.commitTransaction();
+                    }
+                }
+            }
+        }, new Realm.Transaction.Callback() {
+            @Override
+            public void onSuccess() {
+
+                Log.e(TAG, "Sync Successfully");
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+                Log.e(TAG, "UpdateSyncStatusForFeeds Exception : " + e.toString());
+            }
+        });
     }
 
     public void destroy() {
 
     }
 
-    /**
-     *
-     */
+
 }

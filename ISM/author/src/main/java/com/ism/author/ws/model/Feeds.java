@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Feeds {
 
     private String like;
+    private String likeForDataSync;
     private String fullName;
     private String modifiedDate;
     private ArrayList<FeedImages> feedImages;
