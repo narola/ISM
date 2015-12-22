@@ -83,7 +83,6 @@
             android:layout_height="50dp"
             android:layout_margin="@dimen/d10dp"
             android:layout_weight="1"
-
             android:textSize="@dimen/d20dp"
             android:background="@drawable/bg_edit_gray"
             android:hint="Assignment Name"
@@ -92,7 +91,7 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:id="@+id/sp_course_name"
+            android:id="@+id/sp_books"
             android:layout_margin="@dimen/d10dp"
             android:layout_weight="1"
             android:background="@drawable/bg_edit_gray" />
@@ -103,7 +102,5 @@
         android:id="@+id/richtexteditor"
         android:layout_width="match_parent"
         android:layout_margin="@dimen/d10dp"
-        android:focusableInTouchMode="true"
-        android:focusable="true"
         android:layout_height="@dimen/rich_text_editor_height"></com.narola.kpa.richtexteditor.view.RichTextEditor>
 </LinearLayout>

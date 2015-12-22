@@ -38,12 +38,78 @@
 				android:textSize="20sp"/>
 		</LinearLayout>
 
+		<ImageView
+			android:id="@+id/img_expand_discussion"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:src="@drawable/ic_expand_discussion"
+			android:layout_marginRight="5dp"/>
+
+		<RelativeLayout
+			android:id="@+id/rl_admin_notice"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/ll_topic"
+			android:paddingLeft="20dp"
+			android:paddingRight="20dp"
+			android:paddingTop="5dp"
+			android:paddingBottom="20dp"
+			android:background="@drawable/bg_white_border_bottom_shadowed">
+
+			<com.ism.views.CircleImageView
+				android:id="@+id/img_admin_dp"
+				android:layout_width="@dimen/dp_size_list_small"
+				android:layout_height="@dimen/dp_size_list_small"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="5dp"
+				android:layout_marginRight="5dp"
+				android:src="@drawable/img_default_dp"/>
+
+			<TextView
+				android:id="@+id/txt_admin_name"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="5dp"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:layout_toRightOf="@id/img_admin_dp"
+				android:textColor="@color/bg_app_dark"
+				android:text="@string/admin"
+				android:textSize="@dimen/text_size_normal_chat"/>
+
+			<TextView
+				android:id="@+id/txt_admin_notice_time"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:layout_marginBottom="5dp"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:textColor="@color/bg_app_dark"
+				android:text="Sep 1 2015, 03:30 pm"
+				android:textSize="@dimen/text_size_small_chat"/>
+
+			<TextView
+				android:id="@+id/txt_admin_notice"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/txt_admin_name"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:layout_toRightOf="@id/img_admin_dp"
+				android:textColor="@color/bg_app_dark"
+				android:text="Notice from admin regarding TutorialGoup discussion."
+				android:background="@drawable/bg_chat_received_admin"
+				android:textSize="@dimen/text_size_normal_chat"/>
+		</RelativeLayout>
+
 		<android.support.v7.widget.RecyclerView
 			android:id="@+id/recycler_chat"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_above="@+id/ll_attachments"
-			android:layout_below="@id/ll_topic"></android.support.v7.widget.RecyclerView>
+			android:layout_below="@id/rl_admin_notice"
+			android:layout_above="@+id/ll_attachments"></android.support.v7.widget.RecyclerView>
 
 		<TextView
 			android:id="@+id/txt_alert"
@@ -137,9 +203,11 @@
 	</RelativeLayout>
 
 	<RelativeLayout
+		android:id="@+id/rl_utility"
 		android:layout_width="0dp"
 		android:layout_height="match_parent"
-		android:layout_weight="4">
+		android:layout_weight="4"
+		android:background="@color/bg_app_dark">
 
 		<com.ism.scientificcalc.view.Calc
 			android:id="@+id/utility_scientific_calc"
@@ -153,6 +221,7 @@
 			android:layout_height="match_parent"
 			android:layout="@layout/layout_whiteboard"
 			android:inflatedId="@+id/utility_whiteboard"
+			android:layout_marginLeft="1dp"
 			android:layout_above="@+id/ll_controller_utility"></ViewStub>
 
 		<ViewStub
@@ -161,6 +230,7 @@
 			android:layout_height="match_parent"
 			android:layout="@layout/layout_assistant_webview"
 			android:inflatedId="@+id/utility_assistant_webview"
+			android:layout_marginLeft="1dp"
 			android:layout_above="@+id/ll_controller_utility"></ViewStub>
 
 		<LinearLayout

@@ -146,6 +146,10 @@ public class ResponseHandler {
         return preference;
     }
 
+    public void setPreference(ArrayList<SettingPreferences> preference) {
+        this.preference = preference;
+    }
+
     @JsonProperty("badges")
     public ArrayList<Badges> getBadges() {
         return this.badges;
@@ -153,10 +157,6 @@ public class ResponseHandler {
 
     public void setBadges(ArrayList<Badges> badges) {
         this.badges = badges;
-    }
-
-    public void setPreference(ArrayList<SettingPreferences> preference) {
-        this.preference = preference;
     }
 
     @JsonProperty("user_preference")

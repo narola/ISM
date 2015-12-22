@@ -1,6 +1,5 @@
 package com.ism.author.fragment.mydesk;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,20 +21,17 @@ import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.User;
 
-import java.util.Date;
-
 /**
  * Created by c162 on 29/11/15.
  */
 public class AboutMeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private View view;
-    private TextView txtUserName, txtTotalBooks, txtSocial, txtTotalPost, txtTotalFollowing, txtPost, txtAssignment, txtAcademic, txtTotalAssignment, txtExam, txtTotalExam, txtExcellence, txtFavQuestions, txtBadgesEarned, txtTotalBadgesEarned, txtTotalFavQuestions,  txtEducation;
+    private TextView txtUserName, txtTotalBooks, txtSocial, txtTotalPost, txtTotalFollowing, txtPost, txtAssignment, txtAcademic, txtTotalAssignment,
+            txtExam, txtTotalExam, txtExcellence, txtFavQuestions, txtBadgesEarned, txtTotalBadgesEarned, txtTotalFavQuestions, txtEducation;
     private static String TAG = AboutMeFragment.class.getSimpleName();
-    private AuthorHostActivity activityHost;
     MyDeskFragment myDeskFragment;
     public static ImageView imgProfilePic;
-    private Date convertedDate;
     private TextView txtEducationName;
     private TextView txtBirthdate;
     private TextView txtTotalFollowers;
@@ -101,8 +97,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
         //set typeface
         txtTotalBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
-        txtUserName.setTypeface(Global.myTypeFace.getRalewayRegular());
-        txtEducation.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtUserName.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtEducation.setTypeface(Global.myTypeFace.getRalewayBold());
         txtEducationName.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtBirthdate.setTypeface(Global.myTypeFace.getRalewayRegular());
 
@@ -115,10 +111,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         txtPost.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtFollowers.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtAcademic.setTypeface(Global.myTypeFace.getRalewayRegular());
-        //txtAssignment.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtFollowing.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtAssignment.setTypeface(Global.myTypeFace.getRalewayRegular());
-        //txtTotalAssignment.setTypeface(Global.myTypeFace.getRalewayBold());
         txtBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtTotalBooks.setTypeface(Global.myTypeFace.getRalewayBold());
         txtTotalAssignment.setTypeface(Global.myTypeFace.getRalewayBold());
@@ -132,7 +126,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         txtTotalBadgesEarned.setTypeface(Global.myTypeFace.getRalewayBold());
         txtQuestionAnswered.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtTotalFavQuestions.setTypeface(Global.myTypeFace.getRalewayBold());
-        txtEducation.setTypeface(Global.myTypeFace.getRalewayRegular());
         callApiGetAboutMe();
 
     }
@@ -140,7 +133,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private void callApiGetAboutMe() {
         try {
             if (Utility.isConnected(getActivity())) {
-                activityHost.showProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 attribute.setRoleId(Global.role);
@@ -157,7 +150,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void onResponseGetAboutMe(Object object, Exception error) {
         try {
-            activityHost.hideProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseObj = (ResponseHandler) object;
                 if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
@@ -182,53 +175,53 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtEducationName.setText(data.getEducation());
             txtBirthdate.setText(com.ism.commonsource.utility.Utility.DateFormat(data.getBirthdate()));
 
-            if(data.getTotalAssignment()==null)
+            if (data.getTotalAssignment() == null)
                 txtTotalAssignment.setText("0");
             else
                 txtTotalAssignment.setText(data.getTotalAssignment());
 
-            if(data.getAboutAuthor()==null)
+            if (data.getAboutAuthor() == null)
                 txtAboutAuthorDetails.setText("No inforamation available!");
             else
                 txtAboutAuthorDetails.setText(data.getAboutAuthor());
 
-            if(data.getTotalBadgesEarned()==null)
+            if (data.getTotalBadgesEarned() == null)
                 txtTotalBadgesEarned.setText("0");
             else
                 txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
 
-            if(data.getTotalExams()==null)
+            if (data.getTotalExams() == null)
                 txtTotalExam.setText("0");
             else
                 txtTotalExam.setText(data.getTotalExams());
 
 
-            if(data.getTotalPost()==null)
+            if (data.getTotalPost() == null)
                 txtTotalPost.setText("0");
             else
                 txtTotalPost.setText(data.getTotalPost());
 
-            if(data.getTotalQuestionsAnswered()==null)
+            if (data.getTotalQuestionsAnswered() == null)
                 txtTotalQueAnswered.setText("0");
             else
                 txtTotalQueAnswered.setText(data.getTotalQuestionsAnswered());
 
-            if(data.getTotalBooks()==null)
+            if (data.getTotalBooks() == null)
                 txtTotalBooks.setText("0");
             else
                 txtTotalBooks.setText(data.getTotalBooks());
 
-            if(data.getTotalFollowers()==null)
+            if (data.getTotalFollowers() == null)
                 txtTotalFollowers.setText("0");
             else
                 txtTotalFollowers.setText(data.getTotalFollowers());
 
-            if(data.getTotalFavoriteQuestions()==null)
+            if (data.getTotalFavoriteQuestions() == null)
                 txtTotalFavQuestions.setText("0");
             else
                 txtTotalFavQuestions.setText(data.getTotalFavoriteQuestions());
 
-            if(data.getTotalFollowing()==null)
+            if (data.getTotalFollowing() == null)
                 txtTotalFollowing.setText("0");
             else
                 txtTotalFollowing.setText(data.getTotalFollowing());
@@ -240,28 +233,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             Debug.i(TAG, "SetupData :" + e.getLocalizedMessage());
         }
     }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            activityHost = (AuthorHostActivity) activity;
-            //   activityHost.setListenerHostAboutMe(this);
-        } catch (ClassCastException e) {
-            Log.e(TAG, "onAttach Exception : " + e.toString());
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        try {
-        } catch (ClassCastException e) {
-            Log.e(TAG, "onDetach Exception : " + e.toString());
-        }
-    }
-
 
     @Override
     public void onResponse(int apiCode, Object object, Exception error) {

@@ -53,6 +53,9 @@ import java.util.Locale;
 
 public class PostFeedActivity extends Activity implements View.OnClickListener, WebserviceWrapper.WebserviceResponse {
     public static final String TAG = PostFeedActivity.class.getSimpleName();
+    public static final String IMAGE = "image";
+    public static final String AUDIO = "audio";
+    public static final String VIDEO = "video";
     private InputMethodManager inputMethod;
     private TextView txtPost, txtCaptue, txtChoose, txtCancel;
     private EditText etSayIt;
@@ -178,52 +181,79 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
+
         if (v == imgImage) {
-            toolSelected(v);
-            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.img_camera));
-            Toast.makeText(getApplicationContext(), "Images", Toast.LENGTH_SHORT).show();
-            hideKeyboard();
-            llContainer.setVisibility(View.VISIBLE);
-            txtCaptue.setText(getResources().getString(R.string.strcaptureimageusingcamera));
-            txtChoose.setText(getResources().getString(R.string.strchooseimagefromgallery));
-
-
+            onClickImage(v);
         } else if (v == imgAudio) {
-            toolSelected(v);
-            Toast.makeText(getApplicationContext(), "Audio", Toast.LENGTH_SHORT).show();
-            hideKeyboard();
-            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_recorder));
-            llContainer.setVisibility(View.VISIBLE);
-            txtCaptue.setText(getResources().getString(R.string.strrecordyouraudio));
-            txtChoose.setText(getResources().getString(R.string.strchooseyouraudio));
+            onClickAudio(v);
             //loadFragment(FRAGMENT_AUDIO);
         } else if (v == imgVideo) {
-            toolSelected(v);
-            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.img_camera));
-            Toast.makeText(getApplicationContext(), "Video", Toast.LENGTH_SHORT).show();
-            hideKeyboard();
-            llContainer.setVisibility(View.VISIBLE);
-            txtCaptue.setText(getResources().getString(R.string.strcapturevideousingcamera));
-            txtChoose.setText(getResources().getString(R.string.strchoosevideofromgallery));
+            onClickVideo(v);
             //loadFragment(FRAGMENT_VIDEO);
         } else if (v == llChooseImg) {
-            if (txtChoose.getText().toString().equals(getResources().getString(R.string.strchoosevideofromgallery))) {
-                if (!checkMediaFile()) {
-                    openVideoGallery();
-                } else {
-                    Utility.showToast(this, "Please select single audio or video for post your feed!");
-                }
-            } else if (txtChoose.getText().toString().equals(getResources().getString(R.string.strchooseimagefromgallery)))
-                OpenImageGallery();
-            else if (txtChoose.getText().toString().equals(getResources().getString(R.string.strchooseyouraudio))) {
-                if (!checkMediaFile()) {
-                    OpenAudio();
-                } else {
-                    Utility.showToast(this, "Please select single audio or video for post your feed!");
-                }
-            }
+            onClickChooseImage(v);
 
         } else if (v == llCaptureImg) {
+            onClickCaptureImage();
+
+        } else if (v == imgStop) {
+            if (isRecording) {
+                if (mRecorder != null) {
+                    //  mRecorder.stop();
+                    //   mRecorder.release();
+                    mRecorder = null;
+                    handler.removeCallbacks(r);
+                    isRecording = false;
+
+                }
+                recoderDone = 1;
+                seekbar.setProgress(0);
+                //handler.removeCallbacks(r);
+                imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_play));
+            } else if (recoderDone == 1) {
+                playIt();
+                imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_pause));
+                recoderDone = 2;
+            } else if (recoderDone == 2) {
+                playIt();
+                imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_play));
+                recoderDone = 1;
+            }
+        } else if (v == imgSave) {
+            model = new PostFileModel(AUDIO, Uri.fromFile(new File(mFileName)), "");
+            arrayList.add(model);
+            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+            llAudioRecoder.setVisibility(View.GONE);
+            llContainer.setVisibility(View.VISIBLE);
+            // //llBlank.setVisibility(View.GONE);
+        } else if (v == imgCancel) {
+            File file = new File(mFileName);
+            file.delete();
+            llAudioRecoder.setVisibility(View.GONE);
+            llContainer.setVisibility(View.VISIBLE);
+            //llBlank.setVisibility(View.GONE);
+
+        } else if (v == imgKeyboard) {
+            toolSelected(v);
+            //llBlank.setVisibility(View.VISIBLE);
+            showKeyboard();
+        } else if (v == txtCancel) {
+            hideKeyboard();
+
+            super.onBackPressed();
+            //delete video or audio or image if capture
+        } else if (v == txtPost) {
+            hideKeyboard();
+            if (etSayIt.getText().toString().length() != 0) {
+                callPostFeed();
+            } else {
+                Utility.showToast(this, "Please Write any message to post your feed!");
+            }
+        }
+    }
+
+    private void onClickCaptureImage() {
+        try {
             if (txtCaptue.getText().toString().equals(getResources().getString(R.string.strcapturevideousingcamera))) {
                 if (!checkMediaFile())
                     captureVideo();
@@ -255,60 +285,72 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
                 }
 
             }
-        } else if (v == imgStop) {
-            if (isRecording) {
-                if (mRecorder != null) {
-                    //  mRecorder.stop();
-                    //   mRecorder.release();
-                    mRecorder = null;
-                    handler.removeCallbacks(r);
-                    isRecording = false;
+        } catch (Exception e) {
+            Debug.i(TAG, "onClickCaptureImage Exception : " + e.getLocalizedMessage());
+        }
+    }
 
+    private void onClickChooseImage(View v) {
+        try {
+            if (txtChoose.getText().toString().equals(getResources().getString(R.string.strchoosevideofromgallery))) {
+                if (!checkMediaFile()) {
+                    openVideoGallery();
+                } else {
+                    Utility.showToast(this, "Please select single audio or video for post your feed!");
                 }
-                recoderDone = 1;
-                seekbar.setProgress(0);
-                //handler.removeCallbacks(r);
-                imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_play));
-            } else if (recoderDone == 1) {
-                playIt();
-                imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_pause));
-                recoderDone = 2;
-            } else if (recoderDone == 2) {
-                playIt();
-                imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_play));
-                recoderDone = 1;
+            } else if (txtChoose.getText().toString().equals(getResources().getString(R.string.strchooseimagefromgallery)))
+                OpenImageGallery();
+            else if (txtChoose.getText().toString().equals(getResources().getString(R.string.strchooseyouraudio))) {
+                if (!checkMediaFile()) {
+                    OpenAudio();
+                } else {
+                    Utility.showToast(this, "Please select single audio or video for post your feed!");
+                }
             }
-        } else if (v == imgSave) {
-            model = new PostFileModel("audio", Uri.fromFile(new File(mFileName)), "");
-            arrayList.add(model);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
-            llAudioRecoder.setVisibility(View.GONE);
-            llContainer.setVisibility(View.VISIBLE);
-            // //llBlank.setVisibility(View.GONE);
-        } else if (v == imgCancel) {
-            File file = new File(mFileName);
-            file.delete();
-            llAudioRecoder.setVisibility(View.GONE);
-            llContainer.setVisibility(View.VISIBLE);
-            //llBlank.setVisibility(View.GONE);
+        } catch (Exception e) {
+            Debug.i(TAG, "onClickChooseImage Exception : " + e.getLocalizedMessage());
+        }
+    }
 
-        } else if (v == imgKeyboard) {
+    private void onClickAudio(View v) {
+        try {
             toolSelected(v);
-            //llBlank.setVisibility(View.VISIBLE);
-            showKeyboard();
-        } else if (v == txtCancel) {
+            Toast.makeText(getApplicationContext(), AUDIO, Toast.LENGTH_SHORT).show();
             hideKeyboard();
+            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_recorder));
+            llContainer.setVisibility(View.VISIBLE);
+            txtCaptue.setText(getResources().getString(R.string.strrecordyouraudio));
+            txtChoose.setText(getResources().getString(R.string.strchooseyouraudio));
+        } catch (Exception e) {
+            Debug.i(TAG, "onClickAudio Exception : " + e.getLocalizedMessage());
+        }
+    }
 
-            super.onBackPressed();
-            //delete video or audio or image if capture
-        } else if (v == txtPost) {
+    private void onClickVideo(View v) {
+        try {
+            toolSelected(v);
+            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.img_camera));
+            Toast.makeText(getApplicationContext(), VIDEO, Toast.LENGTH_SHORT).show();
             hideKeyboard();
+            llContainer.setVisibility(View.VISIBLE);
+            txtCaptue.setText(getResources().getString(R.string.strcapturevideousingcamera));
+            txtChoose.setText(getResources().getString(R.string.strchoosevideofromgallery));
+        } catch (Exception e) {
+            Debug.i(TAG, "onClickAudio Exception : " + e.getLocalizedMessage());
+        }
+    }
 
-            if (etSayIt.getText().toString().length() != 0) {
-                callPostFeed();
-            } else {
-                Utility.showToast(this, getString(R.string.msg_empty_post));
-            }
+    private void onClickImage(View v) {
+        try {
+            toolSelected(v);
+            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.img_camera));
+            Toast.makeText(getApplicationContext(), "Images", Toast.LENGTH_SHORT).show();
+            hideKeyboard();
+            llContainer.setVisibility(View.VISIBLE);
+            txtCaptue.setText(getResources().getString(R.string.strcaptureimageusingcamera));
+            txtChoose.setText(getResources().getString(R.string.strchooseimagefromgallery));
+        } catch (Exception e) {
+            Debug.i(TAG, "onClickImage Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -325,12 +367,12 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             Log.e(TAG + "Arraylist", "" + arrayList);
             if (arrayList != null) {
                 for (int i = 0; i < arrayList.size(); i++) {
-                    if (arrayList.get(i).getStrFileType().equals("image")) {
+                    if (arrayList.get(i).getStrFileType().equals(IMAGE)) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), arrayList.get(i).getStrFilePath());
                         //imgDp.setImageBitmap(bitmap);
                         String strImgBase64 = Utility.getBase64ForImage(bitmap);
                         listImages.add(strImgBase64);
-                    } else if (arrayList.get(i).getStrFileType().equals("video")) {
+                    } else if (arrayList.get(i).getStrFileType().equals(VIDEO)) {
                         MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
                         mMediaMetadataRetriever.setDataSource(this, arrayList.get(i).getStrFilePath());
                         Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
@@ -352,7 +394,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 
             }
         } catch (Exception e) {
-            Log.e(TAG + "callPostFeed Exception:", e.getLocalizedMessage() + "");
+            Log.e(TAG, "callPostFeed Exception :" + e.getLocalizedMessage() + "");
         }
     }
 
@@ -405,6 +447,12 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         Cursor cursor = getContentResolver().
                 query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                         column, sel, new String[]{id}, null);
+        if(cursor==null){
+            cursor = getContentResolver().
+                    query(MediaStore.Audio.Media.INTERNAL_CONTENT_URI,
+                            column, sel, new String[]{id}, null);
+
+        }
         String filePath = "";
 
         int columnIndex = cursor.getColumnIndex(column[0]);
@@ -592,45 +640,47 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
     }
 
     private void onResponsePostFeed(Object object, Exception error) {
-        if (object != null) {
-            ResponseHandler responseHandler = (ResponseHandler) object;
-            if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-
-                Utility.showToast(this, getString(R.string.msg_success_post_feed));
-                feed_id = responseHandler.getFeed().get(0).getFeedId();
-                if (arrayList != null && arrayList.size() != 0) {
-                    for (int i = 0; i < arrayList.size(); i++) {
-                        if (arrayList.get(i).getStrFileType().equals("video")) {
-                            mediaType = "video";
-                            uploadUri = getPathVideo(arrayList.get(i).getStrFilePath());
-                        } else if (arrayList.get(i).getStrFileType().equals("audio")) {
-                            uploadUri = getPathAudio(arrayList.get(i).getStrFilePath());
-                            mediaType = "audio";
-                        } else if (arrayList.get(i).getStrFileType().equals("image")) {
-                            mediaType = "image";
-                            uploadUri = getPathImage(arrayList.get(i).getStrFilePath());
-                        } else if (arrayList.get(i).getStrFileType().equals("video")) {
-                            MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
-                            mMediaMetadataRetriever.setDataSource(this, arrayList.get(i).getStrFilePath());
-                            Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-                            // strThumbnailBase64 = Utility.getBase64ForImage(bitmap);
+        try {
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                    feed_id = responseHandler.getFeed().get(0).getFeedId();
+                    if (arrayList != null) {
+                        for (int i = 0; i < arrayList.size(); i++) {
+                            if (arrayList.get(i).getStrFileType().equals(VIDEO)) {
+                                mediaType = VIDEO;
+                                uploadUri = getPathVideo(arrayList.get(i).getStrFilePath());
+                            } else if (arrayList.get(i).getStrFileType().equals(AUDIO)) {
+                                uploadUri = getPathAudio(arrayList.get(i).getStrFilePath());
+                                mediaType = AUDIO;
+                            } else if (arrayList.get(i).getStrFileType().equals(IMAGE)) {
+                                mediaType = IMAGE;
+                                uploadUri = getPathImage(arrayList.get(i).getStrFilePath());
+                            } else if (arrayList.get(i).getStrFileType().equals(VIDEO)) {
+                                MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+                                mMediaMetadataRetriever.setDataSource(this, arrayList.get(i).getStrFilePath());
+                                Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+                                // strThumbnailBase64 = Utility.getBase64ForImage(bitmap);
+                            }
+                            if (arrayList.get(i).getStrFilePath() != null) {
+                                Debug.e(TAG, "Thefile path is:" + uploadUri);
+                                callApiForUploadMediaFile(feed_id, mediaType,
+                                        uploadUri);
+                            }
                         }
-                        if (arrayList.get(i).getStrFilePath() != null) {
-                            Debug.e(TAG, "Thefile path is:" + uploadUri);
-                            callApiForUploadMediaFile(feed_id, mediaType,
-                                    uploadUri);
-                        }
+                    } else {
+                        arrayList.clear();
+                        super.onBackPressed();
                     }
-                } else {
-                    arrayList.clear();
-                    super.onBackPressed();
-                }
 
-            } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                Utility.showToast(this, "Please try again!");
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Utility.showToast(this, "Please try again!");
+                }
+            } else if (error != null) {
+                Debug.i(TAG, "onResponsePostFeed error : " + error);
             }
-        } else if (error != null) {
-            Debug.i(TAG, "onResponsePostFeed error : " + error);
+        } catch (Exception e) {
+            Debug.i(TAG, "onResponsePostFeed Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -676,28 +726,27 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             String path = data.getData().toString();
             Uri uri = data.getData();
             Log.i("uri", uri + "");
-            model = new PostFileModel("image", uri, "");
+            model = new PostFileModel(IMAGE, uri, "");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
             // adapter.notifyDataSetChanged();
         } else if (requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK) {
-            model = new PostFileModel("image", uriFile, "");
+            model = new PostFileModel(IMAGE, uriFile, "");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         } else if (requestCode == MEDIA_TYPE_VIDEO && resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory());
             Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory() + uri.getPath());
-            model = new PostFileModel("video", uri, "");
+            model = new PostFileModel(VIDEO, uri, "");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         } else if (requestCode == CAPTURE_VIDEO && resultCode == RESULT_OK) {
             Uri uri = data.getData();
             Log.i(TAG, uri.getPath() + "");
-            model = new PostFileModel("video", uri, "");
+            model = new PostFileModel(VIDEO, uri, "");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
@@ -705,7 +754,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             Uri uri = data.getData();
             Log.i(TAG, uri + "");
             listview.setVisibility(View.VISIBLE);
-            model = new PostFileModel("audio", uri, "");
+            model = new PostFileModel(AUDIO, uri, "");
             arrayList.add(model);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         }
@@ -840,9 +889,9 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 
     public boolean checkMediaFile() {
         for (int i = 0; i < arrayList.size(); i++) {
-            if (arrayList.get(i).getStrFileType().equals("video")) {
+            if (arrayList.get(i).getStrFileType().equals(VIDEO)) {
                 return true;
-            } else if (arrayList.get(i).getStrFileType().equals("audio")) {
+            } else if (arrayList.get(i).getStrFileType().equals(AUDIO)) {
                 return true;
             }
         }

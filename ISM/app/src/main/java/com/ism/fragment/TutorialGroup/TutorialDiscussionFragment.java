@@ -14,6 +14,7 @@ import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.R;
@@ -22,6 +23,7 @@ import com.ism.assistantwebview.view.AssistantWebView;
 import com.ism.model.TestDiscussion;
 import com.ism.object.Global;
 import com.ism.scientificcalc.view.Calc;
+import com.ism.views.CircleImageView;
 import com.ism.whiteboard.view.Whiteboard;
 
 import java.util.ArrayList;
@@ -34,8 +36,10 @@ public class TutorialDiscussionFragment extends Fragment {
 	private static final String TAG = TutorialDiscussionFragment.class.getSimpleName();
 
 	private View view;
-	private TextView txtTopic, txtTopicValue, txtAlert;
-	private ImageView imgCalc, imgWhiteboard, imgSearch, imgDictionary;
+	private TextView txtTopic, txtTopicValue, txtAlert, txtAdminNoticeTime, txtAdminNotice;
+	private ImageView imgCalc, imgWhiteboard, imgSearch, imgDictionary, imgExpandDiscussion;
+	private CircleImageView imgAdminDp;
+	private RelativeLayout rlUtility;
 	private ViewStub vsWhiteboard, vsAssistantWebView;
 	private Calc utilitySciCalc;
 	private Whiteboard utilityWhiteboard;
@@ -110,6 +114,11 @@ public class TutorialDiscussionFragment extends Fragment {
 		vsAssistantWebView = (ViewStub) view.findViewById(R.id.vs_assistant_webview);
 		etMessage = (EditText) view.findViewById(R.id.et_message);
 		btnSend = (Button) view.findViewById(R.id.btn_send);
+		imgExpandDiscussion = (ImageView) view.findViewById(R.id.img_expand_discussion);
+		rlUtility = (RelativeLayout) view.findViewById(R.id.rl_utility);
+		imgAdminDp = (CircleImageView) view.findViewById(R.id.img_admin_dp);
+		txtAdminNoticeTime = (TextView) view.findViewById(R.id.txt_admin_notice_time);
+		txtAdminNotice = (TextView) view.findViewById(R.id.txt_admin_notice);
 
 		imgUtilities = new ImageView[]{imgCalc, imgWhiteboard, imgSearch, imgDictionary};
 		viewUtilities = new View[]{utilitySciCalc, utilityWhiteboard, utilityAssistantWebView};
@@ -117,12 +126,22 @@ public class TutorialDiscussionFragment extends Fragment {
 		txtTopic.setTypeface(Global.myTypeFace.getRalewayRegular());
 		txtTopicValue.setTypeface(Global.myTypeFace.getRalewaySemiBold());
 		txtAlert.setTypeface(Global.myTypeFace.getRalewayRegular());
+		txtAdminNoticeTime.setTypeface(Global.myTypeFace.getRalewayThinItalic());
+		txtAdminNotice.setTypeface(Global.myTypeFace.getRalewayRegular());
+		((TextView) view.findViewById(R.id.txt_admin_name)).setTypeface(Global.myTypeFace.getRalewayRegular());
 
 		txtTopicValue.setText("Osmosis");
 
 		setDay(intWeekDay);
 
 		imgCalc.setEnabled(false);
+
+		imgExpandDiscussion.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				rlUtility.setVisibility(rlUtility.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+			}
+		});
 
 		listenerOnUtilityClick = new View.OnClickListener() {
 			@Override

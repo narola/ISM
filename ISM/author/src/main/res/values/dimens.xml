@@ -51,6 +51,7 @@
     <dimen name="d130dp">130dp</dimen>
     <dimen name="d140dp">140dp</dimen>
     <dimen name="d150dp">150dp</dimen>
+    <dimen name="d160dp">160dp</dimen>
     <dimen name="d170dp">170dp</dimen>
     <dimen name="d190dp">190dp</dimen>
     <dimen name="d200dp">200dp</dimen>
@@ -89,5 +90,6 @@
     <dimen name="text_size_emptylist_message_small">18sp</dimen>
     <dimen name="text_size_emptylist_message_medium">22sp</dimen>
     <dimen name="text_size_emptylist_message_large">25sp</dimen>
+    <dimen name="d80dp">80dp</dimen>
 
 </resources>

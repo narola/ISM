@@ -21,6 +21,7 @@ import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.Preferences;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
     private TextView txtPrivacySetting, txtSmsAlerts, txtBlockUsers, txtNotifications;
     MyTypeFace myTypeFace;
     private int currentFragment = -1;
-    public static ArrayList<Attribute> preferencesList;
+    public static ArrayList<Preferences> preferencesList;
     private Attribute attribute;
 
     public static GeneralSettingsFragment newInstance() {
@@ -151,20 +152,20 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
             case FRAGMENT_PRIVACY_SETTING: {
                 currentFragment = frag;
                // callApiGetGeneralSettingPreferences(preferencesList);
-                PrivacySettingFragment fragment = PrivacySettingFragment.newInstance();
+                com.ism.fragment.userProfile.PrivacySettingFragment fragment = com.ism.fragment.userProfile.PrivacySettingFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_SMS_ALERTS: {
                 currentFragment = frag;
                 //callApiGetGeneralSettingPreferences(preferencesList);
-                SMSAlertsFragment fragment = SMSAlertsFragment.newInstance();
+                com.ism.fragment.userProfile.SMSAlertsFragment fragment = com.ism.fragment.userProfile.SMSAlertsFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_BLOCK_USER: {
                 currentFragment = frag;
-                BlockUserFragment fragment = BlockUserFragment.newInstance();
+                com.ism.fragment.userProfile.BlockUserFragment fragment = com.ism.fragment.userProfile.BlockUserFragment.newInstance();
                 //callApiGetGeneralSettingPreferences(preferencesList);
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
@@ -172,7 +173,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
             case FRAGMENT_NOTIFICATION: {
                 currentFragment = frag;
                // callApiGetGeneralSettingPreferences(preferencesList);
-                NotificationFragment fragment = NotificationFragment.newInstance();
+                com.ism.fragment.userProfile.NotificationFragment fragment = com.ism.fragment.userProfile.NotificationFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
@@ -278,10 +279,10 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
 
     //used for store the preferences value of general setting in arraylist
     public void setPreferenceList(String key, String value, Context context) {
-        Attribute requestObject = new Attribute();
+        Preferences requestObject = new Preferences();
         requestObject.setUserId(Global.strUserId);
         requestObject.setKeyId(key);
-        requestObject.setSettingValue(value);
+        requestObject.setPreferenceValue(value);
         Debug.i(TAG, "setPreferenceList " + "key:" + key + "value:" + value);
         PreferenceData.setStringPrefs(key, context, value);
         preferencesList.add(requestObject);

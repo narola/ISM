@@ -32,6 +32,10 @@ import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 
+import java.util.ArrayList;
+
+import io.realm.RealmResults;
+
 /*
 * This is the homefragment containg the newsfeed.
 */
@@ -60,6 +64,8 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     private OnClickListener onClickAttachFile;
     private TextView tvNoDataMsg;
 
+    private ArrayList<String> arrListLikeFeedId, arrListUnlikeFeedId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -68,6 +74,10 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     }
 
     private void initGlobal(View view) {
+
+        arrListLikeFeedId = new ArrayList<String>();
+        arrListUnlikeFeedId = new ArrayList<String>();
+
         llPost = (LinearLayout) view.findViewById(R.id.ll_post);
         rvPostFeeds = (RecyclerView) view.findViewById(R.id.rv_post_feeds);
         etWritePost = (EditText) view.findViewById(R.id.et_writePost);
@@ -93,7 +103,13 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         rvPostFeeds.setAdapter(postFeedsAdapter);
         rvPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        callApiGetAllPostFeeds();
+
+//        Global.authorHelper.clearTableData(FeedLike.class);
+        if (isDataAvailableForSync()) {
+            callApiLikeFeed();
+        } else {
+            callApiGetAllPostFeeds();
+        }
 
 
     }
@@ -168,46 +184,15 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     }
 
 
-//    String likePrefData, unlikePrefData;
-//
-//    public void callApiLikeFeed() {
-//
-//        likePrefData = PreferenceData.getStringPrefs(PreferenceData.LIKE_ID_LIST, getActivity(), "");
-//        unlikePrefData = PreferenceData.getStringPrefs(PreferenceData.UNLIKE_ID_LIST, getActivity(), "");
-//
-//        if (Utils.isInternetConnected(getActivity())) {
-//            try {
-//                Attribute requestObject = new Attribute();
-//                requestObject.setUserId(WebConstants.TEST_LIKEUSERID);
-//
-//                if (likePrefData.length() > 0) {
-//                    requestObject.setLikedId((likePrefData.substring(0, likePrefData.length() - 1)).split(","));
-////                    likeFeedRequest.setLiked_id(new String[]{"61"});
-//                }
-//
-//                if (unlikePrefData.length() > 0) {
-//                    requestObject.setUnlikedId((unlikePrefData.substring(0, unlikePrefData.length() - 1)).split(","));
-////                    likeFeedRequest.setUnliked_id(new String[]{"71", "62"});
-//                }
-//
-//
-//                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-//                        .execute(WebserviceWrapper.LIKEFEED);
-//            } catch (Exception e) {
-//                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-//            }
-//        } else {
-//            Utils.showToast(getString(R.string.strnetissue), getActivity());
-//        }
-//
-//    }
-
     @Override
     public void onResponse(int apiCode, Object object, Exception error) {
         try {
             switch (apiCode) {
                 case WebConstants.GETALLFEEDS:
                     onResponseGetAllFeeds(object, error);
+                    break;
+                case WebConstants.LIKEFEED:
+                    onResponseLikeFeed(object, error);
                     break;
             }
         } catch (Exception e) {
@@ -241,4 +226,74 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     }
 
 
+    private void getLikeFeedData() {
+        RealmResults<model.FeedLike> realmResults = Global.authorHelper.realm.where(model.FeedLike.class)
+                .equalTo("isLiked", 1).equalTo("isSync", 0).findAll();
+        if (realmResults.size() > 0) {
+            for (model.FeedLike feedLike : realmResults) {
+                arrListLikeFeedId.add(feedLike.getFeedId());
+            }
+        }
+    }
+
+    private void getUnLikeFeedData() {
+        RealmResults<model.FeedLike> realmResults = Global.authorHelper.realm.where(model.FeedLike.class)
+                .equalTo("isLiked", 0).equalTo("isSync", 0).findAll();
+
+        if (realmResults.size() > 0) {
+            for (model.FeedLike feedLike : realmResults) {
+                arrListUnlikeFeedId.add(feedLike.getFeedId());
+            }
+        }
+    }
+
+    private Boolean isDataAvailableForSync() {
+
+        getLikeFeedData();
+        getUnLikeFeedData();
+        Boolean isDataAvailable = false;
+        if (arrListLikeFeedId.size() > 0 || arrListUnlikeFeedId.size() > 0) {
+            isDataAvailable = true;
+        }
+        return isDataAvailable;
+    }
+
+    private void callApiLikeFeed() {
+        if (Utility.isConnected(getActivity())) {
+            ((AuthorHostActivity) getActivity()).showProgress();
+            try {
+                Attribute attribute = new Attribute();
+                attribute.setUserId(Global.strUserId);
+                attribute.setLikedId(arrListLikeFeedId);
+                attribute.setUnlikedId(arrListUnlikeFeedId);
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+                        .execute(WebConstants.LIKEFEED);
+            } catch (Exception e) {
+                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(getActivity());
+        }
+    }
+
+
+    private void onResponseLikeFeed(Object object, Exception error) {
+        try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    Utils.showToast("DATA SYNCED SUCCESSFULLY", getActivity());
+                    Global.authorHelper.updateSyncStatusForFeeds(arrListLikeFeedId, arrListUnlikeFeedId, Global.strUserId);
+                    callApiGetAllPostFeeds();
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseLikeFeeds api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseLikeFeeds Exception : " + e.toString());
+        }
+    }
 }
