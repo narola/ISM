@@ -18,15 +18,16 @@ import com.ism.author.object.Global;
 /**
  * Created by c162 on 28/10/15.
  */
-public class MyDeskFragment extends Fragment {
+public class MyDeskFragment extends Fragment  {
 
     private static final String TAG = MyDeskFragment.class.getSimpleName();
-    private static final int FRAGMENT_ABOUT_ME = 0;
-    private static final int FRAGMENT_BOOKS = 1;
+
+    public static final int FRAGMENT_ABOUT_ME = 0;
+    public static final int FRAGMENT_BOOKS = 1;
     public static final int FRAGMENT_ASSIGNMENTS = 2;
+    public static final int FRAGMENT_BOOKREFERENCE = 3;
 
     private View view;
-
     private FragmentListener fragListener;
     private TextView txtAboutMe, txtBooks, txtAssignments;
     private int currentFragment = -1;
@@ -45,9 +46,7 @@ public class MyDeskFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mydesk, container, false);
-
         initGlobal();
-
         return view;
     }
 
@@ -56,10 +55,13 @@ public class MyDeskFragment extends Fragment {
         txtAdd = (TextView) view.findViewById(R.id.txt_add);
         txtBooks = (TextView) view.findViewById(R.id.txt_books);
         txtAssignments = (TextView) view.findViewById(R.id.txt_assignments);
+
         txtAboutMe.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAdd.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtAssignments.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtAboutMe.setEnabled(false);
+
         View.OnClickListener onClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,27 +122,38 @@ public class MyDeskFragment extends Fragment {
 
     public void loadFragment(int frag) {
         switch (frag) {
-            case FRAGMENT_ABOUT_ME: {
+            case FRAGMENT_ABOUT_ME:
+
                 currentFragment = frag;
                 txtAdd.setVisibility(View.GONE);
-                AboutMeFragment fragment = AboutMeFragment.newInstance();
-                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
-            }
-            break;
-            case FRAGMENT_BOOKS: {
+                AboutMeFragment aboutMeFragment = AboutMeFragment.newInstance();
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, aboutMeFragment).commit();
+                break;
+
+            case FRAGMENT_BOOKS:
+
                 currentFragment = frag;
                 txtAdd.setVisibility(View.GONE);
-                MyDeskBooksFragment fragment = MyDeskBooksFragment.newInstance();
-                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
-            }
-            break;
-            case FRAGMENT_ASSIGNMENTS: {
+                MyDeskBooksFragment myDeskBooksFragment = MyDeskBooksFragment.newInstance();
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, myDeskBooksFragment).commit();
+                break;
+
+            case FRAGMENT_ASSIGNMENTS:
+
                 currentFragment = frag;
                 txtAdd.setVisibility(View.VISIBLE);
-                MyDeskAssignments fragment = MyDeskAssignments.newInstance();
-                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
-            }
-            break;
+                MyDeskAssignmentsFragment myDeskAssignmentsFragment = MyDeskAssignmentsFragment.newInstance(this);
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, myDeskAssignmentsFragment).commit();
+                break;
+
+            case FRAGMENT_BOOKREFERENCE:
+
+                currentFragment = frag;
+                txtAdd.setVisibility(View.VISIBLE);
+                BookReferenceFragment bookReferenceFragment = BookReferenceFragment.newInstance(this);
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, bookReferenceFragment).commit();
+                break;
+
         }
     }
 
@@ -173,6 +186,38 @@ public class MyDeskFragment extends Fragment {
 
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYDESK);
+
+        if (currentFragment == FRAGMENT_BOOKREFERENCE) {
+
+            loadFragment(FRAGMENT_ASSIGNMENTS);
+
+        } else {
+            ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYDESK);
+        }
+
+
     }
+
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.txt_about_me:
+//                loadFragment(FRAGMENT_ABOUT_ME);
+//
+//                break;
+//            case R.id.txt_books:
+//                loadFragment(FRAGMENT_BOOKS);
+//
+//                break;
+//            case R.id.txt_assignments:
+//                loadFragment(FRAGMENT_ASSIGNMENTS);
+//
+//                break;
+//            case R.id.txt_add:
+//                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADD_ASSIGNMENT);
+//
+//                break;
+//        }
+//        selected(v);
+//    }
 }

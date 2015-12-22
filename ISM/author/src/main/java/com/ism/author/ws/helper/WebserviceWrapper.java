@@ -172,8 +172,8 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETQUESTIONBANK).execute(ResponseHandler.class, attribute);
                                 break;
 
-                            case WebConstants.GETALLEXAM:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GETALLEXAM).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GETALLASSIGNMENTS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GETALLASSIGNMENTS).execute(ResponseHandler.class, attribute);
                                 break;
 
                             case WebConstants.GETEXAMEVALUATIONS:
@@ -192,8 +192,8 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETEXAMSUBMISSION).execute(ResponseHandler.class, attribute);
                                 break;
 
-                            case WebConstants.GETALLASSIGNMENTS:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GETALLASSIGNMENTS).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GETALLEXAMS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GETALLEXAMS).execute(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.GET_ALL_BADGES_COUNT:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BADGES_COUNT).execute(ResponseHandler.class, attribute);
@@ -288,6 +288,10 @@ public class WebserviceWrapper {
                             case WebConstants.SUBMIT_TRENDING_ANSWER:
                                 responseObject = new WebserviceConnector(WebConstants.URL_SUBMIT_TRENDING_ANSWER).execute(ResponseHandler.class,
                                         attribute);
+                                break;
+
+                            case WebConstants.UPLOADSUBQUESTIONIMAGES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_UPLOADSUBQUESTIONIMAGES).uploadMedia(ResponseHandler.class, attribute);
                                 break;
                         }
                     }

@@ -86,6 +86,7 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
         etAssignmentName.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtSave.setTypeface(Global.myTypeFace.getRalewayRegular());
 
+
         arrayListBooks = new ArrayList<>();
         arrayListBooks.add(getString(R.string.strSelectBook));
         Adapters.setUpSpinner(getActivity(), spBooks, arrayListBooks, Adapters.ADAPTER_NORMAL);
@@ -111,6 +112,7 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
             public void onClick(View v) {
 
                 switch (v.getId()) {
+
                     case R.id.txt_save: {
                         if (checkInputs())
                             callApiForAddAssignment();

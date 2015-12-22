@@ -17,9 +17,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.PreferenceData;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
-import com.ism.author.object.MyTypeFace;
-
-import java.util.List;
+import com.ism.author.object.Global;
 
 
 /**
@@ -28,7 +26,6 @@ import java.util.List;
 public class PrivacySettingFragment extends Fragment implements View.OnClickListener {
     private View view;
     private TextView txtAlertsPersonalDetails, txtAlertsAcademicDetails, txtAcademicNotification, txtAcademicNotificationBD, txtAlertsExamScore;
-    MyTypeFace myTypeFace;
     private View includeAcademic, includeAcademicBirthDate;
     private RadioGroup radioGroupAcademic, radioGroupAcademicBD;
     private RadioButton radioButtonYesAcademic, radioButtonNoAcademic, radioButtonYesAcademicBD, radioButtonNoAcademicBD;
@@ -37,7 +34,6 @@ public class PrivacySettingFragment extends Fragment implements View.OnClickList
     private AuthorHostActivity activityHost;
     private String[] strArrayList;
     GeneralSettingsFragment generalSettingsFragment;
-    private List<String> stringList;
 
     public static PrivacySettingFragment newInstance() {
         PrivacySettingFragment fragment = new PrivacySettingFragment();
@@ -61,7 +57,6 @@ public class PrivacySettingFragment extends Fragment implements View.OnClickList
     private void initGlobal() {
         generalSettingsFragment = GeneralSettingsFragment.newInstance();
 
-        myTypeFace = new MyTypeFace(getActivity());
         spViewers = (Spinner) view.findViewById(R.id.sp_viewers);
         txtAlertsPersonalDetails = (TextView) view.findViewById(R.id.txt_alerts_personal_details);
         txtAlertsAcademicDetails = (TextView) view.findViewById(R.id.txt_alerts_academic_details);
@@ -85,16 +80,16 @@ public class PrivacySettingFragment extends Fragment implements View.OnClickList
         txtAlertsExamScore.setTextColor(getResources().getColor(R.color.color_blue));
         txtAlertsExamScore.setText(R.string.strAllowsViewersToViewMyExamScores);
         //set typeface
-        txtAlertsAcademicDetails.setTypeface(myTypeFace.getRalewayRegular());
-        txtAlertsPersonalDetails.setTypeface(myTypeFace.getRalewayRegular());
-        txtAcademicNotification.setTypeface(myTypeFace.getRalewayRegular());
-        txtAlertsExamScore.setTypeface(myTypeFace.getRalewayRegular());
-        txtAcademicNotificationBD.setTypeface(myTypeFace.getRalewayRegular());
+        txtAlertsAcademicDetails.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAlertsPersonalDetails.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAcademicNotification.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAlertsExamScore.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAcademicNotificationBD.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-        radioButtonYesAcademic.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonYesAcademicBD.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonNoAcademic.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonNoAcademicBD.setTypeface(myTypeFace.getRalewayRegular());
+        radioButtonYesAcademic.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonYesAcademicBD.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonNoAcademic.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonNoAcademicBD.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         radioButtonNoAcademicBD.setOnClickListener(this);
         radioButtonNoAcademic.setOnClickListener(this);
@@ -120,7 +115,7 @@ public class PrivacySettingFragment extends Fragment implements View.OnClickList
         strArrayList = getActivity().getResources().getStringArray(R.array.viewers_array);
 
         Adapters.setUpSpinner(getActivity(), spViewers, getActivity().getResources().getStringArray(R.array.viewers_array)
-                , myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
+                , Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
         setDefaultValues();
 
     }
@@ -168,14 +163,14 @@ public class PrivacySettingFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v == radioButtonNoAcademic) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_CONTACT, getActivity()), "No",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_CONTACT, getActivity()), "No", getActivity());
 
         } else if (v == radioButtonYesAcademic) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_CONTACT, getActivity()), "Yes",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_CONTACT, getActivity()), "Yes", getActivity());
         } else if (v == radioButtonNoAcademicBD) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_BIRTHDATE, getActivity()), "No",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_BIRTHDATE, getActivity()), "No", getActivity());
         } else if (v == radioButtonYesAcademicBD) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_BIRTHDATE, getActivity()), "Yes",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_BIRTHDATE, getActivity()), "Yes", getActivity());
         }
     }
 
@@ -193,7 +188,7 @@ public class PrivacySettingFragment extends Fragment implements View.OnClickList
     public void onDetach() {
         super.onDetach();
         try {
-           // generalSettingsFragment.callApiGetGeneralSettingPreferences();
+            // generalSettingsFragment.callApiGetGeneralSettingPreferences();
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
         }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.Preferences;
+import com.ism.author.ws.model.UserPreferences;
 
 import java.util.ArrayList;
 
@@ -84,6 +86,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         onClicks();
         setBackGroundLeftController(txtPrivacySetting, FRAGMENT_PRIVACY_SETTING);
 //        callApiForGETUSerPreference();
+        callApiForGetUserPreference();
 
     }
 
@@ -151,7 +154,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         switch (frag) {
             case FRAGMENT_PRIVACY_SETTING: {
                 currentFragment = frag;
-               // callApiGetGeneralSettingPreferences(preferencesList);
+                // callApiGetGeneralSettingPreferences(preferencesList);
                 PrivacySettingFragment fragment = PrivacySettingFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
@@ -172,7 +175,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
             break;
             case FRAGMENT_NOTIFICATION: {
                 currentFragment = frag;
-               // callApiGetGeneralSettingPreferences(preferencesList);
+                // callApiGetGeneralSettingPreferences(preferencesList);
                 NotificationFragment fragment = NotificationFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
@@ -186,7 +189,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         try {
             activityHost = (AuthorHostActivity) activity;
             fragListener = (FragmentListener) activity;
-	        activityHost.setListenerProfileControllerPresence(this);
+            activityHost.setListenerProfileControllerPresence(this);
             if (fragListener != null) {
                 fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_GENERAL_SETTING);
             }
@@ -209,30 +212,64 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         fragListener = null;
     }
 
+    private void onResponseGetUserPreference(Object object, Exception error) {
+        try {
+            activityHost.hideProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().toString().equals(WebConstants.SUCCESS)) {
+                    if (responseHandler.getUserPreference() != null) {
+                        ArrayList<UserPreferences> arrayListUserPreferences = new ArrayList<>();
+                        arrayListUserPreferences = responseHandler.getUserPreference();
+                        for (int j = 0; j < arrayListUserPreferences.size(); j++) {
+                            Debug.i(TAG, "j :" + j);
+                            setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getActivity());
+                        }
+                    }
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Log.e(TAG, "Failed to load user setting preferences");
+                }
+            } else if (error != null) {
+                Log.e(TAG, "onResponseGetUserPreference api Exceptiion : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.i(TAG, "onResponseGetUserPreference :" + e.getLocalizedMessage());
+        }
+    }
+
+    private void callApiForGetUserPreference() {
+        try {
+            if (Utility.isConnected(getActivity())) {
+                activityHost.showProgress();
+                Attribute requestObject = new Attribute();
+                requestObject.setUserId(Global.strUserId);
+                new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_USER_PREFERENCES);
+            } else {
+                Utility.alertOffline(getActivity());
+            }
+        } catch (Exception e) {
+            Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
+        }
+    }
+
 
     private void onResponseManageGeneralSetting(Object object, Exception error) {
         try {
             activityHost.hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
-
                 if (responseHandler.getStatus().toString().equals(WebConstants.SUCCESS)) {
                     Debug.i(TAG, "Updated successfully");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Debug.i(TAG, "Failed to load manage general setting");
                 }
-
             } else {
                 Debug.i(TAG, "onResponseManageGeneralSetting : object is null");
             }
-
         } catch (Exception e) {
-
             Debug.e(TAG, "General setting Pereference :" + e.getLocalizedMessage());
-
         }
     }
-
 
     public void callApiGetGeneralSettingPreferences() {
         try {
@@ -250,9 +287,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-
             Debug.e(TAG, "General setting Pereference :" + e.getLocalizedMessage());
-
         }
     }
 
@@ -273,15 +308,15 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         preferencesList.add(requestObject);
     }
 
-	@Override
-	public void onProfileControllerAttached() {
-		viewHighlighterTriangle.setVisibility(View.VISIBLE);
-	}
+    @Override
+    public void onProfileControllerAttached() {
+        viewHighlighterTriangle.setVisibility(View.VISIBLE);
+    }
 
-	@Override
-	public void onProfileControllerDetached() {
-		viewHighlighterTriangle.setVisibility(View.GONE);
-	}
+    @Override
+    public void onProfileControllerDetached() {
+        viewHighlighterTriangle.setVisibility(View.GONE);
+    }
 
     @Override
     public void onResponse(int apiCode, Object object, Exception error) {
@@ -289,6 +324,9 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
             switch (apiCode) {
                 case WebConstants.MANAGE_GENERAL_SETTINGS:
                     onResponseManageGeneralSetting(object, error);
+                    break;
+                case WebConstants.GET_USER_PREFERENCES:
+                    onResponseGetUserPreference(object, error);
                     break;
             }
 

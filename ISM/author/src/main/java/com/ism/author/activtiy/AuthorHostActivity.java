@@ -62,13 +62,14 @@ import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.NotificationSetting;
 import com.ism.author.ws.model.PrivacySetting;
 import com.ism.author.ws.model.SMSAlert;
-import com.ism.author.ws.model.UserPreferences;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
+
+import realmhelper.AuthorHelper;
 
 /*
 * these class is for the main screen after login contains the host activity for managing the main and container fragment.
@@ -208,6 +209,11 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         this.booksListner = booksListner;
     }
 
+    /**
+     * object of realm database.
+     */
+    private AuthorHelper authorHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -227,6 +233,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
         Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
+//        Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
+//        Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
+//        Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
+        Global.authorHelper = new AuthorHelper(getActivity());
 
 //        Global.strUserId = "52";
 //        Global.strFullName = "Chirag Mistry";
@@ -295,7 +305,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         txtAction.setOnClickListener(onClickMenuItem);
         callApiGetAllBadgesCount();
         callApiGetGeneralSettingPreferences();
-        callApiForGetUserPreference();
+//        callApiForGetUserPreference();
 
     }
 
@@ -564,7 +574,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     }
                     currentMainFragment = fragment;
                     listenerHostProfileController.onSubFragmentAttached(fragment);
-
                     break;
 
                 case FRAGMENT_ADD_ASSIGNMENT:
@@ -956,7 +965,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private void onMenuItemClick(View view) {
         try {
             if (view == imgBack) {
-                hideControllerTopControls();
+//                hideControllerTopControls();
                 onBackClick(currentMainFragment);
 
             } else if (view == txtAction) {
@@ -1225,8 +1234,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             if (WebConstants.GENERAL_SETTING_PREFERENCES == apiCode) {
                 onResponseGetAllPreference(object, error);
 
-            } else if (WebConstants.GET_USER_PREFERENCES == apiCode) {
-                onResponseGetUserPreference(object, error);
+//            } else if (WebConstants.GET_USER_PREFERENCES == apiCode) {
+//                onResponseGetUserPreference(object, error);
 
             } else if (WebConstants.GET_ALL_BADGES_COUNT == apiCode) {
                 onResponseGetAllBadges(object, error);
@@ -1272,51 +1281,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
             Debug.i(TAG, "onResponseGetAllPreference :" + e.getLocalizedMessage());
 
-        }
-    }
-
-    private void onResponseGetUserPreference(Object object, Exception error) {
-        try {
-            if (object != null) {
-                ResponseHandler responseObject = (ResponseHandler) object;
-                if (responseObject.getStatus().toString().equals(WebConstants.SUCCESS)) {
-                    if (responseObject.getPreference() != null) {
-                        ArrayList<UserPreferences> arrayListUserPreferences = new ArrayList<>();
-                        arrayListUserPreferences = responseObject.getUserPreference();
-                        for (int j = 0; j < arrayListUserPreferences.size(); j++) {
-                            Debug.i(TAG, "j :" + j);
-                            generalSettingsFragment.setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getApplicationContext());
-                        }
-                    }
-
-                } else if (responseObject.getStatus().equals(WebConstants.FAILED)) {
-                    Log.e(TAG, "Failed to load user setting preferences");
-                }
-            } else if (error != null) {
-                Log.e(TAG, "onResponseGetUserPreference api Exceptiion : " + error.toString());
-            }
-
-
-        } catch (Exception e) {
-
-            Debug.i(TAG, "onResponseGetUserPreference :" + e.getLocalizedMessage());
-
-        }
-    }
-
-    private void callApiForGetUserPreference() {
-        try {
-            if (Utility.isConnected(getApplicationContext())) {
-                showProgress();
-                Attribute requestObject = new Attribute();
-                requestObject.setUserId(Global.strUserId);
-                new WebserviceWrapper(this, requestObject, this).new WebserviceCaller().execute(WebConstants.GET_USER_PREFERENCES);
-            } else {
-                Utility.alertOffline(getApplicationContext());
-            }
-
-        } catch (Exception e) {
-            Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
         }
     }
 
