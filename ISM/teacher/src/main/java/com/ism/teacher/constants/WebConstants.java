@@ -82,6 +82,7 @@ public class WebConstants {
 
     public static final int GETADMINCONFIG = 35;
     public static final int REFRESH_TOKEN = 36;
+    public static final int GROUP_ALLOCATION= 37;
 
 
     public static final String Image_url = "http://192.168.1.147/WS_ISM/Images/questions_images/";
@@ -148,5 +149,7 @@ public class WebConstants {
     //Upload Media url
 
     public static final String URL_UPLOADMEDIAFORQUESTION = URL_KINJAL_HOST + "UploadMediaForQuestion";
+    //Group Allocation url for sunday
+    public static final String URL_GROUP_ALLOCATION = URL_KINJAL_HOST + "CheckGroupAllocation";
 
 }

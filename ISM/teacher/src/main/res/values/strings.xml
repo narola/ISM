@@ -4,11 +4,22 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Tutorial Group-->
     <string name="str_tutorial">Tutorial</string>
     <string name="str_past">PAST</string>
+    <string name="str_scheduled_date">Scheduled Date</string>
+    <string name="str_ismrank">ISM Rank</string>
+    <string name="str_group_name">Group Name</string>
+    <string name="str_group_scores">Group Scores</string>
+    <string name="str_group_rank">Group Rank</string>
+
+    <!-- Result-->
+    <string name="str_freezeresult">Freeze Result</string>
+
+
     <string name="str_personal_info">PERSONAL INFORMATION</string>
     <string name="str_manage_credential">MANAGE CREDENTIAL</string>
-    <string name="str_teacher_tutorial_label">You are assigned group Venice Beauty,you have \n to schedule question for topic.</string>
+    <string name="str_teacher_tutorial_label">You are assigned group Venice Beauty,you have \n to schedule question for topic</string>
     <string name="strsearchstudymatess">Search Study Mates</string>
 
     <string name="no_internet">No Internet Connection Available...Please Try Again</string>
@@ -45,6 +56,7 @@
     <string name="strsubject">Subject</string>
     <string name="strsubmissiondate">Submission Date</string>
     <string name="strtopic">Topic</string>
+    <string name="strtopics">Topics</string>
     <string name="msg_validation_set_topic">\nPlease select your subject topic.</string>
     <string name="msg_validation_add_text_rich_editor">\nPlease set the assignment.</string>
     <string name="msg_validation_set_classroom">\nPlease select your classroom.</string>
@@ -342,7 +354,7 @@
         <item>Non Assessed</item>
     </string-array>
 
-<string name="strquestionscore">Question Score</string>
+    <string name="strquestionscore">Question Score</string>
 
 
     <!-- question -->
@@ -378,6 +390,7 @@
     <string name="strtest">test</string>
     <string name="strassignmentdate">Assignment date</string>
     <string name="strassignmentdatecolon">Assignment Date:</string>
+    <string name="strupdateddatecolon">Updated Date:</string>
     <string name="stranswer">Answer :</string>
     <string name="strof">of </string>
     <string name="strquestionpallete">Question Palette</string>
