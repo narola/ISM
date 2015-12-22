@@ -248,6 +248,21 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_UPLOADMEDIAFORQUESTION).uploadMedia(ResponseHandler.class,
                                         attribute);
                                 break;
+                            case WebConstants.BLOCK_USER:
+                                responseObject = new WebserviceConnector(WebConstants.URL_BLOCK_USER).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.BLOCKED_USER:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_BLOCKED_USER).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GENERAL_SETTING_PREFERENCES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GENERAL_SETTING_PREFERENCES).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_USER_PREFERENCES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_USER_PREFERENCES).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.MANAGE_GENERAL_SETTINGS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_GENERAL_SETTING).execute(ResponseHandler.class, attribute);
+                                break;
                             case WebConstants.UPLOAD_FEED_MEDIA:
                                 responseObject = new WebserviceConnector(WebConstants.URL_UPLOAD_FEED_MEDIA).uploadMedia(ResponseHandler.class,
                                         attribute);

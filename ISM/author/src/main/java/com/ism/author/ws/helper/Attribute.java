@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.ws.model.AnswerChoices;
 import com.ism.author.ws.model.Answers;
+import com.ism.author.ws.model.Preferences;
 import com.ism.author.ws.model.Tags;
 
 import java.util.ArrayList;
@@ -116,6 +117,10 @@ public class Attribute {
     private String checkSlot;
     private String answerText;
     private String assignmentName;
+    private String blockUser;
+    private ArrayList<Preferences> preferences;
+    private String keyId;
+    private String settingValue;
 
     public ArrayList<String> getUnfavoriteResourceId() {
         return this.unfavoriteResourceId;
@@ -1125,6 +1130,37 @@ public class Attribute {
     @JsonProperty("assignment_name")
     public void setAssignmentName(String assignmentName) {
         this.assignmentName = assignmentName;
+    }
+
+    public String getBlockUser() {
+        return blockUser;
+    }
+
+    @JsonProperty("block_user")
+    public void setBlockUser(String blockUser) {
+        this.blockUser = blockUser;
+    }
+
+    public ArrayList<Preferences> getPreferences() {
+        return preferences;
+    }
+
+    @JsonProperty("preferences")
+    public void setPreferences(ArrayList<Preferences> preferences) {
+        this.preferences = preferences;
+    }
+    @JsonProperty("key_id")
+    public void setKeyId(String keyId) {
+        this.keyId = keyId;
+    }
+
+    public String getSettingValue() {
+        return settingValue;
+    }
+
+    @JsonProperty("preference_value")
+    public void setSettingValue(String settingValue) {
+        this.settingValue = settingValue;
     }
 }
 

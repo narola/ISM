@@ -51,6 +51,7 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
     private String strValidationMsg;
     private EditText etAssignmentName;
     private com.ism.author.Utility.InputValidator inputValidator;
+    MyDeskFragment myDeskFragment;
 
     public static AddAssignmentFragment newInstance() {
         AddAssignmentFragment myDeskFragment = new AddAssignmentFragment();
@@ -171,8 +172,10 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
+            myDeskFragment = MyDeskFragment.newInstance();
             activityHost = (AuthorHostActivity) activity;
             fragListener = (FragmentListener) activity;
+
             if (fragListener != null) {
                 fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_ADD_ASSIGNMENT);
             }
@@ -197,6 +200,7 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
 
     public void onBackClick() {
         ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
+       // myDeskFragment.handleBackClick(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
     }
 
     @Override
@@ -231,10 +235,10 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
 
     private boolean isAssignmentTextSet() {
         try {
-            if(richtexteditor==null){
-                Debug.i(TAG,"RichTextEditor is null");
+            if (richtexteditor == null) {
+                Debug.i(TAG, "RichTextEditor is null");
             }
-            if ((richtexteditor.getHtml() != null) & (richtexteditor.getHtml().getBytes().length>0)) {
+            if ((richtexteditor.getHtml() != null) & (richtexteditor.getHtml().getBytes().length > 0)) {
                 return true;
             } else {
                 strValidationMsg += Utility.getString(R.string.msg_validation_add_text_rich_editor, getActivity());
@@ -266,6 +270,9 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     Debug.i(TAG, "onResponseAddAssignment  : success");
+                    etAssignmentName.setText("");
+                    richtexteditor.setHtml("");
+                    spBooks.setSelection(0);
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED))
                     Debug.i(TAG, "onResponseAddAssignment  : FAILED");
             } else if (error != null) {
@@ -302,4 +309,5 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
             Debug.e(TAG, "onResponseGetAuthorBooks Exception : " + e.toString());
         }
     }
+
 }

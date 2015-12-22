@@ -23,7 +23,7 @@ public class MyDeskFragment extends Fragment {
     private static final String TAG = MyDeskFragment.class.getSimpleName();
     private static final int FRAGMENT_ABOUT_ME = 0;
     private static final int FRAGMENT_BOOKS = 1;
-    private static final int FRAGMENT_ASSIGNMENTS = 2;
+    public static final int FRAGMENT_ASSIGNMENTS = 2;
 
     private View view;
 
@@ -78,6 +78,7 @@ public class MyDeskFragment extends Fragment {
                     }
                     break;
                     case R.id.txt_add: {
+                        setBackClick(FRAGMENT_ASSIGNMENTS);
                         activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADD_ASSIGNMENT);
                     }
                     break;
@@ -85,11 +86,28 @@ public class MyDeskFragment extends Fragment {
                 selected(v);
             }
         };
-        loadFragment(FRAGMENT_ABOUT_ME);
+        handleBackClick(AppConstant.FRAGMENT_ASSIGNMENTS);
         txtAboutMe.setOnClickListener(onClick);
         txtBooks.setOnClickListener(onClick);
         txtAssignments.setOnClickListener(onClick);
         txtAdd.setOnClickListener(onClick);
+    }
+
+    private void setBackClick(int currentFragment) {
+        if (!activityHost.bundle.containsKey(AppConstant.FRAGMENT_ASSIGNMENTS)) {
+            activityHost.bundle.putInt(AppConstant.FRAGMENT_ASSIGNMENTS, currentFragment);
+        }
+    }
+
+    /*This is to handle backstack for particular fragment */
+
+    public void handleBackClick(String fragmentName) {
+        if (activityHost.getBundle().containsKey(fragmentName)) {
+            loadFragment(activityHost.getBundle().getInt(fragmentName));
+            activityHost.getBundle().remove(fragmentName);
+            selected(txtAssignments);
+        } else
+            loadFragment(FRAGMENT_ABOUT_ME);
     }
 
     private void selected(View v) {
@@ -100,7 +118,7 @@ public class MyDeskFragment extends Fragment {
 
     }
 
-    private void loadFragment(int frag) {
+    public void loadFragment(int frag) {
         switch (frag) {
             case FRAGMENT_ABOUT_ME: {
                 currentFragment = frag;

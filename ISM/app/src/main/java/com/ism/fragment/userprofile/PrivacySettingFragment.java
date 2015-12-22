@@ -35,7 +35,7 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
     private static String TAG = PrivacySettingFragment.class.getSimpleName();
     private HostActivity activityHost;
     private String[] strArrayList;
-    GeneralSettingsFragment generalSettingsFragment;
+    com.ism.fragment.userProfile.GeneralSettingsFragment generalSettingsFragment;
 
     public static PrivacySettingFragment newInstance() {
         PrivacySettingFragment fragment = new PrivacySettingFragment();
@@ -57,7 +57,7 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
 
 
     private void initGlobal() {
-        generalSettingsFragment = GeneralSettingsFragment.newInstance();
+        generalSettingsFragment = com.ism.fragment.userProfile.GeneralSettingsFragment.newInstance();
 
         myTypeFace = new MyTypeFace(getActivity());
         spViewers = (Spinner) view.findViewById(R.id.sp_viewers);

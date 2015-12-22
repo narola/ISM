@@ -12,7 +12,7 @@ public class WebConstants {
 
     public static final String FEED_MEDIA_KINJAL = "http://192.168.1.147/WS_ISM/Images/feeds/";
     public static final String FEED_MEDIA = "http://192.168.1.202/pg/ISM/WS_ISM/Images/feeds/";
-    public static final String USER_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/Images/users_images/";
+    public static final String USER_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/WS_ISM/images/users_images/";
     public static final String HOST_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/";                                        // for books
     public static final String USER_IMAGES_TEST = "http://192.168.1.147/WS_ISM/Images/users_images/";
     public static final String HOST_202 = "http://192.168.1.202/pg/ISM/";      // pg
@@ -62,6 +62,11 @@ public class WebConstants {
     public static final int GET_HIGH_SCORERS = 41;
 
     //user settings preferences
+    public static final int MANAGE_GENERAL_SETTINGS = 71;
+    public static final int BLOCK_USER = 74;
+    public static final int UNBLOCK_USER = 74;
+    public static final int BLOCKED_USER = 75;
+
     public static final int GENERAL_SETTING_PREFERENCES = 51;
     public static final int GET_USER_PREFERENCES = 52;
     public static final int GET_NOTIFICATION = 53;
@@ -153,8 +158,6 @@ public class WebConstants {
      */
     public static final String STUDYMATE_REQUEST = "studymate_request";
     public static final String MESSAGES = "messages";
-
-
 
 
     public static final String NOTIFICATION = "notification";

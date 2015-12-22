@@ -23,7 +23,7 @@ import com.ism.author.ws.helper.WebserviceWrapper;
 /**
  * Created by c162 on 28/11/15.
  */
-public class MyDeskAssignments extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class MyDeskAssignments extends Fragment implements WebserviceWrapper.WebserviceResponse{
     private static final String TAG = MyDeskAssignments.class.getSimpleName();
     private View view;
     private AuthorHostActivity activityHost;
@@ -102,28 +102,29 @@ public class MyDeskAssignments extends Fragment implements WebserviceWrapper.Web
                 }
             }
         } catch (Exception e) {
-            Log.i(TAG, "onResponse Exceptions :" +e.toString() + "");
+            Log.i(TAG, "onResponse Exceptions :" + e.toString() + "");
         }
     }
 
     private void onResponseGetAllExam(Object object, Exception error) {
         try {
             ResponseHandler responseHandler = (ResponseHandler) object;
-            if (object !=null) {
+            if (object != null) {
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG,"onResponseGetAllExam status : " + WebConstants.SUCCESS);
+                    Debug.i(TAG, "onResponseGetAllExam status : " + WebConstants.SUCCESS);
                     if (responseHandler.getExams().size() != 0) {
                         arrayList = new AssignmentsAdapter(getActivity(), this);
                         gridView.setAdapter(arrayList);
                     }
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Debug.i(TAG,"onResponseGetAllExam status : " + WebConstants.FAILED);
+                    Debug.i(TAG, "onResponseGetAllExam status : " + WebConstants.FAILED);
                 }
-            } else if(error!=null){
-                Debug.i(TAG,"onResponseGetAllExam error : " + error.toString());
+            } else if (error != null) {
+                Debug.i(TAG, "onResponseGetAllExam error : " + error.toString());
             }
         } catch (Exception e) {
             Debug.i(TAG, "onResponseGetAllExam Exception : " + e.getLocalizedMessage());
         }
     }
+
 }
