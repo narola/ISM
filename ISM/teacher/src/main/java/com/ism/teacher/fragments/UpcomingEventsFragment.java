@@ -14,17 +14,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.EventsAdapter;
 import com.ism.teacher.adapters.HighScoreAdapter;
 import com.ism.teacher.adapters.NoticeAdapter;
-import com.ism.teacher.views.AccordionView;
-import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.model.EventsModel;
 import com.ism.teacher.model.HighScoreModel;
 import com.ism.teacher.model.HighScoreStudentModel;
 import com.ism.teacher.model.NoticeModel;
+import com.ism.teacher.object.MyTypeFace;
+import com.ism.teacher.views.AccordionView;
 
 import java.util.ArrayList;
 

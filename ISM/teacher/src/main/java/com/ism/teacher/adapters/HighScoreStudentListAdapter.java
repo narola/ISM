@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.HighScoreStudentModel;
+import com.ism.teacher.object.Global;
 
 import java.util.ArrayList;
 
@@ -50,9 +50,9 @@ public class HighScoreStudentListAdapter extends BaseAdapter {
         TextView raw_txt_highScoreStudentName = (TextView) convertView.findViewById(R.id.txt_highScoreStudentName);
         TextView raw_txt_highScoreSchoolYearClass = (TextView) convertView.findViewById(R.id.txt_highScoreSchoolYearClass);
         TextView raw_txt_highScoreMarks = (TextView) convertView.findViewById(R.id.txt_highScoreMarks);
-        raw_txt_highScoreStudentName.setTypeface(new MyTypeFace(context).getRalewayRegular());
-        raw_txt_highScoreSchoolYearClass.setTypeface(new MyTypeFace(context).getRalewayThin());
-        raw_txt_highScoreMarks.setTypeface(new MyTypeFace(context).getRalewayBold());
+        raw_txt_highScoreStudentName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        raw_txt_highScoreSchoolYearClass.setTypeface(Global.myTypeFace.getRalewayThin());
+        raw_txt_highScoreMarks.setTypeface(Global.myTypeFace.getRalewayBold());
         raw_txt_highScoreStudentName.setText(arrayList.get(position).getStrStudentName());
         raw_txt_highScoreSchoolYearClass.setText(arrayList.get(position).getStrStudentSchoolYearClass());
         raw_txt_highScoreMarks.setText(arrayList.get(position).getStrStudentMarks());

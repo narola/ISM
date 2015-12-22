@@ -8,6 +8,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import com.ism.teacher.R;
+import com.ism.teacher.Utility.Debug;
 
 
 /**
@@ -15,7 +16,7 @@ import com.ism.teacher.R;
  */
 public class InputValidator {
 
-	private static final String tag = InputValidator.class.getSimpleName();
+	private static final String TAG = InputValidator.class.getSimpleName();
 
 	private Context context;
 
@@ -27,9 +28,11 @@ public class InputValidator {
 		if (editText.getText() == null
 				|| editText.getText().toString().trim().length() == 0) {
 			setError(editText, context.getString(R.string.required));
+			Debug.e(TAG, "edit text validation false");
 			return false;
 		} else {
 			editText.setError(null);
+
 			return true;
 		}
 	}
@@ -48,7 +51,9 @@ public class InputValidator {
 	public boolean validatePasswordLength(EditText editText) {
 		if (editText.getText().toString().trim().length() < 8) {
 			setError(editText, context.getString(R.string.error_password_length));
+			Debug.e(TAG, "pwd length validation false");
 			return false;
+
 		} else {
 			editText.setError(null);
 			return true;
@@ -58,6 +63,7 @@ public class InputValidator {
 	public boolean validatePasswordLength(EditText editText, int passwordLengthMin, String errorMessage) {
 		if (editText.getText().toString().trim().length() < passwordLengthMin) {
 			setError(editText, errorMessage);
+
 			return false;
 		} else {
 			editText.setError(null);
@@ -68,6 +74,7 @@ public class InputValidator {
 	public boolean validateConfirmPasswordMatch(EditText editTextPassword, EditText editTextConfirmPassword) {
 		if (!editTextConfirmPassword.getText().toString().trim().equals(editTextPassword.getText().toString().trim())) {
 			setError(editTextConfirmPassword, context.getString(R.string.error_confirm_password_mismatch));
+			Debug.e(TAG, "confirm pwd validation false");
 			return false;
 		} else {
 			editTextConfirmPassword.setError(null);
@@ -78,6 +85,7 @@ public class InputValidator {
 	public boolean validateNewPassword(EditText editTextOldPassword, EditText editTextNewPassword) {
 		if (editTextOldPassword.getText().toString().trim().equals(editTextNewPassword.getText().toString().trim())) {
 			setError(editTextNewPassword, context.getString(R.string.error_same_old_new_password));
+			Debug.e(TAG, "old new pwd validation false");
 			return false;
 		} else {
 			editTextNewPassword.setError(null);
@@ -89,6 +97,7 @@ public class InputValidator {
 		if (!Patterns.EMAIL_ADDRESS.matcher(
 				editText.getText()).matches()) {
 			setError(editText, context.getString(R.string.error_invalid_email));
+			Debug.e(TAG, "email validation false");
 			return false;
 		} else {
 			editText.setError(null);
@@ -112,6 +121,7 @@ public class InputValidator {
 	{
 		if (editText.getText().toString().trim().length() < 10) {
 			setError(editText,"Minimum 10 characters are required");
+			Debug.e(TAG, "phone num length validation false");
 			return false;
 		} else {
 			editText.setError(null);

@@ -30,6 +30,7 @@ import com.ism.commonsource.utility.AESHelper;
 import com.ism.commonsource.view.ProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
@@ -37,10 +38,11 @@ import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
-import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.City;
 import com.ism.ws.model.Country;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.State;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -78,7 +80,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
     private DatePickerDialog datePickerDob;
     private AlertDialog dialogSchoolInfo;
     private ProgressGenerator progressGenerator;
-    private StudentHelper studentHelper;
+	private StudentHelper studentHelper;
 
     private String strUserId;
     private String strCurrentPassword;
@@ -99,7 +101,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
     private int PICK_IMAGE_REQUEST = 1;
     private String fileName;
     private Uri imageURI;
-    private File sourceFile;
+    private File  sourceFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +140,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         progState = (ProcessButton) findViewById(R.id.prog_state);
         progCity = (ProcessButton) findViewById(R.id.prog_city);
 
-        studentHelper = new StudentHelper(this);
+	    studentHelper = new StudentHelper(this);
 
         myTypeFace = new MyTypeFace(this);
         ((TextView) findViewById(R.id.txt_youare_)).setTypeface(myTypeFace.getRalewayThin());
@@ -187,11 +189,11 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         txtSchoolGender.setText(strSchoolType);
         txtProgramCourse.setText(strCourseName);
 
-        arrListDefalt = new ArrayList<>();
-        arrListDefalt.add(getString(R.string.select));
-        Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, arrListDefalt, myTypeFace.getRalewayRegular());
-        Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
-        Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
+	    arrListDefalt = new ArrayList<>();
+	    arrListDefalt.add(getString(R.string.select));
+	    Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, arrListDefalt, myTypeFace.getRalewayRegular());
+	    Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
+	    Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
 
         if (Utility.isConnected(ProfileInformationActivity.this)) {
             callApiGetCountries();
@@ -200,53 +202,53 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         }
 
         etDob.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    showDatePickerDob();
-                }
-                return true;
-            }
+	        @Override
+	        public boolean onTouch(View v, MotionEvent event) {
+		        if (event.getAction() == MotionEvent.ACTION_UP) {
+			        showDatePickerDob();
+		        }
+		        return true;
+	        }
         });
 
         spCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (arrListCountries != null && position > 0) {
-                    if (Utility.isConnected(ProfileInformationActivity.this)) {
-                        callApiGetStates(arrListCountries.get(position - 1).getId());
-                    } else {
-                        Utility.alertOffline(ProfileInformationActivity.this);
-                    }
-                } else {
-                    Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
-                }
-            }
+	        @Override
+	        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		        if (arrListCountries != null && position > 0) {
+			        if (Utility.isConnected(ProfileInformationActivity.this)) {
+				        callApiGetStates(arrListCountries.get(position - 1).getId());
+			        } else {
+				        Utility.alertOffline(ProfileInformationActivity.this);
+			        }
+		        } else {
+			        Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
+		        }
+	        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+	        @Override
+	        public void onNothingSelected(AdapterView<?> parent) {
 
-            }
+	        }
         });
 
         spState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (arrListStates != null && position > 0) {
-                    if (Utility.isConnected(ProfileInformationActivity.this)) {
-                        callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
-                    } else {
-                        Utility.alertOffline(ProfileInformationActivity.this);
-                    }
-                } else {
-                    Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
-                }
-            }
+	        @Override
+	        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		        if (arrListStates != null && position > 0) {
+			        if (Utility.isConnected(ProfileInformationActivity.this)) {
+				        callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
+			        } else {
+				        Utility.alertOffline(ProfileInformationActivity.this);
+			        }
+		        } else {
+			        Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
+		        }
+	        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+	        @Override
+	        public void onNothingSelected(AdapterView<?> parent) {
 
-            }
+	        }
         });
 
         arrListGender = new ArrayList<>();
@@ -393,7 +395,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             progressGenerator.start(btnSubmit);
 
 	        /*
-             {
+	         {
 		         "credential_id":1,
 		         "email_address":"alpesh.narola@narolainfotech.com",
 		         "password":"password",
@@ -421,7 +423,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 	         */
 
             Attribute attribute = new Attribute();
-            attribute.setCredentialId(1);
+	        attribute.setCredentialId(1);
             attribute.setFirstname(etFirstName.getText().toString().trim());
             attribute.setLastname(etLastName.getText().toString().trim());
             attribute.setEmailAddress(etEmailAddress.getText().toString().trim());
@@ -439,7 +441,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             attribute.setClassroomId(Integer.parseInt(strClassId));
             attribute.setCourseId(Integer.parseInt(strCourseId));
             attribute.setAcademicYear(strAcademicYear);
-            attribute.setSchoolClassroomId(10);
+	        attribute.setSchoolClassroomId(10);
 //			requestObject.setRoleId(Integer.parseInt(strRoleId));
             attribute.setRoleId(strRoleId);
             attribute.setDeviceType(getString(R.string.android));
@@ -811,7 +813,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                     for (Country country : arrListCountries) {
                         countries.add(country.getCountryName());
                     }
-                    Log.e(TAG, "setCountries");
+	                Log.e(TAG, "setCountries");
                     Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, countries, myTypeFace.getRalewayRegular());
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseCountries Failed");
@@ -838,25 +840,25 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                     PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, responseHandler.getUser().get(0).getUserId());
                     PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, ProfileInformationActivity.this, responseHandler.getUser().get(0).getFullName());
                     PreferenceData.setStringPrefs(PreferenceData.USER_NAME, ProfileInformationActivity.this, etUserName.getText().toString().trim());
-                    WebConstants.SECRET_KEY = responseHandler.getUser().get(0).getTokenName();
-                    PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, ProfileInformationActivity.this, WebConstants.SECRET_KEY);
+	                WebConstants.SECRET_KEY = responseHandler.getUser().get(0).getTokenName();
+	                PreferenceData.setStringPrefs(PreferenceData.SECRET_KEY, ProfileInformationActivity.this, WebConstants.SECRET_KEY);
 //                    if (!responseObj.getData().get(0).getUserId().equals(" ")) {
 //                        callApiUploadPic(responseObj.getData().get(0).getUserId(), fileName);
 //                    }
 //	                PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, responseHandler.getUser().get(0).getProfilePic());
 
-                    String globalPassword = studentHelper.getGlobalPassword();
-                    if (globalPassword != null) {
-                        WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, etUserName.getText().toString().trim());
-                        PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, WebConstants.ACCESS_KEY);
-                    }
+	                String globalPassword = studentHelper.getGlobalPassword();
+	                if (globalPassword != null) {
+		                WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, etUserName.getText().toString().trim());
+		                PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, WebConstants.ACCESS_KEY);
+	                }
 
-                    User user = new User();
-                    user.setFullName(responseHandler.getUser().get(0).getFullName());
-                    user.setProfilePicture(responseHandler.getUser().get(0).getProfilePic());
-                    user.setUserId(Integer.parseInt(responseHandler.getUser().get(0).getUserId()));
+                     User user = new User();
+                     user.setFullName(responseHandler.getUser().get(0).getFullName());
+                     user.setProfilePicture(responseHandler.getUser().get(0).getProfilePic());
+                     user.setUserId(Integer.parseInt(responseHandler.getUser().get(0).getUserId()));
 
-                    new UserHelper(user, this).saveUser();
+                     new UserHelper(user,this).saveUser();
 
                     Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
                     startActivity(intentWelcome);
@@ -878,8 +880,8 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         }
     }
 
-    @Override
-    protected void onDestroy() {
+	@Override
+	protected void onDestroy() {
         super.onDestroy();
-    }
+	}
 }

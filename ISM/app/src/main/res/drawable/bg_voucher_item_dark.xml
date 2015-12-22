@@ -8,7 +8,7 @@
 	</item>
 	<item>
 		<shape>
-			<solid android:color="@color/color_gray_light"/>
+			<solid android:color="@color/gray_light"/>
 		</shape>
 	</item>
 </layer-list>

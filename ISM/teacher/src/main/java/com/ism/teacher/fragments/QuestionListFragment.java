@@ -28,7 +28,7 @@ import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.QuestionBankListAdapter;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -78,7 +78,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     public ArrayList<Questions> copylistOfQuestionBank = new ArrayList<Questions>();
     public ArrayList<Questions> latestlistOfQuestionBank = new ArrayList<Questions>();
 
-    private MyTypeFace myTypeFace;
     private ImageView imgSearchQuestions;
 
 
@@ -99,9 +98,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
         tvNoQuestions = (TextView) view.findViewById(R.id.tv_no_questions);
-        tvNoQuestions.setTypeface(myTypeFace.getRalewayBold());
+        tvNoQuestions.setTypeface(Global.myTypeFace.getRalewayBold());
         rlSortQuestionBank = (RelativeLayout) view.findViewById(R.id.rl_sort_question_bank);
         rlSortQuestionBank.setOnClickListener(this);
 
@@ -123,10 +121,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         rvQuestionlist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        etSearchQuestions.setTypeface(myTypeFace.getRalewayRegular());
-        tvQuestionlistTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvQuestionlistAddNewQuestion.setTypeface(myTypeFace.getRalewayRegular());
-        tvQuestionlistAddPreview.setTypeface(myTypeFace.getRalewayRegular());
+        etSearchQuestions.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvQuestionlistTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvQuestionlistAddNewQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvQuestionlistAddPreview.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvQuestionlistAddNewQuestion.setOnClickListener(this);
         tvQuestionlistAddPreview.setOnClickListener(this);
 
@@ -309,7 +307,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         if (Utility.isConnected(getActivity())) {
             try {
                 ((TeacherHostActivity) getActivity()).showProgress();
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), new Attribute(), (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_SUBJECT);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -340,7 +338,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         if (Utility.isConnected(getActivity())) {
             try {
                 ((TeacherHostActivity) getActivity()).showProgress();
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller().execute(WebConstants.GET_COURSES);
+                new WebserviceWrapper(getActivity(),new Attribute(), (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller().execute(WebConstants.GET_COURSES);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }

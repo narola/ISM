@@ -1,4 +1,4 @@
-package com.ism.teacher.helper;
+package com.ism.teacher.Utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,26 +13,32 @@ public class PreferenceData {
     public static final String IS_REMEMBER_ME_FIRST_LOGIN = "isFirstLoginRememberMe";
     public static final String USER_PASSWORD = "userPassword";
     public static final String USER_CREDENTIAL_ID = "userCredentialId";
+    public static final String USER_ROLE_ID = "userRoleId";
+
     public static final String USER_SCHOOL_ID = "userSchoolId";
     public static final String USER_SCHOOL_NAME = "userSchoolName";
     public static final String USER_SCHOOL_DISTRICT = "userSchoolDistrict";
-    public static final String USER_SCHOOL_TYPE = "userSchoolType";
-    public static final String USER_CLASS_ID = "userClassId";
-    public static final String USER_CLASS_NAME = "userClassName";
     public static final String USER_COURSE_ID = "userCourseId";
     public static final String USER_COURSE_NAME = "userCourseName";
     public static final String USER_ACADEMIC_YEAR = "userAcademicYear";
-    public static final String USER_ROLE_ID = "userRoleId";
 //	=========================================
 
-    public static final String USER_SCHOOL_GRADE = "userSchoolGrade";
-    public static final String IS_TUTORIAL_GROUP_ALLOCATED = "isTutorialGroupAllocated";
-    public static final String IS_TUTORIAL_GROUP_ACCEPTED = "isTutorialGroupAccepted";
-    public static final String IS_TUTORIAL_GROUP_COMPLETED = "isTutorialGroupCompleted";
-    public static final String TUTORIAL_GROUP_ID = "tutorialGroupId";
-    public static final String TUTORIAL_GROUP_NAME = "tutorialGroupName";
     public static final String USER_ID = "userId";
+    public static final String USER_NAME = "userName";
     public static final String USER_FULL_NAME = "userFullName";
+    public static final String USER_PROFILE_PIC = "userProfilePic";
+    public static final String SYNC_DATE_ADMIN_CONFIG = "syncDateAdminConfig";
+    public static final String ACCESS_KEY = "accessKey";
+    public static final String SECRET_KEY = "secretKey";
+
+    /*
+    notification
+     */
+    public static final String BADGE_COUNT_NOTIFICATION = "badgeCountNotification";
+    public static final String BADGE_COUNT_MESSAGE = "badgeCountMessage";
+    public static final String BADGE_COUNT_REQUEST = "badgeCountRequest";
+
+
     public static final String LIKE_ID_LIST = "likeIdList";
     public static final String UNLIKE_ID_LIST = "unlikeIdList";
 
@@ -57,7 +63,7 @@ public class PreferenceData {
     }
 
     public static String getStringPrefs(String prefKey, Context context) {
-        return context.getSharedPreferences(PREFS_ISM, 0).getString(prefKey, "");
+        return context.getSharedPreferences(PREFS_ISM, 0).getString(prefKey, null);
     }
 
     public static String getStringPrefs(String prefKey, Context context, String defaultValue) {
@@ -106,9 +112,26 @@ public class PreferenceData {
         return context.getSharedPreferences(PREFS_ISM, 0).getFloat(prefKey, defaultValue);
     }
 
-    public static void clearPreference(Context context) {
+    /**
+     * Clear all questionData in SharedPreference
+     *
+     * @param context
+     */
+    public static void clearWholePreference(Context context) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_ISM, 0).edit();
         editor.clear();
+        editor.commit();
+    }
+
+    /**
+     * Clear single key value
+     *
+     * @param prefKey
+     * @param context
+     */
+    public static void remove(String prefKey, Context context) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_ISM, 0).edit();
+        editor.remove(prefKey);
         editor.commit();
     }
 

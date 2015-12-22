@@ -8,7 +8,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
+import com.ism.teacher.object.MyTypeFace;
 
 import java.util.List;
 
@@ -27,7 +28,6 @@ public class Adapters {
 
     public static int ADAPTER_SMALL = 0, ADAPTER_NORMAL = 1;
     static Integer layout;
-
 
     //Question List
     public static void setUpSpinner(final Context context, Spinner spinner, List<String> strArr, int ADAPTER_TYPE) {
@@ -48,7 +48,7 @@ public class Adapters {
 
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getView(position, convertView, parent);
-                textView.setTypeface(myTypeFace.getRalewayRegular());
+                textView.setTypeface(Global.myTypeFace.getRalewayRegular());
                 if (position == 0) {
                     textView.setTextColor(context.getResources().getColor(R.color.color_text_hint));
                     return textView;
@@ -60,17 +60,17 @@ public class Adapters {
 
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getDropDownView(position, convertView, parent);
-                textView.setTypeface(myTypeFace.getRalewayRegular());
+                textView.setTypeface(Global.myTypeFace.getRalewayRegular());
                 textView.setCompoundDrawables(null, null, null, null);
 
                 if (position == 0) {
-                    textView.setTextColor(context.getResources().getColorStateList(R.color.color_white));
+                    textView.setTextColor(context.getResources().getColorStateList(R.color.white));
                     textView.setBackgroundColor(context.getResources().getColor(R.color.color_blue));
                     textView.setEnabled(false);
                     textView.setOnClickListener(null);
                 } else {
                     textView.setTextColor(context.getResources().getColorStateList(R.color.color_dark_gray));
-                    textView.setBackgroundResource(R.color.color_white);
+                    textView.setBackgroundResource(R.color.white);
                 }
 
                 return textView;
@@ -87,7 +87,7 @@ public class Adapters {
 
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getView(position, convertView, parent);
-                textView.setTypeface(myTypeFace.getRalewayRegular());
+                textView.setTypeface(Global.myTypeFace.getRalewayRegular());
                 if (position == 0) {
                     textView.setTextColor(context.getResources().getColor(R.color.color_text_hint));
                     return textView;
@@ -99,17 +99,17 @@ public class Adapters {
 
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getDropDownView(position, convertView, parent);
-                textView.setTypeface(myTypeFace.getRalewayRegular());
+                textView.setTypeface(Global.myTypeFace.getRalewayRegular());
                 textView.setCompoundDrawables(null, null, null, null);
 
                 if (position == 0) {
-                    textView.setTextColor(context.getResources().getColorStateList(R.color.color_white));
+                    textView.setTextColor(context.getResources().getColorStateList(R.color.white));
                     textView.setBackgroundColor(context.getResources().getColor(R.color.color_blue));
                     textView.setEnabled(false);
                     textView.setOnClickListener(null);
                 } else {
                     textView.setTextColor(context.getResources().getColorStateList(R.color.color_dark_gray));
-                    textView.setBackgroundResource(R.color.color_white);
+                    textView.setBackgroundResource(R.color.white);
                 }
 
                 return textView;

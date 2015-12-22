@@ -123,6 +123,8 @@ public class TutorialFriAddQuestionFragment extends Fragment {
 		rbOption2.setTypeface(Global.myTypeFace.getRalewayRegular());
 		rbOption3.setTypeface(Global.myTypeFace.getRalewayRegular());
 		rbOption4.setTypeface(Global.myTypeFace.getRalewayRegular());
+		((TextView) view.findViewById(R.id.txt_message)).setTypeface(Global.myTypeFace.getRalewaySemiBold());
+		((TextView) view.findViewById(R.id.txt_message2)).setTypeface(Global.myTypeFace.getRalewaySemiBold());
 
 		txtLables = new TextView[] {txtCreateQuestion, txtSetOptions, txtPreviewQuestion, txtUpload};
 		viewLayouts = new RelativeLayout[] {rlCreateQuestion, rlSetOptions, rlPreviewQuestion, rlUpload};
@@ -154,6 +156,13 @@ public class TutorialFriAddQuestionFragment extends Fragment {
 				}
 			}
 		};
+
+		txtHelp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
 
 		txtCreateQuestion.setOnClickListener(onClickLable);
 		txtSetOptions.setOnClickListener(onClickLable);

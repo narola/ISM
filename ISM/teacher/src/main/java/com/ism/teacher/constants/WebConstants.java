@@ -5,6 +5,18 @@ package com.ism.teacher.constants;
  */
 public class WebConstants {
 
+    /**
+     * Parameter value Variables
+     */
+    public static String SECRET_KEY;
+    public static String ACCESS_KEY;
+    public static final String NO_USERNAME = "nousername";
+
+    public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
+
+    public static final String URL_UPLOADPROFILEIMAGES = URL_KINJAL_HOST + "UploadProfileImages";
+
+
     public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Feeds/";
     public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
 
@@ -65,7 +77,14 @@ public class WebConstants {
     public static final int TEMP_CREATE_QUESTION = 30;
     public static final int UPLOAD_FEED_MEDIA = 31;
     public static final int UPLOADMEDIAFORQUESTION = 32;
-    public static final String Image_url= "http://192.168.1.147/WS_ISM/Images/questions_images/";
+    public static final int REGISTERUSER = 33;
+    public static final int UPLOADPROFILEIMAGES = 34;
+
+    public static final int GETADMINCONFIG = 35;
+    public static final int REFRESH_TOKEN = 36;
+
+
+    public static final String Image_url = "http://192.168.1.147/WS_ISM/Images/questions_images/";
 
     /**
      * URLs
@@ -74,9 +93,14 @@ public class WebConstants {
     // private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";  // KRUNAL
     //  private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
 
-    private static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
 
     private static final String URL_PG_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";
+
+
+    public static final String URL_GETADMINCONFIG = URL_KINJAL_HOST + "GetAdminConfig";
+    public static final String URL_REFRESHTOKEN = URL_KINJAL_HOST + "RefreshToken";
+
+    public static final String URL_REGISTERUSER = URL_KINJAL_HOST + "RegisterUser";
     public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
     public static final String URL_GET_ALL_FEEDS = URL_KINJAL_HOST + "GetAllFeeds";
     public static final String URL_GET_ALL_COMMENTS = URL_KINJAL_HOST + "GetAllComments";

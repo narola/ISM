@@ -171,13 +171,13 @@ public class ControllerTopMenuItem {
     }
 
 
-    public static ArrayList<ControllerTopMenuItem> getOnlyAssignmentFromOffice(Context mContext) {
+    public static ArrayList<ControllerTopMenuItem> getMenuTutorialGroup(Context mContext) {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.assignments), null, null));
+            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.str_tutorial), mContext.getString(R.string.str_past), null));
         } catch (Exception e) {
-            Log.e(TAG, "getOnlyAssignmentException : " + e.toString());
+            Log.e(TAG, "tutorial top menu exception : " + e.toString());
         }
         return menu;
     }

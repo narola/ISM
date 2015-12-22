@@ -20,7 +20,7 @@ import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -45,7 +45,6 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
 
     //Objects
     AssignmentSubmitterAdapter assignmentSubmitterAdapter;
-    MyTypeFace myTypeFace;
 
     public AssignmentsSubmitterFragment() {
     }
@@ -77,14 +76,12 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
 
     private void initGlobal(View view) {
 
-        myTypeFace = new MyTypeFace(getActivity());
-
         tvNoSubmissions = (TextView) view.findViewById(R.id.tv_no_submissions);
         tvSubmittorTitle = (TextView) view.findViewById(R.id.tv_submittor_title);
         rvAssignmentSubmittorList = (RecyclerView) view.findViewById(R.id.recycler_examwise_assignments);
         imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
 
-        tvSubmittorTitle.setTypeface(myTypeFace.getRalewayBold());
+        tvSubmittorTitle.setTypeface(Global.myTypeFace.getRalewayBold());
         tvSubmittorTitle.setText(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
         assignmentSubmitterAdapter = new AssignmentSubmitterAdapter(getActivity());
 

@@ -155,6 +155,7 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
                 attribute.setClassroomId("0");
                 attribute.setSubjectId("0");
                 attribute.setTopicId("0");
+                attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.CREATEASSIGNMENT);
             } else {

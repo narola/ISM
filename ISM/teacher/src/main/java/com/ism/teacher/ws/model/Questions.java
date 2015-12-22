@@ -32,6 +32,7 @@ public class Questions implements Parcelable, Comparable<Questions> {
     private String subjectName;
     private Boolean isQuestionAddedInPreview = false;
     private String questionScore;
+    private Boolean isDropdownOpen = false;
 
     public Questions() {
     }
@@ -299,6 +300,15 @@ public class Questions implements Parcelable, Comparable<Questions> {
 
     public Questions setIsEvaluated(Boolean isEvaluated) {
         this.isEvaluated = isEvaluated;
+        return this;
+    }
+
+    public Boolean getIsDropdownOpen() {
+        return isDropdownOpen;
+    }
+
+    public Questions setIsDropdownOpen(Boolean isDropdownOpen) {
+        this.isDropdownOpen = isDropdownOpen;
         return this;
     }
 

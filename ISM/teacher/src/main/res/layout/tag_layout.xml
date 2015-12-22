@@ -11,7 +11,7 @@
         android:background="@drawable/btn_green_teacher"
         android:padding="@dimen/d5dp"
         android:text="@string/strbiology"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/d20dp" />
 
 </com.ism.teacher.autocomplete.TokenLayout>

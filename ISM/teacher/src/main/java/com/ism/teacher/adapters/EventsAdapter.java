@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.EventsModel;
+import com.ism.teacher.object.MyTypeFace;
 
 import java.util.ArrayList;
 

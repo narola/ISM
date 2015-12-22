@@ -15,7 +15,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_white"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:padding="@dimen/d15dp">
 
@@ -42,7 +42,7 @@
                 android:background="@drawable/btn_save_assignment"
                 android:text="@string/strsave"
                 android:textAllCaps="true"
-                android:textColor="@color/color_white"
+                android:textColor="@color/white"
                 android:textSize="@dimen/d20dp" />
 
             <Button
@@ -53,7 +53,7 @@
                 android:background="@drawable/btn_cancel_assignment"
                 android:text="@string/strcancel"
                 android:textAllCaps="true"
-                android:textColor="@color/color_white"
+                android:textColor="@color/white"
                 android:textSize="@dimen/d20dp" />
 
 
