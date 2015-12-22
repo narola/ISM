@@ -267,7 +267,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                 attribute.setRole(Global.role);
                 attribute.setExamCategory("");
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETALLASSIGNMENTS);
+                        .execute(WebConstants.GETALLEXAMS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -316,7 +316,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     public void onResponse(int apiCode, Object object, Exception error) {
         try {
             switch (apiCode) {
-                case WebConstants.GETALLASSIGNMENTS:
+                case WebConstants.GETALLEXAMS:
                     onResponseGetAllExams(object, error);
                     break;
 

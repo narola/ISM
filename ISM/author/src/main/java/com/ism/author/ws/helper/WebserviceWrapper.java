@@ -124,6 +124,10 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETSTUDYMATES).execute(ResponseHandler.class, attribute);
                                 break;
 
+                            case WebConstants.GET_HIGH_SCORERS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_HIGH_SCORERS).execute(ResponseHandler.class, attribute);
+                                break;
+
                             case WebConstants.TAGFRIENDINFEED:
                                 responseObject = new WebserviceConnector(WebConstants.URL_TAGFRIENDINFEED).execute(ResponseHandler.class, attribute);
                                 break;
@@ -168,8 +172,8 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETQUESTIONBANK).execute(ResponseHandler.class, attribute);
                                 break;
 
-                            case WebConstants.GETALLEXAM:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GETALLEXAM).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GETALLASSIGNMENTS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GETALLASSIGNMENTS).execute(ResponseHandler.class, attribute);
                                 break;
 
                             case WebConstants.GETEXAMEVALUATIONS:
@@ -188,8 +192,8 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETEXAMSUBMISSION).execute(ResponseHandler.class, attribute);
                                 break;
 
-                            case WebConstants.GETALLASSIGNMENTS:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GETALLASSIGNMENTS).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GETALLEXAMS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GETALLEXAMS).execute(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.GET_ALL_BADGES_COUNT:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BADGES_COUNT).execute(ResponseHandler.class, attribute);
@@ -257,6 +261,18 @@ public class WebserviceWrapper {
                                 break;
                             case WebConstants.GETADMINCONFIG:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETADMINCONFIG).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_TRENDING_QUESTIONS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GETTRENDINGQUESTIONS).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+                            case WebConstants.GET_PAST_QUESTIONS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GETPASTQUESTIONS).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+                            case WebConstants.SUBMIT_TRENDING_ANSWER:
+                                responseObject = new WebserviceConnector(WebConstants.URL_SUBMIT_TRENDING_ANSWER).execute(ResponseHandler.class,
+                                        attribute);
                                 break;
 
                             case WebConstants.UPLOADSUBQUESTIONIMAGES:

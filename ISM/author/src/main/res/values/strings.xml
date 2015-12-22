@@ -74,7 +74,7 @@
     <string name="straddpost">ADD POST</string>
     <string name="stradd">ADD</string>
     <string name="straddnew">ADD NEW</string>
-    <string name="strpost">POST</string>
+    <string name="strpost">Post</string>
     <string name="strcomment">Comment</string>
     <string name="strsubmission_date">Submission Date</string>
     <string name="strstatus">Status</string>
@@ -265,6 +265,15 @@
     <string name="stravg">Avrage %</string>
     <string name="strattempted">Attempted</string>
     <string name="streducation">Education</string>
+    <string name="strsocial">SOCIAL</string>
+    <string name="stracademic">Academic</string>
+    <string name="strexcellence">Excellence</string>
+    <string name="strfollowing">Following</string>
+    <string name="strexamcreated">Exam Created</string>
+    <string name="strassignmentcreated">Assignment Created</string>
+    <string name="strquestionanswered">Question Answered</string>
+    <string name="strfavouritequestions">Favourite Questions</string>
+    <string name="strbadgesearned">Badges Earned</string>
 
     <!--string array-->
 

@@ -177,7 +177,7 @@ public class InputValidator {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             editText.setError(errorMessage);
         } else {
-            // There is no theme available for ErrorMessageWindow for Light theme for Gingerbread in AppCompat.
+            // There is checkSlotNo theme available for ErrorMessageWindow for Light theme for Gingerbread in AppCompat.
             // To display message properly, need to change color from white to black. No inbuilt functionality available for this.
             editText.setError(Html.fromHtml("<font color='black'>" + errorMessage + "</font>"));
         }
@@ -188,7 +188,7 @@ public class InputValidator {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             autoCompleteTextView.setError(errorMessage);
         } else {
-            // There is no theme available for ErrorMessageWindow for Light theme for Gingerbread in AppCompat.
+            // There is checkSlotNo theme available for ErrorMessageWindow for Light theme for Gingerbread in AppCompat.
             // To display message properly, need to change color from white to black. No inbuilt functionality available for this.
             autoCompleteTextView.setError(Html.fromHtml("<font color='black'>" + errorMessage + "</font>"));
         }

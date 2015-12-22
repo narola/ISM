@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.author.ws.model.AdminConfig;
+import com.ism.author.ws.model.Assignment;
 import com.ism.author.ws.model.AuthorBook;
 import com.ism.author.ws.model.Badges;
 import com.ism.author.ws.model.Books;
@@ -33,6 +34,7 @@ import com.ism.author.ws.model.Subjects;
 import com.ism.author.ws.model.Token;
 import com.ism.author.ws.model.Topics;
 import com.ism.author.ws.model.UploadQuestion;
+import com.ism.author.ws.model.TrendingQuestion;
 import com.ism.author.ws.model.User;
 import com.ism.author.ws.model.UserImages;
 
@@ -48,10 +50,8 @@ import java.util.ArrayList;
 public class ResponseHandler {
     private String TAG = ResponseHandler.class.getSimpleName();
 
-
     private String message;
     private String status;
-
 
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
@@ -63,6 +63,8 @@ public class ResponseHandler {
     private ArrayList<Message> messages;
     private ArrayList<Books> books;
     private ArrayList<Feeds> feedImages;
+    private ArrayList<TrendingQuestion> trendingQuestions;
+    private ArrayList<User> highScorers;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -82,9 +84,7 @@ public class ResponseHandler {
         this.status = status;
     }
 
-
     /*this is the new code for the response handler*/
-
 
     private ArrayList<Feeds> feeds;
     private ArrayList<CommentList> comments;
@@ -110,9 +110,19 @@ public class ResponseHandler {
     private ArrayList<AuthorBook> authorBook;
     private ArrayList<Token> token;
     private ArrayList<AdminConfig> adminConfig;
+    private ArrayList<Assignment> assignment;
     private UserImages userImages;
     FileUploadResponse fileUploadResponse;
     private UploadQuestion uploadQuestion;
+
+    @JsonProperty("high_scorers")
+    public ArrayList<User> getHighScorers() {
+        return highScorers;
+    }
+
+    public void setHighScorers(ArrayList<User> highScorers) {
+        this.highScorers = highScorers;
+    }
 
     @JsonProperty("feeds")
     public ArrayList<Feeds> getFeeds() {
@@ -358,6 +368,14 @@ public class ResponseHandler {
         this.authorBook = authorBook;
     }
 
+    @JsonProperty("trending_question")
+    public ArrayList<TrendingQuestion> getTrendingQuestions() {
+        return this.trendingQuestions;
+    }
+
+    public void setTrendingQuestions(ArrayList<TrendingQuestion> trendingQuestions) {
+        this.trendingQuestions = trendingQuestions;
+    }
 
     @JsonProperty("feed_images")
     public ArrayList<Feeds> getFeedImages() {
@@ -368,7 +386,6 @@ public class ResponseHandler {
         this.feedImages = feedImages;
     }
 
-
     @JsonProperty("upload_question")
     public FileUploadResponse getFileUploadResponse() {
         return fileUploadResponse;
@@ -378,7 +395,6 @@ public class ResponseHandler {
         this.fileUploadResponse = fileUploadResponse;
         return this;
     }
-
 
     @JsonProperty("token")
     public ArrayList<Token> getToken() {
@@ -418,6 +434,14 @@ public class ResponseHandler {
         this.uploadQuestion = uploadQuestion;
     }
 
+    @JsonProperty("assignment")
+    public ArrayList<Assignment> getAssignment() {
+        return this.assignment;
+    }
+
+    public void setAssignment(ArrayList<Assignment> assignment) {
+        this.assignment = assignment;
+    }
 
 }
 

@@ -63,10 +63,12 @@ public class TrialAdapter extends RecyclerView.Adapter<TrialAdapter.ViewHolder> 
             holder.tvExamNoofStudentAvg.setText(mContext.getString(R.string.stravg) + " " + arrListExams.get(position).getAverageScore());
             holder.tvExamNoofStudentAttempted.setText(arrListExams.get(position).getTotalStudentAttempted());
 
-            if (position % 2 == 0) {
-                holder.llTopExam.setBackgroundResource(R.drawable.img_bg_mythirty_pink);
-            } else {
+            if (position == 0 || position % 3 == 0) {
                 holder.llTopExam.setBackgroundResource(R.drawable.img_bg_mythirty_yellow);
+            } else if (position == 1 || (position - 1) % 3 == 0) {
+                holder.llTopExam.setBackgroundResource(R.drawable.img_bg_mythirty_pink);
+            } else if (position == 2 || (position - 2) % 3 == 0) {
+                holder.llTopExam.setBackgroundResource(R.drawable.img_bg_mythirty_blue);
             }
 
 

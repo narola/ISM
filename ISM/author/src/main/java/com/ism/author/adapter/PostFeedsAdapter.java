@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.constant.AppConstant;
@@ -33,6 +32,9 @@ import com.ism.author.ws.model.Feeds;
 
 import java.util.ArrayList;
 
+import model.FeedLike;
+import model.User;
+
 /**
  * these adapter class is for getting all the postfeeds.
  */
@@ -43,7 +45,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private Context mContext;
     private ArrayList<Feeds> arrListFeeds = new ArrayList<Feeds>();
-    String likePrefData, unlikePrefData;
     private int addCommentFeedPosition = -1;
     private int tagFeedPosition = -1;
     private LayoutInflater inflater;
@@ -106,7 +107,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         }
 
         holder.txtCommentViewAll.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
 
@@ -117,12 +117,9 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 
         holder.txtAddComment.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 String comment = holder.etWriteComment.getText().toString().trim();
-
-
                 if (comment != null && comment.length() > 0) {
                     callApiAddComment(position, comment);
                 }
@@ -147,35 +144,28 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         });
 
         holder.imgPostLike.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
 
-                likePrefData = PreferenceData.getStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, "");
-                unlikePrefData = PreferenceData.getStringPrefs(PreferenceData.UNLIKE_ID_LIST, mContext, "");
-
                 holder.imgPostLike.setSelected(!holder.imgPostLike.isSelected());
-
                 if (holder.imgPostLike.isSelected()) {
+
                     arrListFeeds.get(position).setLike(String.valueOf(AppConstant.LIKE));
                     arrListFeeds.get(position).setTotalLike(String.valueOf(Integer.parseInt(arrListFeeds.get(position).getTotalLike()) + 1));
 
-                    setPrefForLike(arrListFeeds.get(position).getFeedId() + ",");
                 } else {
+
                     arrListFeeds.get(position).setLike(String.valueOf(AppConstant.DISLIKE));
                     arrListFeeds.get(position).setTotalLike(String.valueOf(Integer.parseInt(arrListFeeds.get(position).getTotalLike()) - 1));
 
-                    setPrefForUnlike(arrListFeeds.get(position).getFeedId() + ",");
-
                 }
                 notifyDataSetChanged();
-
-                Log.e(TAG, "Pref for like==" + PreferenceData.getStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, ""));
-                Log.e(TAG, "Pref for unlike==" + PreferenceData.getStringPrefs(PreferenceData.UNLIKE_ID_LIST, mContext, ""));
+                insertFeedLikeData(position, holder.imgPostLike.isSelected() ? 1 : 0);
 
 
             }
         });
+
         holder.imgVideo.setVisibility(View.GONE);
         holder.imgPlay.setVisibility(View.GONE);
         holder.imgAudio.setVisibility(View.GONE);
@@ -215,23 +205,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     }
 
-    private void setPrefForLike(String feed_id) {
-
-        PreferenceData.setStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, likePrefData + feed_id);
-        if (unlikePrefData != null && unlikePrefData.length() > 0) {
-            PreferenceData.setStringPrefs(PreferenceData.UNLIKE_ID_LIST, mContext, unlikePrefData.replaceAll(feed_id, ""));
-        }
-
-
-    }
-
-    private void setPrefForUnlike(String feed_id) {
-        PreferenceData.setStringPrefs(PreferenceData.UNLIKE_ID_LIST, mContext, unlikePrefData + feed_id);
-        if (likePrefData != null && likePrefData.length() > 0) {
-            PreferenceData.setStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, likePrefData.replaceAll(feed_id, ""));
-        }
-
-    }
 
     @Override
     public int getItemCount() {
@@ -370,12 +343,10 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     @Override
     public void tagUsers(String[] arrTagUser) {
-
         if (Utility.isConnected(getActivity())) {
             try {
                 Attribute attribute = new Attribute();
                 attribute.setFeedId(arrListFeeds.get(tagFeedPosition).getFeedId());
-//                attribute.setTaggedBy(WebConstants.TEST_USER_ID);
                 attribute.setTaggedBy(Global.strUserId);
                 attribute.setTaggedUserIds(arrTagUser);
 
@@ -387,8 +358,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         } else {
             Utility.toastOffline(getActivity());
         }
-
-
     }
 
 
@@ -435,9 +404,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 arrListFeeds.get(addCommentFeedPosition).
                         setTotalComment("" + (Integer.parseInt(arrListFeeds.get(addCommentFeedPosition).getTotalComment()) + 1));
 
-
                 if (arrListFeeds.get(addCommentFeedPosition).getCommentList().size() <= 2) {
-
                     CommentList addedComment = arrListFeeds.get(addCommentFeedPosition).getCommentList().
                             get(arrListFeeds.get(addCommentFeedPosition).getCommentList().size() - 1);
 
@@ -501,12 +468,56 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 Utils.showToast(getActivity().getString(R.string.msg_tag_done), getActivity());
             } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                 Utils.showToast(getActivity().getString(R.string.msg_tag_failed), getActivity());
-
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseTagStudyMates Exception : " + e.toString());
         }
     }
 
+
+    private void insertFeedLikeData(int position, int isLike) {
+
+        FeedLike feedLike = new FeedLike();
+
+        User user = new User();
+        user.setUserId(Integer.valueOf(Global.strUserId));
+        user.setFullName(Global.strFullName);
+        user.setProfilePicture(Global.strProfilePic);
+
+        feedLike.setLikeBy(user);
+
+        model.Feeds feed = new model.Feeds();
+        feed.setFeedId(Integer.valueOf(arrListFeeds.get(position).getFeedId()));
+
+        User feedCreater = new User();
+        feedCreater.setUserId(Integer.valueOf(arrListFeeds.get(position).getFeedBy()));
+        feedCreater.setFullName(arrListFeeds.get(position).getFullName());
+        feedCreater.setProfilePicture(arrListFeeds.get(position).getProfilePic());
+
+        feed.setFeedBy(feedCreater);
+        feed.setFeedText(arrListFeeds.get(position).getFeedText());
+        feed.setVideoLink(arrListFeeds.get(position).getVideoLink());
+        feed.setVideoThumbnail(arrListFeeds.get(position).getVideoThumbnail());
+        feed.setAudioLink(arrListFeeds.get(position).getAudioLink());
+        feed.setTotalLike(Integer.valueOf(arrListFeeds.get(position).getTotalLike()));
+        feed.setTotalComment(Integer.valueOf(arrListFeeds.get(position).getTotalComment()));
+        feed.setPostedOn(null);
+        feed.setCreatedDate(null);
+        feed.setModifiedDate(null);
+        feed.setModifiedDate(null);
+        feed.setIsSync(0);
+        feed.setLike("0");
+        feed.setComments(null);
+        feed.setFeedImages(null);
+
+
+        feedLike.setFeed(feed);
+        feedLike.setCreatedDate(null);
+        feedLike.setModifiedDate(null);
+        feedLike.setIsLiked(isLike);
+        feedLike.setIsSync(false);
+
+        Global.authorHelper.insertLikeFeedData(feedLike);
+    }
 
 }

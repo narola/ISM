@@ -37,7 +37,7 @@ public class TutorialFriAddQuestionFragment extends Fragment {
 	private static final String TAG = TutorialFriAddQuestionFragment.class.getSimpleName();
 
 	private View view;
-	private RelativeLayout rlTutorialmateQuestion, rlCreateQuestion, rlSetOptions, rlPreviewQuestion, rlUpload;
+	private RelativeLayout rlWaiting, rlHeader, rlTutorialmateQuestion, rlCreateQuestion, rlSetOptions, rlPreviewQuestion, rlUpload;
 	private LinearLayout llOptions;
 	private TextView txtHelp, txtCreateQuestion, txtSetOptions, txtPreviewQuestion, txtUpload, txtQuestion;
 	private EditText etQuestion, etOption1, etOption2, etOption3, etOption4;
@@ -78,6 +78,8 @@ public class TutorialFriAddQuestionFragment extends Fragment {
 
 	private void initGlobal() {
 		txtHelp = (TextView) view.findViewById(R.id.txt_help);
+		rlWaiting = (RelativeLayout) view.findViewById(R.id.rl_waiting);
+		rlHeader = (RelativeLayout) view.findViewById(R.id.rl_header);
 		rlTutorialmateQuestion = (RelativeLayout) view.findViewById(R.id.rl_tutorialmate_question);
 		txtCreateQuestion = (TextView) view.findViewById(R.id.txt_create_question);
 		txtSetOptions = (TextView) view.findViewById(R.id.txt_set_options);
@@ -124,6 +126,10 @@ public class TutorialFriAddQuestionFragment extends Fragment {
 
 		txtLables = new TextView[] {txtCreateQuestion, txtSetOptions, txtPreviewQuestion, txtUpload};
 		viewLayouts = new RelativeLayout[] {rlCreateQuestion, rlSetOptions, rlPreviewQuestion, rlUpload};
+
+//		rlHeader.setVisibility(View.GONE);
+//		rlTutorialmateQuestion.setVisibility(View.GONE);
+//		rlWaiting.setVisibility(View.VISIBLE);
 
 		onClickLable = new View.OnClickListener() {
 			@Override

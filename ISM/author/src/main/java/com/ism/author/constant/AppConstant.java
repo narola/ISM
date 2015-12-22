@@ -63,4 +63,5 @@ public class AppConstant {
     public static final String FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER = "fragmentSubjectiveAssignmentQuestionsContainer";
     public static final String FRAGMENT_ADDQUESTION_CONTAINER = "fragmentAddQuestionContainer";
     public static final String FRAGMENT_PAST = "fragmentPast";
+    public static final String FRAGMENT_ADD_ASSIGNMENT = "fragmentAddAssignment";
 }

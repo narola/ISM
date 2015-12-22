@@ -65,27 +65,22 @@
             android:textSize="@dimen/d20sp" />
 
         <TextView
+            android:id="@+id/txt_add"
             android:layout_width="@dimen/d140dp"
             android:layout_height="wrap_content"
-            android:text="@string/stradd"
-            android:gravity="center"
-            android:id="@+id/txt_add"
-            android:layout_marginRight="@dimen/d10dp"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/d5dp"
-            android:visibility="gone"
-            android:textSize="@dimen/d20sp"
-            android:textColor="@color/color_white"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/d10dp"
             android:background="@drawable/bg_red_add_assignments"
-            android:textAllCaps="true" />
+            android:gravity="center"
+            android:padding="@dimen/d5dp"
+            android:text="@string/stradd"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d20sp"
+            android:visibility="gone" />
 
     </RelativeLayout>
-
-    <!--<TextView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/d5dp"-->
-    <!--android:background="@drawable/shadow_separator" />-->
 
     <FrameLayout
         android:id="@+id/fl_fragment_container"

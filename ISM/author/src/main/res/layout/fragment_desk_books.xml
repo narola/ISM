@@ -37,21 +37,6 @@
                     android:textColor="@color/bg_app_dark"
                     android:textSize="@dimen/d20sp" />
 
-                <!--<ImageView-->
-                <!--android:id="@+id/img_filter_read_books"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_toLeftOf="@+id/line1"-->
-                <!--android:src="@drawable/img_filter" />-->
-
-                <!--<TextView-->
-                <!--android:id="@+id/line1"-->
-                <!--android:layout_width="1dp"-->
-                <!--android:layout_height="@dimen/d40dp"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_toLeftOf="@+id/ll_search_suggested"-->
-                <!--android:background="@color/color_text_hint" />-->
 
                 <LinearLayout
                     android:id="@+id/ll_search_suggested"
@@ -83,13 +68,6 @@
                         android:textColorHint="@color/border_gray"
                         android:visibility="gone" />
                 </LinearLayout>
-                <!--<ImageView-->
-                <!--android:id="@+id/img_search_read_books"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:src="@drawable/selector_search" />-->
 
             </RelativeLayout>
 
@@ -159,22 +137,6 @@
                     android:textColor="@color/bg_app_dark"
                     android:textSize="@dimen/d20sp" />
 
-                <!--<ImageView-->
-                <!--android:id="@+id/img_filter_fav_books"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_toLeftOf="@+id/line2"-->
-                <!--android:src="@drawable/img_filter" />-->
-
-                <!--<TextView-->
-                <!--android:id="@+id/line2"-->
-                <!--android:layout_width="1dp"-->
-                <!--android:layout_height="@dimen/d40dp"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_toLeftOf="@+id/ll_search_fav"-->
-                <!--android:background="@color/color_text_hint" />-->
-
                 <LinearLayout
                     android:id="@+id/ll_search_fav"
                     android:layout_width="wrap_content"
@@ -205,13 +167,6 @@
                         android:textColorHint="@color/border_gray"
                         android:visibility="gone" />
                 </LinearLayout>
-                <!--<ImageView-->
-                <!--android:id="@+id/img_search_fav"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:src="@drawable/img_search_gray" />-->
 
             </RelativeLayout>
 
@@ -230,16 +185,6 @@
                     android:padding="@dimen/d5dp"
                     android:src="@drawable/left_arrow" />
 
-                <!--<com.ism.views.HorizontalListView-->
-                <!--android:id="@+id/lv_fav_books"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerInParent="true"-->
-                <!--android:layout_marginLeft="@dimen/d5dp"-->
-                <!--android:layout_marginRight="@dimen/d5dp"-->
-                <!--android:layout_toLeftOf="@+id/img_next_fav"-->
-                <!--android:layout_toRightOf="@+id/img_prev_fav"-->
-                <!--android:background="@color/color_white" />-->
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/lv_fav_books"
                     android:layout_width="match_parent"

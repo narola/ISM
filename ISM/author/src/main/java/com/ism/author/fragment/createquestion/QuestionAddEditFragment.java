@@ -952,7 +952,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 Attribute attribute = new Attribute();
                 MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
                 questionIdParam.setParamName("question_id");
-                questionIdParam.setParamValue("231");
+                questionIdParam.setParamValue(questionId);
 
                 MediaUploadAttribute noOfImagesParam = new MediaUploadAttribute();
                 noOfImagesParam.setParamName("numberofimages");

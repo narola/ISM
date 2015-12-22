@@ -57,7 +57,7 @@ public class WebserviceConnector {
                 if (request != null) {
                     // writer.writeValueAsString( request );
                     jsonObject = writer.writeValueAsString(request);
-                    Log.i(TAG, "JSON OBJECT : " + jsonObject + "");
+                    Log.i(TAG, "REQUEST JSON OBJECT : " + jsonObject + "");
                 }
 
 
@@ -65,7 +65,7 @@ public class WebserviceConnector {
             try (OutputStream output = connection.getOutputStream()) {
                 output.write(jsonObject.getBytes());
             } catch (Exception error) {
-                Log.i(TAG, "JSON OBJECT  Write: " + jsonObject + "");
+                Log.i(TAG, "JSON OBJECT  Write Exception: " + error.getLocalizedMessage() + "");
             }
 
 
@@ -127,7 +127,7 @@ public class WebserviceConnector {
 
         try {
             MultipartUtility multipart = new MultipartUtility(requestURL, charset);
-            /*No header so no need to add it*/
+            /*No header so checkSlotNo need to add it*/
 
 //            multipart.addHeaderField("User-Agent", "CodeJava");
 //            multipart.addHeaderField("Test-Header", "Header-Value");
@@ -147,7 +147,7 @@ public class WebserviceConnector {
             List<String> response = multipart.finish();
             Debug.e(TAG, "SERVER REPLIED:");
             for (String line : response) {
-                Debug.e(TAG, "Upload Media Response:::" + line);
+                Debug.e(TAG, "Upload Files Response:::" + line);
                 responseString = line;
             }
 
