@@ -217,4 +217,9 @@ public class TutorialFriAddQuestionFragment extends Fragment {
 		}
 	}
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+	}
 }

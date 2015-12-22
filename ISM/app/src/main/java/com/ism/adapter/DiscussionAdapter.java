@@ -13,10 +13,11 @@ import android.widget.TextView;
 
 import com.ism.ISMStudent;
 import com.ism.R;
-import com.ism.model.TestDiscussion;
-import com.ism.object.Global;
+import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
+import com.ism.ws.model.Discussion;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -30,14 +31,20 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 	private static final String TAG = DiscussionAdapter.class.getSimpleName();
 
 	private Context context;
-	private ArrayList<TestDiscussion> arrListDiscussion;
+	private ArrayList<Discussion> arrListDiscussion;
 	private ImageLoader imageLoader;
 	private MyTypeFace myTypeFace;
 	private LayoutInflater inflater;
+	private TutorialDiscussionAdapterListener listenerTutorialDiscussion;
 
-	public DiscussionAdapter(Context context, ArrayList<TestDiscussion> arrListDiscussion) {
+	public interface TutorialDiscussionAdapterListener {
+		public void onTutorialTopicPositionChanged(int topicPosition);
+	}
+
+	public DiscussionAdapter(Context context, ArrayList<Discussion> arrListDiscussion, TutorialDiscussionAdapterListener listenerTutorialDiscussion) {
 		this.context = context;
 		this.arrListDiscussion = arrListDiscussion;
+		this.listenerTutorialDiscussion = listenerTutorialDiscussion;
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		myTypeFace = new MyTypeFace(context);
@@ -81,15 +88,23 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		try {
-			if (position == arrListDiscussion.size() - 1 || !arrListDiscussion.get(position).getTime().equals(arrListDiscussion.get(position + 1).getTime())) {
+//			listenerTutorialDiscussion.onTutorialTopicPositionChanged(position);
+			if (position == arrListDiscussion.size() - 1 || !arrListDiscussion.get(position).getWeekDay()
+					.equals(arrListDiscussion.get(position + 1).getWeekDay())) {
 				holder.rlHeader.setVisibility(View.VISIBLE);
-				holder.txtTime.setText(arrListDiscussion.get(position).getTime());
+				holder.txtTimeHeader.setText(arrListDiscussion.get(position).getWeekDay());
+
+				if (position + 1 < arrListDiscussion.size()) {
+					listenerTutorialDiscussion.onTutorialTopicPositionChanged(arrListDiscussion.get(position + 1).getTopicPosition());
+				}
 			} else {
+				if (position == 0) {
+					listenerTutorialDiscussion.onTutorialTopicPositionChanged(arrListDiscussion.get(position).getTopicPosition());
+				}
 				holder.rlHeader.setVisibility(View.GONE);
 			}
-//			holder.rlHeader.setPadding(0, position == 0 ? 0 : 15, 0, 0);
 
-			imageLoader.displayImage(Global.strProfilePic, holder.imgDp, ISMStudent.options);
+			imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrListDiscussion.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
 
 			if (position % 2 == 0) {
 //				Received Chats
@@ -105,9 +120,10 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 				holder.txtMessage.setBackgroundResource(R.drawable.bg_chat_sent);
 			}
 
-			holder.txtTime.setText(arrListDiscussion.get(position).getTime());
-			holder.txtUserName.setText(arrListDiscussion.get(position).getUserName());
-			holder.txtMessage.setText(arrListDiscussion.get(position).getMessage());
+			holder.txtTime.setText(Utility.formatPHPDateToMMMDDYY_HHMMA(arrListDiscussion.get(position).getCommentTimestamp())
+					+ "  " + arrListDiscussion.get(position).getWeekDay());
+			holder.txtUserName.setText(arrListDiscussion.get(position).getFullName());
+			holder.txtMessage.setText(arrListDiscussion.get(position).getComment());
 		} catch (Exception e) {
 			Log.e(TAG, "onBindViewHolder Exception : " + e.toString());
 		}

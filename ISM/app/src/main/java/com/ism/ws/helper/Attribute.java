@@ -85,6 +85,8 @@ public class Attribute {
 	private String accessKey;
 	private String role;
 	private String lastSyncDate;
+	private String weekNo;
+	private String dayNo;
 
     private ArrayList<String> unfavoriteResourceId;
     private ArrayList<String> favResourceId;
@@ -744,5 +746,22 @@ public class Attribute {
 		this.likedId = likedId;
 	}
 
+	public String getWeekNo() {
+		return weekNo;
+	}
+
+	@JsonProperty("week_no")
+	public void setWeekNo(String weekNo) {
+		this.weekNo = weekNo;
+	}
+
+	public String getDayNo() {
+		return dayNo;
+	}
+
+	@JsonProperty("day_no")
+	public void setDayNo(String dayNo) {
+		this.dayNo = dayNo;
+	}
 
 }
