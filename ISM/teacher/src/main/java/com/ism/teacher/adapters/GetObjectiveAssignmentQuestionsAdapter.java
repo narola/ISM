@@ -15,7 +15,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.MyTypeFace;
 import com.ism.teacher.ws.model.Answers;
 import com.ism.teacher.ws.model.Evaluation;
 import com.ism.teacher.ws.model.Questions;
@@ -31,13 +31,11 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private MyTypeFace myTypeFace;
     private LayoutInflater inflater;
-    private Bundle bundleArgument;
 
-    public GetObjectiveAssignmentQuestionsAdapter(Context context, Bundle bundleArgument) {
+    public GetObjectiveAssignmentQuestionsAdapter(Context context) {
         this.mContext = context;
         inflater = LayoutInflater.from(context);
         myTypeFace = new MyTypeFace(context);
-        this.bundleArgument = bundleArgument;
     }
 
     @Override
@@ -107,12 +105,12 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
             holder.etSolution.setText(Utility.formatHtml(arrListQuestions.get(position).getSolution()));
 
 
-            if (bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
+            if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
                 holder.llQuestionsOptions.setVisibility(View.GONE);
                 holder.llAnswerContainer.setVisibility(View.GONE);
                 holder.llEvaluationContainer.setVisibility(View.VISIBLE);
 
-            } else if (bundleArgument.getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
+            } else if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
                 holder.llQuestionsOptions.setVisibility(View.VISIBLE);
                 holder.llAnswerContainer.setVisibility(View.GONE);
                 holder.llEvaluationContainer.setVisibility(View.GONE);
@@ -130,7 +128,7 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
                  * else
                  * make only answer container visible to show the answers of question
                  */
-                if (bundleArgument.getBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                if (getBundleArguments().getBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                     holder.llEvaluationContainer.setVisibility(View.VISIBLE);
                     holder.llAnswerContainer.setVisibility(View.VISIBLE);
 

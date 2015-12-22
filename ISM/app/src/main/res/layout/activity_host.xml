@@ -167,7 +167,7 @@
                 android:inputType="text"
                 android:padding="10dp"
                 android:textColor="@color/colorPrimary"
-                android:textColorHint="@color/color_gray_light"
+                android:textColorHint="@color/gray_light"
                 android:visibility="gone" />
         </LinearLayout>
 

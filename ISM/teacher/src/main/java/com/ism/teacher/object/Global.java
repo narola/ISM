@@ -1,8 +1,7 @@
 package com.ism.teacher.object;
 
-import com.ism.teacher.helper.MyTypeFace;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by c162 on 26/11/15.

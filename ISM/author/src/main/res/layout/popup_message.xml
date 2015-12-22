@@ -31,6 +31,7 @@
 			android:paddingLeft="40dp"
 			android:paddingRight="40dp"
 			android:text="@string/strviewall"
+			android:visibility="gone"
 			android:textColor="@color/bg_app_dark"
 			android:textSize="18sp"/>
 	</RelativeLayout>

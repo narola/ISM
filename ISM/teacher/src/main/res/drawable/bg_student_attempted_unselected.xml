@@ -9,7 +9,7 @@
     <item>
         <shape>
             <padding android:bottom="1px" />
-            <solid android:color="@color/color_white" />
+            <solid android:color="@color/white" />
         </shape>
     </item>
 

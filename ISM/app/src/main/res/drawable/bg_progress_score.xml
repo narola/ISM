@@ -11,7 +11,7 @@
 				android:centerY="1.0"
 				android:angle="270"
 				/>-->
-			<solid android:color="@color/color_gray_light"/>
+			<solid android:color="@color/gray_light"/>
 		</shape>
 	</item>
 

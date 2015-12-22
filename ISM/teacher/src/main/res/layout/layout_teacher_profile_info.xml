@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_graylight"
@@ -20,16 +22,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Profile Information-->
             <LinearLayout
                 android:id="@+id/ll_profile_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/d10dp"
                 android:layout_marginTop="@dimen/d10dp"
-                android:background="@color/color_white"
-                android:orientation="vertical">
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <TextView
+                    android:id="@+id/tv_personal_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/color_teacher_headers"
@@ -61,6 +66,7 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
+                            <!-- first name +last name-->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -68,16 +74,36 @@
                                 android:orientation="horizontal">
 
                                 <EditText
-                                    android:id="@+id/et_fullname_teacher"
+                                    android:id="@+id/et_firstname_teacher"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="@dimen/d5dp"
                                     android:layout_weight="1"
                                     android:background="@drawable/selector"
-                                    android:hint="@string/strfullname"
+                                    android:hint="@string/str_firstname"
                                     android:padding="15dp"
                                     android:textColorHint="@color/color_text_hint" />
 
+                                <EditText
+                                    android:id="@+id/et_lastname_teacher"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginRight="@dimen/d5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/selector"
+                                    android:hint="@string/str_lastname"
+                                    android:padding="15dp"
+                                    android:textColorHint="@color/color_text_hint" />
+
+
+                            </LinearLayout>
+
+                            <!-- Linear email+dob-->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                                android:orientation="horizontal">
                                 <EditText
                                     android:id="@+id/et_emailAdd_teacher"
                                     android:layout_width="match_parent"
@@ -89,14 +115,26 @@
                                     android:inputType="textEmailAddress"
                                     android:padding="15dp"
                                     android:textColorHint="@color/color_text_hint" />
+                                 <EditText
+                                    android:id="@+id/et_dob_teacher"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginRight="@dimen/d5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/selector"
+                                    android:hint="@string/strdateofbirth"
+                                    android:inputType="textEmailAddress"
+                                    android:padding="15dp"
+                                    android:textColorHint="@color/color_text_hint" />
+
                             </LinearLayout>
 
+                            <!-- gender +contact-->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
                                 android:orientation="horizontal">
-
 
                                 <Spinner
                                     android:id="@+id/sp_gender_teacher"
@@ -131,6 +169,7 @@
                                 android:background="@drawable/selector"
                                 android:gravity="top|left"
                                 android:hint="@string/strhomeaddress"
+                                android:inputType="textMultiLine"
                                 android:padding="15dp"
                                 android:textColorHint="@color/color_text_hint" />
 
@@ -141,10 +180,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="2.5"
-                            android:background="@color/color_white"
+                            android:background="@color/white"
+                            android:onClick="onClickUploadImage"
                             android:orientation="vertical">
 
-                            <com.ism.teacher.views.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            <com.ism.teacher.views.CircleImageView
                                 android:id="@+id/img_teacher_profile_pic"
                                 android:layout_width="200dp"
                                 android:layout_height="match_parent"
@@ -166,22 +206,94 @@
                         </LinearLayout>
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/d10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/d5dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <Spinner
+                                android:id="@+id/sp_country"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/spinner_selector"
+                                android:padding="@dimen/d20dp" />
+
+                            <com.ism.commonsource.view.ActionProcessButton
+                                android:id="@+id/prog_country"
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp"
+                                android:visibility="invisible" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/d5dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <Spinner
+                                android:id="@+id/sp_state"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/spinner_selector"
+                                android:padding="@dimen/d20dp" />
+
+                            <com.ism.commonsource.view.ActionProcessButton
+                                android:id="@+id/prog_state"
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp"
+                                android:visibility="invisible" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <Spinner
+                                android:id="@+id/sp_city"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/spinner_selector"
+                                android:padding="@dimen/d20dp" />
+
+                            <com.ism.commonsource.view.ActionProcessButton
+                                android:id="@+id/prog_city"
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp"
+                                android:visibility="invisible" />
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
 
+            <!-- Work Profile/School Information-->
             <LinearLayout
-                android:id="@+id/ll_school_info"
+                android:id="@+id/ll_workprofile_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/d10dp"
                 android:layout_marginTop="@dimen/d10dp"
-                android:background="@color/color_white"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/d10dp">
 
                 <TextView
+                    android:id="@+id/tv_workprofile_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/color_teacher_headers"
@@ -189,7 +301,7 @@
                     android:drawablePadding="@dimen/d5dp"
                     android:gravity="center_vertical"
                     android:padding="@dimen/d10dp"
-                    android:text="@string/strschoolinformation"
+                    android:text="@string/strworkprofileinformation"
                     android:textColor="@color/color_black"
                     android:textSize="@dimen/d20sp" />
 
@@ -219,13 +331,15 @@
                             android:paddingTop="@dimen/d10dp"
                             android:text="@string/stryouareregisteredforfollowingschool"
                             android:textColor="@color/color_black"
-                            android:textSize="@dimen/d18sp" />
+                            android:textSize="@dimen/d18sp"
+                            android:visibility="visible" />
 
                         <TextView
                             android:id="@+id/txt_clickhere"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:onClick="onClickHere"
                             android:paddingBottom="@dimen/d10dp"
                             android:paddingLeft="0dp"
                             android:paddingRight="@dimen/d5dp"
@@ -256,25 +370,42 @@
                         android:weightSum="2">
 
 
-                        <Spinner
-                            android:id="@+id/sp_name_of_school"
+                        <TextView
+                            android:id="@+id/txt_nameofschool"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector"
-                            android:entries="@array/list"
-                            android:padding="@dimen/d20dp" />
-
-                        <Spinner
-                            android:id="@+id/sp_region_school"
+                            android:background="@drawable/selector"
+                            android:hint="@string/strnameofschool"
+                            android:padding="15sp"
+                            android:textSize="20sp"
+                            android:gravity="center_vertical"
+                            android:textColorHint="@color/color_text_hint" />
+                        <!--<TextView-->
+                            <!--android:id="@+id/txt_districtofschool"-->
+                            <!--android:layout_width="0dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:layout_marginRight="@dimen/d5dp"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:background="@drawable/selector"-->
+                            <!--android:hint="@string/strdistrictofschool"-->
+                            <!--android:padding="15sp"-->
+                            <!--android:textSize="20sp"-->
+                            <!--android:gravity="center_vertical"-->
+                            <!--android:textColorHint="@color/color_text_hint" />-->
+                        <TextView
+                            android:id="@+id/txt_programcourse"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
+                            android:hint="@string/strprogramcourse"
                             android:background="@drawable/spinner_selector"
-                            android:entries="@array/list"
-                            android:padding="@dimen/d20dp" />
+                            android:padding="@dimen/d20dp"
+                            android:textSize="20sp"
+                            android:gravity="center_vertical"
+                            android:textColorHint="@color/color_text_hint" />
 
                     </LinearLayout>
 
@@ -283,43 +414,91 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:weightSum="2">
+                        <!--<Spinner-->
+                            <!--android:id="@+id/sp_city_teacher"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginRight="@dimen/d5dp"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:background="@drawable/spinner_selector"-->
+                            <!--android:entries="@array/list"-->
+                            <!--android:padding="@dimen/d20dp" />-->
 
-                        <Spinner
-                            android:id="@+id/sp_city_teacher"
-                            android:layout_width="match_parent"
+
+                        <!--<TextView-->
+                            <!--android:id="@+id/txt_programcourse"-->
+                            <!--android:layout_width="0dp"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginRight="@dimen/d5dp"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:hint="@string/strprogramcourse"-->
+                            <!--android:background="@drawable/spinner_selector"-->
+                            <!--android:padding="@dimen/d20dp"-->
+                            <!--android:textSize="20sp"-->
+                            <!--android:gravity="center_vertical"-->
+                            <!--android:textColorHint="@color/color_text_hint" />-->
+
+                        <!--<Spinner-->
+                            <!--android:id="@+id/sp_program_course"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginRight="@dimen/d5dp"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:background="@drawable/spinner_selector"-->
+                            <!--android:entries="@array/list"-->
+                            <!--android:padding="@dimen/d20dp" />-->
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <EditText
+                            android:id="@+id/et_education"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector"
-                            android:entries="@array/list"
-                            android:padding="@dimen/d20dp" />
+                            android:background="@drawable/selector"
+                            android:gravity="top|left"
+                            android:hint="@string/str_education"
+                            android:inputType="text"
+                            android:padding="15dp"
+                            android:textColorHint="@color/color_text_hint" />
 
-
-                        <Spinner
-                            android:id="@+id/sp_program_course"
-                            android:layout_width="match_parent"
+                        <EditText
+                            android:id="@+id/et_specializaton"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector"
-                            android:entries="@array/list"
-                            android:padding="@dimen/d20dp" />
+                            android:background="@drawable/selector"
+                            android:gravity="top|left"
+                            android:hint="@string/str_specialization"
+                            android:inputType="text"
+                            android:padding="15dp"
+                            android:textColorHint="@color/color_text_hint" />
+
+
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
-
+            <!-- Credential Information-->
             <LinearLayout
                 android:id="@+id/ll_manage_credentials"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/d10dp"
                 android:layout_marginTop="@dimen/d10dp"
-                android:background="@color/color_white"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/d10dp">
 
                 <TextView
+                    android:id="@+id/tv_manage_credential"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/color_teacher_headers"
@@ -403,6 +582,7 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Cancel or Submit-->
             <LinearLayout
                 android:id="@+id/ll_canncel_submit"
                 android:layout_width="match_parent"
@@ -419,28 +599,37 @@
                     android:layout_marginRight="@dimen/d10dp"
                     android:background="@drawable/backgroundbtnlogin"
                     android:gravity="center"
+                    android:onClick="onClickCancel"
                     android:paddingBottom="@dimen/d10dp"
                     android:paddingLeft="@dimen/d60dp"
                     android:paddingRight="@dimen/d50dp"
                     android:paddingTop="@dimen/d10dp"
                     android:text="@string/strcancel"
-                    android:textColor="@color/color_white"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/d20sp" />
 
-                <Button
+                <com.ism.commonsource.view.ActionProcessButton
                     android:id="@+id/btn_submit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d10dp"
                     android:background="@drawable/background_edittext_teacher"
                     android:gravity="center"
+                    android:onClick="onClickSubmit"
                     android:paddingBottom="@dimen/d10dp"
                     android:paddingLeft="@dimen/d60dp"
                     android:paddingRight="@dimen/d60dp"
                     android:paddingTop="@dimen/d10dp"
                     android:text="@string/strsubmit"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20sp" />
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/d20dp"
+                    app:pb_colorComplete="@color/color_blue"
+                    app:pb_colorNormal="@color/color_blue"
+                    app:pb_colorPressed="@color/color_blue"
+                    app:pb_colorProgress="@color/purple_progress"
+                    app:pb_cornerRadius="@dimen/d5dp"
+                    app:pb_textComplete="@string/strsubmit"
+                    app:pb_textProgress="@string/processing" />
             </LinearLayout>
 
         </LinearLayout>

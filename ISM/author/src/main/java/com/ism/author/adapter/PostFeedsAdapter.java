@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
@@ -17,6 +16,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
+import com.ism.author.activtiy.PostFeedActivity;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.dialog.TagUserDialog;
@@ -165,7 +165,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
             }
         });
-
         holder.imgVideo.setVisibility(View.GONE);
         holder.imgPlay.setVisibility(View.GONE);
         holder.imgAudio.setVisibility(View.GONE);
@@ -175,29 +174,29 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         //video
         if (arrListFeeds.get(position).getVideoThumbnail() != "") {
 
-            holder.imgVideo.setVisibility(View.VISIBLE);
-            holder.imgPlay.setVisibility(View.VISIBLE);
-
-            Log.i(TAG, WebConstants.FEED_MEDIA + arrListFeeds.get(position).getVideoThumbnail() + "");
-            Global.imageLoader.displayImage(WebConstants.FEED_MEDIA + arrListFeeds.get(position).getVideoThumbnail(), holder.imgVideo, ISMAuthor.options);
+           // holder.imgVideo.setVisibility(View.VISIBLE);
+           // holder.imgPlay.setVisibility(View.VISIBLE);
+           // holder.rlImage.addView(getMediaFilesView(arrListFeeds.get(position).getVideoThumbnail(), PostFeedActivity.VIDEO));
+            Log.i(TAG, WebConstants.FEED_MEDIA_KINJAL + arrListFeeds.get(position).getVideoThumbnail() + "");
+            //Global.imageLoader.displayImage(WebConstants.FEED_MEDIA_KINJAL + arrListFeeds.get(position).getVideoThumbnail(), holder.imgVideo, ISMAuthor.options);
 
         }
         //audio
         if (arrListFeeds.get(position).getAudioLink() != "") {
-
-            holder.imgAudio.setVisibility(View.VISIBLE);
+          //  holder.rlImage.addView(getMediaFilesView(arrListFeeds.get(position).getAudioLink(), PostFeedActivity.AUDIO));
+           // holder.imgAudio.setVisibility(View.VISIBLE);
         }
         // images
         if (arrListFeeds.get(position).getFeedImages().size() != 0) {
 
-            holder.imgImage.setVisibility(View.VISIBLE);
+           // holder.imgImage.setVisibility(View.VISIBLE);
 
             ArrayList<FeedImages> feedImages = new ArrayList<FeedImages>();
             feedImages = arrListFeeds.get(position).getFeedImages();
             for (int i = 0; i < feedImages.size(); i++) {
-                Log.i(TAG, WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink() + "");
-                Global.imageLoader.displayImage(WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink(), holder.imgImage, ISMAuthor.options);
-
+                Log.i(TAG, WebConstants.FEED_MEDIA_KINJAL + feedImages.get(i).getImageLink() + "");
+              //  Global.imageLoader.displayImage(WebConstants.FEED_MEDIA_KINJAL + feedImages.get(i).getImageLink(), holder.imgImage, ISMAuthor.options);
+               // holder.rlImage.addView(getMediaFilesView(feedImages.get(i).getImageLink(), PostFeedActivity.IMAGE));
             }
 
         }
@@ -228,7 +227,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         ImageView imgPostLike, imgPostComment, imgPostTag, imgAudio, imgImage, imgPlay, imgVideo;
         EditText etWriteComment;
         LinearLayout llCommentInflater, llMediaFiles;
-        RelativeLayout rlImage;
+        LinearLayout rlImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -250,7 +249,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             llCommentInflater = (LinearLayout) itemView.findViewById(R.id.ll_comment_inflater);
             llMediaFiles = (LinearLayout) itemView.findViewById(R.id.ll_media);
             txtAddComment = (TextView) itemView.findViewById(R.id.txt_add_comment);
-            rlImage = (RelativeLayout) itemView.findViewById(R.id.rl_image);
+            rlImage = (LinearLayout) itemView.findViewById(R.id.rl_image);
 
         }
     }
@@ -276,6 +275,27 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         Global.imageLoader.displayImage(WebConstants.USER_IMAGES + commentList.getProfilePic(), imgCommenterDp, ISMAuthor.options);
 
         return v;
+    }
+
+    private View getMediaFilesView(String filepath, String type) {
+        View view = null;
+        try {
+            LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+            view = layoutInflater.inflate(R.layout.item_media_file_post, null);
+            if (type.equals(PostFeedActivity.AUDIO))
+                ((ImageView) view.findViewById(R.id.image)).setImageResource(R.drawable.audioplay);
+            else if (type.equals(PostFeedActivity.VIDEO)) {
+                Global.imageLoader.displayImage(WebConstants.FEED_MEDIA_KINJAL + filepath,
+                        (ImageView) view.findViewById(R.id.image), ISMAuthor.options);
+                ((ImageView) view.findViewById(R.id.image_play)).setVisibility(View.VISIBLE);
+            } else if (type.equals(PostFeedActivity.IMAGE)) {
+                Global.imageLoader.displayImage(WebConstants.FEED_MEDIA_KINJAL + filepath,
+                        (ImageView) view.findViewById(R.id.image), ISMAuthor.options);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "getMediaFilesView Exception : " + e.toString());
+        }
+        return view;
     }
 
     private void callApiAddComment(int position, String comment) {

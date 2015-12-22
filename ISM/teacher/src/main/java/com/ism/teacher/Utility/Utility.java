@@ -18,6 +18,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
@@ -43,6 +44,19 @@ public class Utility {
 
     public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_DISPLAY = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+    public static final SimpleDateFormat DATE_FORMAT_MY_SQL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    private static AlertDialog dialogOffline;
+    private static AlertDialog dialogServerAlert;
+
+    public static void alertServerNotConnected(Context context) {
+        if (dialogServerAlert == null || !dialogServerAlert.isShowing()) {
+            dialogServerAlert = alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
+        }
+    }
+    public static String formatDateMySql(Date date) {
+        return DATE_FORMAT_MY_SQL.format(date);
+    }
+
 
     /**
      * Krunal Panchal
@@ -113,7 +127,7 @@ public class Utility {
      * @param title
      * @param message
      */
-    public static void alert(Context context, String title, String message) {
+    public static AlertDialog alert(Context context, String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (title != null) {
             builder.setTitle(title);
@@ -121,12 +135,15 @@ public class Utility {
         if (message != null) {
             builder.setMessage(message);
         }
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        AlertDialog dialog = builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
-        }).create().show();
+        }).create();
+        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        dialog.show();
+        return dialog;
     }
 
     /**
@@ -177,7 +194,7 @@ public class Utility {
         try {
             Date date = DATE_FORMAT_API.parse(dateText);
             newDate = DATE_FORMAT_API.format(date);
-            Debug.e("date test",newDate);
+            Debug.e("date test", newDate);
 
         } catch (Exception e) {
 
@@ -343,19 +360,17 @@ public class Utility {
      * Hide the view
      */
 
-    public static void hideView(View view)
-    {
+    public static void hideView(View view) {
         view.setVisibility(View.GONE);
     }
-    public static void invisibleView(View view)
-    {
+
+    public static void invisibleView(View view) {
         view.setVisibility(View.INVISIBLE);
     }
-    public static void showView(View view)
-    {
+
+    public static void showView(View view) {
         view.setVisibility(View.VISIBLE);
     }
-
 
 
     public static void startSlideAnimation(final View view, int fromX, int toX, int fromY, int toY) {
@@ -379,5 +394,12 @@ public class Utility {
         slideOutAnimation.setDuration(500);
         slideOutAnimation.setFillAfter(true);
         view.startAnimation(slideOutAnimation);
+    }
+
+
+    public static void alertOffline(Context context) {
+        if (dialogOffline == null || !dialogOffline.isShowing()) {
+            dialogOffline = alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_offline));
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.AddQuestionContainerFragment;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.model.Answers;
 import com.ism.teacher.ws.model.Questions;
 
@@ -35,10 +36,9 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     Context mContext;
     ArrayList<Questions> arrListQuestions = new ArrayList<>();
     ArrayList<Questions> copyListOfQuestions = new ArrayList<>();
-    MyTypeFace myTypeFace;
 
+    public int MAX_LINES_VISIBLE = 6;
     Fragment mFragment;
-    boolean dropdownFlag = false;
     public Boolean canAddToPreview = false;
 
     public QuestionBankListAdapter(Context context, Fragment fragment) {
@@ -64,7 +64,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
 
-        myTypeFace = new MyTypeFace(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         View questionListview = inflater.inflate(R.layout.row_questionlist_teacher, parent, false);
         ViewHolder viewHolder = new ViewHolder(questionListview);
@@ -72,8 +71,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // ExpandableTextView tvQuestion;
-        //TextView expandable_text;
         TextView tvQuestionNo, tvQuestionCategory, tvQuestionCreatedby, tvQuestionAns, tvQuestion;
         LinearLayout llQuestionAnswers;
         ImageView imgDropdownViewAnswer, imgQuestionEdit, imgQuestionCopy, imgQuestionAddtofavourite;
@@ -82,11 +79,9 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         public ViewHolder(View itemView) {
             super(itemView);
 
-            //  expandable_text = (TextView) itemView.findViewById(R.id.expandable_text);
             tvQuestionNo = (TextView) itemView.findViewById(R.id.tv_question_no);
             tvQuestionCategory = (TextView) itemView.findViewById(R.id.tv_question_category);
             tvQuestionCreatedby = (TextView) itemView.findViewById(R.id.tv_question_createdby);
-            //tvQuestion = (ExpandableTextView) itemView.findViewById(R.id.tv_question);
             tvQuestion = (TextView) itemView.findViewById(R.id.tv_question);
             tvQuestionAns = (TextView) itemView.findViewById(R.id.tv_question_ans);
 
@@ -105,82 +100,92 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         holder.tvQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
-        holder.tvQuestionNo.setTypeface(myTypeFace.getRalewayBold());
+        holder.tvQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
         holder.tvQuestionNo.setPaintFlags(holder.tvQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        holder.tvQuestionCategory.setTypeface(myTypeFace.getRalewayRegular());
+        holder.tvQuestionCategory.setTypeface(Global.myTypeFace.getRalewayRegular());
         holder.tvQuestionCategory.setText(mContext.getString(R.string.strcategory));
 
         holder.tvQuestionCategory.append(Utility.getSpannableString(" " + arrListQuestions.get(position).getSubjectName(),
                 mContext.getResources().getColor(R.color.color_green)));
 
-        holder.tvQuestionCreatedby.setTypeface(myTypeFace.getRalewayRegular());
+        holder.tvQuestionCreatedby.setTypeface(Global.myTypeFace.getRalewayRegular());
         holder.tvQuestionCreatedby.setText(mContext.getString(R.string.strcreatedby));
 
         holder.tvQuestionCreatedby.append(Utility.getSpannableString(" " + arrListQuestions.get(position).getQuestionCreatorName(),
                 mContext.getResources().getColor(R.color.color_green)));
-
-
-//        holder.expandable_text.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
+        holder.tvQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         holder.tvQuestion.setText(Utility.formatHtml(arrListQuestions.get(position).getQuestionText()));
+        /**
+         * hide the edit question
+         */
 
-//        makeTextViewResizable( holder.tvQuestion, 6, "View More", true);
+        if (arrListQuestions.get(position).getQuestionCreatorId().equalsIgnoreCase(WebConstants.USER_ID_370)) {
+            holder.imgQuestionEdit.setVisibility(View.VISIBLE);
+        } else {
+            holder.imgQuestionEdit.setVisibility(View.GONE);
+        }
 
-//        if(holder.tvQuestion.getLineCount()>6)
-//        {
-//            makeTextViewResizable( holder.tvQuestion, 6, "View More", true);
-//        }
+        /**
+         * For inflating options for A,B,C,D....for question options
+         */
 
-//        holder.tvQuestion.setOnExpandStateChangeListener(new ExpandableTextView.OnExpandStateChangeListener() {
-//            @Override
-//            public void onExpandStateChanged(TextView textView, boolean isExpanded) {
-//               // Toast.makeText(mContext, isExpanded ? "Expanded" : "Collapsed", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
+            holder.tvQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvQuestionAns.setText(arrListQuestions.get(position).getSolution());
+        } else {
+            holder.llQuestionAnswers.removeAllViews();
+            if (holder.llQuestionAnswers.getChildCount() == 0) {
+                for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
+                    View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
+                    holder.llQuestionAnswers.addView(ansView);
+                }
+
+            }
+        }
+
+        /**
+         * For managing visibility of options (based on mcq or descriptive.
+         * If mcq then options will be visible
+         */
+
+        holder.imgDropdownViewAnswer.setSelected(arrListQuestions.get(position).getIsDropdownOpen());
+        holder.imgDropdownViewAnswer.setActivated(arrListQuestions.get(position).getIsDropdownOpen());
+        if (arrListQuestions.get(position).getIsDropdownOpen()) {
+            if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
+                holder.tvQuestionAns.setVisibility(View.VISIBLE);
+                holder.llQuestionAnswers.setVisibility(View.GONE);
+            } else {
+                holder.tvQuestionAns.setVisibility(View.GONE);
+                holder.llQuestionAnswers.setVisibility(View.VISIBLE);
+            }
+        } else {
+            holder.tvQuestionAns.setVisibility(View.GONE);
+            holder.llQuestionAnswers.setVisibility(View.GONE);
+        }
+
 
         holder.imgDropdownViewAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (!dropdownFlag) {
-                    if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
+                holder.imgDropdownViewAnswer.setSelected(!holder.imgDropdownViewAnswer.isSelected());
+                arrListQuestions.get(position).setIsDropdownOpen(holder.imgDropdownViewAnswer.isSelected());
+                holder.imgDropdownViewAnswer.setActivated(holder.imgDropdownViewAnswer.isSelected());
 
-                        holder.tvQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
-                        holder.tvQuestionAns.setText(arrListQuestions.get(position).getSolution());
-                        holder.tvQuestionAns.setVisibility(View.VISIBLE);
-
-                    } else {
-
-                        holder.llQuestionAnswers.removeAllViews();
-                        if (holder.llQuestionAnswers.getChildCount() == 0) {
-                            for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
-                                View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
-                                holder.llQuestionAnswers.addView(ansView);
-                            }
-                        }
-
-                        holder.llQuestionAnswers.setVisibility(View.VISIBLE);
-
-                    }
-                    holder.imgDropdownViewAnswer.setBackgroundResource(R.drawable.dropdown_close);
-                    dropdownFlag = true;
+                if (holder.imgDropdownViewAnswer.isActivated()) {
+                    holder.tvQuestion.setMaxLines(Integer.MAX_VALUE);
+                    holder.tvQuestion.setEllipsize(null);
 
                 } else {
-                    holder.imgDropdownViewAnswer.setBackgroundResource(R.drawable.dropdown_open);
-                    dropdownFlag = false;
-
-                    if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
-                        holder.tvQuestionAns.setVisibility(View.GONE);
-                    } else {
-                        holder.llQuestionAnswers.setVisibility(View.GONE);
-                        holder.llQuestionAnswers.removeAllViews();
-                    }
+                    holder.tvQuestion.setMaxLines(MAX_LINES_VISIBLE);
+                    holder.tvQuestion.setEllipsize(TextUtils.TruncateAt.END);
 
                 }
 
+                notifyDataSetChanged();
             }
         });
 
@@ -248,17 +253,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             }
         });
 
-
-        /**
-         * hide the edit question
-         */
-
-        if (arrListQuestions.get(position).getQuestionCreatorId().equalsIgnoreCase(WebConstants.USER_ID_370)) {
-            holder.imgQuestionEdit.setVisibility(View.VISIBLE);
-        } else {
-            holder.imgQuestionEdit.setVisibility(View.GONE);
-        }
-
     }
 
 
@@ -278,7 +272,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         View v;
         v = layoutInflater.inflate(R.layout.row_mcq_question_answer, null, false);
         TextView tvMcqQuestionAns = (TextView) v.findViewById(R.id.tv_mcq_question_ans);
-        tvMcqQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
+        tvMcqQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvMcqQuestionAns.setText(Utility.formatHtml(Utility.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
 
         return v;

@@ -19,11 +19,9 @@ import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.TeacherOfficeFragment;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.model.Examsubmittor;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -36,9 +34,7 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
 
     Context mContext;
     ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<>();
-    MyTypeFace myTypeFace;
 
-    private ImageLoader imageLoader;
     public static String EXAM_OBJECTIVE = "objective";
     public static String EXAM_SUBJECTIVE = "subjective";
 
@@ -52,9 +48,6 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
 
     public AssignmentSubmitterAdapter(Context mContext) {
         this.mContext = mContext;
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(this.mContext));
-        myTypeFace = new MyTypeFace(mContext);
 
         //Get FragmentManager
         fragmentManager = ((Activity) mContext).getFragmentManager();
@@ -81,12 +74,11 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
             super(itemView);
 
             img_student = (CircleImageView) itemView.findViewById(R.id.img_student);
-            txt_studentName = (TextView) itemView.findViewById(R.id.txt_studentName);
 
+            txt_studentName = (TextView) itemView.findViewById(R.id.txt_studentName);
             txt_roll_number_student = (TextView) itemView.findViewById(R.id.txt_roll_number_student);
             txt_submission_date = (TextView) itemView.findViewById(R.id.txt_submission_date);
             txt_assessed_status = (TextView) itemView.findViewById(R.id.txt_assessed_status);
-
             txt_submission_date_label = (TextView) itemView.findViewById(R.id.txt_submission_date_label);
             txt_assessed_status_label = (TextView) itemView.findViewById(R.id.txt_assessed_status_label);
 
@@ -100,11 +92,21 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
+        holder.txt_studentName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        holder.txt_roll_number_student.setTypeface(Global.myTypeFace.getRalewayRegular());
+        holder.txt_submission_date.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+        holder.txt_submission_date.setTypeface(Global.myTypeFace.getRalewayRegular());
+        holder.txt_assessed_status.setTypeface(Global.myTypeFace.getRalewayRegular());
+        holder.txt_submission_date_label.setTypeface(Global.myTypeFace.getRalewayRegular());
+        holder.txt_assessed_status_label.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+
         holder.txt_studentName.setText(arrListExamSubmittor.get(position).getStudentName());
         holder.txt_submission_date.setText(Utility.getFormattedDate("dd-MMM-yyyy", arrListExamSubmittor.get(position).getSubmissionDate()));
         holder.txt_assessed_status.setText(arrListExamSubmittor.get(position).getExamStatus());
 
-        imageLoader.displayImage(WebConstants.USER_IMAGES + "Users_Images/" + arrListExamSubmittor.get(position).getStudentProfilePic(), holder.img_student, ISMTeacher.options);
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + "Users_Images/" + arrListExamSubmittor.get(position).getStudentProfilePic(), holder.img_student, ISMTeacher.options);
 
 
         holder.ll_parent_student_row.setOnClickListener(new View.OnClickListener() {
@@ -128,9 +130,9 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
                 if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(EXAM_OBJECTIVE)) {
 
 //                    TeacherOfficeFragment.current_office_fragment = TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW;
-                    TeacherOfficeFragment teacherOfficeFragment=(TeacherOfficeFragment)fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+                    TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
                     teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW);
-                 //   fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, ObjectiveAssignmentQuestionsFragment.newInstance(getBundleArguments()), AppConstant.FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION).commit();
+                    //   fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, ObjectiveAssignmentQuestionsFragment.newInstance(getBundleArguments()), AppConstant.FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION).commit();
                 }
 
                 /**
@@ -141,7 +143,7 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
 
                 else if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(EXAM_SUBJECTIVE)) {
 
-                    TeacherOfficeFragment teacherOfficeFragment=(TeacherOfficeFragment)fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+                    TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
                     teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_SUBJECTIVE_QUESTIONS);
 
                     //fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, SubjectiveQuestionsContainerFragment.newInstance(getBundleArguments()),AppConstant.FRAGMENT_TAG_SUBJECTIVE_QUESTIONS).commit();

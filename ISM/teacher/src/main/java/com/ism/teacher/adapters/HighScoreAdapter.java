@@ -11,8 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.HighScoreModel;
+import com.ism.teacher.object.Global;
 
 import java.util.ArrayList;
 
@@ -51,7 +51,7 @@ public class HighScoreAdapter extends BaseAdapter {
         convertView=inflater.inflate(R.layout.row_high_score,parent,false);
         TextView txt_highScoreSubject=(TextView)convertView.findViewById(R.id.txt_highScoreSubject);
         ListView lv_highScoreStudentList=(ListView)convertView.findViewById(R.id.lv_highScoreStudentList);
-        txt_highScoreSubject.setTypeface(new MyTypeFace(context).getRalewayRegular());
+        txt_highScoreSubject.setTypeface(Global.myTypeFace.getRalewayRegular());
         txt_highScoreSubject.setText(arrayListSubject.get(position).getStrSubjectName());
         lv_highScoreStudentList.setAdapter(new HighScoreStudentListAdapter(context, arrayListSubject.get(position).getArrayListStudent()));
         lv_highScoreStudentList.setDivider(new ColorDrawable(Color.parseColor("#f4f4f4")));

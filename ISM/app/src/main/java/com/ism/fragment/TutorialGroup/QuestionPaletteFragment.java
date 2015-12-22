@@ -101,13 +101,14 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 //			cal.set(Calendar.HOUR, 11);
 //			cal.set(Calendar.MINUTE, 10);
 //			cal.set(Calendar.AM_PM, Calendar.AM);
-			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
 				try {
 					AdminConfig configStartTime = studentHelper.getActiveHoursStartTime();
 					SimpleDateFormat DATE_FORMAT_TIME = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
 					Calendar calStartTime = Calendar.getInstance();
 					String startTime = configStartTime.getConfigValue() + " " + configStartTime.getValueUnit();
 //					String startTime = "11:21 am";
+					Log.e(TAG, "start time : " + startTime);
 					Date date = DATE_FORMAT_TIME.parse(startTime);
 					calStartTime.set(Calendar.HOUR_OF_DAY, date.getHours());
 					calStartTime.set(Calendar.MINUTE, date.getMinutes());
@@ -115,7 +116,8 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 					if (cal.after(calStartTime)) {
 						AdminConfig configEndTime = studentHelper.getActiveHoursEndTime();
 						String endTime = configEndTime.getConfigValue() + " " + configEndTime.getValueUnit();
-//						String endTime = "02:15 pm";
+//						String endTime = "04:15 pm";
+						Log.e(TAG, "end time : " + endTime);
 						Date endDate = DATE_FORMAT_TIME.parse(endTime);
 
 						Calendar calEndTime = Calendar.getInstance();
@@ -210,13 +212,19 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 
 	private void end() {
 		try {
-			timerExam.cancel();
+			if (timerExam != null) {
+				timerExam.cancel();
+			}
 			for (int i = 0; i < arrListQuestions.size(); i++) {
 				arrListQuestions.get(i).setIsReviewLater(false);
 				arrListQuestions.get(i).setIsSkipped(false);
 			}
 			int timeSpent = (int) ((longExamDurationMilli - intTimeLeft) / 60000);
-			fragExam.getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ResultFragment.newInstance(arrListQuestions, fragExam.isShowGraph(), timeSpent)).commit();
+
+			lvTutorialGroup.setVisibility(View.VISIBLE);
+			rlQuestionPalette.setVisibility(View.GONE);
+			fragExam.getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ResultFragment.newInstance(arrListQuestions,
+					fragExam.isShowGraph(), timeSpent)).commit();
 //			getFragmentManager().beginTransaction().remove(this).commit();
 		} catch (Exception e) {
 			Log.e(TAG, "end Exception : " + e.toString());

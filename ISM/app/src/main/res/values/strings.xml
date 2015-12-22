@@ -416,6 +416,11 @@
 	<string name="option4">Option 4</string>
 	<string name="options_lable">Options:</string>
 	<string name="upload_question_msg">Your question is ready for tutorial studymate.</string>
+	<string name="question_hour_evaluation">Question Hour Evaluation</string>
+	<string name="your_answer">Your Answer:</string>
+	<string name="correct_answer">Correct Answer:</string>
+	<string name="solution">Solution:</string>
+	<string name="admin">Admin</string>
 
 	<!-- ################################## -->
 </resources>

@@ -14,8 +14,6 @@ import android.widget.Toast;
 import com.ism.teacher.R;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.ws.model.Studymates;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -31,12 +29,9 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
     ArrayList<Studymates> copyListOfStudyMates = new ArrayList<>();
 
     private LayoutInflater inflater;
-    private ImageLoader imageLoader;
 
     public TagStudyMatesAdapter(Context mContext) {
         this.context = mContext;
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         inflater = LayoutInflater.from(mContext);
     }
 
