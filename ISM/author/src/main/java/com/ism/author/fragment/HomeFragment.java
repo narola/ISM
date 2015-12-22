@@ -228,7 +228,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
     private void getLikeFeedData() {
         RealmResults<model.FeedLike> realmResults = Global.authorHelper.realm.where(model.FeedLike.class)
-                .equalTo("isLiked", 1).equalTo("isSync", false).findAll();
+                .equalTo("isLiked", 1).equalTo("isSync", 0).findAll();
         if (realmResults.size() > 0) {
             for (model.FeedLike feedLike : realmResults) {
                 arrListLikeFeedId.add(feedLike.getFeedId());
@@ -238,7 +238,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
     private void getUnLikeFeedData() {
         RealmResults<model.FeedLike> realmResults = Global.authorHelper.realm.where(model.FeedLike.class)
-                .equalTo("isLiked", 0).equalTo("isSync", false).findAll();
+                .equalTo("isLiked", 0).equalTo("isSync", 0).findAll();
 
         if (realmResults.size() > 0) {
             for (model.FeedLike feedLike : realmResults) {

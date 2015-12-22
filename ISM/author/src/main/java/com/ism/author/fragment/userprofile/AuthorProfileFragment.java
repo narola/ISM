@@ -57,7 +57,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
     private TextView txtUserName;
     private AuthorHostActivity activityHost;
     private TextView txtMessageNo, txtNotification, txtstudymatesRequest;
-    private TextView txtMyFeeds, txtMyActivity, txtMyBooks, txtFollowers;
+    private TextView txtMyFeeds, txtMyActivity, txtGeneralSetting, txtFollowers;
     private ListView lvNotifications;
     private Button btnViewAll;
     private ImageView imgNotification;
@@ -102,7 +102,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         txtMessageNo = (TextView) view.findViewById(R.id.txt_message);
         txtstudymatesRequest = (TextView) view.findViewById(R.id.txt_request);
         txtMyActivity = (TextView) view.findViewById(R.id.txt_myactivity);
-        // txtMyBooks = (TextView) view.findViewById(R.id.txt_mybooks);
+        txtGeneralSetting = (TextView) view.findViewById(R.id.txt_general_setting);
         txtFollowers = (TextView) view.findViewById(R.id.txt_followers);
         txtMyFeeds = (TextView) view.findViewById(R.id.txt_myfeeds);
         imgNotification = (ImageView) view.findViewById(R.id.img_notification);
@@ -116,7 +116,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         txtMessageNo.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtViewProfile.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtFollowers.setTypeface(Global.myTypeFace.getRalewayRegular());
-        //txtMyBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtGeneralSetting.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtMyFeeds.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtMyActivity.setTypeface(Global.myTypeFace.getRalewayRegular());
 
@@ -132,9 +132,9 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                     case R.id.txt_myfeeds:
                         activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_FEEDS);
                         break;
-//                    case R.id.txt_mybooks:
-//                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_BOOKS, null);
-//                        break;
+                    case R.id.txt_general_setting:
+                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GENERAL_SETTING);
+                        break;
                     case R.id.txt_followers:
                         activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_FOLLOWERS);
                         break;
@@ -171,8 +171,9 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
 
 
         txtFollowers.setOnClickListener(onClickLabel);
-        //txtMyBooks.setOnClickListener(onClickLabel);
+        //txtGeneralSetting.setOnClickListener(onClickLabel);
         txtMyFeeds.setOnClickListener(onClickLabel);
+        txtGeneralSetting.setOnClickListener(onClickLabel);
         txtMyActivity.setOnClickListener(onClickLabel);
         txtUserName.setOnClickListener(onClickLabel);
         rrViewProfile.setOnClickListener(onClickLabel);
@@ -471,10 +472,10 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                 txtMyFeeds.setTextColor(textColor);
                 txtMyFeeds.setEnabled(!attached);
                 break;
-//            case AuthorHostActivity.FRAGMENT_MY_BOOKS:
-//                txtMyBooks.setTextColor(textColor);
-//                txtMyBooks.setEnabled(!attached);
-//                break;
+            case AuthorHostActivity.FRAGMENT_GENERAL_SETTING:
+                txtGeneralSetting.setTextColor(textColor);
+                txtGeneralSetting.setEnabled(!attached);
+                break;
             case AuthorHostActivity.FRAGMENT_MY_ACTIVITY:
                 txtMyActivity.setTextColor(textColor);
                 txtMyActivity.setEnabled(!attached);

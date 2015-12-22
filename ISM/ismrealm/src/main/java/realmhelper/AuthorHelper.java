@@ -146,7 +146,7 @@ public class AuthorHelper {
                 model.FeedLike feedLike = realm.where(model.FeedLike.class)
                         .equalTo("feedId", feedId).equalTo("userId", strUserId).findFirst();
                 realm.beginTransaction();
-                feedLike.setIsSync(true);
+                feedLike.setIsSync(1);
                 realm.copyToRealmOrUpdate(feedLike);
                 realm.commitTransaction();
             }
@@ -156,7 +156,7 @@ public class AuthorHelper {
                 model.FeedLike feedLike = realm.where(model.FeedLike.class)
                         .equalTo("feedId", feedId).equalTo("userId", strUserId).findFirst();
                 realm.beginTransaction();
-                feedLike.setIsSync(true);
+                feedLike.setIsSync(1);
                 realm.copyToRealmOrUpdate(feedLike);
                 realm.commitTransaction();
             }
@@ -176,7 +176,7 @@ public class AuthorHelper {
                         model.FeedLike feedLike = realm.where(model.FeedLike.class)
                                 .equalTo("feedId", feedId).equalTo("userId", strUserId).findFirst();
                         realm.beginTransaction();
-                        feedLike.setIsSync(true);
+                        feedLike.setIsSync(1);
                         realm.copyToRealmOrUpdate(feedLike);
                         realm.commitTransaction();
                     }
@@ -186,7 +186,7 @@ public class AuthorHelper {
                         model.FeedLike feedLike = realm.where(model.FeedLike.class)
                                 .equalTo("feedId", feedId).equalTo("userId", strUserId).findFirst();
                         realm.beginTransaction();
-                        feedLike.setIsSync(true);
+                        feedLike.setIsSync(1);
                         realm.copyToRealmOrUpdate(feedLike);
                         realm.commitTransaction();
                     }

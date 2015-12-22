@@ -8,6 +8,7 @@ import com.ism.author.ws.model.AdminConfig;
 import com.ism.author.ws.model.Assignment;
 import com.ism.author.ws.model.AuthorBook;
 import com.ism.author.ws.model.Badges;
+import com.ism.author.ws.model.BlockedUsers;
 import com.ism.author.ws.model.Books;
 import com.ism.author.ws.model.Cities;
 import com.ism.author.ws.model.Classrooms;
@@ -27,6 +28,7 @@ import com.ism.author.ws.model.Message;
 import com.ism.author.ws.model.Notification;
 import com.ism.author.ws.model.Question;
 import com.ism.author.ws.model.Questions;
+import com.ism.author.ws.model.SettingPreferences;
 import com.ism.author.ws.model.States;
 import com.ism.author.ws.model.StudymateRequest;
 import com.ism.author.ws.model.Studymates;
@@ -37,6 +39,7 @@ import com.ism.author.ws.model.UploadQuestion;
 import com.ism.author.ws.model.TrendingQuestion;
 import com.ism.author.ws.model.User;
 import com.ism.author.ws.model.UserImages;
+import com.ism.author.ws.model.UserPreferences;
 
 import java.util.ArrayList;
 
@@ -65,6 +68,9 @@ public class ResponseHandler {
     private ArrayList<Feeds> feedImages;
     private ArrayList<TrendingQuestion> trendingQuestions;
     private ArrayList<User> highScorers;
+    private ArrayList<BlockedUsers> blockedUsers;
+    private ArrayList<SettingPreferences> preference;
+    private ArrayList<UserPreferences> userPreference;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -114,6 +120,24 @@ public class ResponseHandler {
     private UserImages userImages;
     FileUploadResponse fileUploadResponse;
     private UploadQuestion uploadQuestion;
+
+    @JsonProperty("user_preference")
+    public ArrayList<UserPreferences> getUserPreference() {
+        return this.userPreference;
+    }
+
+    public void setUserPreference(ArrayList<UserPreferences> userPreference) {
+        this.userPreference = userPreference;
+    }
+
+    @JsonProperty("preference")
+    public ArrayList<SettingPreferences> getPreference() {
+        return preference;
+    }
+
+    public void setPreference(ArrayList<SettingPreferences> preference) {
+        this.preference = preference;
+    }
 
     @JsonProperty("high_scorers")
     public ArrayList<User> getHighScorers() {
@@ -424,6 +448,10 @@ public class ResponseHandler {
         this.userImages = userImages;
     }
 
+    @JsonProperty("blocked_users")
+    public ArrayList<BlockedUsers> getBlockedUsers() {
+        return this.blockedUsers;
+    }
 
     @JsonProperty("upload_question_images")
     public UploadQuestion getUploadQuestion() {
@@ -443,5 +471,8 @@ public class ResponseHandler {
         this.assignment = assignment;
     }
 
+    public void setBlockedUsers(ArrayList<BlockedUsers> blockedUsers) {
+        this.blockedUsers = blockedUsers;
+    }
 }
 

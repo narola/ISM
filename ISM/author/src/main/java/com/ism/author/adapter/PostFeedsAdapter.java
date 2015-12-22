@@ -534,7 +534,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         feedLike.setCreatedDate(null);
         feedLike.setModifiedDate(null);
         feedLike.setIsLiked(isLike);
-        feedLike.setIsSync(false);
+        feedLike.setIsSync(0);
         feedLike.setFeedId(arrListFeeds.get(position).getFeedId());
         feedLike.setUserId(Global.strUserId);
 
