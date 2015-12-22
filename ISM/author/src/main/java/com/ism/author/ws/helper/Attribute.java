@@ -115,6 +115,7 @@ public class Attribute {
     private String authorId;
     private String checkSlot;
     private String answerText;
+    private String assignmentName;
 
     public ArrayList<String> getUnfavoriteResourceId() {
         return this.unfavoriteResourceId;
@@ -1115,6 +1116,15 @@ public class Attribute {
     @JsonProperty("education")
     public void setEducation(String education) {
         this.education = education;
+    }
+
+    public String getAssignmentName() {
+        return assignmentName;
+    }
+
+    @JsonProperty("assignment_name")
+    public void setAssignmentName(String assignmentName) {
+        this.assignmentName = assignmentName;
     }
 }
 

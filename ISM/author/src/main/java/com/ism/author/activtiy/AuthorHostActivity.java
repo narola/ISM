@@ -513,7 +513,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
 
                 case FRAGMENT_BOOKS:
-                    setTopBarValues(fragment, getResources().getColor(R.color.bg_books), false, false, true, controllerTopMenuBooks, true);
+                    setTopBarValues(fragment, getResources().getColor(R.color.bg_books), false, false, true, controllerTopMenuBooks, false);
 
                     llControllerLeft.setVisibility(View.VISIBLE);
                     flFragmentContainerRight.setVisibility(View.VISIBLE);
@@ -1115,6 +1115,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 break;
             case R.id.img_high_score:
                 loadFragmentInRightContainer(FRAGMENT_HIGHSCORE);
+                if(currentMainFragment!=FRAGMENT_HOME)
+                    loadFragmentInMainContainer(FRAGMENT_HOME);
                 break;
         }
     }

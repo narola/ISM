@@ -29,6 +29,7 @@ import com.ism.author.broadcastReceiver.NetworkStatusReceiver;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.NetworkStateListener;
 import com.ism.author.object.Global;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -132,6 +133,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         etUserName = (EditText) findViewById(R.id.et_userid);
         llLogin = (LinearLayout) findViewById(R.id.ll_login);
 
+        Global.myTypeFace = new MyTypeFace(this);
         showLoginLayout();
 
 //        etUserName.setText("twinkle");
