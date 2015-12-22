@@ -52,10 +52,17 @@ class TutorialGroup
                 return $this->pingTutorialMate($postData);
             }
                 break;
+
             case "AllocateTeacherToGroup":
             {
                 return $this->allocateTeacherToGroup($postData);
              }
+                break;
+
+            case "GetTutorialGroupExam":
+            {
+                return $this->getTutorialGroupExam($postData);
+            }
                 break;
 
 
@@ -497,12 +504,13 @@ class TutorialGroup
                     }
                     if($groups['group_cycle']=='ongoing'){
 
+
                         $selData="tutorial_group_topic_allocation.*,tutorial_topic.topic_name,topic_description,tutorial_topic.created_by,subjects.subject_name,tutorial_topic.topic_day";
 
                         $queryToFetchTopics="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation
                          INNER JOIN ".TABLE_TUTORIAL_TOPIC." tutorial_topic ON tutorial_group_topic_allocation.tutorial_topic_id=tutorial_topic.id
                          INNER JOIN ".TABLE_SUBJECTS." subjects ON tutorial_topic.subject_id=subjects.id
-                         WHERE group_id=".$group_id." AND week_no = ".$week_no ." AND tutorial_group_topic_allocation.is_delete=0";
+                         WHERE tutorial_group_topic_allocation.group_id=".$group_id." AND tutorial_group_topic_allocation.week_no = ".$week_no ." AND tutorial_group_topic_allocation.week_day BETWEEN 1 AND 7 AND tutorial_group_topic_allocation.is_delete=0";
                         //AND (".$day_no." >= 1 AND ".$day_no." <= 7)
 
                         $resultToFetchTopics = mysqli_query($GLOBALS['con'], $queryToFetchTopics) or $message = mysqli_error($GLOBALS['con']);
@@ -510,15 +518,16 @@ class TutorialGroup
 
                         if (mysqli_num_rows($resultToFetchTopics) > 0) {
                             while ($topicGroups = mysqli_fetch_assoc($resultToFetchTopics)) {
+                                $post['tutorial_topic_id']=$topicGroups['tutorial_topic_id'];
                                 $post['tutorial_topic']=$topicGroups['topic_name'];
                                 $post['topic_description']=$topicGroups['topic_description'];
-                                $post['assigned_by']=$topicGroups['created_by'];
+                                $post['assigned_by']=$groups['group_name'];
                                 $post['day_name']=$topicGroups['topic_day'];
                                 $post['interface_type']=$topicGroups['interface_type'];
                                 $post['assigned_time']=$topicGroups['created_date'];
                                 $post['subject_name']=$topicGroups['subject_name'];
 
-                                $queryForCurrentDay="SELECT * FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE created_date='now()' AND group_id=".$group_id." AND is_delete=0";
+                                $queryForCurrentDay="SELECT * FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE DATE_FORMAT(created_date,'%y-%m-%d') = DATE_FORMAT(NOW(),'%y-%m-%d') AND group_id=".$group_id." AND tutorial_topic_id=".$topicGroups['tutorial_topic_id']." AND is_delete=0";
                                 $resultForCurrentDay=mysqli_query($GLOBALS['con'], $queryForCurrentDay) or $message = mysqli_error($GLOBALS['con']);
                                 if(mysqli_num_rows($resultForCurrentDay)>0)
                                 {
@@ -638,7 +647,7 @@ class TutorialGroup
 //                $condition=" AND week_no=".$weekNum." AND tutorial_group_topic_allocation.is_delete=0";
 //            }
 
-            $selData="DISTINCT tutorial_group_topic_allocation.*,tutorial_topic.topic_name,topic_description,tutorial_topic.created_by,subjects.subject_name";
+            $selData="DISTINCT tutorial_group_topic_allocation.*,tutorial_topic.topic_name,topic_description,tutorial_topic.created_by,subjects.subject_name,tutorial_topic.topic_day";
 
             $queryToFetchTopics="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation
                          INNER JOIN ".TABLE_TUTORIAL_TOPIC." tutorial_topic ON tutorial_group_topic_allocation.tutorial_topic_id=tutorial_topic.id
@@ -657,11 +666,11 @@ class TutorialGroup
                     $topic_discussion['assigned_by']=$topicGroups['created_by'];
                     $topic_discussion['day_name']=$topicGroups['topic_day'];
                     $topic_discussion['interface_type']=$topicGroups['interface_type'];
-                    $topic_discussion['created_date']=$topicGroups['assigned_time'];
+                    $topic_discussion['assigned_time']=$topicGroups['created_date'];
                     $topic_discussion['subject_name']=$topicGroups['subject_name'];
 
 
-                    $queryForCurrentDay="SELECT * FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE created_date='now()' AND group_id=".$group_id." AND is_delete=0";
+                    $queryForCurrentDay="SELECT * FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE DATE_FORMAT(created_date,'%y-%m-%d') = DATE_FORMAT(NOW(),'%y-%m-%d') AND group_id=".$group_id." AND tutorial_topic_id=".$topicGroups['tutorial_topic_id']." AND is_delete=0";
                     $resultForCurrentDay=mysqli_query($GLOBALS['con'], $queryForCurrentDay) or $message = mysqli_error($GLOBALS['con']);
                     if(mysqli_num_rows($resultForCurrentDay)>0)
                     {
@@ -1159,6 +1168,116 @@ class TutorialGroup
         }
 
 
+    }
+
+
+    public function getTutorialGroupExam ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $role = validateObject ($postData , 'role', "");
+        $role = addslashes($role);
+
+        $exam_id = validateObject ($postData , 'exam_id', "");
+        $exam_id = addslashes($exam_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+           // $exam_ids[] = array();
+            if ($role == 2) {
+                if($exam_id==0)
+                {
+                    $queryExam = "SELECT exam_id FROM ".TABLE_TUTORIAL_TOPIC_EXAM." WHERE is_delete=0 AND tutorial_group_id IN( SELECT group_id FROM ".TABLE_TUTORIAL_GROUP_MEMBER." user_id= ".$user_id." WHERE is_delete=0)";
+                    $resultExam = mysqli_query($GLOBALS['con'], $queryExam) or $message = mysqli_error($GLOBALS['con']);
+
+                    if(mysqli_num_rows($resultExam)>0)
+                    while($row=mysqli_fetch_assoc($resultExam))
+                    {
+                        $exam_ids[]=$row;
+                    }
+                }
+                else{
+                    $exam_ids[]['exam_id'] = $exam_id;
+                }
+
+            } else if ($role == 3) {
+                if($exam_id==0)
+                {
+                    $queryExam = "SELECT exam_id FROM ".TABLE_TUTORIAL_TOPIC_EXAM." WHERE allocated_teacher_id= ".$user_id." AND is_delete=0";
+                    $resultExam = mysqli_query($GLOBALS['con'], $queryExam) or $message = mysqli_error($GLOBALS['con']);
+
+                    if(mysqli_num_rows($resultExam)>0)
+                        while($row=mysqli_fetch_assoc($resultExam))
+                        {
+                            $exam_ids[]=$row;
+
+                        }
+                }
+                else{
+                    $exam_ids[]['exam_id'] = $exam_id;
+                }
+            }
+            //print_r($exam_ids);
+
+
+            foreach($exam_ids as $e1) {
+               // echo $e1['exam_id'];
+
+                $queryToGetExams = "SELECT * FROM " . TABLE_EXAMS . " WHERE id=" .$e1['exam_id'] . " AND is_delete=0";
+                $resultToGetExams = mysqli_query($GLOBALS['con'], $queryToGetExams) or $message = mysqli_error($GLOBALS['con']);
+                //echo $queryToGetExams;
+
+                if (mysqli_num_rows($resultToGetExams) > 0) {
+                    while ($rowExam = mysqli_fetch_assoc($resultToGetExams)) {
+                        $examClass = new ExamFunctions();
+                        $exams = array($examClass->getExamData($rowExam,1));
+
+                    }
+                    $status = SUCCESS;
+                    $message = "Exams listed";
+                }
+                else
+                {
+                    $exams=array();
+                    $status = SUCCESS;
+                    $message = DEFAULT_NO_RECORDS;
+                }
+            }
+
+
+            if ($exam_ids == null) {
+                $exams=array();
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['group_exam']=$exams;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
     }
 
 }

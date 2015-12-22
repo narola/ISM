@@ -199,12 +199,6 @@ class ExamFunctions
             }
                 break;
 
-            case "UploadSubQuestionImages":
-            {
-                return $this->uploadSubQuestionImages($postData);
-            }
-                break;
-
             case "PublishResults":
             {
                 return $this->publishResults($postData);
@@ -1011,7 +1005,7 @@ class ExamFunctions
             if (mysqli_num_rows($resultExam) > 0) {
                 while ($rowExam = mysqli_fetch_assoc($resultExam)) {
                     $exam_id[] = $rowExam['id'];
-                    $data[] = $this->getExamData($rowExam);
+                    $data[] = $this->getExamData($rowExam,0);
                 }
             }
             $queryExam = "SELECT * FROM ".TABLE_EXAMS." WHERE is_delete=0 ".$condition."  AND id in (select exam_id from ".TABLE_EXAM_SCHEDULE." where exam_assessor=".$user_id.")";
@@ -1026,7 +1020,7 @@ class ExamFunctions
                         }
                     }
                     if ($flag == false) {
-                        $data[] = $this->getExamData($rowExam);
+                        $data[] = $this->getExamData($rowExam,0);
                     }
 
                 }
@@ -1051,12 +1045,13 @@ class ExamFunctions
         return $response;
     }
 
-    public function getExamData($rowExam)
+    public function getExamData($rowExam,$isQuestion)
     {
         $post = array();
         $post['exam_id'] = $rowExam['id'];
         // $post['question_title']=$rowExam['id'];
         $post['exam_name'] = $rowExam['exam_name'];
+        $post['exam_category'] = $rowExam['exam_category'];
         $post['classroom_id'] = $rowExam['classroom_id'];
 
         $query = "SELECT class_name FROM " . TABLE_CLASSROOMS . " WHERE id=" . $rowExam['classroom_id'] . " AND is_delete=0 ";
@@ -1196,6 +1191,22 @@ class ExamFunctions
 
         $post['exam_created_date'] = $rowExam['created_date'];
 
+        if($isQuestion==1)
+        {
+            $examPostParamClass = new stdClass();
+            $examPostParamClass->exam_id = $rowExam['id'];
+            $questions=$this->getExamQuestions($examPostParamClass);
+
+            $q1=array_slice($questions,0,1);
+            $q1[]=$q1['exam_questions'][0];
+
+            $q1=$q1[0]['questions'];
+            $post['questions']=$q1;
+
+        }
+
+
+
         return $post;
     }
 
@@ -1243,7 +1254,7 @@ class ExamFunctions
                 $examData['class_name'] = $row['class_name'];
                 $examData['created_date'] = $row['created_date'];
 
-                $queryExamQuestion = "SELECT * FROM ".TABLE_EXAM_QUESTION." where exam_id=".$exam_id ." and is_delete=0 ";
+                $queryExamQuestion = "SELECT * FROM ".TABLE_EXAM_QUESTION." where exam_id=".$exam_id ." and is_delete=0 ORDER BY question_id";
                 $resultExamQuestion = mysqli_query($GLOBALS['con'], $queryExamQuestion) or $message = mysqli_error($GLOBALS['con']);
 
                 if (mysqli_num_rows($resultExamQuestion)) {
@@ -2106,6 +2117,8 @@ class ExamFunctions
 ////                        $arrImages[] = $this->uploadRichTextEditorQuestionImages($formPostData);
 ////                        }
 
+
+
                         $question_media_dir = "question_" . $questionId . "/";
 
                         // $mediaName = "_test_IMAGE_" . $created_date . ".png";
@@ -2128,7 +2141,7 @@ class ExamFunctions
                         $img2 = array();
                         $value = 0;
                         foreach ($img as $img1) {
-                            // print_r($img_tag1);
+                            // print_r($img1);
                             $img2[$value] = $img1[2][0];
                             $value++;
 
@@ -2136,7 +2149,10 @@ class ExamFunctions
 
                         for ($i = 0; $i < $number_of_images; $i++) {
 
-                             $dir = RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir;
+
+                            //$name = "questions/";
+
+                            $dir = RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir;
 
                             if (!is_dir(RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir)) {
                                 mkdir(RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir, 0777);
@@ -2164,7 +2180,7 @@ class ExamFunctions
                                 } else {
                                     //echo "ready";
                                     // $client_server_path="http://clientapp.narolainfotech.com/pg/ISM/WS_ISM";
-                                    $html_text = str_replace($oldString, "\"http://192.168.1.147/WS_ISM/images/rich_text_editor_images/questions/" . $_FILES[$i]['name'] . "\"", $html_text);
+                                    $html_text = str_replace($oldString, "\"http://192.168.1.147/WS_ISM/images/rich_text_editor_images/rich_questions/" . $_FILES[$i]['name'] . "\"", $html_text);
                                     $htmlTextOfImages[] = $html_text;
 
                                     $status = SUCCESS;
@@ -4048,118 +4064,6 @@ class ExamFunctions
 
         return $htmlTextOfImages;
     }
-
-    /*
-    * uploadSubQuestionImages
-    */
-    public function uploadSubQuestionImages($postData)
-    {
-        $status='';
-        $mediaName = '';
-        $created_date = date("Ymd-His");
-        $reponse=array();
-
-        $question_id=$_POST['question_id'];
-
-        $secret_key = $_POST['secret_key'];
-        $access_key = $_POST['access_key'];
-
-        $security=new SecurityFunctions();
-        $isSecure = $security->checkForSecurity($access_key,$secret_key);
-
-        if($isSecure==yes) {
-
-            $question_media_dir = "question_" . $question_id . "/";
-
-                $mediaName = "_test_IMAGE_" . $created_date . ".png";
-
-                $numberofimages =  $_POST['numberofimages'];
-
-
-                $text =  $_POST['htmlText'];
-               // echo $text;
-                preg_match_all('/<img[^>]+>/i',$text, $result);
-
-                $img = array();
-
-                foreach($result as $img_tag)
-                {
-
-                    foreach($img_tag as $img_tag1) {
-                        preg_match_all('/(src)=("[^"]*")/i', $img_tag1, $img[$img_tag1]);
-                    }
-                }
-
-
-                $img2 = array();
-                $value = 0;
-                foreach($img as $img1) {
-                    // print_r($img_tag1);
-                    $img2[$value]=$img1[2][0];
-                    $value++;
-
-                }
-
-
-                for ($i = 0; $i < $numberofimages; $i++) {
-
-                    $dir = RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir;
-
-                    if (!is_dir(RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir)) {
-                          mkdir(RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir, 0777);
-                    }
-
-                     $uploadFile = $dir . $created_date;//$_FILES[$i]['name'];
-
-                    $oldString ="";
-
-
-                    foreach($img2 as $key=>$value){
-
-                        if (strpos($value,$_FILES[$i]['name']) !== false) {
-                            $oldString = $value;
-                            //echo "value ".$oldString;
-                        }
-                    }
-
-                    if(isset($_FILES[$i]['tmp_name']))
-                    {
-                        //echo "coming";
-                        if (!move_uploaded_file($_FILES[$i]['tmp_name'], $uploadFile))
-                        {
-
-                            $htmlTextOfImages[]=$uploadFile;
-                            $status=FAILED;
-                            $message = FAILED_TO_UPLOAD_MEDIA;
-                        }
-                        else{
-                            //echo "ready";
-                            // $client_server_path="http://clientapp.narolainfotech.com/pg/ISM/WS_ISM";
-                            $text =  str_replace($oldString,"\"http://192.168.1.147/WS_ISM/images/rich_text_editor_images/".$_FILES[$i]['name']."\"",$text);
-                            $htmlTextOfImages[]=$text;
-
-                            $status=SUCCESS;
-                            $message = "successfully uploaded";
-                        }
-                    }
-
-                }
-               // echo "text=".$text;
-        }
-        else
-        {
-            $status=FAILED;
-            $message = MALICIOUS_SOURCE;
-        }
-        $data['question_id']=$question_id;
-        $data['images_text']=$htmlTextOfImages;
-
-        $response['upload_question']=$data;
-        $response['status']=$status;;
-        $response['message']=$message;
-        return $response;
-    }
-
 
     /*
         * publishResults

@@ -163,7 +163,7 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
     }
 
 
-    public function likeFeed ($postData)
+    public function likeFeed1 ($postData)
     {
         $data=array();
         $response=array();
@@ -193,7 +193,7 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
                     if (mysqli_num_rows($resultCheckFeed)) {
                         $val = mysqli_fetch_assoc($resultCheckFeed);
                         $feed_like_id = $val['id'];
-                        $queryUpdate = "UPDATE `feed_like` SET `is_delete`=0 WHERE `feed_id`=" . $feed_like_id;
+                        $queryUpdate = "UPDATE `feed_like` SET `is_delete`=1 WHERE `feed_id`=" . $feed_like_id;
                         // echo $procedure;
                         $result = mysqli_query($GLOBALS['con'], $queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
                     }
@@ -208,13 +208,13 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
                     if (mysqli_num_rows($resultCheckFeed)) {
                         $val = mysqli_fetch_assoc($resultCheckFeed);
                         $feed_like_id = $val['id'];
-                        $queryUpdate = "UPDATE `feed_like` SET `is_delete`=1 WHERE `id`=" . $feed_like_id;
+                        $queryUpdate = "UPDATE `feed_like` SET `is_delete`=0 WHERE `id`=" . $feed_like_id;
                         // echo $procedure;
                         $result = mysqli_query($GLOBALS['con'], $queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
 
                     } else {
                         $insertFields = "`like_by`, `feed_id`,`is_delete`";
-                        $insertValues = "" . $user_id . ", " . $feed_id . ",'1'";
+                        $insertValues = "" . $user_id . ", " . $feed_id . ",'0'";
                         $query = "INSERT INTO " . TABLE_FEED_LIKE . " (" . $insertFields . ") VALUES (" . $insertValues . ")";
                         $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
                     }
@@ -239,7 +239,7 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
       * LikeFeed
 
     */
-    public function likeFeed1 ($postData)
+    public function likeFeed ($postData)
     {
         $data=array();
         $response=array();
@@ -284,7 +284,7 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
                     if (mysqli_num_rows($resultCheckFeed)>0) {
 
                         $queryUpdate = "UPDATE `feed_like` SET `is_delete`=0 WHERE `feed_id`=" . $feed_id." AND like_by=".$user_id;
-                        // echo $procedure;
+                        // echo $queryUpdate;
                         $result = mysqli_query($GLOBALS['con'], $queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
 
                     } else {

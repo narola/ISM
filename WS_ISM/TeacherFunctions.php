@@ -53,11 +53,13 @@ class TeacherFunctions
                 return $this->submitNotes($postData);//done
             }
                 break;
+
             case "UploadMediaNotes":
             {
                 return $this->uploadMediaNotes($postData);//done
             }
                 break;
+
             case "CreateAssignment":
             {
                 return $this->createAssignment($postData);//done
@@ -79,6 +81,18 @@ class TeacherFunctions
             case "GetAssignmentByBook":
             {
                 return $this->getAssignmentByBook($postData);//done
+            }
+                break;
+
+            case "CheckGroupAllocation":
+            {
+                return $this->checkGroupAllocation($postData);
+            }
+                break;
+
+            case "GetAllAllocatedGroups":
+            {
+                return $this->getAllAllocatedGroups($postData);
             }
                 break;
 
@@ -970,6 +984,221 @@ class TeacherFunctions
         $response['assignment']=$post;
 
         return $response;
+    }
+
+    public function checkGroupAllocation($postData)
+    {
+        $message ='';
+        $post=array();
+        $response=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $getFields="tuoral_topic_exam.*,tutorial_groups.group_name,tutorial_groups.classroom_id,classroom.class_name,group_allocation.group_score,topics.topic_name,exams.exam_name";
+            $query = "SELECT ".$getFields." FROM ".TABLE_TUTORIAL_TOPIC_EXAM." tuoral_topic_exam  LEFT JOIN ".TABLE_TUTORIAL_GROUPS." tutorial_groups ON tuoral_topic_exam.tutorial_group_id=tutorial_groups.id
+            LEFT JOIN ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." group_allocation ON tuoral_topic_exam.tutorial_group_id=group_allocation.group_id
+            LEFT JOIN .".TABLE_TUTORIAL_TOPIC." topics ON tuoral_topic_exam.tutorial_topic_id=topics.id
+            LEFT JOIN ".TABLE_EXAMS." exams ON tuoral_topic_exam.exam_id=exams.id
+            LEFT JOIN ".TABLE_CLASSROOMS." classroom ON tutorial_groups.classroom_id=classroom.id
+            WHERE tuoral_topic_exam.`allocated_teacher_id`=" . $user_id ." AND tuoral_topic_exam.is_ready=0 AND tuoral_topic_exam.is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            //echo $query; exit;
+           $group_allocation=array();
+            if (mysqli_num_rows($result)>0)
+            {
+                while($row=mysqli_fetch_assoc($result))
+                {
+                    $group_allocation['group_id']=$row['tutorial_group_id'];
+                    $group_allocation['group_name']=$row['group_name'];
+                    //$group_allocation['group_score']=$row['group_score'];
+                    $group_allocation['group_rank']=$row['group_rank'];
+                    $group_allocation['group_class']=$row['class_name'];
+                    $group_allocation['topic_id']=$row['tutorial_topic_id'];
+                    $group_allocation['topic_name']=$row['topic_name'];
+                    $group_allocation['exam_id']=$row['exam_id'];
+                    $group_allocation['exam_name']=$row['exam_name'];
+                    $group_allocation['exam_type']=$row['exam_type'];
+
+                    $queryToGetGroupScore="SELECT sum(group_score) FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE group_id=".$row['tutorial_group_id']." AND is_delete=0";
+                    $resultToGetGroupScore=mysqli_query($GLOBALS['con'], $queryToGetGroupScore) or $message = mysqli_error($GLOBALS['con']);
+                    $rowToFetchScore=mysqli_fetch_row($resultToGetGroupScore);
+                    $group_allocation['group_score']=$rowToFetchScore[0];
+
+                    $selData="tutorial_group_member.*,users.full_name,users.profile_pic,school.school_name";
+                    $queryToFetchMembers="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_MEMBER." tutorial_group_member
+                         INNER JOIN ".TABLE_USERS." users ON tutorial_group_member.user_id=users.id
+                         INNER JOIN ". TABLE_STUDENT_PROFILE." studentProfile ON users.id=studentProfile.user_id
+                         LEFT JOIN ".TABLE_SCHOOLS." school ON school.id=studentProfile.school_id
+                         WHERE tutorial_group_member.group_id=".$row['tutorial_group_id']." AND tutorial_group_member.is_delete=0 ";
+                    $resultToFetchMembers = mysqli_query($GLOBALS['con'], $queryToFetchMembers) or $message = mysqli_error($GLOBALS['con']);
+
+                    $member=array();
+                    if (mysqli_num_rows($resultToFetchMembers) > 0) {
+                        while ($members = mysqli_fetch_assoc($resultToFetchMembers)) {
+                            $groupMembers=array();
+                            $groupMembers['member_id'] = $members['user_id'];
+                            $groupMembers['member_name'] = $members['full_name'];
+                            $groupMembers['member_profile_pic'] = $members['profile_pic'];
+                            $groupMembers['member_school'] = $members['school_name'];
+
+
+                            $queryToGetScore="SELECT group_member_score.score FROM ".TABLE_TUTORIAL_GROUP_MEMBER_SCORE." group_member_score LEFT JOIN ".TABLE_TUTORIAL_GROUP_MEMBER." tutorial_group_member ON tutorial_group_member.user_id=group_member_score.member_id WHERE tutorial_group_member.group_id= ".$row['tutorial_group_id']." AND group_member_score.topic_id=".$row['tutorial_topic_id'] ." AND group_member_score.member_id=".$members['user_id'];
+                            $resultToGetScore=mysqli_query($GLOBALS['con'], $queryToGetScore) or $message = mysqli_error($GLOBALS['con']);
+                            $rowToFetchRecord=mysqli_fetch_row($resultToGetScore);
+                            $groupMembers['member_score'] =$rowToFetchRecord[0];
+
+                            $member[]=$groupMembers;
+                        }
+                        $group_allocation['group_members'] = $member;
+                    }
+                    else{
+                        $group_allocation['group_members']=array();
+
+                    }
+
+                }
+                $post[]=$group_allocation;
+                $status=SUCCESS;
+                $message = "Listed allocated groups";
+             //   $data['group']=$post;
+            }
+            else
+            {
+                $status = SUCCESS;
+                $message = "No group allocation";
+            }
+
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['group']=$post;
+        $response['status'] =$status;
+        $response['message'] =$message;
+
+        return $response;
+
+    }
+
+    public function getAllAllocatedGroups($postData)
+    {
+        $message ='';
+        $post=array();
+        $response=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $getFields="tuoral_topic_exam.*,tutorial_groups.group_name,tutorial_groups.classroom_id,classroom.class_name,group_allocation.group_score,topics.topic_name,exams.exam_name";
+            $query = "SELECT ".$getFields." FROM ".TABLE_TUTORIAL_TOPIC_EXAM." tuoral_topic_exam  LEFT JOIN ".TABLE_TUTORIAL_GROUPS." tutorial_groups ON tuoral_topic_exam.tutorial_group_id=tutorial_groups.id
+            LEFT JOIN ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." group_allocation ON tuoral_topic_exam.tutorial_group_id=group_allocation.group_id
+            LEFT JOIN .".TABLE_TUTORIAL_TOPIC." topics ON tuoral_topic_exam.tutorial_topic_id=topics.id
+            LEFT JOIN ".TABLE_EXAMS." exams ON tuoral_topic_exam.exam_id=exams.id
+            LEFT JOIN ".TABLE_CLASSROOMS." classroom ON tutorial_groups.classroom_id=classroom.id
+            WHERE tuoral_topic_exam.`allocated_teacher_id`=" . $user_id ." AND tuoral_topic_exam.is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            //echo $query; exit;
+            $group_allocation=array();
+            if (mysqli_num_rows($result)>0)
+            {
+                while($row=mysqli_fetch_assoc($result))
+                {
+                    $group_allocation['group_id']=$row['tutorial_group_id'];
+                    $group_allocation['group_name']=$row['group_name'];
+                    $group_allocation['group_score']=$row['group_score'];
+                    $group_allocation['group_rank']=$row['group_rank'];
+                    $group_allocation['group_class']=$row['class_name'];
+                    $group_allocation['topic_id']=$row['tutorial_topic_id'];
+                    $group_allocation['topic_name']=$row['topic_name'];
+                    $group_allocation['exam_id']=$row['exam_id'];
+                    $group_allocation['exam_name']=$row['exam_name'];
+                    $group_allocation['exam_type']=$row['exam_type'];
+
+                    $queryToGetGroupScore="SELECT sum(group_score) FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE group_id=".$row['tutorial_group_id']." AND is_delete=0";
+                    $resultToGetGroupScore=mysqli_query($GLOBALS['con'], $queryToGetGroupScore) or $message = mysqli_error($GLOBALS['con']);
+                    $rowToFetchScore=mysqli_fetch_row($resultToGetGroupScore);
+                    $group_allocation['group_score']=$rowToFetchScore[0];
+
+                    $selData="tutorial_group_member.*,users.full_name,users.profile_pic,school.school_name";
+                    $queryToFetchMembers="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_MEMBER." tutorial_group_member
+                         INNER JOIN ".TABLE_USERS." users ON tutorial_group_member.user_id=users.id
+                         INNER JOIN ". TABLE_STUDENT_PROFILE." studentProfile ON users.id=studentProfile.user_id
+                         LEFT JOIN ".TABLE_SCHOOLS." school ON school.id=studentProfile.school_id
+                         WHERE tutorial_group_member.group_id=".$row['tutorial_group_id']." AND tutorial_group_member.is_delete=0 ";
+                    $resultToFetchMembers = mysqli_query($GLOBALS['con'], $queryToFetchMembers) or $message = mysqli_error($GLOBALS['con']);
+
+                    $member=array();
+                    if (mysqli_num_rows($resultToFetchMembers) > 0) {
+                        while ($members = mysqli_fetch_assoc($resultToFetchMembers)) {
+                            $groupMembers=array();
+                            $groupMembers['member_id'] = $members['user_id'];
+                            $groupMembers['member_name'] = $members['full_name'];
+                            $groupMembers['member_profile_pic'] = $members['profile_pic'];
+                            $groupMembers['member_school'] = $members['school_name'];
+
+
+                            $queryToGetScore="SELECT group_member_score.score FROM ".TABLE_TUTORIAL_GROUP_MEMBER_SCORE." group_member_score LEFT JOIN ".TABLE_TUTORIAL_GROUP_MEMBER." tutorial_group_member ON tutorial_group_member.user_id=group_member_score.member_id WHERE tutorial_group_member.group_id= ".$row['tutorial_group_id']." AND group_member_score.topic_id=".$row['tutorial_topic_id'] ." AND group_member_score.member_id=".$members['user_id'];
+                            $resultToGetScore=mysqli_query($GLOBALS['con'], $queryToGetScore) or $message = mysqli_error($GLOBALS['con']);
+                            $rowToFetchRecord=mysqli_fetch_row($resultToGetScore);
+                            $groupMembers['member_score'] =$rowToFetchRecord[0];
+
+                            $member[]=$groupMembers;
+                        }
+                        $group_allocation['group_members'] = $member;
+                    }
+                    else{
+                        $group_allocation['group_members']=array();
+
+                    }
+
+                }
+                $post[]=$group_allocation;
+                //   $data['group']=$post;
+            }
+            else
+            {
+                $status = SUCCESS;
+                $message = "No group allocation";
+            }
+            $status=SUCCESS;
+            $message = "Listed allocated groups";
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['group']=$post;
+        $response['status'] =$status;
+        $response['message'] =$message;
+
+        return $response;
+
     }
 
 }

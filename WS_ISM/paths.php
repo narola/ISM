@@ -14,7 +14,7 @@ define("QUESTION_IMAGE",  'images/questions_images/');
 
 define("SUB_QUESTION_IMAGE",  'images/question_sub_images/');
 
-define("RICH_TEXT_EDITOR_QUESTION_IMAGE",  'images/rich_text_editor_images/questions/');
+define("RICH_TEXT_EDITOR_QUESTION_IMAGE",  'images/rich_text_editor_images/rich_questions/');
 
 define("PASTTIME_IMAGE",  'images/pasttimes_images/');
 

@@ -92,6 +92,8 @@ switch ($_REQUEST['Service'])
     case "GetClasswallFeeds":
     case "GetAllAssignment":
     case "GetAssignmentByBook":
+    case "CheckGroupAllocation":
+    case "GetAllAllocatedGroups":
     {
         include_once 'TeacherFunctions.php';
         $teacher = new TeacherFunctions();
@@ -172,6 +174,7 @@ switch ($_REQUEST['Service'])
     case "GetGroupProfile":
     case "PingTutorialMate":
     case "AllocateTeacherToGroup";
+    case "GetTutorialGroupExam":
     {
         include_once 'TutorialGroup.php';
         $tutorialGroup = new TutorialGroup();
