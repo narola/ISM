@@ -27,8 +27,26 @@ public class AuthorProfile extends RealmObject {
     private int totalSubmissionReceived;
     private int totalPost;
     private int totalBadges;
+    private Date birthDate;
     private Date createdDate;
     private Date modifiedDate;
+    private String contactNumber;
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
 
     public int getTotalBooks() {
         return totalBooks;
@@ -157,4 +175,5 @@ public class AuthorProfile extends RealmObject {
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
+
 }

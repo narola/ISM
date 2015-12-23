@@ -99,8 +99,8 @@ public class Attribute {
     private ArrayList<String> questionIdList;
     private ArrayList<Tags> tags;
     private String[] taggedUserIds;
-    private String[] likedId;
-    private String[] unlikedId;
+    private ArrayList<String> likedId;
+    private ArrayList<String> unlikedId;
 
     private String studymateId;
     private ArrayList<String> recordIds;
@@ -543,22 +543,22 @@ public class Attribute {
         this.taggedBy = taggedBy;
     }
 
-    public String[] getLikedId() {
+    public ArrayList<String> getLikedId() {
         return likedId;
     }
 
 
     @JsonProperty("liked_id")
-    public void setLikedId(String[] likedId) {
+    public void setLikedId(ArrayList<String> likedId) {
         this.likedId = likedId;
     }
 
-    public String[] getUnlikedId() {
+    public ArrayList<String> getUnlikedId() {
         return unlikedId;
     }
 
     @JsonProperty("unliked_id")
-    public void setUnlikedId(String[] unlikedId) {
+    public void setUnlikedId(ArrayList<String> unlikedId) {
         this.unlikedId = unlikedId;
     }
 

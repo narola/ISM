@@ -212,11 +212,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         this.booksListner = booksListner;
     }
 
-    /**
-     * object of realm database.
-     */
-    private AuthorHelper authorHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
