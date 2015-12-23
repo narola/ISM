@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.fragments.SubjectiveQuestionsContainerFragment;
+import com.ism.teacher.fragments.assesment.SubjectiveQuestionsContainerFragment;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.model.QuestionPalette;
 import com.ism.teacher.ws.model.Questions;

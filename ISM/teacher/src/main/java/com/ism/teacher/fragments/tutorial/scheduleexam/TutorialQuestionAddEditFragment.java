@@ -1,4 +1,4 @@
-package com.ism.teacher.fragments;
+package com.ism.teacher.fragments.tutorial.scheduleexam;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -55,10 +55,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class QuestionAddEditFragment extends Fragment implements TokenCompleteTextView.TokenListener, View.OnClickListener, WebserviceWrapper.WebserviceResponse,
+public class TutorialQuestionAddEditFragment extends Fragment implements TokenCompleteTextView.TokenListener, View.OnClickListener, WebserviceWrapper.WebserviceResponse,
         AddQuestionTextDialog.SelectMediaListener, AddQuestionTextDialog.AddTextListener {
 
-    private static final String TAG = QuestionAddEditFragment.class.getSimpleName();
+    private static final String TAG = TutorialQuestionAddEditFragment.class.getSimpleName();
     private View view;
     Fragment mFragment;
 
@@ -90,13 +90,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
 
 
-    public QuestionAddEditFragment() {
+    public TutorialQuestionAddEditFragment() {
     }
 
     @SuppressLint("ValidFragment")
-    public QuestionAddEditFragment(Fragment fragment, Bundle bundleArguments) {
+    public TutorialQuestionAddEditFragment(Fragment fragment) {
         this.mFragment = fragment;
-        this.setArguments(bundleArguments);
     }
 
 
@@ -181,23 +180,27 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 if (position == 1 || position == 2) {
                     llAddMcqanswer.setVisibility(View.GONE);
                     tvAddquestionAnswer.setVisibility(View.VISIBLE);
-                    if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
-                        chkAddquestionPreview.setEnabled(true);
-                        chkAddquestionPreview.setChecked(true);
-                    } else {
-                        chkAddquestionPreview.setEnabled(false);
-                        chkAddquestionPreview.setChecked(false);
-                    }
+//                    if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
+//                        chkAddquestionPreview.setEnabled(true);
+//                        chkAddquestionPreview.setChecked(true);
+//                    } else {
+//                        chkAddquestionPreview.setEnabled(false);
+//                        chkAddquestionPreview.setChecked(false);
+//                    }
+
+
                 } else if (position == 3) {
                     llAddMcqanswer.setVisibility(View.VISIBLE);
                     tvAddquestionAnswer.setVisibility(View.VISIBLE);
-                    if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
-                        chkAddquestionPreview.setEnabled(true);
-                        chkAddquestionPreview.setChecked(false);
-                    } else {
-                        chkAddquestionPreview.setEnabled(true);
-                        chkAddquestionPreview.setChecked(true);
-                    }
+//                    if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
+//                        chkAddquestionPreview.setEnabled(true);
+//                        chkAddquestionPreview.setChecked(false);
+//                    } else {
+//                        chkAddquestionPreview.setEnabled(true);
+//                        chkAddquestionPreview.setChecked(true);
+//                    }
+
+
                 }
 
             }
@@ -477,7 +480,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             } else {
                 imageValidationQuestionType.setVisibility(View.GONE);
             }
-            setSpinnerData(questions.getQuestionFormat());
+
+            spAddquestionType.setSelection(3);
+
+            // setSpinnerData(questions.getQuestionFormat());
             if (questions.getQuestionText() != null) {
                 etAddquestionTitle.setText(Utility.formatHtml(questions.getQuestionText()));
             }
@@ -518,6 +524,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             llAddMcqanswer.setVisibility(View.GONE);
             tvAddquestionAnswer.setVisibility(View.VISIBLE);
         }
+
     }
 
 
@@ -605,9 +612,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 callApiCreateQuestion();
             }
 
-
         } else if (v == rlSelectImage) {
-            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("*/*");
             startActivityForResult(intent, AppConstant.REQUEST_CODE_PICK_FROM_GALLERY);
 
@@ -820,8 +826,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     }
 
-    private AddQuestionContainerFragment getFragment() {
-        return (AddQuestionContainerFragment) mFragment;
+    private ScheduleTutorialExamContainerFragment getFragment() {
+        return (ScheduleTutorialExamContainerFragment) mFragment;
     }
 
     @Override
@@ -1076,6 +1082,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         startActivityForResult(photoPickerIntent, SELECT_VIDEO);
 
     }
+
     private Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }
