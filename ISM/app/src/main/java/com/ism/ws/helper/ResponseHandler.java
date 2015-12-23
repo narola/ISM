@@ -11,6 +11,7 @@ import com.ism.ws.model.City;
 import com.ism.ws.model.Comment;
 import com.ism.ws.model.Country;
 import com.ism.ws.model.Feeds;
+import com.ism.ws.model.GroupDiscussionData;
 import com.ism.ws.model.Message;
 import com.ism.ws.model.Movies;
 import com.ism.ws.model.Notice;
@@ -67,6 +68,7 @@ public class ResponseHandler {
     private ArrayList<AdminConfig> adminConfig;
     private ArrayList<Token> token;
     private ArrayList<Comment> comment;
+    private ArrayList<GroupDiscussionData> groupDiscussionData;
 
 
     @JsonProperty("message")
@@ -347,4 +349,14 @@ public class ResponseHandler {
     public void setToken(ArrayList<Token> token) {
         this.token = token;
     }
+
+	@JsonProperty("group_history")
+	public ArrayList<GroupDiscussionData> getGroupDiscussionData() {
+		return this.groupDiscussionData;
+	}
+
+	public void setGroupDiscussionData(ArrayList<GroupDiscussionData> groupDiscussionData) {
+		this.groupDiscussionData = groupDiscussionData;
+	}
+
 }

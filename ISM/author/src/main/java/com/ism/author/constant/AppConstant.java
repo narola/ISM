@@ -71,5 +71,5 @@ public class AppConstant {
      * Date pattern
      */
 
-    public static final String DATE_YYYYMMDD="yyyy-MM-dd";
+    public static final String DATE_YYYYMMDD="yyyy-mm-dd";
 }

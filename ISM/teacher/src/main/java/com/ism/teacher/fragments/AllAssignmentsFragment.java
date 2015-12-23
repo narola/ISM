@@ -140,7 +140,6 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
             }
         };
 
-
         spAssignmentSubject.setOnItemSelectedListener(spinnerListenerforFilters);
         spAssignmentClasswise.setOnItemSelectedListener(spinnerListenerforFilters);
         spAssignentAssessed.setOnItemSelectedListener(spinnerListenerforFilters);

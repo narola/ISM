@@ -16,6 +16,8 @@ import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.fragments.notes.AllNotesFragment;
+import com.ism.teacher.fragments.results.AllResultsFragment;
 import com.ism.teacher.interfaces.FragmentListener;
 
 /**
@@ -134,7 +136,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                     Debug.e(AppConstant.back_tag + "child added=>>>>>>>>>>>>>>>>>>>", AppConstant.FRAGMENT_TAG_TEACHER_NOTES);
                     setBackStackFragmentKey(AppConstant.FRAGMENT_TAG_TEACHER_NOTES);
                     getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
-                            TeacherNoteHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_NOTES).commit();
+                            AllNotesFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_NOTES).commit();
                     ((TeacherHostActivity) getActivity()).showRightContainerFragment();
                     break;
 
@@ -157,7 +159,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                     Debug.e(AppConstant.back_tag + "child added=>>>>>>>>>>>>>>>>>>>", AppConstant.FRAGMENT_TAG_TEACHER_RESULTS);
                     setBackStackFragmentKey(AppConstant.FRAGMENT_TAG_TEACHER_RESULTS);
                     getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
-                            TeacherResultsHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_RESULTS).commit();
+                            AllResultsFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_RESULTS).commit();
                     ((TeacherHostActivity) getActivity()).showRightContainerFragment();
                     break;
 

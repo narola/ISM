@@ -326,7 +326,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 //                FeedLike feedLike = new FeedLike();
 //                feedLike.setFeed(feeds);
 //                feedLike.setLikeBy(studentHelper.getUser(Global.strUserId));
-//                feedLike.setCreatedDate(Utility.getDateFormateMySql(arrayList.get(i).getCreatedDate()));
+//                feedLike.setAssignedTime(Utility.getDateFormateMySql(arrayList.get(i).getAssignedTime()));
                 //  studentHelper.saveFeedLikes(feedLike);
             }
         } catch (Exception e) {

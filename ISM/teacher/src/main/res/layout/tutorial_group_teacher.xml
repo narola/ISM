@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_tutorial_group"
@@ -9,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="25dp">
+        android:padding="20dp">
 
         <com.ism.teacher.views.CircleImageView
             android:id="@+id/img_dp_group"
@@ -38,7 +39,7 @@
                 android:textSize="@dimen/d25sp" />
 
             <TextView
-                android:id="@+id/tv_course_name"
+                android:id="@+id/tv_group_class_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/d5dp"
@@ -75,39 +76,57 @@
         android:background="@color/white" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_tutorial_group"
+    <LinearLayout
+        android:id="@+id/ll_group_members"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:paddingLeft="150dp"
-        android:paddingRight="150dp"
-        android:paddingTop="10dp"
-        android:layout_gravity="center_vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-    </android.support.v7.widget.RecyclerView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_tutorial_group"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="150dp"
+            android:paddingRight="150dp"
+            android:paddingTop="10dp">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tv_topic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:padding="@dimen/d5dp"
+            android:text="@string/str_teacher_tutorial_label"
+            android:textColor="@color/color_txt_balck_tutorial"
+            android:textSize="@dimen/d25sp" />
+
+        <Button
+            android:id="@+id/btn_schedule_exam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_schedule_tutorial"
+            android:padding="10dp"
+            android:text="Schedule Exam"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/d16sp" />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_topic"
+        android:id="@+id/tv_no_group_members"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_gravity="center"
         android:gravity="center"
-        android:padding="@dimen/d5dp"
-        android:text="@string/str_teacher_tutorial_label"
-        android:textColor="@color/color_txt_balck_tutorial"
-        android:textSize="@dimen/d25sp" />
-
-    <Button
-        android:id="@+id/btn_schedule_exam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:background="@drawable/btn_schedule_tutorial"
-        android:padding="10dp"
-        android:text="Schedule Exam"
-        android:textColor="@color/white"
-        android:textSize="@dimen/d16sp"
-        android:textAllCaps="false"/>
+        android:text="@string/no_group_members_assigned"
+        android:visibility="gone" />
 
 </LinearLayout>

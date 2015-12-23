@@ -151,7 +151,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
         public Viewholder(View convertView) {
             super(convertView);
             try {
-                imgUserPic = (CircleImageView) convertView.findViewById(R.id.img_user_pic);
+                imgUserPic = (CircleImageView) convertView.findViewById(R.id.img_member_pic);
                 txtClass = (TextView) convertView.findViewById(R.id.txt_student_class);
                 txtStudentName = (TextView) convertView.findViewById(R.id.txt_student_name);
                 txtSchoolName = (TextView) convertView.findViewById(R.id.txt_student_school);

@@ -57,6 +57,7 @@ public class Utility {
     public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_DISPLAY = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_DDMMMYY = new SimpleDateFormat("dd MMM yy", Locale.getDefault());
+    public static final SimpleDateFormat DATE_FORMAT_MMMDDYY_HHMMA = new SimpleDateFormat("MMM dd, yy  HH : mm aa", Locale.getDefault()); // Nov 25, 2015  7:10pm
     public static final SimpleDateFormat DATE_FORMAT_MMMDDYYYY = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
 	private static StringBuilder mFormatBuilder = new StringBuilder();
 	private static Formatter mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
@@ -263,6 +264,21 @@ public class Utility {
     public static String formatPHPDateToDMY(String strDate) {
         try {
             return DATE_FORMAT_DDMMMYY.format(DATE_FORMAT_MY_SQL.parse(strDate));
+        } catch (ParseException e) {
+            Log.e(TAG, "formatPHPDateToDMY Exception : " + e.toString());
+            return null;
+        }
+    }
+
+    /**
+     * Krunal Panchal
+     *
+     * @param strDate
+     * @return String : fromatted date. eg. : Nov 25, 2015  7:10pm
+     */
+    public static String formatPHPDateToMMMDDYY_HHMMA(String strDate) {
+        try {
+            return DATE_FORMAT_MMMDDYY_HHMMA.format(DATE_FORMAT_MY_SQL.parse(strDate));
         } catch (ParseException e) {
             Log.e(TAG, "formatPHPDateToDMY Exception : " + e.toString());
             return null;

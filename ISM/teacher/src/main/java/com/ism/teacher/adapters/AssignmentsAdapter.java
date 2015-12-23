@@ -103,7 +103,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
             llParentAssignment = (LinearLayout) itemView.findViewById(R.id.ll_parent_assignment);
             llViewQuestions = (LinearLayout) itemView.findViewById(R.id.ll_view_questions);
-            rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_top_assignment);
+            rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_results);
 
             txtAssignmentSubject = (TextView) itemView.findViewById(R.id.txt_assignment_subject);
             txtExamName = (TextView) itemView.findViewById(R.id.txt_exam_name);
@@ -117,15 +117,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             txtUnassessedLabel = (TextView) itemView.findViewById(R.id.txt_unassessed_label);
             txtQuestionLabel = (TextView) itemView.findViewById(R.id.txt_question_label);
 
-        }
-    }
-
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-
-        holder.txtAssignmentSubject.setTypeface(Global.myTypeFace.getRalewayBold());
-//        holder.txtExamName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            //        holder.txtExamName.setTypeface(Global.myTypeFace.getRalewayRegular());
 //        holder.txtAssignmentDate.setTypeface(Global.myTypeFace.getRalewayRegular());
 //        holder.txtAssignmentClassName.setTypeface(Global.myTypeFace.getRalewayRegular());
 //        holder.txtAssessedLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -134,6 +126,15 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 //        holder.txtNumberUnassessedQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
 //        holder.txtQuestionLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
 //        holder.txtAssignmentType.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+        }
+    }
+
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+
+        holder.txtAssignmentSubject.setTypeface(Global.myTypeFace.getRalewayBold());
 
 
         holder.txtAssignmentSubject.setText(arrayListAssignments.get(position).getSubjectName());

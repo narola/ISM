@@ -40,45 +40,24 @@
             android:name=".activity.ProfileInformationActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden" />
-	        <!--<intent-filter>
-	            <action android:name="android.intent.action.MAIN"/>
-	            <category android:name="android.intent.category.LAUNCHER"/>
-	        </intent-filter>-->
         <activity
             android:name=".activity.WelComeActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape" >
-		    <!--<intent-filter>-->
-			    <!--<action android:name="android.intent.action.MAIN"/>-->
-			    <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-		    <!--</intent-filter>-->
 	    </activity>
         <activity
             android:name=".activity.AcceptTutorialGroupActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".activity.HostActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="landscape">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".fragment.userProfile.EditAboutMeDetailsActivity"
-            android:screenOrientation="landscape"
-             />
-        <!--<intent-filter>
-            <action android:name="android.intent.action.MAIN"/>
-            <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>-->
+            android:screenOrientation="landscape"/>
         <activity
             android:name="com.ism.activity.PostFeedActivity"
             android:hardwareAccelerated="false"

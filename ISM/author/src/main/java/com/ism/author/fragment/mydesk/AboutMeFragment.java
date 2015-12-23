@@ -14,13 +14,16 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.User;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import model.AuthorProfile;
 import realmhelper.AuthorHelper;
@@ -179,7 +182,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             authorProfile.setAuthorId(Integer.parseInt(user.getUserId()));
             authorProfile.setAboutAuthor(user.getAboutAuthor());
             //authorProfile.setContactNumber(user.getContactNumber()); // this field is never used in author module
-            authorProfile.setBirthDate(com.ism.commonsource.utility.Utility.getDateFormate(user.getBirthdate(), AppConstant.DATE_YYYYMMDD));
+            authorProfile.setBirthDate(getDateFormate(user.getBirthdate()));
             authorProfile.setEducation(user.getEducation());
             authorProfile.setTotalAssignment(Integer.parseInt(user.getTotalAssignment() == null ? "0" : user.getTotalAssignment()));
             authorProfile.setTotalBadges(Integer.parseInt(user.getTotalBadgesEarned() == null ? "0" : user.getTotalBadgesEarned()));
@@ -264,12 +267,39 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         }
     }
 
+    public static Date getDateFormate(String birthdate) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = formatter.parse(birthdate);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+            Log.i(TAG, "getDateFormate : " + date);
+            return date;
+        } catch (ParseException e) {
+            Log.i(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public static String getDateFormate(Date date) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+           // Date date = formatter.parse(birthdate);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+            Log.i(TAG, "getDateFormate : " + date);
+            return formatter.format(date);
+        } catch (Exception e) {
+            Log.i(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
 
     private void setUpDBData(model.AuthorProfile data) {
         try {
             txtUserName.setText(data.getUser().getFullName().toUpperCase());
             txtEducationName.setText(data.getEducation());
-            txtBirthdate.setText(com.ism.commonsource.utility.Utility.DateFormatDb(Utility.formatDateApi(data.getBirthDate())));
+            txtBirthdate.setText(com.ism.commonsource.utility.Utility.DateFormat(getDateFormate(data.getBirthDate())));
 
             if (data.getTotalAssignment() == 0)
                 txtTotalAssignment.setText("0");
@@ -329,6 +359,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             Debug.i(TAG, "SetupData :" + e.getLocalizedMessage());
         }
     }
+
+
 
     @Override
     public void onResponse(int apiCode, Object object, Exception error) {

@@ -18,6 +18,7 @@ import com.ism.teacher.ws.model.Exams;
 import com.ism.teacher.ws.model.Feed;
 import com.ism.teacher.ws.model.Feeds;
 import com.ism.teacher.ws.model.FileUploadResponse;
+import com.ism.teacher.ws.model.Group;
 import com.ism.teacher.ws.model.HashTags;
 import com.ism.teacher.ws.model.Question;
 import com.ism.teacher.ws.model.Questions;
@@ -104,6 +105,18 @@ public class ResponseHandler {
     private UserImages userImages;
     private ArrayList<Token> token;
     private ArrayList<AdminConfig> adminConfig;
+    private ArrayList<Group> group;
+
+    @JsonProperty("group")
+    public ArrayList<Group> getGroup() {
+        return group;
+    }
+
+    public ResponseHandler setGroup(ArrayList<Group> group) {
+        this.group = group;
+        return this;
+    }
+
 
     @JsonProperty("question_bank")
     public ArrayList<Questions> getQuestionBanks() {
@@ -339,7 +352,6 @@ public class ResponseHandler {
     public void setToken(ArrayList<Token> token) {
         this.token = token;
     }
-
 
     @JsonProperty("admin_config")
     public ArrayList<AdminConfig> getAdminConfig() {

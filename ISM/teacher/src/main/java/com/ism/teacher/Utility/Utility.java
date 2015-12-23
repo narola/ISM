@@ -53,6 +53,7 @@ public class Utility {
             dialogServerAlert = alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
         }
     }
+
     public static String formatDateMySql(Date date) {
         return DATE_FORMAT_MY_SQL.format(date);
     }
@@ -355,11 +356,9 @@ public class Utility {
 
     }
 
-
     /**
      * Hide the view
      */
-
     public static void hideView(View view) {
         view.setVisibility(View.GONE);
     }

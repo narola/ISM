@@ -380,7 +380,7 @@ public class Utility {
     /*
     * Arti Patel
     * */
-    public static String getDate() {
+    public static String getDateString() {
         SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         return curFormater.format(calendar.getTime());

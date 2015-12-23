@@ -77,14 +77,14 @@ public class Utility {
     public static String DateFormat(String birthdate) {
         try {
             String strDob = birthdate;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date convertedDate = new Date();
             convertedDate = dateFormat.parse(birthdate);
             System.out.println(convertedDate);
             SimpleDateFormat format = new SimpleDateFormat("dd");
             String date = format.format(convertedDate);
 
-            // Log.i(TAG, "Date :" + date);
+            Log.i(TAG, "Date :" + date);
 
             if (date.endsWith("1") && !date.endsWith("11"))
                 format = new SimpleDateFormat("dd'st' MMMM yyyy");
@@ -94,62 +94,16 @@ public class Utility {
                 format = new SimpleDateFormat("dd'rd' MMMM yyyy");
             else
                 format = new SimpleDateFormat("dd'th' MMMM yyyy");
-            // Log.i(TAG, "Date Formated:" + format.format(convertedDate));
+            Log.i(TAG, "Date Formated:" + format.format(convertedDate));
             return format.format(convertedDate);
         } catch (ParseException e) {
-            Log.i(TAG, "dateFormat ParseException : " + e.getLocalizedMessage());
+            Log.i(TAG, "DateFormat ParseException : " + e.getLocalizedMessage());
             return null;
         } catch (Exception e) {
-            Log.i(TAG, "dateFormat Exceptions : " + e.getLocalizedMessage());
+            Log.i(TAG, "DateFormat Exceptions : " + e.getLocalizedMessage());
             return null;
         }
     }
 
-    //used for changed date format in 14th May 2015
-    public static String DateFormatDb(String birthdate) {
-        try {
-            String strDob = birthdate;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
-            Date convertedDate = new Date();
-            convertedDate = dateFormat.parse(birthdate);
-            System.out.println(convertedDate);
-            SimpleDateFormat format = new SimpleDateFormat("dd");
-            String date = format.format(convertedDate);
-
-            // Log.i(TAG, "Date :" + date);
-
-            if (date.endsWith("1") && !date.endsWith("11"))
-                format = new SimpleDateFormat("dd'st' MMMM yyyy");
-            else if (date.endsWith("2") && !date.endsWith("12"))
-                format = new SimpleDateFormat("dd'nd' MMMM yyyy");
-            else if (date.endsWith("3") && !date.endsWith("13"))
-                format = new SimpleDateFormat("dd'rd' MMMM yyyy");
-            else
-                format = new SimpleDateFormat("dd'th' MMMM yyyy");
-             Log.i(TAG, "Date Formated:" + format.format(convertedDate));
-            return format.format(convertedDate);
-        } catch (ParseException e) {
-            Log.i(TAG, "dateFormat ParseException : " + e.getLocalizedMessage());
-            return null;
-        } catch (Exception e) {
-            Log.i(TAG, "dateFormat Exceptions : " + e.getLocalizedMessage());
-            return null;
-        }
-    }
-
-    /*
-   * Arti Patel
-   * return date
-   * */
-    public static Date getDateFormate(String date, String pattern) {
-        SimpleDateFormat curFormater = new SimpleDateFormat(pattern);//"yyyy-MM-dd"
-        try {
-            Log.i(TAG, "getDateFormate : " + curFormater.parse(date));
-            return curFormater.parse(date);
-        } catch (ParseException e) {
-            Log.i(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
-        }
-        return null;
-    }
 
 }

@@ -218,6 +218,9 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_UPLOADPROFILEIMAGES).uploadMedia(ResponseHandler.class, attribute);
                                 break;
 
+                            case WebConstants.GROUP_ALLOCATION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GROUP_ALLOCATION).execute(ResponseHandler.class, attribute);
+                                break;
                         }
                     }
                 }

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="10dp"
+    card_view:cardCornerRadius="3dp"
+    card_view:cardElevation="0.01dp"
+    card_view:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:id="@+id/ll_parent_student_row"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_news_feed"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/color_gray_assignment">
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/frame_circle_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_marginTop="@dimen/d10dp">
+
+                <com.ism.teacher.views.CircleImageView
+                    android:id="@+id/img_group"
+                    android:layout_width="@dimen/d70dp"
+                    android:layout_height="@dimen/d70dp"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/d10dp"
+                    android:src="@drawable/userdp" />
+            </FrameLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_results"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_toRightOf="@+id/frame_circle_class">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/d10dp"
+                    android:padding="@dimen/d5dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/d15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_group_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Adam Ross"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/d18sp" />
+
+                        <TextView
+                            android:id="@+id/tv_group_class_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="(Computer Science)"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/d16sp" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+        <!-- Bottom LinearLayout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/d10dp">
+
+            <TextView
+                android:id="@+id/tv_exam_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/d10dp"
+                android:text="@string/strexamname"
+                android:textSize="@dimen/d16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/d50dp"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                 >
+
+                <!-- Submission date part-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_scheduled_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="29 Sep 2015"
+                        android:textColor="@color/color_blue_past_assignment"
+                        android:textSize="@dimen/d18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_scheduled_date_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/d5dp"
+                        android:gravity="center"
+                        android:text="@string/str_scheduled_date"
+                        android:textSize="@dimen/d14sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/color_shade_news_feed" />
+
+                <!-- Score part-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_score"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="100"
+                        android:textColor="@color/color_txt_tutorial"
+                        android:textSize="@dimen/d18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_score_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/d5dp"
+                        android:gravity="center"
+                        android:text="@string/strScore"
+                        android:textSize="@dimen/d14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
