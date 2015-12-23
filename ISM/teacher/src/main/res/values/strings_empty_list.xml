@@ -21,4 +21,6 @@
     <string name="no_submissions_available">No submissions available!</string>
     <string name="no_questions_available">No questions available!</string>
     <string name="no_preview_questions">No Questions added in preview!</string>
+    <string name="no_group_members_assigned">No Group Members are assigned yet!</string>
+
 </resources>

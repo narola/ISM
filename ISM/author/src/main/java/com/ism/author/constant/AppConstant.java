@@ -64,4 +64,12 @@ public class AppConstant {
     public static final String FRAGMENT_ADDQUESTION_CONTAINER = "fragmentAddQuestionContainer";
     public static final String FRAGMENT_PAST = "fragmentPast";
     public static final String FRAGMENT_ADD_ASSIGNMENT = "fragmentAddAssignment";
+    public static final String FRAGMENT_ASSIGNMENTS = "fragmentAssignment";
+
+
+    /**
+     * Date pattern
+     */
+
+    public static final String DATE_YYYYMMDD="yyyy-mm-dd";
 }

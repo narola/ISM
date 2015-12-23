@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
-
+    private String profilePic;
+    private String fullName;
     private String classId;
     private String courseName;
     private String schoolName;
@@ -131,5 +132,24 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+
+    @JsonProperty("profile_pic")
+    public String getProfilePic() {
+        return this.profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    @JsonProperty("full_name")
+    public String getFullName() {
+        return this.fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

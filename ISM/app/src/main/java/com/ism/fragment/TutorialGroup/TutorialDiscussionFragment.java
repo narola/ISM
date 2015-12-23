@@ -14,28 +14,40 @@ import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.adapter.DiscussionAdapter;
 import com.ism.assistantwebview.view.AssistantWebView;
+import com.ism.constant.WebConstants;
 import com.ism.model.TestDiscussion;
 import com.ism.object.Global;
 import com.ism.scientificcalc.view.Calc;
+import com.ism.utility.Utility;
+import com.ism.views.CircleImageView;
 import com.ism.whiteboard.view.Whiteboard;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.Discussion;
+import com.ism.ws.model.GroupDiscussionData;
 
 import java.util.ArrayList;
 
 /**
  * Created by c161 on 12/10/15.
  */
-public class TutorialDiscussionFragment extends Fragment {
+public class TutorialDiscussionFragment extends Fragment implements WebserviceWrapper.WebserviceResponse,
+		DiscussionAdapter.TutorialDiscussionAdapterListener {
 
 	private static final String TAG = TutorialDiscussionFragment.class.getSimpleName();
 
 	private View view;
-	private TextView txtTopic, txtTopicValue, txtAlert;
-	private ImageView imgCalc, imgWhiteboard, imgSearch, imgDictionary;
+	private TextView txtTopic, txtTopicValue, txtAlert, txtAdminNoticeTime, txtAdminNotice;
+	private ImageView imgCalc, imgWhiteboard, imgSearch, imgDictionary, imgExpandDiscussion;
+	private CircleImageView imgAdminDp;
+	private RelativeLayout rlUtility;
 	private ViewStub vsWhiteboard, vsAssistantWebView;
 	private Calc utilitySciCalc;
 	private Whiteboard utilityWhiteboard;
@@ -50,7 +62,9 @@ public class TutorialDiscussionFragment extends Fragment {
 	private TutorialDiscussionFragmentListener listenerTutorialDiscussion;
 	private Whiteboard.WhiteboardListener whiteboardListener;
 	private View.OnClickListener listenerOnUtilityClick;
-	private ArrayList<TestDiscussion> arrListDiscussion;
+	private ArrayList<TestDiscussion> arrListTestDiscussion;
+	private ArrayList<GroupDiscussionData> arrListDiscussionData;
+	private ArrayList<Discussion> arrListDiscussion;
 	private DiscussionAdapter adpDiscussion;
 	private LinearLayoutManager layoutManagerChat;
 
@@ -78,7 +92,6 @@ public class TutorialDiscussionFragment extends Fragment {
 	public interface TutorialDiscussionFragmentListener {
 		public void onDayChanged(int dayId);
 	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -110,6 +123,11 @@ public class TutorialDiscussionFragment extends Fragment {
 		vsAssistantWebView = (ViewStub) view.findViewById(R.id.vs_assistant_webview);
 		etMessage = (EditText) view.findViewById(R.id.et_message);
 		btnSend = (Button) view.findViewById(R.id.btn_send);
+		imgExpandDiscussion = (ImageView) view.findViewById(R.id.img_expand_discussion);
+		rlUtility = (RelativeLayout) view.findViewById(R.id.rl_utility);
+		imgAdminDp = (CircleImageView) view.findViewById(R.id.img_admin_dp);
+		txtAdminNoticeTime = (TextView) view.findViewById(R.id.txt_admin_notice_time);
+		txtAdminNotice = (TextView) view.findViewById(R.id.txt_admin_notice);
 
 		imgUtilities = new ImageView[]{imgCalc, imgWhiteboard, imgSearch, imgDictionary};
 		viewUtilities = new View[]{utilitySciCalc, utilityWhiteboard, utilityAssistantWebView};
@@ -117,12 +135,22 @@ public class TutorialDiscussionFragment extends Fragment {
 		txtTopic.setTypeface(Global.myTypeFace.getRalewayRegular());
 		txtTopicValue.setTypeface(Global.myTypeFace.getRalewaySemiBold());
 		txtAlert.setTypeface(Global.myTypeFace.getRalewayRegular());
-
-		txtTopicValue.setText("Osmosis");
+		txtAdminNoticeTime.setTypeface(Global.myTypeFace.getRalewayThinItalic());
+		txtAdminNotice.setTypeface(Global.myTypeFace.getRalewayRegular());
+		((TextView) view.findViewById(R.id.txt_admin_name)).setTypeface(Global.myTypeFace.getRalewayRegular());
 
 		setDay(intWeekDay);
 
+		callApiGetGroupHistory();
+
 		imgCalc.setEnabled(false);
+
+		imgExpandDiscussion.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				rlUtility.setVisibility(rlUtility.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+			}
+		});
 
 		listenerOnUtilityClick = new View.OnClickListener() {
 			@Override
@@ -165,7 +193,7 @@ public class TutorialDiscussionFragment extends Fragment {
 					testDiscussion.setMessage(etMessage.getText().toString().trim());
 					testDiscussion.setTime("Aug 5, 2015  4:15pm");
 					testDiscussion.setUserName(Global.strFullName);
-					arrListDiscussion.add(0, testDiscussion);
+					arrListTestDiscussion.add(0, testDiscussion);
 					adpDiscussion.notifyDataSetChanged();
 					layoutManagerChat.smoothScrollToPosition(recyclerChat, null, 0);
 					etMessage.setText("");
@@ -190,7 +218,7 @@ public class TutorialDiscussionFragment extends Fragment {
 		};
 		recyclerChat.addItemDecoration(decoration);
 
-		arrListDiscussion = new ArrayList<>();
+		/*arrListTestDiscussion = new ArrayList<>();
 		String time1 = "Aug 5, 2015  4:15pm";
 		String time2 = "Nov 25, 2015  7:10pm";
 		String time = time1;
@@ -204,10 +232,23 @@ public class TutorialDiscussionFragment extends Fragment {
 			}
 			testDiscussion.setTime(time);
 			testDiscussion.setUserName("Albert Crowley " + i);
-			arrListDiscussion.add(testDiscussion);
+			arrListTestDiscussion.add(testDiscussion);
 		}
-		adpDiscussion = new DiscussionAdapter(getActivity(), arrListDiscussion);
-		recyclerChat.setAdapter(adpDiscussion);
+		adpDiscussion = new DiscussionAdapter(getActivity(), arrListTestDiscussion);
+		recyclerChat.setAdapter(adpDiscussion);*/
+	}
+
+	private void callApiGetGroupHistory() {
+		try {
+			Attribute attribute = new Attribute();
+			attribute.setGroupId("134");
+			attribute.setWeekNo("1");
+			attribute.setDayNo("");
+
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_GROUP_HISTORY);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiGetGroupHistory Exception : " + e.toString());
+		}
 	}
 
 	private void showUtility(int selectedUtilityId) {
@@ -300,6 +341,72 @@ public class TutorialDiscussionFragment extends Fragment {
 			case TutorialFragment.SUN:
 //				txtTopic.setText("Sunday");
 				break;
+		}
+	}
+
+	@Override
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.GET_GROUP_HISTORY:
+					onResponseGetGroupHistory(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseGetGroupHistory(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				arrListDiscussionData = responseHandler.getGroupDiscussionData();
+				arrListDiscussion = new ArrayList<>();
+				for (int i = 0; i < arrListDiscussionData.size(); i++) {
+					for (Discussion discussion : arrListDiscussionData.get(i).getDiscussion()) {
+						discussion.setWeekDay(arrListDiscussionData.get(i).getDayName());
+						discussion.setTopicPosition(i);
+						arrListDiscussion.add(discussion);
+					}
+				}
+				adpDiscussion = new DiscussionAdapter(getActivity(), arrListDiscussion, this);
+				recyclerChat.setAdapter(adpDiscussion);
+			} else if (error != null) {
+				Log.e(TAG, "onResponseGetGroupHistory api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseGetGroupHistory Exception : " + e.toString());
+		}
+	}
+
+	@Override
+	public void onTutorialTopicPositionChanged(int topicPosition) {
+		/*if (arrListDiscussion.get(layoutManagerChat.findFirstCompletelyVisibleItemPosition()).getWeekDay()
+				!= arrListDiscussion.get(layoutManagerChat.findFirstCompletelyVisibleItemPosition()).getWeekDay()) {
+
+		}*/
+		showTopicDetails(topicPosition);
+	}
+
+	private void showTopicDetails(int topicPosition) {
+		Log.e(TAG, "Position : " + topicPosition);
+		txtAdminNoticeTime.setText(Utility.formatPHPDateToMMMDDYY_HHMMA(arrListDiscussionData.get(topicPosition).getAssignedTime())
+				+ "  " + arrListDiscussionData.get(topicPosition).getDayName());
+		txtAdminNotice.setText(arrListDiscussionData.get(topicPosition).getTopicDescription());
+		txtTopicValue.setText(arrListDiscussionData.get(topicPosition).getTutorialTopic());
+		if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Mon")) {
+			listenerTutorialDiscussion.onDayChanged(TutorialFragment.MON);
+		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Tues")) {
+			listenerTutorialDiscussion.onDayChanged(TutorialFragment.TUE);
+		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Wed")) {
+			listenerTutorialDiscussion.onDayChanged(TutorialFragment.WED);
+		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Thurs")) {
+			listenerTutorialDiscussion.onDayChanged(TutorialFragment.THU);
+		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Fri")) {
+			listenerTutorialDiscussion.onDayChanged(TutorialFragment.FRI);
+		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Sat")) {
+			listenerTutorialDiscussion.onDayChanged(TutorialFragment.SAT);
 		}
 	}
 

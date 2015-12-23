@@ -96,7 +96,6 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
         etAssignmentStartdate = (EditText) view.findViewById(R.id.et_assignment_startdate);
         etAssignmentEnddate = (EditText) view.findViewById(R.id.et_assignment_enddate);
 
-
         arrListAssessment = Arrays.asList(getResources().getStringArray(R.array.assignment_status));
 
         Adapters.setUpSpinner(getActivity(), spAssignentAssessed, arrListAssessment, Adapters.ADAPTER_SMALL);
@@ -140,7 +139,6 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
             }
         };
-
 
         spAssignmentSubject.setOnItemSelectedListener(spinnerListenerforFilters);
         spAssignmentClasswise.setOnItemSelectedListener(spinnerListenerforFilters);
@@ -294,7 +292,8 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
         if (Utility.isConnected(getActivity())) {
             try {
                 //   Utility.showSpinnerProgress(progAssignmentClass);
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_CLASSROOMS);
 
             } catch (Exception e) {
@@ -311,7 +310,8 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
         if (Utility.isConnected(getActivity())) {
             try {
                 // Utility.showSpinnerProgress(progAssignmentSubject);
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_SUBJECT);
             } catch (Exception e) {
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());

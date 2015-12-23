@@ -218,6 +218,9 @@ public class WebserviceWrapper {
                             case WebConstants.LIKE_FEED:
                                 responseObject = new WebserviceConnector(WebConstants.URL_LIKE_FEED).execute(ResponseHandler.class, attribute);
                                 break;
+                            case WebConstants.GET_GROUP_HISTORY:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_GROUP_HISTORY).execute(ResponseHandler.class, attribute);
+                                break;
                         }
                     }
                 }

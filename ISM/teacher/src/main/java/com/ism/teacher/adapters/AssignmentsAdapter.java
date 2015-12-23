@@ -20,7 +20,7 @@ import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.fragments.AllAssignmentsFragment;
 import com.ism.teacher.fragments.TeacherOfficeFragment;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.model.Exams;
 
 import java.util.ArrayList;
@@ -35,7 +35,6 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
     Context mContext;
     ArrayList<Exams> arrayListAssignments = new ArrayList<Exams>();
     Fragment mFragment;
-    MyTypeFace myTypeFace;
 
 
     /*this bundle arguments are use for both in edit exam and create exam we have to set it both the places*/
@@ -77,7 +76,6 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
     public AssignmentsAdapter(Context context, Fragment fragment) {
         this.mContext = context;
         this.mFragment = fragment;
-        myTypeFace = new MyTypeFace(context);
         fragmentManager = ((Activity) mContext).getFragmentManager();
 
     }
@@ -105,7 +103,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
             llParentAssignment = (LinearLayout) itemView.findViewById(R.id.ll_parent_assignment);
             llViewQuestions = (LinearLayout) itemView.findViewById(R.id.ll_view_questions);
-            rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_top_assignment);
+            rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_results);
 
             txtAssignmentSubject = (TextView) itemView.findViewById(R.id.txt_assignment_subject);
             txtExamName = (TextView) itemView.findViewById(R.id.txt_exam_name);
@@ -119,6 +117,15 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             txtUnassessedLabel = (TextView) itemView.findViewById(R.id.txt_unassessed_label);
             txtQuestionLabel = (TextView) itemView.findViewById(R.id.txt_question_label);
 
+            //        holder.txtExamName.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        holder.txtAssignmentDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        holder.txtAssignmentClassName.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        holder.txtAssessedLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        holder.txtNumberAssessedQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        holder.txtUnassessedLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        holder.txtNumberUnassessedQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        holder.txtQuestionLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        holder.txtAssignmentType.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         }
     }
@@ -126,6 +133,9 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+
+        holder.txtAssignmentSubject.setTypeface(Global.myTypeFace.getRalewayBold());
+
 
         holder.txtAssignmentSubject.setText(arrayListAssignments.get(position).getSubjectName());
         holder.txtExamName.setText(arrayListAssignments.get(position).getExamName());
@@ -158,10 +168,10 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
                 setBundleArguments(position);
                 getBundleArguments().putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
 
-                TeacherOfficeFragment teacherOfficeFragment=(TeacherOfficeFragment)fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+                TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
                 teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
 
-              //  getFragment().loadOfficeSubmitter(getBundleArguments());
+                //  getFragment().loadOfficeSubmitter(getBundleArguments());
             }
         });
 
@@ -172,10 +182,8 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
                 setBundleArguments(position);
                 getBundleArguments().putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
 
-                TeacherOfficeFragment teacherOfficeFragment=(TeacherOfficeFragment)fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+                TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
                 teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW);
-
-                //getFragment().loadGetObjectiveAssignmentQuestionsFragment(getBundleArguments());
 
             }
         });

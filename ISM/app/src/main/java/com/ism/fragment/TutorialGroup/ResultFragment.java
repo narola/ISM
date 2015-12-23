@@ -19,6 +19,8 @@ import com.ism.model.SubjectScoreTest;
 
 import java.util.ArrayList;
 
+import model.ExamEvaluation;
+
 /**
  * Created by c161 on 15/10/2015.
  */
@@ -100,7 +102,7 @@ public class ResultFragment extends Fragment {
 		btnViewAnswers.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamEvaluationFragment.newInstance()).commit();
 			}
 		});
 

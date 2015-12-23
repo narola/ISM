@@ -149,6 +149,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 						fragTutorialDiscussion.setDay(intCurrentDay);
 					} else {
 						fragTutorialDiscussion = TutorialDiscussionFragment.newInstance(intCurrentDay);
+						fragTutorialDiscussion.setTutorialDiscussionListener(this);
 						getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, fragTutorialDiscussion).commit();
 					}
 					break;
@@ -196,6 +197,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 
 	@Override
 	public void onDayChanged(int dayId) {
+		Log.e(TAG, "onDayChanged : " + dayId);
 		setWeekDaySelection(dayId);
 	}
 

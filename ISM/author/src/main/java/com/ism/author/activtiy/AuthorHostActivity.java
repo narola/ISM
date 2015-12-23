@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -52,6 +51,7 @@ import com.ism.author.fragment.userprofile.HighScoreFragment;
 import com.ism.author.fragment.userprofile.MyActivityFragment;
 import com.ism.author.fragment.userprofile.MyFeedsFragment;
 import com.ism.author.fragment.userprofile.StudentAttemptedAssignmentFragment;
+import com.ism.author.fragment.userprofile.generalsetting.GeneralSettingsFragment;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.ControllerTopMenuItem;
 import com.ism.author.object.Global;
@@ -59,12 +59,19 @@ import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.NotificationSetting;
+import com.ism.author.ws.model.PrivacySetting;
+import com.ism.author.ws.model.SMSAlert;
+import com.ism.author.ws.model.SettingPreferences;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
+
+import model.Preferences;
+import realmhelper.AuthorHelper;
 
 /*
 * these class is for the main screen after login contains the host activity for managing the main and container fragment.
@@ -111,20 +118,14 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 14;
     public static final int FRAGMENT_PAST = 15;
     public static final int FRAGMENT_ADD_ASSIGNMENT = 16;
-
-
     //these are the right side fragments
-
     public static final int FRAGMENT_PROFILE_CONTROLLER = 31;
     public static final int FRAGMENT_HIGHSCORE = 32;
     public static final int FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT = 34;
-
     public static final int FRAGMENT_MY_FEEDS = 35;
     public static final int FRAGMENT_FOLLOWERS = 36;
-    //    public static final int FRAGMENT_MY_BOOKS = 38;
     public static final int FRAGMENT_MY_ACTIVITY = 37;
-    //    public static final int FRAGMENT_VIEW_PROFILE = 39;
-    private InputMethodManager inputMethod;
+    public static final int FRAGMENT_GENERAL_SETTING = 18;
 
     public static int currentMainFragment;
     public static int currentRightFragment;
@@ -133,6 +134,13 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private ProgressGenerator progressGenerator;
     private BooksListner booksListner;
     private HostListenerTrending listenerHostTrending;
+    private ResizeView resizeListView;
+    private ProfileControllerPresenceListener listenerProfileControllerPresence;
+    private GeneralSettingsFragment generalSettingsFragment;
+    private ArrayList<PrivacySetting> arrayListPrivacySetting;
+    private ArrayList<NotificationSetting> arrayListNotificationSettings;
+    private ArrayList<SMSAlert> arrayListSMSAlert;
+    private Preferences preference;
 
 
     public interface HostListenerProfileController {
@@ -146,6 +154,16 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
     public interface HostListenerTrending {
         public void onViewSelect(int position);
+    }
+
+    public interface ResizeView {
+        public void onUnBlockUser();
+    }
+
+    public interface ProfileControllerPresenceListener {
+        public void onProfileControllerAttached();
+
+        public void onProfileControllerDetached();
     }
 
     public interface BooksListner {
@@ -166,13 +184,22 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         public void onControllerTopBackClick();
     }
 
+    public void setListenerProfileControllerPresence(ProfileControllerPresenceListener listenerProfileControllerPresence) {
+        this.listenerProfileControllerPresence = listenerProfileControllerPresence;
+    }
+
     public void setListenerHostProfileController(HostListenerProfileController listenerHostProfileController) {
         this.listenerHostProfileController = listenerHostProfileController;
+    }
+
+    public void setListenerResizeView(ResizeView resizeListView) {
+        this.resizeListView = resizeListView;
     }
 
     public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
         this.listenerHostAllNotification = listenerHostAllNotification;
     }
+
     public void setListenerHostTrending(HostListenerTrending listenerHostTrending) {
         this.listenerHostTrending = listenerHostTrending;
     }
@@ -201,13 +228,17 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         Global.myTypeFace = new MyTypeFace(getApplicationContext());
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
+        Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
+        Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
+        Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
 //        Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
 //        Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
 //        Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
+        Global.authorHelper = new AuthorHelper(getActivity());
 
-        Global.strUserId = "52";
-        Global.strFullName = "Chirag Mistry";
-        Global.strProfilePic = WebConstants.USER_IMAGES + "user_52/_dev_chirag.png";
+//        Global.strUserId = "52";
+//        Global.strFullName = "Chirag Mistry";
+//        Global.strProfilePic = WebConstants.USER_IMAGES + "user_52/_dev_chirag.png";
 
         mFragmentManager = getFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
@@ -271,6 +302,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         imgBack.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
         callApiGetAllBadgesCount();
+        callApiGetGeneralSettingPreferences();
+//        callApiForGetUserPreference();
 
     }
 
@@ -278,7 +311,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     /*this bundle used to pass data between fragments and also managing backstack for the fragment*/
     /*remove bundle data on backclcik of fragment as it is not necessory*/
 
-    Bundle bundle = new Bundle();
+    public Bundle bundle = new Bundle();
 
     public Bundle getBundle() {
         return bundle;
@@ -392,11 +425,11 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                             MyFeedsFragment.newInstance()).commit();
                     break;
 
-//                case FRAGMENT_MY_BOOKS:
-//
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-//                            AssignmentsSubmittorFragment.BooksFragment.newInstance()).commit();
-//                    break;
+                case FRAGMENT_GENERAL_SETTING:
+
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            GeneralSettingsFragment.newInstance()).commit();
+                    break;
 
                 case FRAGMENT_FOLLOWERS:
 
@@ -451,6 +484,13 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         objectiveAssignmentQuestionsFragment.loadStudentEvaluationData();
     }
 
+    public int getCurrentMainFragment() {
+        return currentMainFragment;
+    }
+
+    public int getCurrentRightFragment() {
+        return currentRightFragment;
+    }
 
     //these is for the load fragment in right container.
     public void loadFragmentInRightContainer(int fragment) {
@@ -513,7 +553,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
 
                 case FRAGMENT_BOOKS:
-                    setTopBarValues(fragment, getResources().getColor(R.color.bg_books), false, false, true, controllerTopMenuBooks, true);
+                    setTopBarValues(fragment, getResources().getColor(R.color.bg_books), false, false, true, controllerTopMenuBooks, false);
 
                     llControllerLeft.setVisibility(View.VISIBLE);
                     flFragmentContainerRight.setVisibility(View.VISIBLE);
@@ -532,11 +572,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     }
                     currentMainFragment = fragment;
                     listenerHostProfileController.onSubFragmentAttached(fragment);
-
                     break;
 
                 case FRAGMENT_ADD_ASSIGNMENT:
-                   // setTopBarValues(fragment, getResources().getColor(R.color.bg_office), false, true, false, controllerTopMenuMyDesk, false);
+                    // setTopBarValues(fragment, getResources().getColor(R.color.bg_office), false, true, false, controllerTopMenuMyDesk, false);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     flFragmentContainerRight.setVisibility(View.VISIBLE);
 //                    if (currentRightFragment != FRAGMENT_HIGHSCORE) {
@@ -703,35 +742,26 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
 
 
+//                case FRAGMENT_MY_ACTIVITY:
+//                    setTopBarValues(fragment, getResources().getColor(R.color.color_blue), false, false, false, null, false);
+//                    currentMainFragment = fragment;
+//                    listenerHostProfileController.onSubFragmentAttached(fragment);
+//                    break;
+
+
+                case FRAGMENT_GENERAL_SETTING:
+                case FRAGMENT_MY_FEEDS:
+                case FRAGMENT_FOLLOWERS:
                 case FRAGMENT_MY_ACTIVITY:
                     setTopBarValues(fragment, getResources().getColor(R.color.color_blue), false, false, false, null, false);
                     currentMainFragment = fragment;
                     listenerHostProfileController.onSubFragmentAttached(fragment);
                     break;
 
-//                case FRAGMENT_MY_BOOKS:
-//
-//                    currentMainFragment = fragment;
-//                    listenerHostProfileController.onSubFragmentAttached(fragment);
-//                    break;
-
-                case FRAGMENT_FOLLOWERS:
-                    setTopBarValues(fragment, getResources().getColor(R.color.color_blue), false, false, false, null, false);
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentAttached(fragment);
-                    break;
-
-                case FRAGMENT_MY_FEEDS:
-                    setTopBarValues(fragment, getResources().getColor(R.color.color_blue), false, false, false, null, false);
-                    // llControllerLeft.setVisibility(View.VISIBLE);
-                    //flFragmentContainerRight.setVisibility(View.VISIBLE);
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentAttached(fragment);
-                    break;
-
-//                case FRAGMENT_VIEW_PROFILE:
-//
-//                   // imgOffice.setActivated(true);
+//                case FRAGMENT_MY_FEEDS:
+//                    setTopBarValues(fragment, getResources().getColor(R.color.color_blue), false, false, false, null, false);
+//                    // llControllerLeft.setVisibility(View.VISIBLE);
+//                    //flFragmentContainerRight.setVisibility(View.VISIBLE);
 //                    currentMainFragment = fragment;
 //                    listenerHostProfileController.onSubFragmentAttached(fragment);
 //                    break;
@@ -780,11 +810,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     imgOffice.setActivated(false);
                     break;
 
-                case FRAGMENT_MY_DESK:
-                    imgOffice.setActivated(true);
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-
-                    break;
 
                 case FRAGMENT_ADD_ASSIGNMENT:
                     imgOffice.setActivated(true);
@@ -829,25 +854,23 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     flFragmentContainerRight.setVisibility(View.VISIBLE);
                     break;
 
+                case FRAGMENT_GENERAL_SETTING:
                 case FRAGMENT_MY_FEEDS:
-                    currentMainFragment = fragment;
+                case FRAGMENT_FOLLOWERS:
+                case FRAGMENT_MY_ACTIVITY:
+                case FRAGMENT_MY_DESK:
+                    imgOffice.setActivated(true);
                     listenerHostProfileController.onSubFragmentDetached(fragment);
                     break;
-
-//                case FRAGMENT_MY_BOOKS:
+//                case FRAGMENT_FOLLOWERS:
 //                    currentMainFragment = fragment;
 //                    listenerHostProfileController.onSubFragmentDetached(fragment);
 //                    break;
 
-                case FRAGMENT_FOLLOWERS:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
-
-                case FRAGMENT_MY_ACTIVITY:
-                    currentMainFragment = fragment;
-                    listenerHostProfileController.onSubFragmentDetached(fragment);
-                    break;
+//                case FRAGMENT_MY_ACTIVITY:
+//                    currentMainFragment = fragment;
+//                    listenerHostProfileController.onSubFragmentDetached(fragment);
+//                    break;
 
 //                case FRAGMENT_VIEW_PROFILE:
 //                    currentMainFragment = fragment;
@@ -940,7 +963,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private void onMenuItemClick(View view) {
         try {
             if (view == imgBack) {
-                hideControllerTopControls();
+//                hideControllerTopControls();
                 onBackClick(currentMainFragment);
 
             } else if (view == txtAction) {
@@ -1115,6 +1138,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 break;
             case R.id.img_high_score:
                 loadFragmentInRightContainer(FRAGMENT_HIGHSCORE);
+                if (currentMainFragment != FRAGMENT_HOME)
+                    loadFragmentInMainContainer(FRAGMENT_HOME);
                 break;
         }
     }
@@ -1205,16 +1230,115 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         hideProgress();
         try {
             if (WebConstants.GENERAL_SETTING_PREFERENCES == apiCode) {
-                // onResponseGetAllPreference(object, error);
+                onResponseGetAllPreference(object, error);
 
-            } else if (WebConstants.GET_USER_PREFERENCES == apiCode) {
-                //  onResponseGetUserPreference(object, error);
+//            } else if (WebConstants.GET_USER_PREFERENCES == apiCode) {
+//                onResponseGetUserPreference(object, error);
 
             } else if (WebConstants.GET_ALL_BADGES_COUNT == apiCode) {
                 onResponseGetAllBadges(object, error);
             }
         } catch (Exception e) {
             Debug.i(TAG, "On response Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void onResponseGetAllPreference(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().toString().equals(WebConstants.SUCCESS)) {
+                    if (responseHandler.getPreference().size() > 0) {
+                        arrayListSMSAlert = responseHandler.getPreference().get(0).getSMSAlert();
+                        for (int j = 0; j < arrayListSMSAlert.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
+                            //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                        arrayListNotificationSettings = responseHandler.getPreference().get(0).getNotificationSettings();
+                        for (int j = 0; j < arrayListNotificationSettings.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayListNotificationSettings.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotificationSettings.get(j).getId());
+                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+
+                        arrayListPrivacySetting = responseHandler.getPreference().get(0).getPrivacySetting();
+                        for (int j = 0; j < arrayListPrivacySetting.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
+                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                        savePreferences(responseHandler.getPreference());
+                    }
+
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Log.e(TAG, "Failed to load general setting preferences");
+                }
+            } else if (error != null) {
+                Log.e(TAG, "onResponseGetAllPreference api Exceptiion : " + error.toString());
+            }
+
+
+        } catch (Exception e) {
+
+            Debug.i(TAG, "onResponseGetAllPreference :" + e.getLocalizedMessage());
+
+        }
+    }
+
+    private void savePreferences(ArrayList<SettingPreferences> arrayList) {
+        try {
+            arrayListSMSAlert = arrayList.get(0).getSMSAlert();
+            for (int j = 0; j < arrayListSMSAlert.size(); j++) {
+                preference=new Preferences();
+                preference.setPreferencesId(Integer.parseInt(arrayListSMSAlert.get(j).getId()));
+                preference.setDefaultValue(arrayListSMSAlert.get(j).getDefaultValue());
+                preference.setDisplayValue(arrayListSMSAlert.get(j).getDisplayValue());
+                preference.setPreferenceKey(arrayListSMSAlert.get(j).getPreferenceKey());
+                preference.setIsSync(0);
+                Global.authorHelper.saveAllPreferences(preference);
+               // PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
+                //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+            }
+            arrayListNotificationSettings = arrayList.get(0).getNotificationSettings();
+            for (int j = 0; j < arrayListNotificationSettings.size(); j++) {
+                preference=new Preferences();
+                preference.setPreferencesId(Integer.parseInt(arrayListNotificationSettings.get(j).getId()));
+                preference.setDefaultValue(arrayListNotificationSettings.get(j).getDefaultValue());
+                preference.setDisplayValue(arrayListNotificationSettings.get(j).getDisplayValue());
+                preference.setPreferenceKey(arrayListNotificationSettings.get(j).getPreferenceKey());
+                preference.setIsSync(0);
+                Global.authorHelper.saveAllPreferences(preference);
+              //  PreferenceData.setStringPrefs(arrayListNotificationSettings.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotificationSettings.get(j).getId());
+                // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+            }
+
+            arrayListPrivacySetting = arrayList.get(0).getPrivacySetting();
+            for (int j = 0; j < arrayListPrivacySetting.size(); j++) {
+                preference=new Preferences();
+                preference.setPreferencesId(Integer.parseInt(arrayListPrivacySetting.get(j).getId()));
+                preference.setDefaultValue(arrayListPrivacySetting.get(j).getDefaultValue());
+                preference.setDisplayValue(arrayListPrivacySetting.get(j).getDisplayValue());
+                preference.setPreferenceKey(arrayListPrivacySetting.get(j).getPreferenceKey());
+                preference.setIsSync(0);
+                Global.authorHelper.saveAllPreferences(preference);
+               // PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
+                // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+            }
+
+        } catch (Exception e) {
+            Debug.i(TAG, "savePreferences Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void callApiGetGeneralSettingPreferences() {
+        try {
+            if (Utility.isConnected(getApplicationContext())) {
+                showProgress();
+                new WebserviceWrapper(this, new Attribute(), this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTING_PREFERENCES);
+            } else {
+                Utility.alertOffline(getApplicationContext());
+            }
+
+        } catch (Exception e) {
+            Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
         }
     }
 

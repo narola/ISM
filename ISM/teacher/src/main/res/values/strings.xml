@@ -4,10 +4,22 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Tutorial Group-->
+    <string name="str_tutorial">Tutorial</string>
+    <string name="str_past">PAST</string>
+    <string name="str_scheduled_date">Scheduled Date</string>
+    <string name="str_ismrank">ISM Rank</string>
+    <string name="str_group_name">Group Name</string>
+    <string name="str_group_scores">Group Scores</string>
+    <string name="str_group_rank">Group Rank</string>
+
+    <!-- Result-->
+    <string name="str_freezeresult">Freeze Result</string>
+
 
     <string name="str_personal_info">PERSONAL INFORMATION</string>
     <string name="str_manage_credential">MANAGE CREDENTIAL</string>
-    <string name="str_teacher_tutorial_label">You are assigned group Venice Beauty,you have \n to schedule question for topic Osmosis.</string>
+    <string name="str_teacher_tutorial_label">You are assigned group Venice Beauty,you have \n to schedule question for topic</string>
     <string name="strsearchstudymatess">Search Study Mates</string>
 
     <string name="no_internet">No Internet Connection Available...Please Try Again</string>
@@ -28,6 +40,7 @@
     <string name="registration_failed">Registration failed</string>
     <string name="msg_email_exists">Email id already exists.</string>
     <string name="msg_username_exists">Username already exists.</string>
+    <string name="msg_wrong_username_password">Username or Password is wrong!</string>
 
     <!-- All assignments-->
     <string name="straverage_score">Average Score</string>
@@ -43,6 +56,7 @@
     <string name="strsubject">Subject</string>
     <string name="strsubmissiondate">Submission Date</string>
     <string name="strtopic">Topic</string>
+    <string name="strtopics">Topics</string>
     <string name="msg_validation_set_topic">\nPlease select your subject topic.</string>
     <string name="msg_validation_add_text_rich_editor">\nPlease set the assignment.</string>
     <string name="msg_validation_set_classroom">\nPlease select your classroom.</string>
@@ -192,6 +206,10 @@
     <string name="strprofileinformation">PROFILE INFORMATION</string>
     <string name="stremailaddress">Email Address</string>
     <string name="strgender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="str_firstname">First Name</string>
+    <string name="str_lastname">Last Name</string>
     <string name="strfullname">Full Name</string>
     <string name="strhomeaddress">Home Address</string>
     <string name="strstate">State</string>
@@ -201,8 +219,10 @@
     <string name="strcontactnumber">Contact Number</string>
     <string name="strage">Age</string>
     <string name="struploadprofilepicture">UPLOAD PROFILE PICTURE</string>
+    <string name="msg_validation_set_dp"><![CDATA[> Please set your Profile picture.]]></string>
 
     <string name="strschoolinformation">SCHOOL INFORMATION</string>
+    <string name="strworkprofileinformation">WORK PROFILE INFORMATION</string>
     <string name="stryouareregisteredforfollowingschool">You are registered for following school.</string>
     <string name="strifitisnotyourschool">If it\'s not your school.</string>
     <string name="strnameofschool">Name of School</string>
@@ -219,6 +239,13 @@
     <string name="strconfirmpwd">Confirm Password</string>
     <string name="strsubmit">Submit</string>
     <string name="strcancel">Cancel</string>
+
+    <string name="str_education">Education</string>
+    <string name="str_specialization">Specialization</string>
+    <string name="msg_offline">You are offline!\nPlease check your internet connection.</string>
+    <string name="connectivity_problem">Connectivity problem!</string>
+    <string name="msg_server_connection">Can\'t connect to server!</string>
+    <string name="msg_success_sent_credential">Request for credentials sent to admin successfully.</string>
 
     <string-array name="list">
         <item>1</item>
@@ -278,7 +305,6 @@
     <string name="straddnew">ADD NEW</string>
     <string name="group_name">"Group Name : "</string>
     <string name="ok">Ok</string>
-    <string name="msg_offline">You are offline!\nPlease check your internet connection.</string>
     <string name="msg_failed_comment">Failed to post comment!, please try again.</string>
 
     <string-array name="filtertype">
@@ -328,7 +354,7 @@
         <item>Non Assessed</item>
     </string-array>
 
-<string name="strquestionscore">Question Score</string>
+    <string name="strquestionscore">Question Score</string>
 
 
     <!-- question -->
@@ -364,6 +390,7 @@
     <string name="strtest">test</string>
     <string name="strassignmentdate">Assignment date</string>
     <string name="strassignmentdatecolon">Assignment Date:</string>
+    <string name="strupdateddatecolon">Updated Date:</string>
     <string name="stranswer">Answer :</string>
     <string name="strof">of </string>
     <string name="strquestionpallete">Question Palette</string>
@@ -396,6 +423,7 @@
     <string name="stradvance">Advance</string>
     <string name="strtypetext">Type Text</string>
     <string name="strdone">Done</string>
+    <string name="msg_success_imgupload_profilepic">Profile picture added successfully.</string>
     <string name="msg_help_add_advance_question">By Clicking On Advance You could be able to add formatted text containing image,various scientific symbols and many options to format text </string>
     <string name="strtotalquestions">Total Questions:</string>
 

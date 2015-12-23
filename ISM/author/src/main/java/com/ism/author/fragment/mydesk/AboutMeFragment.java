@@ -1,6 +1,5 @@
 package com.ism.author.fragment.mydesk;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +21,12 @@ import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.User;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import model.AuthorProfile;
+import realmhelper.AuthorHelper;
 
 /**
  * Created by c162 on 29/11/15.
@@ -30,12 +34,11 @@ import java.util.Date;
 public class AboutMeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private View view;
-    private TextView txtUserName, txtTotalBooks, txtSocial, txtTotalPost, txtTotalFollowing, txtPost, txtAssignment, txtAcademic, txtTotalAssignment, txtExam, txtTotalExam, txtExcellence, txtFavQuestions, txtBadgesEarned, txtTotalBadgesEarned, txtTotalFavQuestions,  txtEducation;
+    private TextView txtUserName, txtTotalBooks, txtSocial, txtTotalPost, txtTotalFollowing, txtPost, txtAssignment, txtAcademic, txtTotalAssignment,
+            txtExam, txtTotalExam, txtExcellence, txtFavQuestions, txtBadgesEarned, txtTotalBadgesEarned, txtTotalFavQuestions, txtEducation;
     private static String TAG = AboutMeFragment.class.getSimpleName();
-    private AuthorHostActivity activityHost;
     MyDeskFragment myDeskFragment;
     public static ImageView imgProfilePic;
-    private Date convertedDate;
     private TextView txtEducationName;
     private TextView txtBirthdate;
     private TextView txtTotalFollowers;
@@ -69,7 +72,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         txtUserName = (TextView) view.findViewById(R.id.txt_user_name);
         txtTotalBooks = (TextView) view.findViewById(R.id.txt_total_books);
         imgProfilePic = (ImageView) view.findViewById(R.id.img_profile_pic);
-
+        Global.authorHelper = new AuthorHelper(getActivity());
         txtSocial = (TextView) view.findViewById(R.id.txt_social);
         txtAboutAuthorDetails = (TextView) view.findViewById(R.id.txt_About_author_details);
         txtAboutAuhtor = (TextView) view.findViewById(R.id.txt_About_author);
@@ -101,8 +104,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
         //set typeface
         txtTotalBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
-        txtUserName.setTypeface(Global.myTypeFace.getRalewayRegular());
-        txtEducation.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtUserName.setTypeface(Global.myTypeFace.getRalewayBold());
+        txtEducation.setTypeface(Global.myTypeFace.getRalewayBold());
         txtEducationName.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtBirthdate.setTypeface(Global.myTypeFace.getRalewayRegular());
 
@@ -115,10 +118,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         txtPost.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtFollowers.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtAcademic.setTypeface(Global.myTypeFace.getRalewayRegular());
-        //txtAssignment.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtFollowing.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtAssignment.setTypeface(Global.myTypeFace.getRalewayRegular());
-        //txtTotalAssignment.setTypeface(Global.myTypeFace.getRalewayBold());
         txtBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtTotalBooks.setTypeface(Global.myTypeFace.getRalewayBold());
         txtTotalAssignment.setTypeface(Global.myTypeFace.getRalewayBold());
@@ -132,7 +133,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         txtTotalBadgesEarned.setTypeface(Global.myTypeFace.getRalewayBold());
         txtQuestionAnswered.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtTotalFavQuestions.setTypeface(Global.myTypeFace.getRalewayBold());
-        txtEducation.setTypeface(Global.myTypeFace.getRalewayRegular());
         callApiGetAboutMe();
 
     }
@@ -140,7 +140,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private void callApiGetAboutMe() {
         try {
             if (Utility.isConnected(getActivity())) {
-                activityHost.showProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 attribute.setRoleId(Global.role);
@@ -157,13 +157,13 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void onResponseGetAboutMe(Object object, Exception error) {
         try {
-            activityHost.hideProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseObj = (ResponseHandler) object;
                 if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
                     Log.e(TAG, "onResponseGetAboutMe success");
-                    setUpData(responseObj.getUser().get(0));
-
+                    // setUpData(responseObj.getUser().get(0));
+                    saveAuthorProfile(responseObj.getUser().get(0));
                 } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetAboutMe Failed");
                 }
@@ -175,6 +175,32 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         }
     }
 
+    private void saveAuthorProfile(User user) {
+        try {
+            AuthorProfile authorProfile = new AuthorProfile();
+            authorProfile.setUser(Global.authorHelper.getUser(Integer.parseInt(Global.strUserId)));
+            authorProfile.setAuthorId(Integer.parseInt(user.getUserId()));
+            authorProfile.setAboutAuthor(user.getAboutAuthor());
+            //authorProfile.setContactNumber(user.getContactNumber()); // this field is never used in author module
+            authorProfile.setBirthDate(getDateFormate(user.getBirthdate()));
+            authorProfile.setEducation(user.getEducation());
+            authorProfile.setTotalAssignment(Integer.parseInt(user.getTotalAssignment() == null ? "0" : user.getTotalAssignment()));
+            authorProfile.setTotalBadges(Integer.parseInt(user.getTotalBadgesEarned() == null ? "0" : user.getTotalBadgesEarned()));
+            authorProfile.setTotalPost(Integer.parseInt(user.getTotalPost() == null ? "0" : user.getTotalPost()));
+            authorProfile.setTotalQuestionAnswered(Integer.parseInt(user.getTotalQuestionsAnswered() == null ? "0" : user.getTotalQuestionsAnswered()));
+            authorProfile.setTotalFavouritesQuestions(Integer.parseInt(user.getTotalFavoriteQuestions() == null ? "0" : user.getTotalFavoriteQuestions()));
+            authorProfile.setTotalFollowers(Integer.parseInt(user.getTotalFollowers() == null ? "0" : user.getTotalFollowers()));
+            authorProfile.setTotalFollpwing(Integer.parseInt(user.getTotalFollowing() == null ? "0" : user.getTotalFollowing()));
+            authorProfile.setTotalExamCreated(Integer.parseInt(user.getTotalExams() == null ? "0" : user.getTotalExams()));
+            authorProfile.setTotalBooks(Integer.parseInt(user.getTotalBooks() == null ? "0" : user.getTotalBooks()));
+            Global.authorHelper.saveAuthorProfile(authorProfile);
+            setUpDBData(Global.authorHelper.getAuthorprofile(Integer.parseInt(Global.strUserId)));
+
+        } catch (Exception e) {
+            Debug.i(TAG, "saveAuthorProfile Exceptions: " + e.getLocalizedMessage());
+        }
+    }
+
 
     private void setUpData(User data) {
         try {
@@ -182,53 +208,53 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtEducationName.setText(data.getEducation());
             txtBirthdate.setText(com.ism.commonsource.utility.Utility.DateFormat(data.getBirthdate()));
 
-            if(data.getTotalAssignment()==null)
+            if (data.getTotalAssignment() == null)
                 txtTotalAssignment.setText("0");
             else
                 txtTotalAssignment.setText(data.getTotalAssignment());
 
-            if(data.getAboutAuthor()==null)
+            if (data.getAboutAuthor() == null)
                 txtAboutAuthorDetails.setText("No inforamation available!");
             else
                 txtAboutAuthorDetails.setText(data.getAboutAuthor());
 
-            if(data.getTotalBadgesEarned()==null)
+            if (data.getTotalBadgesEarned() == null)
                 txtTotalBadgesEarned.setText("0");
             else
                 txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
 
-            if(data.getTotalExams()==null)
+            if (data.getTotalExams() == null)
                 txtTotalExam.setText("0");
             else
                 txtTotalExam.setText(data.getTotalExams());
 
 
-            if(data.getTotalPost()==null)
+            if (data.getTotalPost() == null)
                 txtTotalPost.setText("0");
             else
                 txtTotalPost.setText(data.getTotalPost());
 
-            if(data.getTotalQuestionsAnswered()==null)
+            if (data.getTotalQuestionsAnswered() == null)
                 txtTotalQueAnswered.setText("0");
             else
                 txtTotalQueAnswered.setText(data.getTotalQuestionsAnswered());
 
-            if(data.getTotalBooks()==null)
+            if (data.getTotalBooks() == null)
                 txtTotalBooks.setText("0");
             else
                 txtTotalBooks.setText(data.getTotalBooks());
 
-            if(data.getTotalFollowers()==null)
+            if (data.getTotalFollowers() == null)
                 txtTotalFollowers.setText("0");
             else
                 txtTotalFollowers.setText(data.getTotalFollowers());
 
-            if(data.getTotalFavoriteQuestions()==null)
+            if (data.getTotalFavoriteQuestions() == null)
                 txtTotalFavQuestions.setText("0");
             else
                 txtTotalFavQuestions.setText(data.getTotalFavoriteQuestions());
 
-            if(data.getTotalFollowing()==null)
+            if (data.getTotalFollowing() == null)
                 txtTotalFollowing.setText("0");
             else
                 txtTotalFollowing.setText(data.getTotalFollowing());
@@ -241,26 +267,99 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         }
     }
 
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public static Date getDateFormate(String birthdate) {
         try {
-            activityHost = (AuthorHostActivity) activity;
-            //   activityHost.setListenerHostAboutMe(this);
-        } catch (ClassCastException e) {
-            Log.e(TAG, "onAttach Exception : " + e.toString());
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = formatter.parse(birthdate);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+            Log.i(TAG, "getDateFormate : " + date);
+            return date;
+        } catch (ParseException e) {
+            Log.i(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public static String getDateFormate(Date date) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+           // Date date = formatter.parse(birthdate);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+            Log.i(TAG, "getDateFormate : " + date);
+            return formatter.format(date);
+        } catch (Exception e) {
+            Log.i(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    private void setUpDBData(model.AuthorProfile data) {
+        try {
+            txtUserName.setText(data.getUser().getFullName().toUpperCase());
+            txtEducationName.setText(data.getEducation());
+            txtBirthdate.setText(com.ism.commonsource.utility.Utility.DateFormat(getDateFormate(data.getBirthDate())));
+
+            if (data.getTotalAssignment() == 0)
+                txtTotalAssignment.setText("0");
+            else
+                txtTotalAssignment.setText(data.getTotalAssignment());
+
+            if (data.getAboutAuthor() == null)
+                txtAboutAuthorDetails.setText("No inforamation available!");
+            else
+                txtAboutAuthorDetails.setText(data.getAboutAuthor());
+
+            if (data.getTotalBadges() == 0)
+                txtTotalBadgesEarned.setText("0");
+            else
+                txtTotalBadgesEarned.setText(data.getTotalBadges());
+
+            if (data.getTotalExamCreated() == 0)
+                txtTotalExam.setText("0");
+            else
+                txtTotalExam.setText(data.getTotalExamCreated());
+
+
+            if (data.getTotalPost() == 0)
+                txtTotalPost.setText("0");
+            else
+                txtTotalPost.setText(data.getTotalPost());
+
+            if (data.getTotalQuestionAnswered() == 0)
+                txtTotalQueAnswered.setText("0");
+            else
+                txtTotalQueAnswered.setText(data.getTotalQuestionAnswered());
+
+            if (data.getTotalBooks() == 0)
+                txtTotalBooks.setText("0");
+            else
+                txtTotalBooks.setText(data.getTotalBooks());
+
+            if (data.getTotalFollowers() == 0)
+                txtTotalFollowers.setText("0");
+            else
+                txtTotalFollowers.setText(data.getTotalFollowers());
+
+            if (data.getTotalFavouritesQuestions() == 0)
+                txtTotalFavQuestions.setText("0");
+            else
+                txtTotalFavQuestions.setText(data.getTotalFavouritesQuestions());
+
+            if (data.getTotalFollpwing() == 0)
+                txtTotalFollowing.setText("0");
+            else
+                txtTotalFollowing.setText(data.getTotalFollpwing());
+
+            txtAboutAuhtor.setText("ABOUT " + data.getUser().getFullName().toUpperCase());
+//            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + data.getProfilePic(), imgProfilePic, ISMAuthor.options);
+            Global.imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMAuthor.options);
+        } catch (Exception e) {
+            Debug.i(TAG, "SetupData :" + e.getLocalizedMessage());
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        try {
-        } catch (ClassCastException e) {
-            Log.e(TAG, "onDetach Exception : " + e.toString());
-        }
-    }
 
 
     @Override

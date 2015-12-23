@@ -39,8 +39,8 @@ import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.dialog.AddQuestionTextDialog;
 import com.ism.teacher.helper.InputValidator;
-import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.HashTagsModel;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.MediaUploadAttribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -50,8 +50,6 @@ import com.ism.teacher.ws.model.Answers;
 import com.ism.teacher.ws.model.HashTags;
 import com.ism.teacher.ws.model.Questions;
 import com.ism.teacher.ws.model.Tags;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,7 +83,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private LinearLayout llAddMcqanswer;
     private RelativeLayout rlSelectImage;
 
-    MyTypeFace myTypeFace;
     private InputValidator inputValidator;
     private Boolean isAddMore = false;
     private Uri selectedUri = null;
@@ -112,10 +109,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
         inputValidator = new InputValidator(getActivity());
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
         imageValidationQuestionType = (ImageView) view.findViewById(R.id.image_validation_questionType);
         imageValidationQuestionType.setOnClickListener(this);
@@ -140,17 +134,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         tvAddquestionAdvance.setOnClickListener(this);
         tvAddquestionAdvance.setPaintFlags(tvAddquestionAdvance.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        tvAddquestionAnswer.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionAdvance.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionHeader.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvAddquestionType.setTypeface(myTypeFace.getRalewayBold());
-        tvAddquestionCategory.setTypeface(myTypeFace.getRalewayBold());
-        tvEvaluationNote1.setTypeface(myTypeFace.getRalewayRegular());
-        tvEvaluationNote2.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionSave.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionSaveAddmore.setTypeface(myTypeFace.getRalewayRegular());
-        tvAddquestionGotoquestionbank.setTypeface(myTypeFace.getRalewayRegular());
+        tvAddquestionAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionAdvance.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionHeader.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionTitle.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvAddquestionType.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvAddquestionCategory.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvEvaluationNote1.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvEvaluationNote2.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionSave.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionSaveAddmore.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvAddquestionGotoquestionbank.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         imgSelectImage = (ImageView) view.findViewById(R.id.img_select_image);
@@ -161,9 +155,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         etEvaluationNote2 = (EditText) view.findViewById(R.id.et_evaluation_note2);
 
 
-        etAddquestionTitle.setTypeface(myTypeFace.getRalewayRegular());
-        etEvaluationNote1.setTypeface(myTypeFace.getRalewayRegular());
-        etEvaluationNote2.setTypeface(myTypeFace.getRalewayRegular());
+        etAddquestionTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etEvaluationNote1.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etEvaluationNote2.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         spAddquestionType = (Spinner) view.findViewById(R.id.sp_addquestion_type);
@@ -173,7 +167,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         rlSelectImage.setOnClickListener(this);
 
         chkAddquestionPreview = (CheckBox) view.findViewById(R.id.chk_addquestion_preview);
-        chkAddquestionPreview.setTypeface(myTypeFace.getRalewayRegular());
+        chkAddquestionPreview.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         arrListQuestionType = new ArrayList<String>();
         arrListQuestionType.add(getString(R.string.strquestiontype));
@@ -467,10 +461,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
 
-    /*these is for set question questionData for copy and edit question.*/
-    private ImageLoader imageLoader;
-
-
     public void setQuestionData(Questions questions) {
         clearViewsData();
         try {
@@ -498,7 +488,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
 
             if (questions.getQuestionImageLink() != null && !questions.getQuestionImageLink().equals("")) {
-                imageLoader.displayImage(WebConstants.Image_url + questions.getQuestionImageLink(), imgSelectImage, ISMTeacher.options);
+                Global.imageLoader.displayImage(WebConstants.Image_url + questions.getQuestionImageLink(), imgSelectImage, ISMTeacher.options);
 
                 Debug.e(TAG, "============from set data =======================" + questions.getQuestionImageLink());
                 img_cancel.setVisibility(View.VISIBLE);
@@ -700,7 +690,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         if (Utility.isConnected(getActivity())) {
             ((TeacherHostActivity) getActivity()).showProgress();
             try {
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), new Attribute(), (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_HASHTAG);
 
             } catch (Exception e) {

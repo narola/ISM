@@ -3,6 +3,7 @@ package com.ism.teacher.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.ws.model.AnswerChoices;
 import com.ism.teacher.ws.model.Answers;
 
@@ -17,14 +18,15 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Attribute {
 
-
+    private String education;
+    private String specialization;
     private String schoolName;
     private String homeAddress;
     private int cityId;
     private String lastname;
     private String firstname;
     private int stateId;
-    private int countryId;
+    private String countryId;
     private String contactNumber;
     private String emailAddress;
     private String name;
@@ -73,14 +75,13 @@ public class Attribute {
     private List<String> images;
     private String postedOn;
     private String videoThumbnail;
-    private String role;
     private String examId;
     private String[] taggedUserIds;
     private String taggedBy;
     private String[] likedId;
     private String[] unlikedId;
     private String studentId;
-
+    private int schoolClassroomId;
 
     //these are for the add question
 
@@ -98,6 +99,59 @@ public class Attribute {
     private String questionScore;
     private ArrayList<AnswerChoices> answerChoices;
     private String hashtagData;
+
+    private String secretKey;
+    private String accessKey;
+    private String role;
+    private String lastSyncDate;
+    private int credentialId;
+
+    private ArrayList<String> unfavoriteResourceId;
+    private ArrayList<String> favResourceId;
+    public Attribute() {
+        setAccessKey(WebConstants.ACCESS_KEY);
+        setSecretKey(WebConstants.SECRET_KEY);
+    }
+
+
+    public Attribute(String accessKey) {
+        setAccessKey(accessKey);
+    }
+
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    @JsonProperty("secret_key")
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    @JsonProperty("access_key")
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
+    }
+
+
+    @JsonProperty("unfavorite_resource_id")
+    public void setUnfavoriteResourceId(ArrayList<String> unfavoriteResourceId) {
+        this.unfavoriteResourceId = unfavoriteResourceId;
+    }
+
+    public ArrayList<String> getFavResourceId() {
+        return this.favResourceId;
+    }
+
+    @JsonProperty("fav_resource_id")
+    public void setFavResourceId(ArrayList<String> favResourceId) {
+        this.favResourceId = favResourceId;
+    }
 
     public String getFeedId() {
         return this.feedId;
@@ -536,14 +590,15 @@ public class Attribute {
         this.stateId = stateId;
     }
 
-    public int getCountryId() {
+    public String getCountryId() {
         return this.countryId;
     }
 
     @JsonProperty("country_id")
-    public void setCountryId(int countryId) {
+    public void setCountryId(String countryId) {
         this.countryId = countryId;
     }
+
 
     public String getContactNumber() {
         return this.contactNumber;
@@ -806,6 +861,7 @@ public class Attribute {
 
     //used in preview questions
     private ArrayList<String> questionIdList;
+
     public ArrayList<String> getQuestionIdList() {
         return questionIdList;
     }
@@ -817,6 +873,7 @@ public class Attribute {
     }
 
     private String questionid;
+
     public String getQuestionid() {
         return questionid;
     }
@@ -893,4 +950,48 @@ public class Attribute {
         return this;
     }
 
+    public int getCredentialId() {
+        return credentialId;
+    }
+
+    @JsonProperty("credential_id")
+    public void setCredentialId(int credentialId) {
+        this.credentialId = credentialId;
+    }
+
+    public int getSchoolClassroomId() {
+        return schoolClassroomId;
+    }
+
+    @JsonProperty("school_classroom_id")
+    public void setSchoolClassroomId(int schoolClassroomId) {
+        this.schoolClassroomId = schoolClassroomId;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    @JsonProperty("education")
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    @JsonProperty("specialization")
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    @JsonProperty("last_sync_date")
+    public String getLastSyncDate() {
+        return lastSyncDate;
+    }
+
+    public void setLastSyncDate(String lastSyncDate) {
+        this.lastSyncDate = lastSyncDate;
+    }
 }

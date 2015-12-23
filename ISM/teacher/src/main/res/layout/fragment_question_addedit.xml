@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_white"
+    android:background="@color/white"
     android:orientation="vertical">
 
 
@@ -371,7 +371,7 @@
             android:button="@drawable/custom_checkbox_question_selection"
             android:checked="false"
             android:text="@string/straddquestiontopreview"
-            android:textColor="@color/color_white"
+            android:textColor="@color/white"
             android:textSize="@dimen/d20dp" />
 
         <LinearLayout
@@ -392,7 +392,7 @@
                 android:paddingRight="@dimen/d15dp"
                 android:paddingTop="@dimen/d5dp"
                 android:text="@string/strsave"
-                android:textColor="@color/color_white"
+                android:textColor="@color/white"
                 android:textSize="@dimen/d20dp" />
 
 
@@ -407,7 +407,7 @@
                 android:paddingRight="@dimen/d15dp"
                 android:paddingTop="@dimen/d5dp"
                 android:text="@string/strsaveandaddmore"
-                android:textColor="@color/color_white"
+                android:textColor="@color/white"
                 android:textSize="@dimen/d20dp" />
 
         </LinearLayout>

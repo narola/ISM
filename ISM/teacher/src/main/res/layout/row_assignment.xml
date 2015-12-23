@@ -24,7 +24,7 @@
             android:layout_height="@dimen/d150dp">
 
             <RelativeLayout
-                android:id="@+id/rl_top_assignment"
+                android:id="@+id/rl_results"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/d100dp"
                 android:background="@drawable/bg_subject_yellow"
@@ -38,7 +38,7 @@
                     android:singleLine="true"
                     android:text="@string/strtest"
                     android:textAllCaps="true"
-                    android:textColor="@color/color_white"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/d17sp"
                     android:textStyle="bold" />
 
@@ -54,7 +54,7 @@
                     android:background="@drawable/btn_dark_grey"
                     android:singleLine="false"
                     android:text="@string/strtest"
-                    android:textColor="@color/color_white"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/d15sp" />
 
             </RelativeLayout>
@@ -62,7 +62,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/rl_top_assignment"
+                android:layout_below="@+id/rl_results"
                 android:gravity="center_vertical">
 
                 <TextView

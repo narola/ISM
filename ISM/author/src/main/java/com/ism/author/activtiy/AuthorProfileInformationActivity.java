@@ -25,7 +25,7 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.object.Global;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.MediaUploadAttribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -55,6 +55,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
     private ImageView imgDp;
     private ProcessButton btnSubmit, progCountry, progState, progCity;
 
+    private MyTypeFace myTypeFace;
     private InputValidator inputValidator;
     private List<String> arrListGender;
     private List<String> arrListDefalt;
@@ -75,6 +76,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
     private long lngMaxDob;
     private int PICK_IMAGE_REQUEST = 1;
     Uri selectedUri = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,20 +111,21 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
         progCity = (ProcessButton) findViewById(R.id.prog_city);
 
         authorHelper = new AuthorHelper(this);
+        myTypeFace = new MyTypeFace(this);
 
-        ((TextView) findViewById(R.id.txt_uploadpic)).setTypeface(Global.myTypeFace.getRalewayRegular());
-        etAge.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etContactNo.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etConfirmPwd.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etCurrentPwd.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etDob.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etEmailAddress.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etFirstName.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etLastName.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etHomeAddress.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etNewPwd.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etUserName.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etEducation.setTypeface(Global.myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_uploadpic)).setTypeface(myTypeFace.getRalewayRegular());
+        etAge.setTypeface(myTypeFace.getRalewayRegular());
+        etContactNo.setTypeface(myTypeFace.getRalewayRegular());
+        etConfirmPwd.setTypeface(myTypeFace.getRalewayRegular());
+        etCurrentPwd.setTypeface(myTypeFace.getRalewayRegular());
+        etDob.setTypeface(myTypeFace.getRalewayRegular());
+        etEmailAddress.setTypeface(myTypeFace.getRalewayRegular());
+        etFirstName.setTypeface(myTypeFace.getRalewayRegular());
+        etLastName.setTypeface(myTypeFace.getRalewayRegular());
+        etHomeAddress.setTypeface(myTypeFace.getRalewayRegular());
+        etNewPwd.setTypeface(myTypeFace.getRalewayRegular());
+        etUserName.setTypeface(myTypeFace.getRalewayRegular());
+        etEducation.setTypeface(myTypeFace.getRalewayRegular());
 
 
         inputValidator = new InputValidator(getActivity());

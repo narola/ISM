@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.constant.WebConstants;
+import com.ism.ws.model.Preferences;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class Attribute {
     private ArrayList<String> recordIds;
 
     private String[] taggedUserIds;
-    private ArrayList<Attribute> preferences;
+    private ArrayList<Preferences> preferences;
     private File file;
     private String aboutMeText;
     private String ambitionInLife;
@@ -85,6 +86,8 @@ public class Attribute {
 	private String accessKey;
 	private String role;
 	private String lastSyncDate;
+	private String weekNo;
+	private String dayNo;
 
     private ArrayList<String> unfavoriteResourceId;
     private ArrayList<String> favResourceId;
@@ -498,12 +501,12 @@ public class Attribute {
 		this.taggedBy = taggedBy;
 	}
 
-	public ArrayList<Attribute> getPreferences() {
+	public ArrayList<Preferences> getPreferences() {
 		return preferences;
 	}
 
 	@JsonProperty("preferences")
-	public void setPreferences(ArrayList<Attribute> preferences) {
+	public void setPreferences(ArrayList<Preferences> preferences) {
 		this.preferences = preferences;
 	}
 
@@ -744,5 +747,22 @@ public class Attribute {
 		this.likedId = likedId;
 	}
 
+	public String getWeekNo() {
+		return weekNo;
+	}
+
+	@JsonProperty("week_no")
+	public void setWeekNo(String weekNo) {
+		this.weekNo = weekNo;
+	}
+
+	public String getDayNo() {
+		return dayNo;
+	}
+
+	@JsonProperty("day_no")
+	public void setDayNo(String dayNo) {
+		this.dayNo = dayNo;
+	}
 
 }

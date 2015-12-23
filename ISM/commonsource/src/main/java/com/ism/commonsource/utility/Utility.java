@@ -1,7 +1,8 @@
 package com.ism.commonsource.utility;
 
 
-import android.util.*;
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -71,18 +72,19 @@ public class Utility {
         }
 
     }
+
     //used for changed date format in 14th May 2015
     public static String DateFormat(String birthdate) {
         try {
             String strDob = birthdate;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date convertedDate = new Date();
             convertedDate = dateFormat.parse(birthdate);
             System.out.println(convertedDate);
             SimpleDateFormat format = new SimpleDateFormat("dd");
             String date = format.format(convertedDate);
 
-           // Log.i(TAG, "Date :" + date);
+            Log.i(TAG, "Date :" + date);
 
             if (date.endsWith("1") && !date.endsWith("11"))
                 format = new SimpleDateFormat("dd'st' MMMM yyyy");
@@ -92,17 +94,16 @@ public class Utility {
                 format = new SimpleDateFormat("dd'rd' MMMM yyyy");
             else
                 format = new SimpleDateFormat("dd'th' MMMM yyyy");
-           // Log.i(TAG, "Date Formated:" + format.format(convertedDate));
+            Log.i(TAG, "Date Formated:" + format.format(convertedDate));
             return format.format(convertedDate);
         } catch (ParseException e) {
-            Log.i(TAG, "dateFormat ParseException : " + e.getLocalizedMessage());
+            Log.i(TAG, "DateFormat ParseException : " + e.getLocalizedMessage());
             return null;
         } catch (Exception e) {
-            Log.i(TAG, "dateFormat Exceptions : " + e.getLocalizedMessage());
+            Log.i(TAG, "DateFormat Exceptions : " + e.getLocalizedMessage());
             return null;
         }
-
-
     }
+
 
 }

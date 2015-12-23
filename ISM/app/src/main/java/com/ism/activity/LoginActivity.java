@@ -103,6 +103,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			WebConstants.ACCESS_KEY = PreferenceData.getStringPrefs(PreferenceData.ACCESS_KEY, this);
 			WebConstants.SECRET_KEY = PreferenceData.getStringPrefs(PreferenceData.SECRET_KEY, this);
 			callApiGetAdminConfig();
+//			resumeApp();
 		} else {
 			PreferenceData.clearWholePreference(this);
 			PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, WebConstants.NO_USERNAME);

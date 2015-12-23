@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.ws.model.AnswerChoices;
 import com.ism.author.ws.model.Answers;
+import com.ism.author.ws.model.Preferences;
 import com.ism.author.ws.model.Tags;
 
 import java.util.ArrayList;
@@ -98,8 +99,8 @@ public class Attribute {
     private ArrayList<String> questionIdList;
     private ArrayList<Tags> tags;
     private String[] taggedUserIds;
-    private String[] likedId;
-    private String[] unlikedId;
+    private ArrayList<String> likedId;
+    private ArrayList<String> unlikedId;
 
     private String studymateId;
     private ArrayList<String> recordIds;
@@ -115,6 +116,11 @@ public class Attribute {
     private String authorId;
     private String checkSlot;
     private String answerText;
+    private String assignmentName;
+    private String blockUser;
+    private ArrayList<Preferences> preferences;
+    private String keyId;
+    private String settingValue;
 
     public ArrayList<String> getUnfavoriteResourceId() {
         return this.unfavoriteResourceId;
@@ -537,22 +543,22 @@ public class Attribute {
         this.taggedBy = taggedBy;
     }
 
-    public String[] getLikedId() {
+    public ArrayList<String> getLikedId() {
         return likedId;
     }
 
 
     @JsonProperty("liked_id")
-    public void setLikedId(String[] likedId) {
+    public void setLikedId(ArrayList<String> likedId) {
         this.likedId = likedId;
     }
 
-    public String[] getUnlikedId() {
+    public ArrayList<String> getUnlikedId() {
         return unlikedId;
     }
 
     @JsonProperty("unliked_id")
-    public void setUnlikedId(String[] unlikedId) {
+    public void setUnlikedId(ArrayList<String> unlikedId) {
         this.unlikedId = unlikedId;
     }
 
@@ -1115,6 +1121,46 @@ public class Attribute {
     @JsonProperty("education")
     public void setEducation(String education) {
         this.education = education;
+    }
+
+    public String getAssignmentName() {
+        return assignmentName;
+    }
+
+    @JsonProperty("assignment_name")
+    public void setAssignmentName(String assignmentName) {
+        this.assignmentName = assignmentName;
+    }
+
+    public String getBlockUser() {
+        return blockUser;
+    }
+
+    @JsonProperty("block_user")
+    public void setBlockUser(String blockUser) {
+        this.blockUser = blockUser;
+    }
+
+    public ArrayList<Preferences> getPreferences() {
+        return preferences;
+    }
+
+    @JsonProperty("preferences")
+    public void setPreferences(ArrayList<Preferences> preferences) {
+        this.preferences = preferences;
+    }
+    @JsonProperty("key_id")
+    public void setKeyId(String keyId) {
+        this.keyId = keyId;
+    }
+
+    public String getSettingValue() {
+        return settingValue;
+    }
+
+    @JsonProperty("preference_value")
+    public void setSettingValue(String settingValue) {
+        this.settingValue = settingValue;
     }
 }
 

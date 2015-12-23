@@ -9,6 +9,17 @@
     <color name="color_shade_news_feed">#90BABABA</color>
     <color name="fragment_background_color">#F5F5F5</color>
 
+    <!-- Tutorial-->
+    <color name="color_txt_tutorial">#AE1F1B</color>
+    <color name="color_txt_balck_tutorial">#333331</color>
+    <color name="color_green_schedule_exam">#05A986</color>
+    <color name="color_green_exam_name">#67C08A</color>
+    <color name="color_blue_group_score">#0C5097</color>
+
+
+    <!-- Teacher User Profile-->
+    <color name="color_living_in">#0C5097</color>
+    <color name="color_violet">#A44B99</color>
     <!-- Assignment -->
     <color name="btn_save">#26AF61</color>
     <color name="btn_cancel">#3C4650</color>
@@ -67,7 +78,7 @@
     <color name="color_green">#1BC4A2</color>
     <color name="color_green_dark">#14987d</color>
     <color name="color_transparent_white">#70ffffff</color>
-    <color name="color_white">#ffffff</color>
+    <color name="white">#ffffff</color>
     <color name="color_dark_gray">#333333</color>
     <color name="color_gray">#323232</color>
     <color name="color_gray1">#393A3C</color>

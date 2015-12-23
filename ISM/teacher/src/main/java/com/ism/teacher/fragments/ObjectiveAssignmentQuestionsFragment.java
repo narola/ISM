@@ -20,7 +20,7 @@ import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.GetObjectiveAssignmentQuestionsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -37,7 +37,6 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
 
     private static final String TAG = ObjectiveAssignmentQuestionsFragment.class.getSimpleName();
     private View view;
-    private MyTypeFace myTypeFace;
 
     private TextView tvObjectiveAssignmentSubject, tvObjectiveAssignmentClass, tvObjectiveAssignmentNo, tvObjectiveAssignmentTitle,
             tvObjectiveAssignmentDateTitle, tvObjectiveAssignmentDate, tvNoQuestions;
@@ -79,8 +78,6 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
-
         tvNoQuestions = (TextView) view.findViewById(R.id.tv_no_questions);
         tvObjectiveAssignmentSubject = (TextView) view.findViewById(R.id.tv_objective_assignment_subject);
         tvObjectiveAssignmentClass = (TextView) view.findViewById(R.id.tv_objective_assignment_class);
@@ -92,15 +89,15 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         imgEditExam = (ImageView) view.findViewById(R.id.img_edit_exam);
         imgCopyExam = (ImageView) view.findViewById(R.id.img_copy_exam);
 
-        tvObjectiveAssignmentSubject.setTypeface(myTypeFace.getRalewayRegular());
-        tvObjectiveAssignmentClass.setTypeface(myTypeFace.getRalewayRegular());
-        tvObjectiveAssignmentNo.setTypeface(myTypeFace.getRalewayRegular());
-        tvObjectiveAssignmentTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvObjectiveAssignmentDateTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvObjectiveAssignmentDate.setTypeface(myTypeFace.getRalewayRegular());
+        tvObjectiveAssignmentSubject.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvObjectiveAssignmentClass.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvObjectiveAssignmentNo.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvObjectiveAssignmentTitle.setTypeface(Global.myTypeFace.getRalewayBold());
+        tvObjectiveAssignmentDateTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvObjectiveAssignmentDate.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         rvGetObjectiveAssignmentQuestionslist = (RecyclerView) view.findViewById(R.id.rv_getObjective_assignment_questionslist);
-        getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(getActivity(), getArguments());
+        getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(getActivity());
         rvGetObjectiveAssignmentQuestionslist.setAdapter(getObjectiveAssignmentQuestionsAdapter);
         rvGetObjectiveAssignmentQuestionslist.setLayoutManager(new LinearLayoutManager(getActivity()));
 

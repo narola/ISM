@@ -31,7 +31,6 @@ import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.InputValidator;
-import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -71,7 +70,6 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     private ScrollView svCreateExam;
 
 
-    private MyTypeFace myTypeFace;
     private static int PASSINGPERCENT_INTERVAL = 5, PASSINGPERCENT_STARTVALUE = 30, PASSINGPERCENT_ENDVALUE = 99;
     private static int EXAMDURATION_INTERVAL = 30, EXAMDURATION_STARTVALUE = 30, EXAMDURATION_ENDVALUE = 300;
     private static int QUESTIONSCORE_INERVAL = 1, QUESTIONSCORE_STARTVALUE = 1, QUESTIONSCORE_ENDVALUE = 5;
@@ -85,6 +83,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     private ArrayList<Classrooms> arrListClassRooms;
     private ArrayList<Subjects> arrListSubject;
     public List<String> arrListQuestionScore;
+    private Fragment mFragment;
 
     /**
      * Fragment Args
@@ -96,20 +95,12 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         // Required empty public constructor
     }
 
-    public static AssignmentExamFragment newInstance(Fragment fragment, Context mContext, Bundle bundleArgument) {
+    public static AssignmentExamFragment newInstance(Fragment fragment, Context mContext) {
         AssignmentExamFragment assignmentExamFragment = new AssignmentExamFragment();
-
-        if (bundleArgument != null) {
-            assignmentExamFragment.setArguments(bundleArgument);
-            assignmentExamFragment.getArguments().putBoolean(ARG_IS_CREATE_EXAM, false);
-        } else {
-            Bundle bundle = new Bundle();
-            bundle.putBoolean(ARG_IS_CREATE_EXAM, true);
-            assignmentExamFragment.setArguments(bundle);
-        }
 
         assignmentExamFragment.mContext = mContext;
         assignmentExamFragment.fragmentContext = fragment;
+        assignmentExamFragment.mFragment = fragment;
         return assignmentExamFragment;
     }
 
@@ -124,7 +115,6 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(mContext);
         inputValidator = new InputValidator(mContext);
         llExamStartTime = (LinearLayout) view.findViewById(R.id.ll_exam_startTime);
         llTopicSpinner = (LinearLayout) view.findViewById(R.id.ll_topic_spinner);
@@ -143,17 +133,17 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         tvExamStartTime = (TextView) view.findViewById(R.id.tv_exam_startTime);
         tvExamAssessor = (TextView) view.findViewById(R.id.tv_exam_assessor);
 
-        tvExamName.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamClass.setTypeface(myTypeFace.getRalewayRegular());
-        tvSubjectName.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamPassingpercent.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamCategory.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamExammode.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamExamduration.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamAttemptcount.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamschedule.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamStartdate.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamStartTime.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamClass.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvSubjectName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamPassingpercent.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamCategory.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamExammode.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamExamduration.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamAttemptcount.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamschedule.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamStartdate.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamStartTime.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         spExamAssessor = (Spinner) view.findViewById(R.id.sp_exam_assessor);
         tvExamTitle = (TextView) view.findViewById(R.id.tv_exam_title);
@@ -166,15 +156,15 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         tvExamQuestionscorevalue = (TextView) view.findViewById(R.id.tv_exam_questionscorevalue);
         tvExamAddnegativemark = (TextView) view.findViewById(R.id.tv_exam_addnegativemark);
 
-        tvExamTitle.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamExamfor.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamExaminstruction.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamDeclareresult.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamNegativemarking.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamRandomquestion.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamUsescore.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamQuestionscorevalue.setTypeface(myTypeFace.getRalewayRegular());
-        tvExamAddnegativemark.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamExamfor.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamExaminstruction.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamDeclareresult.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamNegativemarking.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamRandomquestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamUsescore.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamQuestionscorevalue.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamAddnegativemark.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         spExamClassroom = (Spinner) view.findViewById(R.id.sp_exam_classroom);
@@ -194,10 +184,10 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         etExamAttemptcount = (EditText) view.findViewById(R.id.et_exam_attemptcount);
         etExamAddnegativemark = (EditText) view.findViewById(R.id.et_exam_addnegativemark);
 
-        etExamName.setTypeface(myTypeFace.getRalewayRegular());
-        etExamStartdate.setTypeface(myTypeFace.getRalewayRegular());
-        etExamStartTime.setTypeface(myTypeFace.getRalewayRegular());
-        etExamAddnegativemark.setTypeface(myTypeFace.getRalewayRegular());
+        etExamName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etExamStartdate.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etExamStartTime.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etExamAddnegativemark.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         cbExamStartdateNotify = (CheckBox) view.findViewById(R.id.cb_exam_startdate_notify);
         cbExamEnddateNotify = (CheckBox) view.findViewById(R.id.cb_exam_enddate_notify);
@@ -220,9 +210,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         btnExamSetquestion = (Button) view.findViewById(R.id.btn_exam_setquestion);
         btnExamCancel = (Button) view.findViewById(R.id.btn_exam_cancel);
 
-        btnExamSave.setTypeface(myTypeFace.getRalewayRegular());
-        btnExamSetquestion.setTypeface(myTypeFace.getRalewayRegular());
-        btnExamCancel.setTypeface(myTypeFace.getRalewayRegular());
+        btnExamSave.setTypeface(Global.myTypeFace.getRalewayRegular());
+        btnExamSetquestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+        btnExamCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         llAddQuestionscore = (LinearLayout) view.findViewById(R.id.ll_add_questionscore);
         llAddNegativeMark = (LinearLayout) view.findViewById(R.id.ll_add_negative_mark);
@@ -396,7 +386,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
         //For New Exam
 
-        if (getArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
+        if (getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
             btnExamSetquestion.setVisibility(View.GONE);
             btnExamSave.setVisibility(View.VISIBLE);
 
@@ -414,6 +404,10 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         callApiGetSubjects();
 
 
+    }
+
+    private CreateExamAssignmentContainerFragment getBaseFragment() {
+        return (CreateExamAssignmentContainerFragment) mFragment;
     }
 
     private void getQuestionScoreSpinnerValues() {
@@ -507,7 +501,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         if (Utility.isConnected(mContext)) {
             try {
                 //   ((TeacherHostActivity) getActivity()).showProgress();
-                new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(mContext, new Attribute(), (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_CLASSROOMS);
             } catch (Exception e) {
                 Debug.e(TAG + Utility.getString(R.string.strerrormessage, mContext), e.getLocalizedMessage());
@@ -521,7 +515,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         if (Utility.isConnected(mContext)) {
             try {
                 //     ((TeacherHostActivity) getActivity()).showProgress();
-                new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(mContext, new Attribute(), (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_SUBJECT);
             } catch (Exception e) {
                 Debug.e(TAG + Utility.getString(R.string.strerrormessage, mContext), e.getLocalizedMessage());

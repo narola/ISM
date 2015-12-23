@@ -17,7 +17,7 @@
             android:padding="@dimen/d5dp"
             android:text="@string/strquestionpallete"
             android:textAllCaps="true"
-            android:textColor="@color/color_white"
+            android:textColor="@color/white"
             android:textSize="@dimen/d18dp" />
 
         <android.support.v7.widget.RecyclerView
