@@ -48,5 +48,9 @@ public class AppConstant {
     public  static final String RESOURCE_PASTTIMES="pastimes";
     public  static final String RESOURCE_MOVIES="movies";
 
+    /**
+     * Date pattern
+     */
 
+    public static final String DATE_YYYYMMDD="yyyy-MM-dd";
 }

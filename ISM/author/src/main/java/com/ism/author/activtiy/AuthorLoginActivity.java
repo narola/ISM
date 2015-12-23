@@ -36,6 +36,7 @@ import com.ism.author.ws.model.AdminConfig;
 import com.ism.author.ws.model.Cities;
 import com.ism.author.ws.model.Countries;
 import com.ism.author.ws.model.States;
+import com.ism.author.ws.model.User;
 import com.ism.commonsource.utility.AESHelper;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
@@ -758,6 +759,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                         PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, getActivity(), responseHandler.getUser().get(0).getFullName());
                         PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, getActivity(), responseHandler.getUser().get(0).getProfilePic());
                         PreferenceData.setStringPrefs(PreferenceData.USER_NAME, this, etUserName.getText().toString().trim());
+                        saveUser(responseHandler.getUser().get(0),etUserName.getText().toString().trim());
 
                         launchHostActivity();
                     }
@@ -770,6 +772,20 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponseLogin Exception : " + e.toString());
+        }
+    }
+
+    private void saveUser(User user, String userName) {
+        try{
+            model.User userData=new model.User();
+            userData.setUserId(Integer.parseInt(user.getUserId()));
+            userData.setProfilePicture(user.getProfilePic());
+            userData.setFullName(user.getFullName());
+            userData.setUserName(userName);
+            authorHelper.saveUser(userData);
+        }
+        catch (Exception e){
+            Debug.i(TAG,"saveUser Exceptions : " +e.getLocalizedMessage());
         }
     }
 

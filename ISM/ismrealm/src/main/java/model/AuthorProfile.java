@@ -19,11 +19,42 @@ public class AuthorProfile extends RealmObject {
     private User user;
     private int totalQuestionAnswered;
     private int totalAssignment;
+    private int totalFavouritesQuestions;
+    private int totalExamCreated;
+    private int totalFollowers;
+    private int totalFollpwing;
+    private int totalBooks;
     private int totalSubmissionReceived;
     private int totalPost;
     private int totalBadges;
+    private Date birthDate;
     private Date createdDate;
     private Date modifiedDate;
+    private String contactNumber;
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public int getTotalBooks() {
+        return totalBooks;
+    }
+
+    public void setTotalBooks(int totalBooks) {
+        this.totalBooks = totalBooks;
+    }
 
     public int getAuthorId() {
         return authorId;
@@ -63,6 +94,38 @@ public class AuthorProfile extends RealmObject {
 
     public void setTotalQuestionAnswered(int totalQuestionAnswered) {
         this.totalQuestionAnswered = totalQuestionAnswered;
+    }
+
+    public int getTotalFollpwing() {
+        return totalFollpwing;
+    }
+
+    public void setTotalFollpwing(int totalFollpwing) {
+        this.totalFollpwing = totalFollpwing;
+    }
+
+    public int getTotalFollowers() {
+        return totalFollowers;
+    }
+
+    public void setTotalFollowers(int totalFollowers) {
+        this.totalFollowers = totalFollowers;
+    }
+
+    public int getTotalExamCreated() {
+        return totalExamCreated;
+    }
+
+    public void setTotalExamCreated(int totalExamCreated) {
+        this.totalExamCreated = totalExamCreated;
+    }
+
+    public int getTotalFavouritesQuestions() {
+        return totalFavouritesQuestions;
+    }
+
+    public void setTotalFavouritesQuestions(int totalFavouritesQuestions) {
+        this.totalFavouritesQuestions = totalFavouritesQuestions;
     }
 
     public int getTotalAssignment() {
@@ -112,4 +175,5 @@ public class AuthorProfile extends RealmObject {
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
+
 }

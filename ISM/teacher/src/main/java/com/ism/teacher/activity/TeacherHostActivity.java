@@ -406,6 +406,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     rlAddPost.setVisibility(View.GONE);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     showControllerTopBackButton();
+                    showRightContainerFragment();
 
                     break;
 
@@ -421,7 +422,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     rlAddPost.setVisibility(View.GONE);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     showControllerTopBackButton();
-
+                    showRightContainerFragment();
                     break;
 
                 case FRAGMENT_SCHEDULE_EXAM:
@@ -438,7 +439,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     showControllerTopBackButton();
                     hideRightContainerFragment();
                     break;
-
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());

@@ -42,6 +42,7 @@ public class WebConstants {
     public static final int GET_ADMIN_CONFIG = 32;
     public static final int REFRESH_TOKEN = 33;
     public static final int SEND_REQUEST_STUDYMATE = 34;
+    public static final int GET_GROUP_HISTORY = 35;
 
 
     //general settings
@@ -74,12 +75,12 @@ public class WebConstants {
 //	private static final String URL_HOST_147 = HOST_147 + "WS_ISM/ISMServices.php?Service=";                // KINJAL
 //	private static final String URL_IMAGE_PATH = "http://192.168.1.147/WS_ISM/Images"
 
-//	public static final String HOST = "http://192.168.1.202/";                                              // SERVER
+	public static final String HOST = "http://192.168.1.202/";                                              // SERVER
 //	public static final String HOST = "http://clientapp.narolainfotech.com/";                               // SERVER
-    public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
+//    public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
 
-    //	private static final String DIR_PATH = "pg/ISM/WS_ISM/";    //  SERVER
-    private static final String DIR_PATH = "WS_ISM/";           //  KINJAL
+    	private static final String DIR_PATH = "pg/ISM/WS_ISM/";    //  SERVER
+//    private static final String DIR_PATH = "WS_ISM/";           //  KINJAL
     private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
 	//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_images/";
 	public static final String HOST_IMAGE_USER = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
@@ -124,6 +125,7 @@ public class WebConstants {
 	public static final String URL_REFRESH_TOKEN = HOST_WS + "RefreshToken";
 	public static final String URL_GET_ADMIN_CONFIG = HOST_WS + "GetAdminConfig";
 	public static final String URL_LIKE_FEED = HOST_WS + "LikeFeed";
+	public static final String URL_GET_GROUP_HISTORY = HOST_WS + "GetGroupHistory";
 
 	public static final String URL_SEND_REQUEST_STUDYMATE = HOST_WS + "SendRequestToStudymate";
 	/*

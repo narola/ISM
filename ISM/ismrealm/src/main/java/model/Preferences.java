@@ -20,6 +20,7 @@ public class Preferences extends RealmObject {
     private Preferences preference;
     private Date createdDate;
     private Date modifiedDate;
+    private int isSync;
 
     public int getPreferencesId() {
         return preferencesId;
@@ -75,5 +76,13 @@ public class Preferences extends RealmObject {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public int getIsSync() {
+        return isSync;
+    }
+
+    public void setIsSync(int isSync) {
+        this.isSync = isSync;
     }
 }
