@@ -30,4 +30,6 @@ define("FEEDS_MEDIA",  'images/feeds/');
 
 define("NOTES_MEDIA",  'notes/');
 
+define("LESSON_NOTES_MEDIA",  'images/lesson_notes/');
+
 ?>

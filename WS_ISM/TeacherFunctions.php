@@ -96,6 +96,36 @@ class TeacherFunctions
             }
                 break;
 
+            case "GetAllLessonNotes":
+            {
+                return $this->getAllLessonNotes($postData);
+            }
+                break;
+
+            case "GetLessonNotesWithDetails":
+            {
+                return $this->getLessonNotesWithDetails($postData);
+            }
+                break;
+
+            case "SubmitLessonNotes":
+            {
+                return $this->submitLessonNotes($postData);
+            }
+                break;
+
+            case "UploadMediaForLessonNotes":
+            {
+                return $this->uploadMediaForLessonNotes($postData);
+            }
+                break;
+
+            case "EditLessonNotes":
+            {
+                return $this->editLessonNotes($postData);
+            }
+                break;
+
         }
     }
     /*
@@ -420,12 +450,17 @@ class TeacherFunctions
             // echo $query;
             if (mysqli_num_rows($result)) {
                 while ($row = mysqli_fetch_assoc($result)) {
+
+
+                    $q="SELECT cs.subject_id,s.subject_name FROM `classroom_subject` cs INNER JOIN subjects s ON cs.subject_id=s.id WHERE `classroom_id`=2";
+
+
                     $classroom_id = $row['classroom_id'];
                     // echo $classroom_id."\n";
                     $getFields = "notes.topic_id,topics.topic_name,notes.id,notes.user_id,users.full_name,users.profile_pic,notes.created_date,notes.note_title,notes.note,notes.video_link,notes.audio_link,notes.video_thumbnail,notes.image_link";
                     $queryGetPost = "SELECT ".$getFields." FROM ".TABLE_NOTES." notes INNER JOIN ".TABLE_TOPICS." topics INNER JOIN ".TABLE_USERS." users on topics.id=notes.topic_id and users.id=notes.user_id WHERE `classroom_id`=" .$classroom_id ." AND notes.is_delete=0 AND topics.is_delete=0 AND users.is_delete=0";
                     $resultGetPost = mysqli_query($GLOBALS['con'],$queryGetPost) or $message = mysqli_error($GLOBALS['con']);
-                    // echo $queryGetPost;
+                     //echo $queryGetPost; exit;
 
                     if (mysqli_num_rows($resultGetPost)) {
                         while ($val = mysqli_fetch_assoc($resultGetPost)) {
@@ -453,6 +488,7 @@ class TeacherFunctions
             }
             $status = SUCCESS;
         }
+        else
         {
             $status=FAILED;
             $message = MALICIOUS_SOURCE;
@@ -1200,5 +1236,386 @@ class TeacherFunctions
         return $response;
 
     }
+
+    /*
+     * getAllNotes
+     *  used to fetch all the lesson notes that belongs to the user.
+     *
+     */
+    public function getAllLessonNotes ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $role_id = validateObject ($postData , 'role_id', "");
+        $role_id = addslashes($role_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            if ($role_id == 2) {
+                //student
+                $table = TABLE_STUDENT_PROFILE;
+            } else if ($role_id == 3) {
+                //teacher
+                $table = TABLE_TEACHER_SUBJECT_INFO;
+            }
+
+            $query = "SELECT `classroom_id`FROM ".$table." WHERE `user_id`=" . $user_id." AND is_delete=0";
+            $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
+           //  echo $query;
+            if (mysqli_num_rows($result)) {
+                while ($row = mysqli_fetch_assoc($result)) {
+
+                    $classroom_id=$row['classroom_id'];
+                    $queryGetSubjectId="SELECT classroom_subject.subject_id,subjects.subject_name,classrooms.class_name FROM ".TABLE_CLASSROOM_SUBJECT." classroom_subject INNER JOIN ".TABLE_SUBJECTS." subjects ON classroom_subject.subject_id=subjects.id INNER JOIN ".TABLE_CLASSROOMS." classrooms ON classroom_subject.classroom_id=classrooms.id INNER JOIN ".TABLE_LECTURES." lecture ON lecture.classroom_id=classroom_subject.`classroom_id` WHERE lecture.classroom_id=".$classroom_id;
+                    $resultGetSubjectId = mysqli_query($GLOBALS['con'],$queryGetSubjectId) or $message = mysqli_error($GLOBALS['con']);
+
+                    if(mysqli_num_rows($resultGetSubjectId))
+                    {
+                        while($val=mysqli_fetch_assoc($resultGetSubjectId))
+                        {
+                            $post=array();
+                            $post['subject_id'] = $val['subject_id'];
+                            $post['class_name'] = $val['class_name'];
+                            $post['subject_name'] = $val['subject_name'];
+                            $data[]=$post;
+                        }
+                        $message = "Record Found";
+                    }
+                }
+            }
+            else {
+                $message = DEFAULT_NO_RECORDS;
+            }
+            $status = SUCCESS;
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['notes']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
+    }
+
+
+    public function getLessonNotesWithDetails ($postData)
+    {
+        $data = array();
+        $response = array();
+
+        $subject_id = validateObject($postData, 'subject_id', "");
+        $subject_id = addslashes($subject_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security = new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key, $secret_key);
+
+        if ($isSecure == yes) {
+
+//
+//            $selQuery="SELECT * FROM ".TABLE_LECTURES." WHERE subject_id=".$subject_id;
+//            $selResult=mysqli_query($GLOBALS['con'],$selQuery) or $message = mysqli_error($GLOBALS['con']);
+//
+//            if(mysqli_num_rows($selResult))
+//            {
+//                while($row=mysqli_fetch_assoc($selResult))
+//                {
+
+            $getFields = "lectures.*,topics.topic_name,users.full_name,users.profile_pic";
+            $queryGetPost = "SELECT " . $getFields . " FROM " . TABLE_LECTURES . " lectures INNER JOIN " . TABLE_TOPICS . " topics on lectures.topic_id=topics.id INNER JOIN " . TABLE_USERS . " users on lectures.lecture_by=users.id WHERE lectures.`subject_id`=" . $subject_id . " AND lectures.is_delete=0 AND topics.is_delete=0 AND users.is_delete=0";
+            $resultGetPost = mysqli_query($GLOBALS['con'], $queryGetPost) or $message = mysqli_error($GLOBALS['con']);
+            //echo $queryGetPost; exit;
+
+            $note_info = array();
+            $notes = array();
+            $notes_topics = array();
+            $post = array();
+            if (mysqli_num_rows($resultGetPost)) {
+                while ($val = mysqli_fetch_assoc($resultGetPost)) {
+
+                    $post['topic_id'] = $val['topic_id'];
+                     $post['topic_name'] = $val['topic_name'];
+                     $post['subject_id'] = $val['subject_id'];
+
+
+                    $note_info['note_id'] = $val['id'];
+                    $note_info['note_by_id'] = $val['lecture_by'];
+                    $note_info['note_by_user'] = $val['full_name'];
+                    $note_info['user_profile_pic'] = $val['profile_pic'];
+                    $note_info['note_title'] = $val['lecture_title'];
+                    $note_info['note_text'] = $val['note'];
+                    $note_info['video_link'] = $val['video_link'];
+                    $note_info['audio_link'] = $val['audio_link'];
+                    $note_info['created_date'] = $val['created_date'];
+
+//                            //Group By Topic_notes
+                    if (sizeof($notes) == 0) {
+                        $notes = $val['topic_name'];
+                    } else {
+                        if (in_array($val['topic_name'], $notes, true)) {
+
+                        } else {
+                            $notes = $notes['topic_name'];
+                        }
+                    }
+
+                    $notes_topics[$val['topic_name']][] = $note_info;
+
+                    // $post[]=$note_info;
+
+                }
+                $post['notes'] = $notes_topics;
+                //$data[] = $post;
+                $message = "Record Found";
+            }
+        else {
+                $message = DEFAULT_NO_RECORDS;
+            }
+
+            $status = SUCCESS;
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['notes']=$post;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
+    }
+
+    /*
+     * submitLessonNotes
+     *  used to submit lesson notes in the system by either students or teachers.
+     */
+    public function submitLessonNotes($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $lecture_title = validateObject ($postData , 'lecture_title', "");
+        $lecture_title = addslashes($lecture_title);
+
+        $note_text = validateObject ($postData , 'note_text', "");
+        $note_text = addslashes($note_text);
+
+        $topic_id = validateObject ($postData , 'topic_id', "");
+        $topic_id = addslashes($topic_id);
+
+        $classroom_id = validateObject ($postData , 'classroom_id', "");
+        $classroom_id = addslashes($classroom_id);
+
+        $subject_id = validateObject ($postData , 'subject_id', "");
+        $subject_id = addslashes($subject_id);
+
+        $lecture_category_id = validateObject ($postData , 'lecture_category_id', "");
+        $lecture_category_id = addslashes($lecture_category_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $insertFields = "`lecture_title`, `classroom_id`, `subject_id`, `topic_id`, `description`, `lecture_by`,`difficulty_level`,`lecture_category_id`,`notes`";
+            $insertValues = "'" . $lecture_title . "'," . $classroom_id . "," .  $subject_id . "," . $topic_id . ",''," . $user_id . ", 'low' , 0 ,'". $note_text."'";
+
+            $query = "INSERT INTO " . TABLE_LECTURES . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+            //echo $query; exit;
+            $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
+
+            if ($result) {
+                $data['lesson_note_id'] = mysqli_insert_id($GLOBALS['con']);
+                $status = SUCCESS;
+                $message = SUCCESSFULLY_ADDED;
+            } else {
+                $status = FAILED;
+                $message = "";
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['status'] = $status;
+        $response['message'] =$message;
+        $response['lesson_notes']=$data;
+        return $response;
+
+    }
+
+    /*
+    * uploadMediaForQuestion
+    */
+    public function uploadMediaForLessonNotes($postData)
+    {
+        $status='';
+        $mediaName = '';
+        $created_date = date("Ymd-His");
+        $response=array();
+
+
+        $lesson_id=$_POST['lesson_id'];
+        $media_type=$_POST['media_type'];
+        $secret_key = $_POST['secret_key'];
+        $access_key = $_POST['access_key'];
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $lesson__media_dir = "lesson_" . $lesson_id . "/";
+            if (!is_dir(LESSON_NOTES_MEDIA . $lesson__media_dir)) {
+                mkdir(LESSON_NOTES_MEDIA . $lesson__media_dir, 0777);
+            }
+
+            if ("video" == $media_type) {
+                $mediaName = "_test_VIDEO_" . $created_date . ".mp4";
+                $field="video_link";
+
+            } else if ("audio" == $media_type) {
+                $mediaName = "_test_AUDIO_" . $created_date . ".mp3";
+                $field="audio_link";
+            }
+
+            if ($_FILES["media_file"]["error"] > 0) {
+                $message = $_FILES["media_file"]["error"];
+
+            } else {
+
+
+                $uploadFile = LESSON_NOTES_MEDIA . $lesson__media_dir . $mediaName;
+
+                if (move_uploaded_file($_FILES['media_file']['tmp_name'], $uploadFile)) {
+
+                    //store image data.
+                    $link = $lesson__media_dir . $mediaName;
+
+                    $queryUpdate = "UPDATE " . TABLE_LECTURES . " SET ".$field." = '" . $link . "' WHERE id=" . $lesson_id;
+                    $resultQuery = mysqli_query($GLOBALS['con'], $queryUpdate) or $message = mysqli_error($GLOBALS['con']);
+
+                    if($resultQuery)
+                    {
+                        $status = SUCCESS;
+                        $message = "successfully uploaded";
+                    }
+                    else {
+                        $status = FAILED;
+                        $message = "failed to uploaded.";
+                    }
+
+
+                } else {
+                    $status = FAILED;
+                    $message = FAILED_TO_UPLOAD_MEDIA;
+                }
+
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $data['lesson_id']=$lesson_id;
+        $data['mediaType']=$media_type;
+        $data['media_file']=$link;
+
+        $response['upload_question']=$data;
+        $response['status']=$status;;
+        $response['message']=$message;
+        return $response;
+    }
+
+
+    /*
+    * editLessonNotes
+     * used for edit lecture notes.
+    */
+
+    public function editLessonNotes ($postData)
+    {
+        $data = array();
+        $response = array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $lecture_id = validateObject($postData, 'lecture_id', "");
+        $lecture_id = addslashes($lecture_id);
+
+        $note_text = validateObject ($postData , 'note_text', "");
+        $note_text = addslashes($note_text);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $queryToChkRecordExist="SELECT * FROM ".TABLE_LECTURES." WHERE id=".$lecture_id." AND lecture_by=".$user_id ." AND is_delete=0";
+            $resultToChkRecordExist = mysqli_query($GLOBALS['con'],$queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
+            if (mysqli_num_rows($resultToChkRecordExist)>0) {
+
+                $query = "UPDATE " . TABLE_LECTURES . "SET note='".$note_text."' WHERE id=".$lecture_id." AND lecture_by=".$user_id ." AND is_delete=0";
+                $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+                if ($result) {
+                    $status = SUCCESS;
+                    $message = SUCCESSFULLY_UPDATED;
+                } else {
+                    $status = FAILED;
+                    $message = "";
+                }
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['lession_notes']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+    }
+
 
 }

@@ -2147,6 +2147,17 @@ class ExamFunctions
 
                         }
 
+
+//                        if (array_key_exists('delete_file', $_POST)) {
+//                            $filename = $_POST['delete_file'];
+//                            if (file_exists($filename)) {
+//                                unlink($filename);
+//                                echo 'File '.$filename.' has been deleted';
+//                            } else {
+//                                echo 'Could not delete '.$filename.', file does not exist';
+//                            }
+//                        }
+
                         for ($i = 0; $i < $number_of_images; $i++) {
 
 
@@ -2167,6 +2178,9 @@ class ExamFunctions
                                 if (strpos($value, $_FILES[$i]['name']) !== false) {
                                     $oldString = $value;
                                     //echo "value ".$oldString;
+//                                    $pos = strpos($oldString, "http");
+//                                    if($pos==tr)
+
                                 }
                             }
 
@@ -2180,8 +2194,23 @@ class ExamFunctions
                                 } else {
                                     //echo "ready";
                                     // $client_server_path="http://clientapp.narolainfotech.com/pg/ISM/WS_ISM";
-                                    $html_text = str_replace($oldString, "\"http://192.168.1.147/WS_ISM/images/rich_text_editor_images/rich_questions/" . $_FILES[$i]['name'] . "\"", $html_text);
-                                    $htmlTextOfImages[] = $html_text;
+                                    ///rich_text_editor_images/rich_questions/
+
+                                    if(stristr($oldString, 'http') === FALSE) {
+                                        // echo '"http" not found in string';
+                                        $html_text = str_replace($oldString, "\"http://192.168.1.147/WS_ISM/".$dir . $_FILES[$i]['name'] . "\"", $html_text);
+
+                                    }
+                                    else
+                                    {
+                                    // echo '"http"  found in string';
+                                        $html_text = $oldString;
+                                    }
+
+                                    $htmlTextOfImages = $html_text;
+
+                                    $updateText="UPDATE ".TABLE_QUESTIONS." SET question_text='".$html_text."' WHERE id = ".$questionId ." AND is_delete=0";
+                                    $updateResult = mysqli_query($GLOBALS['con'], $updateText) or $message = mysqli_error($GLOBALS['con']);
 
                                     $status = SUCCESS;
                                     $message = "successfully uploaded";

@@ -94,6 +94,11 @@ switch ($_REQUEST['Service'])
     case "GetAssignmentByBook":
     case "CheckGroupAllocation":
     case "GetAllAllocatedGroups":
+    case "GetAllLessonNotes":
+    case "GetLessonNotesWithDetails":
+    case "SubmitLessonNotes":
+    case "UploadMediaForLessonNotes":
+    case "EditLessonNotes":
     {
         include_once 'TeacherFunctions.php';
         $teacher = new TeacherFunctions();
