@@ -19,11 +19,24 @@ public class AuthorProfile extends RealmObject {
     private User user;
     private int totalQuestionAnswered;
     private int totalAssignment;
+    private int totalFavouritesQuestions;
+    private int totalExamCreated;
+    private int totalFollowers;
+    private int totalFollpwing;
+    private int totalBooks;
     private int totalSubmissionReceived;
     private int totalPost;
     private int totalBadges;
     private Date createdDate;
     private Date modifiedDate;
+
+    public int getTotalBooks() {
+        return totalBooks;
+    }
+
+    public void setTotalBooks(int totalBooks) {
+        this.totalBooks = totalBooks;
+    }
 
     public int getAuthorId() {
         return authorId;
@@ -63,6 +76,38 @@ public class AuthorProfile extends RealmObject {
 
     public void setTotalQuestionAnswered(int totalQuestionAnswered) {
         this.totalQuestionAnswered = totalQuestionAnswered;
+    }
+
+    public int getTotalFollpwing() {
+        return totalFollpwing;
+    }
+
+    public void setTotalFollpwing(int totalFollpwing) {
+        this.totalFollpwing = totalFollpwing;
+    }
+
+    public int getTotalFollowers() {
+        return totalFollowers;
+    }
+
+    public void setTotalFollowers(int totalFollowers) {
+        this.totalFollowers = totalFollowers;
+    }
+
+    public int getTotalExamCreated() {
+        return totalExamCreated;
+    }
+
+    public void setTotalExamCreated(int totalExamCreated) {
+        this.totalExamCreated = totalExamCreated;
+    }
+
+    public int getTotalFavouritesQuestions() {
+        return totalFavouritesQuestions;
+    }
+
+    public void setTotalFavouritesQuestions(int totalFavouritesQuestions) {
+        this.totalFavouritesQuestions = totalFavouritesQuestions;
     }
 
     public int getTotalAssignment() {

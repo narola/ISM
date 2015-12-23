@@ -62,6 +62,7 @@ import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.NotificationSetting;
 import com.ism.author.ws.model.PrivacySetting;
 import com.ism.author.ws.model.SMSAlert;
+import com.ism.author.ws.model.SettingPreferences;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -69,6 +70,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
+import model.Preferences;
 import realmhelper.AuthorHelper;
 
 /*
@@ -138,6 +140,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private ArrayList<PrivacySetting> arrayListPrivacySetting;
     private ArrayList<NotificationSetting> arrayListNotificationSettings;
     private ArrayList<SMSAlert> arrayListSMSAlert;
+    private Preferences preference;
 
 
     public interface HostListenerProfileController {
@@ -1267,6 +1270,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                             PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
                             // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
                         }
+                        savePreferences(responseHandler.getPreference());
                     }
 
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
@@ -1281,6 +1285,51 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
             Debug.i(TAG, "onResponseGetAllPreference :" + e.getLocalizedMessage());
 
+        }
+    }
+
+    private void savePreferences(ArrayList<SettingPreferences> arrayList) {
+        try {
+            arrayListSMSAlert = arrayList.get(0).getSMSAlert();
+            for (int j = 0; j < arrayListSMSAlert.size(); j++) {
+                preference=new Preferences();
+                preference.setPreferencesId(Integer.parseInt(arrayListSMSAlert.get(j).getId()));
+                preference.setDefaultValue(arrayListSMSAlert.get(j).getDefaultValue());
+                preference.setDisplayValue(arrayListSMSAlert.get(j).getDisplayValue());
+                preference.setPreferenceKey(arrayListSMSAlert.get(j).getPreferenceKey());
+                preference.setIsSync(0);
+                Global.authorHelper.saveAllPreferences(preference);
+               // PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
+                //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+            }
+            arrayListNotificationSettings = arrayList.get(0).getNotificationSettings();
+            for (int j = 0; j < arrayListNotificationSettings.size(); j++) {
+                preference=new Preferences();
+                preference.setPreferencesId(Integer.parseInt(arrayListNotificationSettings.get(j).getId()));
+                preference.setDefaultValue(arrayListNotificationSettings.get(j).getDefaultValue());
+                preference.setDisplayValue(arrayListNotificationSettings.get(j).getDisplayValue());
+                preference.setPreferenceKey(arrayListNotificationSettings.get(j).getPreferenceKey());
+                preference.setIsSync(0);
+                Global.authorHelper.saveAllPreferences(preference);
+              //  PreferenceData.setStringPrefs(arrayListNotificationSettings.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotificationSettings.get(j).getId());
+                // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+            }
+
+            arrayListPrivacySetting = arrayList.get(0).getPrivacySetting();
+            for (int j = 0; j < arrayListPrivacySetting.size(); j++) {
+                preference=new Preferences();
+                preference.setPreferencesId(Integer.parseInt(arrayListPrivacySetting.get(j).getId()));
+                preference.setDefaultValue(arrayListPrivacySetting.get(j).getDefaultValue());
+                preference.setDisplayValue(arrayListPrivacySetting.get(j).getDisplayValue());
+                preference.setPreferenceKey(arrayListPrivacySetting.get(j).getPreferenceKey());
+                preference.setIsSync(0);
+                Global.authorHelper.saveAllPreferences(preference);
+               // PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
+                // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+            }
+
+        } catch (Exception e) {
+            Debug.i(TAG, "savePreferences Exceptions : " + e.getLocalizedMessage());
         }
     }
 

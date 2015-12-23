@@ -21,6 +21,8 @@ import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.User;
 
+import model.AuthorProfile;
+
 /**
  * Created by c162 on 29/11/15.
  */
@@ -156,7 +158,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
                     Log.e(TAG, "onResponseGetAboutMe success");
                     setUpData(responseObj.getUser().get(0));
-
+                    saveAuthorProfile(responseObj.getUser().get(0));
                 } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetAboutMe Failed");
                 }
@@ -165,6 +167,28 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponseGetAboutMe Exception : " + e.toString());
+        }
+    }
+
+    private void saveAuthorProfile(User user) {
+        try {
+            AuthorProfile authorProfile=new AuthorProfile();
+            //authorProfile.setUser(Global.authorHelper.getU);
+            authorProfile.setAuthorId(Integer.parseInt(user.getUserId()));
+            authorProfile.setAboutAuthor(user.getAboutAuthor());
+            authorProfile.setEducation(user.getEducation());
+            authorProfile.setTotalAssignment(Integer.parseInt(user.getTotalAssignment() == null ? "0" : user.getTotalAssignment()));
+            authorProfile.setTotalBadges(Integer.parseInt(user.getTotalBadgesEarned() == null ? "0" : user.getTotalBadgesEarned()));
+            authorProfile.setTotalPost(Integer.parseInt(user.getTotalPost() == null ? "0" : user.getTotalPost()));
+            authorProfile.setTotalQuestionAnswered(Integer.parseInt(user.getTotalQuestionsAnswered() == null ? "0" : user.getTotalQuestionsAnswered()));
+            authorProfile.setTotalFavouritesQuestions(Integer.parseInt(user.getTotalFavoriteQuestions() == null ? "0" : user.getTotalFavoriteQuestions()));
+            authorProfile.setTotalFollowers(Integer.parseInt(user.getTotalFollowers() == null ? "0" : user.getTotalFollowers()));
+            authorProfile.setTotalFollpwing(Integer.parseInt(user.getTotalFollowing() == null ? "0" : user.getTotalFollowing()));
+            authorProfile.setTotalExamCreated(Integer.parseInt(user.getTotalExams() == null ? "0" : user.getTotalExams()));
+            authorProfile.setTotalBooks(Integer.parseInt(user.getTotalBooks() == null ? "0" : user.getTotalBooks()));
+
+        } catch (Exception e) {
+            Debug.i(TAG, "saveAuthorProfile Exceptions: " + e.getLocalizedMessage());
         }
     }
 

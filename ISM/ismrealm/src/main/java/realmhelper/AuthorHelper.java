@@ -9,7 +9,9 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import model.AdminConfig;
+import model.AuthorProfile;
 import model.FeedLike;
+import model.Preferences;
 
 /**
  * Created by c166 on 16/12/15.
@@ -114,6 +116,58 @@ public class AuthorHelper {
     }
 
     /**
-     *
+     * This method for save the preferences data
+     * @param preferences
      */
+    public void saveAllPreferences(Preferences preferences){
+        try{
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(preferences);
+            realm.commitTransaction();
+            Log.e(TAG, "Records availbale in preferences table :" + realm.where(Preferences.class).findAll().size());
+        }
+        catch (Exception e){
+            Log.i(TAG," saveAllPreferences Exceptions : "+e.getLocalizedMessage());
+        }
+    }
+
+//    /**
+//     * update the general settings
+//     * @param preferences
+//     */
+//    public void updateUserPereferenes(Preferences preferences){
+//        try{
+//            Preferences getpreferences=realm.where(Preferences.class).equalTo("preferencesId",preferences.getPreferencesId()).findFirst();
+//            realm.beginTransaction();
+//            if(getpreferences!=null){
+//                getpreferences.setIsSync(getpreferences.getIsSync()==0?1:0);
+//                getpreferences.setDefaultValue(preferences.getDefaultValue());
+//                Log.i(TAG,"Update id : " +preferences.getPreferencesId() + " and isSync : "+ getpreferences.getIsSync() + " and value is : " + preferences.getDefaultValue());
+//            }
+//            //else
+//            //realm.copyToRealmOrUpdate(preferences);
+//            realm.commitTransaction();
+//            Log.e(TAG, "Records availbale in preferences table :" + realm.where(Preferences.class).findAll().size());
+//        }
+//        catch (Exception e){
+//            Log.i(TAG," updateUserPereferenes Exceptions : "+e.getLocalizedMessage());
+//        }
+//    }
+
+
+    /**
+     *
+     * @param authorProfile
+     */
+    public void saveAuthorProfile(AuthorProfile authorProfile){
+        try{
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(authorProfile);
+            realm.commitTransaction();
+            Log.e(TAG, "Records availbale in preferences table :" + realm.where(AuthorProfile.class).findAll().size());
+        }
+        catch (Exception e){
+            Log.i(TAG," saveAllPreferences Exceptions : "+e.getLocalizedMessage());
+        }
+    }
 }
