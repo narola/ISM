@@ -103,7 +103,10 @@ public class AssistantWebView extends RelativeLayout {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                mProgressWebView.setVisibility(GONE);
+	            mProgressWebView.setVisibility(GONE);
+	            Log.e(TAG, "can go back 2 : " + mWebView.canGoBack());
+	            mImageGoBack.setVisibility(mWebView.canGoBack() ? VISIBLE : INVISIBLE);
+	            mImageForward.setVisibility(mWebView.canGoForward() ? VISIBLE : INVISIBLE);
             }
 
         });
@@ -113,8 +116,8 @@ public class AssistantWebView extends RelativeLayout {
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
                 mProgressWebView.setProgress(newProgress);
-                mImageGoBack.setVisibility(mWebView.canGoBack() ? VISIBLE : INVISIBLE);
-                mImageForward.setVisibility(mWebView.canGoForward() ? VISIBLE : INVISIBLE);
+//	            mImageGoBack.setVisibility(mWebView.canGoBack() ? VISIBLE : INVISIBLE);
+//	            mImageForward.setVisibility(mWebView.canGoForward() ? VISIBLE : INVISIBLE);
             }
         });
 
@@ -183,6 +186,10 @@ public class AssistantWebView extends RelativeLayout {
 
 	public void setControllerBackground(int resId) {
 		mLayoutController.setBackgroundResource(resId);
+	}
+
+	public void clearHistory() {
+		mWebView.clearHistory();
 	}
 
     private void showError(String errorMessage) {
