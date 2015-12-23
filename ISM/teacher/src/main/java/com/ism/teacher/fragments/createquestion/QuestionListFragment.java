@@ -1,4 +1,4 @@
-package com.ism.teacher.fragments;
+package com.ism.teacher.fragments.createquestion;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -28,6 +28,7 @@ import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.QuestionBankListAdapter;
 import com.ism.teacher.constants.WebConstants;
+import com.ism.teacher.fragments.assesment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -59,9 +60,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     }
 
     @SuppressLint("ValidFragment")
-    public QuestionListFragment(Fragment fragment, Bundle bundleArguments) {
+    public QuestionListFragment(Fragment fragment) {
         this.mFragment = fragment;
-        this.setArguments(bundleArguments);
     }
 
     private Spinner spQuestionlistFiltertype, spQuestionlistSubject, spQuestionlistTopic;

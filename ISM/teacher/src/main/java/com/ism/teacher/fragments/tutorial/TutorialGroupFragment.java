@@ -32,9 +32,9 @@ import java.util.ArrayList;
 /**
  * Created by c161 on --/10/15.
  */
-public class TeacherTutorialGroupFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
+public class TutorialGroupFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
-    private static final String TAG = TeacherTutorialGroupFragment.class.getSimpleName();
+    private static final String TAG = TutorialGroupFragment.class.getSimpleName();
 
     //Views
     private LinearLayout llGroupMembers;
@@ -47,14 +47,41 @@ public class TeacherTutorialGroupFragment extends Fragment implements Webservice
 
     private TutorialGroupAdapter tutorialGroupAdapter;
 
-    public static TeacherTutorialGroupFragment newInstance() {
-        TeacherTutorialGroupFragment teacherTutorialGroupFragment = new TeacherTutorialGroupFragment();
-        return teacherTutorialGroupFragment;
+    public static TutorialGroupFragment newInstance() {
+        TutorialGroupFragment tutorialGroupFragment = new TutorialGroupFragment();
+        return tutorialGroupFragment;
     }
 
-    public TeacherTutorialGroupFragment() {
+    public TutorialGroupFragment() {
         // Required empty public constructor
     }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            fragListener = (FragmentListener) activity;
+            if (fragListener != null) {
+                fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_TEACHER_TUTORIAL_GROUP);
+            }
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onAttach Exception : " + e.toString());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        try {
+            if (fragListener != null) {
+                fragListener.onFragmentDetached(TeacherHostActivity.FRAGMENT_TEACHER_TUTORIAL_GROUP);
+            }
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onDetach Exception : " + e.toString());
+        }
+        fragListener = null;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -112,31 +139,6 @@ public class TeacherTutorialGroupFragment extends Fragment implements Webservice
         btnScheduleExam.setTypeface(Global.myTypeFace.getRalewayRegular());
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            fragListener = (FragmentListener) activity;
-            if (fragListener != null) {
-                fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_TEACHER_TUTORIAL_GROUP);
-            }
-        } catch (ClassCastException e) {
-            Log.e(TAG, "onAttach Exception : " + e.toString());
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        try {
-            if (fragListener != null) {
-                fragListener.onFragmentDetached(TeacherHostActivity.FRAGMENT_TEACHER_TUTORIAL_GROUP);
-            }
-        } catch (ClassCastException e) {
-            Log.e(TAG, "onDetach Exception : " + e.toString());
-        }
-        fragListener = null;
-    }
 
     private Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
@@ -183,6 +185,9 @@ public class TeacherTutorialGroupFragment extends Fragment implements Webservice
     }
 
     private void setTutorialGroupDetails(ArrayList<Group> group) {
+
+        setBundleArguments(group);
+
         tvGroupName.setText(getActivity().getResources().getString(R.string.str_group_name) + " : ");
         tvGroupName.append(Utility.getSpannableString(group.get(0).getGroupName(), getActivity().getResources().getColor(R.color.color_green_exam_name)));
 
@@ -199,13 +204,45 @@ public class TeacherTutorialGroupFragment extends Fragment implements Webservice
             tvGroupRank.append(Utility.getSpannableString("---", getActivity().getResources().getColor(R.color.color_blue_group_score)));
         }
 
-        tvTopic.setText(getActivity().getResources().getString(R.string.str_teacher_tutorial_label) + " " + group.get(0).getTopicName());
+        tvTopic.setText(getString(R.string.str_you_are_assigned_group) + " " + group.get(0).getGroupName() + getString(R.string.str_you_have_to_schedule) +" "+ group.get(0).getTopicName());
+
+    }
+
+    public static String ARG_TUTORIAL_GROUP_ID = "tutorialGroupId";
+    public static String ARG_TUTORIAL_GROUP_NAME = "tutorialGroupName";
+    public static String ARG_TUTORIAL_GROUP_RANK = "tutorialGroupRank";
+    public static String ARG_TUTORIAL_GROUP_CLASS = "tutorialGroupClass";
+    public static String ARG_TUTORIAL_TOPIC_ID = "tutorialTopicId";
+    public static String ARG_TUTORIAL_TOPIC_NAME = "tutorialTopicName";
+    public static String ARG_TUTORIAL_EXAM_ID = "tutorialExamId";
+    public static String ARG_TUTORIAL_EXAM_NAME = "tutorialExamName";
+    public static String ARG_TUTORIAL_EXAM_TYPE = "tutorialExamType";
+    public static String ARG_TUTORIAL_GROUP_SCORE = "tutorialGroupScore";
+    public static String ARG_TUTORIAL_SUBJECT_NAME = "tutorialSubjectName";
+
+    private void setBundleArguments(ArrayList<Group> group) {
+
+        getBundleArguments().putString(ARG_TUTORIAL_GROUP_ID, group.get(0).getGroupId());
+        getBundleArguments().putString(ARG_TUTORIAL_GROUP_NAME, group.get(0).getGroupName());
+        getBundleArguments().putString(ARG_TUTORIAL_GROUP_RANK, group.get(0).getGroupRank());
+        getBundleArguments().putString(ARG_TUTORIAL_GROUP_CLASS, group.get(0).getGroupClass());
+        getBundleArguments().putString(ARG_TUTORIAL_TOPIC_ID, group.get(0).getTopicId());
+        getBundleArguments().putString(ARG_TUTORIAL_TOPIC_NAME, group.get(0).getTopicName());
+        getBundleArguments().putString(ARG_TUTORIAL_EXAM_ID, group.get(0).getExamId());
+        getBundleArguments().putString(ARG_TUTORIAL_EXAM_NAME, group.get(0).getExamName());
+        getBundleArguments().putString(ARG_TUTORIAL_EXAM_TYPE, group.get(0).getExamType());
+        getBundleArguments().putString(ARG_TUTORIAL_GROUP_SCORE, group.get(0).getGroupScore());
+
+//        getBundleArguments().putString(ARG_TUTORIAL_SUBJECT_NAME, grou);
+
     }
 
     @Override
     public void onClick(View v) {
-//        if (v == btnScheduleExam) {
-//            Utility.showToast("Tutorial Exam", getActivity());
-//        }
+        if (v == btnScheduleExam) {
+            ((TeacherHostActivity) getActivity()).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_SCHEDULE_EXAM);
+        }
     }
+
+
 }

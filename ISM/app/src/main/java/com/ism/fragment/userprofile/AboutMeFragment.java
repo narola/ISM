@@ -57,7 +57,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private TextView txtUserName, txtSchool, txtClass, txtSocial, txtTotalPost, txtTotalStudymates, txtTotalAuthorFollowed, txtPost, txtAssignment, txtAuthorFollowed, txtAcademic, txtStudymates, txtIsmScore, txtTotalIsmScore, txtIsmRank, txtTotalIsmRank, txtTotalAssignment, txtExam, txtTotalExam, txtExcellence, txtFavQuestions, txtBadgesEarned, txtQueAsked, txtTotalBadgesEarned, txtTotalQueAsked, txtTotalFavQuestions, txtYourAmbition, txtAboutMe, txtClickAddAboutMe, txtClickAddAmbitions;
     private static String TAG = AboutMeFragment.class.getSimpleName();
     private HostActivity activityHost;
-    EditProfileFragment editProfileFragment;
+    com.ism.fragment.userProfile.EditProfileFragment editProfileFragment;
     private TextView txtEdit;
     private EditText etCno, etDob;
     public static ImageView imgProfilePic, imgProfileEdit;
@@ -91,7 +91,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
 
     private void initGlobal() {
-        editProfileFragment = EditProfileFragment.newInstance();
+        editProfileFragment = com.ism.fragment.userProfile.EditProfileFragment.newInstance();
 
         txtUserName = (TextView) view.findViewById(R.id.txt_user_name);
         txtEdit = (TextView) view.findViewById(R.id.txt_edit);
@@ -304,7 +304,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 if (!file.isFile()) {
                     Debug.e(TAG, "Source File Does not exist");
                 } else {
-                    new EditProfileImageAsync(file).execute();
+                    new com.ism.fragment.userProfile.EditProfileImageAsync(file).execute();
                 }
                 // hostListenerAboutMe.onSelectImage(bitmap);
                 // strDpBase64 = Utility.getBase64ForImage(bitmap);
@@ -461,7 +461,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private String dateFormat(String birthdate) {
         try {
             strDob = birthdate;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             convertedDate = new Date();
             convertedDate = dateFormat.parse(birthdate);
             System.out.println(convertedDate);
@@ -481,14 +481,12 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             Debug.i(TAG, "Date Formated:" + format.format(convertedDate));
             return format.format(convertedDate);
         } catch (ParseException e) {
-            Debug.i(TAG, "dateFormat ParseException : " + e.getLocalizedMessage());
+            Debug.i(TAG, "DateFormat ParseException : " + e.getLocalizedMessage());
             return null;
         } catch (Exception e) {
-            Debug.i(TAG, "dateFormat Exceptions : " + e.getLocalizedMessage());
+            Debug.i(TAG, "DateFormat Exceptions : " + e.getLocalizedMessage());
             return null;
         }
-
-
     }
 
     @Override
@@ -531,7 +529,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     }
 
     private void editDetails(int type) {
-        Intent intent = new Intent(getActivity(), EditAboutMeDetailsActivity.class);
+        Intent intent = new Intent(getActivity(), com.ism.fragment.userProfile.EditAboutMeDetailsActivity.class);
         intent.putExtra(USERNAME, txtUserName.getText().toString());
         intent.putExtra(BIRTHDATE, strDob);
         intent.putExtra(CONTACT_NUMBER, etCno.getText().toString());

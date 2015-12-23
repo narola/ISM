@@ -507,6 +507,7 @@ public class Utility {
 
     /*
     * Arti Patel
+    * current date
     * */
     public static Date getDateMySql() {
         Calendar calendar = Calendar.getInstance();

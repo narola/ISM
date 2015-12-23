@@ -306,6 +306,11 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         Debug.i(TAG, "setPreferenceList " + "key:" + key + "value:" + value);
         PreferenceData.setStringPrefs(key, context, value);
         preferencesList.add(requestObject);
+
+//        model.Preferences preferences=new model.Preferences();
+//        preferences.setPreferencesId(Integer.parseInt(key));
+//        preferences.setDefaultValue(value);
+//        Global.authorHelper.updateUserPereferenes(preferences);
     }
 
     @Override

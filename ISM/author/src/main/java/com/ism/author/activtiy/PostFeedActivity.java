@@ -385,7 +385,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
                 attribute.setImages(null);
                 attribute.setVideoLink("");
                 attribute.setAudioLink("");
-                attribute.setPostedOn(Utility.getDate());
+                attribute.setPostedOn(Utility.getDateString());
                 attribute.setVideoThumbnail(strThumbnailBase64);
                 attribute.setFeedText(etSayIt.getText().toString().trim());
 

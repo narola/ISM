@@ -11,7 +11,10 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import model.AdminConfig;
+import model.AuthorProfile;
 import model.FeedLike;
+import model.Preferences;
+import model.User;
 
 /**
  * Created by c166 on 16/12/15.
@@ -75,7 +78,6 @@ public class AuthorHelper {
      */
     public void clearTableData(Class className) {
         try {
-            RealmQuery<AdminConfig> realmQuery = realm.where(className);
             realm.beginTransaction();
             realm.clear(className);
             realm.commitTransaction();
@@ -131,6 +133,62 @@ public class AuthorHelper {
         }
     }
 
+
+    /**
+     * This method for save the preferences data
+     * @param preferences
+     */
+    public void saveAllPreferences(Preferences preferences){
+        try{
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(preferences);
+            realm.commitTransaction();
+            Log.e(TAG, "Records availbale in preferences table :" + realm.where(Preferences.class).findAll().size());
+        }
+        catch (Exception e){
+            Log.i(TAG," saveAllPreferences Exceptions : "+e.getLocalizedMessage());
+        }
+    }
+
+//    /**
+//     * update the general settings
+//     * @param preferences
+//     */
+//    public void updateUserPereferenes(Preferences preferences){
+//        try{
+//            Preferences getpreferences=realm.where(Preferences.class).equalTo("preferencesId",preferences.getPreferencesId()).findFirst();
+//            realm.beginTransaction();
+//            if(getpreferences!=null){
+//                getpreferences.setIsSync(getpreferences.getIsSync()==0?1:0);
+//                getpreferences.setDefaultValue(preferences.getDefaultValue());
+//                Log.i(TAG,"Update id : " +preferences.getPreferencesId() + " and isSync : "+ getpreferences.getIsSync() + " and value is : " + preferences.getDefaultValue());
+//            }
+//            //else
+//            //realm.copyToRealmOrUpdate(preferences);
+//            realm.commitTransaction();
+//            Log.e(TAG, "Records availbale in preferences table :" + realm.where(Preferences.class).findAll().size());
+//        }
+//        catch (Exception e){
+//            Log.i(TAG," updateUserPereferenes Exceptions : "+e.getLocalizedMessage());
+//        }
+//    }
+
+
+    /**
+     * save author profile information
+     * @param authorProfile
+     */
+    public void saveAuthorProfile(AuthorProfile authorProfile){
+        try{
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(authorProfile);
+            realm.commitTransaction();
+            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
+        }
+        catch (Exception e){
+            Log.i(TAG," saveAuthorProfile Exceptions : "+e.getLocalizedMessage());
+        }
+    }
 
     /**
      * Method to update sync status after successfully update data at server side.
@@ -211,5 +269,36 @@ public class AuthorHelper {
 
     }
 
+    public User getUser(int userId){
+        try {
+            return  realm.where(User.class).equalTo("userId",userId).findFirst();
+        }
+        catch (Exception e){
+            Log.i(TAG,"getUser Exceptions : "+e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public void saveUser(User user) {
+        try{
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(user);
+            realm.commitTransaction();
+            Log.e(TAG, "Records availbale in user table :" + realm.where(AuthorProfile.class).findAll().size());
+        }
+        catch (Exception e){
+            Log.i(TAG," saveUser Exceptions : "+e.getLocalizedMessage());
+        }
+    }
+
+    public AuthorProfile getAuthorprofile(int userId) {
+        try {
+            return  realm.where(AuthorProfile.class).equalTo("authorId",userId).findFirst();
+        }
+        catch (Exception e){
+            Log.i(TAG,"getUser Exceptions : "+e.getLocalizedMessage());
+        }
+        return null;
+    }
 
 }

@@ -30,5 +30,5 @@
         android:visibility="gone"
         android:textSize="@dimen/d20sp"
         android:id="@+id/txt_empty"
-        android:text="No record found!"/>
+        android:text="No high scores available!"/>
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.ism.teacher.fragments;
+package com.ism.teacher.fragments.tutorial.scheduleexam;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -14,9 +14,9 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.PreviewQuestionListAdapter;
 import com.ism.teacher.constants.WebConstants;
+import com.ism.teacher.fragments.tutorial.TutorialGroupFragment;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -28,24 +28,23 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 31/10/15.
  */
-public class PreviewQuestionFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class TutorialPreviewQuestionFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 
-    private static final String TAG = PreviewQuestionFragment.class.getSimpleName();
+    private static final String TAG = TutorialPreviewQuestionFragment.class.getSimpleName();
     private View view;
     Fragment mFragment;
 
-    public PreviewQuestionFragment() {
+    public TutorialPreviewQuestionFragment() {
     }
 
     @SuppressLint("ValidFragment")
-    public PreviewQuestionFragment(Fragment fragment, Bundle bundleArguments) {
+    public TutorialPreviewQuestionFragment(Fragment fragment) {
         this.mFragment = fragment;
-        this.setArguments(bundleArguments);
     }
 
 
-    public TextView tvPreviewQuestionlistTitle, tvPreviewQuestionlistFreeze, tvNoQuestions,tv_total_questions, tv_total_score;
+    public TextView tvPreviewQuestionlistTitle, tvPreviewQuestionlistFreeze, tvNoQuestions, tv_total_questions, tv_total_score;
     public RecyclerView rvPreviewquestionlist;
     private PreviewQuestionListAdapter previewQuestionListAdapter;
     public ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
@@ -86,7 +85,14 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
             @Override
             public void onClick(View view) {
 
-                callApiFreezeQuestions();
+                if (totalQuestions < 5) {
+                    Utility.showToast("Please Add " + String.valueOf(5 - totalQuestions) + " more question to create tutorial exam", getActivity());
+                } else {
+                    Debug.e(TAG, "calling SetQuestionForExam api(freeze question) with " + totalQuestions + " Questions");
+                    //SetQuestionForexam api
+                    callApiFreezeQuestions();
+                }
+
             }
         });
 
@@ -97,7 +103,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
             if (arrListQuestions.size() > 0) {
                 try {
                     Attribute attribute = new Attribute();
-                    attribute.setExamId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
+                    attribute.setExamId(getScheduleTutorialContainerFragment().getBundleArguments().getString(TutorialGroupFragment.ARG_TUTORIAL_EXAM_ID));
                     attribute.setQuestionIdList(getArrListQuestionId());
 
                     new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -193,6 +199,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 ResponseHandler responseObj = (ResponseHandler) object;
                 if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utility.showToast(getActivity().getString(R.string.str_success_setexamquestions), getActivity());
+
+                    ((TeacherHostActivity) getActivity()).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_PAST_TUTORIALS);
                 } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseObj.getMessage(), getActivity());
                 }
@@ -237,11 +245,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     }
 
-    private AddQuestionContainerFragment getFragment() {
-        return (AddQuestionContainerFragment) mFragment;
+    public ScheduleTutorialExamContainerFragment getScheduleTutorialContainerFragment() {
+        return (ScheduleTutorialExamContainerFragment) mFragment;
     }
 
-    private Bundle getBundleArguments() {
-        return ((TeacherHostActivity) getActivity()).getBundle();
-    }
 }

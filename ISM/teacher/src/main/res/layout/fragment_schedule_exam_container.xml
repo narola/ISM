@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fragment_background_color"
+    android:orientation="vertical">
+
+    <!-- linear layout for top details-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_bg_trial_exam_details"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/d10dp"
+        android:paddingLeft="@dimen/d5dp"
+        android:paddingRight="@dimen/d5dp"
+        android:paddingTop="@dimen/d5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_exam_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=""
+                android:textAllCaps="true"
+                android:textColor="@color/color_red"
+                android:textSize="@dimen/d20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/d5dp"
+                android:layout_marginTop="@dimen/d10dp"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_group_class"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/d18sp" />
+
+                <TextView
+                    android:id="@+id/tv_topic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/d18sp" />
+
+                <TextView
+                    android:id="@+id/tv_subject_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/d18sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--Containers for loading question bank and preview questions-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <FrameLayout
+            android:id="@+id/fl_addquestionfragment_container_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"></FrameLayout>
+
+        <ImageView
+            android:layout_width="@dimen/d1dp"
+            android:layout_height="match_parent"
+            android:background="@color/questionlistseparator" />
+
+        <FrameLayout
+            android:id="@+id/fl_addquestionfragment_container_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"></FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

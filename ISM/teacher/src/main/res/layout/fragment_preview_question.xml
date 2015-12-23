@@ -134,10 +134,9 @@
                 android:text="@string/no_preview_questions"
                 android:textSize="@dimen/d22sp"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </RelativeLayout>
-
 
     </LinearLayout>
 
