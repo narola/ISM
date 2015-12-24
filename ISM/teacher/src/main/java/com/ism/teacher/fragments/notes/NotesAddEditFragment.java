@@ -1,18 +1,21 @@
 package com.ism.teacher.fragments.notes;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
 /**
@@ -32,8 +35,11 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
 
     HorizontalScrollView richEditorEditControls;
     ImageView imgEditNote, imgShareNote;
-    TextView tvNoteTitle;
+    EditText etNoteTitle;
     private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
+    Uri selectedUri = null;
+
+    public static String ARG_IS_CREATE_NOTE = "isCreateNote";
 
     public static NotesAddEditFragment newInstance() {
         NotesAddEditFragment notesAddEditFragment = new NotesAddEditFragment();
@@ -42,6 +48,12 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
 
     public NotesAddEditFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((TeacherHostActivity) getActivity()).rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_blue);
     }
 
     @Override
@@ -60,15 +72,30 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
 
         imgEditNote = (ImageView) rootview.findViewById(R.id.img_edit_note);
         imgShareNote = (ImageView) rootview.findViewById(R.id.img_share_note);
-        tvNoteTitle = (TextView) rootview.findViewById(R.id.tv_note_title);
+        etNoteTitle = (EditText) rootview.findViewById(R.id.et_note_title);
 
         imgEditNote.setOnClickListener(this);
         imgShareNote.setOnClickListener(this);
         rteNotes.setHtml(getString(R.string.dummy_string));
+
         rteNotes.setRichTextListener(this);
 
-    }
+        /**
+         * For add new note
+         */
+        if (getBundleArguments().getBoolean(NotesAddEditFragment.ARG_IS_CREATE_NOTE)) {
+            etNoteTitle.setEnabled(true);
+            etNoteTitle.setText("");
+            etNoteTitle.setHint("Add title of your new Note");
+            etNoteTitle.setHintTextColor(getResources().getColor(R.color.color_shade_news_feed));
+            Utility.showView(richEditorEditControls);
+            rteNotes.setHtml("");
+        } else {
 
+            Utility.hideView(richEditorEditControls);
+        }
+
+    }
 
     @Override
     public void onClick(View v) {
@@ -85,7 +112,6 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
     @Override
     public void imagePicker() {
         Debug.e(TAG, "image");
-
         openImage();
     }
 
@@ -107,9 +133,49 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
     }
 
     private void openVideo() {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("video/*");
-        startActivityForResult(photoPickerIntent, SELECT_VIDEO);
+        Intent videoPickerIntent = new Intent(Intent.ACTION_PICK);
+        videoPickerIntent.setType("video/*");
+        startActivityForResult(videoPickerIntent, SELECT_VIDEO);
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent returnedIntent) {
+        super.onActivityResult(requestCode, resultCode, returnedIntent);
+        if (returnedIntent != null) {
+            switch (requestCode) {
+                case SELECT_PHOTO:
+                    if (resultCode == Activity.RESULT_OK) {
+                        try {
+                            selectedUri = returnedIntent.getData();
+                            String imgPath = Utility.getRealPathFromURI(selectedUri, getActivity());
+                            rteNotes.insertImage(imgPath);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+
+                case SELECT_VIDEO:
+
+                    if (resultCode == Activity.RESULT_OK) {
+                        try {
+                            selectedUri = returnedIntent.getData();
+                            String videoPath = Utility.getRealPathFromURI(selectedUri, getActivity());
+                            rteNotes.insertVideo(videoPath);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    break;
+            }
+        }
+    }
+
+    public Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
     }
 }

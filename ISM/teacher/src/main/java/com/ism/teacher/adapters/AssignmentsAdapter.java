@@ -103,7 +103,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
             llParentAssignment = (LinearLayout) itemView.findViewById(R.id.ll_parent_assignment);
             llViewQuestions = (LinearLayout) itemView.findViewById(R.id.ll_view_questions);
-            rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_results);
+            rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_notes);
 
             txtAssignmentSubject = (TextView) itemView.findViewById(R.id.txt_assignment_subject);
             txtExamName = (TextView) itemView.findViewById(R.id.txt_exam_name);
