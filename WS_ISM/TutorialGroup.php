@@ -652,7 +652,7 @@ class TutorialGroup
             $queryToFetchTopics="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation
                          INNER JOIN ".TABLE_TUTORIAL_TOPIC." tutorial_topic ON tutorial_group_topic_allocation.tutorial_topic_id=tutorial_topic.id
                          INNER JOIN ".TABLE_SUBJECTS." subjects ON tutorial_topic.subject_id=subjects.id
-                         WHERE tutorial_group_topic_allocation.group_id=".$group_id. $condition;//" AND tutorial_group_topic_allocation.week_no = ".$week_no ." AND tutorial_group_topic_allocation.is_delete=0";
+                         WHERE tutorial_group_topic_allocation.group_id=".$group_id. $condition." ORDER BY tutorial_group_topic_allocation.tutorial_topic_id DESC";//" AND tutorial_group_topic_allocation.week_no = ".$week_no ." AND tutorial_group_topic_allocation.is_delete=0";
 
             $resultToFetchTopics = mysqli_query($GLOBALS['con'], $queryToFetchTopics) or $message = mysqli_error($GLOBALS['con']);
 
@@ -668,7 +668,6 @@ class TutorialGroup
                     $topic_discussion['interface_type']=$topicGroups['interface_type'];
                     $topic_discussion['assigned_time']=$topicGroups['created_date'];
                     $topic_discussion['subject_name']=$topicGroups['subject_name'];
-
 
                     $queryForCurrentDay="SELECT * FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE DATE_FORMAT(created_date,'%y-%m-%d') = DATE_FORMAT(NOW(),'%y-%m-%d') AND group_id=".$group_id." AND tutorial_topic_id=".$topicGroups['tutorial_topic_id']." AND is_delete=0";
                     $resultForCurrentDay=mysqli_query($GLOBALS['con'], $queryForCurrentDay) or $message = mysqli_error($GLOBALS['con']);
@@ -727,6 +726,7 @@ class TutorialGroup
 
                     else
                     {
+                        $topic_discussion['discussion']=array();
                         $status=SUCCESS;
                         $message=DEFAULT_NO_RECORDS;
 
@@ -737,6 +737,7 @@ class TutorialGroup
             }
             else
             {
+
                 $status=SUCCESS;
                 $message=DEFAULT_NO_RECORDS;
 
@@ -803,7 +804,7 @@ class TutorialGroup
                         $selData="tutorial_group_member.*,users.full_name,users.profile_pic,school.school_name";
                         $queryToFetchMembers="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_MEMBER." tutorial_group_member
                          INNER JOIN ".TABLE_USERS." users ON tutorial_group_member.user_id=users.id
-                         INNER JOIN ". TABLE_STUDENT_PROFILE." studentProfile ON users.id=studentProfile.user_id
+                         LEFT JOIN ". TABLE_STUDENT_PROFILE." studentProfile ON users.id=studentProfile.user_id
                          LEFT JOIN ".TABLE_SCHOOLS." school ON school.id=studentProfile.school_id
                          WHERE tutorial_group_member.group_id=".$group_id." AND tutorial_group_member.is_delete=0 ORDER BY (tutorial_group_member.user_id=".$user_id.") DESC";
                         $resultToFetchMembers = mysqli_query($GLOBALS['con'], $queryToFetchMembers) or $message = mysqli_error($GLOBALS['con']);

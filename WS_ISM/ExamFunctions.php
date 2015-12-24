@@ -781,7 +781,7 @@ class ExamFunctions
 
             $querySubjectId = "SELECT ".$getField." FROM ".$table." WHERE `user_id`=".$user_id ." and is_delete=0";
             $resultSubjectId = mysqli_query($GLOBALS['con'], $querySubjectId) or $message = mysqli_error($GLOBALS['con']);
-           // echo $querySubjectId; exit;
+            //echo $querySubjectId; exit;
             if (mysqli_num_rows($resultSubjectId)) {
                 while ($row = mysqli_fetch_assoc($resultSubjectId)) {
                     //$post['subject_id']=$row;
@@ -852,9 +852,10 @@ class ExamFunctions
                             if ($rowQuestion['question_format'] == 'MCQ') {
                                 $queryGetChoice = "SELECT `id`, `question_id`, `choice_text`, `is_right`, `image_link`, `audio_link`, `video_link` FROM ".TABLE_ANSWER_CHOICES." WHERE `question_id`=".$rowQuestion['id'] ." and is_delete=0";
                                 $resultGetChoice = mysqli_query($GLOBALS['con'], $queryGetChoice) or $message = mysqli_error($GLOBALS['con']);
-                                // echo $resultGetChoice;
-                                if (mysqli_num_rows($resultGetChoice)) {
+                                // echo $queryGetChoice;
+                                if (mysqli_num_rows($resultGetChoice)>0) {
                                     while ($rowGetChoice = mysqli_fetch_assoc($resultGetChoice)) {
+                                        //print_r($rowGetChoice);
                                         $choice[] = $rowGetChoice;
 
                                     }
@@ -2105,124 +2106,8 @@ class ExamFunctions
 
 
                     //For Rich Text Editor
-
                     if ($number_of_images != 0 && $html_text != null) {
-
-//
-////                        $formPostData = new stdClass();
-////                        $formPostData->number_of_images = $number_of_images;
-////                        $formPostData->question_id = $questionId;
-////                        $formPostData->html_text = $html_text;
-////
-////                        $arrImages[] = $this->uploadRichTextEditorQuestionImages($formPostData);
-////                        }
-
-
-
-                        $question_media_dir = "question_" . $questionId . "/";
-
-                        // $mediaName = "_test_IMAGE_" . $created_date . ".png";
-
-                        $number_of_images = $_POST['number_of_images'];
-
-                        // echo $text;
-                        preg_match_all('/<img[^>]+>/i', $html_text, $result);
-
-                        $img = array();
-
-                        foreach ($result as $img_tag) {
-
-                            foreach ($img_tag as $img_tag1) {
-                                preg_match_all('/(src)=("[^"]*")/i', $img_tag1, $img[$img_tag1]);
-                            }
-                        }
-
-
-                        $img2 = array();
-                        $value = 0;
-                        foreach ($img as $img1) {
-                            // print_r($img1);
-                            $img2[$value] = $img1[2][0];
-                            $value++;
-
-                        }
-
-
-//                        if (array_key_exists('delete_file', $_POST)) {
-//                            $filename = $_POST['delete_file'];
-//                            if (file_exists($filename)) {
-//                                unlink($filename);
-//                                echo 'File '.$filename.' has been deleted';
-//                            } else {
-//                                echo 'Could not delete '.$filename.', file does not exist';
-//                            }
-//                        }
-
-                        for ($i = 0; $i < $number_of_images; $i++) {
-
-
-                            //$name = "questions/";
-
-                            $dir = RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir;
-
-                            if (!is_dir(RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir)) {
-                                mkdir(RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir, 0777);
-                            }
-
-                            $uploadFile = $dir . $_FILES[$i]['name'];//$mediaName;//
-
-                            $oldString = "";
-
-                            foreach ($img2 as $key => $value) {
-
-                                if (strpos($value, $_FILES[$i]['name']) !== false) {
-                                    $oldString = $value;
-                                    //echo "value ".$oldString;
-//                                    $pos = strpos($oldString, "http");
-//                                    if($pos==tr)
-
-                                }
-                            }
-
-                            if (isset($_FILES[$i]['tmp_name'])) {
-                                //echo "coming";
-                                if (!move_uploaded_file($_FILES[$i]['tmp_name'], $uploadFile)) {
-
-                                    $htmlTextOfImages[] = $uploadFile;
-                                    $status = FAILED;
-                                    $message = FAILED_TO_UPLOAD_MEDIA;
-                                } else {
-                                    //echo "ready";
-                                    // $client_server_path="http://clientapp.narolainfotech.com/pg/ISM/WS_ISM";
-                                    ///rich_text_editor_images/rich_questions/
-
-                                    if(stristr($oldString, 'http') === FALSE) {
-                                        // echo '"http" not found in string';
-                                        $html_text = str_replace($oldString, "\"http://192.168.1.147/WS_ISM/".$dir . $_FILES[$i]['name'] . "\"", $html_text);
-
-                                    }
-                                    else
-                                    {
-                                    // echo '"http"  found in string';
-                                        $html_text = $oldString;
-                                    }
-
-                                    $htmlTextOfImages = $html_text;
-
-                                    $updateText="UPDATE ".TABLE_QUESTIONS." SET question_text='".$html_text."' WHERE id = ".$questionId ." AND is_delete=0";
-                                    $updateResult = mysqli_query($GLOBALS['con'], $updateText) or $message = mysqli_error($GLOBALS['con']);
-
-                                    $status = SUCCESS;
-                                    $message = "successfully uploaded";
-
-                                }
-                                $post['rich_text_editor_images'] = $htmlTextOfImages;
-
-                            }
-
-                        }
-
-
+                        $post['rich_text_editor_images'] = $this->uploadRichTextEditorQuestionImages($number_of_images,$html_text,$questionId);
                     }
 
                 }
@@ -2247,7 +2132,98 @@ class ExamFunctions
         return $response;
     }
 
+        public  function uploadRichTextEditorQuestionImages($number_of_images,$html_text,$questionId)
+        {
 
+         $question_media_dir = "question_" . $questionId . "/";
+
+        // $mediaName = "_test_IMAGE_" . $created_date . ".png";
+
+        $number_of_images = $_POST['number_of_images'];
+
+        preg_match_all('/<img[^>]+>/i', $html_text, $result);
+        // print_r($result); exit;
+
+        $img = array();
+
+        foreach ($result as $img_tag) {
+
+            foreach ($img_tag as $img_tag1) {
+                //print_r($img_tag1);
+                preg_match_all('/(src)=("[^"]*")/i', $img_tag1, $img[$img_tag1]);
+            }
+        }
+
+
+        $img2 = array();
+        $value = 0;
+        foreach ($img as $img1) {
+            //print_r($img1);
+            $img2[$value] = $img1[2][0];
+            $value++;
+        }
+
+        for ($i = 0; $i < $number_of_images; $i++) {
+
+            //$name = "questions/";
+            $dir = RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir;
+
+            if (!is_dir(RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir)) {
+                mkdir(RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir, 0777);
+            }
+
+            $uploadFile = $dir . $_FILES[$i]['name'];//$mediaName;//
+
+            $oldString = "";
+
+            foreach ($img2 as $key => $value) {
+
+                if (strpos($value, $_FILES[$i]['name']) !== false) {
+                    $oldString = $value;
+                }
+            }
+
+
+            if (isset($_FILES[$i]['tmp_name'])) {
+                // echo "coming";
+                if (!move_uploaded_file($_FILES[$i]['tmp_name'], $uploadFile)) {
+
+                    $htmlTextOfImages[] = $uploadFile;
+                    $status = FAILED;
+                    $message = FAILED_TO_UPLOAD_MEDIA;
+                } else {
+                    // echo "ready";
+                    // $client_server_path="http://clientapp.narolainfotech.com/pg/ISM/WS_ISM";
+                    ///rich_text_editor_images/rich_questions/
+
+                    if(stristr($oldString, 'http') === FALSE) {
+                        // echo '"http" not found in string';
+                        $html_text = str_replace($oldString, "\"http://192.168.1.147/WS_ISM/".$dir . $_FILES[$i]['name'] . "\"", $html_text);
+
+                    }
+                    else
+                    {
+                        // echo '"http"  found in string';
+                        $html_text = $oldString;
+                    }
+
+                    $htmlTextOfImages = $html_text;
+
+                    $updateText="UPDATE ".TABLE_QUESTIONS." SET question_text='".$html_text."' WHERE id = ".$questionId ." AND is_delete=0";
+                    $updateResult = mysqli_query($GLOBALS['con'], $updateText) or $message = mysqli_error($GLOBALS['con']);
+
+                    $status = SUCCESS;
+                    $message = "successfully uploaded";
+
+                }
+
+                $post['rich_text_editor_images'] = $htmlTextOfImages;
+
+            }
+
+        }
+            return $post;
+}
     /*
      * getCourses
     */
@@ -3997,102 +3973,7 @@ class ExamFunctions
         return $response;
     }
 
-    public function uploadRichTextEditorQuestionImages($post)
-    {
 
-        $status = '';
-        $mediaName = '';
-        $created_date = date("Ymd-His");
-        $reponse = array();
-
-        $question_id = $_POST['question_id'];
-        $secret_key = $_POST['secret_key'];
-        $access_key = $_POST['access_key'];
-
-        $security = new SecurityFunctions();
-        $isSecure = $security->checkForSecurity($access_key, $secret_key);
-
-        if ($isSecure == yes) {
-
-            $question_media_dir = "question_" . $question_id . "/";
-
-            $mediaName = "_test_IMAGE_" . $created_date . ".png";
-
-            $number_of_images = $_POST['number_of_images'];
-
-
-            $text = $_POST['html_text'];
-            // echo $text;
-            preg_match_all('/<img[^>]+>/i', $text, $result);
-
-            $img = array();
-
-            foreach ($result as $img_tag) {
-
-                foreach ($img_tag as $img_tag1) {
-                    preg_match_all('/(src)=("[^"]*")/i', $img_tag1, $img[$img_tag1]);
-                }
-            }
-
-
-            $img2 = array();
-            $value = 0;
-            foreach ($img as $img1) {
-                // print_r($img_tag1);
-                $img2[$value] = $img1[2][0];
-                $value++;
-
-            }
-
-
-            for ($i = 0; $i < $number_of_images; $i++) {
-
-                $dir = RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir;
-
-                if (!is_dir(RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir)) {
-                    mkdir(RICH_TEXT_EDITOR_QUESTION_IMAGE . $question_media_dir, 0777);
-                }
-
-                $uploadFile = $dir . $_FILES[$i]['name'];//$mediaName;//
-
-                $oldString = "";
-
-
-                foreach ($img2 as $key => $value) {
-
-                    if (strpos($value, $_FILES[$i]['name']) !== false) {
-                        $oldString = $value;
-                        //echo "value ".$oldString;
-                    }
-                }
-
-                if (isset($_FILES[$i]['tmp_name'])) {
-                    //echo "coming";
-                    if (!move_uploaded_file($_FILES[$i]['tmp_name'], $uploadFile)) {
-
-                        $htmlTextOfImages[] = $uploadFile;
-                        $status = FAILED;
-                        $message = FAILED_TO_UPLOAD_MEDIA;
-                    } else {
-                        //echo "ready";
-                        // $client_server_path="http://clientapp.narolainfotech.com/pg/ISM/WS_ISM";
-                        $text = str_replace($oldString, "\"http://192.168.1.147/WS_ISM/images/rich_text_editor_images/" . $_FILES[$i]['name'] . "\"", $text);
-                        $htmlTextOfImages = $text;
-
-                        $status = SUCCESS;
-                        $message = "successfully uploaded";
-                    }
-                }
-
-            }
-            // echo "text=".$text;
-        } else {
-            $status = FAILED;
-            $message = MALICIOUS_SOURCE;
-        }
-
-        return $htmlTextOfImages;
-    }
 
     /*
         * publishResults

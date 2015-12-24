@@ -525,10 +525,13 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
         $dir = '';
         $mediaName = '';
         $created_date = date("Ymd-His");
+
         //create Random String.
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
         //generate random string with minimum 5 and maximum of 10 characters
         $str = substr(str_shuffle($chars), 0, 8);
+
         //add extension to file
         //$name = $str."_test";
         $feed_id = $_POST['feed_id'];

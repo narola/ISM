@@ -187,6 +187,11 @@ class ProfileFunctions
             }
                 break;
 
+            case "GetMyFollowers":{
+                return $this->getMyFollowers($postData);
+            }
+                break;
+
         }
     }
     /*
@@ -3413,6 +3418,88 @@ class ProfileFunctions
         return $response;
 
     }
+
+
+    /*
+    * getMyFollowers
+    */
+    public function getMyFollowers($postData)
+    {
+        $message ='';
+        $status='';
+        $data = array();
+        $response = array();
+
+        $user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            $selectQuery = "SELECT followers.follower_id as 'follower_id',users.full_name,users.profile_pic FROM ".TABLE_FOLLOWERS." followers INNER JOIN ".TABLE_USERS." users ON followers.follower_id=users.id WHERE followers.follow_to=". $user_id ." AND followers.follow_status='followed' AND followers.is_delete=0";
+                $selResult = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                if (mysqli_num_rows($selResult) > 0) {
+                    while ($row = mysqli_fetch_assoc($selResult)) {
+                        $post['follower_id']=$row['follower_id'];
+                        $post['follower_name']=$row['full_name'];
+                        $post['follower_profile_pic']=$row['profile_pic'];
+
+                         $queryGetAuthorFollower="SELECT follow_to FROM ".TABLE_FOLLOWERS." WHERE `follower_id`=".$row['follower_id']." AND follow_status='followed' AND is_delete=0";
+                        $resultGetAuthorFollower= mysqli_query($GLOBALS['con'], $queryGetAuthorFollower) or $message = mysqli_error($GLOBALS['con']);
+
+
+                        $count=0;
+                        if(mysqli_num_rows($resultGetAuthorFollower))
+                        {
+                            while ($row1 = mysqli_fetch_assoc($resultGetAuthorFollower))
+
+                            {
+                                //echo $getCountQuery="SELECT followers.count(*) FROM  ".TABLE_FOLLOWERS." followers LEFT JOIN ".TABLE_AUTHOR_PROFILE." author_profile ON followers.follow_to=author_profile.id AND followers.follow_to=".$row1['follow_to']." AND followers.follow_status='followed'";
+                                $getCountQuery="SELECT user_id FROM author_profile WHERE user_id IN ( SELECT follow_to FROM followers WHERE follow_to=".$row1['follow_to'].")" ;
+                                $getCountResult = mysqli_query($GLOBALS['con'], $getCountQuery) or $message = mysqli_error($GLOBALS['con']);
+                                $rowCount=mysqli_fetch_row($getCountResult);
+
+                                $count+=mysqli_num_rows($getCountResult);
+
+                            }
+                            $post['number_of_author_followed']=$count;
+                        }
+                        else
+                        {
+                            $post['number_of_author_followed']=0;
+                        }
+
+                        $data[]=$post;
+                    }
+
+                    $message = "Followers listed";
+                }
+                else {
+                    $message = DEFAULT_NO_RECORDS;
+                }
+                $status = SUCCESS;
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['followers']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+
+        return $response;
+    }
+
 
 }
 ?>

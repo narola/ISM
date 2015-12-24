@@ -28,7 +28,7 @@ define("BOOK_IMAGE",  'images/books/');
 
 define("FEEDS_MEDIA",  'images/feeds/');
 
-define("NOTES_MEDIA",  'notes/');
+define("NOTES_MEDIA",  '/images/notes/');
 
 define("LESSON_NOTES_MEDIA",  'images/lesson_notes/');
 

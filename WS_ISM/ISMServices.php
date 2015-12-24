@@ -56,6 +56,7 @@ switch ($_REQUEST['Service'])
     case "GetAdminConfig":
     case "UnBlockUser":
     case "UploadProfileImages":
+    case "GetMyFollowers":
     {
         include_once 'ProfileFunctions.php';
         $profile = new ProfileFunctions();
@@ -99,6 +100,7 @@ switch ($_REQUEST['Service'])
     case "SubmitLessonNotes":
     case "UploadMediaForLessonNotes":
     case "EditLessonNotes":
+    case "GetAuthorBookAssignment":
     {
         include_once 'TeacherFunctions.php';
         $teacher = new TeacherFunctions();
