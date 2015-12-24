@@ -245,7 +245,9 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         Debug.i(TAG, "User Image : " + WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this));
 	    Global.strProfilePic = WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
 //        Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
-        Global.imageLoader = ImageLoader.getInstance();
+	    Global.strTutorialGroupId = PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, HostActivity.this);
+	    Global.strTutorialGroupName = PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, HostActivity.this);
+	    Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
 
 	    if (Utility.isConnected(HostActivity.this)) {
@@ -514,8 +516,6 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     currentMainFragmentBg = R.color.bg_tutorial;
                     imgTutorial.setActivated(true);
                     loadControllerTopMenu(null);
-                    txtTitle.setText(Html.fromHtml("<font color='#ffffff'>" + getString(R.string.group_name) + "</font><font color='#1BBC9B'>Venice Beauty</font>"));
-                    txtTitle.setVisibility(View.VISIBLE);
                     break;
                 case FRAGMENT_CLASSROOM:
                     currentMainFragment = fragment;
@@ -597,7 +597,13 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         }
     }
 
-	@Override
+    public void showTutorialGroupName(String tutorialGroupName) {
+        txtTitle.setText(Html.fromHtml("<font color='#ffffff'>" + getString(R.string.group_name)
+                + "</font><font color='#1BBC9B'>" + tutorialGroupName + "</font>"));
+        txtTitle.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onFragmentDetached(int fragment) {
         try {
             switch (fragment) {
