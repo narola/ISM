@@ -45,6 +45,7 @@ public class AddQuestionTextDialog extends Dialog implements View.OnClickListene
         this.selectMediaListener = selectMediaListener;
         this.addTextListener = addTextListener;
         this.htmlText = htmlText;
+        this.Text = htmlText;
         Window w = getWindow();
         getWindow().getAttributes().windowAnimations =
                 R.style.DialogOpenAnimation;
@@ -75,7 +76,7 @@ public class AddQuestionTextDialog extends Dialog implements View.OnClickListene
         rteDialogAddText.getRichEditor().setEditorFontSize(20);
         rteDialogAddText.setRichTextListener((RichTextEditor.RichTextListener) this);
         rteDialogAddText.getRichEditor().setOnTextChangeListener(this);
-        rteDialogAddText.setHtml(htmlText);
+        rteDialogAddText.setHtml(Text);
         layoutRich = (RelativeLayout) findViewById(R.id.rl_dialog_add_text_richlayout);
 
     }
@@ -86,8 +87,10 @@ public class AddQuestionTextDialog extends Dialog implements View.OnClickListene
 
         if (v == tvDialogAddTextDone) {
 //            addTextListener.SetText(rteDialogAddText.getHtml());
+
             addTextListener.SetText(Text);
             dismiss();
+
         } else if (v == tvDialogAddTextClose) {
             dismiss();
         }
