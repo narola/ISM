@@ -41,7 +41,7 @@ public class RoleModelsDetailsDialog extends Dialog implements View.OnClickListe
         getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.imageLoader = imageLoader;
-        setContentView(R.layout.dailog_rolemodel_details);
+        setContentView(R.layout.dialog_rolemodel_details);
         w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         w.setBackgroundDrawableResource(android.R.color.transparent);
 

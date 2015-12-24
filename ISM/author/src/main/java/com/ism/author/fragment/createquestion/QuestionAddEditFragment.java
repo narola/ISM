@@ -724,11 +724,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         Debug.e(TAG, "Original text of edittext is:::::" + Html.toHtml(etAddquestionTitle.getText()));
 
         htmlText = Html.toHtml(etAddquestionTitle.getText());
-        htmlText = htmlText.replace("<p dir=\"ltr\"><img", "<img");
-        htmlText = htmlText.replace("<p dir=\"ltr\"", "<p");
-        htmlText = htmlText.replace(".png\"></p>", ".png\">");
-        htmlText = htmlText.replace(".jpeg\"></p>", ".jpeg\">");
-        htmlText = htmlText.replace(".jpg\"></p>", ".jpg\">");
+        htmlText = htmlText.replaceAll("<p dir=\"ltr\"><img", "<img");
+        htmlText = htmlText.replaceAll("<p dir=\"ltr\"", "<p");
+        htmlText = htmlText.replaceAll(".png\"></p>", ".png\">");
+        htmlText = htmlText.replaceAll(".jpeg\"></p>", ".jpeg\">");
+        htmlText = htmlText.replaceAll(".jpg\"></p>", ".jpg\">");
+        htmlText = htmlText.replaceAll(".png\"> </p>", ".png\">");
+        htmlText = htmlText.replaceAll(".jpeg\"> </p>", ".jpeg\">");
+        htmlText = htmlText.replaceAll(".jpg\"> </p>", ".jpg\">");
 
         Debug.e(TAG, "Formatted text of edittext is:::::" + htmlText);
 
@@ -850,136 +853,133 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private void callApiTempCreateQuestion() {
 
 
-        Debug.e(TAG, "The Question Text is::::" + getHtmlQuestionText());
-
         if (Utility.isConnected(getActivity())) {
             ((AuthorHostActivity) getActivity()).showProgress();
-            try {
-                Attribute attribute = new Attribute();
+//            try {
+            Attribute attribute = new Attribute();
 
 
-                MediaUploadAttribute userIdParam = new MediaUploadAttribute();
-                userIdParam.setParamName("user_id");
-                userIdParam.setParamValue(Global.strUserId);
+            MediaUploadAttribute userIdParam = new MediaUploadAttribute();
+            userIdParam.setParamName("user_id");
+            userIdParam.setParamValue(Global.strUserId);
 
-                MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
-                questionIdParam.setParamName("question_id");
+            MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
+            questionIdParam.setParamName("question_id");
 
-                if (getBaseFragment().getIsSetQuestionData() && !getBaseFragment().getIsCopy()) {
+            if (getBaseFragment().getIsSetQuestionData() && !getBaseFragment().getIsCopy()) {
                     /*for edit question*/
-                    questionIdParam.setParamValue(getBaseFragment().getQuestionData().getQuestionId());
-                } else {
+                questionIdParam.setParamValue(getBaseFragment().getQuestionData().getQuestionId());
+            } else {
                     /*for add question*/
-                    questionIdParam.setParamValue("0");
-                }
-                questionIdParam.setParamValue("229");
-
-
-                MediaUploadAttribute questionTextParam = new MediaUploadAttribute();
-                questionTextParam.setParamName("question_text");
-                questionTextParam.setParamValue(getHtmlQuestionText());
-
-                MediaUploadAttribute subjectIdParam = new MediaUploadAttribute();
-                subjectIdParam.setParamName("subject_id");
-                subjectIdParam.setParamValue("0");
-
-                MediaUploadAttribute questionScoreParam = new MediaUploadAttribute();
-                questionScoreParam.setParamName("question_score");
-                questionScoreParam.setParamValue(arrListQuestionScore.get(spExamQuestionScore.getSelectedItemPosition()));
-
-
-                MediaUploadAttribute questionFormatParam = new MediaUploadAttribute();
-                questionFormatParam.setParamName("question_format");
-                questionFormatParam.setParamValue(getQuestionFormat());
-
-
-                MediaUploadAttribute evaluationNotesParam = new MediaUploadAttribute();
-                evaluationNotesParam.setParamName("evaluation_notes");
-                evaluationNotesParam.setParamValue(etEvaluationNote1.getText().toString());
-
-                MediaUploadAttribute solutionParam = new MediaUploadAttribute();
-                solutionParam.setParamName("solution");
-                solutionParam.setParamValue(etSolution.getText().toString());
-
-
-                MediaUploadAttribute topicIdParam = new MediaUploadAttribute();
-                topicIdParam.setParamName("topic_id");
-                topicIdParam.setParamValue("0");
-
-
-                MediaUploadAttribute classroomIdParam = new MediaUploadAttribute();
-                classroomIdParam.setParamName("classroom_id");
-                classroomIdParam.setParamValue("0");
-
-//
-//                String test = "[ {\"choice_text\" :\"java1\", \"is_right\":1, \"id\":669 }," +
-//                        "{\"choice_text\" : \"java3\",  \"is_right\":0,   \"id\":670},,{\"choice_text\" : \"java3\",  \"is_right\":0,  \"id\":670}]";
-//
-//                MediaUploadAttribute answerChoicesParam = new MediaUploadAttribute();
-//                answerChoicesParam.setParamName("answer_choices");
-//                answerChoicesParam.setParamValue(test);
-//                attribute.getArrListParam().add(answerChoicesParam);
-
-//                if (getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
-//                    getMcqAnswers();
-//                    answerChoicesParam.setParamName("answer_choices");
-//                    answerChoicesParam.setArrListMcqAnswerValue(arrListAnswerChioces);
-//                    attribute.getArrListParam().add(answerChoicesParam);
-//                }
-
-
-                MediaUploadAttribute hashTagParam = new MediaUploadAttribute();
-                hashTagParam.setParamName("hashtag_data");
-                hashTagParam.setParamValue(getHashTagData());
-
-
-                MediaUploadAttribute numberOfImagesParam = new MediaUploadAttribute();
-                numberOfImagesParam.setParamName("number_of_images");
-                numberOfImagesParam.setParamValue(String.valueOf(imageSources.size()));
-
-
-                MediaUploadAttribute htmlTextParam = new MediaUploadAttribute();
-                htmlTextParam.setParamName("html_text");
-                htmlTextParam.setParamValue(getHtmlQuestionText());
-
-
-                MediaUploadAttribute bookParam = new MediaUploadAttribute();
-                bookParam.setParamName("book_id");
-                bookParam.setParamValue(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
-
-
-                attribute.getArrListParam().add(userIdParam);
-                attribute.getArrListParam().add(questionIdParam);
-                attribute.getArrListParam().add(questionTextParam);
-                attribute.getArrListParam().add(subjectIdParam);
-                attribute.getArrListParam().add(questionScoreParam);
-                attribute.getArrListParam().add(questionFormatParam);
-                attribute.getArrListParam().add(evaluationNotesParam);
-                attribute.getArrListParam().add(solutionParam);
-                attribute.getArrListParam().add(topicIdParam);
-                attribute.getArrListParam().add(classroomIdParam);
-                attribute.getArrListParam().add(hashTagParam);
-                attribute.getArrListParam().add(numberOfImagesParam);
-                attribute.getArrListParam().add(htmlTextParam);
-                attribute.getArrListParam().add(bookParam);
-
-
-                addImage();
-                if (imageSources.size() > 0) {
-                    for (int i = 0; i < imageSources.size(); i++) {
-                        MediaUploadAttribute mediaFileParam = new MediaUploadAttribute();
-                        mediaFileParam.setParamName("" + i);
-                        mediaFileParam.setFileName(imageSources.get(i));
-                        attribute.getArrListFile().add(mediaFileParam);
-                    }
-                }
-
-
-                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.TEMPCREATEQUESTION);
-            } catch (Exception e) {
-                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+                questionIdParam.setParamValue("0");
             }
+//                questionIdParam.setParamValue("229");
+
+
+            MediaUploadAttribute questionTextParam = new MediaUploadAttribute();
+            questionTextParam.setParamName("question_text");
+            questionTextParam.setParamValue("test");
+
+            MediaUploadAttribute subjectIdParam = new MediaUploadAttribute();
+            subjectIdParam.setParamName("subject_id");
+            subjectIdParam.setParamValue("0");
+
+            MediaUploadAttribute questionScoreParam = new MediaUploadAttribute();
+            questionScoreParam.setParamName("question_score");
+            questionScoreParam.setParamValue(arrListQuestionScore.get(spExamQuestionScore.getSelectedItemPosition()));
+
+
+            MediaUploadAttribute questionFormatParam = new MediaUploadAttribute();
+            questionFormatParam.setParamName("question_format");
+            questionFormatParam.setParamValue(getQuestionFormat());
+
+
+            MediaUploadAttribute evaluationNotesParam = new MediaUploadAttribute();
+            evaluationNotesParam.setParamName("evaluation_notes");
+            evaluationNotesParam.setParamValue(etEvaluationNote1.getText().toString());
+
+            MediaUploadAttribute solutionParam = new MediaUploadAttribute();
+            solutionParam.setParamName("solution");
+            solutionParam.setParamValue(etSolution.getText().toString());
+
+
+            MediaUploadAttribute topicIdParam = new MediaUploadAttribute();
+            topicIdParam.setParamName("topic_id");
+            topicIdParam.setParamValue("0");
+
+
+            MediaUploadAttribute classroomIdParam = new MediaUploadAttribute();
+            classroomIdParam.setParamName("classroom_id");
+            classroomIdParam.setParamValue("0");
+
+            String test = "[ {\"choice_text\" :\"hello\", \"is_right\":1 },{\"choice_text\" : \"hello1\",  \"is_right\":0}]";
+//
+            MediaUploadAttribute answerChoicesParam = new MediaUploadAttribute();
+            answerChoicesParam.setParamName("answer_choices");
+            answerChoicesParam.setParamValue(test);
+            attribute.getArrListParam().add(answerChoicesParam);
+
+            if (getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
+                getMcqAnswers();
+                answerChoicesParam.setParamName("answer_choices");
+                answerChoicesParam.setArrListMcqAnswerValue(arrListAnswerChioces);
+                attribute.getArrListParam().add(answerChoicesParam);
+            }
+
+
+            MediaUploadAttribute hashTagParam = new MediaUploadAttribute();
+            hashTagParam.setParamName("hashtag_data");
+            hashTagParam.setParamValue(getHashTagData());
+
+
+            Debug.e(TAG, "The Question Text is::::" + getHtmlQuestionText());
+
+
+            MediaUploadAttribute htmlTextParam = new MediaUploadAttribute();
+            htmlTextParam.setParamName("html_text");
+            htmlTextParam.setParamValue(getHtmlQuestionText());
+
+
+            MediaUploadAttribute bookParam = new MediaUploadAttribute();
+            bookParam.setParamName("book_id");
+            bookParam.setParamValue(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID));
+
+
+            attribute.getArrListParam().add(userIdParam);
+            attribute.getArrListParam().add(questionIdParam);
+            attribute.getArrListParam().add(questionTextParam);
+            attribute.getArrListParam().add(subjectIdParam);
+            attribute.getArrListParam().add(questionScoreParam);
+            attribute.getArrListParam().add(questionFormatParam);
+            attribute.getArrListParam().add(evaluationNotesParam);
+            attribute.getArrListParam().add(solutionParam);
+            attribute.getArrListParam().add(topicIdParam);
+            attribute.getArrListParam().add(classroomIdParam);
+            attribute.getArrListParam().add(hashTagParam);
+            attribute.getArrListParam().add(htmlTextParam);
+            attribute.getArrListParam().add(bookParam);
+
+
+            addImage();
+            if (imageSources.size() > 0) {
+                for (int i = 0; i < imageSources.size(); i++) {
+                    MediaUploadAttribute mediaFileParam = new MediaUploadAttribute();
+                    mediaFileParam.setParamName("" + i);
+                    mediaFileParam.setFileName(imageSources.get(i));
+                    attribute.getArrListFile().add(mediaFileParam);
+                }
+            }
+
+            MediaUploadAttribute numberOfImagesParam = new MediaUploadAttribute();
+            numberOfImagesParam.setParamName("number_of_images");
+            numberOfImagesParam.setParamValue(String.valueOf(imageSources.size()));
+            attribute.getArrListParam().add(numberOfImagesParam);
+
+            new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                    .execute(WebConstants.TEMPCREATEQUESTION);
+//            } catch (Exception e) {
+//                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+//            }
         } else {
             Utility.toastOffline(getActivity());
         }
@@ -1013,11 +1013,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 }
             }
         } else {
-            sb.substring(0, sb.toString().length() - 1);
+            if (sb.length() > 0) {
+                sb.substring(0, sb.toString().length() - 1);
+            }
         }
 
         Debug.e(TAG, "The HashTags Are:::" + sb.toString());
         return sb.toString();
+
     }
 
     private String getQuestionFormat() {
