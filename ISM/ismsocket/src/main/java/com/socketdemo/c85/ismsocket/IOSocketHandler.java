@@ -31,7 +31,7 @@ public class IOSocketHandler {
     /**
      * connect to socket.
      */
-    public static void ConnectSocket(){
+    public static void ConnectSocket() {
 
         SocketIOClient.connect(AsyncHttpClient.getDefaultInstance(), SocketConstants.SOCKET_URL, new ConnectCallback() {
             @Override
@@ -39,7 +39,7 @@ public class IOSocketHandler {
                 socketIOClient = client;
                 handleEvents();
 
-                if(ex == null){
+                if (ex == null) {
 
                     JSONObject joinSocket = new JSONObject();
                     try {
@@ -61,16 +61,15 @@ public class IOSocketHandler {
     /**
      * disconnect from socket
      */
-    public static void disconnectSocket(){
+    public static void disconnectSocket() {
 
         try {
-            if(socketIOClient.isConnected()){
+            if (socketIOClient.isConnected()) {
                 socketIOClient.disconnect();
                 socketIOClient = null;
                 System.gc();
             }
-        }
-        catch (Exception error){
+        } catch (Exception error) {
 
         }
     }
@@ -78,7 +77,7 @@ public class IOSocketHandler {
     /**
      * handle different event for socket.
      */
-    private static void handleEvents(){
+    private static void handleEvents() {
 
         socketIOClient.on(SocketConstants.JOIN_SOCKET, new EventCallback() {
             @Override

@@ -5,10 +5,9 @@ package com.ism.author.constant;
  */
 public class WebConstants {
 
-    //private static final String URL_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
-    // public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
-    // public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
-    public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";
+
+//    public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";
+
 
     public static final String FEED_MEDIA_KINJAL = "http://192.168.1.147/WS_ISM/Images/feeds/";
 
@@ -21,6 +20,7 @@ public class WebConstants {
     public static final String USER_IMAGES_TEST = "http://192.168.1.147/WS_ISM/Images/users_images/";
 
     public static final String HOST_202 = "http://192.168.1.202/pg/ISM/";      // pg
+    public static final String URL_KINJAL_HOST = HOST_202 + "WS_ISM/ISMServices.php?Service=";
 
     public static final String URL_HOST_202 = HOST_202 + "WS_ISM/ISMServices.php?Service=";
 
@@ -104,7 +104,6 @@ public class WebConstants {
 
     public static final int REFRESH_TOKEN = 40;
 
-    public static final int UPLOADSUBQUESTIONIMAGES = 41;
 
     public static final int GET_HIGH_SCORERS = 42;
 
@@ -268,7 +267,6 @@ public class WebConstants {
 
     public static final String URL_MANAGE_BOOK_LIBRARY = URL_KINJAL_HOST + "ManageBookLibrary";
 
-    public static final String URL_UPLOADSUBQUESTIONIMAGES = URL_KINJAL_HOST + "UploadSubQuestionImages";
 
     /*status for apisuccess ans apifailed*/
 
