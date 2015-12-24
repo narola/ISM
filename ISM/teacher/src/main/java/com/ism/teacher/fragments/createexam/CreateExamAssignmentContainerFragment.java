@@ -1,4 +1,4 @@
-package com.ism.teacher.fragments;
+package com.ism.teacher.fragments.createexam;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -21,7 +21,7 @@ import com.ism.teacher.object.Global;
  * This fragment contains two tabs
  * AssignmentActivity and AssignmentExam
  * And (from AssignmentExam) After assignment exam is created successfully(retrieve exam id and click on
- * SetQuestion which calls AddQuestionContainerFragment
+ * SetQuestion which calls ScheduleTutorialExamContainerFragment
  */
 
 
@@ -43,7 +43,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
     public static final int FRAGMENT_ASSIGNMENT_ACTIVITY = 1;
     public static final int FRAGMENT_ASSIGNMENT_EXAM = 2;
-
 
     FrameLayout fl_tab_activity, fl_tab_exam;
     TextView tv_tab_activity, tv_tab_exam;
@@ -167,7 +166,7 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     }
 
     /**
-     * Hide top tab bar in AddQuestionContainerFragment because we are replacing AddQuestionContainerFragment in teacher office so the top
+     * Hide top tab bar in ScheduleTutorialExamContainerFragment because we are replacing ScheduleTutorialExamContainerFragment in teacher office so the top
      * bar was visible.
      */
     public void hideTopBar() {

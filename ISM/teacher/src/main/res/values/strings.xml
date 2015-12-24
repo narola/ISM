@@ -19,7 +19,8 @@
 
     <string name="str_personal_info">PERSONAL INFORMATION</string>
     <string name="str_manage_credential">MANAGE CREDENTIAL</string>
-    <string name="str_teacher_tutorial_label">You are assigned group Venice Beauty,you have \n to schedule question for topic</string>
+    <string name="str_you_are_assigned_group">You are assigned group</string>
+    <string name="str_you_have_to_schedule">,you have \n to schedule question for topic</string>
     <string name="strsearchstudymatess">Search Study Mates</string>
 
     <string name="no_internet">No Internet Connection Available...Please Try Again</string>

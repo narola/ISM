@@ -1,4 +1,4 @@
-package com.ism.fragment.userprofile;
+package com.ism.fragment.userProfile;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -152,20 +152,20 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
             case FRAGMENT_PRIVACY_SETTING: {
                 currentFragment = frag;
                // callApiGetGeneralSettingPreferences(preferencesList);
-                com.ism.fragment.userprofile.PrivacySettingFragment fragment = com.ism.fragment.userprofile.PrivacySettingFragment.newInstance();
+                com.ism.fragment.userProfile.PrivacySettingFragment fragment = com.ism.fragment.userProfile.PrivacySettingFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_SMS_ALERTS: {
                 currentFragment = frag;
                 //callApiGetGeneralSettingPreferences(preferencesList);
-                com.ism.fragment.userprofile.SMSAlertsFragment fragment = com.ism.fragment.userprofile.SMSAlertsFragment.newInstance();
+                com.ism.fragment.userProfile.SMSAlertsFragment fragment = com.ism.fragment.userProfile.SMSAlertsFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_BLOCK_USER: {
                 currentFragment = frag;
-                com.ism.fragment.userprofile.BlockUserFragment fragment = com.ism.fragment.userprofile.BlockUserFragment.newInstance();
+                com.ism.fragment.userProfile.BlockUserFragment fragment = com.ism.fragment.userProfile.BlockUserFragment.newInstance();
                 //callApiGetGeneralSettingPreferences(preferencesList);
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
@@ -173,7 +173,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
             case FRAGMENT_NOTIFICATION: {
                 currentFragment = frag;
                // callApiGetGeneralSettingPreferences(preferencesList);
-                com.ism.fragment.userprofile.NotificationFragment fragment = com.ism.fragment.userprofile.NotificationFragment.newInstance();
+                com.ism.fragment.userProfile.NotificationFragment fragment = com.ism.fragment.userProfile.NotificationFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;

@@ -1,4 +1,4 @@
-package com.ism.teacher.fragments;
+package com.ism.teacher.fragments.office;
 
 import android.app.Fragment;
 import android.os.Bundle;

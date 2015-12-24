@@ -1,4 +1,4 @@
-package com.ism.fragment.userprofile;
+package com.ism.fragment.userProfile;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -58,7 +58,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private static String TAG = AboutMeFragment.class.getSimpleName();
     private HostActivity activityHost;
 
-    com.ism.fragment.userprofile.EditProfileFragment editProfileFragment;
+    com.ism.fragment.userProfile.EditProfileFragment editProfileFragment;
     private TextView txtEdit;
     private EditText etCno, etDob;
     public static ImageView imgProfilePic, imgProfileEdit;
@@ -92,7 +92,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
 
     private void initGlobal() {
-        editProfileFragment = com.ism.fragment.userprofile.EditProfileFragment.newInstance();
+        editProfileFragment = com.ism.fragment.userProfile.EditProfileFragment.newInstance();
 
         txtUserName = (TextView) view.findViewById(R.id.txt_user_name);
         txtEdit = (TextView) view.findViewById(R.id.txt_edit);
@@ -305,7 +305,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 if (!file.isFile()) {
                     Debug.e(TAG, "Source File Does not exist");
                 } else {
-                    new com.ism.fragment.userprofile.EditProfileImageAsync(file).execute();
+                    new com.ism.fragment.userProfile.EditProfileImageAsync(file).execute();
                 }
                 // hostListenerAboutMe.onSelectImage(bitmap);
                 // strDpBase64 = Utility.getBase64ForImage(bitmap);
@@ -530,7 +530,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     }
 
     private void editDetails(int type) {
-        Intent intent = new Intent(getActivity(), com.ism.fragment.userprofile.EditAboutMeDetailsActivity.class);
+        Intent intent = new Intent(getActivity(), com.ism.fragment.userProfile.EditAboutMeDetailsActivity.class);
         intent.putExtra(USERNAME, txtUserName.getText().toString());
         intent.putExtra(BIRTHDATE, strDob);
         intent.putExtra(CONTACT_NUMBER, etCno.getText().toString());

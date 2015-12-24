@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.ism.fragment.userprofile.FindStudymatesFragment;
-import com.ism.fragment.userprofile.YourStudymatesFragment;
+import com.ism.fragment.userProfile.FindStudymatesFragment;
+import com.ism.fragment.userProfile.YourStudymatesFragment;
 
 /**
  * Created by c161 on 27/11/15.

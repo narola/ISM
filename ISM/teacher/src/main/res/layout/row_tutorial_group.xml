@@ -13,12 +13,12 @@
         android:src="@drawable/userdp" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/d10dp"
-        android:layout_marginLeft="@dimen/d15dp"
-        android:layout_marginRight="@dimen/d15dp"
-        android:layout_marginTop="@dimen/d15dp"
+        android:layout_marginLeft="@dimen/d5dp"
+        android:layout_marginRight="@dimen/d5dp"
+        android:layout_marginTop="@dimen/d10dp"
         android:layout_toRightOf="@+id/img_member_pic"
         android:orientation="vertical">
 
@@ -29,7 +29,7 @@
             android:padding="@dimen/d5dp"
             android:text="Adam Stanger"
             android:textColor="@color/color_txt_tutorial"
-            android:textSize="@dimen/d15sp" />
+            android:textSize="@dimen/d17sp" />
 
         <TextView
             android:id="@+id/tv_member_school"

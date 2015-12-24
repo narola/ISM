@@ -249,6 +249,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@drawable/bg_controller_left_button_tutorial"
+            android:onClick="openMainContainerFragment"
             android:scaleType="centerInside"
             android:src="@drawable/image_tutorial_group" />
 
@@ -258,6 +259,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@drawable/bg_controller_left_button_assessment"
+            android:onClick="openMainContainerFragment"
             android:scaleType="centerInside"
             android:src="@drawable/image_office" />
 

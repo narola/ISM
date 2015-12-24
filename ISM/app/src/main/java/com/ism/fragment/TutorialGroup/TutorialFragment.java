@@ -1,4 +1,4 @@
-package com.ism.fragment.TutorialGroup;
+package com.ism.fragment.tutorialGroup;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -159,7 +159,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, TutorialSatFragment.newInstance()).commit();
 					break;
 				case FRAGMENT_SUN:
-					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.TutorialGroup.TutorialSunFragment.newInstance()).commit();
+					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.tutorialGroup.TutorialSunFragment.newInstance()).commit();
 					break;
 			}
 			intCurrentFragment = fragment;

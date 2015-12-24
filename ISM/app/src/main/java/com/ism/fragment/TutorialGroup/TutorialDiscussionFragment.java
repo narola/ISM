@@ -1,4 +1,4 @@
-package com.ism.fragment.TutorialGroup;
+package com.ism.fragment.tutorialGroup;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
@@ -24,7 +24,6 @@ import com.ism.constant.WebConstants;
 import com.ism.model.TestDiscussion;
 import com.ism.object.Global;
 import com.ism.scientificcalc.view.Calc;
-import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
 import com.ism.whiteboard.view.Whiteboard;
 import com.ism.ws.helper.Attribute;
@@ -38,8 +37,7 @@ import java.util.ArrayList;
 /**
  * Created by c161 on 12/10/15.
  */
-public class TutorialDiscussionFragment extends Fragment implements WebserviceWrapper.WebserviceResponse,
-		DiscussionAdapter.TutorialDiscussionAdapterListener {
+public class TutorialDiscussionFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 	private static final String TAG = TutorialDiscussionFragment.class.getSimpleName();
 
@@ -47,7 +45,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	private TextView txtTopic, txtTopicValue, txtAlert, txtAdminNoticeTime, txtAdminNotice;
 	private ImageView imgCalc, imgWhiteboard, imgSearch, imgDictionary, imgExpandDiscussion;
 	private CircleImageView imgAdminDp;
-	private RelativeLayout rlUtility;
+	private RelativeLayout rlUtility, rlAdminNotice;
 	private ViewStub vsWhiteboard, vsAssistantWebView;
 	private Calc utilitySciCalc;
 	private Whiteboard utilityWhiteboard;
@@ -76,6 +74,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	private static int currentUtility = -1;
 	private static int currentWebUtility = -1;
 	private int intWeekDay;
+	private String strCurrentWeekDay = "";
 
 	public static TutorialDiscussionFragment newInstance(int weekDay) {
 		TutorialDiscussionFragment fragment = new TutorialDiscussionFragment();
@@ -128,6 +127,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		imgAdminDp = (CircleImageView) view.findViewById(R.id.img_admin_dp);
 		txtAdminNoticeTime = (TextView) view.findViewById(R.id.txt_admin_notice_time);
 		txtAdminNotice = (TextView) view.findViewById(R.id.txt_admin_notice);
+		rlAdminNotice = (RelativeLayout) view.findViewById(R.id.rl_admin_notice);
 
 		imgUtilities = new ImageView[]{imgCalc, imgWhiteboard, imgSearch, imgDictionary};
 		viewUtilities = new View[]{utilitySciCalc, utilityWhiteboard, utilityAssistantWebView};
@@ -138,8 +138,6 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		txtAdminNoticeTime.setTypeface(Global.myTypeFace.getRalewayThinItalic());
 		txtAdminNotice.setTypeface(Global.myTypeFace.getRalewayRegular());
 		((TextView) view.findViewById(R.id.txt_admin_name)).setTypeface(Global.myTypeFace.getRalewayRegular());
-
-		setDay(intWeekDay);
 
 		callApiGetGroupHistory();
 
@@ -217,6 +215,33 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 			}
 		};
 		recyclerChat.addItemDecoration(decoration);
+
+		recyclerChat.addOnScrollListener(new RecyclerView.OnScrollListener() {
+			@Override
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+				super.onScrolled(recyclerView, dx, dy);
+				int lastPosition = layoutManagerChat.findLastCompletelyVisibleItemPosition();
+				if (lastPosition != 0
+						&& lastPosition != RecyclerView.NO_POSITION
+						&& !arrListDiscussion.get(layoutManagerChat.findLastCompletelyVisibleItemPosition()).getWeekDay()
+						.equals(strCurrentWeekDay)) {
+					strCurrentWeekDay = arrListDiscussion.get(layoutManagerChat.findLastCompletelyVisibleItemPosition()).getWeekDay();
+					showTopicDetails(arrListDiscussion.get(layoutManagerChat.findLastCompletelyVisibleItemPosition()).getTopicPosition());
+					Log.e(TAG, "day changed to : " + strCurrentWeekDay);
+				}
+			}
+		});
+
+		txtAdminNotice.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (txtAdminNotice.getMaxLines() == 2) {
+					txtAdminNotice.setMaxLines(Integer.MAX_VALUE);
+				} else {
+					txtAdminNotice.setMaxLines(2);
+				}
+			}
+		});
 
 		/*arrListTestDiscussion = new ArrayList<>();
 		String time1 = "Aug 5, 2015  4:15pm";
@@ -320,27 +345,32 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	public void setDay(int day) {
 		intWeekDay = day;
 		switch (intWeekDay) {
-			case com.ism.fragment.TutorialGroup.TutorialFragment.MON:
-//				txtTopic.setText("Monday");
+			case TutorialFragment.MON:
+				showDiscussionFor(WebConstants.MONDAY);
 				break;
-			case com.ism.fragment.TutorialGroup.TutorialFragment.TUE:
-//				txtTopic.setText("Tuesday");
+			case TutorialFragment.TUE:
+				showDiscussionFor(WebConstants.TUESDAY);
 				break;
-			case com.ism.fragment.TutorialGroup.TutorialFragment.WED:
-//				txtTopic.setText("Wednesday");
+			case TutorialFragment.WED:
+				showDiscussionFor(WebConstants.WEDNESDAY);
 				break;
-			case com.ism.fragment.TutorialGroup.TutorialFragment.THU:
-//				txtTopic.setText("Thursday");
+			case TutorialFragment.THU:
+				showDiscussionFor(WebConstants.THURSDAY);
 				break;
-			case com.ism.fragment.TutorialGroup.TutorialFragment.FRI:
-//				txtTopic.setText("Friday");
+		}
+	}
+
+	private void showDiscussionFor(String weekDay) {
+		for (int i = 0; i < arrListDiscussion.size(); i++) {
+			if (arrListDiscussion.get(i).getWeekDay().equals(weekDay)
+					&& (i == arrListDiscussion.size() - 1 || !arrListDiscussion.get(i + 1).getWeekDay().equals(weekDay))) {
+				if (i != arrListDiscussion.size() - 1) {
+					((LinearLayoutManager) recyclerChat.getLayoutManager()).scrollToPositionWithOffset(i + 1, recyclerChat.getHeight());
+				} else {
+					recyclerChat.scrollToPosition(i);
+				}
 				break;
-			case com.ism.fragment.TutorialGroup.TutorialFragment.SAT:
-//				txtTopic.setText("Saturday");
-				break;
-			case com.ism.fragment.TutorialGroup.TutorialFragment.SUN:
-//				txtTopic.setText("Sunday");
-				break;
+			}
 		}
 	}
 
@@ -370,8 +400,9 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 						arrListDiscussion.add(discussion);
 					}
 				}
-				adpDiscussion = new DiscussionAdapter(getActivity(), arrListDiscussion, this);
+				adpDiscussion = new DiscussionAdapter(getActivity(), arrListDiscussion);
 				recyclerChat.setAdapter(adpDiscussion);
+				setDay(intWeekDay);
 			} else if (error != null) {
 				Log.e(TAG, "onResponseGetGroupHistory api Exception : " + error.toString());
 			}
@@ -380,33 +411,22 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		}
 	}
 
-	@Override
-	public void onTutorialTopicPositionChanged(int topicPosition) {
-		/*if (arrListDiscussion.get(layoutManagerChat.findFirstCompletelyVisibleItemPosition()).getWeekDay()
-				!= arrListDiscussion.get(layoutManagerChat.findFirstCompletelyVisibleItemPosition()).getWeekDay()) {
-
-		}*/
-		showTopicDetails(topicPosition);
-	}
-
 	private void showTopicDetails(int topicPosition) {
-		Log.e(TAG, "Position : " + topicPosition);
-		txtAdminNoticeTime.setText(Utility.formatPHPDateToMMMDDYY_HHMMA(arrListDiscussionData.get(topicPosition).getAssignedTime())
-				+ "  " + arrListDiscussionData.get(topicPosition).getDayName());
+		txtAdminNoticeTime.setText(com.ism.commonsource.utility.Utility.getTimeDuration(arrListDiscussionData.get(topicPosition).getAssignedTime()));
 		txtAdminNotice.setText(arrListDiscussionData.get(topicPosition).getTopicDescription());
 		txtTopicValue.setText(arrListDiscussionData.get(topicPosition).getTutorialTopic());
-		if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Mon")) {
-			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.TutorialGroup.TutorialFragment.MON);
-		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Tues")) {
-			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.TutorialGroup.TutorialFragment.TUE);
-		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Wed")) {
-			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.TutorialGroup.TutorialFragment.WED);
-		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Thurs")) {
-			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.TutorialGroup.TutorialFragment.THU);
-		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Fri")) {
-			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.TutorialGroup.TutorialFragment.FRI);
-		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Sat")) {
-			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.TutorialGroup.TutorialFragment.SAT);
+		if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase(WebConstants.MONDAY)) {
+			listenerTutorialDiscussion.onDayChanged(TutorialFragment.MON);
+		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase(WebConstants.TUESDAY)) {
+			listenerTutorialDiscussion.onDayChanged(TutorialFragment.TUE);
+		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase(WebConstants.WEDNESDAY)) {
+			listenerTutorialDiscussion.onDayChanged(TutorialFragment.WED);
+		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase(WebConstants.THURSDAY)) {
+			listenerTutorialDiscussion.onDayChanged(TutorialFragment.THU);
+		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase(WebConstants.FRIDAY)) {
+			listenerTutorialDiscussion.onDayChanged(TutorialFragment.FRI);
+		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase(WebConstants.SATURDAY)) {
+			listenerTutorialDiscussion.onDayChanged(TutorialFragment.SAT);
 		}
 	}
 

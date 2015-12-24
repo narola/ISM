@@ -82,7 +82,7 @@
                 android:src="@drawable/img_share_notes" />
 
             <TextView
-                android:layout_width="2dp"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/d15dp"
                 android:layout_marginTop="@dimen/d15dp"

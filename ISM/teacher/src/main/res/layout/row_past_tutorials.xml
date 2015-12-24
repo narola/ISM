@@ -69,7 +69,7 @@
                             android:id="@+id/tv_group_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Adam Ross"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="@dimen/d18sp" />
 
@@ -78,7 +78,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="(Computer Science)"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="@dimen/d16sp" />
 
@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/d10dp"
-                android:text="@string/strexamname"
+                android:text=""
                 android:textSize="@dimen/d16sp" />
 
             <LinearLayout
@@ -123,7 +123,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="29 Sep 2015"
+                        android:text=""
                         android:textColor="@color/color_blue_past_assignment"
                         android:textSize="@dimen/d18sp" />
 
@@ -156,7 +156,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="100"
+                        android:text=""
                         android:textColor="@color/color_txt_tutorial"
                         android:textSize="@dimen/d18sp" />
 

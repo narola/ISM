@@ -293,7 +293,9 @@ public class Questions implements Parcelable, Comparable<Questions> {
         this.questionScore = questionScore;
         return this;
     }
+
     private Boolean isEvaluated = false;
+
     public Boolean getIsEvaluated() {
         return isEvaluated;
     }

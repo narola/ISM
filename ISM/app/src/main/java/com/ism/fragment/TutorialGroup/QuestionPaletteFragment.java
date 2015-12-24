@@ -1,4 +1,4 @@
-package com.ism.fragment.TutorialGroup;
+package com.ism.fragment.tutorialGroup;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -222,7 +222,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 
 			lvTutorialGroup.setVisibility(View.VISIBLE);
 			rlQuestionPalette.setVisibility(View.GONE);
-			fragExam.getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.TutorialGroup.ResultFragment.newInstance(arrListQuestions,
+			fragExam.getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.tutorialGroup.ResultFragment.newInstance(arrListQuestions,
 					fragExam.isShowGraph(), timeSpent)).commit();
 //			getFragmentManager().beginTransaction().remove(this).commit();
 		} catch (Exception e) {

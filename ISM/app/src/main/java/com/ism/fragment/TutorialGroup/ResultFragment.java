@@ -1,4 +1,4 @@
-package com.ism.fragment.TutorialGroup;
+package com.ism.fragment.tutorialGroup;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -100,7 +100,7 @@ public class ResultFragment extends Fragment {
 		btnViewAnswers.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.TutorialGroup.ExamEvaluationFragment.newInstance()).commit();
+				getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.tutorialGroup.ExamEvaluationFragment.newInstance()).commit();
 			}
 		});
 

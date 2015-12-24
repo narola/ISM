@@ -12,10 +12,13 @@ public class WebConstants {
     public static String ACCESS_KEY;
     public static final String NO_USERNAME = "nousername";
 
+
+    //Host urls
+    private static final String URL_PG_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
 
-    public static final String URL_UPLOADPROFILEIMAGES = URL_KINJAL_HOST + "UploadProfileImages";
 
+    public static final String URL_UPLOADPROFILEIMAGES = URL_KINJAL_HOST + "UploadProfileImages";
 
     public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Feeds/";
     public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
@@ -82,7 +85,7 @@ public class WebConstants {
 
     public static final int GETADMINCONFIG = 35;
     public static final int REFRESH_TOKEN = 36;
-    public static final int GROUP_ALLOCATION= 37;
+    public static final int GROUP_ALLOCATION = 37;
 
 
     public static final String Image_url = "http://192.168.1.147/WS_ISM/Images/questions_images/";
@@ -93,9 +96,6 @@ public class WebConstants {
     // private static final String URL_HOST_75 = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";    // RAVI
     // private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";  // KRUNAL
     //  private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
-
-
-    private static final String URL_PG_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";
 
 
     public static final String URL_GETADMINCONFIG = URL_KINJAL_HOST + "GetAdminConfig";
@@ -117,6 +117,7 @@ public class WebConstants {
     public static final String URL_CREATE_EXAM = URL_KINJAL_HOST + "CreateExam";
     public static final String URL_GET_QUESTION_BANK = URL_KINJAL_HOST + "GetQuestionBank";
     public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
+    //SetQuestionForexam api
     public static final String URL_SET_QUESTIONS_FOR_EXAM = URL_KINJAL_HOST + "SetQuestionsForExam";
     public static final String URL_FORGOT_PASSWORD = URL_KINJAL_HOST + "ForgotPassword";
     public static final String URL_UPLOAD_FEED_MEDIA = URL_KINJAL_HOST + "UploadMedia";
