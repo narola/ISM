@@ -12,10 +12,10 @@ public class WebConstants {
     public static String ACCESS_KEY;
     public static final String NO_USERNAME = "nousername";
 
-
     //Host urls
     private static final String URL_PG_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
+    // public static final String URL_KINJAL_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";      // KINJAL
 
 
     public static final String URL_UPLOADPROFILEIMAGES = URL_KINJAL_HOST + "UploadProfileImages";

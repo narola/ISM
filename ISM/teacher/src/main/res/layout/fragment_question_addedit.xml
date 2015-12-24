@@ -209,7 +209,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
                             android:background="@drawable/btn_close_blue"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
 
                     </RelativeLayout>
                 </LinearLayout>

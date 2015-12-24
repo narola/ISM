@@ -237,7 +237,7 @@ public class AddQuestionContainerFragment extends Fragment {
         }
     }
 
-    private Bundle getBundleArguments() {
+    public Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }
 
