@@ -1,22 +1,17 @@
-package com.ism.fragment.tutorialGroup;
+package com.ism.fragment.TutorialGroup;
 
 import android.app.Fragment;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.object.Global;
-import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 /**
  * Created by c161 on 15/12/15.

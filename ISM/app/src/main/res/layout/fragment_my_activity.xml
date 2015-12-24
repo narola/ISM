@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/gray_light"
-                tools:mContext=".fragment.userProfile.MyActivityFragment">
+                tools:mContext=".fragment.userprofile.MyActivityFragment">
 
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/recycler_my_activity"

@@ -1,4 +1,4 @@
-package com.ism.fragment.userProfile;
+package com.ism.fragment.userprofile;
 
 import android.app.Activity;
 import android.app.Fragment;

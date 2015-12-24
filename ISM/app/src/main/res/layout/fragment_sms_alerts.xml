@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
-    tools:mContext="com.ism.fragment.userProfile.SMSAlertsFragment">
+    tools:mContext="com.ism.fragment.userprofile.SMSAlertsFragment">
 
     <TextView
         android:id="@+id/txt_alerts_assignment"

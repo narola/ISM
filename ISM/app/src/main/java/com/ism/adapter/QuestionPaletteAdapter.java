@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.fragment.tutorialGroup.ExamFragment;
+import com.ism.fragment.TutorialGroup.ExamFragment;
 import com.ism.model.QuestionObjectiveTest;
 
 import java.util.ArrayList;

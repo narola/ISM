@@ -1,4 +1,4 @@
-package com.ism.fragment.userProfile;
+package com.ism.fragment.userprofile;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -35,7 +35,7 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
     private static String TAG = PrivacySettingFragment.class.getSimpleName();
     private HostActivity activityHost;
     private String[] strArrayList;
-    com.ism.fragment.userProfile.GeneralSettingsFragment generalSettingsFragment;
+    com.ism.fragment.userprofile.GeneralSettingsFragment generalSettingsFragment;
 
     public static PrivacySettingFragment newInstance() {
         PrivacySettingFragment fragment = new PrivacySettingFragment();
@@ -57,7 +57,7 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
 
 
     private void initGlobal() {
-        generalSettingsFragment = com.ism.fragment.userProfile.GeneralSettingsFragment.newInstance();
+        generalSettingsFragment = com.ism.fragment.userprofile.GeneralSettingsFragment.newInstance();
 
         myTypeFace = new MyTypeFace(getActivity());
         spViewers = (Spinner) view.findViewById(R.id.sp_viewers);

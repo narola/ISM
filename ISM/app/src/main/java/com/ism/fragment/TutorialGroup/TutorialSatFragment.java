@@ -1,4 +1,4 @@
-package com.ism.fragment.tutorialGroup;
+package com.ism.fragment.TutorialGroup;
 
 import android.app.Fragment;
 import android.os.Bundle;

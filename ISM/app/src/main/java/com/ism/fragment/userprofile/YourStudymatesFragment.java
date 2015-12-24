@@ -1,4 +1,4 @@
-package com.ism.fragment.userProfile;
+package com.ism.fragment.userprofile;
 
 import android.support.v4.app.Fragment;
 import android.graphics.Rect;

@@ -14,7 +14,7 @@ import com.ism.activity.HostActivity;
 import com.ism.R;
 import com.ism.adapter.StudymateChatAdapter;
 import com.ism.constant.WebConstants;
-import com.ism.fragment.userProfile.StudymatesFragment;
+import com.ism.fragment.userprofile.StudymatesFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.utility.Utility;

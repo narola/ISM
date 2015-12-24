@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.fragment.userProfile.AllNoticeFragment;
+import com.ism.fragment.userprofile.AllNoticeFragment;
 import com.ism.object.MyTypeFace;
 import com.ism.ws.model.Notice;
 

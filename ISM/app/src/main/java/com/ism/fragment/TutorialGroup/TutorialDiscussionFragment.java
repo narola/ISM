@@ -1,4 +1,4 @@
-package com.ism.fragment.tutorialGroup;
+package com.ism.fragment.TutorialGroup;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
@@ -320,25 +320,25 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	public void setDay(int day) {
 		intWeekDay = day;
 		switch (intWeekDay) {
-			case TutorialFragment.MON:
+			case com.ism.fragment.TutorialGroup.TutorialFragment.MON:
 //				txtTopic.setText("Monday");
 				break;
-			case TutorialFragment.TUE:
+			case com.ism.fragment.TutorialGroup.TutorialFragment.TUE:
 //				txtTopic.setText("Tuesday");
 				break;
-			case TutorialFragment.WED:
+			case com.ism.fragment.TutorialGroup.TutorialFragment.WED:
 //				txtTopic.setText("Wednesday");
 				break;
-			case TutorialFragment.THU:
+			case com.ism.fragment.TutorialGroup.TutorialFragment.THU:
 //				txtTopic.setText("Thursday");
 				break;
-			case TutorialFragment.FRI:
+			case com.ism.fragment.TutorialGroup.TutorialFragment.FRI:
 //				txtTopic.setText("Friday");
 				break;
-			case TutorialFragment.SAT:
+			case com.ism.fragment.TutorialGroup.TutorialFragment.SAT:
 //				txtTopic.setText("Saturday");
 				break;
-			case TutorialFragment.SUN:
+			case com.ism.fragment.TutorialGroup.TutorialFragment.SUN:
 //				txtTopic.setText("Sunday");
 				break;
 		}
@@ -396,17 +396,17 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		txtAdminNotice.setText(arrListDiscussionData.get(topicPosition).getTopicDescription());
 		txtTopicValue.setText(arrListDiscussionData.get(topicPosition).getTutorialTopic());
 		if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Mon")) {
-			listenerTutorialDiscussion.onDayChanged(TutorialFragment.MON);
+			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.TutorialGroup.TutorialFragment.MON);
 		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Tues")) {
-			listenerTutorialDiscussion.onDayChanged(TutorialFragment.TUE);
+			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.TutorialGroup.TutorialFragment.TUE);
 		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Wed")) {
-			listenerTutorialDiscussion.onDayChanged(TutorialFragment.WED);
+			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.TutorialGroup.TutorialFragment.WED);
 		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Thurs")) {
-			listenerTutorialDiscussion.onDayChanged(TutorialFragment.THU);
+			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.TutorialGroup.TutorialFragment.THU);
 		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Fri")) {
-			listenerTutorialDiscussion.onDayChanged(TutorialFragment.FRI);
+			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.TutorialGroup.TutorialFragment.FRI);
 		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase("Sat")) {
-			listenerTutorialDiscussion.onDayChanged(TutorialFragment.SAT);
+			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.TutorialGroup.TutorialFragment.SAT);
 		}
 	}
 
