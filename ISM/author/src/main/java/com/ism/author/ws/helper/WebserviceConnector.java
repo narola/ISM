@@ -127,7 +127,7 @@ public class WebserviceConnector {
 
         try {
             MultipartUtility multipart = new MultipartUtility(requestURL, charset);
-            /*No header so checkSlotNo need to add it*/
+            multipart.addHeaderField("User-Agent", "android");
 
 //            multipart.addHeaderField("User-Agent", "CodeJava");
 //            multipart.addHeaderField("Test-Header", "Header-Value");

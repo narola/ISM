@@ -152,6 +152,12 @@ public class WebConstants {
 	public static final String NOTIFICATION = "notification";
 	public static final String ROLE_ALL = "all";
 	public static final String ROLE_STUDENT = "student";
+	public static final String MONDAY = "Mon";
+	public static final String TUESDAY = "Tues";
+	public static final String WEDNESDAY = "Wed";
+	public static final String THURSDAY = "Thurs";
+	public static final String FRIDAY = "Fri";
+	public static final String SATURDAY = "Sat";
 
 	/**
 	 * Parameter value Variables

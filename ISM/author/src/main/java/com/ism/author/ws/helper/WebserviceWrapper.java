@@ -227,7 +227,7 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_HASHTAG).execute(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.TEMPCREATEQUESTION:
-                                responseObject = new WebserviceConnector(WebConstants.URL_TEMPCREATEQUESTION).execute(ResponseHandler.class, attribute);
+                                responseObject = new WebserviceConnector(WebConstants.URL_TEMPCREATEQUESTION).uploadMedia(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.GET_BOOKS_FOR_USER:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseHandler.class, attribute);
@@ -288,10 +288,6 @@ public class WebserviceWrapper {
                             case WebConstants.SUBMIT_TRENDING_ANSWER:
                                 responseObject = new WebserviceConnector(WebConstants.URL_SUBMIT_TRENDING_ANSWER).execute(ResponseHandler.class,
                                         attribute);
-                                break;
-
-                            case WebConstants.UPLOADSUBQUESTIONIMAGES:
-                                responseObject = new WebserviceConnector(WebConstants.URL_UPLOADSUBQUESTIONIMAGES).uploadMedia(ResponseHandler.class, attribute);
                                 break;
                         }
                     }
