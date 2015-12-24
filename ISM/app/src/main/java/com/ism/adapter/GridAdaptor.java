@@ -49,7 +49,7 @@ public class GridAdaptor extends BaseAdapter {
 
         btnSymbol.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         btnSymbol.setTypeface(Global.myTypeFace.getRalewayExtraBold(), Typeface.BOLD);
-        btnSymbol.setTextSize(28);
+        btnSymbol.setTextSize(32);
         btnSymbol.setBackgroundColor(Color.TRANSPARENT);
        // btnSymbol.setBackgroundResource(R.drawable.border);
         btnSymbol.setText(formulas[position]);

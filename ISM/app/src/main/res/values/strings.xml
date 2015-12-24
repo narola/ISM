@@ -485,4 +485,5 @@
 	<string name="psi">&#968;</string>
 	<!--ϖ-->
 	<string name="greekpi">&#982;</string>
+	<string name="steAddnewCategory">Add new Category</string>
 </resources>
