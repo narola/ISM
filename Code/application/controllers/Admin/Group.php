@@ -84,7 +84,7 @@ class Group extends ADMIN_Controller {
                                 array(
                                     'table' => TBL_TUTORIAL_GROUP_MEMBER,
                                     'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
-                                    'join' => 'right'
+                                    //'join' => 'right'
                                 ),
                                 array(
                                     'table' => TBL_USERS,
@@ -152,7 +152,7 @@ class Group extends ADMIN_Controller {
                          array(
                             'table' => TBL_TUTORIAL_GROUP_MEMBER,
                             'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
-                            'join' => 'right'
+                            //'join' => 'right'
                         ),
                         array(
                             'table' => TBL_USERS,
@@ -166,9 +166,9 @@ class Group extends ADMIN_Controller {
                     )
                 )
         );
-        qry();
+        // qry();
         // exit;
-        p($this->data['all_groups'], true);
+        // p($this->data['all_groups'], true);
         // fetch all data of group right joins with tutorial group members
         $this->data['all_groups_members'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUP_MEMBER . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.id as gid,' .
                 TBL_USERS . '.username,' . TBL_SCHOOLS . '.school_name,' . TBL_CLASSROOMS . '.class_name,' . TBL_USER_PROFILE_PICTURE . '.profile_link,' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id', FALSE, array(
@@ -275,7 +275,7 @@ class Group extends ADMIN_Controller {
 
         $this->data['all_groups_topics'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
                 TBL_TUTORIAL_GROUPS . '.group_status,' . TBL_TUTORIAL_GROUPS . '.is_completed,' .
-                TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score,' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.topic_id,' .TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.week_no,' .
+                TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score,' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.tutorial_topic_id,' .TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.week_no,' .
                 TBL_TUTORIAL_TOPIC . '.topic_name,COUNT(' . TBL_TUTORIAL_GROUP_DISCUSSION . '.id) as total', 
                 array('where'=>array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'=>$gid)), 
                 array(
@@ -288,11 +288,11 @@ class Group extends ADMIN_Controller {
                         ),
                         array(
                             'table' => TBL_TUTORIAL_TOPIC,
-                            'condition' => TBL_TUTORIAL_TOPIC . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.topic_id',
+                            'condition' => TBL_TUTORIAL_TOPIC . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.tutorial_topic_id',
                         ),
                         array(
                             'table' => TBL_TUTORIAL_GROUP_DISCUSSION,
-                            'condition' => TBL_TUTORIAL_GROUP_DISCUSSION . '.topic_id=' . TBL_TUTORIAL_TOPIC . '.id',
+                            'condition' => TBL_TUTORIAL_GROUP_DISCUSSION . '.tutorial_topic_id=' . TBL_TUTORIAL_TOPIC . '.id',
                             // 'join' => 'right'
                         )
                     )
@@ -306,7 +306,7 @@ class Group extends ADMIN_Controller {
                 'join'=>array(
                     array(
                     'table' => TBL_TUTORIAL_TOPIC,
-                    'condition' => TBL_TUTORIAL_TOPIC . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.topic_id',
+                    'condition' => TBL_TUTORIAL_TOPIC . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.tutorial_topic_id',
                 ),
                     array(
                     'table' => TBL_SUBJECTS,

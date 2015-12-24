@@ -923,8 +923,12 @@ class PHPWebSocket {
                 'profile_link' => $rows['profile_link'],
                 'user_created_date' => $rows['created_date']
             );
-        } else {
-            return null;
+        } else{
+             return array(
+                'id' =>null,
+                'full_name' =>null,
+                'profile_link' => null,
+                'user_created_date' => null);
         }
     }
 
@@ -1025,7 +1029,7 @@ class PHPWebSocket {
             $msg = mysqli_escape_string($link, $data['message']); // Feed or comment
             $query = "INSERT INTO `" . TBL_FEEDS . "`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) "
                     . "VALUES (NULL,$user_id,'$msg','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
-            $x = mysqli_query($link, $query);
+            $x = mysqli_query($link, $query) or die(mysqli_error($link));
             $data['post_id'] = mysqli_insert_id($link);
             $data['tot_like'] = 0;
             $data['tot_comment'] = 0;
@@ -1096,6 +1100,8 @@ class PHPWebSocket {
             }
         }
         //return $data;
+        echo $user_id;
+        pr($this->get_client_info($user_id));
         return array_merge($data, $this->get_client_info($user_id));
     }
 
@@ -2231,7 +2237,7 @@ class PHPWebSocket {
         if ($data['exam_type'] == 'no') {
             if ($data['exam']['remaining_time'] <= 0) {
                 $data['exam_st'] = 'finished';
-                $data['redirect'] = '/student/my_classroom_exam';
+                $data['redirect'] = 'student/my_classroom_exam';
             } else {
                 $data['exam_st'] = 'started';
             }
@@ -2484,7 +2490,7 @@ class PHPWebSocket {
             $row = mysqli_query($link, $query);
             if (mysqli_num_rows($row) == 1) {
                 $exam = mysqli_fetch_assoc($row);
-                $data['redirect'] = '/student/my_scoreboard/index/' . $exam['exam_id'];
+                $data['redirect'] = 'student/my_scoreboard/index/' . $exam['exam_id'];
                 $query = "UPDATE `" . TBL_STUDENT_EXAM_SCORE . "` `te` "
                         . "SET `te`.`exam_status` = 'finished', `te`.`exam_endtime` = CURRENT_TIMESTAMP "
                         . "WHERE `te`.`user_id` = $userID "

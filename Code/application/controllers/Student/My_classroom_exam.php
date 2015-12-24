@@ -165,7 +165,7 @@ class My_classroom_exam extends ISM_Controller {
 				}
 			}else{
 				$this->session->set_flashdata('error','Selected Exam Invalid! Please don\'t modify data manually.');
-				redirect(base_url().'/student/my_classroom_exam');
+				redirect(base_url().'student/my_classroom_exam');
 			}
 
 		}
@@ -175,6 +175,7 @@ class My_classroom_exam extends ISM_Controller {
 
 	public function exam_start()
 	{
+		$this->data['title'] = 'ISM - Exam';
 		$user_id = $data['user_id'] = $user_id = $this->session->userdata('user')['id'];
 		$data['hide_right_bar'] = true;	
 		$data['left_menu'] = false;

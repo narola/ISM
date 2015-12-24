@@ -13,6 +13,7 @@ class User extends ADMIN_Controller {
 		$this->load->library(array('zip'));
 		$this->data['cur_url'] = $this->session->userdata('cur_url');
 		$this->data['prev_url'] = $this->session->userdata('prev_url');
+		
 	}
 
 	// ---------------------------- User Module Start --------------------------------------------

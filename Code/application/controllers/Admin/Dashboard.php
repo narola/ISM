@@ -234,7 +234,7 @@ class Dashboard extends ADMIN_Controller {
 				if(sizeof($find_credentials)>0 || sizeof($find_user) > 0){
 					//if data found in users or auto_generated_credentials table then it will decrease $i value and continue 
 					$i--;
-					$cnt--;
+					//$cnt--;
 					continue;
 					
 				}else{

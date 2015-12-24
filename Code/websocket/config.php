@@ -5,12 +5,12 @@
 
 $db = array(
     'host' => '192.168.1.201',
-    'username' => 'ISM',
+    /*'username' => 'ISM',
     'password' => '69NC52j07761uvw',
-    'database' => 'ISM'
-    /*'username' => 'ism_V1',
+    'database' => 'ISM'*/
+    'username' => 'ism_V1',
     'password' => '7!#11<D#Kgj!q<d',
-    'database' => 'ism_V1'*/
+    'database' => 'ism_V1'
 );
 
 /**

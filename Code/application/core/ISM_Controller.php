@@ -11,6 +11,7 @@ class ISM_Controller extends CI_Controller {
 		
 		parent::__construct();
 		
+		
 		$this->load->model(array('common_model'));	
 		$this->active_h = active_hours();
 		$this->notification_list = notification_list($this->session->userdata('user')['id']);

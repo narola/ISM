@@ -189,7 +189,7 @@ function toHHMMSS (sec) {
                    <!--  <li><a href="#">
                         <span class="icon icon_message"></span>
                         <span class="badge message_badge" id="my_message_cnt">0</span></a></li> -->
-                    <li><a href="/student/studymates_request"><span class="icon icon_request"></span>
+                    <li><a href="student/studymates_request"><span class="icon icon_request"></span>
                         <?php 
                             $request_cnt = count_studymate_request($this->session->userdata('user')['id']);
                             //if($request_cnt > 0){
