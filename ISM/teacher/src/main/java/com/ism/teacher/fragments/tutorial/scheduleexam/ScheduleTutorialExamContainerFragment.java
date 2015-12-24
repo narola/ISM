@@ -121,10 +121,10 @@ public class ScheduleTutorialExamContainerFragment extends Fragment {
         fl_addquestionfragment_container_left = (FrameLayout) rootview.findViewById(R.id.fl_addquestionfragment_container_left);
         fl_addquestionfragment_container_right = (FrameLayout) rootview.findViewById(R.id.fl_addquestionfragment_container_right);
 
-        tvExamName =(TextView)rootview.findViewById(R.id.tv_exam_name);
-        tvGroupClass =(TextView)rootview.findViewById(R.id.tv_group_class);
-        tvTopic =(TextView)rootview.findViewById(R.id.tv_topic);
-        tvSubjectName =(TextView)rootview.findViewById(R.id.tv_subject_name);
+        tvExamName = (TextView) rootview.findViewById(R.id.tv_exam_name);
+        tvGroupClass = (TextView) rootview.findViewById(R.id.tv_group_class);
+        tvTopic = (TextView) rootview.findViewById(R.id.tv_topic);
+        tvSubjectName = (TextView) rootview.findViewById(R.id.tv_subject_name);
 
         tvExamName.setTypeface(Global.myTypeFace.getRalewayBold());
         tvGroupClass.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -137,8 +137,8 @@ public class ScheduleTutorialExamContainerFragment extends Fragment {
     private void setDataFromArguments() {
 
         tvExamName.setText(getBundleArguments().getString(TutorialGroupFragment.ARG_TUTORIAL_EXAM_NAME));
-        tvGroupClass.setText(getString(R.string.strclass)+" : "+getBundleArguments().getString(TutorialGroupFragment.ARG_TUTORIAL_GROUP_CLASS));
-        tvTopic.setText(getString(R.string.strtopic)+" : " +getBundleArguments().getString(TutorialGroupFragment.ARG_TUTORIAL_TOPIC_NAME));
+        tvGroupClass.setText(getString(R.string.strclass) + " : " + getBundleArguments().getString(TutorialGroupFragment.ARG_TUTORIAL_GROUP_CLASS));
+        tvTopic.setText(getString(R.string.strtopic) + " : " + getBundleArguments().getString(TutorialGroupFragment.ARG_TUTORIAL_TOPIC_NAME));
 //        tvSubjectName.setText(getBundleArguments().getString(TutorialGroupFragment.ARG_TUTORIAL_SUBJECT_NAME));
 
     }
