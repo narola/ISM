@@ -1,4 +1,4 @@
-package com.ism.teacher.fragments;
+package com.ism.teacher.fragments.createexam;
 
 
 import android.app.Fragment;
@@ -30,6 +30,8 @@ import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.constants.WebConstants;
+import com.ism.teacher.fragments.assesment.ObjectiveAssignmentQuestionsFragment;
+import com.ism.teacher.fragments.createquestion.AddQuestionContainerFragment;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
@@ -360,15 +362,14 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
                 if (arrListTopic != null) {
                     if (position > 1) {
-                        getArguments().putString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID, arrListTopic.get(position - 2).getId());
+                        getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID, arrListTopic.get(position - 2).getId());
 
                         Debug.e("test topic by position>1:", "topic name:" + arrListTopic.get(position - 2).getTopicName());
                     } else {
-                        getArguments().putString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID, "0");
+                        getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID, "0");
                         Debug.e("test topic by position=1:", "topic name:" + spExamSubjecttopic.getSelectedItem().toString());
                     }
                 }
-
             }
 
             @Override
@@ -377,10 +378,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             }
         });
 
-
         /**
          * Checking args to know this is new assign exam or edit assignment
-         *  if (getArguments() != null) means edit assign
+         *  if (getBaseFragment().getBundleArguments()() != null) means edit assign
          *  so disable exam mode and subject selection spinner
          */
 
@@ -420,15 +420,15 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
 
     private void setExamDetails() {
-        etExamName.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
-        spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE)));
-        setExamType(getArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
-        spExamExamCategory.setSelection(arrListExamCategory.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CATEGORY)));
-        spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE)));
-        spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_DURATION)));
+        etExamName.setText(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
+        spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE)));
+        setExamType(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
+        spExamExamCategory.setSelection(arrListExamCategory.indexOf(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CATEGORY)));
+        spExamExammode.setSelection(arrListExamMode.indexOf(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE)));
+        spExamExamduration.setSelection(arrListExamDuration.indexOf(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_DURATION)));
 
             /*we cant change the exam mode and subject for that particular exam if it once created*/
-        if (getArguments().getBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+        if (getBaseFragment().getBundleArguments().getBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
 
             btnExamSetquestion.setVisibility(View.GONE);
             btnExamSave.setVisibility(View.VISIBLE);
@@ -440,47 +440,47 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             btnExamSave.setText(getString(R.string.streditexam));
 
         }
-        etExamName.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
-        spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE)));
+        etExamName.setText(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
+        spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE)));
         spExamAssessor.setSelection(1);
-        spExamExamCategory.setSelection(arrListExamCategory.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CATEGORY)));
-        spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE)));
-        spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_DURATION)));
+        spExamExamCategory.setSelection(arrListExamCategory.indexOf(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CATEGORY)));
+        spExamExammode.setSelection(arrListExamMode.indexOf(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE)));
+        spExamExamduration.setSelection(arrListExamDuration.indexOf(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_DURATION)));
 
-        etExamAttemptcount.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_ATTEMPT_COUNT));
-        etExamStartdate.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_START_DATE));
-        etExamStartTime.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_START_TIME));
+        etExamAttemptcount.setText(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ATTEMPT_COUNT));
+        etExamStartdate.setText(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_START_DATE));
+        etExamStartTime.setText(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_START_TIME));
 
-        if (getArguments().getBoolean(AssignmentsAdapter.ARG_EXAM_IS_DECLARE_RESULTS)) {
+        if (getBaseFragment().getBundleArguments().getBoolean(AssignmentsAdapter.ARG_EXAM_IS_DECLARE_RESULTS)) {
             ((RadioButton) radioDeclareresult.getChildAt(0)).setChecked(true);
         } else {
             ((RadioButton) radioDeclareresult.getChildAt(1)).setChecked(true);
         }
 
-        if (getArguments().getBoolean(AssignmentsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING)) {
+        if (getBaseFragment().getBundleArguments().getBoolean(AssignmentsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING)) {
             ((RadioButton) radioNegativemarking.getChildAt(0)).setChecked(true);
         } else {
             ((RadioButton) radioNegativemarking.getChildAt(1)).setChecked(true);
         }
 
-        etExamAddnegativemark.setText(getArguments().getString(AssignmentsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE));
+        etExamAddnegativemark.setText(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE));
 
-        if (getArguments().getBoolean(AssignmentsAdapter.ARG_EXAM_IS_RANDOM_QUESTION)) {
+        if (getBaseFragment().getBundleArguments().getBoolean(AssignmentsAdapter.ARG_EXAM_IS_RANDOM_QUESTION)) {
             ((RadioButton) radioExamRandomQuestion.getChildAt(0)).setChecked(true);
         } else {
             ((RadioButton) radioExamRandomQuestion.getChildAt(1)).setChecked(true);
         }
 
 
-        if (getArguments().getBoolean(AssignmentsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE)) {
+        if (getBaseFragment().getBundleArguments().getBoolean(AssignmentsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE)) {
             ((RadioButton) radioExamUsescore.getChildAt(0)).setChecked(true);
         } else {
             ((RadioButton) radioExamUsescore.getChildAt(1)).setChecked(true);
         }
 
 
-        rteTrialExam.setHtml(getArguments().getString(AssignmentsAdapter.ARG_EXAM_INSTRUCTIONS));
-        spExamQuestionScore.setSelection(arrListQuestionScore.indexOf(getArguments().getString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE)));
+        rteTrialExam.setHtml(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_INSTRUCTIONS));
+        spExamQuestionScore.setSelection(arrListQuestionScore.indexOf(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE)));
 
     }
 
@@ -552,9 +552,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
                 /*set exam id "0" if you are creating new and copy exam ,In case of edit set particular exam id*/
                 attribute.setExamId("0");
-                if (getBundleArguments().containsKey(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
-                    if (!getBundleArguments().getBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
-                        attribute.setExamId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
+                if (getBaseFragment().getBundleArguments().containsKey(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                    if (!getBaseFragment().getBundleArguments().getBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
+                        attribute.setExamId(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
                     }
                 }
                 attribute.setExamName(etExamName.getText().toString());
@@ -592,7 +592,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 if (getExamType().equalsIgnoreCase("subject")) {
                     attribute.setTopicId("0");
                 } else {
-                    attribute.setTopicId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
+                    attribute.setTopicId(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
                 }
 
                 attribute.setCorrectAnswerScore(getQuestionScoreValue());
@@ -620,7 +620,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         if (value.equalsIgnoreCase("subject")) {
             tbExamSelectexamfor.setChecked(true);
             Utility.invisibleView(llTopicSpinner);
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID, "0");
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID, "0");
         } else if (value.equals("topic")) {
             tbExamSelectexamfor.setChecked(false);
             Utility.showView(llTopicSpinner);
@@ -674,8 +674,8 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
                     }
                     Adapters.setUpSpinner(mContext, spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL);
-                    if (getBundleArguments() != null) {
-                        spExamClassroom.setSelection(classrooms.indexOf(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME)));
+                    if (getBaseFragment().getBundleArguments() != null) {
+                        spExamClassroom.setSelection(classrooms.indexOf(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME)));
                     }
 
 
@@ -707,8 +707,8 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                     }
                     Adapters.setUpSpinner(mContext, spExamSubjectname, subjects, Adapters.ADAPTER_NORMAL);
 
-                    if (getBundleArguments() != null) {
-                        spExamSubjectname.setSelection(subjects.indexOf(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME)));
+                    if (getBaseFragment().getBundleArguments() != null) {
+                        spExamSubjectname.setSelection(subjects.indexOf(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME)));
 
                     }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -739,11 +739,11 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
                     Adapters.setUpSpinner(mContext, spExamSubjecttopic, topics_name, Adapters.ADAPTER_NORMAL);
 
-                    if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID).equalsIgnoreCase("0")) {
+                    if (getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID).equalsIgnoreCase("0")) {
                         spExamSubjecttopic.setSelection(1);
                     } else {
                         for (int i = 0; i < arrListTopic.size(); i++) {
-                            if (arrListTopic.get(i).getId().equalsIgnoreCase(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID))) {
+                            if (arrListTopic.get(i).getId().equalsIgnoreCase(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID))) {
                                 spExamSubjecttopic.setSelection(topics_name.indexOf(arrListTopic.get(i).getTopicName()));
                             }
                         }
@@ -771,7 +771,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utility.showToast(Utility.getString(R.string.msg_success_createexam, mContext), mContext);
                     btnExamSetquestion.setVisibility(View.VISIBLE);
-                    getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+                    getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
                     setBundleArguments();
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -818,7 +818,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         } else if (v == btnExamSetquestion) {
             ((CreateExamAssignmentContainerFragment) fragmentContext).hideTopBar();
             getFragmentManager().beginTransaction().
-                    replace(R.id.fl_fragment_assignment_container, AddQuestionContainerFragment.newInstance(getBundleArguments()))
+                    replace(R.id.fl_fragment_assignment_container, AddQuestionContainerFragment.newInstance())
                     .commit();
         } else if (v == btnExamCancel) {
             backToTrialScreen();
@@ -829,51 +829,51 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     private void setBundleArguments() {
         try {
             //exam name
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_NAME, etExamName.getText().toString());
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_NAME, etExamName.getText().toString());
             //classroomid
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
                     Integer.parseInt(arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
 
 
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
                     arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getClassName() : 0));
             //subject id
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
                     Integer.parseInt(arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
 
             //topicid
 //            getBundleArguments().putString(ARG_EXAM_TOPIC_ID, String.valueOf(spExamSubjecttopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
 //                    get(spExamSubjecttopic.getSelectedItemPosition() - 1).getId()) : 0));
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID, getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID, getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
             //book id
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_BOOK_ID, "0");
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_BOOK_ID, "0");
             //subject/topic
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getExamType());
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getExamType());
             //ISMmock /wassce
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CATEGORY, arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CATEGORY, arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
 
             //subject name
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME, arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName());
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME, arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName());
             //subjective/objective
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_MODE,
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_MODE,
                     arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
 
             //exam duration
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_DURATION,
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_DURATION,
                     arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
 
-            getBundleArguments().putString(AssignmentsAdapter.ARG_ASSIGNMENT_NO, "0");
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_ASSIGNMENT_NO, "0");
             //pass percentage
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE, arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE, arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
 
             //exam created date
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CREATED_DATE, etExamStartdate.getText().toString());
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CREATED_DATE, etExamStartdate.getText().toString());
 
-            getBundleArguments().putBoolean(AssignmentsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE,
+            getBaseFragment().getBundleArguments().putBoolean(AssignmentsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE,
                     ((RadioButton) radioExamUsescore.getChildAt(0)).isChecked() ? true : false);
 
             //getQuestion score
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE,
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE,
                     arrListQuestionScore.get(spExamQuestionScore.getSelectedItemPosition()));
 
         } catch (Exception e) {
@@ -1023,10 +1023,6 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             strValidationMsg += Utility.getString(R.string.msg_validation_set_classroom, mContext);
             return false;
         }
-    }
-
-    private Bundle getBundleArguments() {
-        return ((TeacherHostActivity) getActivity()).getBundle();
     }
 
 

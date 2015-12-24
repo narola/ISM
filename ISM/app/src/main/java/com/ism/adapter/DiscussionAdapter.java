@@ -35,16 +35,10 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 	private ImageLoader imageLoader;
 	private MyTypeFace myTypeFace;
 	private LayoutInflater inflater;
-	private TutorialDiscussionAdapterListener listenerTutorialDiscussion;
 
-	public interface TutorialDiscussionAdapterListener {
-		public void onTutorialTopicPositionChanged(int topicPosition);
-	}
-
-	public DiscussionAdapter(Context context, ArrayList<Discussion> arrListDiscussion, TutorialDiscussionAdapterListener listenerTutorialDiscussion) {
+	public DiscussionAdapter(Context context, ArrayList<Discussion> arrListDiscussion) {
 		this.context = context;
 		this.arrListDiscussion = arrListDiscussion;
-		this.listenerTutorialDiscussion = listenerTutorialDiscussion;
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		myTypeFace = new MyTypeFace(context);
@@ -88,19 +82,11 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		try {
-//			listenerTutorialDiscussion.onTutorialTopicPositionChanged(position);
 			if (position == arrListDiscussion.size() - 1 || !arrListDiscussion.get(position).getWeekDay()
 					.equals(arrListDiscussion.get(position + 1).getWeekDay())) {
 				holder.rlHeader.setVisibility(View.VISIBLE);
 				holder.txtTimeHeader.setText(arrListDiscussion.get(position).getWeekDay());
-
-				if (position + 1 < arrListDiscussion.size()) {
-					listenerTutorialDiscussion.onTutorialTopicPositionChanged(arrListDiscussion.get(position + 1).getTopicPosition());
-				}
 			} else {
-				if (position == 0) {
-					listenerTutorialDiscussion.onTutorialTopicPositionChanged(arrListDiscussion.get(position).getTopicPosition());
-				}
 				holder.rlHeader.setVisibility(View.GONE);
 			}
 
@@ -120,8 +106,7 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 				holder.txtMessage.setBackgroundResource(R.drawable.bg_chat_sent);
 			}
 
-			holder.txtTime.setText(Utility.formatPHPDateToMMMDDYY_HHMMA(arrListDiscussion.get(position).getCommentTimestamp())
-					+ "  " + arrListDiscussion.get(position).getWeekDay());
+			holder.txtTime.setText(Utility.formatPHPDateToMMMDDYY_HHMMA(arrListDiscussion.get(position).getCommentTimestamp()));
 			holder.txtUserName.setText(arrListDiscussion.get(position).getFullName());
 			holder.txtMessage.setText(arrListDiscussion.get(position).getComment());
 		} catch (Exception e) {

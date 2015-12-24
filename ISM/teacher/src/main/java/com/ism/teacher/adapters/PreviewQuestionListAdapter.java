@@ -16,7 +16,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.AddQuestionContainerFragment;
+import com.ism.teacher.fragments.tutorial.scheduleexam.ScheduleTutorialExamContainerFragment;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.model.Answers;
 import com.ism.teacher.ws.model.Questions;
@@ -105,14 +105,14 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
 //                if(arrListQuestions.size()>0)
 //                {
-//                    ((AddQuestionContainerFragment)mFragment).hideText();
-//                    ((AddQuestionContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
+//                    ((ScheduleTutorialExamContainerFragment)mFragment).hideText();
+//                    ((ScheduleTutorialExamContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
 //
 //                }
 //                else
 //                {
-//                    ((AddQuestionContainerFragment)mFragment).showText();
-//                    ((AddQuestionContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
+//                    ((ScheduleTutorialExamContainerFragment)mFragment).showText();
+//                    ((ScheduleTutorialExamContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
 //                }
             }
         });
@@ -193,8 +193,8 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         return v;
     }
 
-    private AddQuestionContainerFragment getFragment() {
-        return (AddQuestionContainerFragment) mFragment;
+    private ScheduleTutorialExamContainerFragment getFragment() {
+        return (ScheduleTutorialExamContainerFragment) mFragment;
     }
 
     private Bundle getBundleArguments() {

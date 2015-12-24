@@ -11,23 +11,11 @@
 		android:background="@color/bg_discussion"
 		android:layout_weight="7">
 
-		<LinearLayout
-			android:id="@+id/ll_topic"
+		<RelativeLayout
+			android:id="@+id/rl_topic"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@color/green"
-			android:gravity="center"
-			android:orientation="horizontal"
-			android:padding="5dp">
-
-			<TextView
-				android:id="@+id/txt_topic"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/topic"
-				android:textAllCaps="true"
-				android:textColor="@android:color/white"
-				android:textSize="20sp"/>
+			android:background="@color/green">
 
 			<TextView
 				android:id="@+id/txt_topic_value"
@@ -35,69 +23,78 @@
 				android:layout_height="wrap_content"
 				android:textAllCaps="true"
 				android:textColor="@android:color/white"
-				android:textSize="20sp"/>
-		</LinearLayout>
+				android:layout_centerInParent="true"
+				android:layout_marginTop="5dp"
+				android:layout_marginBottom="5dp"
+				android:textSize="14sp"/>
 
-		<ImageView
-			android:id="@+id/img_expand_discussion"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
-			android:src="@drawable/ic_expand_discussion"
-			android:layout_marginRight="5dp"/>
+			<TextView
+				android:id="@+id/txt_topic"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/topic"
+				android:layout_toLeftOf="@id/txt_topic_value"
+				android:layout_centerVertical="true"
+				android:textAllCaps="true"
+				android:textColor="@android:color/white"
+				android:textSize="14sp"/>
+
+			<ImageView
+				android:id="@+id/img_expand_discussion"
+				android:layout_width="wrap_content"
+				android:layout_height="25dp"
+				android:layout_alignParentRight="true"
+				android:layout_centerVertical="true"
+				android:src="@drawable/ic_expand_discussion"
+				android:layout_marginRight="5dp"/>
+		</RelativeLayout>
 
 		<RelativeLayout
 			android:id="@+id/rl_admin_notice"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/ll_topic"
-			android:paddingLeft="20dp"
-			android:paddingRight="20dp"
-			android:paddingTop="5dp"
-			android:paddingBottom="20dp"
+			android:layout_below="@id/rl_topic"
+			android:padding="5dp"
 			android:background="@drawable/bg_white_border_bottom_shadowed">
 
 			<com.ism.views.CircleImageView
 				android:id="@+id/img_admin_dp"
 				android:layout_width="@dimen/dp_size_list_small"
 				android:layout_height="@dimen/dp_size_list_small"
-				android:layout_marginTop="20dp"
-				android:layout_marginLeft="5dp"
-				android:layout_marginRight="5dp"
 				android:src="@drawable/img_default_dp"/>
 
 			<TextView
 				android:id="@+id/txt_admin_name"
-				android:layout_width="match_parent"
+				android:layout_width="60dp"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="5dp"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"
+				android:layout_marginLeft="5dp"
 				android:layout_toRightOf="@id/img_admin_dp"
+				android:gravity="center"
 				android:textColor="@color/bg_app_dark"
 				android:text="@string/admin"
-				android:textSize="@dimen/text_size_normal_chat"/>
+				android:textSize="@dimen/text_size_small_chat"/>
 
 			<TextView
 				android:id="@+id/txt_admin_notice_time"
-				android:layout_width="wrap_content"
+				android:layout_width="60dp"
 				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:layout_marginBottom="5dp"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"
+				android:layout_toRightOf="@id/img_admin_dp"
+				android:layout_below="@id/txt_admin_name"
+				android:layout_marginLeft="5dp"
+				android:layout_marginRight="5dp"
+				android:layout_marginBottom="10dp"
+				android:gravity="center"
 				android:textColor="@color/bg_app_dark"
-				android:text="Sep 1 2015, 03:30 pm"
 				android:textSize="@dimen/text_size_small_chat"/>
 
 			<TextView
 				android:id="@+id/txt_admin_notice"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_below="@id/txt_admin_name"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"
-				android:layout_toRightOf="@id/img_admin_dp"
+				android:layout_toRightOf="@id/txt_admin_name"
+				android:layout_marginBottom="10dp"
+				android:maxLines="2"
+				android:ellipsize="end"
 				android:textColor="@color/bg_app_dark"
 				android:text="Notice from admin regarding TutorialGoup discussion."
 				android:background="@drawable/bg_chat_received_admin"

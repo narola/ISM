@@ -1,4 +1,4 @@
-package com.ism.teacher.adapters;
+package com.ism.teacher.adapters.tutorial;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -18,7 +18,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.createquestion.AddQuestionContainerFragment;
+import com.ism.teacher.fragments.tutorial.scheduleexam.ScheduleTutorialExamContainerFragment;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.model.Answers;
 import com.ism.teacher.ws.model.Questions;
@@ -28,10 +28,10 @@ import java.util.ArrayList;
 /**
  * these adapter class is to set the list of questionbank.
  */
-public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankListAdapter.ViewHolder> {
+public class TutorialQuestionBankListAdapter extends RecyclerView.Adapter<TutorialQuestionBankListAdapter.ViewHolder> {
 
 
-    private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
+    private static final String TAG = TutorialQuestionBankListAdapter.class.getSimpleName();
 
     Context mContext;
     ArrayList<Questions> arrListQuestions = new ArrayList<>();
@@ -41,7 +41,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     Fragment mFragment;
     public Boolean canAddToPreview = false;
 
-    public QuestionBankListAdapter(Context context, Fragment fragment) {
+    public TutorialQuestionBankListAdapter(Context context, Fragment fragment) {
         this.mContext = context;
         this.mFragment = fragment;
 
@@ -195,44 +195,44 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
             @Override
             public void onClick(View v) {
-
-                if (canAddToPreview) {
-
-                    if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strquestionformatmcq))) {
-
-                        if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
-                                (mContext.getString(R.string.strobjective))) {
-                            isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
-                        } else {
-                            Utility.showToast(mContext.getString(R.string.msg_validation_addsubjective_question), mContext);
-                        }
-
-                    } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
-                            (mContext.getString(R.string.strquestionformatdescriptive))) {
-
-                        if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
-                                (mContext.getString(R.string.strsubjective))) {
-                            isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
-                        } else {
-                            Utility.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
-                        }
-
-
-                    } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
-                            (mContext.getString(R.string.strquestionformatfillups))) {
-                        if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
-                                (mContext.getString(R.string.strsubjective))) {
-                            isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
-                        } else {
-                            Utility.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
-                        }
-                    }
-                    notifyDataSetChanged();
-                } else {
-                    holder.chkSelectQuestion.setChecked(arrListQuestions.get(position).getIsQuestionAddedInPreview());
-                    Utility.showToast(mContext.getString(R.string.msg_validation_add_question), mContext);
-                }
-
+//
+//                if (canAddToPreview) {
+//
+//                    if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strquestionformatmcq))) {
+//
+//                        if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+//                                (mContext.getString(R.string.strobjective))) {
+//                            isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
+//                        } else {
+//                            Utility.showToast(mContext.getString(R.string.msg_validation_addsubjective_question), mContext);
+//                        }
+//
+//                    } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
+//                            (mContext.getString(R.string.strquestionformatdescriptive))) {
+//
+//                        if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+//                                (mContext.getString(R.string.strsubjective))) {
+//                            isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
+//                        } else {
+//                            Utility.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
+//                        }
+//
+//
+//                    } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
+//                            (mContext.getString(R.string.strquestionformatfillups))) {
+//                        if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+//                                (mContext.getString(R.string.strsubjective))) {
+//                            isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
+//                        } else {
+//                            Utility.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
+//                        }
+//                    }
+//                    notifyDataSetChanged();
+//                } else {
+//                    holder.chkSelectQuestion.setChecked(arrListQuestions.get(position).getIsQuestionAddedInPreview());
+//                    Utility.showToast(mContext.getString(R.string.msg_validation_add_question), mContext);
+//                }
+                isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
             }
         });
 
@@ -294,8 +294,8 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         notifyDataSetChanged();
     }
 
-    private AddQuestionContainerFragment getFragment() {
-        return (AddQuestionContainerFragment) mFragment;
+    private ScheduleTutorialExamContainerFragment getFragment() {
+        return (ScheduleTutorialExamContainerFragment) mFragment;
     }
 
 

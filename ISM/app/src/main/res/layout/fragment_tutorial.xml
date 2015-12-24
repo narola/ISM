@@ -12,6 +12,7 @@
 		android:background="@color/bg_tutorial"
 		android:gravity="center"
 		android:textAllCaps="true"
+		android:textSize="12sp"
 		android:textColor="@android:color/white"/>
 
 	<LinearLayout

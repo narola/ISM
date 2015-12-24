@@ -18,8 +18,8 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.AppConstant;
-import com.ism.teacher.fragments.AllAssignmentsFragment;
-import com.ism.teacher.fragments.TeacherOfficeFragment;
+import com.ism.teacher.fragments.office.AllAssignmentsFragment;
+import com.ism.teacher.fragments.office.TeacherOfficeFragment;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.model.Exams;
 

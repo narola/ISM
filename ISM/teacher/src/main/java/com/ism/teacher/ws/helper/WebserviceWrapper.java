@@ -34,7 +34,7 @@ public class WebserviceWrapper {
     private boolean isRefreshToken;
 
     public interface WebserviceResponse {
-        public void onResponse(int API_METHOD, Object object, Exception error);
+        public void onResponse(int apiCode, Object object, Exception error);
     }
 
     public WebserviceWrapper(Context context, Attribute attribute, WebserviceResponse listener) {

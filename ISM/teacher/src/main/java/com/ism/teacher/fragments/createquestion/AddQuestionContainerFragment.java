@@ -1,4 +1,4 @@
-package com.ism.teacher.fragments;
+package com.ism.teacher.fragments.createquestion;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -39,9 +39,8 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
 
-    public static AddQuestionContainerFragment newInstance(Bundle bundleArgument) {
+    public static AddQuestionContainerFragment newInstance() {
         AddQuestionContainerFragment addQuestionContainerFragment = new AddQuestionContainerFragment();
-        addQuestionContainerFragment.setArguments(bundleArgument);
         return addQuestionContainerFragment;
 
     }
@@ -95,9 +94,9 @@ public class AddQuestionContainerFragment extends Fragment {
 
     private void initGlobal() {
 
-        questionListFragment = new QuestionListFragment(this, getBundleArguments());
-        previewQuestionFragment = new PreviewQuestionFragment(this, getBundleArguments());
-        questionAddEditFragment = new QuestionAddEditFragment(this, getBundleArguments());
+        questionListFragment = new QuestionListFragment(this);
+        previewQuestionFragment = new PreviewQuestionFragment(this);
+        questionAddEditFragment = new QuestionAddEditFragment(this);
 
         fl_addquestionfragment_container_left = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
         fl_addquestionfragment_container_right = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
@@ -105,10 +104,8 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
     public void flipCard() {
-
         showHideFragment(questionListFragment);
         showHideFragment(questionAddEditFragment);
-
         if (isFrontVisible) {
             isFrontVisible = false;
             questionAddEditFragment.setViewForAddEditQuestion();
@@ -239,6 +236,7 @@ public class AddQuestionContainerFragment extends Fragment {
             previewQuestionFragment.addQuestionDataAfterAddQuestion(question);
         }
     }
+
     private Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }
