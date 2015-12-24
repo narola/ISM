@@ -14,7 +14,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.adapters.PreviewQuestionListAdapter;
+import com.ism.teacher.adapters.tutorial.TutorialPreviewQuestionListAdapter;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.tutorial.TutorialGroupFragment;
 import com.ism.teacher.object.Global;
@@ -46,7 +46,7 @@ public class TutorialPreviewQuestionFragment extends Fragment implements Webserv
 
     public TextView tvPreviewQuestionlistTitle, tvPreviewQuestionlistFreeze, tvNoQuestions, tv_total_questions, tv_total_score;
     public RecyclerView rvPreviewquestionlist;
-    private PreviewQuestionListAdapter previewQuestionListAdapter;
+    private TutorialPreviewQuestionListAdapter previewQuestionListAdapter;
     public ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
 
     //this is for the movable recyclerview.
@@ -77,7 +77,7 @@ public class TutorialPreviewQuestionFragment extends Fragment implements Webserv
 
 
         rvPreviewquestionlist = (RecyclerView) view.findViewById(R.id.rv_previewquestionlist);
-        previewQuestionListAdapter = new PreviewQuestionListAdapter(getActivity(), mFragment);
+        previewQuestionListAdapter = new TutorialPreviewQuestionListAdapter(getActivity(), mFragment);
         rvPreviewquestionlist.setAdapter(previewQuestionListAdapter);
         rvPreviewquestionlist.setLayoutManager(new LinearLayoutManager(getActivity()));
 

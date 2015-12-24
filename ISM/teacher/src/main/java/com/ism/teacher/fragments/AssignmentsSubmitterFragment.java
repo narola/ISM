@@ -53,7 +53,7 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            ((TeacherHostActivity) getActivity()).hideTxtAction();
+            ((TeacherHostActivity) getActivity()).hideAddOption();
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
         }

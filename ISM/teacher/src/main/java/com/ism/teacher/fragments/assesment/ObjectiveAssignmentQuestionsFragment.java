@@ -20,7 +20,7 @@ import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.GetObjectiveAssignmentQuestionsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.createexam.AssignmentExamFragment;
+import com.ism.teacher.fragments.createexam.CreateExamFragment;
 import com.ism.teacher.fragments.office.TeacherOfficeFragment;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
@@ -67,7 +67,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((TeacherHostActivity) getActivity()).hideTxtAction();
+        ((TeacherHostActivity) getActivity()).hideAddOption();
     }
 
     @Override
@@ -109,7 +109,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         imgEditExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getBundleArguments().putBoolean(AssignmentExamFragment.ARG_IS_CREATE_EXAM, false);
+                getBundleArguments().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, false);
                 getBundleArguments().putBoolean(ARG_EXAM_ISCOPY, false);
                 setExamQuestions();
             }
@@ -118,7 +118,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         imgCopyExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getBundleArguments().putBoolean(AssignmentExamFragment.ARG_IS_CREATE_EXAM, false);
+                getBundleArguments().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, false);
                 getBundleArguments().putBoolean(ARG_EXAM_ISCOPY, true);
                 setExamQuestions();
             }
@@ -136,7 +136,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
 //                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
 
             TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
-            teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
+            teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
 
         }
 

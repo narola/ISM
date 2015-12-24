@@ -475,6 +475,8 @@
     <string name="blackletter_capital_I">&#8465;</string>
     <!--ℑ-->
     <string name="blackletter_capital_R">&#8476;</string>
+
+
     <string name="strSelectBook">Select book</string>
     <string name="strGeneralSetting">General Setting</string>
     <string name="strStudyMates">Studymates</string>

@@ -103,7 +103,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
             llParentAssignment = (LinearLayout) itemView.findViewById(R.id.ll_parent_assignment);
             llViewQuestions = (LinearLayout) itemView.findViewById(R.id.ll_view_questions);
-            rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_results);
+            rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_notes);
 
             txtAssignmentSubject = (TextView) itemView.findViewById(R.id.txt_assignment_subject);
             txtExamName = (TextView) itemView.findViewById(R.id.txt_exam_name);
@@ -169,7 +169,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
                 getBundleArguments().putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
 
                 TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
-                teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
+                teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
 
                 //  getFragment().loadOfficeSubmitter(getBundleArguments());
             }
@@ -183,7 +183,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
                 getBundleArguments().putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
 
                 TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
-                teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW);
+                teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW);
 
             }
         });

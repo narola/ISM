@@ -2,7 +2,6 @@ package com.ism.fragment.tutorialGroup;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ism.activity.HostActivity;
 import com.ism.R;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;

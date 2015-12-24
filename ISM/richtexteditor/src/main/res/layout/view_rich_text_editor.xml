@@ -2,6 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <HorizontalScrollView
+        android:id="@+id/horizontal_rich_editor_top_options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_control_bar"
@@ -218,9 +219,10 @@
     <jp.wasabeef.richeditor.RichEditor
         android:id="@+id/rich_editor"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:layout_weight="1"
-        android:background="@android:color/white"></jp.wasabeef.richeditor.RichEditor>
+        android:background="@android:color/white"
+        ></jp.wasabeef.richeditor.RichEditor>
 
 </merge>

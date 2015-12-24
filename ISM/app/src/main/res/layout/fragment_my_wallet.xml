@@ -4,7 +4,7 @@
                 android:layout_height="match_parent"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@color/gray_light"
-                tools:mContext=".fragment.userProfile.MyWalletFragment">
+                tools:mContext=".fragment.userprofile.MyWalletFragment">
 
 	<ImageView
 		android:id="@+id/img_wallet"

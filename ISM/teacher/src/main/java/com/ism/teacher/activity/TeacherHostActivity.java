@@ -32,11 +32,12 @@ import com.ism.teacher.adapters.ControllerTopSpinnerAdapter;
 import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.createexam.AssignmentExamFragment;
+import com.ism.teacher.fragments.createexam.CreateExamFragment;
 import com.ism.teacher.fragments.assesment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.assesment.StudentAttemptedFragment;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
+import com.ism.teacher.fragments.notes.NotesAddEditFragment;
 import com.ism.teacher.fragments.office.TeacherOfficeFragment;
 import com.ism.teacher.fragments.UpcomingEventsFragment;
 import com.ism.teacher.fragments.UserProfileFragment;
@@ -59,9 +60,13 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     private static final String TAG = TeacherHostActivity.class.getSimpleName();
 
+
+    /**
+     * Views
+     */
     private LinearLayout llControllerLeft, llSearch;
     public FrameLayout flFragmentContainerMain, flFragmentContainerRight;
-    private RelativeLayout rlControllerTopMenu, rlAddPost;
+    public RelativeLayout rlControllerTopMenu, rlAddPost;
     private ImageView imgHome, imgTutorial, imgOffice, imgAssessment, imgDesk, imgReportCard, imgLogOut, imgSearch, imgUpcomings, img_teacher_profile, imgChat, imgBack;
     private TextView txtTitle, txtOne, txtTwo, txtThree, txtFour, txtFive, txtSix, txtAction, txtAddPost;
     private EditText etSearch;
@@ -70,9 +75,23 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     private View.OnClickListener onClickMenuItem;
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
 
+
+    /**
+     * Custom Views
+     */
+    private ActionProcessButton progress_bar;
+    private ProgressGenerator progressGenerator;
+
+    /**
+     * Array List to control top menu
+     */
     private TextView txtsMenu[];
     public ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom, controllerTopMenuAssessment, controllerTopMenuDesk, controllerTopMenuReportCard, currentControllerTopMenu;
+    private ArrayList<ControllerTopMenuItem> controllerTopMenuOffice, controllerTopMenuTutorial;
 
+    /**
+     * Constant block to handle MainContainerFragment===================================
+     */
 
     public static final int FRAGMENT_UPCOMING_EVENTS = 1;
     public static final int FRAGMENT_TEACHER_CHAT = 2;
@@ -84,19 +103,27 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_PAST_TUTORIALS = 8;
     public static final int FRAGMENT_SCHEDULE_EXAM = 9;
 
+    /**
+     * ====================================================================================
+     */
+
     public static int currentMainFragment;
     public static int currentRightFragment;
     private int currentMainFragmentBg;
 
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuOffice, controllerTopMenuTutorial;
+    /**
+     * Listeners
+     */
     private HostListener listenerHost;
     private AddTopicsListener addTopicsListener;
 
-    private ActionProcessButton progress_bar;
-    private ProgressGenerator progressGenerator;
 
+    /**
+     * FragmentTransaction
+     */
     FragmentTransaction mFragmentTransaction;
     FragmentManager mFragmentManager;
+
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -299,7 +326,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     break;
 
                 case FRAGMENT_TEACHER_OFFICE:
-                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance(FRAGMENT_TEACHER_OFFICE);
+                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance();
                     listenerHost = teacherOfficeFragment;
                     addTopicsListener = teacherOfficeFragment;
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment, AppConstant.FRAGMENT_TAG_TEACHER_OFFICE).commit();
@@ -385,7 +412,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     currentMainFragmentBg = R.color.bg_classroom;
                     imgOffice.setActivated(true);
                     imgTutorial.setActivated(false);
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
+                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_yellow);
                     txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
                     loadControllerTopMenu(controllerTopMenuOffice);
                     llControllerLeft.setVisibility(View.VISIBLE);
@@ -395,7 +422,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_TEACHER_TUTORIAL_GROUP:
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_tutorial;
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_tutorial);
+                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_darkred);
                     imgTutorial.setActivated(true);
                     imgHome.setActivated(false);
                     loadControllerTopMenu(controllerTopMenuTutorial);
@@ -413,12 +440,12 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_PAST_TUTORIALS:
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_tutorial;
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_tutorial);
+                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_darkred);
                     imgTutorial.setActivated(true);
                     imgHome.setActivated(false);
                     loadControllerTopMenu(controllerTopMenuTutorial);
                     txtTitle.setVisibility(View.GONE);
-                    hideTxtAction();
+                    hideAddOption();
                     rlAddPost.setVisibility(View.GONE);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     showControllerTopBackButton();
@@ -428,12 +455,12 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_SCHEDULE_EXAM:
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_tutorial;
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_tutorial);
+                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_darkred);
                     imgTutorial.setActivated(true);
                     imgHome.setActivated(false);
                     loadControllerTopMenu(controllerTopMenuTutorial);
                     txtTitle.setVisibility(View.GONE);
-                    hideTxtAction();
+                    hideAddOption();
                     rlAddPost.setVisibility(View.GONE);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     showControllerTopBackButton();
@@ -529,13 +556,20 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                             case TeacherOfficeFragment.FRAGMENT_NOTES:
                                 if (addTopicsListener != null) {
                                     addTopicsListener.addTopic(TeacherOfficeFragment.FRAGMENT_NOTES);
-                                    txtAction.setVisibility(View.GONE);
+                                    hideAddOption();
                                 }
                                 break;
                             case TeacherOfficeFragment.FRAGMENT_QUIZ:
                                 if (addTopicsListener != null) {
                                     addTopicsListener.addTopic(TeacherOfficeFragment.FRAGMENT_QUIZ);
-                                    txtAction.setVisibility(View.GONE);
+                                    hideAddOption();
+                                }
+                                break;
+
+                            case TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT:
+                                if (addTopicsListener != null) {
+                                    addTopicsListener.addTopic(TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT);
+                                    hideAddOption();
                                 }
                                 break;
                         }
@@ -691,11 +725,11 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         flFragmentContainerRight.setVisibility(View.GONE);
     }
 
-    public void hideTxtAction() {
+    public void hideAddOption() {
         txtAction.setVisibility(View.GONE);
     }
 
-    public void showTxtAction() {
+    public void showAddOption() {
         txtAction.setVisibility(View.VISIBLE);
         txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
     }
@@ -704,7 +738,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
      * Handle the back click in TeacherOfficeFragment
      *
      * @param currentMainFragment Based on the currentMainFragment i.e active fragment inside Teacher Office Fragment
-     *                            <p/>
+     *                            <p>
      *                            OR current main when we call tutorials related fragment.
      */
 
@@ -765,6 +799,10 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
                     case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER:
                         Debug.e(AppConstant.back_tag + "back click host", "from create exam container");
+                        teacherOfficeFragment.onBackClick();
+                        break;
+                    case TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT:
+                        Debug.e(AppConstant.back_tag + "back click host", "from add edit notesr");
                         teacherOfficeFragment.onBackClick();
                         break;
 
@@ -853,7 +891,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
      */
     private void removeBundleArguments() {
 
-        getBundle().remove(AssignmentExamFragment.ARG_IS_CREATE_EXAM);
+        getBundle().remove(CreateExamFragment.ARG_IS_CREATE_EXAM);
 
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_ID);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_NAME);
@@ -907,6 +945,10 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_EXAM_TYPE);
         getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_SCORE);
 //        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_SUBJECT_NAME);
+
+
+        //Notes Args
+        getBundle().remove(NotesAddEditFragment.ARG_IS_CREATE_NOTE);
 
     }
 }

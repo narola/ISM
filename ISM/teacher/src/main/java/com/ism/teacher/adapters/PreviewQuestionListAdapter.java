@@ -16,7 +16,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.tutorial.scheduleexam.ScheduleTutorialExamContainerFragment;
+import com.ism.teacher.fragments.createquestion.AddQuestionContainerFragment;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.model.Answers;
 import com.ism.teacher.ws.model.Questions;
@@ -193,8 +193,8 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         return v;
     }
 
-    private ScheduleTutorialExamContainerFragment getFragment() {
-        return (ScheduleTutorialExamContainerFragment) mFragment;
+    private AddQuestionContainerFragment getFragment() {
+        return (AddQuestionContainerFragment) mFragment;
     }
 
     private Bundle getBundleArguments() {

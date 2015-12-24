@@ -108,7 +108,7 @@
                 android:drawablePadding="@dimen/d10dp"
                 android:inputType="phone"
                 android:padding="@dimen/d10dp"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/et_dob"
@@ -118,7 +118,7 @@
                 android:drawableLeft="@drawable/birthday"
                 android:drawablePadding="@dimen/d10dp"
                 android:padding="@dimen/d10dp"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/txt_edit"

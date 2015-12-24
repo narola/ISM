@@ -360,7 +360,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_evaluation_note2"
+                            android:id="@+id/tv_solution"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/fragment_background_color"
@@ -377,7 +377,7 @@
                             android:background="@drawable/news_feed_post_box" />
 
                         <EditText
-                            android:id="@+id/et_evaluation_note2"
+                            android:id="@+id/et_solution"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/d170dp"
                             android:background="@android:color/transparent"

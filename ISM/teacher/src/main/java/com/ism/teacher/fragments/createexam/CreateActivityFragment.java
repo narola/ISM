@@ -38,10 +38,10 @@ import jp.wasabeef.richeditor.RichEditor;
 /**
  * Created by c166 on 28/10/15.
  */
-public class AssignmentActivityFragment extends Fragment implements WebserviceWrapper.WebserviceResponse,View.OnClickListener{
+public class CreateActivityFragment extends Fragment implements WebserviceWrapper.WebserviceResponse,View.OnClickListener{
 
 
-    private static final String TAG = AssignmentActivityFragment.class.getSimpleName();
+    private static final String TAG = CreateActivityFragment.class.getSimpleName();
     private View view;
 
     TextView tvActivityTitle, tvActivityAssignmentname, tvActivityCoursename, tvActivityClass, tvActivitySubject, tvActivitySubmissiondate, tvActivityTopic;
@@ -60,12 +60,12 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     private InputValidator inputValidator;
 
 
-    public static AssignmentActivityFragment newInstance() {
-        AssignmentActivityFragment assignmentActivityFragment = new AssignmentActivityFragment();
-        return assignmentActivityFragment;
+    public static CreateActivityFragment newInstance() {
+        CreateActivityFragment createActivityFragment = new CreateActivityFragment();
+        return createActivityFragment;
     }
 
-    public AssignmentActivityFragment() {
+    public CreateActivityFragment() {
         // Required empty public constructor
     }
 
