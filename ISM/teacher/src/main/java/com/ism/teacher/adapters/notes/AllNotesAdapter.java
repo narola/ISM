@@ -1,5 +1,7 @@
 package com.ism.teacher.adapters.notes;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
+import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.fragments.office.TeacherOfficeFragment;
 import com.ism.teacher.object.Global;
 
 /**
@@ -18,10 +22,11 @@ public class AllNotesAdapter extends RecyclerView.Adapter<AllNotesAdapter.ViewHo
 
     private static final String TAG = AllNotesAdapter.class.getSimpleName();
     Context mContext;
-
+    FragmentManager fragmentManager;
 
     public AllNotesAdapter(Context context) {
         this.mContext = context;
+        fragmentManager = ((Activity) mContext).getFragmentManager();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -75,11 +80,20 @@ public class AllNotesAdapter extends RecyclerView.Adapter<AllNotesAdapter.ViewHo
             holder.rlNotes.setBackgroundResource(R.drawable.bg_subject_yellow);
         }
 
+
+        holder.rlNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
+                teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT);
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return 1;
     }
 
 

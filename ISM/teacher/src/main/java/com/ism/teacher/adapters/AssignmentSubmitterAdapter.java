@@ -131,7 +131,7 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
 
 //                    TeacherOfficeFragment.current_office_fragment = TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW;
                     TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
-                    teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW);
+                    teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW);
                     //   fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, ObjectiveAssignmentQuestionsFragment.newInstance(getBundleArguments()), AppConstant.FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION).commit();
                 }
 
@@ -144,7 +144,7 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
                 else if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(EXAM_SUBJECTIVE)) {
 
                     TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
-                    teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_SUBJECTIVE_QUESTIONS);
+                    teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_SUBJECTIVE_QUESTIONS);
 
                     //fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, SubjectiveQuestionsContainerFragment.newInstance(getBundleArguments()),AppConstant.FRAGMENT_TAG_SUBJECTIVE_QUESTIONS).commit();
                 }

@@ -69,6 +69,7 @@ public class AppConstant {
     public static final String FRAGMENT_TAG_CREATE_EXAM_CONTAINER = "create_exam";
     public static final String FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION = "view_assignment_question";
     public static final String FRAGMENT_TAG_SUBJECTIVE_QUESTIONS = "subjective_questions";
+    public static final String FRAGMENT_TAG_NOTES_ADD_EDIT = "notesAddEdit";
 
 
     public static final int LIKE = 1;

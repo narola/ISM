@@ -47,13 +47,13 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-public class AssignmentExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
+public class CreateExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
     private View view;
     private Context mContext;
     private Fragment fragmentContext;
 
-    private static final String TAG = AssignmentExamFragment.class.getSimpleName();
+    private static final String TAG = CreateExamFragment.class.getSimpleName();
     private TextView tvExamTitle, tvExamExamfor, tvExamExaminstruction, tvExamDeclareresult,
             tvExamNegativemarking, tvExamRandomquestion, tvExamUsescore, tvExamQuestionscorevalue, tvExamAddnegativemark;
 
@@ -93,17 +93,17 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     public static String ARG_IS_CREATE_EXAM = "isCreateExam";
 
 
-    public AssignmentExamFragment() {
+    public CreateExamFragment() {
         // Required empty public constructor
     }
 
-    public static AssignmentExamFragment newInstance(Fragment fragment, Context mContext) {
-        AssignmentExamFragment assignmentExamFragment = new AssignmentExamFragment();
+    public static CreateExamFragment newInstance(Fragment fragment, Context mContext) {
+        CreateExamFragment createExamFragment = new CreateExamFragment();
 
-        assignmentExamFragment.mContext = mContext;
-        assignmentExamFragment.fragmentContext = fragment;
-        assignmentExamFragment.mFragment = fragment;
-        return assignmentExamFragment;
+        createExamFragment.mContext = mContext;
+        createExamFragment.fragmentContext = fragment;
+        createExamFragment.mFragment = fragment;
+        return createExamFragment;
     }
 
 

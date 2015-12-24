@@ -159,7 +159,7 @@ public class ScheduleTutorialExamContainerFragment extends Fragment {
         try {
             getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, tutorialPreviewQuestionFragment).commit();
         } catch (Exception e) {
-            Debug.e(TAG, "loadFragment Exception : " + e.toString());
+            Debug.e(TAG, "loadFragmentInTeacherOffice Exception : " + e.toString());
         }
 
     }
