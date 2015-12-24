@@ -1,6 +1,5 @@
 package com.ism.teacher.fragments.createquestion;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -93,7 +92,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     public QuestionAddEditFragment() {
     }
 
-    @SuppressLint("ValidFragment")
     public QuestionAddEditFragment(Fragment fragment) {
         this.mFragment = fragment;
     }
@@ -180,7 +178,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 if (position == 1 || position == 2) {
                     llAddMcqanswer.setVisibility(View.GONE);
                     tvAddquestionAnswer.setVisibility(View.VISIBLE);
-                    if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
+                    if (getAddQuestionContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(true);
                     } else {
@@ -190,7 +188,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 } else if (position == 3) {
                     llAddMcqanswer.setVisibility(View.VISIBLE);
                     tvAddquestionAnswer.setVisibility(View.VISIBLE);
-                    if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
+                    if (getAddQuestionContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
                         chkAddquestionPreview.setEnabled(true);
                         chkAddquestionPreview.setChecked(false);
                     } else {
@@ -304,8 +302,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
 
     public void setViewForAddEditQuestion() {
-        if (getFragment().getIsSetQuestionData()) {
-            setQuestionData(getFragment().getQuestionData());
+        if (getAddQuestionContainerFragment().getIsSetQuestionData()) {
+            setQuestionData(getAddQuestionContainerFragment().getQuestionData());
         } else {
             clearViewsData();
         }
@@ -469,7 +467,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 chkAddquestionPreview.setEnabled(false);
             }
             /*check that if user edit question then disable the formatting of question type.*/
-            if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+            if (getAddQuestionContainerFragment().getIsSetQuestionData() && !getAddQuestionContainerFragment().getIsCopy()) {
 
                 imageValidationQuestionType.setVisibility(View.VISIBLE);
 
@@ -611,7 +609,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             startActivityForResult(intent, AppConstant.REQUEST_CODE_PICK_FROM_GALLERY);
 
         } else if (v == tvAddquestionGotoquestionbank) {
-            getFragment().flipCard();
+            getAddQuestionContainerFragment().flipCard();
 
         } else if (v == img_cancel) {
             if (selectedUri != null) {
@@ -721,10 +719,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
                 Attribute attribute = new Attribute();
                 attribute.setUserId(WebConstants.USER_ID_370);
-                if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+                if (getAddQuestionContainerFragment().getIsSetQuestionData() && !getAddQuestionContainerFragment().getIsCopy()) {
                     /*for edit question*/
-                    Debug.e(TAG, "The question id is::" + getFragment().getQuestionData().getQuestionId());
-                    attribute.setQuestionid(getFragment().getQuestionData().getQuestionId());
+                    Debug.e(TAG, "The question id is::" + getAddQuestionContainerFragment().getQuestionData().getQuestionId());
+                    attribute.setQuestionid(getAddQuestionContainerFragment().getQuestionData().getQuestionId());
 
                 } else {
                     /*for add question*/
@@ -819,7 +817,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     }
 
-    private AddQuestionContainerFragment getFragment() {
+    private AddQuestionContainerFragment getAddQuestionContainerFragment() {
         return (AddQuestionContainerFragment) mFragment;
     }
 
@@ -857,10 +855,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     Utility.showToast(getString(R.string.msg_success_imgupload_question), getActivity());
 
 
-                    if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+                    if (getAddQuestionContainerFragment().getIsSetQuestionData() && !getAddQuestionContainerFragment().getIsCopy()) {
                         //  Utility.showToast(getString(R.string.question_edit_success), getActivity());
 //                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_edit_success));
-                        getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
+                        getAddQuestionContainerFragment().setQuestionDataAfterEditQuestion(getAddQuestionContainerFragment().getQuestionData(),
                                 makeQuestionData(responseHandler.getFileUploadResponse().getQuestion_id(), responseHandler.getFileUploadResponse().getImageLink()),
                                 chkAddquestionPreview.isChecked());
                     }
@@ -887,16 +885,16 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     Debug.e(TAG, "The Question Id Is::" + responseHandler.getQuestion().get(0).getQuestionId());
-                    if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+                    if (getAddQuestionContainerFragment().getIsSetQuestionData() && !getAddQuestionContainerFragment().getIsCopy()) {
 
                         Utility.showToast(getString(R.string.question_edit_success), getActivity());
-                        getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
+                        getAddQuestionContainerFragment().setQuestionDataAfterEditQuestion(getAddQuestionContainerFragment().getQuestionData(),
                                 makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId(), ""),
                                 chkAddquestionPreview.isChecked());
                     } else {
 
                         Utility.showToast(getString(R.string.question_add_success), getActivity());
-                        getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId(), ""),
+                        getAddQuestionContainerFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId(), ""),
                                 chkAddquestionPreview.isChecked());
 
                     }

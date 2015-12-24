@@ -16,12 +16,13 @@ import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
 import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.constants.AppConstant;
-import com.ism.teacher.fragments.createexam.AssignmentExamFragment;
 import com.ism.teacher.fragments.AssignmentsSubmitterFragment;
-import com.ism.teacher.fragments.createexam.CreateExamAssignmentContainerFragment;
 import com.ism.teacher.fragments.assesment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.assesment.SubjectiveQuestionsContainerFragment;
+import com.ism.teacher.fragments.createexam.CreateExamFragment;
+import com.ism.teacher.fragments.createexam.CreateExamAssignmentContainerFragment;
 import com.ism.teacher.fragments.notes.AllNotesFragment;
+import com.ism.teacher.fragments.notes.NotesAddEditFragment;
 import com.ism.teacher.fragments.results.AllResultsFragment;
 import com.ism.teacher.interfaces.FragmentListener;
 
@@ -53,35 +54,19 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
     //container to view objective/subjective questions only
     public static final int FRAGMENT_OBJECTIVE_QUESTIONS_VIEW = 9;
     public static final int FRAGMENT_SUBJECTIVE_QUESTIONS = 10;
+    public static final int FRAGMENT_NOTES_ADD_EDIT = 11;
 
-    private int fragment;
     public static int current_office_fragment;
 
 
-    public static TeacherOfficeFragment newInstance(int fragment) {
+    public static TeacherOfficeFragment newInstance() {
         TeacherOfficeFragment teacherOfficeFragment = new TeacherOfficeFragment();
-        Bundle args = new Bundle();
-
-        args.putInt(ARG_FRAGMENT, fragment);
-        teacherOfficeFragment.setArguments(args);
         return teacherOfficeFragment;
     }
 
     public TeacherOfficeFragment() {
         // Required empty public constructor
     }
-
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getBundleArguments() != null) {
-//            fragment = getArguments().getInt(ARG_FRAGMENT);
-//            if (fragListener != null) {
-//                fragListener.onFragmentAttached(fragment);
-//            }
-//        }
-//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,7 +78,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
     }
 
     private void initGlobal() {
-        loadFragment(FRAGMENT_CLASSWALL);
+        loadFragmentInTeacherOffice(FRAGMENT_CLASSWALL);
     }
 
     @Override
@@ -103,7 +88,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
             fragListener = (FragmentListener) activity;
             fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_TEACHER_OFFICE);
         } catch (ClassCastException e) {
-            Log.e(TAG, "onAttach Exception : " + e.toString());
+            Log.e(TAG, "onAttach Office Exception : " + e.toString());
         }
     }
 
@@ -115,17 +100,17 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                 fragListener.onFragmentDetached(TeacherHostActivity.FRAGMENT_TEACHER_OFFICE);
             }
         } catch (ClassCastException e) {
-            Log.e(TAG, "onDetach Exception : " + e.toString());
+            Log.e(TAG, "onDetach Office Exception : " + e.toString());
         }
         fragListener = null;
     }
 
     @Override
     public void onControllerMenuItemClicked(int fragmentIndex) {
-        loadFragment(fragmentIndex);
+        loadFragmentInTeacherOffice(fragmentIndex);
     }
 
-    public void loadFragment(int fragment) {
+    public void loadFragmentInTeacherOffice(int fragment) {
         try {
             switch (fragment) {
                 case FRAGMENT_CLASSWALL:
@@ -140,9 +125,10 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                 case FRAGMENT_NOTES:
                     Debug.e(AppConstant.back_tag + "child added=>>>>>>>>>>>>>>>>>>>", AppConstant.FRAGMENT_TAG_TEACHER_NOTES);
                     setBackStackFragmentKey(AppConstant.FRAGMENT_TAG_TEACHER_NOTES);
+
                     getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
                             AllNotesFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_NOTES).commit();
-                    ((TeacherHostActivity) getActivity()).showRightContainerFragment();
+
                     break;
 
                 case FRAGMENT_QUIZ:
@@ -199,7 +185,6 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                 case FRAGMENT_SUBJECTIVE_QUESTIONS:
                     Debug.e(AppConstant.back_tag + "child added=>>>>>>>>>>>>>>>>>>>", AppConstant.FRAGMENT_TAG_SUBJECTIVE_QUESTIONS);
 
-
                     setBackStackFragmentKey(AppConstant.FRAGMENT_TAG_SUBJECTIVE_QUESTIONS);
 
                     getFragmentManager().beginTransaction().
@@ -218,6 +203,18 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                             replace(R.id.fl_teacher_office_home,
                                     CreateExamAssignmentContainerFragment.newInstance(), AppConstant.FRAGMENT_TAG_CREATE_EXAM_CONTAINER).commit();
                     break;
+
+
+
+                case FRAGMENT_NOTES_ADD_EDIT:
+                    Debug.e(AppConstant.back_tag + "child added=>>>>>>>>>>>>>>>>>>>", AppConstant.FRAGMENT_TAG_NOTES_ADD_EDIT);
+                    setBackStackFragmentKey(AppConstant.FRAGMENT_TAG_NOTES_ADD_EDIT);
+                    getFragmentManager().beginTransaction().
+                            replace(R.id.fl_teacher_office_home,
+                                    NotesAddEditFragment.newInstance(), AppConstant.FRAGMENT_TAG_NOTES_ADD_EDIT).commit();
+                    ((TeacherHostActivity) getActivity()).showRightContainerFragment();
+                    break;
+
             }
 
             current_office_fragment = fragment;
@@ -231,7 +228,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
         switch (current_office_fragment) {
 
             case TeacherOfficeFragment.FRAGMENT_CLASSWALL:
-                loadFragment(TeacherOfficeFragment.FRAGMENT_CLASSWALL);
+                loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_CLASSWALL);
                 ((TeacherHostActivity) getActivity()).showRightContainerFragment();
                 ((TeacherHostActivity) getActivity()).showAllMainMenus();
 
@@ -302,9 +299,14 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                 break;
 
             case TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER:
-                getBundleArguments().remove(AssignmentExamFragment.ARG_IS_CREATE_EXAM);
+                getBundleArguments().remove(CreateExamFragment.ARG_IS_CREATE_EXAM);
 
                 handleBackClick(AppConstant.FRAGMENT_TAG_CREATE_EXAM_CONTAINER);
+                ((TeacherHostActivity) getActivity()).showSpinnerWithSubMenu(AppConstant.INDEX_ALL_ASSIGNMENTS);
+                break;
+
+            case TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT:
+                handleBackClick(AppConstant.FRAGMENT_TAG_NOTES_ADD_EDIT);
                 ((TeacherHostActivity) getActivity()).showSpinnerWithSubMenu(AppConstant.INDEX_ALL_ASSIGNMENTS);
                 break;
         }
@@ -375,8 +377,8 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                     Utility.showToast("teacher notes test", getActivity());
                     break;
                 case FRAGMENT_QUIZ:
-                    getBundleArguments().putBoolean(AssignmentExamFragment.ARG_IS_CREATE_EXAM, true);
-                    loadFragment(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
+                    getBundleArguments().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, true);
+                    loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
                     break;
 
                 case FRAGMENT_MARK_SCRIPT:
@@ -405,7 +407,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
     }
 
     public void handleBackClick(String fragmentName) {
-        loadFragment(getBundleArguments().getInt(fragmentName));
+        loadFragmentInTeacherOffice(getBundleArguments().getInt(fragmentName));
         getBundleArguments().remove(fragmentName);
     }
 }

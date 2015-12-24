@@ -25,7 +25,7 @@ import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.adapters.SubjectiveQuestionListAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.createexam.AssignmentExamFragment;
+import com.ism.teacher.fragments.createexam.CreateExamFragment;
 import com.ism.teacher.fragments.office.TeacherOfficeFragment;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.views.CircleImageView;
@@ -374,11 +374,11 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
             loadNextStudentData();
 
         } else if (v == imgEditExam) {
-            getBaseFragment().getBundleArguments().putBoolean(AssignmentExamFragment.ARG_IS_CREATE_EXAM, false);
+            getBaseFragment().getBundleArguments().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, false);
             getBaseFragment().getBundleArguments().putBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY, false);
             setExamQuestions();
         } else if (v == imgCopyExam) {
-            getBaseFragment().getBundleArguments().putBoolean(AssignmentExamFragment.ARG_IS_CREATE_EXAM, false);
+            getBaseFragment().getBundleArguments().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, false);
             getBaseFragment().getBundleArguments().putBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY, true);
             setExamQuestions();
         }
@@ -398,7 +398,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 //                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
 
             TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) mFragment.getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
-            teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
+            teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
 
 //            mFragment.getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
 //                    CreateExamAssignmentContainerFragment.newInstance()).commit();

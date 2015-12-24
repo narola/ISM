@@ -908,7 +908,7 @@
                 <com.narola.kpa.richtexteditor.view.RichTextEditor
                     android:id="@+id/rte_trial_exam"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/rich_text_editor_height"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_exam_instruction"
                     android:layout_marginBottom="@dimen/d20dp"
                     android:layout_marginRight="@dimen/d15dp"

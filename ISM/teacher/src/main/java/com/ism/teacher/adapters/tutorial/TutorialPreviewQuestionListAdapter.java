@@ -1,4 +1,4 @@
-package com.ism.teacher.adapters;
+package com.ism.teacher.adapters.tutorial;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -16,7 +16,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.createquestion.AddQuestionContainerFragment;
+import com.ism.teacher.fragments.tutorial.scheduleexam.ScheduleTutorialExamContainerFragment;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.model.Answers;
 import com.ism.teacher.ws.model.Questions;
@@ -26,16 +26,16 @@ import java.util.ArrayList;
 /**
  * these adapter class is to set the list of previewquestions.
  */
-public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQuestionListAdapter.ViewHolder> {
+public class TutorialPreviewQuestionListAdapter extends RecyclerView.Adapter<TutorialPreviewQuestionListAdapter.ViewHolder> {
 
-    private static final String TAG = PreviewQuestionListAdapter.class.getSimpleName();
+    private static final String TAG = TutorialPreviewQuestionListAdapter.class.getSimpleName();
     private Context mContext;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     Fragment mFragment;
     private LayoutInflater inflater;
 
 
-    public PreviewQuestionListAdapter(Context context, Fragment fragment) {
+    public TutorialPreviewQuestionListAdapter(Context context, Fragment fragment) {
         this.mContext = context;
         this.mFragment = fragment;
         inflater = LayoutInflater.from(mContext);
@@ -102,18 +102,6 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
                 getFragment().updateQuestionListviewAfterDeleteQuestionInPreview(arrListQuestions.get(position));
                 arrListQuestions.remove(arrListQuestions.get(position));
                 notifyDataSetChanged();
-
-//                if(arrListQuestions.size()>0)
-//                {
-//                    ((ScheduleTutorialExamContainerFragment)mFragment).hideText();
-//                    ((ScheduleTutorialExamContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
-//
-//                }
-//                else
-//                {
-//                    ((ScheduleTutorialExamContainerFragment)mFragment).showText();
-//                    ((ScheduleTutorialExamContainerFragment)mFragment).getTotalPreviewQuestions(arrListQuestions.size());
-//                }
             }
         });
 
@@ -193,8 +181,8 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         return v;
     }
 
-    private AddQuestionContainerFragment getFragment() {
-        return (AddQuestionContainerFragment) mFragment;
+    private ScheduleTutorialExamContainerFragment getFragment() {
+        return (ScheduleTutorialExamContainerFragment) mFragment;
     }
 
     private Bundle getBundleArguments() {
