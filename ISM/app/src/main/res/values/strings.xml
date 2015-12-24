@@ -421,6 +421,69 @@
 	<string name="correct_answer">Correct Answer:</string>
 	<string name="solution">Solution:</string>
 	<string name="admin">Admin</string>
+	<string name="strScientificSymbol">Scientific Symbol</string>
+	<string name="strInsert">Insert</string>
+	<string name="strImages">Images</string>
 
 	<!-- ################################## -->
+	<!--all scientific symbols for rich editor-->
+	<!--α-->
+	<string name="alpha">&#945;</string>
+	<!--β-->
+	<string name="beta">&#946;</string>
+	<!--γ-->
+	<string name="gamma">&#947;</string>
+	<!--δ-->
+	<string name="delta">&#948;</string>
+	<!--ε-->
+	<string name="epsilon">&#949;</string>
+	<!--ζ-->
+	<string name="zeta">&#950;</string>
+	<!--η-->
+	<string name="eta">&#951;</string>
+	<!--θ-->
+	<string name="theta">&#952;</string>
+	<!--ι-->
+	<string name="iota">&#953;</string>
+	<!--κ-->
+	<string name="kappa">&#954;</string>
+	<!--λ-->
+	<string name="lamda">&#955;</string>
+	<!--μ-->
+	<string name="mu">&#956;</string>
+	<!--ν-->
+	<string name="nu">&#957;</string>
+	<!--ξ-->
+	<string name="xi">&#958;</string>
+	<!--ο-->
+	<string name="omicron">&#959;</string>
+	<!--→π-->
+	<string name="pi">&#960;</string>
+	<!--ω-->
+	<string name="greekomega">&#969;</string>
+	<!--ϑ-->
+	<string name="greektheta">ϑ</string>
+	<!--ϒ-->
+	<string name="greekupsilon">&#978;</string>
+	<!--ϕ-->
+	<string name="phi">&#981;</string>
+	<!--ρ-->
+	<string name="greeksmallrho">&#961;</string>
+	<!--σ-->
+	<string name="greeksmallsigma">&#963;</string>
+	<!--ς-->
+	<string name="greeksmallsigmafinal">&#962;</string>
+	<!--τ-->
+	<string name="greeksmalltau">&#964;</string>
+	<!--υ-->
+	<string name="greeksmallupsilon">&#965;</string>
+	<!--φ-->
+	<string name="greeksmallphi">&#966;</string>
+	<!--χ-->
+	<string name="chi">&#935;</string>
+	<!--ψ-->
+	<string name="psi">&#968;</string>
+	<!--ϖ-->
+	<string name="greekpi">&#982;</string>
+	<string name="steAddnewCategory">Add new Category</string>
 </resources>

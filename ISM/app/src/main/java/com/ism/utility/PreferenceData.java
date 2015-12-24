@@ -37,7 +37,7 @@ public class PreferenceData {
     public static final String USER_ID = "userId";
     public static final String USER_NAME = "userName";
     public static final String USER_FULL_NAME = "userFullName";
-    public static final String USER_PROFILE_PIC = "userProfilePic";
+    public static final String USER_PROFILE_PIC = "userprofilePic";
     public static final String BADGE_COUNT_NOTIFICATION = "badgeCountNotification";
     public static final String BADGE_COUNT_MESSAGE = "badgeCountMessage";
     public static final String BADGE_COUNT_REQUEST = "badgeCountRequest";

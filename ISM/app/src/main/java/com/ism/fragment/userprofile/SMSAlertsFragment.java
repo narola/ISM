@@ -31,7 +31,7 @@ public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.Web
     private RadioButton radioButtonYesConf, radioButtonNoconf, radioButtonYesAssign, radioButtonNoAssign, radioButtonYesEval, radioButtonNoEval;
     private static String TAG = SMSAlertsFragment.class.getSimpleName();
     private HostActivity activityHost;
-    private GeneralSettingsFragment generalSettingsFragment;
+    private com.ism.fragment.userProfile.GeneralSettingsFragment generalSettingsFragment;
 
     public static SMSAlertsFragment newInstance() {
         SMSAlertsFragment fragment = new SMSAlertsFragment();
@@ -53,7 +53,7 @@ public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.Web
 
     private void initGlobal() {
         myTypeFace = new MyTypeFace(getActivity());
-        generalSettingsFragment = GeneralSettingsFragment.newInstance();
+        generalSettingsFragment = com.ism.fragment.userProfile.GeneralSettingsFragment.newInstance();
         txtAssign = (TextView) view.findViewById(R.id.txt_alerts_assignment);
         txtEvaluation = (TextView) view.findViewById(R.id.txt_alerts_evaluations);
         txtConference = (TextView) view.findViewById(R.id.txt_alerts_conference);

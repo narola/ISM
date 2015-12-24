@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f7f7f7"
+    android:id="@+id/rr_main"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_note_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/d5dp"
+        android:textColor="@color/bg_app_dark"
+        android:text="Introduction of waves"
+        android:textSize="@dimen/d20sp" />
+
+    <TextView
+        android:id="@+id/txt_notes_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_note_name"
+        android:padding="@dimen/d5dp"
+        android:text="By Admin"
+        android:textColor="@color/color_red" />
+
+    <TextView
+        android:id="@+id/txt_subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/txt_note_name"
+        android:padding="@dimen/d5dp"
+        android:text="Physics"
+        android:textColor="@color/color_red" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/img_media_files"
+        android:layout_margin="@dimen/d5dp"
+        android:src="@drawable/ic_video_dark_gray" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/txt_notes_by"
+        android:background="@color/text_gray"/>
+</RelativeLayout>

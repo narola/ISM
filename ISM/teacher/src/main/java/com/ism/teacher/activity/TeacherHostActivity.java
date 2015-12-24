@@ -32,7 +32,7 @@ import com.ism.teacher.adapters.ControllerTopSpinnerAdapter;
 import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.createexam.AssignmentExamFragment;
+import com.ism.teacher.fragments.createexam.CreateExamFragment;
 import com.ism.teacher.fragments.assesment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.assesment.StudentAttemptedFragment;
 import com.ism.teacher.fragments.TeacherChatFragment;
@@ -299,7 +299,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     break;
 
                 case FRAGMENT_TEACHER_OFFICE:
-                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance(FRAGMENT_TEACHER_OFFICE);
+                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance();
                     listenerHost = teacherOfficeFragment;
                     addTopicsListener = teacherOfficeFragment;
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment, AppConstant.FRAGMENT_TAG_TEACHER_OFFICE).commit();
@@ -767,6 +767,10 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                         Debug.e(AppConstant.back_tag + "back click host", "from create exam container");
                         teacherOfficeFragment.onBackClick();
                         break;
+                    case TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT:
+                        Debug.e(AppConstant.back_tag + "back click host", "from add edit notesr");
+                        teacherOfficeFragment.onBackClick();
+                        break;
 
                 }
                 break;
@@ -853,7 +857,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
      */
     private void removeBundleArguments() {
 
-        getBundle().remove(AssignmentExamFragment.ARG_IS_CREATE_EXAM);
+        getBundle().remove(CreateExamFragment.ARG_IS_CREATE_EXAM);
 
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_ID);
         getBundle().remove(AssignmentsAdapter.ARG_EXAM_NAME);

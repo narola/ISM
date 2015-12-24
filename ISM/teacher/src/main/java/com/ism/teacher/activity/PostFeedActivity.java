@@ -197,7 +197,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             llContainer.setVisibility(View.VISIBLE);
             txtCaptue.setText(getResources().getString(R.string.strrecordyouraudio));
             txtChoose.setText(getResources().getString(R.string.strchooseyouraudio));
-            //loadFragment(FRAGMENT_AUDIO);
+            //loadFragmentInTeacherOffice(FRAGMENT_AUDIO);
         } else if (v == imgVideo) {
             toolSelected(v);
             imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.img_camera));
@@ -206,7 +206,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             llContainer.setVisibility(View.VISIBLE);
             txtCaptue.setText(getResources().getString(R.string.strcapturevideousingcamera));
             txtChoose.setText(getResources().getString(R.string.strchoosevideofromgallery));
-            //loadFragment(FRAGMENT_VIDEO);
+            //loadFragmentInTeacherOffice(FRAGMENT_VIDEO);
         } else if (v == llChooseImg) {
             if (txtChoose.getText().toString().equals(getResources().getString(R.string.strchoosevideofromgallery))) {
                 if (!checkMediaFile()) {

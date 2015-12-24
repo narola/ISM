@@ -104,7 +104,7 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
          * setExamDetails(); in AssignmentExam is used to set data using passed args.
          */
 
-        if (getBundleArguments().getBoolean(AssignmentExamFragment.ARG_IS_CREATE_EXAM)) {
+        if (getBundleArguments().getBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM)) {
             initTab(0);
         } else {
             initTab(1);
@@ -129,10 +129,10 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         try {
             switch (fragment) {
                 case FRAGMENT_ASSIGNMENT_ACTIVITY:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, CreateActivityFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_ASSIGNMENT_EXAM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance(this, getActivity())).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, CreateExamFragment.newInstance(this, getActivity())).commit();
                     break;
             }
 

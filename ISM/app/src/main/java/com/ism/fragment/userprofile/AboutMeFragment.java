@@ -57,6 +57,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private TextView txtUserName, txtSchool, txtClass, txtSocial, txtTotalPost, txtTotalStudymates, txtTotalAuthorFollowed, txtPost, txtAssignment, txtAuthorFollowed, txtAcademic, txtStudymates, txtIsmScore, txtTotalIsmScore, txtIsmRank, txtTotalIsmRank, txtTotalAssignment, txtExam, txtTotalExam, txtExcellence, txtFavQuestions, txtBadgesEarned, txtQueAsked, txtTotalBadgesEarned, txtTotalQueAsked, txtTotalFavQuestions, txtYourAmbition, txtAboutMe, txtClickAddAboutMe, txtClickAddAmbitions;
     private static String TAG = AboutMeFragment.class.getSimpleName();
     private HostActivity activityHost;
+
     com.ism.fragment.userProfile.EditProfileFragment editProfileFragment;
     private TextView txtEdit;
     private EditText etCno, etDob;

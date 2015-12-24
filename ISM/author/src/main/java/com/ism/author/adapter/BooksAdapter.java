@@ -46,20 +46,10 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
             if (position == 0) {
 
-                Global.imageLoader.displayImage(WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position).getBookImage(), holder.imgBookOne,
-                        Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
-                Global.imageLoader.displayImage(WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position + 1).getBookImage(), holder.imgBookTwo,
-                        Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
-                Global.imageLoader.displayImage(WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position + 2).getBookImage(), holder.imgBookThree,
-                        Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
-                Global.imageLoader.displayImage(WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position + 3).getBookImage(), holder.imgBookFour,
-                        Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
-
-
-                setBookImage(holder.imgBookOne, position , WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position).getBookImage());
-                setBookImage(holder.imgBookTwo, position+ 1, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position+ 1).getBookImage());
-                setBookImage(holder.imgBookOne, position + 2, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get((position * 4) + 2).getBookImage());
-                setBookImage(holder.imgBookOne, (position * 4) + 3, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get((position * 4) + 3).getBookImage());
+                setBookImage(holder.imgBookOne, position, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position).getBookImage());
+                setBookImage(holder.imgBookTwo, position + 1, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position + 1).getBookImage());
+                setBookImage(holder.imgBookOne, position + 2, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position + 2).getBookImage());
+                setBookImage(holder.imgBookOne, position + 3, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position + 3).getBookImage());
 
             } else {
 
