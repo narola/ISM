@@ -486,4 +486,5 @@
 	<!--ϖ-->
 	<string name="greekpi">&#982;</string>
 	<string name="steAddnewCategory">Add new Category</string>
+	<string name="group_rank">Group Rank :</string>
 </resources>
