@@ -58,6 +58,7 @@
     <dimen name="d25dp">25dp</dimen>
 
     <dimen name="d40dp">40dp</dimen>
+    <dimen name="d45dp">45dp</dimen>
     <dimen name="d50dp">50dp</dimen>
     <dimen name="d60dp">60dp</dimen>
     <dimen name="d70dp">70dp</dimen>
@@ -69,6 +70,7 @@
     <dimen name="d140dp">140dp</dimen>
     <dimen name="d150dp">150dp</dimen>
     <dimen name="d170dp">170dp</dimen>
+    <dimen name="d200dp">200dp</dimen>
     <dimen name="rich_text_editor_height">450dp</dimen>
     <dimen name="dp_post_creater_image_width_height">160dp</dimen>
     <dimen name="d22sp">22sp</dimen>
