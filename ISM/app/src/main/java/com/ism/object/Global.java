@@ -12,6 +12,8 @@ public class Global {
     public static String strUserId;
     public static String strFullName;
     public static String strProfilePic;
+    public static String strTutorialGroupId;
+    public static String strTutorialGroupName;
 
     public static int intApiCounter = 0;
     public static ImageLoader imageLoader;

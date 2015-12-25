@@ -40,7 +40,7 @@ public class Whiteboard extends LinearLayout {
 	private int mPenColor = Color.BLACK;
 
     public interface WhiteboardListener {
-        public void onSendImageListener(Bitmap bitmap);
+        public void onSendImageClick(Bitmap bitmap);
     }
 
     public Whiteboard(Context context, AttributeSet attrs) {
@@ -168,7 +168,7 @@ public class Whiteboard extends LinearLayout {
             @Override
             public void onClick(View v) {
                 if (mWhiteboardListener != null) {
-                    mWhiteboardListener.onSendImageListener(mWhiteboardView.getBitmap());
+                    mWhiteboardListener.onSendImageClick(mWhiteboardView.getBitmap());
                 }
             }
         });

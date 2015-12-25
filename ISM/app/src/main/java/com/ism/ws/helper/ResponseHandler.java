@@ -23,6 +23,7 @@ import com.ism.ws.model.State;
 import com.ism.ws.model.StudymateRequest;
 import com.ism.ws.model.Token;
 import com.ism.ws.model.TutorialGroup;
+import com.ism.ws.model.TutorialGroupProfile;
 import com.ism.ws.model.User;
 import com.ism.ws.model.UserActivitiy;
 import com.ism.ws.model.UserPreferences;
@@ -69,6 +70,7 @@ public class ResponseHandler {
     private ArrayList<Token> token;
     private ArrayList<Comment> comment;
     private ArrayList<GroupDiscussionData> groupDiscussionData;
+    private ArrayList<TutorialGroupProfile> tutorialGroupProfile;
 
 
     @JsonProperty("message")
@@ -358,5 +360,14 @@ public class ResponseHandler {
 	public void setGroupDiscussionData(ArrayList<GroupDiscussionData> groupDiscussionData) {
 		this.groupDiscussionData = groupDiscussionData;
 	}
+
+	@JsonProperty("tutorial_group_profile")
+    public ArrayList<TutorialGroupProfile> getTutorialGroupProfile() {
+        return this.tutorialGroupProfile;
+    }
+
+    public void setTutorialGroupProfile(ArrayList<TutorialGroupProfile> tutorialGroupProfile) {
+        this.tutorialGroupProfile = tutorialGroupProfile;
+    }
 
 }
