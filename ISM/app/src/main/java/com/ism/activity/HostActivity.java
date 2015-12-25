@@ -699,6 +699,12 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         }
     }
 
+    public void showTutorialGroupName(String tutorialGroupName) {
+        txtTitle.setText(Html.fromHtml("<font color='#ffffff'>" + getString(R.string.group_name)
+                + "</font><font color='#1BBC9B'>" + tutorialGroupName + "</font>"));
+        txtTitle.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onFragmentResumed(int fragment) {
         try {

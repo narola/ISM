@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
