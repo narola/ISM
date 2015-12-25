@@ -123,7 +123,6 @@ switch ($_REQUEST['Service'])
     case "GetStudentResultsByExam":
     case "GetHighScorers":
     case "TempCreateQuestion":
-    case "GetBooks":
     case "GetExamsByUser":
     case "SubmitQuestionForFriday":
     case "CheckFridayExamStatus":
@@ -200,6 +199,7 @@ switch ($_REQUEST['Service'])
     case "GetAllSubjects":
     case "GetAllTopics":
     case "GetAllClassrooms":
+    case "GetAllBooks":
 
     {
         include_once 'Data.php';

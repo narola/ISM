@@ -67,6 +67,12 @@ class TutorialGroup
             }
                 break;
 
+            case "GetAllBooks":
+            {
+                return $this->getAllBooks($postData);
+            }
+                break;
+
         }
 	}
 
@@ -534,6 +540,56 @@ class TutorialGroup
             $message = MALICIOUS_SOURCE;
         }
         $response['classrooms']=$data;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+
+    /*
+     * getAllBooks
+    */
+    public function getAllBooks ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $query = "SELECT `id`, `book_name`, `book_description`,`ebook_link`,`front_cover_image`,`back_cover_image` FROM ".TABLE_BOOKS ." WHERE is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            //echo $query;
+            if (mysqli_num_rows($result)) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    //$post['subject_id']=$row;
+                    $data[] = $row;
+
+                }
+                $status = SUCCESS;
+
+            } else {
+                $status = SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['all_books']=$data;
         $response['message']=$message;
         $response['status']=$status;
 

@@ -103,12 +103,6 @@ class ExamFunctions
             }
                 break;
 
-            case "GetBooks":
-            {
-                return $this->getBooks($postData);
-            }
-                break;
-
             case "GetExamsByUser":
             {
                 return $this->getExamsByUser($postData);
@@ -147,7 +141,7 @@ class ExamFunctions
 
             case "SubmitStudentObjectiveResponse":
             {
-                return $this->submitStudentObjectiveResponse($postData);
+                return $this->submitStudentObjectiveResponse($postData);//remaining
             }
                 break;
 
@@ -195,13 +189,13 @@ class ExamFunctions
 
             case "GetPastTrendingQuestion":
             {
-                return $this->getPastTrendingQuestion($postData);
+                return $this->getPastTrendingQuestion($postData);//remaining
             }
                 break;
 
             case "PublishResults":
             {
-                return $this->publishResults($postData);
+                return $this->publishResults($postData);//remaining
             }
                 break;
 
@@ -1909,57 +1903,6 @@ class ExamFunctions
 
 
 
-        /*$user_id = validateObject($postData, 'user_id', "");
-        $user_id = addslashes($user_id);
-
-        $question_text = validateObject($postData, 'question_text', "");
-        $question_text = addslashes($question_text);
-
-        $subject_id = validateObject($postData, 'subject_id', "");
-        $subject_id = addslashes($subject_id);
-
-        $question_score = validateObject($postData, 'question_score', "");
-        $question_score = addslashes($question_score);
-
-        $question_format = validateObject($postData, 'question_format', "");
-        $question_format = addslashes($question_format);
-
-        /* $question_image = validateObject ($postData , 'question_image', "");
-         $question_image = addslashes($question_image);
-
-         $question_video = validateObject ($postData , 'question_video', "");
-         $question_video = addslashes($question_video);*/
-
-        /*$evaluation_notes = validateObject($postData, 'evaluation_notes', "");
-        $evaluation_notes = addslashes($evaluation_notes);
-
-        $solution = validateObject($postData, 'solution', "");
-        $solution = addslashes($solution);
-
-        $topic_id = validateObject($postData, 'topic_id', "");
-        $topic_id = addslashes($topic_id);
-
-        $classroom_id = validateObject($postData, 'classroom_id', "");
-        $classroom_id = addslashes($classroom_id);
-
-        $book_id = validateObject($postData, 'book_id', "");
-        $book_id = addslashes($book_id);
-
-        $question_id = validateObject($postData, 'question_id', "");
-        $question_id = addslashes($question_id);
-
-        $answer_choices = validateObject($postData, 'answer_choices', "");
-
-        $hashtag_data = validateObject($postData, "hashtag_data", "");
-        $hashtag_data = addslashes($hashtag_data);
-
-
-        $secret_key = validateObject($postData, 'secret_key', "");
-        $secret_key = addslashes($secret_key);
-
-        $access_key = validateObject($postData, 'access_key', "");
-        $access_key = addslashes($access_key);*/
-
         $security=new SecurityFunctions();
         $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
@@ -2224,55 +2167,7 @@ class ExamFunctions
         }
             return $post;
 }
-    /*
-     * getCourses
-    */
-    public function getBooks ($postData)
-    {
-        $message='';
-        $status='';
-        $data=array();
-        $post=array();
-        $response=array();
 
-        $secret_key = validateObject($postData, 'secret_key', "");
-        $secret_key = addslashes($secret_key);
-
-        $access_key = validateObject($postData, 'access_key', "");
-        $access_key = addslashes($access_key);
-
-        $security=new SecurityFunctions();
-        $isSecure = $security->checkForSecurity($access_key,$secret_key);
-
-        if($isSecure==yes) {
-
-            $query = "SELECT `id`, `book_name`, `book_description`,`ebook_link`,`front_cover_image`,`back_cover_image` FROM ".TABLE_BOOKS ." WHERE is_delete=0";
-            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
-            //echo $query;
-            if (mysqli_num_rows($result)) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    //$post['subject_id']=$row;
-                    $data[] = $row;
-
-                }
-                $status = SUCCESS;
-
-            } else {
-                $status = SUCCESS;
-                $message = DEFAULT_NO_RECORDS;
-            }
-        }
-        else
-        {
-            $status=FAILED;
-            $message = MALICIOUS_SOURCE;
-        }
-        $response['books']=$data;
-        $response['message']=$message;
-        $response['status']=$status;
-
-        return $response;
-    }
 
     public function getExamsByUser($postData)
     {
@@ -3065,7 +2960,7 @@ class ExamFunctions
             $message = MALICIOUS_SOURCE;
         }
 
-        $response['exam_evaluation']=$data;
+        $response['friday_exam_evaluation']=$data;
         $response['message']=$message;
         $response['status']=$status;
 
@@ -3183,12 +3078,10 @@ class ExamFunctions
                                         $queryToUpdateMarks = "UPDATE " . TABLE_STUDENT_OBJECTIVE_RESPONSE . " SET " . $updation . " WHERE `user_id`=" . $user_id . " and exam_id=" . $exam_id . " AND question_id=" . $row->question_id . " AND is_delete=0";
                                        // echo $queryToUpdateMarks;
                                         $resultToUpdateMarks = mysqli_query($GLOBALS['con'], $queryToUpdateMarks) or $message = mysqli_error($GLOBALS['con']);
-
                                     }
 
                                 }
                             }
-
                         }
                         else
                         {
@@ -3206,9 +3099,7 @@ class ExamFunctions
                                         {
                                             $updation = "marks_obtained = $row->correct_answer_score ";
                                         }
-
                                     }
-
                                 }
                             }
 
@@ -3223,7 +3114,8 @@ class ExamFunctions
 
                             if ($resultQuestionQuery) {
                                 $student_response_ids[] = mysqli_insert_id($GLOBALS['con']);
-                            } else {
+                            } else
+                            {
                                 $status = FAILED;
                                 $message = "failed to insert record in student objective response";
                             }
@@ -3397,9 +3289,7 @@ class ExamFunctions
         $isSecure = $security->checkForSecurityTest($access_key,$secret_key);
 
         if($isSecure==yes) {
-
             $response=$this->getExamQuestions($postData);
-
         }
         else
         {
@@ -3454,7 +3344,6 @@ class ExamFunctions
                 $query = "INSERT INTO " . TABLE_TRENDING_QUESTION . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
                 //echo $query; exit;
                 $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
-
 
 
                 if ($result) {

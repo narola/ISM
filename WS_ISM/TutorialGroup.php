@@ -18,48 +18,55 @@ class TutorialGroup
 	public function call_service($service, $postData)
 	{
 		switch ($service) {
-			case "AllocateTutorialGroup": {
+			case "AllocateTutorialGroup":
+            {
 				return $this->allocateTutorialGroup($postData);
 			}
 				break;
 
-			case "AcceptTutorialGroup": {
+			case "AcceptTutorialGroup":
+            {
 				return $this->acceptTutorialGroup($postData);
 			}
 				break;
 
-			case "GetTutorialGroupOfUser": {
+			case "GetTutorialGroupOfUser":
+            {
 				return $this->getTutorialGroupOfUser($postData);
 			}
 				break;
 
-            case "GetTopicForDay": {
+            case "GetTopicForDay": //need to check
+            {
                 return $this->getTopicForDay($postData);
             }
                 break;
 
-            case "GetGroupHistory":{
+            case "GetGroupHistory"://need to check
+            {
                 return $this->getGroupHistory($postData);
             }
                 break;
 
-            case "GetGroupProfile":{
+            case "GetGroupProfile"://need to check
+            {
                 return $this->getGroupProfile($postData);
             }
                 break;
 
-            case "PingTutorialMate":{
+            case "PingTutorialMate"://need to check and remaining
+            {
                 return $this->pingTutorialMate($postData);
             }
                 break;
 
-            case "AllocateTeacherToGroup":
+            case "AllocateTeacherToGroup"://need to check
             {
                 return $this->allocateTeacherToGroup($postData);
              }
                 break;
 
-            case "GetTutorialGroupExam":
+            case "GetTutorialGroupExam"://need to check
             {
                 return $this->getTutorialGroupExam($postData);
             }

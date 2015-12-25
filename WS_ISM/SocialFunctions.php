@@ -163,77 +163,6 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
     }
 
 
-    public function likeFeed1 ($postData)
-    {
-        $data=array();
-        $response=array();
-
-        $user_id = validateObject ($postData , 'user_id', "");
-        $user_id = addslashes($user_id);
-
-        $secret_key = validateObject($postData, 'secret_key', "");
-        $secret_key = addslashes($secret_key);
-
-        $access_key = validateObject($postData, 'access_key', "");
-        $access_key = addslashes($access_key);
-
-        $security=new SecurityFunctions();
-        $isSecure = $security->checkForSecurity($access_key,$secret_key);
-
-        if($isSecure==yes) {
-
-            $liked_id = validateObject($postData, 'liked_id', "");
-            $unliked_id = validateObject($postData, 'unliked_id', "");
-            if ($unliked_id != null) {
-                foreach ($unliked_id as $feed_id) {
-                    $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id;
-                    // echo $queryCheckFeed."\n_unliked";
-                    $resultCheckFeed = mysqli_query($GLOBALS['con'], $queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
-                    // echo $queryCheckFeed . "\n";
-                    if (mysqli_num_rows($resultCheckFeed)) {
-                        $val = mysqli_fetch_assoc($resultCheckFeed);
-                        $feed_like_id = $val['id'];
-                        $queryUpdate = "UPDATE `feed_like` SET `is_delete`=1 WHERE `feed_id`=" . $feed_like_id;
-                        // echo $procedure;
-                        $result = mysqli_query($GLOBALS['con'], $queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
-                    }
-                }
-            }
-
-            if ($liked_id != null) {
-                foreach ($liked_id as $feed_id) {
-                    $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id;
-                    //echo $queryCheckFeed."\n_liked";
-                    $resultCheckFeed = mysqli_query($GLOBALS['con'], $queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
-                    if (mysqli_num_rows($resultCheckFeed)) {
-                        $val = mysqli_fetch_assoc($resultCheckFeed);
-                        $feed_like_id = $val['id'];
-                        $queryUpdate = "UPDATE `feed_like` SET `is_delete`=0 WHERE `id`=" . $feed_like_id;
-                        // echo $procedure;
-                        $result = mysqli_query($GLOBALS['con'], $queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
-
-                    } else {
-                        $insertFields = "`like_by`, `feed_id`,`is_delete`";
-                        $insertValues = "" . $user_id . ", " . $feed_id . ",'0'";
-                        $query = "INSERT INTO " . TABLE_FEED_LIKE . " (" . $insertFields . ") VALUES (" . $insertValues . ")";
-                        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
-                    }
-                }
-            }
-            $status = "success";
-            $message = "Successfully";
-        }
-        else
-        {
-            $status="failed";
-            $message = MALICIOUS_SOURCE;
-        }
-        $response['like_feed']=$data;
-        $response['status']=$status;
-        $response['message']=$message;
-        return $response;
-
-    }
 
     /*
       * LikeFeed
@@ -1323,7 +1252,9 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
         return $response;
     }
 
-
+/*
+ * Temporartu services for testing
+ */
     public function getSecurirty($postData)
     {
         $message ='';
@@ -1348,7 +1279,9 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
 
 
 
-
+    /*
+     * Temporartu services for testing
+     */
     public function encryptionData($postData)
     {
 
@@ -1383,6 +1316,9 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
         return $response;
     }
 
+    /*
+ * Temporartu services for testing
+ */
     public function decryptionData($postData)
     {
         $status='';

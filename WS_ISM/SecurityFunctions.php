@@ -80,7 +80,7 @@ class SecurityFunctions {
             }
             else
             {
-                return $this->checkCredentialsForSecurity($accessvalue,$secretvalue);
+                return $this->checkCredentialsForSecurity($accessvalue,$secretvalue,$tempToken[0]);
 //                if ($secretvalue == $tempToken[0])
 //                {
 //                    $this->checkCredentialsForSecurity($accessvalue,$secretvalue);
@@ -105,9 +105,8 @@ class SecurityFunctions {
 
     }
 
-    public function checkCredentialsForSecurity($accessvalue,$secretvalue)
+    public function checkCredentialsForSecurity($accessvalue,$secretvalue,$tempToken)
     {
-
             $query = "SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='globalPassword' AND is_delete=0";
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
             $masterKey = mysqli_fetch_row($result);
@@ -149,14 +148,16 @@ class SecurityFunctions {
                     else {
                         $decrypted_secret_key = $security->decrypt($secretvalue, $decrypted_access_key);// echo " hi ".$decrypted_secret_key;
 
-                        if ($decrypted_secret_key == $tokenName) {
+                        if ($decrypted_secret_key == $tokenName)
+                        {
                             return yes;
-                        } else {
+                        }
+                        else
+                        {
                             //generate token
                             return no;
                         }
                     }
-
                 }
                 else
                 {
@@ -190,8 +191,9 @@ class SecurityFunctions {
                 if (mysqli_num_rows($resultToCheckAccessKeyInAuto) > 0) {
                     $query = "SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='tempToken' AND is_delete=0";
                     $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
-                    $tempToken = mysqli_fetch_row($result);
-                    return $tempToken[0];
+                    //$tempToken = mysqli_fetch_row($result);
+                   // return $tempToken[0];
+                    return $tempToken;
                 } else {
                     return no;
                 }

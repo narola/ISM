@@ -2628,7 +2628,7 @@ class ProfileFunctions
     }
 
     /*
-   *getBooksForUser
+   *getBooksForAuthor
    */
     public function getBooksForAuthor($postData)
     {
@@ -2653,7 +2653,14 @@ class ProfileFunctions
 
         if ($isSecure == yes) {
 
-            $selectQuery = "select book.*,autorBook.book_id as 'book_id' from ".TABLE_BOOKS ." book INNER JOIN ".TABLE_AUTHOR_BOOK." autorBook ON autorBook.book_id=book.id WHERE autorBook.is_delete=0 AND autorBook.user_id=".$user_id;
+            if($user_id==0)
+            {
+                $selectQuery = "SELECT `id` as 'book_id' , `book_name`, `book_description`,`ebook_link`,`front_cover_image`,`back_cover_image` FROM ".TABLE_BOOKS ." WHERE is_delete=0";
+            }
+            else{
+                $selectQuery = "select book.*,autorBook.book_id as 'book_id' from ".TABLE_BOOKS ." book INNER JOIN ".TABLE_AUTHOR_BOOK." autorBook ON autorBook.book_id=book.id WHERE autorBook.is_delete=0 AND autorBook.user_id=".$user_id." ORDER BY book.id DESC";
+            }
+
 
             $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
 
@@ -2661,7 +2668,10 @@ class ProfileFunctions
                 while ($val = mysqli_fetch_assoc($resultQuery)) {
                     $suggested['book_id'] = $val['book_id'];
                     $suggested['book_name'] = $val['book_name'];
-                    $suggested['book_image'] = $val['front_cover_image'];
+                    $suggested['book_description'] = $val['book_description'];
+                    $suggested['front_cover_image'] = $val['front_cover_image'];
+                    $suggested['back_cover_image'] = $val['back_cover_image'];
+                    $suggested['ebook_link'] = $val['ebook_link'];
 
                   //  $suggested['author_name'] = $val['full_name'];
                   //  $suggested['author_image'] = $val['profile_pic'];
@@ -3444,7 +3454,8 @@ class ProfileFunctions
 
         if ($isSecure == yes) {
 
-            $selectQuery = "SELECT followers.follower_id as 'follower_id',users.full_name,users.profile_pic FROM ".TABLE_FOLLOWERS." followers INNER JOIN ".TABLE_USERS." users ON followers.follower_id=users.id WHERE followers.follow_to=". $user_id ." AND followers.follow_status='followed' AND followers.is_delete=0";
+            //$selectQuery = "SELECT followers.follower_id as 'follower_id',users.full_name,users.profile_pic FROM ".TABLE_FOLLOWERS." followers INNER JOIN ".TABLE_USERS." users ON followers.follower_id=users.id WHERE followers.follow_to=". $user_id ." AND followers.follow_status='followed' AND followers.is_delete=0";
+                 $selectQuery = "SELECT followers.follower_id as 'follower_id',users.full_name,users.profile_pic,country.country_name,school.school_name FROM ".TABLE_FOLLOWERS." followers INNER JOIN ".TABLE_USERS." users ON followers.follower_id=users.id LEFT JOIN ".TABLE_COUNTRIES." country ON users.country_id=country.id LEFT JOIN ". TABLE_STUDENT_PROFILE." student_proile ON followers.follower_id=student_proile.user_id LEFT JOIN ".TABLE_SCHOOLS." school ON student_proile.school_id=school.id WHERE followers.follow_to=". $user_id ." AND followers.follow_status='followed' AND followers.is_delete=0";
                 $selResult = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
 
                 if (mysqli_num_rows($selResult) > 0) {
@@ -3452,6 +3463,8 @@ class ProfileFunctions
                         $post['follower_id']=$row['follower_id'];
                         $post['follower_name']=$row['full_name'];
                         $post['follower_profile_pic']=$row['profile_pic'];
+                        $post['follower_country_name']=$row['country_name'];
+                        $post['follower_school']=$row['school_name'];
 
                          $queryGetAuthorFollower="SELECT follow_to FROM ".TABLE_FOLLOWERS." WHERE `follower_id`=".$row['follower_id']." AND follow_status='followed' AND is_delete=0";
                         $resultGetAuthorFollower= mysqli_query($GLOBALS['con'], $queryGetAuthorFollower) or $message = mysqli_error($GLOBALS['con']);
@@ -3461,15 +3474,11 @@ class ProfileFunctions
                         if(mysqli_num_rows($resultGetAuthorFollower))
                         {
                             while ($row1 = mysqli_fetch_assoc($resultGetAuthorFollower))
-
                             {
                                 //echo $getCountQuery="SELECT followers.count(*) FROM  ".TABLE_FOLLOWERS." followers LEFT JOIN ".TABLE_AUTHOR_PROFILE." author_profile ON followers.follow_to=author_profile.id AND followers.follow_to=".$row1['follow_to']." AND followers.follow_status='followed'";
                                 $getCountQuery="SELECT user_id FROM author_profile WHERE user_id IN ( SELECT follow_to FROM followers WHERE follow_to=".$row1['follow_to'].")" ;
                                 $getCountResult = mysqli_query($GLOBALS['con'], $getCountQuery) or $message = mysqli_error($GLOBALS['con']);
-                                $rowCount=mysqli_fetch_row($getCountResult);
-
                                 $count+=mysqli_num_rows($getCountResult);
-
                             }
                             $post['number_of_author_followed']=$count;
                         }

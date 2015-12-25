@@ -57,47 +57,56 @@ class TeacherFunctions
             }
                 break;
 
-            case "GetClasswallFeeds": {
+            case "GetClasswallFeeds":
+            {
                 return $this->getClasswallFeeds($postData);//done
             }
                 break;
 
-            case "GetAllAssignment": {
+            case "GetAllAssignment":
+            {
                 return $this->getAllAssignment($postData);//done
             }
                 break;
 
-            case "GetAssignmentByBook": {
+            case "GetAssignmentByBook":
+            {
                 return $this->getAssignmentByBook($postData);//done
             }
                 break;
 
-            case "CheckGroupAllocation": {
+            case "CheckGroupAllocation":
+            {
                 return $this->checkGroupAllocation($postData);
             }
                 break;
 
-            case "GetAllAllocatedGroups": {
+            case "GetAllAllocatedGroups":
+            {
                 return $this->getAllAllocatedGroups($postData);
             }
                 break;
 
-            case "GetAllLessonNotes": {
+            case "GetAllLessonNotes": //need to check
+            {
                 return $this->getAllLessonNotes($postData);
             }
                 break;
 
-            case "GetLessonNotesWithDetails": {
+            case "GetLessonNotesWithDetails": //need to check
+            {
                 return $this->getLessonNotesWithDetails($postData);
             }
                 break;
 
-            case "SubmitLessonNotes": {
+            case "SubmitLessonNotes": //need to check
+            {
                 return $this->submitLessonNotes($postData);
             }
                 break;
 
-            case "UploadMediaForLessonNotes": {
+            case "UploadMediaForLessonNotes":
+            {
                 return $this->uploadMediaForLessonNotes($postData);
             }
                 break;
@@ -1579,10 +1588,13 @@ class TeacherFunctions
                     $book['book_id'] = $val['book_id'];
                     $book['book_name'] = $val['book_name'];
 
-                    $query = "SELECT id,assignment_name FROM " . TABLE_ASSIGNMENTS ." WHERE book_id=" . $val['book_id'] . " AND is_delete=0";
+                    $queryToCountTotalAssignment = "SELECT count(id) FROM " . TABLE_ASSIGNMENTS ." WHERE book_id=" . $val['book_id'] . " AND is_delete=0 ORDER BY id DESC LIMIT 3";
+                    $resultToCountTotalAssignment = mysqli_query($GLOBALS['con'], $queryToCountTotalAssignment) or $message = mysqli_error($GLOBALS['con']);
+                    $rowCount=mysqli_fetch_row($resultToCountTotalAssignment);
+                    $book['total_assignments'] = $rowCount[0];
+
+                    $query = "SELECT id,assignment_name FROM " . TABLE_ASSIGNMENTS ." WHERE book_id=" . $val['book_id'] . " AND is_delete=0 ORDER BY id DESC LIMIT 3";
                     $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
-
-
 
                     $post=array();
                     if (mysqli_num_rows($result)>0) {
@@ -1590,6 +1602,7 @@ class TeacherFunctions
                         while ($row = mysqli_fetch_assoc($result)) {
 
                             $assignments['assignment_id'] = $row['id'];
+
                             $assignments['assignment_name'] = $row['assignment_name'];
 
                            $post[]=$row;
@@ -1620,7 +1633,7 @@ class TeacherFunctions
         }
         $response['message'] = $message;
         $response['status'] = $status;
-        $response['author_book_assignment'] = $data;
+        $response['book_assignments'] = $data;
 
         return $response;
     }
