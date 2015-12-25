@@ -274,6 +274,9 @@
     <string name="strquestionanswered">Question Answered</string>
     <string name="strfavouritequestions">Favourite Questions</string>
     <string name="strbadgesearned">Badges Earned</string>
+    <string name="strassignmentinformation">Assignment Information</string>
+    <string name="strstudentfrom">Student from</string>
+    <string name="strlivein">Live in</string>
 
     <string name="strSMSAlertsForAssignments">SMS Alerts For Assignment</string>
     <string name="strSMSAlertsForEvaluations">SMS Alerts For Evaluations</string>

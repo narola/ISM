@@ -39,8 +39,8 @@ import com.ism.author.fragment.createexam.CreateExamAssignmentContainerFragment;
 import com.ism.author.fragment.createexam.CreateExamFragment;
 import com.ism.author.fragment.createquestion.AddQuestionContainerFragment;
 import com.ism.author.fragment.gotrending.GoTrendingFragment;
-import com.ism.author.fragment.gotrending.PastFragment;
-import com.ism.author.fragment.mydesk.AddAssignmentFragment;
+import com.ism.author.fragment.gotrending.PastTrendingQuestionsFragment;
+import com.ism.author.fragment.mydesk.CreateAssignmentFragment;
 import com.ism.author.fragment.mydesk.MyDeskFragment;
 import com.ism.author.fragment.userprofile.AllMessageFragment;
 import com.ism.author.fragment.userprofile.AllNotificationFragment;
@@ -351,7 +351,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
                     setBackStackFragmentKey(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AddAssignmentFragment.newInstance(), AppConstant.FRAGMENT_ADD_ASSIGNMENT).commit();
+                            CreateAssignmentFragment.newInstance(), AppConstant.FRAGMENT_ADD_ASSIGNMENT).commit();
                     break;
 
                 case FRAGMENT_TRIAL:
@@ -371,7 +371,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
                     setBackStackFragmentKey(AppConstant.FRAGMENT_PAST);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            PastFragment.newInstance(), AppConstant.FRAGMENT_PAST).commit();
+                            PastTrendingQuestionsFragment.newInstance(), AppConstant.FRAGMENT_PAST).commit();
                     break;
 
                 case FRAGMENT_ASSESSMENT:
@@ -997,8 +997,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 break;
 
             case FRAGMENT_ADD_ASSIGNMENT:
-                AddAssignmentFragment addAssignmentFragment = (AddAssignmentFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
-                addAssignmentFragment.onBackClick();
+                CreateAssignmentFragment createAssignmentFragment = (CreateAssignmentFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
+                createAssignmentFragment.onBackClick();
                 break;
 
             case FRAGMENT_GOTRENDING:
@@ -1007,8 +1007,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 break;
 
             case FRAGMENT_PAST:
-                PastFragment pastFragment = (PastFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_PAST);
-                pastFragment.onBackClick();
+                PastTrendingQuestionsFragment pastTrendingQuestionsFragment = (PastTrendingQuestionsFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_PAST);
+                pastTrendingQuestionsFragment.onBackClick();
                 break;
 
             case FRAGMENT_TRIAL:

@@ -42,24 +42,17 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
     private View view;
 
     private FragmentListener fragListener;
-    private TextView txtYourAnswer;
+    private TextView txtYourAnswer, txtSave, txt_Creator_Name, txtQuestion, txtDate, txtFollowers,
+            txtQuestionMostFollower, txtEmpty, txtEmptyAnswer;
     private EditText etAnswer;
-    private TextView txtSave;
-    private TextView txt_Creator_Name;
-    private TextView txtQuestion;
-    private TextView txtDate;
-    private TextView txtFollowers;
-    private TextView txtQuestionMostFollower;
-    private RecyclerView rvList;
+    private RecyclerView rvTrendingQuestionsList;
     private QuestionsMostFollowAdapter questionsMostFollowAdapter;
-    private TextView txtEmpty;
     private AuthorHostActivity activityHost;
     private String trendingId;
     private ImageView imgProfilePic;
     private ArrayList<TrendingQuestion> arrayListTrendingQuestions = new ArrayList<>();
     private InputValidator inputValidator;
     private int visibleQuestionPosition = -1;
-    private TextView txtEmptyAnswer;
     ScrollView scrollView;
 
     public static GoTrendingFragment newInstance() {
@@ -108,8 +101,8 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
         etAnswer = (EditText) view.findViewById(R.id.et_answer);
         etAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-        rvList = (RecyclerView) view.findViewById(R.id.rv_list);
-        rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvTrendingQuestionsList = (RecyclerView) view.findViewById(R.id.rv_trending_questions_list);
+        rvTrendingQuestionsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
 
@@ -118,7 +111,6 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
 
         txtEmptyAnswer = (TextView) view.findViewById(R.id.txt_empty_answer);
         txtEmptyAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
-
 
         setEmptyView(true);
         onClicks();
@@ -188,8 +180,9 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private void setEmptyView(boolean isEnable) {
+
         txtEmpty.setVisibility(isEnable ? View.VISIBLE : View.GONE);
-        rvList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+        rvTrendingQuestionsList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
         txtEmptyAnswer.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         scrollView.setVisibility(isEnable ? View.GONE : View.VISIBLE);
 
@@ -251,12 +244,12 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseSubmitTrendingAnswer : " + WebConstants.SUCCESS);
                     etAnswer.setText("");
                     arrayListTrendingQuestions.remove(visibleQuestionPosition);
                     setQuestion(arrayListTrendingQuestions.size() - 1 > visibleQuestionPosition ? visibleQuestionPosition - 1 : visibleQuestionPosition + 1);
                     questionsMostFollowAdapter.notifyDataSetChanged();
-                    if(arrayListTrendingQuestions.size()==0) setEmptyView(true); else setEmptyView(false);
+                    if (arrayListTrendingQuestions.size() == 0) setEmptyView(true);
+                    else setEmptyView(false);
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Debug.i(TAG, "onResponseSubmitTrendingAnswer : " + WebConstants.FAILED);
 
@@ -275,18 +268,9 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseGetTrending : " + WebConstants.SUCCESS);
+
                     arrayListTrendingQuestions = responseHandler.getTrendingQuestions();
                     setUpData(arrayListTrendingQuestions);
-//                    if (getBundleArguments().containsKey(QuestionsMostFollowAdapter.ARG_TRENDING_ID)) {
-//                        txtDate.setText(com.ism.commonsource.utility.Utility.DateFormat(getBundleArguments().getString(QuestionsMostFollowAdapter.ARG_DATE)));
-//                        txt_Creator_Name.setText(getBundleArguments().getString(QuestionsMostFollowAdapter.ARG_CREATOR_NAME));
-//                        txtFollowers.setText(getBundleArguments().getString(QuestionsMostFollowAdapter.ARG_FOLLOWERS));
-//                        txtQuestion.setText(getBundleArguments().getString(QuestionsMostFollowAdapter.ARG_QUESTIONS));
-//                        trendingId = getBundleArguments().getString(QuestionsMostFollowAdapter.ARG_TRENDING_ID);
-//                        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + getBundleArguments().getString(QuestionsMostFollowAdapter.ARG_QUESTION_CREATOR_PROFILE_PIC), imgProfilePic, ISMAuthor.options);
-//                    }
-
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Debug.i(TAG, "onResponseGetTrending : " + WebConstants.FAILED);
 
@@ -306,7 +290,7 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
                 setEmptyView(false);
 
                 questionsMostFollowAdapter = new QuestionsMostFollowAdapter(getActivity(), trendingQuestions, this);
-                rvList.setAdapter(questionsMostFollowAdapter);
+                rvTrendingQuestionsList.setAdapter(questionsMostFollowAdapter);
 
             } else {
                 setEmptyView(true);
@@ -316,10 +300,6 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
             Debug.i(TAG, "setUpData Exception : " + e.getLocalizedMessage());
         }
     }
-
-//    private Bundle getBundleArguments() {
-//        return ((AuthorHostActivity) getActivity()).getBundle();
-//    }
 
     @Override
     public void onViewSelect(int position) {

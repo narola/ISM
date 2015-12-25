@@ -31,29 +31,29 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 21/10/15.
  */
-public class PastFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class PastTrendingQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
-    private static final String TAG = PastFragment.class.getSimpleName();
+    private static final String TAG = PastTrendingQuestionsFragment.class.getSimpleName();
     private View view;
 
     private FragmentListener fragListener;
     private RecyclerView rvList;
     private PastQuestionsAdapter pastQuestionsAdapter;
-    private TextView txtEmpty;
     private AuthorHostActivity activityHost;
+    private TextView tvNoDataMsg;
 
-    public static PastFragment newInstance() {
-        PastFragment fragGoTrending = new PastFragment();
-        return fragGoTrending;
+    public static PastTrendingQuestionsFragment newInstance() {
+        PastTrendingQuestionsFragment pastTrendingQuestionsFragment = new PastTrendingQuestionsFragment();
+        return pastTrendingQuestionsFragment;
     }
 
-    public PastFragment() {
+    public PastTrendingQuestionsFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_past, container, false);
+        view = inflater.inflate(R.layout.fragment_past_trending_questions, container, false);
 
         initGlobal();
 
@@ -62,19 +62,18 @@ public class PastFragment extends Fragment implements WebserviceWrapper.Webservi
 
     private void initGlobal() {
 
-        rvList = (RecyclerView) view.findViewById(R.id.rv_list);
+        rvList = (RecyclerView) view.findViewById(R.id.rv_past_trending_question_list);
         rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        txtEmpty = (TextView) view.findViewById(R.id.txt_empty);
-        txtEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         setEmptyView(true);
-
-        callApiForGetPastQuestions();
+        callApiForGetPastTrendingQuestions();
     }
 
     private void setEmptyView(boolean isEnable) {
-        txtEmpty.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         rvList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
 
@@ -109,19 +108,18 @@ public class PastFragment extends Fragment implements WebserviceWrapper.Webservi
         ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_PAST);
     }
 
-    private void callApiForGetPastQuestions() {
+    private void callApiForGetPastTrendingQuestions() {
         if (Utility.isConnected(getActivity())) {
             try {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setAuthorId(Global.strUserId);
                 attribute.setRole(Global.role);
-                attribute.setCheckSlot(Global.checkSlotNo);
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-                        .execute(WebConstants.GET_TRENDING_QUESTIONS);
+                        .execute(WebConstants.GET_PAST_TRENDING_QUESTION);
             } catch (Exception e) {
-                Log.e(TAG, "callApiForGetPastQuestions Exception : " + e.toString());
+                Log.e(TAG, "callApiForGetPastTrendingQuestions Exception : " + e.toString());
             }
         } else {
             Utility.alertOffline(getActivity());
@@ -133,8 +131,8 @@ public class PastFragment extends Fragment implements WebserviceWrapper.Webservi
         try {
             activityHost.hideProgress();
             switch (apiCode) {
-                case WebConstants.GET_TRENDING_QUESTIONS:
-                    onResponseGetPastQuestions(object, error);
+                case WebConstants.GET_PAST_TRENDING_QUESTION:
+                    onResponseGetPastTrendingQuestions(object, error);
                     break;
             }
 
@@ -143,24 +141,23 @@ public class PastFragment extends Fragment implements WebserviceWrapper.Webservi
         }
     }
 
-    private void onResponseGetPastQuestions(Object object, Exception error) {
+    private void onResponseGetPastTrendingQuestions(Object object, Exception error) {
         try {
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseGetPastQuestions : " + WebConstants.SUCCESS);
                     setUpData(responseHandler.getTrendingQuestions());
 
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Debug.i(TAG, "onResponseGetPastQuestions : " + WebConstants.FAILED);
+                    Debug.i(TAG, "onResponseGetPastTrendingQuestions : " + WebConstants.FAILED);
 
                 }
             } else if (error != null) {
-                Debug.i(TAG, "onResponseGetPastQuestions error : " + error.toString());
+                Debug.i(TAG, "onResponseGetPastTrendingQuestions error : " + error.toString());
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "onResponseGetPastQuestions Exceptions : " + e.getLocalizedMessage());
+            Debug.i(TAG, "onResponseGetPastTrendingQuestions Exceptions : " + e.getLocalizedMessage());
         }
     }
 
