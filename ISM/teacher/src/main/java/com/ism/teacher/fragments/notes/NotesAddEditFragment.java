@@ -11,34 +11,40 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
+import com.ism.teacher.richeditor.Formula;
+import com.ism.teacher.richeditor.GridAdaptor;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
 /**
  * This Fragment is used to view notes/edit notes.
  */
-public class NotesAddEditFragment extends Fragment implements View.OnClickListener, RichTextEditor.RichTextListener {
+public class NotesAddEditFragment extends Fragment implements View.OnClickListener, RichTextEditor.RichTextListener,Formula.FormulaListener, GridAdaptor.InsertSymbolListener {
 
     private static final String TAG = NotesAddEditFragment.class.getSimpleName();
-
-
-    RichTextEditor rteNotes;
 
     /**
      * Hide the text edit options when user is just reading note.
      * enable the options to edit text when user need to edit
+     *
      */
 
     HorizontalScrollView richEditorEditControls;
+    RichTextEditor rteNotes;
+    private Formula formula;
+    RelativeLayout rlRichEditorContainer;
+
     ImageView imgEditNote, imgShareNote;
     EditText etNoteTitle;
     private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
     Uri selectedUri = null;
 
+    //To know user is viewing note or creating new note
     public static String ARG_IS_CREATE_NOTE = "isCreateNote";
 
     public static NotesAddEditFragment newInstance() {
@@ -50,6 +56,10 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
         // Required empty public constructor
     }
 
+    public NotesAddEditFragment (Fragment fragment)
+    {
+
+    }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -65,7 +75,7 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
     }
 
     private void initGlobal(View rootview) {
-
+        rlRichEditorContainer =(RelativeLayout)rootview.findViewById(R.id.rl_rich_editor_container);
         rteNotes = (RichTextEditor) rootview.findViewById(R.id.rte_notes);
         richEditorEditControls = (HorizontalScrollView) rootview.findViewById(R.id.horizontal_rich_editor_top_options);
         Utility.hideView(richEditorEditControls);
@@ -124,6 +134,10 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
     @Override
     public void openFormulaDialog() {
         Debug.e(TAG, "formula");
+        formula = new Formula(getActivity());
+        formula.setFormulaListener((Formula.FormulaListener) this);
+        rlRichEditorContainer.addView(formula);
+        formula.gridAdaptor.setInsertSymbolListener(this);
     }
 
     private void openImage() {
@@ -177,5 +191,16 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
 
     public Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
+    }
+
+    @Override
+    public void close() {
+        rlRichEditorContainer.removeView(formula);
+        formula = null;
+    }
+
+    @Override
+    public void insertSymbol(String symbol) {
+        rteNotes.addSymbols(symbol);
     }
 }

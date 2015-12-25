@@ -78,6 +78,7 @@ public class PostFileAdapter extends BaseAdapter {
             ImageView imgClose = (ImageView) convertView.findViewById(R.id.img_cancel);
             ImageView imgPlay = (ImageView) convertView.findViewById(R.id.img_play);
             imageView.setVisibility(View.VISIBLE);
+            imgClose.setVisibility(View.VISIBLE);
             Log.e("File", "" + arrayList.get(position).getStrFilePath());
             if (arrayList.get(position).getStrFileType().equals(PostFeedActivity.IMAGE)) {
                 if (arrayList.get(position).getStrFilePath() != null) {
@@ -102,18 +103,18 @@ public class PostFileAdapter extends BaseAdapter {
                     }
                 });
             } else if (arrayList.get(position).getStrFileType().equals(PostFeedActivity.VIDEO)) {
+                imgPlay.setVisibility(View.VISIBLE);
                 MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
                 mMediaMetadataRetriever.setDataSource(context, arrayList.get(position).getStrFilePath());
                 Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
                 imageView.setImageBitmap(bitmap);
                 //videoIndicator.setText(mediaPlayer.getDuration() + "");
-                videoIndicator.setVisibility(View.VISIBLE);
-                imgPlay.setVisibility(View.VISIBLE);
+                // videoIndicator.setVisibility(View.VISIBLE);
 
 
             } else if (arrayList.get(position).getStrFileType().equals(PostFeedActivity.AUDIO)) {
-               // videoIndicator.setText(mediaPlayer.getDuration() + "");
-               videoIndicator.setVisibility(View.VISIBLE);
+                // videoIndicator.setText(mediaPlayer.getDuration() + "");
+                videoIndicator.setVisibility(View.VISIBLE);
                 imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.audioplay));
             }
             imgClose.setVisibility(View.VISIBLE);
@@ -130,10 +131,9 @@ public class PostFileAdapter extends BaseAdapter {
                     notifyDataSetChanged();
                 }
             });
-            imgClose.setVisibility(View.VISIBLE);
-        }
-        catch (Exception e){
-            Debug.i(TAG,"getView Exception : "+e.getLocalizedMessage());
+
+        } catch (Exception e) {
+            Debug.i(TAG, "getView Exception : " + e.getLocalizedMessage());
         }
         return convertView;
     }

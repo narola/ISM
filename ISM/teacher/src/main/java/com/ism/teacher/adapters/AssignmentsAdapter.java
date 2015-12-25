@@ -211,12 +211,22 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         //new
         getBundleArguments().putString(ARG_EXAM_ATTEMPT_COUNT, arrayListAssignments.get(position).getAttemptCount());
         getBundleArguments().putString(ARG_EXAM_INSTRUCTIONS, arrayListAssignments.get(position).getExamInstructions());
-        getBundleArguments().putString(ARG_EXAM_IS_RANDOM_QUESTION, arrayListAssignments.get(position).getRandomQuestion());
-        getBundleArguments().putString(ARG_EXAM_IS_NEGATIVE_MARKING, arrayListAssignments.get(position).getNegativeMarking());
         getBundleArguments().putString(ARG_EXAM_NEGATIVE_MARK_VALUE, arrayListAssignments.get(position).getNegativeMarkValue());
-        getBundleArguments().putString(ARG_EXAM_IS_USE_QUESTION_SCORE, arrayListAssignments.get(position).getUseQuestionScore());
         getBundleArguments().putString(ARG_EXAM_CORRECT_ANSWER_SCORE, arrayListAssignments.get(position).getCorrectAnswerScore());
-        getBundleArguments().putString(ARG_EXAM_IS_DECLARE_RESULTS, arrayListAssignments.get(position).getDeclareResults());
+
+        //booleans
+
+        getBundleArguments().putBoolean(ARG_EXAM_IS_RANDOM_QUESTION, arrayListAssignments.get(position).getRandomQuestion().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+
+        getBundleArguments().putBoolean(ARG_EXAM_IS_NEGATIVE_MARKING, arrayListAssignments.get(position).getNegativeMarking().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+
+        getBundleArguments().putBoolean(ARG_EXAM_IS_USE_QUESTION_SCORE, arrayListAssignments.get(position).getUseQuestionScore().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+
+        getBundleArguments().putBoolean(ARG_EXAM_IS_DECLARE_RESULTS, arrayListAssignments.get(position).getDeclareResults().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
 
         getBundleArguments().putString(ARG_EXAM_ASSESSOR, arrayListAssignments.get(position).getExamAssessor());
         getBundleArguments().putString(ARG_EXAM_START_DATE, arrayListAssignments.get(position).getExamStartDate());

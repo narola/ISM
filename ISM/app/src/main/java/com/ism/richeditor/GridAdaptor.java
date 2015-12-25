@@ -1,4 +1,4 @@
-package com.ism.adapter;
+package com.ism.richeditor;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,18 +9,16 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 
-import com.ism.activity.HostActivity;
-import com.ism.object.Global;
-import com.ism.utility.Debug;
-
+import com.ism.R;
 
 /**
  * Created by c85 on 06/11/15.
  */
 public class GridAdaptor extends BaseAdapter {
     private Context mContext;
+
     private String[] formulas;
-    private final int btnsize = 40;
+    private final int btnsize = 50;
 
     // Constructor
     public GridAdaptor(Context c, String[] formulas) {
@@ -47,24 +45,34 @@ public class GridAdaptor extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final Button btnSymbol = new Button(mContext);
 
-        btnSymbol.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        btnSymbol.setTypeface(Global.myTypeFace.getRalewayExtraBold(), Typeface.BOLD);
-        btnSymbol.setTextSize(32);
+        btnSymbol.setLayoutParams(new GridView.LayoutParams(btnsize, btnsize));
+        btnSymbol.setTypeface(null, Typeface.BOLD);
+        btnSymbol.setTextSize(25);
         btnSymbol.setBackgroundColor(Color.TRANSPARENT);
-       // btnSymbol.setBackgroundResource(R.drawable.border);
+        btnSymbol.setBackgroundResource(R.drawable.border);
         btnSymbol.setText(formulas[position]);
-        btnSymbol.setAllCaps(false);
-        Debug.i("Char ", formulas[position]);
+
         btnSymbol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                ((MainActivity) mContext).insertSymbols(((Button) v).getText() + "");
-                ((HostActivity)mContext).insertSymbolListener.insertSymbol(((Button) v).getText() + "");
+                insertSymbolListener.insertSymbol(((Button) v).getText() + "");
             }
         });
         return btnSymbol;
     }
 
+
+    public interface InsertSymbolListener {
+        public void insertSymbol(String symbol);
+    }
+
+
+    public void setInsertSymbolListener(InsertSymbolListener insertSymbolListener) {
+        this.insertSymbolListener = insertSymbolListener;
+    }
+
+    private InsertSymbolListener insertSymbolListener;
 
 
 }

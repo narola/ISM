@@ -213,10 +213,10 @@ public class Utility {
                 confirmationListener.onConfirmationResponse(requestId, true);
             }
         }).setNegativeButton(R.string.strcancel, new DialogInterface.OnClickListener() {
-	        @Override
-	        public void onClick(DialogInterface dialog, int which) {
-		        confirmationListener.onConfirmationResponse(requestId, false);
-	        }
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                confirmationListener.onConfirmationResponse(requestId, false);
+            }
         }).create();
         dialog.setCancelable(cancelable);
 //        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
@@ -321,11 +321,11 @@ public class Utility {
      */
     public static void sortPostedOnAsc(ArrayList<Notice> arrListData) {
         Collections.sort(arrListData, new Comparator<Notice>() {
-	        @Override
-	        public int compare(Notice lData, Notice rData) {
-		        int compare = lData.getPostedOn().compareTo(rData.getPostedOn());
-		        return compare;
-	        }
+            @Override
+            public int compare(Notice lData, Notice rData) {
+                int compare = lData.getPostedOn().compareTo(rData.getPostedOn());
+                return compare;
+            }
         });
     }
 
@@ -582,5 +582,26 @@ public class Utility {
 		mFormatBuilder.setLength(0);
 		return mFormatter.format("%02d", number).toString();
 	}
+    /**
+     * get the file path from the URI
+     *
+     * @param contentURI
+     * @param mContext
+     * @return
+     */
+
+    public static String getRealPathFromURI(Uri contentURI, Context mContext) {
+        String result;
+        Cursor cursor = mContext.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
 
 }

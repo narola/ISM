@@ -53,4 +53,12 @@ public class AppConstant {
      */
 
     public static final String DATE_YYYYMMDD="yyyy-MM-dd";
+    public static final int REQUEST_CODE_PICK_FROM_GALLERY = 771;
+
+    /**
+     *
+     */
+    public static final String MEDIATYPE_IMAGE = "image";
+    public static final String MEDIATYPE_VIDEO = "video";
+    public static final String MEDIATYPE_AUDIO = "audio";
 }
