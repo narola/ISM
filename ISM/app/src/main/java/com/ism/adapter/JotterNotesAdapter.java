@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.fragment.userProfile.AllNoticeFragment;
-import com.ism.object.MyTypeFace;
+import com.ism.object.Global;
 import com.ism.ws.model.Notice;
 
 import java.util.ArrayList;
@@ -29,14 +29,12 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
     private LayoutInflater inflater;
     private Context context;
     private ArrayList<Notice> arrListNotice;
-    private MyTypeFace myTypeFace;
 //	private HostActivity activityHost;
 
     public JotterNotesAdapter(Context context, ArrayList<Notice> arrListNotice) {
         this.context = context;
         this.arrListNotice = arrListNotice;
         inflater = LayoutInflater.from(context);
-        myTypeFace = new MyTypeFace(context);
     }
 
     @Override
@@ -51,9 +49,9 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         try {
-            if (position == 0) {
-                holder.rrMain.setBackgroundColor(Color.parseColor("#D6DBDF"));
-            }
+//            if (position == 0) {
+//                holder.rrMain.setBackgroundColor(Color.parseColor("#D6DBDF"));
+//            }
             holder.txtSubject.setText(arrListNotice.get(position).getNoticeTitle());
             holder.txtNotename.setText(arrListNotice.get(position).getNotice());
 
@@ -101,9 +99,9 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
             imgMedia = (ImageView) view.findViewById(R.id.img_media_files);
             rrMain = (RelativeLayout) view.findViewById(R.id.rr_main);
 
-            txtSubject.setTypeface(myTypeFace.getRalewayRegular());
-            txtNotename.setTypeface(myTypeFace.getRalewayThin());
-            txtNoteBy.setTypeface(myTypeFace.getRalewayLight());
+            txtSubject.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtNotename.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtNoteBy.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         }
     }

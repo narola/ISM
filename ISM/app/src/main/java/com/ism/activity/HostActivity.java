@@ -33,11 +33,11 @@ import com.ism.fragment.AllStudymateRequestFragment;
 import com.ism.fragment.AssessmentFragment;
 import com.ism.fragment.ChatFragment;
 import com.ism.fragment.ClassroomFragment;
-import com.ism.fragment.desk.DeskFragment;
+import com.ism.fragment.DeskFragment;
 import com.ism.fragment.ReportCardFragment;
+import com.ism.fragment.desk.JotterScientificSymbolFragment;
 import com.ism.fragment.tutorialGroup.QuestionPaletteFragment;
 import com.ism.fragment.tutorialGroup.TutorialFragment;
-import com.ism.fragment.desk.JotterScientificSymbolFragment;
 import com.ism.fragment.userProfile.AllMessageFragment;
 import com.ism.fragment.userProfile.AllNoticeFragment;
 import com.ism.fragment.userProfile.AllNotificationFragment;
@@ -58,7 +58,6 @@ import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.BookData;
 import com.ism.ws.model.NotificationSetting;
 import com.ism.ws.model.PrivacySetting;
 import com.ism.ws.model.SMSAlert;
@@ -138,7 +137,6 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private ArrayList<PrivacySetting> arrayListPrivacySetting = new ArrayList<>();
     private InputMethodManager inputMethod;
     private ScrollListener scrollListener;
-
     private ResizeView resizeListView;
     public InsertSymbolListener insertSymbolListener;
 
@@ -152,7 +150,6 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
-
     }
 
     public interface HostListenerAllNotification {
@@ -200,9 +197,9 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
         public void onRemoveFromLibrary(String id);
 
-        public void onSearchFav(ArrayList<BookData> arrayList);
+       // public void onSearchFav(ArrayList<BookData> arrayList);
 
-        public void onSearchSuggested(ArrayList<BookData> arrayList);
+       // public void onSearchSuggested(ArrayList<BookData> arrayList);
     }
 
     public interface ManageResourcesListner {
@@ -460,7 +457,9 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     break;
                 case FRAGMENT_DESK:
                     if (currentMainFragment != fragment) {
-                        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, DeskFragment.newInstance()).commit();
+                        DeskFragment deskFragment = DeskFragment.newInstance(FRAGMENT_DESK);
+                        listenerHost = deskFragment;
+                        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, deskFragment).commit();
                         if (currentRightFragment != FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL) {
                             loadFragment(FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL, null);
                         }
@@ -1073,7 +1072,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     }
 
     public interface InsertSymbolListener {
-        public void insertSymbol(String symbol);
+        public void Scientific(String symbol);
     }
 
     public void setInsertSymbolListener(InsertSymbolListener insertSymbolListener) {

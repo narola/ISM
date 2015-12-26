@@ -10,19 +10,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.fragment.DeskFragment;
+import com.ism.fragment.desk.JotterFragment;
 import com.ism.object.Global;
+import com.ism.utility.Debug;
+import com.ism.utility.InputValidator;
 
 /**
  * Created by c162 on 24/12/15.
  */
 public class AddNewNoteDialog extends Dialog implements View.OnClickListener {
 
+    private static final String TAG = AddNewNoteDialog.class.getSimpleName();
     private Context mContext;
     private TextView txtAddNewCategory;
     private ImageView imgSave;
     private EditText etCategoryName;
-
-    public AddNewNoteDialog(Context mContext) {
+    InputValidator inputValidator;
+    DeskFragment.AlertDismissListener alertDismissListener;
+    public AddNewNoteDialog(Context mContext,JotterFragment jotterFragment) {
         super(mContext);
         this.mContext = mContext;
 
@@ -34,12 +40,15 @@ public class AddNewNoteDialog extends Dialog implements View.OnClickListener {
         w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         w.setBackgroundDrawableResource(android.R.color.transparent);
 
+        this.alertDismissListener=jotterFragment;
         initializeDialog();
 
     }
 
     private void initializeDialog() {
 
+        new DeskFragment().setAlertDismissListener(alertDismissListener);
+        inputValidator=new InputValidator(mContext);
         txtAddNewCategory = (TextView) findViewById(R.id.txt_add_new_category);
         txtAddNewCategory.setTypeface(Global.myTypeFace.getRalewayRegular());
 
@@ -53,8 +62,15 @@ public class AddNewNoteDialog extends Dialog implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        try{
         if (v == imgSave) {
-            dismiss();
+            if(inputValidator.validateStringPresence(etCategoryName)) {
+                alertDismissListener.onDismiss(JotterFragment.DIALOG_ADD_NOTES,etCategoryName.getText().toString());
+                dismiss();
+            }
+        }}
+        catch (Exception e){
+            Debug.i(TAG,"onClick Exception : "+e.getLocalizedMessage());
         }
     }
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical"
+    tools:mContext="com.ism.fragment.desk.FavoriteFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include_notes"
+            layout="@layout/layout_favorite" />
+        <include
+            android:id="@+id/include_books"
+            layout="@layout/layout_favorite" />
+        <include
+            android:id="@+id/include_assignments"
+            layout="@layout/layout_favorite" />
+        <include
+            android:id="@+id/include_exam"
+            layout="@layout/layout_favorite" />
+        <include
+            android:id="@+id/include_links"
+            layout="@layout/layout_favorite" />
+        <include
+            android:id="@+id/include_events"
+            layout="@layout/layout_favorite" />
+        <include
+            android:id="@+id/include_authors"
+            layout="@layout/layout_favorite" />
+    </LinearLayout>
+</ScrollView>

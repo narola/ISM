@@ -91,15 +91,18 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         }
     }
 
-    @Override
-    public void onSearchFav(ArrayList<BookData> arrayList) {
-        setUpFavList(arrayList);
-    }
+//    @Override
+//    public void onSearchFav(ArrayList<BookData> arrayList) {
+//        Debug.i(TAG, "listener called ");
+//        setUpFavList(arrayList);
+//    }
 
-    @Override
-    public void onSearchSuggested(ArrayList<BookData> arrayList) {
-        setUpSuggestedList(arrayList);
-    }
+//    @Override
+//    public void onSearchSuggested(ArrayList<BookData> arrayList) {
+//
+//        Debug.i(TAG, "listener called ");
+//        setUpSuggestedList(arrayList);
+//    }
 
     public BooksFragment() {
     }
@@ -171,123 +174,121 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 //                    return false;
 //                }
 //        });
-        imgNextFav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utility.showToast(getActivity(), "Next");
-                imgPrevFav.setEnabled(arrayListFavBooks.size() > 4);
-                if (layoutManagerFav.findLastCompletelyVisibleItemPosition() == arrayListFavBooks.size() - 2) {
-                    imgNextFav.setEnabled(false);
+            imgNextFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utility.showToast(getActivity(), "Next");
+                    imgPrevFav.setEnabled(arrayListFavBooks.size() > 4);
+                    if (layoutManagerFav.findLastCompletelyVisibleItemPosition() == arrayListFavBooks.size() - 2) {
+                        imgNextFav.setEnabled(false);
+                    }
+                    listViewFavBooks.getLayoutManager().smoothScrollToPosition(listViewFavBooks, null, layoutManagerFav.findLastCompletelyVisibleItemPosition() + 1);
                 }
-                listViewFavBooks.getLayoutManager().smoothScrollToPosition(listViewFavBooks, null, layoutManagerFav.findLastCompletelyVisibleItemPosition() + 1);
-            }
 
-        });
+            });
 
-        imgPrevFav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utility.showToast(getActivity(), "Previous");
-                imgNextFav.setEnabled(arrayListFavBooks.size() > 4);
-                if (layoutManagerFav.findFirstCompletelyVisibleItemPosition() == 1) {
-                    imgPrevFav.setEnabled(false);
+            imgPrevFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utility.showToast(getActivity(), "Previous");
+                    imgNextFav.setEnabled(arrayListFavBooks.size() > 4);
+                    if (layoutManagerFav.findFirstCompletelyVisibleItemPosition() == 1) {
+                        imgPrevFav.setEnabled(false);
+                    }
+                    listViewFavBooks.getLayoutManager().smoothScrollToPosition(listViewFavBooks, null, layoutManagerFav.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerFav.findFirstCompletelyVisibleItemPosition() - 1 : 0);
                 }
-                listViewFavBooks.getLayoutManager().smoothScrollToPosition(listViewFavBooks, null, layoutManagerFav.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerFav.findFirstCompletelyVisibleItemPosition() - 1 : 0);
-            }
-        });
+            });
 
-        imgNextSuggested.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utility.showToast(getActivity(), "Next");
-                imgPrevSuggested.setEnabled(arrayListSuggestedBooks.size() > 4);
-                if (layoutManagerSuggested.findLastCompletelyVisibleItemPosition() == arrayListSuggestedBooks.size() - 2) {
-                    imgNextSuggested.setEnabled(false);
+            imgNextSuggested.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utility.showToast(getActivity(), "Next");
+                    imgPrevSuggested.setEnabled(arrayListSuggestedBooks.size() > 4);
+                    if (layoutManagerSuggested.findLastCompletelyVisibleItemPosition() == arrayListSuggestedBooks.size() - 2) {
+                        imgNextSuggested.setEnabled(false);
+                    }
+                    listViewSuggestedBooks.getLayoutManager().smoothScrollToPosition(listViewSuggestedBooks, null, layoutManagerSuggested.findLastCompletelyVisibleItemPosition() + 1);
                 }
-                listViewSuggestedBooks.getLayoutManager().smoothScrollToPosition(listViewSuggestedBooks, null, layoutManagerSuggested.findLastCompletelyVisibleItemPosition() + 1);
-            }
-        });
+            });
 
-        imgPrevSuggested.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utility.showToast(getActivity(), "Previous");
-                imgNextSuggested.setEnabled(arrayListSuggestedBooks.size() > 4);
-                if (layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() == 1) {
-                    imgPrevFav.setEnabled(false);
+            imgPrevSuggested.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utility.showToast(getActivity(), "Previous");
+                    imgNextSuggested.setEnabled(arrayListSuggestedBooks.size() > 4);
+                    if (layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() == 1) {
+                        imgPrevFav.setEnabled(false);
+                    }
+                    listViewSuggestedBooks.getLayoutManager().smoothScrollToPosition(listViewSuggestedBooks, null, layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() - 1 : 0);
                 }
-                listViewSuggestedBooks.getLayoutManager().smoothScrollToPosition(listViewSuggestedBooks, null, layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() > 0 ? layoutManagerSuggested.findFirstCompletelyVisibleItemPosition() - 1 : 0);
-            }
-        });
+            });
 
-        imgFavSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickImgFavSearch();
-            }
-        });
-
-        imgSuggestedSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickImgSuggetedSearch();
-            }
-        });
-        etSuggestedSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    Utility.hideKeyboard(getActivity(), getView());
-                    // rrInvisibleLayout.setVisibility(View.GONE);
+            imgFavSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickImgFavSearch();
                 }
-            }
-        });
-        etSuggestedSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                strSearch = "";
-            }
+            });
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                strSearch = strSearch + s;
-                setUpSuggestedList(onSearch(arrayListSuggestedBooks, strSearch));
-            }
+            imgSuggestedSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickImgSuggetedSearch();
+                }
+            });
+            etSuggestedSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        Utility.hideKeyboard(getActivity(), getView());
+                        // rrInvisibleLayout.setVisibility(View.GONE);
+                    }
+                }
+            });
+            etSuggestedSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    strSearch = "";
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    strSearch = strSearch + s;
+                    setUpSuggestedList(onSearch(arrayListSuggestedBooks, strSearch));
+                }
 
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
 
-        etFavSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                strSearch = "";
-            }
+                }
+            });
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                strSearch = strSearch + s;
-                setUpFavList(onSearch(arrayListFavBooks, strSearch));
-            }
+            etFavSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    strSearch = "";
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    strSearch = strSearch + s;
+                    setUpFavList(onSearch(arrayListFavBooks, strSearch));
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+
+        } catch (
+                Exception e
+                )
+
+        {
+            Debug.i(TAG, "onClicks : " + e.getLocalizedMessage());
+        }
 
     }
-
-    catch(
-    Exception e
-    )
-
-    {
-        Debug.i(TAG, "onClicks : " + e.getLocalizedMessage());
-    }
-
-}
 
     // from the link above
     @Override

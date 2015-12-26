@@ -70,7 +70,10 @@
     <color name="bg_discussion">#FFFFFF</color>
     <color name="pink">#EC8AC3</color>
     <color name="green_xlight">#B2D5D9</color>
-
+    <color name="color_parrot">#A8D240</color>
+    <color name="color_pink_dark">#EB4E9D</color>
+    <color name="color_green_events">#36C2A9</color>
+    <color name="dark_grey">#3C4650</color>
 
 
 
