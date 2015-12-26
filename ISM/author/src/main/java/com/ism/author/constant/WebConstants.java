@@ -6,7 +6,7 @@ package com.ism.author.constant;
 public class WebConstants {
 
 
-//    public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";
+    public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";
 
 
     public static final String FEED_MEDIA_KINJAL = "http://192.168.1.147/WS_ISM/Images/feeds/";
@@ -20,7 +20,7 @@ public class WebConstants {
     public static final String USER_IMAGES_TEST = "http://192.168.1.147/WS_ISM/Images/users_images/";
 
     public static final String HOST_202 = "http://192.168.1.202/pg/ISM/";      // pg
-    public static final String URL_KINJAL_HOST = HOST_202 + "WS_ISM/ISMServices.php?Service=";
+//    public static final String URL_KINJAL_HOST = HOST_202 + "WS_ISM/ISMServices.php?Service=";
 
     public static final String URL_HOST_202 = HOST_202 + "WS_ISM/ISMServices.php?Service=";
 
@@ -289,6 +289,7 @@ public class WebConstants {
     /*Image Url Constants*/
 
     public static final String QUESTION_IMAGES = "http://192.168.1.147/WS_ISM/Images/questions_images/";
+    public static final String BOOKS_IMAGES = "http://192.168.1.147/WS_ISM/";
 
     /**
      * Parameter value Variables

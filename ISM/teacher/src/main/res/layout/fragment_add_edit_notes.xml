@@ -47,11 +47,12 @@
                 android:layout_margin="@dimen/d10dp"
                 android:src="@drawable/userdp" />
 
-            <TextView
-                android:id="@+id/txt_note_name"
+            <EditText
+                android:id="@+id/et_note_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:enabled="false"
                 android:gravity="center"
                 android:padding="@dimen/d10dp"
                 android:text="Introduction to waves"
@@ -59,7 +60,7 @@
                 android:textSize="20sp" />
 
             <ImageView
-                android:id="@+id/img_share"
+                android:id="@+id/img_share_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -74,7 +75,7 @@
                 android:background="@color/gray_light" />
 
             <ImageView
-                android:id="@+id/img_edit"
+                android:id="@+id/img_edit_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -83,42 +84,18 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/rr_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ll_title"
-            android:background="@color/gray_light"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/txt_by"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/d10dp"
-                android:text="By : Admin "
-                android:textColor="@color/color_blue" />
-
-            <EditText
-                android:id="@+id/txt_subject"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:background="@color/gray_light"
-                android:padding="@dimen/d10dp"
-                android:text="Physics"
-                android:textColor="@color/color_red" />
-        </RelativeLayout>
-
-        <com.narola.kpa.richtexteditor.view.RichTextEditor
-            android:id="@+id/rte_notes"
+            android:id="@+id/rl_rich_editor_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/rr_details"
-            android:background="@color/rte_notes_bg"
-            android:gravity="top|left"
-            android:padding="@dimen/d10dp"
-            />
+            android:layout_below="@id/ll_title">
 
+            <com.narola.kpa.richtexteditor.view.RichTextEditor
+                android:id="@+id/rte_notes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rte_notes_bg"
+                android:gravity="top|left"
+                android:padding="@dimen/d10dp" />
+        </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

@@ -100,7 +100,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 //			cal.set(Calendar.HOUR, 11);
 //			cal.set(Calendar.MINUTE, 10);
 //			cal.set(Calendar.AM_PM, Calendar.AM);
-			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
 				try {
 					AdminConfig configStartTime = studentHelper.getActiveHoursStartTime();
 					SimpleDateFormat DATE_FORMAT_TIME = new SimpleDateFormat("hh:mm aa", Locale.getDefault());

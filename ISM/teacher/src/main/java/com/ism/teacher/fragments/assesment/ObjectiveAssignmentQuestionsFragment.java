@@ -67,7 +67,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((TeacherHostActivity) getActivity()).hideTxtAction();
+        ((TeacherHostActivity) getActivity()).hideAddOption();
     }
 
     @Override

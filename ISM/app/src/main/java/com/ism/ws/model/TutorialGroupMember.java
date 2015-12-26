@@ -19,6 +19,9 @@ public class TutorialGroupMember {
     private String userName;
     private String courseName;
     private String schoolName;
+    private String fullName;
+    private String lastSeen;
+    private String userIsOnline;
 
     @JsonProperty("school_grade")
     public String getSchoolGrade() {
@@ -91,5 +94,32 @@ public class TutorialGroupMember {
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
     }
-    
+
+	@JsonProperty("full_name")
+	public String getFullName() {
+		return this.fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	@JsonProperty("last_seen")
+	public String getLastSeen() {
+		return this.lastSeen;
+	}
+
+	public void setLastSeen(String lastSeen) {
+		this.lastSeen = lastSeen;
+	}
+
+	@JsonProperty("user_is_online")
+	public String getUserIsOnline() {
+		return this.userIsOnline;
+	}
+
+	public void setUserIsOnline(String userIsOnline) {
+		this.userIsOnline = userIsOnline;
+	}
+
 }

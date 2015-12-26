@@ -48,7 +48,7 @@
             </FrameLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_results"
+                android:id="@+id/rl_notes"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_toRightOf="@+id/frame_circle_class">
