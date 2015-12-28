@@ -11,7 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.model.TutorialGroupMemberTest;
+import com.ism.constant.WebConstants;
+import com.ism.object.Global;
+import com.ism.views.CircleImageView;
+import com.ism.ws.model.TutorialGroupMember;
 
 import java.util.ArrayList;
 
@@ -21,24 +24,24 @@ import java.util.ArrayList;
 public class TutorialGroupAdapter extends BaseAdapter {
 
 	private static final String TAG = TutorialGroupAdapter.class.getSimpleName();
-	private ArrayList<TutorialGroupMemberTest> arrListMembers;
+	private ArrayList<TutorialGroupMember> arrListGroupMember;
 	private Context context;
 	private LayoutInflater inflater;
 
-	public TutorialGroupAdapter(Context context, ArrayList<TutorialGroupMemberTest> arrListMembers) {
-		this.arrListMembers = arrListMembers;
+	public TutorialGroupAdapter(Context context, ArrayList<TutorialGroupMember> arrListGroupMember) {
+		this.arrListGroupMember = arrListGroupMember;
 		this.context = context;
 		inflater = LayoutInflater.from(this.context);
 	}
 
 	@Override
 	public int getCount() {
-		return arrListMembers.size();
+		return arrListGroupMember.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return arrListMembers.get(position);
+		return arrListGroupMember.get(position);
 	}
 
 	@Override
@@ -52,19 +55,25 @@ public class TutorialGroupAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.list_item_tutorial_group, parent, false);
 			holder = new ViewHolder();
-			holder.imgDp = (ImageView) convertView.findViewById(R.id.img_circle_dp);
+			holder.imgDp = (CircleImageView) convertView.findViewById(R.id.img_circle_dp);
 			holder.txtName = (TextView) convertView.findViewById(R.id.txt_name);
+			holder.txtStatus = (TextView) convertView.findViewById(R.id.txt_status);
 			holder.imgNotification = (ImageView) convertView.findViewById(R.id.img_notification);
+
+			holder.txtName.setTypeface(Global.myTypeFace.getRalewayRegular());
+			holder.txtStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
+
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
 		try {
-			holder.txtName.setText(Html.fromHtml("<font color='#333333'>" + arrListMembers.get(position).getName() + "</font><br/><small><font color='#AEAEAE'>" + arrListMembers.get(position).getSchoolName() + "</font></small>"));
-//			Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.userdp);
-//			holder.imgDp.setImageBitmap(bitmap);
-//			holder.imgDp.setImageResource(R.drawable.userdp);
+			holder.txtName.setText(Html.fromHtml("<font color='#333333'>" + arrListGroupMember.get(position).getFullName()
+					+ "</font><br/><small><font color='#AEAEAE'>"
+					+ (arrListGroupMember.get(position).getSchoolName() != null ? arrListGroupMember.get(position).getSchoolName() : "")
+					+ "</font></small>"));
+			Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrListGroupMember.get(position).getProfilePic(), holder.imgDp);
 		} catch (Exception e) {
 			Log.e(TAG, "getView Exception : " + e.toString());
 		}
@@ -73,8 +82,8 @@ public class TutorialGroupAdapter extends BaseAdapter {
 	}
 
 	class ViewHolder {
-		ImageView imgDp;
-		TextView txtName;
+		CircleImageView imgDp;
+		TextView txtName, txtStatus;
 		ImageView imgNotification;
 	}
 

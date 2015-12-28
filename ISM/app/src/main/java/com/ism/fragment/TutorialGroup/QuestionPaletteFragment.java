@@ -1,5 +1,6 @@
 package com.ism.fragment.tutorialGroup;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -17,11 +18,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.adapter.QuestionPaletteAdapter;
 import com.ism.adapter.TutorialGroupAdapter;
 import com.ism.model.QuestionObjectiveTest;
-import com.ism.model.TutorialGroupMemberTest;
 import com.ism.views.TimerView;
+import com.ism.ws.model.TutorialGroupMember;
+import com.ism.ws.model.TutorialGroupProfile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,7 +39,7 @@ import realmhelper.StudentHelper;
 /**
  * Created by c161 on 14/10/15.
  */
-public class QuestionPaletteFragment extends Fragment implements ExamFragment.ExamListener {
+public class QuestionPaletteFragment extends Fragment implements ExamFragment.ExamListener, HostActivity.HostListenerQuestionPalette {
 
 	private static final String TAG = QuestionPaletteFragment.class.getSimpleName();
 
@@ -46,7 +49,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	private TextView txtTitle;
 	private TextView txtGroupScore;
 	private TextView txtActiveComments;
-	private TextView txtMyScore;
+	private TextView txtGroupRank;
 	private GridView gridQuestion;
 	private Button btnEndTest;
 	private TimerView timerViewExam;
@@ -56,8 +59,9 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	private QuestionPaletteAdapter adpQuestionPalette;
 	private ArrayList<QuestionObjectiveTest> arrListQuestions;
 	private TutorialGroupAdapter adpTutorialGroup;
-	private ArrayList<TutorialGroupMemberTest> arrListMembers;
+	private ArrayList<TutorialGroupMember> arrListGroupMembers;
 	private StudentHelper studentHelper;
+	private HostActivity activityHost;
 
 	private int intTimeLeft;
 	private long longExamDurationMilli;
@@ -88,7 +92,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 		txtTitle = (TextView) view.findViewById(R.id.txt_title);
 		txtGroupScore = (TextView) view.findViewById(R.id.txt_group_score);
 		txtActiveComments = (TextView) view.findViewById(R.id.txt_active_comments_value);
-		txtMyScore = (TextView) view.findViewById(R.id.txt_my_score_value);
+		txtGroupRank = (TextView) view.findViewById(R.id.txt_group_rank_value);
 		gridQuestion = (GridView) view.findViewById(R.id.grid_question_no);
 		btnEndTest = (Button) view.findViewById(R.id.btn_end_test);
 		timerViewExam = (TimerView) view.findViewById(R.id.timer_exam);
@@ -125,7 +129,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 
 						if (cal.before(calEndTime)) {
 							longExamDurationMilli = calEndTime.getTimeInMillis() - cal.getTimeInMillis();
-							timerViewExam.setTotalTimeMilli(longExamDurationMilli);
+							timerViewExam.setTotalTimeMilli(calEndTime.getTimeInMillis() - calStartTime.getTimeInMillis());
 							timerExam = new CountDownTimer(longExamDurationMilli, 1000) {
 
 								@Override
@@ -148,14 +152,6 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 				}
 			}
 		}
-
-		arrListMembers = TutorialGroupMemberTest.getTutorialGroupMembers();
-		adpTutorialGroup = new TutorialGroupAdapter(getActivity(), arrListMembers);
-		lvTutorialGroup.setAdapter(adpTutorialGroup);
-
-		txtGroupScore.setText(Html.fromHtml("<small><font color='#7B7B7B'>GROUP SCORE : </font></small><b><font color='#1BC4A2'>" + 5000 + "</font><b/>"));
-		txtActiveComments.setText("55");
-		txtMyScore.setText("2458");
 
 		btnEndTest.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -256,6 +252,27 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 		});
 		builder.setCancelable(false);
 		builder.create().show();
+	}
+
+	@Override
+	public void showTutorialGroupData(TutorialGroupProfile tutorialGroupProfile) {
+		if (tutorialGroupProfile != null) {
+			arrListGroupMembers = tutorialGroupProfile.getGroupMembers();
+			adpTutorialGroup = new TutorialGroupAdapter(getActivity(), arrListGroupMembers);
+			lvTutorialGroup.setAdapter(adpTutorialGroup);
+
+			txtGroupScore.setText(Html.fromHtml("<small><font color='#7B7B7B'>GROUP SCORE : </font></small><b><font color='#1BC4A2'>"
+				+ (tutorialGroupProfile.getGroupScore() != null ? tutorialGroupProfile.getGroupScore() : "") + "</font><b/>"));
+			txtActiveComments.setText(tutorialGroupProfile.getTotalActiveComments() != null ? tutorialGroupProfile.getTotalActiveComments() : "");
+			txtGroupRank.setText(tutorialGroupProfile.getGroupRank() != null ? tutorialGroupProfile.getGroupRank() : "");
+		}
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		activityHost = (HostActivity) activity;
+		activityHost.setListenerQuestionPalette(this);
 	}
 
 }

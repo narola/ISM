@@ -21,7 +21,6 @@ import com.ism.R;
 import com.ism.adapter.DiscussionAdapter;
 import com.ism.assistantwebview.view.AssistantWebView;
 import com.ism.constant.WebConstants;
-import com.ism.model.TestDiscussion;
 import com.ism.object.Global;
 import com.ism.scientificcalc.view.Calc;
 import com.ism.views.CircleImageView;
@@ -34,6 +33,9 @@ import com.ism.ws.model.GroupDiscussionData;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import model.TutorialTopic;
+import realmhelper.StudentHelper;
 
 /**
  * Created by c161 on 12/10/15.
@@ -60,11 +62,11 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	private TutorialDiscussionFragmentListener listenerTutorialDiscussion;
 	private Whiteboard.WhiteboardListener whiteboardListener;
 	private View.OnClickListener listenerOnUtilityClick;
-	private ArrayList<TestDiscussion> arrListTestDiscussion;
 	private ArrayList<GroupDiscussionData> arrListDiscussionData;
 	private ArrayList<Discussion> arrListDiscussion;
 	private DiscussionAdapter adpDiscussion;
 	private LinearLayoutManager layoutManagerChat;
+	private StudentHelper studentHelper;
 
 	private static final String ARG_WEEK_DAY = "weekDay";
 	private static final int UTILITY_CALC = 0;
@@ -130,6 +132,8 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		txtAdminNotice = (TextView) view.findViewById(R.id.txt_admin_notice);
 		rlAdminNotice = (RelativeLayout) view.findViewById(R.id.rl_admin_notice);
 
+		studentHelper = new StudentHelper(getActivity());
+
 		imgUtilities = new ImageView[]{imgCalc, imgWhiteboard, imgSearch, imgDictionary};
 
 		txtTopic.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -187,7 +191,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		btnSend.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (etMessage.getText() != null && etMessage.getText().toString().length() > 0) {
+				/*if (etMessage.getText() != null && etMessage.getText().toString().length() > 0) {
 					TestDiscussion testDiscussion = new TestDiscussion();
 					testDiscussion.setMessage(etMessage.getText().toString().trim());
 					testDiscussion.setTime("Aug 5, 2015  4:15pm");
@@ -196,7 +200,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 					adpDiscussion.notifyDataSetChanged();
 					layoutManagerChat.smoothScrollToPosition(recyclerChat, null, 0);
 					etMessage.setText("");
-				}
+				}*/
 			}
 		});
 
@@ -410,6 +414,33 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				arrListDiscussionData = responseHandler.getGroupDiscussionData();
+
+//				Save data
+				for (int i = 0; i < arrListDiscussionData.size(); i++) {
+					TutorialTopic tutorialTopic = new TutorialTopic();
+					/*
+					*
+						  "tutorial_topic_id": "13",
+					      "tutorial_topic": "Magnetism and Matter - Laws and usuage",
+					      "topic_description": "Discuss about Laws and usuage of Magnetism and matter",
+					      "assigned_by": "109",
+					      "day_name": "Thurs",
+					      "interface_type": null,
+					      "assigned_time": "2015-12-16 15:41:27",
+					      "subject_name": "Physics",
+					      "is_current_day": "no",
+					      "group_score": "1",
+					      "total_active_comments": "8",
+					      "total_active_comments_score": "118"
+					*
+					*
+					* */
+
+					tutorialTopic.setServerTutorialTopicId(Integer.parseInt(arrListDiscussionData.get(i).getTutorialTopicId()));
+//					tutorialTopic.setTopic(arrListDiscussionData.get(i).getTutorialTopic());
+					studentHelper.saveTutorialGroupTopic(tutorialTopic);
+				}
+
 				arrListDiscussion = new ArrayList<>();
 				for (int i = 0; i < arrListDiscussionData.size(); i++) {
 					for (Discussion discussion : arrListDiscussionData.get(i).getDiscussion()) {

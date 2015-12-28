@@ -11,6 +11,8 @@ import model.AdminConfig;
 import model.FeedComment;
 import model.FeedImage;
 import model.Feeds;
+import model.TutorialGroupDiscussion;
+import model.TutorialTopic;
 import model.User;
 
 /**
@@ -44,7 +46,7 @@ public class StudentHelper {
     public void saveAdminConfig(AdminConfig adminConfig) {
         try {
             Number configId = realm.where(AdminConfig.class).max("configId");
-            long newId = 0;
+            long newId = 1;
             if (configId != null) {
                 newId = (long) configId + 1;
             }
@@ -170,7 +172,7 @@ public class StudentHelper {
 //    public void saveFeedLikes(FeedLike feedLike) {
 //        realm.beginTransaction();
 //        Number feedLikeId = realm.where(FeedLike.class).max("feedLikeId");
-//        long newId = 0;
+//        long newId = 1;
 //        if (feedLikeId != null) {
 //            newId = (long) feedLikeId + 1;
 //        }
@@ -256,4 +258,37 @@ public class StudentHelper {
 //            Log.i(TAG, "saveAllComments Exceptions : " + e.getLocalizedMessage());
 //        }
 //    }
+
+    public void saveTutorialGroupDiscussion(TutorialGroupDiscussion tutorialGroupDiscussion) {
+	    try {
+		    Number discussionId = realm.where(AdminConfig.class).max("tutorialGroupDiscussionId");
+		    long newId = 1;
+		    if (discussionId != null) {
+			    newId = (long) discussionId + 1;
+		    }
+		    realm.beginTransaction();
+		    tutorialGroupDiscussion.setTutorialGroupDiscussionId((int) newId);
+		    realm.copyToRealmOrUpdate(tutorialGroupDiscussion);
+		    realm.commitTransaction();
+	    } catch (Exception e) {
+		    Log.e(TAG, "saveTutorialGroupDiscussion Exception : " + e.toString());
+	    }
+    }
+
+	public void saveTutorialGroupTopic(TutorialTopic tutorialTopic) {
+		try {
+			Number topicId = realm.where(AdminConfig.class).max("tutorialTopicId");
+			long newId = 1;
+			if (topicId != null) {
+				newId = (long) topicId + 1;
+			}
+			realm.beginTransaction();
+			tutorialTopic.setTutorialTopicId((int) newId);
+			realm.copyToRealmOrUpdate(tutorialTopic);
+			realm.commitTransaction();
+		} catch (Exception e) {
+			Log.e(TAG, "saveTutorialGroupTopic Exception : " + e.toString());
+		}
+	}
+
 }

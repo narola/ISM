@@ -61,6 +61,7 @@ import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.NotificationSetting;
 import com.ism.ws.model.PrivacySetting;
 import com.ism.ws.model.SMSAlert;
+import com.ism.ws.model.TutorialGroupProfile;
 import com.ism.ws.model.UserPreferences;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -101,6 +102,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private BooksListner booksListner;
     private HostListenerEditAboutMe listenerEditAboutMe;
     private StudentHelper studentHelper;
+	private HostListenerQuestionPalette listenerQuestionPalette;
 
     private TextView arrTxtMenu[];
     private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
@@ -108,7 +110,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private ArrayList<ControllerTopMenuItem> controllerTopMenuDesk;
     private ArrayList<ControllerTopMenuItem> controllerTopMenuReportCard;
     private ArrayList<ControllerTopMenuItem> currentControllerTopMenu;
-    GeneralSettingsFragment generalSettingsFragment;
+    private GeneralSettingsFragment generalSettingsFragment;
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_TUTORIAL = 1;
     public static final int FRAGMENT_CLASSROOM = 2;
@@ -141,11 +143,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     public InsertSymbolListener insertSymbolListener;
 
     public interface ScrollListener {
-
         public void isLastPosition();
-
         public void isFirstPosition();
-
     }
 
     public interface HostListener {
@@ -158,7 +157,6 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
     public interface HostListenerEditAboutMe {
         public void onAmbition();
-
         public void onAboutMe();
     }
 
@@ -211,6 +209,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
         public void onSearchSuggested(Object o);
     }
+
+	public interface HostListenerQuestionPalette {
+		public void showTutorialGroupData(TutorialGroupProfile tutorialGroupProfile);
+	}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -698,10 +700,11 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         }
     }
 
-    public void showTutorialGroupName(String tutorialGroupName) {
+    public void showTutorialGroupData(TutorialGroupProfile tutorialGroupProfile) {
         txtTitle.setText(Html.fromHtml("<font color='#ffffff'>" + getString(R.string.group_name)
-                + "</font><font color='#1BBC9B'>" + tutorialGroupName + "</font>"));
+                + "</font><font color='#1BBC9B'>" + tutorialGroupProfile.getGroupName() + "</font>"));
         txtTitle.setVisibility(View.VISIBLE);
+	    listenerQuestionPalette.showTutorialGroupData(tutorialGroupProfile);
     }
 
     @Override
@@ -1091,7 +1094,11 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         this.addToLibraryListner = addToLibraryListner;
     }
 
-    private void onResponseGetAllBadges(Object object, Exception error) {
+	public void setListenerQuestionPalette(HostListenerQuestionPalette listenerQuestionPalette) {
+		this.listenerQuestionPalette = listenerQuestionPalette;
+	}
+
+	private void onResponseGetAllBadges(Object object, Exception error) {
         try {
             hideProgress();
             if (object != null) {

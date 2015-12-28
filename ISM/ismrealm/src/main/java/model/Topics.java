@@ -13,7 +13,8 @@ import io.realm.annotations.PrimaryKey;
 public class Topics extends RealmObject {
 
     @PrimaryKey
-    private  int topicId;
+    private int topicId;
+    private int serverTopicId;
     private String topicName;
     private String topicDescription;
     private Subjects subject;
@@ -26,6 +27,14 @@ public class Topics extends RealmObject {
 
     public void setTopicId(int topicId) {
         this.topicId = topicId;
+    }
+
+    public int getServerTopicId() {
+        return serverTopicId;
+    }
+
+    public void setServerTopicId(int serverTopicId) {
+        this.serverTopicId = serverTopicId;
     }
 
     public String getTopicName() {
