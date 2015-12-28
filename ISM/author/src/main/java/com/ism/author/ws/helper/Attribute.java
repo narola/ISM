@@ -1149,6 +1149,7 @@ public class Attribute {
     public void setPreferences(ArrayList<Preferences> preferences) {
         this.preferences = preferences;
     }
+
     @JsonProperty("key_id")
     public void setKeyId(String keyId) {
         this.keyId = keyId;

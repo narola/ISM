@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,12 +34,13 @@ import java.util.List;
 /**
  * Created by c162 on 17/12/15.
  */
-public class AddAssignmentFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class CreateAssignmentFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
-    private static final String TAG = AddAssignmentFragment.class.getSimpleName();
+    private static final String TAG = CreateAssignmentFragment.class.getSimpleName();
 
     private View view;
     private FragmentListener fragListener;
+
     private TextView txtAssignmentInfo, txtSave;
     private AuthorHostActivity activityHost;
     private TextView txtCancel;
@@ -53,12 +53,12 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
     private com.ism.author.Utility.InputValidator inputValidator;
     MyDeskFragment myDeskFragment;
 
-    public static AddAssignmentFragment newInstance() {
-        AddAssignmentFragment myDeskFragment = new AddAssignmentFragment();
+    public static CreateAssignmentFragment newInstance() {
+        CreateAssignmentFragment myDeskFragment = new CreateAssignmentFragment();
         return myDeskFragment;
     }
 
-    public AddAssignmentFragment() {
+    public CreateAssignmentFragment() {
         // Required empty public constructor
     }
 
@@ -72,61 +72,34 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
     }
 
     private void initGlobal() {
+
         txtAssignmentInfo = (TextView) view.findViewById(R.id.txt_assignment_info);
         txtCancel = (TextView) view.findViewById(R.id.txt_cancel);
         etAssignmentName = (EditText) view.findViewById(R.id.et_assignment_name);
         spBooks = (Spinner) view.findViewById(R.id.sp_books);
         txtSave = (TextView) view.findViewById(R.id.txt_save);
+
         richtexteditor = (RichTextEditor) view.findViewById(R.id.richtexteditor);
         richtexteditor.getRichEditor().setEditorFontSize(20);
         richtexteditor.hideMediaControls();
         inputValidator = new InputValidator(getActivity());
-//        txtAssignments = (TextView) view.findViewById(R.id.txt_assignments);
+
+
         txtAssignmentInfo.setTypeface(Global.myTypeFace.getRalewayRegular());
         etAssignmentName.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtSave.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         arrayListBooks = new ArrayList<>();
         arrayListBooks.add(getString(R.string.strSelectBook));
         Adapters.setUpSpinner(getActivity(), spBooks, arrayListBooks, Adapters.ADAPTER_NORMAL);
+
+        txtCancel.setOnClickListener(this);
+        txtSave.setOnClickListener(this);
+
         callApiGetAuthorBooks();
-        spBooks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if (arrayListBooks != null && position > 0) {
-////                    callApiGetAuthorBooks();
-//                } else {
-//                    Adapters.setUpSpinner(getActivity(), spBooks, arrayListBooks, Adapters.ADAPTER_NORMAL);
-//                }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-//        txtAssignments.setTypeface(Global.myTypeFace.getRalewayRegular());
-        View.OnClickListener onClick = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                switch (v.getId()) {
-
-                    case R.id.txt_save: {
-                        if (checkInputs())
-                            callApiForAddAssignment();
-                    }
-                    break;
-                    case R.id.txt_cancel: {
-                        onBackClick();
-                    }
-                    break;
-                }
-            }
-        };
-        txtCancel.setOnClickListener(onClick);
-        txtSave.setOnClickListener(onClick);
     }
 
     private void callApiGetAuthorBooks() {
@@ -151,7 +124,6 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
             if (Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
-//                attribute.setAssignmentText("Test data");
                 attribute.setAssignmentText(richtexteditor.getHtml());
                 attribute.setAssignmentName(etAssignmentName.getText().toString());
                 attribute.setBookId(arrListAuthorBooks.get(spBooks.getSelectedItemPosition() - 1).getBookId());
@@ -170,40 +142,6 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
         }
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            myDeskFragment = MyDeskFragment.newInstance();
-            activityHost = (AuthorHostActivity) activity;
-            fragListener = (FragmentListener) activity;
-
-            if (fragListener != null) {
-                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_ADD_ASSIGNMENT);
-            }
-        } catch (ClassCastException e) {
-            Log.e(TAG, "onAttach Exception : " + e.toString());
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        try {
-            if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ADD_ASSIGNMENT);
-            }
-        } catch (ClassCastException e) {
-            Log.e(TAG, "onDetach Exception : " + e.toString());
-        }
-        fragListener = null;
-    }
-
-
-    public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
-       // myDeskFragment.handleBackClick(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
-    }
 
     @Override
     public void onResponse(int apiCode, Object object, Exception error) {
@@ -224,10 +162,8 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
 
     private boolean checkInputs() {
 
-//        & isTextSetInRichTextEditor()
         strValidationMsg = "";
         if (isAssignmentNameSet() & isBookSet()) {
-//        if (isAssignmentNameSet() & isBookSet() & isAssignmentTextSet()) {
             return true;
         } else {
             Utility.alert(getActivity(), null, strValidationMsg);
@@ -275,6 +211,7 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
                     etAssignmentName.setText("");
                     richtexteditor.setHtml("");
                     spBooks.setSelection(0);
+                    Utility.showToast(getActivity(), getString(R.string.msg_success_createassignment));
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED))
                     Debug.i(TAG, "onResponseAddAssignment  : FAILED");
             } else if (error != null) {
@@ -295,7 +232,6 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
                     arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
                     List<String> authorBooks = new ArrayList<String>();
                     authorBooks.add(getString(R.string.strSelectBook));
-//                    authorBooks.add(getString(R.string.strall));
                     for (AuthorBook authorBook : arrListAuthorBooks) {
                         authorBooks.add(authorBook.getBookName());
                     }
@@ -311,5 +247,56 @@ public class AddAssignmentFragment extends Fragment implements WebserviceWrapper
             Debug.e(TAG, "onResponseGetAuthorBooks Exception : " + e.toString());
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.txt_save:
+                if (checkInputs())
+                    callApiForAddAssignment();
+
+                break;
+            case R.id.txt_cancel:
+                onBackClick();
+
+                break;
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            myDeskFragment = MyDeskFragment.newInstance();
+            activityHost = (AuthorHostActivity) activity;
+            fragListener = (FragmentListener) activity;
+
+            if (fragListener != null) {
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_ADD_ASSIGNMENT);
+            }
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onAttach Exception : " + e.toString());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        try {
+            if (fragListener != null) {
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ADD_ASSIGNMENT);
+            }
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onDetach Exception : " + e.toString());
+        }
+        fragListener = null;
+    }
+
+
+    public void onBackClick() {
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
+    }
+
 
 }

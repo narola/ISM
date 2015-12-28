@@ -18,6 +18,7 @@
     <string name="no_exam_questions">No questions are set for the exam,click on edit to set questions!</string>
     <string name="no_exam_submittor">No one has submitted the exam!</string>
     <string name="no_exams">No exams created yet!</string>
+    <string name="no_books_added">No books added by admin!</string>
     <string name="no_filter_exams">No exams found to filter!</string>
 
 </resources>

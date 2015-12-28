@@ -20,7 +20,7 @@ import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.Assignment;
+import com.ism.author.ws.model.AuthorBookAssignment;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,7 @@ public class MyDeskAssignmentsFragment extends Fragment implements WebserviceWra
     private RecyclerView rvAssignmentsList;
     private MyDeskAssignmentsAdapter assignmentAdapter;
     private Fragment mFragment;
-    private ArrayList<Assignment> arrListAssignments = new ArrayList<Assignment>();
+    private ArrayList<AuthorBookAssignment> arrListAuthorBooksAssignment = new ArrayList<AuthorBookAssignment>();
     private TextView tvNoDataMsg;
 
 
@@ -66,29 +66,29 @@ public class MyDeskAssignmentsFragment extends Fragment implements WebserviceWra
         rvAssignmentsList.setAdapter(assignmentAdapter);
 
 
-        callApiGetAllExams();
+        callApiGetAuthorBookAssignment();
 
 
     }
 
 
-    private void callApiGetAllExams() {
+    private void callApiGetAuthorBookAssignment() {
+
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
-//                attribute.setUserId(Global.strUserId);
-//                attribute.setRole(Global.role);
-                attribute.setBookId("5");
+                attribute.setAuthorId(Global.strUserId);
 
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETALLASSIGNMENTS);
+                        .execute(WebConstants.GET_AUTHOR_BOOK_ASSIGNMENT);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
             Utility.toastOffline(getActivity());
         }
+
     }
 
 
@@ -96,8 +96,8 @@ public class MyDeskAssignmentsFragment extends Fragment implements WebserviceWra
     public void onResponse(int apiCode, Object object, Exception error) {
         try {
             switch (apiCode) {
-                case WebConstants.GETALLASSIGNMENTS:
-                    onResponseGetAllAssignments(object, error);
+                case WebConstants.GET_AUTHOR_BOOK_ASSIGNMENT:
+                    onResponseGetAuthorBookAssignment(object, error);
                     break;
             }
 
@@ -106,7 +106,7 @@ public class MyDeskAssignmentsFragment extends Fragment implements WebserviceWra
         }
     }
 
-    private void onResponseGetAllAssignments(Object object, Exception error) {
+    private void onResponseGetAuthorBookAssignment(Object object, Exception error) {
 
         try {
             ((AuthorHostActivity) getActivity()).hideProgress();
@@ -114,9 +114,10 @@ public class MyDeskAssignmentsFragment extends Fragment implements WebserviceWra
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    if (responseHandler.getAssignment().size() > 0) {
-                        arrListAssignments.addAll(responseHandler.getAssignment());
-                        assignmentAdapter.addAll(arrListAssignments);
+                    if (responseHandler.getAuthorBookAssignment().size() > 0) {
+
+                        arrListAuthorBooksAssignment.addAll(responseHandler.getAuthorBookAssignment());
+                        assignmentAdapter.addAll(arrListAuthorBooksAssignment);
                         assignmentAdapter.notifyDataSetChanged();
 
                         tvNoDataMsg.setVisibility(View.GONE);
@@ -129,10 +130,10 @@ public class MyDeskAssignmentsFragment extends Fragment implements WebserviceWra
 
                 }
             } else if (error != null) {
-                Debug.e(TAG, "onResponseGetAllAssignments api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseGetAuthorBookAssignment api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Debug.e(TAG, "onResponseGetAllAssignments Exception : " + e.toString());
+            Debug.e(TAG, "onResponseGetAuthorBookAssignment Exception : " + e.toString());
         }
     }
 

@@ -26,11 +26,6 @@ import java.util.ArrayList;
 public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdapter.ViewHolder> {
     private static final String TAG = PastQuestionsAdapter.class.getSimpleName();
     private static final String ARG_QUESTION_ID = "questionId";
-    private static final String ARG_QUESTION_CREATOR_PROFILE_PIC = "creatorProfPic";
-    private static final String ARG_CREATOR_NAME = "questionCreatorName";
-    private static final String ARG_CREATOR_ID = "questionCreatorId";
-    private static final String ARG_DATE = "questionCreatedDate";
-    private static final String ARG_FOLLOWERS = "followers";
     Context context;
     ArrayList<TrendingQuestion> arrayList = new ArrayList<>();
     private LayoutInflater inflater;
@@ -54,10 +49,8 @@ public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdap
 
         try {
             holder.txt_Creator_Name.setText(arrayList.get(position).getPostedByUsername());
-            //holder.txtDate.setText(Utility.DateFormat(arrayList.get(position).getPostedOn()));
             holder.txtNoOfFollowers.setText(arrayList.get(position).getFollowerCount());
             holder.txtQuestion.setText(arrayList.get(position).getQuestionText());
-          //  holder.txtAnswer.setText(Html.fromHtml("<font color=red>"+arrayList.get(position).getTotalComment() +" comments"));
             Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrayList.get(position).getPostedByPic(), holder.imgDpPostCreator, ISMAuthor.options);
             holder.llMain.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -65,8 +58,9 @@ public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdap
 
                     /*this is to select the current student*/
                     setBundleArgument(position);
-                    //((AuthorHostActivity) context).loadStudentEvaluationData();
+                    ((AuthorHostActivity) context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRENDING_QUESTION_DETAIL);
 
+//
                 }
             });
 
@@ -114,19 +108,10 @@ public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdap
     }
 
     public void setBundleArgument(int position) {
-        getBundleArguments().putInt(PastQuestionsAdapter.ARG_QUESTION_ID, position);
-//        getBundleArguments().putString(QuestionsMostFollowAdapter.ARG_QUESTION_CREATOR_PROFILE_PIC,
-//                arrayList.get(position).getStudentProfilePic());
-//        getBundleArguments().putString(QuestionsMostFollowAdapter.ARG_CREATOR_NAME,
-//                arrayList.get(position).getStudentName());
-//        getBundleArguments().putString(QuestionsMostFollowAdapter.ARG_CREATOR_ID,
-//                arrayList.get(position).getStudentId());
-//        getBundleArguments().putString(QuestionsMostFollowAdapter.ARG_DATE,
-//                arrayList.get(position).getStudentId());
-//        getBundleArguments().putString(QuestionsMostFollowAdapter.ARG_FOLLOWERS,
-//                arrayList.get(position).getStudentId());
 
+        getBundleArguments().putInt(PastQuestionsAdapter.ARG_QUESTION_ID, position);
         notifyDataSetChanged();
+
     }
 
     private Bundle getBundleArguments() {

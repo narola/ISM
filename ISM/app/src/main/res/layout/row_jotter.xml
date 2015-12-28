@@ -39,12 +39,22 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/img_media_files"
+        android:id="@+id/img_media_video"
         android:src="@drawable/ic_video_dark_gray"
         android:layout_marginLeft="@dimen/d5dp"
+        android:visibility="gone"
         android:layout_marginRight="@dimen/d5dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_media_audio"
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_audio_gray"
+        android:layout_toLeftOf="@+id/img_media_video"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"

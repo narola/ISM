@@ -101,7 +101,7 @@ public class ControllerTopMenuItem {
             favorites.add(context.getString(R.string.exams));
             favorites.add(context.getString(R.string.links));
             favorites.add(context.getString(R.string.events));
-            favorites.add(context.getString(R.string.Authors));
+//            favorites.add(context.getString(R.string.Authors));
             menu.add(new ControllerTopMenuItem(context.getString(R.string.favorite), context.getString(R.string.add_new_favorite), favorites));
             menu.add(new ControllerTopMenuItem(context.getString(R.string.timetable), context.getString(R.string.add_question), null));
             menu.add(new ControllerTopMenuItem(context.getString(R.string.books), context.getString(R.string.add_book), null));

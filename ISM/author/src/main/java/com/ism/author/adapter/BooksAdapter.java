@@ -12,7 +12,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.Global;
-import com.ism.author.ws.model.AuthorBook;
+import com.ism.author.ws.model.AllBooks;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
     private static final String TAG = BooksAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<AuthorBook> arrListAuthorBooks = new ArrayList<AuthorBook>();
+    private ArrayList<AllBooks> arrListBooks = new ArrayList<AllBooks>();
     private LayoutInflater inflater;
 
 
@@ -46,17 +46,17 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
             if (position == 0) {
 
-                setBookImage(holder.imgBookOne, position, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position).getBookImage());
-                setBookImage(holder.imgBookTwo, position + 1, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position + 1).getBookImage());
-                setBookImage(holder.imgBookOne, position + 2, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position + 2).getBookImage());
-                setBookImage(holder.imgBookOne, position + 3, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position + 3).getBookImage());
+                setBookImage(holder.imgBookOne, position);
+                setBookImage(holder.imgBookTwo, position + 1);
+                setBookImage(holder.imgBookThree, position + 2);
+                setBookImage(holder.imgBookFour, position + 3);
 
             } else {
 
-                setBookImage(holder.imgBookOne, position * 4, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position * 4).getBookImage());
-                setBookImage(holder.imgBookTwo, (position * 4) + 1, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get((position * 4) + 1).getBookImage());
-                setBookImage(holder.imgBookOne, (position * 4) + 2, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get((position * 4) + 2).getBookImage());
-                setBookImage(holder.imgBookOne, (position * 4) + 3, WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get((position * 4) + 3).getBookImage());
+                setBookImage(holder.imgBookOne, position * 4);
+                setBookImage(holder.imgBookTwo, (position * 4) + 1);
+                setBookImage(holder.imgBookThree, (position * 4) + 2);
+                setBookImage(holder.imgBookFour, (position * 4) + 3);
             }
 
         } catch (Exception e) {
@@ -68,15 +68,26 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
 
-        return (int) Math.ceil(arrListAuthorBooks.size() / 4);
+        return (int) Math.ceil(((float) arrListBooks.size() / 4));
 
     }
 
+    public void addAll(ArrayList<AllBooks> allBooks) {
+        try {
+            this.arrListBooks.clear();
+            this.arrListBooks.addAll(allBooks);
+        } catch (Exception e) {
+            Debug.e(TAG, "addAllData Exception : " + e.toString());
+        }
+        notifyDataSetChanged();
+    }
 
-    private void setBookImage(ImageView imageView, int position, String imageUrl) {
 
-        if (position <= arrListAuthorBooks.size()) {
-            Global.imageLoader.displayImage(WebConstants.BOOKS_IMAGES + arrListAuthorBooks.get(position + 3).getBookImage(), imageView,
+    private void setBookImage(ImageView imageView, int position) {
+
+        if (position < arrListBooks.size()) {
+
+            Global.imageLoader.displayImage(WebConstants.BOOKS_IMAGES + arrListBooks.get(position).getFrontCoverImage(), imageView,
                     Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
         }
 

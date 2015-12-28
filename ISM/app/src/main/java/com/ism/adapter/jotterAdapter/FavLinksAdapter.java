@@ -19,14 +19,14 @@ public class FavLinksAdapter extends RecyclerView.Adapter<FavLinksAdapter.ViewHo
     private Context context;
 
     public FavLinksAdapter(Context context) {
-        this.context=context;
+        this.context = context;
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(context).inflate(R.layout.item_link, parent, false);
-        View view = LayoutInflater.from(context).inflate(R.layout.item_events, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_link, parent, false);
+//        View view = LayoutInflater.from(context).inflate(R.layout.item_events, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }

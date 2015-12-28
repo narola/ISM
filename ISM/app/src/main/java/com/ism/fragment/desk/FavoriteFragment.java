@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.jotterAdapter.FavAssignmentsAdapter;
 import com.ism.adapter.jotterAdapter.FavBooksAdapter;
+import com.ism.adapter.jotterAdapter.FavEventsAdapter;
 import com.ism.adapter.jotterAdapter.FavExamsAdapter;
 import com.ism.adapter.jotterAdapter.FavLinksAdapter;
 import com.ism.adapter.jotterAdapter.FavNotesAdapter;
@@ -25,8 +27,7 @@ import com.ism.utility.Debug;
 /**
  * Created by c162 on 24/10/15.
  */
-public class FavoriteFragment extends Fragment {
-
+public class FavoriteFragment extends Fragment{
     private static final String TAG = FavoriteFragment.class.getSimpleName();
     private View view;
 
@@ -42,6 +43,8 @@ public class FavoriteFragment extends Fragment {
     private FavAssignmentsAdapter favAssignmentsAdapter;
     private FavExamsAdapter favExamsAdapter;
     private FavLinksAdapter linksAdapter;
+    private FavEventsAdapter favEventsAdapter;
+    private ScrollView scrollView;
 
     public static FavoriteFragment newInstance() {
         FavoriteFragment fragDesk = new FavoriteFragment();
@@ -62,6 +65,7 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void initGlobal() {
+        scrollView = (ScrollView) view.findViewById(R.id.scrollView);
 
         // inclue notes
         includeNotes = view.findViewById(R.id.include_notes);
@@ -137,7 +141,7 @@ public class FavoriteFragment extends Fragment {
         txtEvents = (TextView) includeEvents.findViewById(R.id.txt_fav_item);
         txtEvents.setTypeface(Global.myTypeFace.getRalewayMedium());
         txtEvents.setText(R.string.events);
-        txtEvents.setBackgroundColor(getResources().getColor(R.color.color_pink_dark));
+        txtEvents.setBackgroundColor(getResources().getColor(R.color.color_green_events));
 
         txtViewAllEvents = (TextView) includeEvents.findViewById(R.id.txt_view_all);
         txtViewAllEvents.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -160,35 +164,32 @@ public class FavoriteFragment extends Fragment {
 //        listViewAuthors.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
 //        // inclue links
-//        includeLinks = view.findViewById(R.id.include_links);
-//
-//        txtLinks = (TextView) includeLinks.findViewById(R.id.txt_fav_item);
-//        txtLinks.setTypeface(Global.myTypeFace.getRalewayMedium());
-//        txtLinks.setText(R.string.links);
-//        txtLinks.setBackgroundColor(getResources().getColor(R.color.color_pink_dark));
-//
-//        txtViewAllLinks = (TextView) includeLinks.findViewById(R.id.txt_view_all);
-//        txtViewAllLinks.setTypeface(Global.myTypeFace.getRalewayRegular());
-//
-//        listViewLinks = (RecyclerView) includeLinks.findViewById(R.id.recyclerview);
-//        listViewLinks.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        includeLinks = view.findViewById(R.id.include_links);
 
+        txtLinks = (TextView) includeLinks.findViewById(R.id.txt_fav_item);
+        txtLinks.setTypeface(Global.myTypeFace.getRalewayMedium());
+        txtLinks.setText(R.string.links);
+        txtLinks.setBackgroundColor(getResources().getColor(R.color.color_orange));
+
+        txtViewAllLinks = (TextView) includeLinks.findViewById(R.id.txt_view_all);
+        txtViewAllLinks.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+        listViewLinks = (RecyclerView) includeLinks.findViewById(R.id.recyclerview);
+        listViewLinks.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         setUpNotes();
         setUpBooks();
         setUpAssignments();
         setUpExams();
-        //setUpLinks();
+        setUpLinks();
         setUpEvents();
         onClicks();
-
-
     }
 
     private void setUpEvents() {
         try {
-            linksAdapter = new FavLinksAdapter(getActivity());
-            listViewEvents.setAdapter(linksAdapter);
+            favEventsAdapter = new FavEventsAdapter(getActivity());
+            listViewEvents.setAdapter(favEventsAdapter);
 //            listViewLinks.setAdapter(linksAdapter);
         } catch (Exception e) {
             Debug.i(TAG, "setUpEvents Exceptions : " + e.getLocalizedMessage());

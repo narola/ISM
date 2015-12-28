@@ -172,8 +172,8 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETQUESTIONBANK).execute(ResponseHandler.class, attribute);
                                 break;
 
-                            case WebConstants.GETALLASSIGNMENTS:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GETALLASSIGNMENTS).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GETASSIGNMENTBYBOOK:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_ASSIGNMENT_BY_BOOK).execute(ResponseHandler.class, attribute);
                                 break;
 
                             case WebConstants.GETEXAMEVALUATIONS:
@@ -281,12 +281,32 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETTRENDINGQUESTIONS).execute(ResponseHandler.class,
                                         attribute);
                                 break;
-                            case WebConstants.GET_PAST_QUESTIONS:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GETPASTQUESTIONS).execute(ResponseHandler.class,
+                            case WebConstants.GET_PAST_TRENDING_QUESTION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_PAST_TRENDING_QUESTION).execute(ResponseHandler.class,
                                         attribute);
                                 break;
                             case WebConstants.SUBMIT_TRENDING_ANSWER:
                                 responseObject = new WebserviceConnector(WebConstants.URL_SUBMIT_TRENDING_ANSWER).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+
+                            case WebConstants.GETMYFOLLOWERS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GETMYFOLLOWERS).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+
+                            case WebConstants.GET_AUTHOR_BOOK_ASSIGNMENT:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_AUTHOR_BOOK_ASSIGNMENT).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+
+                            case WebConstants.GET_ALL_BOOKS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BOOKS).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+
+                            case WebConstants.GET_TRENDING_QUESTION_DETAIL:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_TRENDING_QUESTION_DETAIL).execute(ResponseHandler.class,
                                         attribute);
                                 break;
                         }

@@ -101,9 +101,11 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private AddToLibraryListner addToLibraryListner;
     private BooksListner booksListner;
     private HostListenerEditAboutMe listenerEditAboutMe;
+    public InsertSymbolListener insertSymbolListener;
     private StudentHelper studentHelper;
-	private HostListenerQuestionPalette listenerQuestionPalette;
+    private HostSpinnerListener hostSpinnerListener;
 
+	private HostListenerQuestionPalette listenerQuestionPalette;
     private TextView arrTxtMenu[];
     private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
     private ArrayList<ControllerTopMenuItem> controllerTopMenuAssessment;
@@ -140,7 +142,6 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private InputMethodManager inputMethod;
     private ScrollListener scrollListener;
     private ResizeView resizeListView;
-    public InsertSymbolListener insertSymbolListener;
 
     public interface ScrollListener {
         public void isLastPosition();
@@ -149,6 +150,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
+    }
+
+    public interface HostSpinnerListener {
+        public void onControllerMenuSpinnerItemClicked(String item);
     }
 
     public interface HostListenerAllNotification {
@@ -463,6 +468,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     if (currentMainFragment != fragment) {
                         DeskFragment deskFragment = DeskFragment.newInstance(FRAGMENT_DESK);
                         listenerHost = deskFragment;
+//                        hostSpinnerListener= FavoriteFragment.newInstance();
                         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, deskFragment).commit();
                         if (currentRightFragment != FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL) {
                             loadFragment(FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL, null);
@@ -786,6 +792,9 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     case FRAGMENT_ALL_MESSAGE:
                         listenerHostAllMessage.onControllerTopBackClick();
                         break;
+                    case FRAGMENT_DESK:
+                        listenerHost.onControllerMenuItemClicked(DeskFragment.FRAGMENT_JOTTER);
+                        break;
                 }
 
             } else if (view == txtAction) {
@@ -843,6 +852,9 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                             if (listenerHost != null) {
                                 listenerHost.onControllerMenuItemClicked(i);
                             }
+//                            if(view==spSubmenu){
+//                                hostSpinnerListener.onControllerMenuSpinnerItemClicked(spSubmenu.getSelectedItem().toString());
+//                            }
                         } else {
                             currentControllerTopMenu.get(i).setIsActive(false);
                             startSlideAnimation(arrTxtMenu[i], 0, rlControllerTopMenu.getWidth(), 0, 0);
@@ -985,7 +997,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                         arrayListPrivacySetting = responseHandler.getPreference().get(0).getPrivacySetting();
                         for (int j = 0; j < arrayListPrivacySetting.size(); j++) {
                             PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
-                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                            //PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
                         }
                     }
 
@@ -1009,12 +1021,13 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
             if (object != null) {
                 ResponseHandler responseObject = (ResponseHandler) object;
                 if (responseObject.getStatus().toString().equals(WebConstants.SUCCESS)) {
-                    if (responseObject.getPreference() != null) {
+                    if (responseObject.getUserPreference() != null) {
                         ArrayList<UserPreferences> arrayListUserPreferences = new ArrayList<>();
                         arrayListUserPreferences = responseObject.getUserPreference();
                         for (int j = 0; j < arrayListUserPreferences.size(); j++) {
                             Debug.i(TAG, "j :" + j);
-                            generalSettingsFragment.setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getApplicationContext());
+                            //generalSettingsFragment.setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getApplicationContext());
+                            PreferenceData.setStringPrefs(arrayListUserPreferences.get(j).getId(),this, arrayListUserPreferences.get(j).getPreferenceValue());
                         }
                     }
 
@@ -1064,6 +1077,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         this.listenerHostProfileController = listenerHostProfileController;
     }
 
+    public void setHostSpinnerListener(HostSpinnerListener hostSpinnerListener) {
+        this.hostSpinnerListener = hostSpinnerListener;
+    }
+
     public void setListenerProfileControllerPresence(ProfileControllerPresenceListener listenerProfileControllerPresence) {
         this.listenerProfileControllerPresence = listenerProfileControllerPresence;
     }
@@ -1098,7 +1115,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 		this.listenerQuestionPalette = listenerQuestionPalette;
 	}
 
-	private void onResponseGetAllBadges(Object object, Exception error) {
+    private void onResponseGetAllBadges(Object object, Exception error) {
         try {
             hideProgress();
             if (object != null) {

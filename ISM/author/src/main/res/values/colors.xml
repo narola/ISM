@@ -64,7 +64,10 @@
     <color name="text_gray">#C3C3C3</color>
     <color name="color_gray_light">#F5F5F5</color>
     <color name="desk_tab_bg">#F2F2F2</color>
-    <color name="exam_options_dialog_sep"> #3C4652</color>
+    <color name="exam_options_dialog_sep">#3C4652</color>
+    <color name="title_bg"> #D6DBDF</color>
 
 
+
+   
 </resources>
