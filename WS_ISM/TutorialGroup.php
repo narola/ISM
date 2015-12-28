@@ -656,7 +656,7 @@ class TutorialGroup
 
             $selData="DISTINCT tutorial_group_topic_allocation.*,tutorial_topic.topic_name,topic_description,tutorial_topic.created_by,subjects.subject_name,tutorial_topic.topic_day";
 
-            $queryToFetchTopics="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation
+          echo  $queryToFetchTopics="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation
                          INNER JOIN ".TABLE_TUTORIAL_TOPIC." tutorial_topic ON tutorial_group_topic_allocation.tutorial_topic_id=tutorial_topic.id
                          INNER JOIN ".TABLE_SUBJECTS." subjects ON tutorial_topic.subject_id=subjects.id
                          WHERE tutorial_group_topic_allocation.group_id=".$group_id. $condition." ORDER BY tutorial_group_topic_allocation.tutorial_topic_id DESC";//" AND tutorial_group_topic_allocation.week_no = ".$week_no ." AND tutorial_group_topic_allocation.is_delete=0";
