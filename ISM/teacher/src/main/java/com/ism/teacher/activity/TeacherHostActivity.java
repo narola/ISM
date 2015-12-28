@@ -146,7 +146,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         Global.myTypeFace = new MyTypeFace(getApplicationContext());
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
-        Debug.e(TAG,"user_id_from_pref"+PreferenceData.getStringPrefs(PreferenceData.USER_ID, TeacherHostActivity.this));
+        Debug.e(TAG, "user_id_from_pref" + PreferenceData.getStringPrefs(PreferenceData.USER_ID, TeacherHostActivity.this));
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, TeacherHostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, TeacherHostActivity.this);
         Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, TeacherHostActivity.this);
@@ -567,9 +567,9 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                                 }
                                 break;
 
-                            case TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT:
+                            case TeacherOfficeFragment.FRAGMENT_NOTES_CONTAINER:
                                 if (addTopicsListener != null) {
-                                    addTopicsListener.addTopic(TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT);
+                                    addTopicsListener.addTopic(TeacherOfficeFragment.FRAGMENT_NOTES_CONTAINER);
                                     hideAddOption();
                                 }
                                 break;
@@ -739,7 +739,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
      * Handle the back click in TeacherOfficeFragment
      *
      * @param currentMainFragment Based on the currentMainFragment i.e active fragment inside Teacher Office Fragment
-     *                            <p>
+     *                            <p/>
      *                            OR current main when we call tutorials related fragment.
      */
 
@@ -802,14 +802,13 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                         Debug.e(AppConstant.back_tag + "back click host", "from create exam container");
                         teacherOfficeFragment.onBackClick();
                         break;
-                    case TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT:
-                        Debug.e(AppConstant.back_tag + "back click host", "from add edit notesr");
+                    case TeacherOfficeFragment.FRAGMENT_NOTES_CONTAINER:
+                        Debug.e(AppConstant.back_tag + "back click host", "from notes container");
                         teacherOfficeFragment.onBackClick();
                         break;
 
                 }
                 break;
-
 
             case FRAGMENT_TEACHER_TUTORIAL_GROUP:
                 Debug.e(AppConstant.back_tag, "back from tutorial group");
@@ -855,6 +854,15 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     public void showSpinnerWithSubMenu(int index) {
         switch (index) {
             case AppConstant.INDEX_ALL_ASSIGNMENTS:
+                hideAllMainMenus();
+                showControllerTopBackButton();
+                startSlideAnimation(spSubmenu, -imgBack.getWidth(), 0, 0, 0);
+                spSubmenu.setVisibility(View.VISIBLE);
+                adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(index).getSubMenu(), TeacherHostActivity.this);
+                spSubmenu.setAdapter(adapterControllerTopSpinner);
+                break;
+
+            case AppConstant.INDEX_NOTES:
                 hideAllMainMenus();
                 showControllerTopBackButton();
                 startSlideAnimation(spSubmenu, -imgBack.getWidth(), 0, 0, 0);

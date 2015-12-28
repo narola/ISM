@@ -88,7 +88,7 @@ public class AllNotesAdapter extends RecyclerView.Adapter<AllNotesAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
-                teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT);
+                teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_NOTES_CONTAINER);
             }
         });
 
