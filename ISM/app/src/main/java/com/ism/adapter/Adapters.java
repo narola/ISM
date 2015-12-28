@@ -2,7 +2,6 @@ package com.ism.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -69,13 +68,13 @@ public class Adapters {
 		}
 		textView.setCompoundDrawables(null, null, null, null);
 		if (position == 0) {
-			textView.setTextColor(context.getResources().getColorStateList(R.color.white));
+			textView.setTextColor(context.getResources().getColorStateList(R.color.color_white));
 			textView.setBackgroundColor(context.getResources().getColor(R.color.green));
 			textView.setEnabled(false);
 			textView.setOnClickListener(null);
 		} else {
 			textView.setTextColor(context.getResources().getColorStateList(R.color.color_dark_gray));
-			textView.setBackgroundResource(R.color.white);
+			textView.setBackgroundResource(R.color.color_white);
 		}
 	}
 

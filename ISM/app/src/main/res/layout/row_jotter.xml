@@ -22,7 +22,8 @@
         android:layout_below="@id/txt_note_name"
         android:padding="@dimen/d5dp"
         android:text="By Admin"
-        android:textColor="@color/color_red" />
+        android:textStyle="bold"
+        android:textColor="@color/text_red_timeline" />
 
     <TextView
         android:id="@+id/txt_subject"
@@ -32,15 +33,18 @@
         android:layout_below="@id/txt_note_name"
         android:padding="@dimen/d5dp"
         android:text="Physics"
-        android:textColor="@color/color_red" />
+        android:textStyle="bold"
+        android:textColor="@color/text_red_timeline" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:id="@+id/img_media_files"
-        android:layout_margin="@dimen/d5dp"
-        android:src="@drawable/ic_video_dark_gray" />
+        android:src="@drawable/ic_video_dark_gray"
+        android:layout_marginLeft="@dimen/d5dp"
+        android:layout_marginRight="@dimen/d5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"

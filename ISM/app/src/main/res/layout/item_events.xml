@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="260dp"
+    android:layout_marginBottom="@dimen/d10dp"
+    android:layout_marginEnd="@dimen/d5dp"
+    android:layout_marginLeft="@dimen/d5dp"
+    android:layout_marginRight="@dimen/d5dp"
+    android:layout_marginStart="@dimen/d5dp"
+    android:layout_marginTop="@dimen/d10dp">
+
+    <ImageView
+        android:id="@+id/img_link"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:src="@color/pink"
+        android:padding="@dimen/d5dp"
+        android:background="@drawable/bg_white_border_gray"></ImageView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/like_fill"
+        android:id="@+id/imageView"
+        android:layout_margin="@dimen/d5dp"
+        android:layout_alignBottom="@+id/img_link"
+        android:layout_alignEnd="@+id/img_link" />
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:background="@drawable/shape_event_date"
+        android:text="30th May"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

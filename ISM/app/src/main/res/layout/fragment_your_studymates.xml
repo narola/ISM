@@ -8,7 +8,7 @@
 		android:id="@+id/recycler_your_studymates"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="@color/white"
+		android:background="@color/color_white"
 		android:layout_above="@+id/rl_recommended_studymates"></android.support.v7.widget.RecyclerView>
 
 	<TextView
@@ -53,7 +53,7 @@
 			android:layout_width="40dp"
 			android:layout_height="match_parent"
 			android:layout_below="@id/txt_header_recommended"
-			android:background="@color/white"
+			android:background="@color/color_white"
 			android:scaleType="centerInside"
 			android:src="@drawable/img_previous"/>
 
@@ -63,7 +63,7 @@
 			android:layout_height="match_parent"
 			android:layout_alignParentRight="true"
 			android:layout_below="@id/txt_header_recommended"
-			android:background="@color/white"
+			android:background="@color/color_white"
 			android:scaleType="centerInside"
 			android:src="@drawable/img_next"/>
 
@@ -74,7 +74,7 @@
 			android:layout_below="@id/txt_header_recommended"
 			android:layout_toLeftOf="@id/img_next"
 			android:layout_toRightOf="@id/img_previous"
-			android:background="@color/white"></android.support.v7.widget.RecyclerView>
+			android:background="@color/color_white"></android.support.v7.widget.RecyclerView>
 
 		<TextView
 			android:id="@+id/txt_empty_view_recommended"

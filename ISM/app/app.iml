@@ -105,6 +105,7 @@
     <orderEntry type="library" exported="" name="jackson-core-2.3.1" level="project" />
     <orderEntry type="module" module-name="commonsource" exported="" />
     <orderEntry type="module" module-name="whiteboard" exported="" />
+    <orderEntry type="module" module-name="richtexteditor" exported="" />
     <orderEntry type="module" module-name="scientificcalc" exported="" />
     <orderEntry type="module" module-name="roundedimageview" exported="" />
     <orderEntry type="module" module-name="ismrealm" exported="" />

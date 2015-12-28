@@ -61,6 +61,7 @@
 				android:id="@+id/img_admin_dp"
 				android:layout_width="@dimen/dp_size_list_small"
 				android:layout_height="@dimen/dp_size_list_small"
+				android:layout_marginBottom="10dp"
 				android:src="@drawable/img_default_dp"/>
 
 			<TextView
@@ -96,7 +97,6 @@
 				android:maxLines="2"
 				android:ellipsize="end"
 				android:textColor="@color/bg_app_dark"
-				android:text="Notice from admin regarding TutorialGoup discussion."
 				android:background="@drawable/bg_chat_received_admin"
 				android:textSize="@dimen/text_size_normal_chat"/>
 		</RelativeLayout>
@@ -108,6 +108,16 @@
 			android:layout_below="@id/rl_admin_notice"
 			android:layout_above="@+id/ll_attachments"></android.support.v7.widget.RecyclerView>
 
+		<TextView
+			android:id="@+id/txt_empty_list_msg"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:textSize="20sp"
+			android:gravity="center"
+			android:text="@string/no_messages_found"
+			android:visibility="gone"/>
+		
 		<TextView
 			android:id="@+id/txt_alert"
 			android:layout_width="match_parent"
@@ -182,7 +192,7 @@
 				android:paddingRight="20dp"
 				android:text="@string/send"
 				android:layout_gravity="bottom"
-				android:textColor="@color/white"/>
+				android:textColor="@color/color_white"/>
 
 			<EditText
 				android:id="@+id/et_message"

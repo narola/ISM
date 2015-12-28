@@ -31,7 +31,7 @@ public class AllResultsAdapter extends RecyclerView.Adapter<AllResultsAdapter.Vi
 
         public ViewHolder(View itemView) {
             super(itemView);
-            rlResults = (RelativeLayout) itemView.findViewById(R.id.rl_results);
+            rlResults = (RelativeLayout) itemView.findViewById(R.id.rl_notes);
 
             tvSubjectName = (TextView) itemView.findViewById(R.id.tv_subject_name);
             tvExamName = (TextView) itemView.findViewById(R.id.tv_exam_name);

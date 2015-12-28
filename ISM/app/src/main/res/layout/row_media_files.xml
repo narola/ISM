@@ -53,7 +53,7 @@
         android:text="X"
         android:visibility="gone"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="@color/color_white"
         android:layout_alignRight="@+id/rl_image"
         android:layout_alignTop="@+id/rl_image"
         />

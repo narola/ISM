@@ -53,6 +53,8 @@ import java.util.Locale;
 
 public class PostFeedActivity extends Activity implements View.OnClickListener, WebserviceWrapper.WebserviceResponse {
     public static final String TAG = PostFeedActivity.class.getSimpleName();
+    public static final String IMAGE = "image";
+    public static final String VIDEO = "video";
     private InputMethodManager inputMethod;
     private TextView txtPost, txtCaptue, txtChoose, txtCancel;
     private EditText etSayIt;
@@ -350,7 +352,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 
             }
         } catch (Exception e) {
-            Log.e(TAG + "callPostFeed Exception :", e.getLocalizedMessage() + "");
+            Log.e(TAG, "callPostFeed Exception :" + e.getLocalizedMessage() + "");
         }
     }
 

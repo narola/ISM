@@ -13,7 +13,8 @@ import io.realm.annotations.PrimaryKey;
 public class TutorialGroupDiscussion extends RealmObject {
 
     @PrimaryKey
-    private  int tutorialGroupDiscussionId;
+    private int tutorialGroupDiscussionId;
+    private int serverTutorialGroupDiscussionId;
     private String message;
     private String messageType;
     private String messageStatus;
@@ -33,6 +34,14 @@ public class TutorialGroupDiscussion extends RealmObject {
 
     public void setTutorialGroupDiscussionId(int tutorialGroupDiscussionId) {
         this.tutorialGroupDiscussionId = tutorialGroupDiscussionId;
+    }
+
+    public int getServerTutorialGroupDiscussionId() {
+        return serverTutorialGroupDiscussionId;
+    }
+
+    public void setServerTutorialGroupDiscussionId(int serverTutorialGroupDiscussionId) {
+        this.serverTutorialGroupDiscussionId = serverTutorialGroupDiscussionId;
     }
 
     public String getMessage() {

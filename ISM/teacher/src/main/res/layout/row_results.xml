@@ -24,7 +24,7 @@
             android:layout_height="@dimen/d150dp">
 
             <RelativeLayout
-                android:id="@+id/rl_results"
+                android:id="@+id/rl_notes"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/d100dp"
                 android:background="@drawable/bg_subject_yellow"
@@ -62,7 +62,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/rl_results"
+                android:layout_below="@+id/rl_notes"
                 android:gravity="center_vertical">
 
                 <TextView

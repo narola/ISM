@@ -92,18 +92,19 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 
 			imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrListDiscussion.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
 
-			if (position % 2 == 0) {
-//				Received Chats
-				holder.llChat.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-				holder.txtUserName.setGravity(Gravity.LEFT);
-				holder.txtTime.setGravity(Gravity.RIGHT);
-				holder.txtMessage.setBackgroundResource(R.drawable.bg_chat_received);
-			} else {
+//			if (position % 2 == 0) {
+			if (arrListDiscussion.get(position).getUserId().equals("555")) {
 //				Sent Chats
 				holder.llChat.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 				holder.txtUserName.setGravity(Gravity.RIGHT);
 				holder.txtTime.setGravity(Gravity.LEFT);
 				holder.txtMessage.setBackgroundResource(R.drawable.bg_chat_sent);
+			} else {
+//				Received Chats
+				holder.llChat.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+				holder.txtUserName.setGravity(Gravity.LEFT);
+				holder.txtTime.setGravity(Gravity.RIGHT);
+				holder.txtMessage.setBackgroundResource(R.drawable.bg_chat_received);
 			}
 
 			holder.txtTime.setText(Utility.formatPHPDateToMMMDDYY_HHMMA(arrListDiscussion.get(position).getCommentTimestamp()));
