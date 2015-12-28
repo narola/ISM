@@ -15,6 +15,8 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.jotterAdapter.FavAssignmentsAdapter;
 import com.ism.adapter.jotterAdapter.FavBooksAdapter;
+import com.ism.adapter.jotterAdapter.FavExamsAdapter;
+import com.ism.adapter.jotterAdapter.FavLinksAdapter;
 import com.ism.adapter.jotterAdapter.FavNotesAdapter;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
@@ -31,13 +33,15 @@ public class FavoriteFragment extends Fragment {
     private FragmentListener fragListener;
     private HostActivity activityHost;
     private View includeNotes, includeBooks, includeAssignments, includeExams, includeLinks, includeAuthors, includeEvents;
-//    private RelativeLayout rrNotes, rrBooks, rrAssignments, rrExams, rrEvents, rrAuthors, rrLinks;
+    //    private RelativeLayout rrNotes, rrBooks, rrAssignments, rrExams, rrEvents, rrAuthors, rrLinks;
     private TextView txtNotes, txtBooks, txtAssignments, txtEvents, txtLinks, txtAuthors, txtExams;
     private TextView txtViewAllNotes, txtViewAllBooks, txtViewAllAssignment, txtViewAllExmas, txtViewAllEvents, txtViewAllLinks, txtViewAllAuthors;
     private RecyclerView listViewNotes, listViewBooks, listViewAssignments, listViewExams, listViewAuthors, listViewLinks, listViewEvents;
     private FavNotesAdapter favNotesAdapter;
     private FavBooksAdapter favBooksAdapter;
     private FavAssignmentsAdapter favAssignmentsAdapter;
+    private FavExamsAdapter favExamsAdapter;
+    private FavLinksAdapter linksAdapter;
 
     public static FavoriteFragment newInstance() {
         FavoriteFragment fragDesk = new FavoriteFragment();
@@ -74,7 +78,7 @@ public class FavoriteFragment extends Fragment {
         txtViewAllNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         listViewNotes = (RecyclerView) includeNotes.findViewById(R.id.recyclerview);
-        listViewNotes.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        listViewNotes.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         // inclue books
         includeBooks = view.findViewById(R.id.include_books);
@@ -108,30 +112,27 @@ public class FavoriteFragment extends Fragment {
         txtViewAllAssignment.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         listViewAssignments = (RecyclerView) includeAssignments.findViewById(R.id.recyclerview);
-        listViewAssignments.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        listViewAssignments.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         // inclue exams
-        includeExams = view.findViewById(R.id.include_exam);
+//        includeExams = view.findViewById(R.id.include_exam);
 
 //        rrExams = (RelativeLayout) includeExams.findViewById(R.id.rr_fav);
 //        rrExams.setBackgroundColor(getResources().getColor(R.color.color_pink_dark));
 
-        txtExams = (TextView) includeExams.findViewById(R.id.txt_fav_item);
+        txtExams = (TextView) view.findViewById(R.id.txt_fav_exam);
         txtExams.setTypeface(Global.myTypeFace.getRalewayMedium());
-        txtExams.setText(R.string.exams);
-        txtExams.setBackgroundColor(getResources().getColor(R.color.color_pink_dark));
+//        txtExams.setText(R.string.exams);
+//        txtExams.setBackgroundColor(getResources().getColor(R.color.color_pink_dark));
 
-        txtViewAllExmas = (TextView) includeExams.findViewById(R.id.txt_view_all);
+        txtViewAllExmas = (TextView) view.findViewById(R.id.txt_view_all_exam);
         txtViewAllExmas.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-        listViewExams = (RecyclerView) includeExams.findViewById(R.id.recyclerview);
-        listViewExams.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        listViewExams = (RecyclerView) view.findViewById(R.id.recyclerview_exams);
+        listViewExams.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         // inclue events
         includeEvents = view.findViewById(R.id.include_events);
-
-//        rrEvents = (RelativeLayout) includeEvents.findViewById(R.id.rr_fav);
-//        rrEvents.setBackgroundColor(getResources().getColor(R.color.color_pink_dark));
 
         txtEvents = (TextView) includeEvents.findViewById(R.id.txt_fav_item);
         txtEvents.setTypeface(Global.myTypeFace.getRalewayMedium());
@@ -142,22 +143,93 @@ public class FavoriteFragment extends Fragment {
         txtViewAllEvents.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         listViewEvents = (RecyclerView) includeEvents.findViewById(R.id.recyclerview);
-        listViewEvents.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        listViewEvents.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-//        etNotes = (EditText) view.findViewById(R.id.et_notes);
-//        etNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        // inclue author
+//        includeAuthors = view.findViewById(R.id.include_authors);
+//
+//        txtAuthors = (TextView) includeAuthors.findViewById(R.id.txt_fav_item);
+//        txtAuthors.setTypeface(Global.myTypeFace.getRalewayMedium());
+//        txtAuthors.setText(R.string.authors);
+//        txtAuthors.setBackgroundColor(getResources().getColor(R.color.color_pink_dark));
+//
+//        txtViewAllAuthors = (TextView) includeAuthors.findViewById(R.id.txt_view_all);
+//        txtViewAllAuthors.setTypeface(Global.myTypeFace.getRalewayRegular());
+//
+//        listViewAuthors = (RecyclerView) includeAuthors.findViewById(R.id.recyclerview);
+//        listViewAuthors.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
+//        // inclue links
+//        includeLinks = view.findViewById(R.id.include_links);
+//
+//        txtLinks = (TextView) includeLinks.findViewById(R.id.txt_fav_item);
+//        txtLinks.setTypeface(Global.myTypeFace.getRalewayMedium());
+//        txtLinks.setText(R.string.links);
+//        txtLinks.setBackgroundColor(getResources().getColor(R.color.color_pink_dark));
+//
+//        txtViewAllLinks = (TextView) includeLinks.findViewById(R.id.txt_view_all);
+//        txtViewAllLinks.setTypeface(Global.myTypeFace.getRalewayRegular());
+//
+//        listViewLinks = (RecyclerView) includeLinks.findViewById(R.id.recyclerview);
+//        listViewLinks.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
 
         setUpNotes();
         setUpBooks();
         setUpAssignments();
+        setUpExams();
+        //setUpLinks();
+        setUpEvents();
+        onClicks();
 
 
     }
 
+    private void setUpEvents() {
+        try {
+            linksAdapter = new FavLinksAdapter(getActivity());
+            listViewEvents.setAdapter(linksAdapter);
+//            listViewLinks.setAdapter(linksAdapter);
+        } catch (Exception e) {
+            Debug.i(TAG, "setUpEvents Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void onClicks() {
+        try {
+           txtViewAllNotes.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   
+               }
+           });
+
+        } catch (Exception e) {
+            Debug.i(TAG, "onClicks Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void setUpLinks() {
+        try {
+            linksAdapter = new FavLinksAdapter(getActivity());
+            listViewLinks.setAdapter(linksAdapter);
+        } catch (Exception e) {
+            Debug.i(TAG, "setUpLinks Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void setUpExams() {
+        try {
+            favExamsAdapter = new FavExamsAdapter(getActivity());
+            listViewExams.setAdapter(favExamsAdapter);
+        } catch (Exception e) {
+            Debug.i(TAG, "setUpExams Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
     private void setUpAssignments() {
         try {
-            favAssignmentsAdapter=new FavAssignmentsAdapter(getActivity());
+            favAssignmentsAdapter = new FavAssignmentsAdapter(getActivity());
             listViewAssignments.setAdapter(favAssignmentsAdapter);
         } catch (Exception e) {
             Debug.i(TAG, "setUpAssignments Exceptions : " + e.getLocalizedMessage());
@@ -166,7 +238,7 @@ public class FavoriteFragment extends Fragment {
 
     private void setUpBooks() {
         try {
-            favBooksAdapter=new FavBooksAdapter(getActivity(),null,null);
+            favBooksAdapter = new FavBooksAdapter(getActivity(), null, null);
             listViewBooks.setAdapter(favBooksAdapter);
         } catch (Exception e) {
             Debug.i(TAG, "setUpBooks Exceptions : " + e.getLocalizedMessage());
@@ -175,7 +247,7 @@ public class FavoriteFragment extends Fragment {
 
     private void setUpNotes() {
         try {
-            favNotesAdapter=new FavNotesAdapter(getActivity());
+            favNotesAdapter = new FavNotesAdapter(getActivity());
             listViewNotes.setAdapter(favNotesAdapter);
         } catch (Exception e) {
             Debug.i(TAG, "setUpNotes Exceptions : " + e.getLocalizedMessage());

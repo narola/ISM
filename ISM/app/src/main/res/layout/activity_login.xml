@@ -43,8 +43,8 @@
                 android:hint="@string/username"
                 android:inputType="text"
                 android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
+                android:textColor="@color/color_white"
+                android:textColorHint="@color/color_white"
                 android:textSize="@dimen/d20dp" />
 
             <EditText
@@ -59,8 +59,8 @@
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
+                android:textColor="@color/color_white"
+                android:textColorHint="@color/color_white"
                 android:textSize="@dimen/d20dp" />
 
             <CheckBox
@@ -89,7 +89,7 @@
                 android:paddingLeft="@dimen/d90dp"
                 android:paddingRight="@dimen/d90dp"
                 android:text="@string/strlogin"
-                android:textColor="@color/white"
+                android:textColor="@color/color_white"
                 android:textSize="@dimen/d20dp"
                 app:pb_colorComplete="@color/color_dark_gray"
                 app:pb_colorNormal="@color/color_dark_gray"

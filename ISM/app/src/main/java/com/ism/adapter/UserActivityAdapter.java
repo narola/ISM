@@ -138,7 +138,7 @@ public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapte
 		holder.txtActivityTitle.setText(R.string.assignment_submitted);
 		View viewAssignment = setMyActivityLayout(holder, R.layout.layout_timeline_assignment);
 
-		TextView txtAssignmentName = (TextView) viewAssignment.findViewById(R.id.txt_assignment_name);
+		TextView txtAssignmentName = (TextView) viewAssignment.findViewById(R.id.txt_exam_name);
 		TextView txtSubjectName = (TextView) viewAssignment.findViewById(R.id.txt_subject_name);
 		TextView txtSubmittedOn = (TextView) viewAssignment.findViewById(R.id.txt_submitted_on);
 

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
-<merger version="3"><dataSet config="main"><source path="/Volumes/Data/ISM_github/ISM/ISM/AndroidAsync/src/main/res"/><source path="/Volumes/Data/ISM_github/ISM/ISM/AndroidAsync/build/generated/res/rs/release"/><source path="/Volumes/Data/ISM_github/ISM/ISM/AndroidAsync/build/generated/res/resValues/release"/></dataSet><dataSet config="release"><source path="/Volumes/Data/ISM_github/ISM/ISM/AndroidAsync/src/release/res"/></dataSet><mergedItems/></merger>
-=======
-<merger version="3"><dataSet config="main"><source path="/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/AndroidAsync/src/main/res"/><source path="/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/AndroidAsync/build/generated/res/rs/release"/><source path="/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/AndroidAsync/build/generated/res/resValues/release"/></dataSet><dataSet config="release"><source path="/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/AndroidAsync/src/release/res"/></dataSet><mergedItems/></merger>
->>>>>>> 72bf07f664b42e6df003484fb48bebcc42a88e99
