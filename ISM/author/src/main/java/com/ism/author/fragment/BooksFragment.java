@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
@@ -21,7 +22,7 @@ import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.AuthorBook;
+import com.ism.author.ws.model.AllBooks;
 
 import java.util.ArrayList;
 
@@ -35,9 +36,10 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     private View view;
     private FragmentListener fragListener;
 
-    private RecyclerView mRecyclerView;
+    private RecyclerView rvBooksList;
     private BooksAdapter booksAdapter;
-    private ArrayList<AuthorBook> arrListAuthorBooks;
+    private ArrayList<AllBooks> arrListAuthorBooks;
+    private TextView tvNoDataMsg;
 
     public static BooksFragment newInstance() {
         BooksFragment fragBooks = new BooksFragment();
@@ -58,25 +60,29 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void initGlobal() {
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        booksAdapter = new BooksAdapter(getActivity(), null, null);
-        mRecyclerView.setAdapter(booksAdapter);
+        rvBooksList = (RecyclerView) view.findViewById(R.id.rv_books_list);
+        rvBooksList.setHasFixedSize(true);
+        rvBooksList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        booksAdapter = new BooksAdapter(getActivity());
+        rvBooksList.setAdapter(booksAdapter);
 
-        callApiGetAuthorBooks();
+
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(View.GONE);
+        tvNoDataMsg.setText(getString(R.string.no_books_added));
+
+        callApiGetAllBooks();
     }
 
 
-    private void callApiGetAuthorBooks() {
+    private void callApiGetAllBooks() {
 
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
-                Attribute attribute = new Attribute();
-                attribute.setUserId(Global.strUserId);
-                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETBOOKSFORAUTHOR);
+                new WebserviceWrapper(getActivity(), new Attribute(), (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.GET_ALL_BOOKS);
             } catch (Exception e) {
                 Debug.e(TAG + Utility.getString(R.string.strerrormessage, getActivity()), e.getLocalizedMessage());
             }
@@ -91,7 +97,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         try {
             switch (apiCode) {
 
-                case WebConstants.GETBOOKSFORAUTHOR:
+                case WebConstants.GET_ALL_BOOKS:
                     onResponseGetBooksForAuthor(object, error);
                     break;
 
@@ -108,19 +114,25 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListAuthorBooks = new ArrayList<AuthorBook>();
-                    arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
-                    booksAdapter.addAll(arrListAuthorBooks);
-                    booksAdapter.notifyDataSetChanged();
+
+                    if (responseHandler.getAllBooks().size() > 0) {
+                        arrListAuthorBooks = new ArrayList<AllBooks>();
+                        arrListAuthorBooks.addAll(responseHandler.getAllBooks());
+                        booksAdapter.addAll(arrListAuthorBooks);
+                        booksAdapter.notifyDataSetChanged();
+                        tvNoDataMsg.setVisibility(View.GONE);
+                    } else {
+                        tvNoDataMsg.setVisibility(View.VISIBLE);
+                    }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
-                Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseGetBooksForAuthor api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Debug.e(TAG, "onResponseGetSubjects Exception : " + e.toString());
+            Debug.e(TAG, "onResponseGetBooksForAuthor Exception : " + e.toString());
         }
     }
 

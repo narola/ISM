@@ -3,7 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:background="@color/gray_light"
-             tools:context="com.ism.fragment.tutorialGroup.TutorialFriAddQuestionFragment">
+             tools:mContext="com.ism.fragment.tutorialGroup.TutorialFriAddQuestionFragment">
 
 	<RelativeLayout
 		android:id="@+id/rl_header"
@@ -50,7 +50,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:background="@color/green"
-			android:textColor="@color/white"
+			android:textColor="@color/color_white"
 			android:paddingTop="10dp"
 			android:paddingBottom="10dp"
 			android:paddingLeft="20dp"
@@ -428,7 +428,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/upload_and_freeze"
-				android:textColor="@color/white"
+				android:textColor="@color/color_white"
 				android:layout_marginTop="50dp"
 				android:layout_below="@id/txt_upload_msg"
 				android:paddingLeft="20dp"

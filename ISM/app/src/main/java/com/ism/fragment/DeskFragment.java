@@ -21,7 +21,7 @@ import com.ism.interfaces.FragmentListener;
 public class DeskFragment extends Fragment implements HostActivity.HostListener {
 
     private static final String TAG = DeskFragment.class.getSimpleName();
-    private static final int FRAGMENT_JOTTER = 0;
+    public static final int FRAGMENT_JOTTER = 0;
     private static final int FRAGMENT_FAVOURITES = 1;
     private static final int FRAGMENT_TIMETABLE = 2;
     private static final int FRAGMENT_BOOK = 3;

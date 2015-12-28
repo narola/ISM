@@ -5,33 +5,100 @@
     android:layout_height="match_parent"
     android:background="@color/color_white"
     android:orientation="vertical"
+    android:id="@+id/scrollView"
     tools:mContext="com.ism.fragment.desk.FavoriteFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <include
             android:id="@+id/include_notes"
             layout="@layout/layout_favorite" />
+
         <include
             android:id="@+id/include_books"
             layout="@layout/layout_favorite" />
+
         <include
             android:id="@+id/include_assignments"
             layout="@layout/layout_favorite" />
-        <include
-            android:id="@+id/include_exam"
-            layout="@layout/layout_favorite" />
+
+        <!--<include-->
+        <!--android:id="@+id/include_exam"-->
+        <!--layout="@layout/layout_favorite" />-->
+
+        <LinearLayout
+            android:id="@+id/ll_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white"
+            android:orientation="vertical">
+
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/rr_fav"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:gravity="center"-->
+            <!--android:background="@color/color_red"-->
+            <!--android:orientation="horizontal">-->
+
+            <TextView
+                android:id="@+id/txt_fav_exam"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:background="@color/color_pink_dark"
+                android:padding="@dimen/d10dp"
+                android:text="Exams"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/d20sp" />
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:text="View all"-->
+            <!--android:layout_marginRight="@dimen/d10dp"-->
+            <!--android:id="@+id/txt_view_all"-->
+            <!--android:textColor="@color/color_white"-->
+            <!--android:textSize="@dimen/d20sp" />-->
+            <!--</RelativeLayout>-->
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_exams"
+                android:layout_width="match_parent"
+                android:layout_height="290dp"
+                android:layout_marginLeft="@dimen/d5dp"
+                android:layout_marginRight="@dimen/d5dp"
+                android:layout_weight="8"
+                android:background="@color/color_white" />
+
+            <TextView
+                android:id="@+id/txt_view_all_exam"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_alignEnd="@+id/recyclerview"
+                android:layout_gravity="end"
+                android:layout_marginRight="@dimen/d10dp"
+                android:layout_weight="0.5"
+                android:padding="@dimen/d5dp"
+                android:text="View all"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/d20sp" />
+        </LinearLayout>
+
         <include
             android:id="@+id/include_links"
             layout="@layout/layout_favorite" />
+
         <include
             android:id="@+id/include_events"
             layout="@layout/layout_favorite" />
-        <include
-            android:id="@+id/include_authors"
-            layout="@layout/layout_favorite" />
+
+        <!--<include-->
+            <!--android:id="@+id/include_authors"-->
+            <!--layout="@layout/layout_favorite" />-->
     </LinearLayout>
 </ScrollView>

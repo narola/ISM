@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rr_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/color_white"
     android:orientation="vertical">
 
@@ -18,10 +18,9 @@
     <TextView
         android:id="@+id/txt_fav_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_red"
+        android:layout_height="0dp"
         android:padding="@dimen/d10dp"
-        android:text="Notes"
+        android:layout_weight="0.5"
         android:textColor="@color/color_white"
         android:textSize="@dimen/d20sp" />
 
@@ -43,17 +42,20 @@
         android:layout_below="@id/txt_fav_item"
         android:layout_marginLeft="@dimen/d5dp"
         android:layout_marginRight="@dimen/d5dp"
+        android:layout_weight="8"
         android:background="@color/color_white" />
 
     <TextView
         android:id="@+id/txt_view_all"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/recyclerview"
+        android:layout_height="0dp"
         android:layout_marginRight="@dimen/d10dp"
         android:padding="@dimen/d5dp"
+        android:layout_weight="0.5"
+        android:layout_gravity="end"
+        android:layout_below="@+id/recyclerview"
         android:text="View all"
+        android:layout_alignEnd="@+id/recyclerview"
         android:textColor="@color/blue"
         android:textSize="@dimen/d20sp" />
-</RelativeLayout>
+</LinearLayout>

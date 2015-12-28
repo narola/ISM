@@ -1,8 +1,10 @@
 package com.ism.teacher.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,21 +28,15 @@ import com.ism.teacher.Utility.ControllerTopMenuItem;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.PreferenceData;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
-import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.ControllerTopSpinnerAdapter;
-import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.createexam.CreateExamFragment;
-import com.ism.teacher.fragments.assesment.ObjectiveAssignmentQuestionsFragment;
-import com.ism.teacher.fragments.assesment.StudentAttemptedFragment;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
-import com.ism.teacher.fragments.notes.NotesAddEditFragment;
-import com.ism.teacher.fragments.office.TeacherOfficeFragment;
 import com.ism.teacher.fragments.UpcomingEventsFragment;
 import com.ism.teacher.fragments.UserProfileFragment;
+import com.ism.teacher.fragments.assesment.StudentAttemptedFragment;
+import com.ism.teacher.fragments.office.TeacherOfficeFragment;
 import com.ism.teacher.fragments.tutorial.PastTutorialsFragment;
 import com.ism.teacher.fragments.tutorial.TutorialGroupFragment;
 import com.ism.teacher.fragments.tutorial.scheduleexam.ScheduleTutorialExamContainerFragment;
@@ -60,6 +56,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     private static final String TAG = TeacherHostActivity.class.getSimpleName();
 
+    AlertDialog exitAppAlertDialog;
 
     /**
      * Views
@@ -146,7 +143,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         Global.myTypeFace = new MyTypeFace(getApplicationContext());
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
-        Debug.e(TAG,"user_id_from_pref"+PreferenceData.getStringPrefs(PreferenceData.USER_ID, TeacherHostActivity.this));
+        Debug.e(TAG, "user_id_from_pref" + PreferenceData.getStringPrefs(PreferenceData.USER_ID, TeacherHostActivity.this));
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, TeacherHostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, TeacherHostActivity.this);
         Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, TeacherHostActivity.this);
@@ -567,9 +564,9 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                                 }
                                 break;
 
-                            case TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT:
+                            case TeacherOfficeFragment.FRAGMENT_NOTES_CONTAINER:
                                 if (addTopicsListener != null) {
-                                    addTopicsListener.addTopic(TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT);
+                                    addTopicsListener.addTopic(TeacherOfficeFragment.FRAGMENT_NOTES_CONTAINER);
                                     hideAddOption();
                                 }
                                 break;
@@ -802,14 +799,13 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                         Debug.e(AppConstant.back_tag + "back click host", "from create exam container");
                         teacherOfficeFragment.onBackClick();
                         break;
-                    case TeacherOfficeFragment.FRAGMENT_NOTES_ADD_EDIT:
-                        Debug.e(AppConstant.back_tag + "back click host", "from add edit notesr");
+                    case TeacherOfficeFragment.FRAGMENT_NOTES_CONTAINER:
+                        Debug.e(AppConstant.back_tag + "back click host", "from notes container");
                         teacherOfficeFragment.onBackClick();
                         break;
 
                 }
                 break;
-
 
             case FRAGMENT_TEACHER_TUTORIAL_GROUP:
                 Debug.e(AppConstant.back_tag, "back from tutorial group");
@@ -835,7 +831,9 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     @Override
     public void onBackPressed() {
-
+        if (currentMainFragment == FRAGMENT_TEACHER_HOME) {
+            showExitAlertDialog("Exit", "Are you sure you want to exit from the app?");
+        }
     }
 
     /**
@@ -855,6 +853,15 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     public void showSpinnerWithSubMenu(int index) {
         switch (index) {
             case AppConstant.INDEX_ALL_ASSIGNMENTS:
+                hideAllMainMenus();
+                showControllerTopBackButton();
+                startSlideAnimation(spSubmenu, -imgBack.getWidth(), 0, 0, 0);
+                spSubmenu.setVisibility(View.VISIBLE);
+                adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(index).getSubMenu(), TeacherHostActivity.this);
+                spSubmenu.setAdapter(adapterControllerTopSpinner);
+                break;
+
+            case AppConstant.INDEX_NOTES:
                 hideAllMainMenus();
                 showControllerTopBackButton();
                 startSlideAnimation(spSubmenu, -imgBack.getWidth(), 0, 0, 0);
@@ -891,65 +898,91 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
      * Remove all the bundle arguments
      */
     private void removeBundleArguments() {
+        getBundle().clear();
 
-        getBundle().remove(CreateExamFragment.ARG_IS_CREATE_EXAM);
+//        getBundle().remove(CreateExamFragment.ARG_IS_CREATE_EXAM);
+//
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ID);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_NAME);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_TOPIC_ID);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_BOOK_ID);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CATEGORY);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_TYPE);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_MODE);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_DURATION);
+//        getBundle().remove(AssignmentsAdapter.ARG_ASSIGNMENT_NO);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CREATED_DATE);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ATTEMPT_COUNT);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_INSTRUCTIONS);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ASSESSOR);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_START_DATE);
+//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_START_TIME);
+//        getBundle().remove(AssignmentsAdapter.ARG_FRAGMENT_TYPE);
+//        getBundle().remove(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
+//
+//        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_ID);
+//        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION);
+//        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_PROFILE_PIC);
+//        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_NAME);
+//
+//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY);
+//        getBundle().remove(MyStudentsAdapter.ARG_ARR_LIST_STUDENTS);
+//
+//
+//        // Tutorial args
+//
+//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_ID);
+//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_NAME);
+//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_RANK);
+//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_CLASS);
+//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_TOPIC_ID);
+//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_TOPIC_NAME);
+//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_EXAM_ID);
+//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_EXAM_NAME);
+//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_EXAM_TYPE);
+//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_SCORE);
+////        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_SUBJECT_NAME);
+//
+//
+//        //Notes Args
+//        getBundle().remove(NotesAddEditFragment.ARG_IS_CREATE_NOTE);
 
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ID);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_NAME);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_TOPIC_ID);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_BOOK_ID);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CATEGORY);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_TYPE);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_MODE);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_DURATION);
-        getBundle().remove(AssignmentsAdapter.ARG_ASSIGNMENT_NO);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CREATED_DATE);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ATTEMPT_COUNT);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_INSTRUCTIONS);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ASSESSOR);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_START_DATE);
-        getBundle().remove(AssignmentsAdapter.ARG_EXAM_START_TIME);
-        getBundle().remove(AssignmentsAdapter.ARG_FRAGMENT_TYPE);
-        getBundle().remove(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
+    }
 
-        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_ID);
-        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION);
-        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_PROFILE_PIC);
-        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_NAME);
+    private void showExitAlertDialog(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(TeacherHostActivity.this);
 
-        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
-        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY);
-        getBundle().remove(MyStudentsAdapter.ARG_ARR_LIST_STUDENTS);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setCancelable(true);
 
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
 
-        // Tutorial args
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
 
-        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_ID);
-        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_NAME);
-        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_RANK);
-        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_CLASS);
-        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_TOPIC_ID);
-        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_TOPIC_NAME);
-        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_EXAM_ID);
-        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_EXAM_NAME);
-        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_EXAM_TYPE);
-        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_SCORE);
-//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_SUBJECT_NAME);
-
-
-        //Notes Args
-        getBundle().remove(NotesAddEditFragment.ARG_IS_CREATE_NOTE);
-
+            }
+        });
+        exitAppAlertDialog = builder.create();
+        exitAppAlertDialog.show();
     }
 }

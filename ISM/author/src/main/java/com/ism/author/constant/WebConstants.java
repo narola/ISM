@@ -66,7 +66,7 @@ public class WebConstants {
 
     public static final int GETQUESTIONBANK = 20;
 
-    public static final int GETALLASSIGNMENTS = 21;
+    public static final int GETASSIGNMENTBYBOOK = 21;
 
     public static final int GETEXAMSUBMISSION = 22;
 
@@ -107,6 +107,10 @@ public class WebConstants {
 
     public static final int GET_HIGH_SCORERS = 42;
 
+    public static final int GETMYFOLLOWERS = 43;
+
+    public static final int GET_AUTHOR_BOOK_ASSIGNMENT = 44;
+
     //user settings preferences
 
     public static final int MANAGE_GENERAL_SETTINGS = 71;
@@ -143,9 +147,13 @@ public class WebConstants {
 
     public static final int GET_TRENDING_QUESTIONS = 63;
 
-    public static final int GET_PAST_QUESTIONS = 64;
+    public static final int GET_PAST_TRENDING_QUESTION = 64;
 
     public static final int SUBMIT_TRENDING_ANSWER = 65;
+
+    public static final int GET_ALL_BOOKS = 66;
+
+    public static final int GET_TRENDING_QUESTION_DETAIL = 67;
 
     /*webservice url*/
 
@@ -197,7 +205,7 @@ public class WebConstants {
 
     public static final String URL_GETTRENDINGQUESTIONS = URL_KINJAL_HOST + "GetTrendingQuestions";
 
-    public static final String URL_GETPASTQUESTIONS = URL_KINJAL_HOST + "GetTrendingQuestions";
+    public static final String URL_GET_PAST_TRENDING_QUESTION = URL_KINJAL_HOST + "GetPastTrendingQuestion";
 
     public static final String URL_UPLOADMEDIAFORQUESTION = URL_KINJAL_HOST + "UploadMediaForQuestion";
 
@@ -209,7 +217,7 @@ public class WebConstants {
 
     public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
 
-    public static final String URL_GETALLASSIGNMENTS = URL_KINJAL_HOST + "GetAssignmentByBook";
+    public static final String URL_GET_ASSIGNMENT_BY_BOOK = URL_KINJAL_HOST + "GetAssignmentByBook";
 
     public static final String URL_HASHTAG = URL_KINJAL_HOST + "Hashtag";
 
@@ -251,6 +259,12 @@ public class WebConstants {
 
     public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
 
+    public static final String URL_GETMYFOLLOWERS = URL_KINJAL_HOST + "GetMyFollowers";
+
+    public static final String URL_GET_AUTHOR_BOOK_ASSIGNMENT = URL_KINJAL_HOST + "GetAuthorBookAssignment";
+
+    public static final String URL_GET_TRENDING_QUESTION_DETAIL = URL_KINJAL_HOST + "GetTrendingQuestionDetail";
+
     /*status for apisuccess ans apifailed*/
 
     public static final String URL_SUBMIT_TRENDING_ANSWER = URL_KINJAL_HOST + "SubmitTrendingAnswer";
@@ -266,6 +280,8 @@ public class WebConstants {
     public static final String URL_MANAGE_FAVOURITES = URL_KINJAL_HOST + "ManageFavorite";
 
     public static final String URL_MANAGE_BOOK_LIBRARY = URL_KINJAL_HOST + "ManageBookLibrary";
+
+    public static final String URL_GET_ALL_BOOKS = URL_KINJAL_HOST + "GetAllBooks";
 
 
     /*status for apisuccess ans apifailed*/

@@ -123,24 +123,6 @@ public class ControllerTopMenuItem {
     }
 
 
-    public static ArrayList<ControllerTopMenuItem> getMenuAuthorOffice(Context mContext) {
-        ArrayList<ControllerTopMenuItem> menu = null;
-        try {
-            menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.gotrending), mContext.getString(R.string.stradd), null));
-            ArrayList<String> setquiz = new ArrayList<String>();
-            setquiz.add(mContext.getString(R.string.setquiz));
-            setquiz.add(mContext.getString(R.string.settrial));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.setquiz), mContext.getString(R.string.straddnew), setquiz));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.progress_report), null, null));
-
-        } catch (Exception e) {
-            Log.e(TAG, "getMenuAuthorOffice Exception : " + e.toString());
-        }
-        return menu;
-
-    }
-
     /**
      * For loading  teacher office main menu at top
      *
@@ -153,12 +135,15 @@ public class ControllerTopMenuItem {
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
             menu.add(new ControllerTopMenuItem(mContext.getString(R.string.str_classwall), null, null));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.str_notes), mContext.getString(R.string.add_notes), null));
+
+            ArrayList<String> notes_sub_sections = new ArrayList<>();
+            notes_sub_sections.add(mContext.getString(R.string.notes));
+            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.str_notes), mContext.getString(R.string.add_notes), notes_sub_sections));
 
             ArrayList<String> quiz_sub_sections = new ArrayList<String>();
             quiz_sub_sections.add(mContext.getString(R.string.assignments));
-            quiz_sub_sections.add(mContext.getString(R.string.assignments));
-            quiz_sub_sections.add(mContext.getString(R.string.assignments));
+//            quiz_sub_sections.add(mContext.getString(R.string.assignments));
+//            quiz_sub_sections.add(mContext.getString(R.string.assignments));
             menu.add(new ControllerTopMenuItem(mContext.getString(R.string.str_quiz), mContext.getString(R.string.str_add), quiz_sub_sections));
 
             menu.add(new ControllerTopMenuItem(mContext.getString(R.string.str_markscript), null, null));

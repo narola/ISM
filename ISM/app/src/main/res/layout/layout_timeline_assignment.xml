@@ -4,7 +4,7 @@
               android:layout_height="match_parent">
 
 	<TextView
-		android:id="@+id/txt_assignment_name"
+		android:id="@+id/txt_exam_name"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:gravity="center"
@@ -16,7 +16,7 @@
         android:id="@+id/txt_subject_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txt_assignment_name"
+        android:layout_below="@id/txt_exam_name"
         android:gravity="center"
         android:text="Science &amp; Technlogy"
         android:textSize="16sp"/>

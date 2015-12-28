@@ -148,31 +148,49 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
     private void filterAssignmentResults(View view, int position) {
 
-        if (view == spAssignmentSubject) {
-            if (arrListSubject != null && position > 0) {
-                if (position > 1) {
 
-                    /**
-                     * Position-2 because two static elements are added in the spinner in beginning
-                     * so to fetch the first element from arraylist at index zero we are doing position-2
-                     */
-                    Debug.e(TAG, "subject is:" + arrListSubject.get(position - 2).getSubjectName());
-                    filterSubjectIdWiseAssignments(arrListSubject.get(position - 2).getId());
-                    spAssignentAssessed.setSelection(0);
-                    spAssignmentClasswise.setSelection(0);
+        switch (view.getId()) {
+            case R.id.sp_assignment_subject:
+                if (arrListSubject != null && position > 0) {
+                    if (position > 1) {
 
-                } else {
+                        /**
+                         * Position-2 because two static elements are added in the spinner in beginning
+                         * so to fetch the first element from arraylist at index zero we are doing position-2
+                         */
+                        Debug.e(TAG, "subject is:" + arrListSubject.get(position - 2).getSubjectName());
+                        filterSubjectIdWiseAssignments(arrListSubject.get(position - 2).getId());
+                        spAssignentAssessed.setSelection(0);
+                        spAssignmentClasswise.setSelection(0);
 
-                    clearFilters();
-                    spAssignentAssessed.setSelection(0);
-                    spAssignmentClasswise.setSelection(0);
+                    } else {
+
+                        clearFilters();
+                        spAssignentAssessed.setSelection(0);
+                        spAssignmentClasswise.setSelection(0);
+                    }
                 }
-            }
-        } else if (view == spAssignmentClasswise) {
-            if (arrListClassRooms != null && position > 0) {
+                break;
+
+            case R.id.sp_assignment_classwise:
+                if (arrListClassRooms != null && position > 0) {
+                    if (position > 1) {
+                        filterClassroomIdWiseAssignments(arrListClassRooms.get(position - 2).getId());
+                        spAssignentAssessed.setSelection(0);
+                        spAssignmentSubject.setSelection(0);
+
+                    } else {
+                        clearFilters();
+                        spAssignentAssessed.setSelection(0);
+                        spAssignmentClasswise.setSelection(0);
+                    }
+                }
+                break;
+
+            case R.id.sp_assignent_assessed:
                 if (position > 1) {
-                    filterClassroomIdWiseAssignments(arrListClassRooms.get(position - 2).getId());
-                    spAssignentAssessed.setSelection(0);
+                    filterAssessedNotAssessedAssignments(arrListAssessment.get(position));
+                    spAssignmentClasswise.setSelection(0);
                     spAssignmentSubject.setSelection(0);
 
                 } else {
@@ -180,20 +198,9 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
                     spAssignentAssessed.setSelection(0);
                     spAssignmentClasswise.setSelection(0);
                 }
-            }
-        } else if (view == spAssignentAssessed) {
-            if (position > 1) {
-                filterAssessedNotAssessedAssignments(arrListAssessment.get(position));
-                spAssignmentClasswise.setSelection(0);
-                spAssignmentSubject.setSelection(0);
+                break;
 
-            } else {
-                clearFilters();
-                spAssignentAssessed.setSelection(0);
-                spAssignmentClasswise.setSelection(0);
-            }
         }
-
     }
 
     private void clearFilters() {

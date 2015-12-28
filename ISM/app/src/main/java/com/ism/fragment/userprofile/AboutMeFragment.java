@@ -323,7 +323,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
-
         try {
             switch (apiCode) {
                 case WebConstants.GET_ABOUT_ME:
@@ -332,7 +331,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 case WebConstants.EDIT_ABOUT_ME:
                     onResponseEditAboutMe(object, error);
                     break;
-
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());

@@ -50,7 +50,7 @@ public class FavAssignmentsAdapter extends RecyclerView.Adapter<FavAssignmentsAd
         private TextView txtBookSubject;
         private TextView txtAssignmentName;
         private TextView txtAssignmentBy;
-        private TextView txtExamType;
+        private TextView txtExamMode;
         private TextView txtSubject;
         private ImageView imgUser;
         private ImageView imgMenu;
@@ -61,13 +61,13 @@ public class FavAssignmentsAdapter extends RecyclerView.Adapter<FavAssignmentsAd
             txtSubject = (TextView) itemView.findViewById(R.id.txt_subject);
             txtSubject.setTypeface(Global.myTypeFace.getRalewayBold());
 
-            txtExamType = (TextView) itemView.findViewById(R.id.txt_exam_type);
-            txtExamType.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtExamMode = (TextView) itemView.findViewById(R.id.txt_exam_mode);
+            txtExamMode.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-            txtAssignmentBy = (TextView) itemView.findViewById(R.id.txt_assignment_by);
+            txtAssignmentBy = (TextView) itemView.findViewById(R.id.txt_exam_by);
             txtAssignmentBy.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-            txtAssignmentName = (TextView) itemView.findViewById(R.id.txt_assignment_name);
+            txtAssignmentName = (TextView) itemView.findViewById(R.id.txt_exam_name);
             txtAssignmentName.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             txtBookSubject = (TextView) itemView.findViewById(R.id.txt_book_subject);
