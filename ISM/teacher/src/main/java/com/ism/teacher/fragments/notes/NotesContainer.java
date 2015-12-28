@@ -56,7 +56,7 @@ public class NotesContainer extends Fragment {
         flRightNoteContainer = (FrameLayout) rootview.findViewById(R.id.fl_right_note_container);
 
         notesAddEditFragment = new NotesAddEditFragment(this);
-        notesListFragment=new NotesListFragment(this);
+        notesListFragment = new NotesListFragment(this);
         loadFragmentInLeftContainer();
         loadFragmentInRightContainer();
 
@@ -79,6 +79,5 @@ public class NotesContainer extends Fragment {
         }
 
     }
-
 
 }
