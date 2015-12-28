@@ -26,7 +26,8 @@ import java.util.ArrayList;
  * Created by c162 on 16/10/15.
  */
 public class PostFileAdapter extends BaseAdapter {
-    private  LayoutInflater inflater;
+    private static final String TAG = PostFileAdapter.class.getSimpleName();
+    private LayoutInflater inflater;
     ArrayList<PostFileModel> arrayList = new ArrayList<>();
     Context context;
     MediaPlayer mediaPlayer = new MediaPlayer();
@@ -44,11 +45,11 @@ public class PostFileAdapter extends BaseAdapter {
     }
 
     public PostFileAdapter() {
-       // this.inflater = LayoutInflater.from(mContext);
+        // this.inflater = LayoutInflater.from(mContext);
     }
 
     public ArrayList<PostFileModel> getArrayList() {
-        Log.e("ArrayList size",""+this.arrayList.size());
+        Log.e("ArrayList size", "" + this.arrayList.size());
         return this.arrayList;
     }
 
@@ -69,69 +70,76 @@ public class PostFileAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        convertView = inflater.inflate(R.layout.row_post_files, parent, false);
-        RelativeLayout rlMain = (RelativeLayout) convertView.findViewById(R.id.rl_image);
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.img_video);
-        TextView videoIndicator = (TextView) convertView.findViewById(R.id.txt_video);
-        ImageView imgClose = (ImageView) convertView.findViewById(R.id.img_cancel);
-       ImageView imgPlay = (ImageView) convertView.findViewById(R.id.img_play);
-        imageView.setVisibility(View.VISIBLE);
-        Log.e("File", "" + arrayList.get(position).getStrFilePath());
-     if (arrayList.get(position).getStrFileType().equals("image")) {
-            if (arrayList.get(position).getStrFilePath() != null) {
-                //  Uri uri = Uri.fromFile(new File(arrayList.get(position).getStrFilePath()));
+        try {
+            convertView = inflater.inflate(R.layout.row_post_files, parent, false);
+            RelativeLayout rlMain = (RelativeLayout) convertView.findViewById(R.id.rl_image);
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.img_video);
+            TextView videoIndicator = (TextView) convertView.findViewById(R.id.txt_video);
+            ImageView imgClose = (ImageView) convertView.findViewById(R.id.img_cancel);
+            ImageView imgPlay = (ImageView) convertView.findViewById(R.id.img_play);
+            imageView.setVisibility(View.VISIBLE);
+            imgClose.setVisibility(View.VISIBLE);
+            Log.e(TAG,"Media File uri : " + arrayList.get(position).getStrFilePath());
+            if (arrayList.get(position).getStrFileType().equals("image")) {
+                if (arrayList.get(position).getStrFilePath() != null) {
+                    //  Uri uri = Uri.fromFile(new File(arrayList.get(position).getStrFilePath()));
 
-                Picasso.with(context)
-                        .load(arrayList.get(position).getStrFilePath())
-                        .error(R.drawable.ic_launcher)
-                        .placeholder(R.drawable.selector_loading)
-                        .into(imageView);
-                // bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), Uri.parse(arrayList.get(position).getStrFilePath()));
+                    Picasso.with(context)
+                            .load(arrayList.get(position).getStrFilePath())
+                            .error(R.drawable.ic_launcher)
+                            .placeholder(R.drawable.selector_loading)
+                            .into(imageView);
+                    // bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), Uri.parse(arrayList.get(position).getStrFilePath()));
 
-                // imageView.setImageBitmap(bitmap);
+                    // imageView.setImageBitmap(bitmap);
 
+                }
+
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else if (arrayList.get(position).getStrFileType().equals("video")) {
+                MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+                mMediaMetadataRetriever.setDataSource(context, arrayList.get(position).getStrFilePath());
+                bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+                imageView.setImageBitmap(bitmap);
+                videoIndicator.setText(mediaPlayer.getDuration() + "");
+                videoIndicator.setVisibility(View.VISIBLE);
+                imgPlay.setVisibility(View.VISIBLE);
+
+
+            } else if (arrayList.get(position).getStrFileType().equals("audio")) {
+                imgClose.setVisibility(View.VISIBLE);
+                videoIndicator.setText(mediaPlayer.getDuration() + "");
+                videoIndicator.setVisibility(View.VISIBLE);
+                imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.audioplay));
             }
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
-
                 public void onClick(View v) {
                     Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
                 }
             });
-        } else if (arrayList.get(position).getStrFileType().equals("video")) {
-         MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
-         mMediaMetadataRetriever.setDataSource(context, arrayList.get(position).getStrFilePath());
-         bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-         imageView.setImageBitmap(bitmap);
-         videoIndicator.setText(mediaPlayer.getDuration() + "");
-            videoIndicator.setVisibility(View.VISIBLE);
-            imgPlay.setVisibility(View.VISIBLE);
+            imgClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    arrayList.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
 
-
-        } else if (arrayList.get(position).getStrFileType().equals("audio")) {
-            imgClose.setVisibility(View.VISIBLE);
-            videoIndicator.setText(mediaPlayer.getDuration() + "");
-            videoIndicator.setVisibility(View.VISIBLE);
-            imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.audioplay));
+        } catch (Exception e) {
+            Log.i(TAG, "getView Exception : " + e.getLocalizedMessage());
         }
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
-            }
-        });
-        imgClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                arrayList.remove(position);
-                notifyDataSetChanged();
-            }
-        });
-        imgClose.setVisibility(View.VISIBLE);
         return convertView;
     }
+
     private Bundle getBundleArguments() {
         return ((TeacherHostActivity) context).getBundle();
     }

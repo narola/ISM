@@ -11,7 +11,7 @@ import android.widget.GridView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.adapter.GridAdaptor;
+import com.ism.adapter.ScientificGridAdaptor;
 import com.ism.interfaces.FragmentListener;
 
 /**
@@ -24,7 +24,7 @@ public class JotterScientificSymbolFragment extends Fragment {
 
     private FragmentListener fragListener;
     private GridView gridSymbols;
-    private GridAdaptor gridAdaptor;
+    private ScientificGridAdaptor gridAdaptor;
     private HostActivity activityHost;
 
     public static JotterScientificSymbolFragment newInstance() {
@@ -83,7 +83,7 @@ public class JotterScientificSymbolFragment extends Fragment {
         };
 
 
-        gridAdaptor = new GridAdaptor(getActivity(), formulas);
+        gridAdaptor = new ScientificGridAdaptor(getActivity(), formulas);
         gridSymbols.setAdapter(gridAdaptor);
 
     }

@@ -39,7 +39,7 @@
 				android:layout_height="wrap_content"
 				android:padding="0sp"
 				android:text="Welcome to ISM"
-				android:textColor="@color/white"
+				android:textColor="@color/color_white"
 				android:textSize="28sp"/>
 
 			<TextView
@@ -48,7 +48,7 @@
 				android:layout_height="wrap_content"
 				android:padding="0sp"
 				android:text="John Samuel"
-				android:textColor="@color/white"
+				android:textColor="@color/color_white"
 				android:textSize="@dimen/d25dp"/>
 
 			<TextView
@@ -107,7 +107,7 @@
 		android:paddingTop="@dimen/d10dp"
 		android:text="@string/striacceptedgroup"
 		android:onClick="onClickAccept"
-		android:textColor="@color/white"
+		android:textColor="@color/color_white"
 		android:textSize="@dimen/d20dp"
 		app:pb_colorComplete="@color/green"
 		app:pb_colorNormal="@color/green"

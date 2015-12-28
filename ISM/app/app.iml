@@ -95,5 +95,6 @@
     <orderEntry type="module" module-name="whiteboard" exported="" />
     <orderEntry type="module" module-name="roundedimageview" exported="" />
     <orderEntry type="module" module-name="commonsource" exported="" />
+    <orderEntry type="module" module-name="richtexteditor" exported="" />
   </component>
 </module>

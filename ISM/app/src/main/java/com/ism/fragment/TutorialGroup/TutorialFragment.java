@@ -278,7 +278,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					tutorialGroupProfile = responseHandler.getTutorialGroupProfile().get(0);
-					activityHost.showTutorialGroupName(tutorialGroupProfile.getGroupName());
+					activityHost.showTutorialGroupData(tutorialGroupProfile);
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetGroupProfile Failed, message : " + ((ResponseHandler) object).getMessage());
 				}
@@ -289,4 +289,5 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 			Log.e(TAG, "onResponseGetGroupProfile Exception : " + e.toString());
 		}
 	}
+
 }
