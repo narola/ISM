@@ -513,7 +513,7 @@ public class ResponseHandler {
         return this;
     }
 
-    @JsonProperty("trending_question")
+    @JsonProperty("trending_question_detail")
     public ArrayList<QuestionComments> getQuestionComments() {
         return questionComments;
     }

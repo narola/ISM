@@ -84,7 +84,7 @@ public class PastTrendingQuestionsFragment extends Fragment implements Webservic
             activityHost = (AuthorHostActivity) activity;
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_PAST);
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_PAST_TRENDING_QUESTIONS);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -96,7 +96,7 @@ public class PastTrendingQuestionsFragment extends Fragment implements Webservic
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_PAST);
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_PAST_TRENDING_QUESTIONS);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
@@ -105,7 +105,7 @@ public class PastTrendingQuestionsFragment extends Fragment implements Webservic
     }
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_PAST);
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_PAST_QUESTIONS);
     }
 
     private void callApiForGetPastTrendingQuestions() {

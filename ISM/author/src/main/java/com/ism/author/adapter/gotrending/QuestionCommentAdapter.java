@@ -6,15 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
-import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.object.Global;
-import com.ism.author.ws.model.AuthorBookAssignment;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.ws.model.Comment;
 
 import java.util.ArrayList;
 
@@ -24,9 +22,9 @@ import java.util.ArrayList;
 public class QuestionCommentAdapter extends RecyclerView.Adapter<QuestionCommentAdapter.ViewHolder> {
 
 
-    private static final String TAG = ExamsAdapter.class.getSimpleName();
+    private static final String TAG = QuestionCommentAdapter.class.getSimpleName();
     private Fragment mFragment;
-    private ArrayList<AuthorBookAssignment> arrListAuthorBooksAssignments = new ArrayList<AuthorBookAssignment>();
+    private ArrayList<Comment> arrListQuestionComments = new ArrayList<Comment>();
     private LayoutInflater inflater;
     private Context mContext;
 
@@ -52,6 +50,9 @@ public class QuestionCommentAdapter extends RecyclerView.Adapter<QuestionComment
         try {
 
 
+            holder.txtCommentorName.setText(arrListQuestionComments.get(position).getCommentBy());
+            holder.txtComment.setText(arrListQuestionComments.get(position).getCommentText());
+
         } catch (Exception e) {
             Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());
         }
@@ -60,13 +61,13 @@ public class QuestionCommentAdapter extends RecyclerView.Adapter<QuestionComment
 
     @Override
     public int getItemCount() {
-        return arrListAuthorBooksAssignments.size();
+        return arrListQuestionComments.size();
     }
 
-    public void addAll(ArrayList<AuthorBookAssignment> authorBookAssignments) {
+    public void addAll(ArrayList<Comment> comments) {
         try {
-            this.arrListAuthorBooksAssignments.clear();
-            this.arrListAuthorBooksAssignments.addAll(authorBookAssignments);
+            this.arrListQuestionComments.clear();
+            this.arrListQuestionComments.addAll(comments);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
@@ -76,29 +77,18 @@ public class QuestionCommentAdapter extends RecyclerView.Adapter<QuestionComment
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        LinearLayout llAssignmentContainer;
-        RelativeLayout rlTopAssignment;
-        TextView tvBookName, tvViewAllAssignments, tvAssignmentOne, tvAssignmentTwo, tvAssignmentThree;
-
+        CircleImageView imgCommentorDp;
+        TextView txtCommentorName, txtComment;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            llAssignmentContainer = (LinearLayout) itemView.findViewById(R.id.ll_assignment_container);
-            rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_top_assignment);
+            imgCommentorDp = (CircleImageView) itemView.findViewById(R.id.img_commenter_dp);
+            txtCommentorName = (TextView) itemView.findViewById(R.id.txt_commentor_name);
+            txtComment = (TextView) itemView.findViewById(R.id.txt_comment);
 
-            tvBookName = (TextView) itemView.findViewById(R.id.tv_book_name);
-            tvViewAllAssignments = (TextView) itemView.findViewById(R.id.tv_view_all_assignments);
-            tvAssignmentOne = (TextView) itemView.findViewById(R.id.tv_assignment_one);
-            tvAssignmentTwo = (TextView) itemView.findViewById(R.id.tv_assignment_two);
-            tvAssignmentThree = (TextView) itemView.findViewById(R.id.tv_assignment_three);
-
-
-            tvBookName.setTypeface(Global.myTypeFace.getRalewayBold());
-            tvViewAllAssignments.setTypeface(Global.myTypeFace.getRalewayRegular());
-            tvAssignmentOne.setTypeface(Global.myTypeFace.getRalewayRegular());
-            tvAssignmentTwo.setTypeface(Global.myTypeFace.getRalewayRegular());
-            tvAssignmentThree.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtCommentorName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtComment.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         }

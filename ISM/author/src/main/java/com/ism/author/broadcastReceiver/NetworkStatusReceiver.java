@@ -16,9 +16,11 @@ public class NetworkStatusReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
         if (listenerNetworkState != null) {
             listenerNetworkState.onNetworkStateChange();
         }
+
     }
 
     public static void setNetworkStateListener(NetworkStateListener networkStateListener) {
