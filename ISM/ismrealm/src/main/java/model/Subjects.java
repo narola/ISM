@@ -13,6 +13,7 @@ public class Subjects extends RealmObject {
 
     @PrimaryKey
     private  int subjectId;
+    private  int serverSubjectId;
     private String subjectName;
     private String subjectImage;
     private Date createdDate;
@@ -24,6 +25,14 @@ public class Subjects extends RealmObject {
 
     public void setSubjectId(int subjectId) {
         this.subjectId = subjectId;
+    }
+
+    public int getServerSubjectId() {
+        return serverSubjectId;
+    }
+
+    public void setServerSubjectId(int serverSubjectId) {
+        this.serverSubjectId = serverSubjectId;
     }
 
     public String getSubjectName() {

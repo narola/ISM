@@ -3,6 +3,7 @@ package com.ism.fragment.tutorialGroup;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.constant.WebConstants;
 import com.ism.object.Global;
+import com.ism.utility.InputValidator;
+import com.ism.utility.Utility;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.AnswerChoice;
+
+import java.util.ArrayList;
 
 /**
  * Created by c161 on 16/12/15.
  */
-public class TutorialFriAddQuestionFragment extends Fragment {
+public class TutorialFriAddQuestionFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 	private static final String TAG = TutorialFriAddQuestionFragment.class.getSimpleName();
 
@@ -33,8 +43,12 @@ public class TutorialFriAddQuestionFragment extends Fragment {
 	private RadioButton rbOption1, rbOption2, rbOption3, rbOption4;
 	private Button btnUploadAndFreeze;
 
+	private EditText[] etOptions;
+	private RadioButton[] rbOptions;
+
 	private ExamFragment.ExamListener listenerExam;
 	private View.OnClickListener onClickLable;
+	private InputValidator inputValidator;
 
 	private TextView[] txtLables;
 	private RelativeLayout[] viewLayouts;
@@ -91,6 +105,9 @@ public class TutorialFriAddQuestionFragment extends Fragment {
 		rlPreviewQuestion = (RelativeLayout) view.findViewById(R.id.rl_preview_question);
 		rlUpload = (RelativeLayout) view.findViewById(R.id.rl_upload);
 
+		etOptions = new EditText[]{etOption1, etOption2, etOption3, etOption4};
+		rbOptions = new RadioButton[]{rbOption1, rbOption2, rbOption3, rbOption4};
+
 		((TextView) view.findViewById(R.id.txt_header)).setTypeface(Global.myTypeFace.getRalewayRegular());
 		txtHelp.setTypeface(Global.myTypeFace.getRalewayRegular());
 		((TextView) view.findViewById(R.id.txt_title)).setTypeface(Global.myTypeFace.getRalewaySemiBold());
@@ -117,6 +134,8 @@ public class TutorialFriAddQuestionFragment extends Fragment {
 
 		txtLables = new TextView[] {txtCreateQuestion, txtSetOptions, txtPreviewQuestion, txtUpload};
 		viewLayouts = new RelativeLayout[] {rlCreateQuestion, rlSetOptions, rlPreviewQuestion, rlUpload};
+
+		inputValidator = new InputValidator(getActivity());
 
 //		rlHeader.setVisibility(View.GONE);
 //		rlTutorialmateQuestion.setVisibility(View.GONE);
@@ -166,10 +185,71 @@ public class TutorialFriAddQuestionFragment extends Fragment {
 		btnUploadAndFreeze.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam, 0, false)).commit();
+				if (inputsValid()) {
+					callApiSubmitQuestionForFriday();
+					getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam, 0, false)).commit();
+				}
 			}
 		});
 
+	}
+
+	private void callApiSubmitQuestionForFriday() {
+		try {
+
+			/*
+			"group_id":59,
+			"user_id":1,
+			"tutorial_topic_id":4,
+			"question_text":"Test Virtual Java Question",
+			"answer_choices":[
+								{
+									"choice_text" :"java1",
+										"is_right":1
+								},
+								{
+									"choice_text" : "java3",
+										"is_right":0
+								}
+							]
+							*/
+
+			Attribute attribute = new Attribute();
+			attribute.setGroupId(Global.strTutorialGroupId);
+			attribute.setUserId(Global.strUserId);
+			attribute.setTutorialTopicId("");
+			attribute.setQuestionText(etQuestion.getText().toString().trim());
+			ArrayList<AnswerChoice> answerChoices = new ArrayList<>();
+			for (int i = 0; i < 4; i++) {
+				AnswerChoice answerChoice = new AnswerChoice();
+				answerChoice.setChoiceText(etOptions[i].getText().toString().trim());
+				answerChoice.setIsRight(rbOptions[i].isChecked() ? 1 : 0);
+				answerChoices.add(answerChoice);
+			}
+			attribute.setAnswerChoices(answerChoices);
+
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+					.execute(WebConstants.SUBMIT_QUESTION_FOR_FRIDAY);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiSubmitQuestionForFriday Exception : " + e.toString());
+		}
+	}
+
+	private boolean inputsValid() {
+		return inputValidator.validateStringPresence(etQuestion)
+				& inputValidator.validateStringPresence(etOption1)
+				& inputValidator.validateStringPresence(etOption2)
+				& inputValidator.validateStringPresence(etOption3)
+				& inputValidator.validateStringPresence(etOption4)
+				& isAnswerSelected();
+	}
+
+	private boolean isAnswerSelected() {
+		boolean valid = rbOption1.isChecked() || rbOption2.isChecked() || rbOption3.isChecked() || rbOption4.isChecked();
+		if (!valid) {
+			Utility.alert(getActivity(), getString(R.string.title_select_answer), getString(R.string.msg_select_answer));
+		}
+		return valid;
 	}
 
 	private void showForm(RelativeLayout layoutForm) {
@@ -211,4 +291,35 @@ public class TutorialFriAddQuestionFragment extends Fragment {
 		super.onDestroy();
 		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 	}
+
+	@Override
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.SUBMIT_QUESTION_FOR_FRIDAY:
+					onResponseSubmitQuestionForFriday(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseSubmitQuestionForFriday(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus() == WebConstants.SUCCESS) {
+					Log.e(TAG, "question added successfully.");
+				} else if (responseHandler.getStatus() == WebConstants.FAILED) {
+					Log.e(TAG, "question failed to be added.");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseSubmitQuestionForFriday api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseSubmitQuestionForFriday Exception : " + e.toString());
+		}
+	}
+
 }

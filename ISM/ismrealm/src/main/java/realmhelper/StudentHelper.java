@@ -11,6 +11,7 @@ import model.AdminConfig;
 import model.FeedComment;
 import model.FeedImage;
 import model.Feeds;
+import model.Subjects;
 import model.TutorialGroupDiscussion;
 import model.TutorialTopic;
 import model.User;
@@ -290,5 +291,21 @@ public class StudentHelper {
 			Log.e(TAG, "saveTutorialGroupTopic Exception : " + e.toString());
 		}
 	}
+
+    public void saveSubjects(Subjects subjects) {
+        try {
+            Number subjectId = realm.where(AdminConfig.class).max("subjectId");
+            long newId = 1;
+            if (subjectId != null) {
+                newId = (long) subjectId + 1;
+            }
+            realm.beginTransaction();
+            subjects.setSubjectId((int) newId);
+            realm.copyToRealmOrUpdate(subjects);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.e(TAG, "saveSubjects Exception : " + e.toString());
+        }
+    }
 
 }
