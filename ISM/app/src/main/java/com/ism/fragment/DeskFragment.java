@@ -19,7 +19,7 @@ import com.ism.utility.Debug;
 /**
  * Created by c162 on --/10/15.
  */
-public class DeskFragment extends Fragment implements HostActivity.HostListener, HostActivity.BackHostListener,FavoriteFragment.DeskListenrer {
+public class DeskFragment extends Fragment implements HostActivity.HostListener, HostActivity.BackHostListener {
 
     private static final String TAG = DeskFragment.class.getSimpleName();
     public static final int FRAGMENT_JOTTER = 0;
@@ -70,11 +70,6 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
         } catch (Exception e) {
             Debug.i(TAG, "onBackPress Exceptions : " + e.getLocalizedMessage());
         }
-    }
-
-    @Override
-    public void onViewAllListener(int position) {
-        loadFragment(position);
     }
 
     public interface AlertDismissListener {
