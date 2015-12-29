@@ -71,7 +71,7 @@
                 android:padding="@dimen/d15dp"
                 android:singleLine="false"
                 android:text="@string/strtest"
-                android:textColor="@color/color_green"
+                android:textColor="@color/color_dark_blue_assignment"
                 android:textSize="@dimen/d18sp" />
         </RelativeLayout>
 

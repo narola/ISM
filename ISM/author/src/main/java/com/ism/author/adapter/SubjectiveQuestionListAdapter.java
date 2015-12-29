@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.HtmlImageGetter;
 import com.ism.author.Utility.Utils;
 import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveQuestionsFragment;
 import com.ism.author.object.Global;
@@ -72,7 +74,8 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
             holder.tvSubjectiveQuestionNo.setText(mContext.getResources().getString(R.string.strquestion) + " : " + (position + 1));
 
-            holder.tvSubjectiveQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
+//            holder.tvSubjectiveQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
+            holder.tvSubjectiveQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext), null));
 
             holder.tvSubjectiveQuesEvaluationNotes.setText(arrListQuestions.get(position).getEvaluationNotes());
 

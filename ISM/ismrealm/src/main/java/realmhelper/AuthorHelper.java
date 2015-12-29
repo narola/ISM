@@ -65,6 +65,7 @@ public class AuthorHelper {
             adminConfig.setConfigId((int) newId);
             realm.copyToRealmOrUpdate(adminConfig);
             realm.commitTransaction();
+            realm.close();
         } catch (Exception e) {
             Log.e(TAG, "saveAdminConfig Exception : " + e.toString());
         }
@@ -81,6 +82,7 @@ public class AuthorHelper {
             realm.beginTransaction();
             realm.clear(className);
             realm.commitTransaction();
+            realm.close();
         } catch (Exception e) {
             Log.e(TAG, "clearTableData Exception : " + e.toString());
         }
@@ -125,6 +127,7 @@ public class AuthorHelper {
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(feedLike);
             realm.commitTransaction();
+            realm.close();
 
 
             Log.e(TAG, "The no of records in likeFeed table is" + realm.where(FeedLike.class).findAll().size());
@@ -161,6 +164,8 @@ public class AuthorHelper {
                         realm.commitTransaction();
                     }
                 }
+
+                realm.close();
             }
         }, new Realm.Transaction.Callback() {
             @Override
@@ -194,6 +199,7 @@ public class AuthorHelper {
                 feedLike.setIsSync(1);
                 realm.copyToRealmOrUpdate(feedLike);
                 realm.commitTransaction();
+                realm.close();
             }
         }
         if (arrListUnlikeFeedId.size() > 0) {
@@ -204,6 +210,7 @@ public class AuthorHelper {
                 feedLike.setIsSync(1);
                 realm.copyToRealmOrUpdate(feedLike);
                 realm.commitTransaction();
+                realm.close();
             }
         }
     }
@@ -223,6 +230,7 @@ public class AuthorHelper {
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(preferences);
             realm.commitTransaction();
+            realm.close();
 //            Log.e(TAG, "Records availbale in preferences table :" + realm.where(Preferences.class).findAll().size());
         } catch (Exception e) {
             Log.i(TAG, " saveAllPreferences Exceptions : " + e.getLocalizedMessage());
@@ -239,6 +247,7 @@ public class AuthorHelper {
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(authorProfile);
             realm.commitTransaction();
+            realm.close();
 //            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
         } catch (Exception e) {
             Log.i(TAG, " saveAuthorProfile Exceptions : " + e.getLocalizedMessage());
@@ -260,6 +269,7 @@ public class AuthorHelper {
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(user);
             realm.commitTransaction();
+            realm.close();
 //            Log.e(TAG, "Records availbale in user table :" + realm.where(AuthorProfile.class).findAll().size());
         } catch (Exception e) {
             Log.i(TAG, " saveUser Exceptions : " + e.getLocalizedMessage());

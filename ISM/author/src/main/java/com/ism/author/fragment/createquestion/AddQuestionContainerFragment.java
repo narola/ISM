@@ -247,7 +247,6 @@ public class AddQuestionContainerFragment extends Fragment {
 
 
     public void onBackClick() {
-
         ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_ADDQUESTION_CONTAINER);
     }
 

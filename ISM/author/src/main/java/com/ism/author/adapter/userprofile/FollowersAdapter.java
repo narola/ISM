@@ -56,8 +56,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
             DecimalFormat decimalFormat = new DecimalFormat("#");
 
             holder.txtTotalFollowing.setText(mContext.getString(R.string.strfollowing) + " " +
-                    decimalFormat.format(arrListFollowers.get(position).getNumberOfAuthorFollowed()) + " " + mContext.getString(R.string.strAuthor));
-
+                    decimalFormat.format(arrListFollowers.get(position).getNumberOfAuthorFollowed()) + " " + mContext.getString(R.string.strauthor));
             holder.txtSchoolName.setText(mContext.getString(R.string.strstudentfrom) + " " + arrListFollowers.get(position).getFollowerSchool());
             holder.txtLiveFrom.setText(mContext.getString(R.string.strlivein) + " " + arrListFollowers.get(position).getFollowerCountryName());
 

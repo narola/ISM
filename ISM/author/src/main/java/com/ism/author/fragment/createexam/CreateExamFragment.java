@@ -368,11 +368,11 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
         if (getBaseFragment().getBundleArguments().getBoolean(ExamsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING)) {
             ((RadioButton) radioNegativemarking.getChildAt(0)).setChecked(true);
-            etExamAddnegativemark.setVisibility(View.VISIBLE);
+            llAddQuestionscore.setVisibility(View.VISIBLE);
             etExamAddnegativemark.setText(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE));
         } else {
             ((RadioButton) radioNegativemarking.getChildAt(1)).setChecked(true);
-            etExamAddnegativemark.setVisibility(View.GONE);
+            llAddNegativeMark.setVisibility(View.GONE);
         }
 
 
