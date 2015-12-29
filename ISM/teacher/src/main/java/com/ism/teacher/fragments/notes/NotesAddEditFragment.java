@@ -86,7 +86,7 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
 
         imgEditNote.setOnClickListener(this);
         imgShareNote.setOnClickListener(this);
-        rteNotes.setHtml(getString(R.string.dummy_string));
+        rteNotes.setHtml("");
 
         rteNotes.setRichTextListener(this);
 

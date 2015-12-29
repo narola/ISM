@@ -54,7 +54,7 @@ public class ScientificGridAdaptor extends BaseAdapter {
        // btnSymbol.setBackgroundResource(R.drawable.border);
         btnSymbol.setText(formulas[position]);
         btnSymbol.setAllCaps(false);
-        Debug.i("Char ", formulas[position]);
+       // Debug.i("Char ", formulas[position]);
         btnSymbol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

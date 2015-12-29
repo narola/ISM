@@ -200,7 +200,7 @@
 				android:layout_height="wrap_content"
 				android:inputType="textMultiLine"
 				android:gravity="start"
-				android:hint="@string/type_message"
+				android:hint="@string/say_it"
 				android:layout_margin="5dp"
 				android:background="@android:color/transparent"
 				android:textSize="18sp"

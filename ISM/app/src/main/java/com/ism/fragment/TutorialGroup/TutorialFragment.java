@@ -164,6 +164,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 			    txtSunday.performClick();
 			    break;
 	    }
+
     }
 
 	private void callApiGetGroupProfile() {
@@ -199,6 +200,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 			switch (fragment) {
 				case FRAGMENT_DISCUSSION:
 					if (intCurrentFragment == FRAGMENT_DISCUSSION && fragTutorialDiscussion != null) {
+						Log.e(TAG, "set day : " + intCurrentDay);
 						fragTutorialDiscussion.setDay(intCurrentDay);
 					} else {
 						fragTutorialDiscussion = TutorialDiscussionFragment.newInstance(intCurrentDay);

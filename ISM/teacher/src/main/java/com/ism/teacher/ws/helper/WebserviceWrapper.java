@@ -202,7 +202,7 @@ public class WebserviceWrapper {
 
                             case WebConstants.UPLOAD_FEED_MEDIA:
                                 responseObject = new WebserviceConnector(WebConstants.URL_UPLOAD_FEED_MEDIA).uploadMedia(ResponseHandler.class,
-                                         attribute);
+                                        attribute);
                                 break;
                             case WebConstants.SET_HASHTAG:
                                 responseObject = new WebserviceConnector(WebConstants.URL_HASHTAG).execute(ResponseHandler.class, attribute);
@@ -221,6 +221,13 @@ public class WebserviceWrapper {
                             case WebConstants.GROUP_ALLOCATION:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GROUP_ALLOCATION).execute(ResponseHandler.class, attribute);
                                 break;
+                            case WebConstants.ALL_LESSON_NOTES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_ALL_LESSON_NOTES).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.LESSON_NOTES_WITH_DETAILS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_LESSON_NOTES_WITH_DETAILS).execute(ResponseHandler.class, attribute);
+                                break;
+
                         }
                     }
                 }

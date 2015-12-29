@@ -225,7 +225,6 @@
 	<string name="studymates">Studymates</string>
 	<string name="my_activity">My Activity</string>
 	<string name="my_wallet">My Wallet</string>
-	<string name="say_it">SAY IT</string>
 	<string name="strSMSAlertsForAssignments">SMS Alerts For Assignment</string>
 	<string name="strSMSAlertsForEvaluations">SMS Alerts For Evaluations</string>
 	<string name="strSMSAlertsForConference">SMS Alerts For Conference</string>
@@ -363,7 +362,7 @@
 	<string name="yes">Yes</string>
 	<string name="msg_active_hours_finished">Active hours are finished!</string>
 	<string name="send">Send</string>
-	<string name="type_message">Type message...</string>
+	<string name="say_it">Say it...</string>
 
 
 	<!-- Tutorial Group Friday Exam Strings -->
@@ -558,6 +557,8 @@
 	<!--ℑ-->
 	<string name="blackletter_capital_R">&#8476;</string>
 	<string name="exams">Exams</string>
+	<string name="title_select_answer">Select answer!</string>
+	<string name="msg_select_answer">Please select the right answer.</string>
 
 
 </resources>

@@ -20,6 +20,8 @@ import com.ism.teacher.ws.model.Feeds;
 import com.ism.teacher.ws.model.FileUploadResponse;
 import com.ism.teacher.ws.model.Group;
 import com.ism.teacher.ws.model.HashTags;
+import com.ism.teacher.ws.model.LessonNotes;
+import com.ism.teacher.ws.model.Notes;
 import com.ism.teacher.ws.model.Question;
 import com.ism.teacher.ws.model.Questions;
 import com.ism.teacher.ws.model.States;
@@ -32,9 +34,6 @@ import com.ism.teacher.ws.model.UserImages;
 
 import java.util.ArrayList;
 
-/**
- * Created by c166 on 23/10/15.
- */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -107,6 +106,33 @@ public class ResponseHandler {
     private ArrayList<AdminConfig> adminConfig;
     private ArrayList<Group> group;
 
+    /**
+     * For Notes
+     */
+
+    private ArrayList<Notes> notes;
+    private ArrayList<LessonNotes> lessonNotes;
+
+    @JsonProperty("lesson_notes")
+    public ArrayList<LessonNotes> getLessonNotes() {
+        return lessonNotes;
+    }
+
+    public ResponseHandler setLessonNotes(ArrayList<LessonNotes> lessonNotes) {
+        this.lessonNotes = lessonNotes;
+        return this;
+    }
+
+    @JsonProperty("notes")
+    public ArrayList<Notes> getNotes() {
+        return notes;
+    }
+
+    public ResponseHandler setNotes(ArrayList<Notes> notes) {
+        this.notes = notes;
+        return this;
+    }
+
     @JsonProperty("group")
     public ArrayList<Group> getGroup() {
         return group;
@@ -116,7 +142,6 @@ public class ResponseHandler {
         this.group = group;
         return this;
     }
-
 
     @JsonProperty("question_bank")
     public ArrayList<Questions> getQuestionBanks() {

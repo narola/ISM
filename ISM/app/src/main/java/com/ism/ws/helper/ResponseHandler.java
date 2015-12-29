@@ -14,6 +14,7 @@ import com.ism.ws.model.Feeds;
 import com.ism.ws.model.GroupDiscussionData;
 import com.ism.ws.model.Message;
 import com.ism.ws.model.Movies;
+import com.ism.ws.model.Notes;
 import com.ism.ws.model.Notice;
 import com.ism.ws.model.Notification;
 import com.ism.ws.model.Pastime;
@@ -71,6 +72,7 @@ public class ResponseHandler {
     private ArrayList<Comment> comment;
     private ArrayList<GroupDiscussionData> groupDiscussionData;
     private ArrayList<TutorialGroupProfile> tutorialGroupProfile;
+    private ArrayList<Notes> notes;
 
 
     @JsonProperty("message")
@@ -369,5 +371,15 @@ public class ResponseHandler {
     public void setTutorialGroupProfile(ArrayList<TutorialGroupProfile> tutorialGroupProfile) {
         this.tutorialGroupProfile = tutorialGroupProfile;
     }
+
+    @JsonProperty("notes")
+    public ArrayList<Notes> getNotes() {
+        return this.notes;
+    }
+
+    public void setNotes(ArrayList<Notes> notes) {
+        this.notes = notes;
+    }
+
 
 }

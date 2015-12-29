@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_white"
     android:orientation="vertical"
+    android:id="@+id/scrollView"
     tools:mContext="com.ism.fragment.desk.FavoriteFragment">
 
     <LinearLayout
@@ -88,9 +89,9 @@
                 android:textSize="@dimen/d20sp" />
         </LinearLayout>
 
-        <!--<include-->
-            <!--android:id="@+id/include_links"-->
-            <!--layout="@layout/layout_favorite" />-->
+        <include
+            android:id="@+id/include_links"
+            layout="@layout/layout_favorite" />
 
         <include
             android:id="@+id/include_events"

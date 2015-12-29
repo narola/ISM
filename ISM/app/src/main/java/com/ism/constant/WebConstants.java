@@ -44,6 +44,8 @@ public class WebConstants {
     public static final int SEND_REQUEST_STUDYMATE = 34;
     public static final int GET_GROUP_HISTORY = 35;
     public static final int GET_GROUP_PROFILE = 36;
+    public static final int SUBMIT_QUESTION_FOR_FRIDAY = 37;
+    public static final int GET_ALL_NOTES = 38;
 
 
     //general settings
@@ -127,9 +129,11 @@ public class WebConstants {
 	public static final String URL_GET_ADMIN_CONFIG = HOST_WS + "GetAdminConfig";
 	public static final String URL_LIKE_FEED = HOST_WS + "LikeFeed";
 	public static final String URL_GET_GROUP_HISTORY = HOST_WS + "GetGroupHistory";
+	public static final String URL_GET_ALL_NOTES = HOST_WS + "GetAllNotes";
 	public static final String URL_GET_GROUP_PROFILE = HOST_WS + "GetGroupProfile";
-
 	public static final String URL_SEND_REQUEST_STUDYMATE = HOST_WS + "SendRequestToStudymate";
+	public static final String URL_SUBMIT_QUESTION_FOR_FRIDAY = HOST_WS + "SubmitQuestionForFriday";
+
 	/*
 	* edit profile
 	* */
@@ -143,8 +147,8 @@ public class WebConstants {
 	public static final String URL_MANAGE_BOOK_LIBRARY =  HOST_WS + "ManageBookLibrary";
 	public static final String URL_EDIT_PROFILE_PIC = " ";
 	public static final String URL_GET_BLOCKED_USER =  HOST_WS + "GetBlockedUser";
-
 	public static final String URL_UNBLOCK_USER =  HOST_WS + "UnBlockUser";
+
 	/**
 	 * Parameter value Constants
 	 */
