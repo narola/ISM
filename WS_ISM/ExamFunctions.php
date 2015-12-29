@@ -1900,7 +1900,7 @@ class ExamFunctions
         $secret_key = $_POST['secret_key'];
         $access_key = $_POST['access_key'];
 
-
+        //print_r($answer_choices); exit;
 
         $security=new SecurityFunctions();
         $isSecure = $security->checkForSecurity($access_key,$secret_key);
@@ -2467,7 +2467,7 @@ class ExamFunctions
 
         if($isSecure==yes) {
 
-            $queryChkInTutorialTopicExam="SELECT * FROM ".TABLE_TUTORIAL_TOPIC_EXAM." WHERE tutorial_group_id=".$group_id." AND tutorial_topic_id=".$tutorial_topic_id." AND is_delete=0";
+             $queryChkInTutorialTopicExam="SELECT * FROM ".TABLE_TUTORIAL_TOPIC_EXAM." WHERE tutorial_group_id=".$group_id." AND tutorial_topic_id=".$tutorial_topic_id." AND is_delete=0";
             $resultChkInTutorialTopicExam = mysqli_query($GLOBALS['con'], $queryChkInTutorialTopicExam) or $message = mysqli_error($GLOBALS['con']);
 
             if(mysqli_num_rows($resultChkInTutorialTopicExam)>0)
@@ -2500,6 +2500,7 @@ class ExamFunctions
                         $message="failed to update";
                     }
                 }
+                $data=array();
             }
             //If Exam Id is not TutorialTopicExam Table, then Insert exam in Exam Table
             else
@@ -2537,9 +2538,10 @@ class ExamFunctions
 
                 if($resultInsertExam)
                 {
-                    $data['exam_id']=$getExamId;
+                    $post['exam_id']=$getExamId;
                     $message="Exam created";
                     $status=SUCCESS;
+
                 }
                 else{
                     $message="failed to create exam";
@@ -2569,7 +2571,7 @@ class ExamFunctions
 
                 if($resultInsertQuestion){
 
-                    $data['question_id']=$questionID;
+                    $post['question_id']=$questionID;
                     $message="Question created";
                     $status=SUCCESS;
 
@@ -2596,7 +2598,8 @@ class ExamFunctions
                                     $message = "failed to insert answer choice";
                                 }
                             }
-                            $data['answer_ids']=$answer_ids;
+                            //$answers[]=$answer_ids;
+                            $post['answer_ids']=$answer_ids;
                         }
                     }
 
@@ -2623,8 +2626,6 @@ class ExamFunctions
                             $message="failed to add exam and question";
                         }
 
-
-
                         $insertTopicExamFields = "`tutorial_topic_id`,`tutorial_group_id`,`exam_id`, `exam_question_count`";//, `exam_type`";
                         $insertTopicExamValues = "".$tutorial_topic_id . ",'" . $group_id . "'," . $getExamId . ",1  ";//,'" . $topic_exam_type . "'";
 
@@ -2644,13 +2645,14 @@ class ExamFunctions
                             $message = "Failed to insert record";
                         }
                     }
+
                 }
                 else
                 {
                     $message="failed to create question";
                     $status=FAILED;
                 }
-
+                $data[]=$post;
             }
 
         }
@@ -2659,7 +2661,7 @@ class ExamFunctions
             $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
-        $response['question_for_friday'][]=$data;
+        $response['question_for_friday']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
 
@@ -2711,13 +2713,14 @@ class ExamFunctions
                     $message="waiting for question submission";
                     $post['is_ready']='no';
                 }
+                $data[]=$post;
             }
             else{
                 $status=SUCCESS;
                 $message=DEFAULT_NO_RECORDS;
                 $data=array();
             }
-            $data[]=$post;
+
         }
         else
         {

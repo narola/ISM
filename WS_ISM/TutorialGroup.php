@@ -605,6 +605,13 @@ class TutorialGroup
         $week_no = validateObject($postData, 'week_no', "");
         $week_no = addslashes($week_no);
 
+        $from_date = validateObject($postData, 'from_date', "0000-00-00 00:00:00 +0000");
+        $from_date = addslashes($from_date);
+
+
+
+        //$from_date = "0000-00-00 00:00:00 +0000";
+
         $secret_key = validateObject($postData, 'secret_key', "");
         $secret_key = addslashes($secret_key);
 
@@ -663,13 +670,13 @@ class TutorialGroup
 
 
 
-            $resultToFetchTopics = mysqli_query($GLOBALS['con'], $queryToFetchTopics) or $message = mysqli_error($GLOBALS['con']);
+             $resultToFetchTopics = mysqli_query($GLOBALS['con'], $queryToFetchTopics) or $message = mysqli_error($GLOBALS['con']);
 
 
             if (mysqli_num_rows($resultToFetchTopics) > 0) {
 
                 while ($topicGroups = mysqli_fetch_assoc($resultToFetchTopics)) {
-                    $topic_discussion['tutorial_topic_id']=$topicGroups['tutorial_topic_id'];
+                       $topic_discussion['tutorial_topic_id']=$topicGroups['tutorial_topic_id'];
                     $topic_discussion['tutorial_topic']=$topicGroups['topic_name'];
                     $topic_discussion['topic_description']=$topicGroups['topic_description'];
                     $topic_discussion['assigned_by']=$topicGroups['created_by'];
@@ -689,27 +696,31 @@ class TutorialGroup
                     }
 
 
-//                    $queryToGetGroupScore="SELECT sum(group_score)  FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE group_id=".$group_id;
-//
-//                    $resultToGetGetGroupScore= mysqli_query($GLOBALS['con'], $queryToGetGroupScore) or $message = mysqli_error($GLOBALS['con']);
-//                    $rowToGetGroupScore=mysqli_fetch_row($resultToGetGetGroupScore);
-//
-//                    $topic_discussion['group_score']=$rowToGetGroupScore[0];
+                    $queryToGetGroupScore="SELECT sum(group_score)  FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE group_id=".$group_id;
 
-//                    $queryToGetTotalComment="SELECT sum(total_comments) as 'active_comments',sum(score) as 'active_comments_score' FROM ".TABLE_TUTORIAL_GROUP_MEMBER_SCORE." WHERE topic_id=".$topicGroups['tutorial_topic_id'];
-//                    $resultToGetTotalComment= mysqli_query($GLOBALS['con'], $queryToGetTotalComment) or $message = mysqli_error($GLOBALS['con']);
-//                    $rowToGetTotalComments=mysqli_fetch_row($resultToGetTotalComment);
-//
-//                    $topic_discussion['total_active_comments']=$rowToGetTotalComments[0];
-//                    $topic_discussion['total_active_comments_score']=$rowToGetTotalComments[1];
+                    $resultToGetGetGroupScore= mysqli_query($GLOBALS['con'], $queryToGetGroupScore) or $message = mysqli_error($GLOBALS['con']);
+                    $rowToGetGroupScore=mysqli_fetch_row($resultToGetGetGroupScore);
+
+                    $topic_discussion['group_score']=$rowToGetGroupScore[0];
+
+                    $queryToGetTotalComment="SELECT sum(total_comments) as 'active_comments',sum(score) as 'active_comments_score' FROM ".TABLE_TUTORIAL_GROUP_MEMBER_SCORE." WHERE topic_id=".$topicGroups['tutorial_topic_id'];
+                    $resultToGetTotalComment= mysqli_query($GLOBALS['con'], $queryToGetTotalComment) or $message = mysqli_error($GLOBALS['con']);
+                    $rowToGetTotalComments=mysqli_fetch_row($resultToGetTotalComment);
+
+                    $topic_discussion['total_active_comments']=$rowToGetTotalComments[0];
+                    $topic_discussion['total_active_comments_score']=$rowToGetTotalComments[1];
 
 
-                    $selData="tutorial_group_discussion.*,users.full_name,users.profile_pic";
+                      $selData="tutorial_group_discussion.*,users.full_name,users.profile_pic";
 
-                     $queryToFetchMembers="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_DISCUSSION." tutorial_group_discussion
+                      $queryToFetchMembers="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_DISCUSSION." tutorial_group_discussion
                          INNER JOIN ".TABLE_USERS." users ON tutorial_group_discussion.sender_id=users.id
-                         WHERE tutorial_group_discussion.group_id=".$group_id. " AND tutorial_group_discussion.tutorial_topic_id=".$topicGroups['tutorial_topic_id']." AND tutorial_group_discussion.is_delete=0 ";//ORDER BY ". $user_id;
-                    $resultToFetchMembers = mysqli_query($GLOBALS['con'], $queryToFetchMembers) or $message = mysqli_error($GLOBALS['con']);
+                         WHERE tutorial_group_discussion.group_id=".$group_id. "
+                         AND tutorial_group_discussion.tutorial_topic_id=".$topicGroups['tutorial_topic_id']."
+                         AND tutorial_group_discussion.is_delete=0
+                         AND tutorial_group_discussion.created_date >= '".$from_date."'";//ORDER BY ". $user_id;
+
+                  $resultToFetchMembers = mysqli_query($GLOBALS['con'], $queryToFetchMembers) or $message = mysqli_error($GLOBALS['con']);
 
                     $discussion_text=array();
                     if (mysqli_num_rows($resultToFetchMembers) > 0) {
