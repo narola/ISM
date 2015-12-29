@@ -4,7 +4,6 @@
        <div class="col-sm-12">
            <ol class="breadcrumb">
               <li><a href="#">Manage</a></li>
-              <li><a href="#">book</a></li>
               <li class="active">Authors</li>
           </ol>
       </div>

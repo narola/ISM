@@ -2,11 +2,15 @@
             	<!--breadcrumb-->
            		<div class="page_header">
                 	<div class="col-sm-12">
-                    	<ol class="breadcrumb">
+                    	<ol class="breadcrumb col-sm-6">
                           <li><a href="#">Manage</a></li>
-                          <li><a href="#">book</a></li>
+                          <li><a href="admin/book">Book</a></li>
                           <li class="active">List Of Books</li>
                         </ol>
+                        <div class="pull-right">
+                          <a href="admin/book/add" class="btn btn_green add_topic">Add New Book</a>
+                        </div>
+                    
                     </div>
                 </div>
                 <!--//breadcrumb-->

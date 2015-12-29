@@ -66,34 +66,23 @@ class Book extends ADMIN_Controller {
 	// function to view all books of a particular author
 	// $id - id of the author
 	public function view_all($id){
-
 		// set condition for particular author
 		$where[TBL_AUTHOR_BOOK.'.user_id'] = $id;
+		
 
-		if( !empty($_GET['author']) || !empty($_GET['tags']) || !empty($_GET['order']) ){
+		if( !empty($_GET['q'])){
 
-			if( !empty($_GET['author']) ) { $role = $this->input->get('author'); }	
-			if( !empty($_GET['tags']) ) { $status = $this->input->get('tags'); }
-			if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }		
-			
+			if( !empty($_GET['q']) ) { $q = replace_invalid_chars($this->input->get('q')); }	
 			$str = '';
 			
+			if (!empty($q)) {
+                $where['like'][TBL_BOOKS . '.book_name'] = $q;
+                $str.='q=' . $q;
 
-			/*if(!empty($role)){ $where['noticeboard_viewer.role_id'] = $role ; $str .= '&role='.$role; }	
-			if(!empty($status)){ 
-						if($status != 'template') { $where['noticeboard.status'] = $status;   $str .= '&status='.$status;}
-						else{ $where['noticeboard.is_template'] = TRUE;   $str .= '&status='.$status; } 
-					}
-			if(!empty($classroom)){  $where['noticeboard_viewer.classroom_id'] = $classroom ; $str .= '&classroom='.$classroom; }		
+            }
 			
-			if($order == 'name_asc'){ $order = "noticeboard.notice asc"; $str.='&order=name_asc';  }
-			if($order == 'name_desc'){ $order = "noticeboard.notice desc"; $str.='&order=name_desc'; }
-			if($order == 'latest'){ $order = "noticeboard.created_date desc"; $str.='&order=latest'; }
-			if($order == 'older'){ $order = "noticeboard.created_date asc"; $str.='&order=older'; }	
-
-
 			$str =  trim($str,'&');
-*/
+
 			// pagination configuration when searched something
 			$config['base_url'] = base_url().'admin/book/view_all/'.$id.'?'.$str;
 			$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
@@ -107,7 +96,19 @@ class Book extends ADMIN_Controller {
 
 		// other pagination settings
 		$config['num_links'] = 3;
-		$config['total_rows'] = select(TBL_AUTHOR_BOOK,FALSE,array('where'=>$where),array('count'=>TRUE));
+		// $config['total_rows'] = select(TBL_AUTHOR_BOOK,FALSE,array('where'=>$where),array('count'=>TRUE));
+		$config['total_rows'] = select(TBL_AUTHOR_BOOK,TBL_BOOKS.'.id,'. TBL_BOOKS.'.book_name,'.TBL_BOOKS.'.front_cover_image',
+										$where,
+										array(
+											'count'=>true,
+											'join'=>array(
+												array(
+							    				'table' => TBL_BOOKS,
+							    				'condition' => TBL_BOOKS.".id = ".TBL_AUTHOR_BOOK.".book_id",
+							    				)
+												)
+											)
+										);
 		
 		
 		$this->data['page_number'] =  $this->uri->segment(5);
@@ -141,9 +142,10 @@ class Book extends ADMIN_Controller {
 	 	$config['last_tag_open'] = '<li>';
 	 	$config['last_tag_close'] = '</li>';
 
+	 	$where[TBL_BOOKS.'.is_delete'] = 0;
 	 	// paginate the books as per the conditions and configurations
 	 	$this->data['books'] = select(TBL_AUTHOR_BOOK,TBL_BOOKS.'.id,'. TBL_BOOKS.'.book_name,'.TBL_BOOKS.'.front_cover_image',
-										array('where'=>$where),
+										$where,
 										array(
 											'limit'=>$config['per_page'],
 											'offset'=>$offset,

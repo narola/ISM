@@ -2,11 +2,14 @@
             	<!--breadcrumb-->
            		<div class="page_header">
                 	<div class="col-sm-12">
-                    	<ol class="breadcrumb">
+                    	<ol class="breadcrumb col-sm-6">
                           <li><a href="#">Manage</a></li>
-                          <li><a href="#">book</a></li>
-                          <li class="active">Add New Book</li>
+                          <li><a href="admin/book">Book</a></li>
+                          <li class="active">View Books</li>
                         </ol>
+                        <div class="pull-right">
+                          <a href="admin/book/add" class="btn btn_green add_topic">Add New Book</a>
+                        </div>
                     </div>
                 </div>
                 <!--//breadcrumb-->
@@ -31,7 +34,7 @@
                         </div> -->
                         
                         <div class="form-group no_effect search_input">
-                            <input type="text" name="q" id="q" class="form-control" placeholder="Search" >
+                            <input type="text" name="q" id="q" class="form-control" placeholder="Type Book Name" >
                             
                             <?php if(!empty($_GET['q'])) { ?>
                                 <a onclick="filter_data_reverse()" style="cursor:pointer">X</a>
@@ -78,12 +81,11 @@
                <!--//row table-->
             </div>
             <script type="text/javascript">
-            jQuery(document).ready(function($) {
+            
               function filter_data_reverse(){
                 $('#q').removeAttr('name');
                 $('#filter').submit();        
               }
-            });
 
     function filter_data() {
         var q = $('#q').val();

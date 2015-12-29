@@ -77,11 +77,15 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.1.201',
+  'hostname' => '52.28.165.231',
+  'username' => 'root',
+  'password' => 'ism4all',
+  'database' => 'ism',
+  /*'hostname' => '192.168.1.201',
 	'username' => 'ISM',
   'password' => '69NC52j07761uvw',
   'database' => 'ISM',
-  /*'username' => 'ism_V1',
+  'username' => 'ism_V1',
 	'password' => '7!#11<D#Kgj!q<d',
 	'database' => 'ism_V1',*/
 	'dbdriver' => 'mysqli',

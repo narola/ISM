@@ -522,6 +522,7 @@ function set_session($userid){
     'single' => true
                     )
                 );
+
         $session_data = array(
             'loggedin' => TRUE,
             'user'=>$users
