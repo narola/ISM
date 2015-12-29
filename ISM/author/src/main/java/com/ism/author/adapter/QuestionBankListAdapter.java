@@ -3,6 +3,7 @@ package com.ism.author.adapter;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.HtmlImageGetter;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 /**
  * these adapter class is to set the list of questionbank.
  */
-public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankListAdapter.ViewHolder> {
+public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankListAdapter.ViewHolder> implements HtmlImageGetter.RefreshDataAfterLoadImage {
 
 
     private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
@@ -58,6 +60,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
+
         try {
             holder.tvQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
             holder.tvQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
@@ -78,8 +81,18 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
             holder.tvQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-            holder.tvQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext), null));
 
+            if (arrListQuestions.get(position).getSpan() == null) {
+
+                arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                        new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+                        ), null));
+            } else {
+
+                holder.tvQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                        new HtmlImageGetter(50, 50, mContext, null
+                        ), null));
+            }
 
             if (arrListQuestions.get(position).getQuestionCreatorId().equals(Global.strUserId)) {
                 holder.imgQuestionEdit.setVisibility(View.VISIBLE);
@@ -133,23 +146,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                         holder.tvQuestion.setEllipsize(TextUtils.TruncateAt.END);
 
                     }
-
-//                    if (holder.imgDropdownViewAnswer.isSelected()) {
-//                        holder.imgDropdownViewAnswer.setActivated(true);
-//                        arrListQuestions.get(position).setIsDropdownOpen(true);
-//                        if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
-//                            holder.tvQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
-//                            holder.tvQuestionAns.setText(arrListQuestions.get(position).getSolution());
-//                            holder.tvQuestionAns.setVisibility(View.VISIBLE);
-//                        } else {
-//                            holder.llQuestionAnswers.setVisibility(View.VISIBLE);
-//                        }
-//                    } else {
-//                        holder.imgDropdownViewAnswer.setActivated(false);
-//                        arrListQuestions.get(position).setIsDropdownOpen(false);
-//                        holder.tvQuestionAns.setVisibility(View.GONE);
-//                        holder.llQuestionAnswers.setVisibility(View.GONE);
-//                    }
                     notifyDataSetChanged();
                 }
             });
@@ -160,7 +156,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                 @Override
                 public void onClick(View v) {
-                    
+
                     if (canAddToPreview) {
 
                         if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strquestionformatmcq))) {
@@ -273,6 +269,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         return arrListQuestions.size();
     }
 
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvQuestionNo, tvQuestionBookName, tvQuestionCreatedby, tvQuestion, tvQuestionAns;
@@ -338,5 +335,20 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     public Boolean canAddToPreview = false;
 
+    @Override
+    public void refreshData() {
 
+
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+
+                notifyDataSetChanged();
+                Debug.e(TAG, "notify data called");
+
+            }
+        };
+
+        handler.post(r);
+    }
 }

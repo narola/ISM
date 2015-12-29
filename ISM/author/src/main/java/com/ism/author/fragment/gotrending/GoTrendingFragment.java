@@ -2,9 +2,12 @@ package com.ism.author.fragment.gotrending;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +20,14 @@ import android.widget.TextView;
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.HtmlImageGetter;
 import com.ism.author.Utility.InputValidator;
 import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.gotrending.QuestionsMostFollowAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.dialog.AddQuestionTextDialog;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
@@ -36,7 +41,7 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 21/10/15.
  */
-public class GoTrendingFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, AuthorHostActivity.HostListenerTrending {
+public class GoTrendingFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener, AuthorHostActivity.HostListenerTrending, AddQuestionTextDialog.SelectMediaListener, AddQuestionTextDialog.AddTextListener {
 
     private static final String TAG = GoTrendingFragment.class.getSimpleName();
     private View view;
@@ -54,6 +59,8 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
     private InputValidator inputValidator;
     private int visibleQuestionPosition = -1;
     ScrollView scrollView;
+
+    private ImageView imgAttachMedia;
 
     public static GoTrendingFragment newInstance() {
         GoTrendingFragment fragGoTrending = new GoTrendingFragment();
@@ -112,11 +119,16 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
         txtEmptyAnswer = (TextView) view.findViewById(R.id.txt_empty_answer);
         txtEmptyAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
 
+        imgAttachMedia = (ImageView) view.findViewById(R.id.img_attach_media);
+        imgAttachMedia.setOnClickListener(this);
+
+
         setEmptyView(true);
         onClicks();
 
         callApiForGetTrending();
     }
+
 
     private void onClicks() {
         try {
@@ -322,4 +334,126 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
         }
 
     }
+
+    AddQuestionTextDialog addRichTextDialog;
+    String htmlText;
+    String richEditText;
+    ArrayList<String> imageSources = new ArrayList<String>();
+    private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
+
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.img_attach_media:
+
+                addRichTextDialog = new AddQuestionTextDialog(getActivity(), (AddQuestionTextDialog.SelectMediaListener) this,
+                        (AddQuestionTextDialog.AddTextListener) this, getHtmlQuestionText());
+                addRichTextDialog.show();
+                break;
+        }
+    }
+
+
+    @Override
+    public void SetText(String text) {
+        htmlText = text;
+        richEditText = text;
+        etAnswer.setText(Html.fromHtml(text, new HtmlImageGetter(50, 50, getActivity(), null), null));
+
+        Debug.e(TAG, "RichEditor text is:::::::::::" + text);
+        Debug.e(TAG, "Text Of Edittext is:::::::::::" + Html.toHtml(etAnswer.getText()));
+    }
+
+    @Override
+    public void ImagePicker() {
+
+        openImage();
+
+    }
+
+    @Override
+    public void VideoPicker() {
+        openVideo();
+    }
+
+
+    private String getHtmlQuestionText() {
+
+
+        Debug.e(TAG, "Original text of edittext is:::::" + Html.toHtml(etAnswer.getText()));
+
+        htmlText = Html.toHtml(etAnswer.getText());
+        htmlText = htmlText.replaceAll("<p dir=\"ltr\"><img", "<img");
+        htmlText = htmlText.replaceAll("<p dir=\"ltr\"", "<p");
+        htmlText = htmlText.replaceAll(".png\"></p>", ".png\">");
+        htmlText = htmlText.replaceAll(".jpeg\"></p>", ".jpeg\">");
+        htmlText = htmlText.replaceAll(".jpg\"></p>", ".jpg\">");
+        htmlText = htmlText.replaceAll(".png\"> </p>", ".png\">");
+        htmlText = htmlText.replaceAll(".jpeg\"> </p>", ".jpeg\">");
+        htmlText = htmlText.replaceAll(".jpg\"> </p>", ".jpg\">");
+
+        Debug.e(TAG, "Formatted text of edittext is:::::" + htmlText);
+
+        return htmlText;
+    }
+
+    private void openImage() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+    }
+
+    private void openVideo() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("video/*");
+        startActivityForResult(photoPickerIntent, SELECT_VIDEO);
+
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent returnedIntent) {
+        super.onActivityResult(requestCode, resultCode, returnedIntent);
+
+        if (returnedIntent != null) {
+
+            switch (requestCode) {
+                case SELECT_PHOTO:
+                    if (resultCode == getActivity().RESULT_OK) {
+                        try {
+                            if (addRichTextDialog != null && addRichTextDialog.isShowing()) {
+                                final Uri imageUri = returnedIntent.getData();
+                                String imgPath = Utility.getRealPathFromURI(imageUri, getActivity());
+                                addRichTextDialog.insertImage(imgPath);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+
+                case SELECT_VIDEO:
+
+                    if (resultCode == getActivity().RESULT_OK) {
+                        try {
+                            if (addRichTextDialog != null && addRichTextDialog.isShowing()) {
+
+                                final Uri videoUri = returnedIntent.getData();
+                                String videoPath = Utility.getRealPathFromURI(videoUri, getActivity());
+                                addRichTextDialog.insertVideo(videoPath);
+
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    break;
+            }
+        }
+    }
+
 }
