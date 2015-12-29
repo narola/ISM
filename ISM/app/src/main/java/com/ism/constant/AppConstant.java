@@ -61,4 +61,9 @@ public class AppConstant {
     public static final String MEDIATYPE_IMAGE = "image";
     public static final String MEDIATYPE_VIDEO = "video";
     public static final String MEDIATYPE_AUDIO = "audio";
+
+    public static final String FRAGMENT_JOTTER = "jotter";
+    public static final String FRAGMENT_FAVOURITE = "favourites";
+    public static final String FRAGMENT_BOOKS = "books";
+    public static final String FRAGMENT_TIMETABLE = "timetable";
 }
