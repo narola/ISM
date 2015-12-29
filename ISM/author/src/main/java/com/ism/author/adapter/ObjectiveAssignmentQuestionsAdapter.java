@@ -3,6 +3,7 @@ package com.ism.author.adapter;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 16/11/15.
  */
-public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<ObjectiveAssignmentQuestionsAdapter.ViewHolder> {
+public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<ObjectiveAssignmentQuestionsAdapter.ViewHolder> implements HtmlImageGetter.RefreshDataAfterLoadImage {
 
     private static final String TAG = ObjectiveAssignmentQuestionsAdapter.class.getSimpleName();
     private Context mContext;
@@ -66,9 +67,18 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
             holder.txtQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
             holder.txtQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
             holder.txtQuestionNo.setPaintFlags(holder.txtQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-//            holder.txtQuestionText.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
+//            holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext, null), null));
+            if (arrListQuestions.get(position).getSpan() == null) {
 
-            holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext), null));
+                arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                        new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+                        ), null));
+            } else {
+
+                holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                        new HtmlImageGetter(50, 50, mContext, null
+                        ), null));
+            }
 
             holder.etEvoluationsNotes.setText(Utils.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
             holder.etSolution.setText(Utils.formatHtml(arrListQuestions.get(position).getSolution()));
@@ -161,6 +171,7 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
         notifyDataSetChanged();
     }
 
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtQuestionNo, txtQuestionText, txtCorrectAnswer, txtAnswer, txtStudentnameAnswer, txtStudentAnswer, txtEvoluationsNotes,
@@ -221,5 +232,18 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
         return ((AuthorHostActivity) mContext).getBundle();
     }
 
+
+    @Override
+    public void refreshData() {
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+                notifyDataSetChanged();
+                Debug.e(TAG, "notify data called");
+            }
+        };
+
+        handler.post(r);
+    }
 
 }

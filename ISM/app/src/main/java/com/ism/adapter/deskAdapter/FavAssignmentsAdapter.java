@@ -11,6 +11,9 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
+import com.ism.ws.model.AllBooks;
+
+import java.util.ArrayList;
 
 /**
  * Created by c162 on 25/12/15.
@@ -19,6 +22,7 @@ public class FavAssignmentsAdapter extends RecyclerView.Adapter<FavAssignmentsAd
 
     private static final String TAG = FavAssignmentsAdapter.class.getSimpleName();
     private Context context;
+    private ArrayList<AllBooks> arrayList=new ArrayList<>();
 
     public FavAssignmentsAdapter(Context context) {
         this.context = context;
@@ -40,7 +44,15 @@ public class FavAssignmentsAdapter extends RecyclerView.Adapter<FavAssignmentsAd
             Debug.i(TAG, "onBinderViewHolder Exceptions : " + e.getLocalizedMessage());
         }
     }
-
+    public void addAll(ArrayList<AllBooks> allBooks) {
+        try {
+            this.arrayList.clear();
+            this.arrayList.addAll(allBooks);
+        } catch (Exception e) {
+            Debug.e(TAG, "addAllData Exception : " + e.toString());
+        }
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
         return 10;

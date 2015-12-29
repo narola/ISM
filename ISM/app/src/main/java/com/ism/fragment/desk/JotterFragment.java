@@ -3,12 +3,8 @@ package com.ism.fragment.desk;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,9 +20,8 @@ import android.widget.TextView;
 import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.adapter.ScientificGridAdaptor;
 import com.ism.adapter.JotterNotesAdapter;
-import com.ism.constant.AppConstant;
+import com.ism.adapter.ScientificGridAdaptor;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.AddNewNoteDialog;
 import com.ism.dialog.ShareNoteDialog;
@@ -38,14 +33,10 @@ import com.ism.richeditor.GridAdaptor;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
-import com.ism.ws.helper.Attribute;
-import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Notes;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
-import java.util.ArrayList;
-
+import io.realm.RealmResults;
 import jp.wasabeef.richeditor.RichEditor;
 
 /**
@@ -79,8 +70,11 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
     private EditText etSubject;
     private String strNote = "";
     private TextView txtNoteBy, txtNoteTitle;
-    private ArrayList<Notes> arraylistNotes = new ArrayList<>();
+    private RealmResults<model.Notes> arraylistNotes;
     private CircleImageView imgUser;
+    private String strNoteText="";
+    private String strNoteId="";
+    private int lastPosition=0;
 
     public static JotterFragment newInstance() {
         JotterFragment jotterFragment = new JotterFragment();
@@ -104,8 +98,8 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
     private void initGlobal() {
         shareNoteDialog = new ShareNoteDialog(getActivity(), this);
 
-//        etNotes = (EditText) view.findViewById(R.id.et_notes);
-//        etNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etNotes = (EditText) view.findViewById(R.id.et_notes);
+        etNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         layoutText = (RelativeLayout) view.findViewById(R.id.rr_details);
         rteNotes = (RichTextEditor) view.findViewById(R.id.rte_notes);
@@ -151,6 +145,7 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
                 if (imgEdit.isActivated()) {
                     imgEdit.setActivated(false);
                     etSubject.setEnabled(false);
+                    editNote(etSubject.getText().toString().trim(),rteNotes.getHtml().toString());
                 } else {
                     etSubject.setEnabled(true);
                     imgEdit.setActivated(true);
@@ -173,107 +168,22 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
                 newNoteDialog.show();
             }
         });
-
-
-        callApiGetAllNotes();
+//        arraylistNotes=Global.studentHelper.getNotes(Global.studentHelper.getUser(Integer.parseInt(Global.strUserId)),null);
+        setUpData();
 
     }
 
-    private void callApiGetAllNotes() {
+    private void editNote(String subject, String noteText) {
         try {
-            if (Utility.isConnected(getActivity())) {
-                activityHost.showProgress();
-                Attribute attribute = new Attribute();
-//                attribute.setUserId(Global.strUserId);
-                attribute.setUserId("425");
-                attribute.setRole(Global.roleID);
-                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_ALL_NOTES);
-            } else {
-                Utility.alertOffline(getActivity());
-            }
-        } catch (Exception e) {
-            Debug.i(TAG, "callApiGetAllNotes Exception : " + e.getLocalizedMessage());
-        }
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent returnedIntent) {
-        super.onActivityResult(requestCode, resultCode, returnedIntent);
-
-        if (returnedIntent != null) {
-
-            switch (requestCode) {
-                case SELECT_PHOTO:
-                    if (resultCode == getActivity().RESULT_OK) {
-                        try {
-                            final Uri imageUri = returnedIntent.getData();
-                            String imgPath = Utility.getRealPathFromURI(imageUri, getActivity());
-                            rteNotes.insertImage(imgPath);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    break;
-
-                case SELECT_VIDEO:
-
-                    if (resultCode == getActivity().RESULT_OK) {
-                        try {
-
-                            final Uri videoUri = returnedIntent.getData();
-                            String videoPath = Utility.getRealPathFromURI(videoUri, getActivity());
-                            rteNotes.insertVideo(videoPath);
-//                                MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
-//                                mMediaMetadataRetriever.setDataSource(getActivity(), selectedUri);
-//                                Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-//                                imgSelectImage.setImageBitmap(bitmap);
-//                                imgPlay.setVisibility(View.VISIBLE);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                    break;
-
-                case AppConstant.REQUEST_CODE_PICK_FROM_GALLERY:
-
-                    if (returnedIntent != null) {
-                        selectedUri = returnedIntent.getData();
-                        String[] columns = {MediaStore.Images.Media.DATA,
-                                MediaStore.Images.Media.MIME_TYPE};
-                        Cursor cursor = getActivity().getContentResolver().query(selectedUri, columns, null, null, null);
-                        cursor.moveToFirst();
-
-                        int mimeTypeColumnIndex = cursor.getColumnIndex(columns[1]);
-                        String mimeType = cursor.getString(mimeTypeColumnIndex);
-                        cursor.close();
-
-                        if (mimeType.startsWith(AppConstant.MEDIATYPE_IMAGE)) {
-                            try {
-                                mediaType = AppConstant.MEDIATYPE_IMAGE;
-                                // imgSelectImage.setImageURI(selectedUri);
-                                // imgPlay.setVisibility(View.GONE);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else if (mimeType.startsWith(AppConstant.MEDIATYPE_VIDEO)) {
-                            try {
-                                mediaType = AppConstant.MEDIATYPE_VIDEO;
-                                MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
-                                mMediaMetadataRetriever.setDataSource(getActivity(), selectedUri);
-                                Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-                                // imgSelectImage.setImageBitmap(bitmap);
-                                //  imgPlay.setVisibility(View.VISIBLE);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    }
-                    break;
-            }
+            model.Notes updateNote=new model.Notes();
+            updateNote.setNoteId(Integer.parseInt(strNoteId));
+            updateNote.setNoteText(noteText);
+            updateNote.setNoteSubject(subject);
+            updateNote.setModifiedDate(Utility.getDateMySql());
+            Global.studentHelper.updateNotes(updateNote, Integer.parseInt(Global.strUserId));
+            setUpData();
+        }catch (Exception e){
+            Debug.i(TAG,"editNote Exception : "+e.getLocalizedMessage());
         }
     }
 
@@ -305,12 +215,7 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
             } else if (alertDialog == DIALOG_ADD_NOTES) {
                 // if(getArguments()!=null){
                 strNote = note;
-                Notes notes = new Notes();
-                notes.setUserProfilePic(Global.strProfilePic);
-                notes.setNoteById(Global.strUserId);
-                notes.setNoteByUser(Global.strFullName);
-                notes.setNoteTitle(strNote);
-                arraylistNotes.add(notes);
+                copyDataToRealm(strNote,"","");
                 jotterNotesAdapter.notifyDataSetChanged();
                 Debug.i(TAG, "New Note : " + strNote);
                 // }
@@ -326,6 +231,15 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
         rteNotes.addSymbols(symbol);
     }
 
+    public void copyDataToRealm(String noteName,String noteText,String noteSubject){
+        model.Notes notes = new model.Notes();
+        notes.setUser(Global.studentHelper.getUser(Integer.parseInt(Global.strUserId)));
+        notes.setNoteName(strNote);
+        notes.setNoteText(strNoteText);
+        notes.setCreatedDate(Utility.getDateMySql());
+        Global.studentHelper.saveNote(notes);
+        setUpData();
+    }
 
     private void openImage() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -379,7 +293,7 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
         try {
             switch (apiCode) {
                 case WebConstants.GET_ALL_NOTES:
-                    onResponseGetAllNotes(object, error);
+                //    onResponseGetAllNotes(object, error);
                     break;
 //                case WebConstants.EDIT_ABOUT_ME:
 //                    onResponseEditAboutMe(object, error);
@@ -390,31 +304,32 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
         }
     }
 
-    private void onResponseGetAllNotes(Object object, Exception error) {
-        try {
-            activityHost.hideProgress();
-            if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
-                    Log.e(TAG, "onResponseGetAllNotes success");
-                    arraylistNotes = responseObj.getNotes();
-                    setUpData(responseObj.getNotes());
-                } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
-                    Log.e(TAG, "onResponseGetAllNotes Failed");
-                }
-            } else if (error != null) {
-                Log.e(TAG, "onResponseGetAllNotes api Exception : " + error.toString());
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "onResponseGetAllNotes Exception : " + e.toString());
-        }
-    }
+//    private void onResponseGetAllNotes(Object object, Exception error) {
+//        try {
+//            activityHost.hideProgress();
+//            if (object != null) {
+//                ResponseHandler responseObj = (ResponseHandler) object;
+//                if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
+//                    Log.e(TAG, "onResponseGetAllNotes success");
+//                    arraylistNotes = responseObj.getNotes();
+//                    setUpData(responseObj.getNotes());
+//                } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
+//                    Log.e(TAG, "onResponseGetAllNotes Failed");
+//                }
+//            } else if (error != null) {
+//                Log.e(TAG, "onResponseGetAllNotes api Exception : " + error.toString());
+//            }
+//        } catch (Exception e) {
+//            Log.e(TAG, "onResponseGetAllNotes Exception : " + e.toString());
+//        }
+//    }
 
-    private void setUpData(ArrayList<Notes> notes) {
+    private void setUpData() {
         try {
-            jotterNotesAdapter = new JotterNotesAdapter(getActivity(), notes, this);
+            arraylistNotes=Global.studentHelper.getNotes(Global.studentHelper.getUser(Integer.parseInt(Global.strUserId)));
+            jotterNotesAdapter = new JotterNotesAdapter(getActivity(), arraylistNotes, this,lastPosition);
             listView.setAdapter(jotterNotesAdapter);
-            setUpNoteDetails(0);
+            setUpNoteDetails(lastPosition);
         } catch (Exception e) {
             Debug.i(TAG, "setUpData Exceptions : " + e.getLocalizedMessage());
         }
@@ -431,15 +346,29 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
 
     private void setUpNoteDetails(int position) {
         try {
-            imgEdit.setActivated(false);
-            imgShare.setActivated(false);
-            txtNoteTitle.setText(arraylistNotes.get(position).getNoteTitle());
-            txtNoteBy.setText(arraylistNotes.get(position).getNoteByUser());
-            rteNotes.setHtml(arraylistNotes.get(position).getNoteText());
-            etSubject.setText(arraylistNotes.get(position).getTopicName());
-            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arraylistNotes.get(position).getUserProfilePic(), imgUser, ISMStudent.options);
+            lastPosition=position;
+            if(arraylistNotes==null){
+                Utility.hideView(imgEdit);
+                Utility.hideView(imgShare);
+                Utility.hideView(txtNoteTitle);
+                Utility.hideView(txtNoteBy);
+                Utility.hideView(rteNotes);
+                Utility.hideView(etSubject);
+                Utility.hideView(imgUser);
+            }else {
+                strNoteId=String.valueOf(arraylistNotes.get(position).getNoteId());
+                imgEdit.setActivated(false);
+                imgShare.setActivated(false);
+                txtNoteTitle.setText(arraylistNotes.get(position).getNoteName());
+                txtNoteBy.setText("By : "+arraylistNotes.get(position).getUser().getFullName());
+                rteNotes.setHtml(arraylistNotes.get(position).getNoteText());
+                etSubject.setText(arraylistNotes.get(position).getNoteSubject());
+                Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arraylistNotes.get(position).getUser().getProfilePicture(), imgUser, ISMStudent.options);
+            }
         } catch (Exception e) {
             Debug.i(TAG, "setNoteDetails Exceptions : " + e.getLocalizedMessage());
         }
     }
+
+
 }
