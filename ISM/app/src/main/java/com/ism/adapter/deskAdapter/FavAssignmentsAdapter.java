@@ -1,8 +1,7 @@
-package com.ism.adapter.jotterAdapter;
+package com.ism.adapter.deskAdapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +15,19 @@ import com.ism.utility.Debug;
 /**
  * Created by c162 on 25/12/15.
  */
-public class FavExamsAdapter extends RecyclerView.Adapter<FavExamsAdapter.ViewHolder> {
+public class FavAssignmentsAdapter extends RecyclerView.Adapter<FavAssignmentsAdapter.ViewHolder> {
 
-    private static final String TAG = FavExamsAdapter.class.getSimpleName();
+    private static final String TAG = FavAssignmentsAdapter.class.getSimpleName();
     private Context context;
 
-    public FavExamsAdapter(Context context) {
+    public FavAssignmentsAdapter(Context context) {
         this.context = context;
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_exam, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_assignment, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -36,8 +35,7 @@ public class FavExamsAdapter extends RecyclerView.Adapter<FavExamsAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         try {
-            holder.txtYearClass.setText(Html.fromHtml("2015 : <font color='#66C188'><b>12 th Science</b></font>"));
-            holder.txtExamType.setText(Html.fromHtml("Exam Type : <font color='#1BC4A2'>ISM MOCK</font>"));
+
         } catch (Exception e) {
             Debug.i(TAG, "onBinderViewHolder Exceptions : " + e.getLocalizedMessage());
         }
@@ -49,10 +47,9 @@ public class FavExamsAdapter extends RecyclerView.Adapter<FavExamsAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtExamType;
-        private TextView txtYearClass;
+        private TextView txtBookSubject;
         private TextView txtAssignmentName;
-        private TextView txtExamBy;
+        private TextView txtAssignmentBy;
         private TextView txtExamMode;
         private TextView txtSubject;
         private ImageView imgUser;
@@ -67,17 +64,14 @@ public class FavExamsAdapter extends RecyclerView.Adapter<FavExamsAdapter.ViewHo
             txtExamMode = (TextView) itemView.findViewById(R.id.txt_exam_mode);
             txtExamMode.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-            txtExamType = (TextView) itemView.findViewById(R.id.txt_exam_type);
-            txtExamType.setTypeface(Global.myTypeFace.getRalewayRegular());
-
-            txtExamBy = (TextView) itemView.findViewById(R.id.txt_exam_by);
-            txtExamBy.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtAssignmentBy = (TextView) itemView.findViewById(R.id.txt_exam_by);
+            txtAssignmentBy.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             txtAssignmentName = (TextView) itemView.findViewById(R.id.txt_exam_name);
             txtAssignmentName.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-            txtYearClass = (TextView) itemView.findViewById(R.id.txt_year_class);
-            txtYearClass.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtBookSubject = (TextView) itemView.findViewById(R.id.txt_book_subject);
+            txtBookSubject.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             imgMenu = (ImageView) itemView.findViewById(R.id.img_menu);
 

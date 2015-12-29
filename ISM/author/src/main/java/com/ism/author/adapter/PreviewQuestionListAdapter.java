@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
+import com.ism.author.Utility.HtmlImageGetter;
 import com.ism.author.Utility.Utils;
 import com.ism.author.fragment.createquestion.AddQuestionContainerFragment;
 import com.ism.author.object.Global;
@@ -57,7 +59,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
 
         holder.tvPreviewQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-        holder.tvPreviewQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
+        holder.tvPreviewQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext), null));
 
         if (arrListQuestions.get(position).getQuestionCreatorId().equals(Global.strUserId)) {
             holder.imgPreviewQuestionEdit.setVisibility(View.VISIBLE);

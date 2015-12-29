@@ -1,4 +1,4 @@
-package com.ism.adapter.jotterAdapter;
+package com.ism.adapter.deskAdapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

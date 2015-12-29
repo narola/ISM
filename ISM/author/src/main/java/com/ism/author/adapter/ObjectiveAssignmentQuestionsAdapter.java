@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.HtmlImageGetter;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.object.Global;
@@ -64,7 +66,9 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
             holder.txtQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
             holder.txtQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
             holder.txtQuestionNo.setPaintFlags(holder.txtQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            holder.txtQuestionText.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
+//            holder.txtQuestionText.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
+
+            holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext), null));
 
             holder.etEvoluationsNotes.setText(Utils.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
             holder.etSolution.setText(Utils.formatHtml(arrListQuestions.get(position).getSolution()));

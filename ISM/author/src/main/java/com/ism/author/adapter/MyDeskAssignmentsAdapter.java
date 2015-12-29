@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.fragment.mydesk.MyDeskFragment;
 import com.ism.author.object.Global;
@@ -96,6 +97,11 @@ public class MyDeskAssignmentsAdapter extends RecyclerView.Adapter<MyDeskAssignm
 
                 }
             });
+
+
+            holder.tvViewAllAssignments.setText(arrListAuthorBooksAssignments.get(position).getTotalAssignments() + "\n");
+            holder.tvViewAllAssignments.append(Utility.getSpannableString(mContext.getResources().getString(R.string.strviewall),
+                    mContext.getResources().getColor(R.color.color_question)));
 
         } catch (Exception e) {
             Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());
