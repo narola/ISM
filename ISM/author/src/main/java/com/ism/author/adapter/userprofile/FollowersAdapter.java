@@ -9,9 +9,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.Utility;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.object.Global;
 import com.ism.author.views.CircleImageView;
+import com.ism.author.ws.model.Followers;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -19,14 +24,15 @@ import java.util.ArrayList;
  */
 public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.ViewHolder> {
 
-    Context context;
-    ArrayList<String> arrayList=new ArrayList<>();
-    private LayoutInflater inflater;
 
-    public FollowersAdapter(Context context, ArrayList<String> arrayList) {
-        this.context = context;
-        this.arrayList = arrayList;
-        inflater=LayoutInflater.from(context);
+    private static final String TAG = FollowersAdapter.class.getSimpleName();
+    Context mContext;
+    private LayoutInflater inflater;
+    private ArrayList<Followers> arrListFollowers = new ArrayList<Followers>();
+
+    public FollowersAdapter(Context mContext) {
+        this.mContext = mContext;
+        inflater = LayoutInflater.from(mContext);
     }
 
     @Override
@@ -39,39 +45,71 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
+        try {
+
+            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrListFollowers.get(position).getFollowerProfilePic(), holder.imgDpFollower,
+                    Utility.getDisplayImageOption(R.drawable.userdp, R.drawable.userdp));
+
+            holder.txtName.setText(arrListFollowers.get(position).getFollowerName());
+
+
+            DecimalFormat decimalFormat = new DecimalFormat("#");
+
+            holder.txtTotalFollowing.setText(mContext.getString(R.string.strfollowing) + " " +
+                    decimalFormat.format(arrListFollowers.get(position).getNumberOfAuthorFollowed()) + " " + mContext.getString(R.string.strAuthor));
+
+            holder.txtSchoolName.setText(mContext.getString(R.string.strstudentfrom) + " " + arrListFollowers.get(position).getFollowerSchool());
+            holder.txtLiveFrom.setText(mContext.getString(R.string.strlivein) + " " + arrListFollowers.get(position).getFollowerCountryName());
+
+        } catch (Exception e) {
+            Debug.i(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+
+        return arrListFollowers.size();
+
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        CircleImageView imgDpPostCreator;
-        TextView txtName, txtSchoolName, txtTotalFollowing, txt_Following, txtLiveFrom;
+    public void addAll(ArrayList<Followers> followers) {
+        try {
+            this.arrListFollowers.clear();
+            this.arrListFollowers.addAll(followers);
+        } catch (Exception e) {
+            Debug.e(TAG, "addAllData Exception : " + e.toString());
+        }
+        notifyDataSetChanged();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+
+        CircleImageView imgDpFollower;
+        TextView txtName, txtSchoolName, txtTotalFollowing, txtFollowing, txtLiveFrom;
         RelativeLayout rrMain;
 
         public ViewHolder(View view) {
             super(view);
-            imgDpPostCreator = (CircleImageView) itemView
+
+            imgDpFollower = (CircleImageView) itemView
                     .findViewById(R.id.img_user_dp);
 
-            txtName =(TextView)view.findViewById(R.id.txt_name);
+            txtName = (TextView) view.findViewById(R.id.txt_name);
+            txtSchoolName = (TextView) view.findViewById(R.id.txt_school_name);
+            txtLiveFrom = (TextView) view.findViewById(R.id.txt_live_from);
+            txtTotalFollowing = (TextView) view.findViewById(R.id.txt_total_following);
+            txtFollowing = (TextView) view.findViewById(R.id.txt_following);
+            rrMain = (RelativeLayout) view.findViewById(R.id.rr_main);
+
+
             txtName.setTypeface(Global.myTypeFace.getRalewayMedium());
-
-            txtSchoolName =(TextView)view.findViewById(R.id.txt_school_name);
             txtSchoolName.setTypeface(Global.myTypeFace.getRalewayRegular());
-
-            txtLiveFrom =(TextView)view.findViewById(R.id.txt_live_from);
             txtLiveFrom.setTypeface(Global.myTypeFace.getRalewayRegular());
-
-            txtTotalFollowing =(TextView)view.findViewById(R.id.txt_total_following);
             txtTotalFollowing.setTypeface(Global.myTypeFace.getRalewayRegular());
-
-            txt_Following =(TextView)view.findViewById(R.id.txt_following);
-            txt_Following.setTypeface(Global.myTypeFace.getRalewayRegular());
-
-            rrMain =(RelativeLayout)view.findViewById(R.id.rr_main);
+            txtFollowing.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         }
     }

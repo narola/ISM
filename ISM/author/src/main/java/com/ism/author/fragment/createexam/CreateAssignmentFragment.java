@@ -163,8 +163,6 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
         callApiGetClassRooms();
         callApiGetSubjects();
-
-
     }
 
     private void callApiGetClassRooms() {

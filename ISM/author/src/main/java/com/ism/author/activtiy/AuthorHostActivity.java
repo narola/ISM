@@ -39,8 +39,9 @@ import com.ism.author.fragment.createexam.CreateExamAssignmentContainerFragment;
 import com.ism.author.fragment.createexam.CreateExamFragment;
 import com.ism.author.fragment.createquestion.AddQuestionContainerFragment;
 import com.ism.author.fragment.gotrending.GoTrendingFragment;
-import com.ism.author.fragment.gotrending.PastFragment;
-import com.ism.author.fragment.mydesk.AddAssignmentFragment;
+import com.ism.author.fragment.gotrending.PastTrendingQuestionsFragment;
+import com.ism.author.fragment.gotrending.TrendingQuestionDetailFragment;
+import com.ism.author.fragment.mydesk.CreateAssignmentFragment;
 import com.ism.author.fragment.mydesk.MyDeskFragment;
 import com.ism.author.fragment.userprofile.AllMessageFragment;
 import com.ism.author.fragment.userprofile.AllNotificationFragment;
@@ -116,8 +117,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_ALL_MESSAGE = 12;
     public static final int FRAGMENT_ALL_NOTIFICATION = 13;
     public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 14;
-    public static final int FRAGMENT_PAST = 15;
+    public static final int FRAGMENT_PAST_TRENDING_QUESTIONS = 15;
     public static final int FRAGMENT_ADD_ASSIGNMENT = 16;
+    public static final int FRAGMENT_TRENDING_QUESTION_DETAIL = 17;
+
     //these are the right side fragments
     public static final int FRAGMENT_PROFILE_CONTROLLER = 31;
     public static final int FRAGMENT_HIGHSCORE = 32;
@@ -351,7 +354,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
                     setBackStackFragmentKey(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AddAssignmentFragment.newInstance(), AppConstant.FRAGMENT_ADD_ASSIGNMENT).commit();
+                            CreateAssignmentFragment.newInstance(), AppConstant.FRAGMENT_ADD_ASSIGNMENT).commit();
                     break;
 
                 case FRAGMENT_TRIAL:
@@ -367,11 +370,18 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
                             GoTrendingFragment.newInstance(), AppConstant.FRAGMENT_GOTRENDING).commit();
                     break;
-                case FRAGMENT_PAST:
+                case FRAGMENT_PAST_TRENDING_QUESTIONS:
 
-                    setBackStackFragmentKey(AppConstant.FRAGMENT_PAST);
+                    setBackStackFragmentKey(AppConstant.FRAGMENT_PAST_QUESTIONS);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            PastFragment.newInstance(), AppConstant.FRAGMENT_PAST).commit();
+                            PastTrendingQuestionsFragment.newInstance(), AppConstant.FRAGMENT_PAST_QUESTIONS).commit();
+                    break;
+
+                case FRAGMENT_TRENDING_QUESTION_DETAIL:
+
+                    setBackStackFragmentKey(AppConstant.FRAGMENT_TRENDING_QUESTION_DETAIL);
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            TrendingQuestionDetailFragment.newInstance(), AppConstant.FRAGMENT_TRENDING_QUESTION_DETAIL).commit();
                     break;
 
                 case FRAGMENT_ASSESSMENT:
@@ -618,7 +628,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 //                    }
                     break;
 
-                case FRAGMENT_PAST:
+                case FRAGMENT_PAST_TRENDING_QUESTIONS:
                     setTopBarValues(fragment, getResources().getColor(R.color.bg_office), false, true, false, controllerTopSubMenuGoTrading, false);
 
                     llControllerLeft.setVisibility(View.VISIBLE);
@@ -827,7 +837,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     imgOffice.setActivated(true);
                     break;
 
-                case FRAGMENT_PAST:
+                case FRAGMENT_PAST_TRENDING_QUESTIONS:
                     imgOffice.setActivated(true);
                     break;
 
@@ -997,8 +1007,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 break;
 
             case FRAGMENT_ADD_ASSIGNMENT:
-                AddAssignmentFragment addAssignmentFragment = (AddAssignmentFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
-                addAssignmentFragment.onBackClick();
+                CreateAssignmentFragment createAssignmentFragment = (CreateAssignmentFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
+                createAssignmentFragment.onBackClick();
                 break;
 
             case FRAGMENT_GOTRENDING:
@@ -1006,10 +1016,16 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 goTrendingFragment.onBackClick();
                 break;
 
-            case FRAGMENT_PAST:
-                PastFragment pastFragment = (PastFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_PAST);
-                pastFragment.onBackClick();
+            case FRAGMENT_PAST_TRENDING_QUESTIONS:
+                PastTrendingQuestionsFragment pastTrendingQuestionsFragment = (PastTrendingQuestionsFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_PAST_QUESTIONS);
+                pastTrendingQuestionsFragment.onBackClick();
                 break;
+
+            case FRAGMENT_TRENDING_QUESTION_DETAIL:
+                TrendingQuestionDetailFragment trendingQuestionDetailFragment = (TrendingQuestionDetailFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TRENDING_QUESTION_DETAIL);
+                trendingQuestionDetailFragment.onBackClick();
+                break;
+
 
             case FRAGMENT_TRIAL:
                 TrialFragment trialFragment = (TrialFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TRIAL);
@@ -1068,7 +1084,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         } else if (currentMainFragment == FRAGMENT_ADDQUESTION_CONTAINER) {
 
         } else if (currentMainFragment == FRAGMENT_GOTRENDING) {
-            loadFragmentInMainContainer(FRAGMENT_PAST);
+            loadFragmentInMainContainer(FRAGMENT_PAST_TRENDING_QUESTIONS);
         }
 
 
@@ -1287,39 +1303,39 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         try {
             arrayListSMSAlert = arrayList.get(0).getSMSAlert();
             for (int j = 0; j < arrayListSMSAlert.size(); j++) {
-                preference=new Preferences();
+                preference = new Preferences();
                 preference.setPreferencesId(Integer.parseInt(arrayListSMSAlert.get(j).getId()));
                 preference.setDefaultValue(arrayListSMSAlert.get(j).getDefaultValue());
                 preference.setDisplayValue(arrayListSMSAlert.get(j).getDisplayValue());
                 preference.setPreferenceKey(arrayListSMSAlert.get(j).getPreferenceKey());
                 preference.setIsSync(0);
                 Global.authorHelper.saveAllPreferences(preference);
-               // PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
+                // PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
                 //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
             }
             arrayListNotificationSettings = arrayList.get(0).getNotificationSettings();
             for (int j = 0; j < arrayListNotificationSettings.size(); j++) {
-                preference=new Preferences();
+                preference = new Preferences();
                 preference.setPreferencesId(Integer.parseInt(arrayListNotificationSettings.get(j).getId()));
                 preference.setDefaultValue(arrayListNotificationSettings.get(j).getDefaultValue());
                 preference.setDisplayValue(arrayListNotificationSettings.get(j).getDisplayValue());
                 preference.setPreferenceKey(arrayListNotificationSettings.get(j).getPreferenceKey());
                 preference.setIsSync(0);
                 Global.authorHelper.saveAllPreferences(preference);
-              //  PreferenceData.setStringPrefs(arrayListNotificationSettings.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotificationSettings.get(j).getId());
+                //  PreferenceData.setStringPrefs(arrayListNotificationSettings.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotificationSettings.get(j).getId());
                 // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
             }
 
             arrayListPrivacySetting = arrayList.get(0).getPrivacySetting();
             for (int j = 0; j < arrayListPrivacySetting.size(); j++) {
-                preference=new Preferences();
+                preference = new Preferences();
                 preference.setPreferencesId(Integer.parseInt(arrayListPrivacySetting.get(j).getId()));
                 preference.setDefaultValue(arrayListPrivacySetting.get(j).getDefaultValue());
                 preference.setDisplayValue(arrayListPrivacySetting.get(j).getDisplayValue());
                 preference.setPreferenceKey(arrayListPrivacySetting.get(j).getPreferenceKey());
                 preference.setIsSync(0);
                 Global.authorHelper.saveAllPreferences(preference);
-               // PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
+                // PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
                 // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
             }
 
