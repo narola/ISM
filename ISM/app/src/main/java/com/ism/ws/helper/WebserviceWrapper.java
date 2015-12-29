@@ -224,6 +224,9 @@ public class WebserviceWrapper {
                             case WebConstants.GET_GROUP_PROFILE:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_GROUP_PROFILE).execute(ResponseHandler.class, attribute);
                                 break;
+                            case WebConstants.GET_ALL_NOTES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_NOTES).execute(ResponseHandler.class, attribute);
+                                break;
                         }
                     }
                 }

@@ -13,9 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.fragment.userProfile.AllNoticeFragment;
+import com.ism.fragment.desk.JotterFragment;
 import com.ism.object.Global;
-import com.ism.ws.model.Notice;
+import com.ism.ws.model.Notes;
 
 import java.util.ArrayList;
 
@@ -28,12 +28,19 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
 
     private LayoutInflater inflater;
     private Context context;
-    private ArrayList<Notice> arrListNotice;
-//	private HostActivity activityHost;
+    private ArrayList<Notes> arrayList;
+    //	private HostActivity activityHost;
+    ViewNoteListener viewNoteListener;
+    private int lastSelected = 0;
 
-    public JotterNotesAdapter(Context context, ArrayList<Notice> arrListNotice) {
+    public void setViewNoteListener(ViewNoteListener viewNoteListener) {
+        this.viewNoteListener = viewNoteListener;
+    }
+
+    public JotterNotesAdapter(Context context, ArrayList<Notes> arrListNotice, JotterFragment jotterFragment) {
         this.context = context;
-        this.arrListNotice = arrListNotice;
+        this.arrayList = arrListNotice;
+        this.viewNoteListener = jotterFragment;
         inflater = LayoutInflater.from(context);
     }
 
@@ -47,28 +54,42 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         try {
 //            if (position == 0) {
 //                holder.rrMain.setBackgroundColor(Color.parseColor("#D6DBDF"));
 //            }
-            holder.txtSubject.setText(arrListNotice.get(position).getNoticeTitle());
-            holder.txtNotename.setText(arrListNotice.get(position).getNotice());
+            holder.txtSubject.setText(arrayList.get(position).getTopicName());
+            holder.txtNotename.setText(arrayList.get(position).getNoteTitle());
+            holder.txtNoteBy.setText(arrayList.get(position).getNoteByUser());
 
             holder.txtNoteBy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Bundle bundleAllNotice = new Bundle();
-                    bundleAllNotice.putParcelableArrayList(AllNoticeFragment.ARG_ARR_LIST_NOTICE, arrListNotice);
+                    //  bundleAllNotice.putParcelableArrayList(AllNoticeFragment.ARG_ARR_LIST_NOTICE, arrayList);
 //					activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTICE, bundleAllNotice);
                 }
             });
+            if(lastSelected!=position){
+                holder.rrMain.setBackgroundColor(Color.parseColor("#f7f7f7"));
+            }
             holder.rrMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    lastSelected = position;
                     holder.rrMain.setBackgroundColor(Color.parseColor("#D6DBDF"));
+                    notifyDataSetChanged();
+                    viewNoteListener.onNoteListener(position);
                 }
             });
+            if (arrayList.get(position).getAudioLink() != null && arrayList.get(position).getAudioLink().length() > 0) {
+                holder.imgMedia.setImageResource(R.drawable.ic_audio_gray);
+                holder.imgMedia.setVisibility(View.VISIBLE);
+            } else if (arrayList.get(position).getVideoLink() != null && arrayList.get(position).getVideoLink().length() > 0) {
+                holder.imgMedia.setVisibility(View.VISIBLE);
+                holder.imgMedia.setImageResource(R.drawable.ic_video_dark_gray);
+            }
 
         } catch (Exception e) {
             Log.e(TAG, "onBindViewHolder Exception : " + e.toString());
@@ -82,7 +103,7 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
 
     @Override
     public int getItemCount() {
-        return 20;
+        return arrayList.size();
     }
 
 
@@ -96,7 +117,7 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
             txtSubject = (TextView) view.findViewById(R.id.txt_subject);
             txtNotename = (TextView) view.findViewById(R.id.txt_note_name);
             txtNoteBy = (TextView) view.findViewById(R.id.txt_notes_by);
-            imgMedia = (ImageView) view.findViewById(R.id.img_media_files);
+            imgMedia = (ImageView) view.findViewById(R.id.img_media_video);
             rrMain = (RelativeLayout) view.findViewById(R.id.rr_main);
 
             txtSubject.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -104,6 +125,10 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
             txtNoteBy.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         }
+    }
+
+    public interface ViewNoteListener {
+        public void onNoteListener(int position);
     }
 
 }
