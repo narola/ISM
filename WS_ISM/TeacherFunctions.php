@@ -470,6 +470,10 @@ class TeacherFunctions
                         }
                         $message = "Record Found";
                     }
+                    else
+                    {
+                        $message=DEFAULT_NO_RECORDS;
+                    }
                 }
             } else {
                 $message = DEFAULT_NO_RECORDS;
@@ -1192,7 +1196,7 @@ class TeacherFunctions
     }
 
     /*
-     * getAllNotes
+     * getAllLessonNotes
      *  used to fetch all the lesson notes that belongs to the user.
      *
      */
@@ -1228,25 +1232,33 @@ class TeacherFunctions
 
             $query = "SELECT `classroom_id`FROM " . $table . " WHERE `user_id`=" . $user_id . " AND is_delete=0";
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
-            //  echo $query;
+            //echo $query;
             if (mysqli_num_rows($result)) {
                 while ($row = mysqli_fetch_assoc($result)) {
 
                     $classroom_id = $row['classroom_id'];
-                    $queryGetSubjectId = "SELECT classroom_subject.subject_id,subjects.subject_name,classrooms.class_name FROM " . TABLE_CLASSROOM_SUBJECT . " classroom_subject INNER JOIN " . TABLE_SUBJECTS . " subjects ON classroom_subject.subject_id=subjects.id INNER JOIN " . TABLE_CLASSROOMS . " classrooms ON classroom_subject.classroom_id=classrooms.id INNER JOIN " . TABLE_LECTURES . " lecture ON lecture.classroom_id=classroom_subject.`classroom_id` WHERE lecture.classroom_id=" . $classroom_id;
+                     $queryGetSubjectId = "SELECT DISTINCT classroom_subject.subject_id,subjects.subject_name,classrooms.class_name FROM " . TABLE_CLASSROOM_SUBJECT . " classroom_subject INNER JOIN " . TABLE_SUBJECTS . " subjects ON classroom_subject.subject_id=subjects.id INNER JOIN " . TABLE_CLASSROOMS . " classrooms ON classroom_subject.classroom_id=classrooms.id INNER JOIN " . TABLE_LECTURES . " lecture ON lecture.classroom_id=classroom_subject.`classroom_id` WHERE lecture.classroom_id=" . $classroom_id;
                     $resultGetSubjectId = mysqli_query($GLOBALS['con'], $queryGetSubjectId) or $message = mysqli_error($GLOBALS['con']);
 
+
                     if (mysqli_num_rows($resultGetSubjectId)) {
+                        $post = array();
                         while ($val = mysqli_fetch_assoc($resultGetSubjectId)) {
-                            $post = array();
-                            $post['subject_id'] = $val['subject_id'];
-                            $post['class_name'] = $val['class_name'];
-                            $post['subject_name'] = $val['subject_name'];
-                            $data[] = $post;
+
+//                            $post['subject_id'] = $val['subject_id'];
+//                            $post['class_name'] = $val['class_name'];
+//                            $post['subject_name'] = $val['subject_name'];
+                            $data[] = $val;
                         }
                         $message = "Record Found";
                     }
+                    else
+                    {
+                        $message = DEFAULT_NO_RECORDS;
+                    }
                 }
+
+
             } else {
                 $message = DEFAULT_NO_RECORDS;
             }
@@ -1312,7 +1324,7 @@ class TeacherFunctions
                             $note_info['user_profile_pic'] = $val['profile_pic'];
                             $note_info['created_date'] = $val['created_date'];
 
-                            $notes_topics['topics'][] = $note_info;
+                            $notes_topics['notes'][] = $note_info;
 
                         }
                         $post[]=$notes_topics;

@@ -57,6 +57,7 @@ switch ($_REQUEST['Service'])
     case "UnBlockUser":
     case "UploadProfileImages":
     case "GetMyFollowers":
+    case "GetRecommendedAuthors":
     {
         include_once 'ProfileFunctions.php';
         $profile = new ProfileFunctions();

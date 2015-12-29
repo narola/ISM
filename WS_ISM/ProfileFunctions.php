@@ -192,6 +192,12 @@ class ProfileFunctions
             }
                 break;
 
+            case "GetRecommendedAuthors":
+            {
+                return $this->getRecommendedAuthors($postData);
+            }
+            break;
+
         }
     }
     /*
@@ -3509,6 +3515,64 @@ class ProfileFunctions
         return $response;
     }
 
+        /*
+       * getRecommendedAuthors
+       */
+    public function getRecommendedAuthors($postData)
+    {
+        $message ='';
+        $status='';
+        $data = array();
+        $response = array();
 
+        $author_id = validateObject($postData, 'author_id', "");
+        $author_id = addslashes($author_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+
+            $selectQuery = "SELECT users.full_name,users.profile_pic,author_profile.* FROM ".TABLE_USERS." users INNER JOIN ".TABLE_AUTHOR_PROFILE." author_profile ON author_profile.user_id=users.id WHERE users.role_id=4 AND author_profile.is_delete=0 AND users.is_delete=0";
+            $selectResult = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($selectResult) > 0) {
+                while ($row = mysqli_fetch_assoc($selectResult)) {
+                    $post['author_id']=$row['user_id'];
+                    $post['author_name']=$row['full_name'];
+                    $post['author_pic']=$row['profile_pic'];
+                    $post['total_books']=$row['total_books'];
+                    $post['about_author']=$row['about_author'];
+                    $post['education']=$row['education'];
+                    $post['total_followers']=$row['total_followers'];
+                    $post['terms_link']=$row['terms_link'];
+                    $data[]=$post;
+                }
+
+                $message = "Authors listed";
+            }
+            else {
+                $message = DEFAULT_NO_RECORDS;
+            }
+            $status = SUCCESS;
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['author']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+
+        return $response;
+    }
 }
 ?>

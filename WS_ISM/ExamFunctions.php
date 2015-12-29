@@ -1647,11 +1647,10 @@ class ExamFunctions
         $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
         if($isSecure==yes) {
-
             $query ="SELECT exams.*,examEvaluation.evaluation_status as 'Status',examEvaluation.total_questions as 'total_questions',examEvaluation.average_score as 'score',examEvaluation.total_student_attempted as 'total_submission' FROM ".TABLE_EXAMS. " exams
-	 	INNER JOIN ".TABLE_EXAM_SCHEDULE." exam_schedule on exams.id=exam_schedule.exam_id
-	 	INNER JOIN ". TABLE_EXAM_EVALUATION." examEvaluation on exams.id = examEvaluation.exam_id
-	 	WHERE exam_schedule.exam_assessor =".$user_id ." AND exam_schedule.is_delete=0  ORDER BY exams.created_date DESC";
+	 	LEFT JOIN ".TABLE_EXAM_SCHEDULE." exam_schedule on exams.id=exam_schedule.exam_id
+	 	LEFT JOIN ". TABLE_EXAM_EVALUATION." examEvaluation on exams.id = examEvaluation.exam_id
+	 	WHERE exam_schedule.exam_assessor =".$user_id ." AND exam_schedule.is_delete=0  ORDER BY exams.created_date DESC"; //exams.modified_date
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
             if (mysqli_num_rows($result)) {
@@ -2160,7 +2159,7 @@ class ExamFunctions
 
                 }
 
-                $post['rich_text_editor_images'] = $htmlTextOfImages;
+                $post = $htmlTextOfImages;
 
             }
 
@@ -3777,7 +3776,7 @@ class ExamFunctions
             $status=FAILED;
             $message = MALICIOUS_SOURCE;
         }
-        $response['trending_question']=$post;
+        $response['trending_question_detail']=$post;
         $response['message']=$message;
         $response['status']=$status;
 
