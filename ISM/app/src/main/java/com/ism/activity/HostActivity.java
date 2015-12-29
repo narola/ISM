@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -334,7 +335,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         imgLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PreferenceData.clearWholePreference(HostActivity.this);
+//                PreferenceData.clearWholePreference(HostActivity.this);
+                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, HostActivity.this, false);
                 Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
                 startActivity(intentLogin);
                 finish();
