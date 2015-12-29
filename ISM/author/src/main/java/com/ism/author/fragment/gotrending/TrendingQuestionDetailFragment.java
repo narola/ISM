@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +12,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
+import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.gotrending.QuestionCommentAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.Comment;
+import com.ism.author.ws.model.QuestionComments;
 
 import java.util.ArrayList;
 
@@ -38,7 +43,7 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
     private TextView txtCreatorName, txtQuestion, txtDate, txtTotalFollowers, txtTotalComments, tvNoDataMsg;
     private RecyclerView rvQuestionCommentsList;
     private QuestionCommentAdapter questionCommentAdapter;
-    private ArrayList<Comment> arrListExams = new ArrayList<Comment>();
+    private ArrayList<Comment> arrListComments = new ArrayList<Comment>();
 
 
     public static TrendingQuestionDetailFragment newInstance() {
@@ -69,6 +74,13 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
         txtTotalComments = (TextView) view.findViewById(R.id.txt_total_comments);
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
 
+        txtCreatorName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtTotalFollowers.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtTotalComments.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+
         rvQuestionCommentsList = (RecyclerView) view.findViewById(R.id.rv_question_comments_list);
         questionCommentAdapter = new QuestionCommentAdapter(this, getActivity());
         rvQuestionCommentsList.setAdapter(questionCommentAdapter);
@@ -91,6 +103,7 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setQuestionid("2");
+//                attribute.setQuestionid((((AuthorHostActivity) getActivity()).getBundle().getString(PastQuestionsAdapter.ARG_QUESTION_ID)));
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GET_TRENDING_QUESTION_DETAIL);
@@ -127,14 +140,13 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
 
 
                     if (responseHandler.getQuestionComments().size() > 0) {
-                        arrListExams.addAll(responseHandler.getQuestionComments().get(0).getComment());
-                        questionCommentAdapter.addAll(arrListExams);
+                        arrListComments.addAll(responseHandler.getQuestionComments().get(0).getComment());
+                        questionCommentAdapter.addAll(arrListComments);
                         questionCommentAdapter.notifyDataSetChanged();
-//                        tvNoDataMsg.setVisibility(View.GONE);
-
                         setEmptyView(false);
+                        setData(responseHandler.getQuestionComments().get(0));
+
                     } else {
-//                        tvNoDataMsg.setVisibility(View.VISIBLE);
                         setEmptyView(true);
                     }
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
@@ -150,6 +162,20 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
         }
     }
 
+
+    private void setData(QuestionComments questionComments) {
+
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + questionComments.getPostedByPic(),
+                imgUserDp, ISMAuthor.options);
+        txtCreatorName.setText(questionComments.getPostedByUsername());
+        txtDate.setText(Utils.getDateInApiFormat(questionComments.getPostedOn()));
+
+        txtDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", questionComments.getPostedOn()));
+        txtQuestion.setText(Html.fromHtml(questionComments.getQuestionText()));
+        txtTotalFollowers.setText(questionComments.getFollowerCount() + " " + getActivity().getString(R.string.strfollowers));
+        txtTotalComments.setText(questionComments.getTotalComment() + " " + getActivity().getString(R.string.strComments));
+
+    }
 
     public void onBackClick() {
         ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_TRENDING_QUESTION_DETAIL);

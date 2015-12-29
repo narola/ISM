@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.HtmlImageGetter;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.fragment.createquestion.AddQuestionContainerFragment;
@@ -76,7 +77,8 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
 
             holder.tvQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
+
+            holder.tvQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext), null));
 
 
             if (arrListQuestions.get(position).getQuestionCreatorId().equals(Global.strUserId)) {
@@ -158,9 +160,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                 @Override
                 public void onClick(View v) {
-
-                    Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS:::" + getBaseFragment().getListOfPreviewQuestion().size());
-
+                    
                     if (canAddToPreview) {
 
                         if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strquestionformatmcq))) {
@@ -169,7 +169,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                                     (mContext.getString(R.string.strobjective))) {
                                 isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                             } else {
-//                                Utils.showToast(mContext.getString(R.string.msg_validation_addsubjective_question), mContext);
                                 Utility.alert(mContext, null, mContext.getString(R.string.msg_validation_addsubjective_question));
                             }
 
@@ -180,7 +179,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                                     (mContext.getString(R.string.strsubjective))) {
                                 isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                             } else {
-//                                Utils.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
                                 Utility.alert(mContext, null, mContext.getString(R.string.msg_validation_addobjective_question));
                             }
 
@@ -191,15 +189,15 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                                     (mContext.getString(R.string.strsubjective))) {
                                 isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                             } else {
-//                                Utils.showToast(mContext.getString(R.string.msg_validation_addobjective_question), mContext);
                                 Utility.alert(mContext, null, mContext.getString(R.string.msg_validation_addobjective_question));
                             }
                         }
                         notifyDataSetChanged();
                     } else {
+
                         holder.chkSelectQuestion.setChecked(arrListQuestions.get(position).getIsQuestionAddedInPreview());
-//                        Utils.showToast(mContext.getString(R.string.msg_validation_add_question), mContext);
                         Utility.alert(mContext, null, mContext.getString(R.string.msg_validation_add_question));
+
                     }
 
                 }

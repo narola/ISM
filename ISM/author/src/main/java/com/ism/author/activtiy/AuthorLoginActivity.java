@@ -759,7 +759,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                         PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, getActivity(), responseHandler.getUser().get(0).getFullName());
                         PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, getActivity(), responseHandler.getUser().get(0).getProfilePic());
                         PreferenceData.setStringPrefs(PreferenceData.USER_NAME, this, etUserName.getText().toString().trim());
-                        saveUser(responseHandler.getUser().get(0),etUserName.getText().toString().trim());
+                        saveUser(responseHandler.getUser().get(0), etUserName.getText().toString().trim());
 
                         launchHostActivity();
                     }
@@ -776,16 +776,15 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
     }
 
     private void saveUser(User user, String userName) {
-        try{
-            model.User userData=new model.User();
+        try {
+            model.User userData = new model.User();
             userData.setUserId(Integer.parseInt(user.getUserId()));
             userData.setProfilePicture(user.getProfilePic());
             userData.setFullName(user.getFullName());
             userData.setUserName(userName);
             authorHelper.saveUser(userData);
-        }
-        catch (Exception e){
-            Debug.i(TAG,"saveUser Exceptions : " +e.getLocalizedMessage());
+        } catch (Exception e) {
+            Debug.i(TAG, "saveUser Exceptions : " + e.getLocalizedMessage());
         }
     }
 

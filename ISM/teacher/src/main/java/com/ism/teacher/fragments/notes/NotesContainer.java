@@ -23,6 +23,7 @@ public class NotesContainer extends Fragment {
 
 
     NotesAddEditFragment notesAddEditFragment;
+    NotesListFragment notesListFragment;
 
     public static NotesContainer newInstance() {
         NotesContainer notesContainer = new NotesContainer();
@@ -54,20 +55,22 @@ public class NotesContainer extends Fragment {
         flLeftNoteContainer = (FrameLayout) rootview.findViewById(R.id.fl_left_note_container);
         flRightNoteContainer = (FrameLayout) rootview.findViewById(R.id.fl_right_note_container);
 
+        notesListFragment = new NotesListFragment(this);
         notesAddEditFragment = new NotesAddEditFragment(this);
-        //loadFragmentInLeftContainer();
+
+        loadFragmentInLeftContainer();
         loadFragmentInRightContainer();
 
     }
 
-//    private void loadFragmentInLeftContainer() {
-//        try {
-//            getFragmentManager().beginTransaction().replace(R.id.fl_left_note_container, tutorialPreviewQuestionFragment).commit();
-//        } catch (Exception e) {
-//            Debug.e(TAG, "loadFragmentInLeft Note Exception : " + e.toString());
-//        }
-//
-//    }
+    private void loadFragmentInLeftContainer() {
+        try {
+            getFragmentManager().beginTransaction().replace(R.id.fl_left_note_container, notesListFragment).commit();
+        } catch (Exception e) {
+            Debug.e(TAG, "loadFragmentInLeft Note Exception : " + e.toString());
+        }
+
+    }
 
     private void loadFragmentInRightContainer() {
         try {
@@ -78,5 +81,8 @@ public class NotesContainer extends Fragment {
 
     }
 
+    public Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
+    }
 
 }

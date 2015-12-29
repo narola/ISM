@@ -256,6 +256,7 @@
     <string name="strPrice">Price :</string>
     <string name="strPublisher">Publisher :</string>
     <string name="strAuthor">Author :</string>
+    <string name="strauthor">Author</string>.
     <string name="strEbookLink">Ebook link :</string>
     <string name="strfilters">Filters</string>
     <string name="strtypetext">Type Text</string>

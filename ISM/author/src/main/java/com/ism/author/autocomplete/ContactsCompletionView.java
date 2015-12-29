@@ -21,7 +21,7 @@ import java.util.Random;
 
 /**
  * Sample token completion view for basic contact info
- * <p/>
+ * <p>
  * Created on 9/12/13.
  *
  * @author mgod
@@ -64,6 +64,8 @@ public class ContactsCompletionView extends TokenCompleteTextView<HashTagsModel>
             ((ShapeDrawable) background).getPaint().setColor(getRandomColor());
         } else if (background instanceof GradientDrawable) {
             ((GradientDrawable) background).setColor(getRandomColor());
+        } else {
+            ((ShapeDrawable) background).getPaint().setColor(getContext().getResources().getColor(R.color.color_green));
         }
 
         return view;

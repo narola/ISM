@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.constant.WebConstants;
+import com.ism.ws.model.AnswerChoice;
 import com.ism.ws.model.Preferences;
 
 import java.io.File;
@@ -88,6 +89,8 @@ public class Attribute {
 	private String lastSyncDate;
 	private String weekNo;
 	private String dayNo;
+	private String tutorialTopicId;
+	private String questionText;
 
     private ArrayList<String> unfavoriteResourceId;
     private ArrayList<String> favResourceId;
@@ -95,6 +98,7 @@ public class Attribute {
     private ArrayList<String> addBookId;
     private ArrayList<String> likedId=new ArrayList<>();
 	private ArrayList<String> unlikedId=new ArrayList<>();
+	private ArrayList<AnswerChoice> answerChoices;
 
     private String studymateId;
     private String videoThumbnail;
@@ -765,4 +769,30 @@ public class Attribute {
 		this.dayNo = dayNo;
 	}
 
+	public String getTutorialTopicId() {
+		return tutorialTopicId;
+	}
+
+	@JsonProperty("tutorial_topic_id")
+	public void setTutorialTopicId(String tutorialTopicId) {
+		this.tutorialTopicId = tutorialTopicId;
+	}
+
+	public String getQuestionText() {
+		return questionText;
+	}
+
+	@JsonProperty("question_text")
+	public void setQuestionText(String questionText) {
+		this.questionText = questionText;
+	}
+
+	public ArrayList<AnswerChoice> getAnswerChoices() {
+		return answerChoices;
+	}
+
+	@JsonProperty("answer_choices")
+	public void setAnswerChoices(ArrayList<AnswerChoice> answerChoices) {
+		this.answerChoices = answerChoices;
+	}
 }

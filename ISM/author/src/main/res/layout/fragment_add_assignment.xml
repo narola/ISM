@@ -76,10 +76,10 @@
         <EditText
             android:id="@+id/et_assignment_name"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/d10dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_edit_gray"
+            android:background="@drawable/selector"
             android:hint="Assignment Name"
             android:padding="@dimen/d10dp"
             android:textSize="@dimen/d20dp" />
@@ -87,10 +87,11 @@
         <Spinner
             android:id="@+id/sp_books"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/d10dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_edit_gray" />
+            android:background="@drawable/spinner_selector"
+            android:padding="@dimen/d10dp" />
 
     </LinearLayout>
 

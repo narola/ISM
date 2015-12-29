@@ -3,49 +3,60 @@
     android:id="@+id/ll_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/d10dp"
-    android:background="@drawable/bg_white_border_gray"
-    android:orientation="horizontal">
-
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/d10dp">
+        android:orientation="horizontal">
 
-        <com.ism.author.views.CircleImageView
-            android:id="@+id/img_user_dp"
-            android:layout_width="@dimen/d70dp"
-            android:layout_height="@dimen/d70dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/userdp" />
 
-        <TextView
-            android:id="@+id/txt_commentor_name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingLeft="@dimen/d25dp"
-            android:paddingRight="@dimen/d25dp"
-            android:paddingTop="@dimen/d5dp"
-            android:text="Adam Stanger"
-            android:textColor="@color/color_blue"
-            android:textSize="15sp" />
+            android:orientation="vertical"
+            android:padding="@dimen/d10dp">
+
+            <com.ism.author.views.CircleImageView
+                android:id="@+id/img_user_dp"
+                android:layout_width="@dimen/d70dp"
+                android:layout_height="@dimen/d70dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/userdp" />
+
+            <TextView
+                android:id="@+id/txt_commentor_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingLeft="@dimen/d25dp"
+                android:paddingRight="@dimen/d25dp"
+                android:paddingTop="@dimen/d5dp"
+                android:text="Adam Stanger"
+                android:textColor="@color/color_blue"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/txt_comment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:padding="@dimen/d15dp"
+            android:text=""
+            android:textColor="#BE76B6"
+            android:textSize="@dimen/d18sp" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txt_comment"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:text="Jackson JSR-310 module fails to  deserialize simplest offsetDatetime format?"
-        android:textColor="#BE76B6"
-        android:textSize="@dimen/d18sp" />
+        android:layout_height="1dp"
+        android:background="@color/assignment_separator" />
 
 
 </LinearLayout>

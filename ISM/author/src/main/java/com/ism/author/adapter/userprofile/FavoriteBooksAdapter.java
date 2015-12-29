@@ -22,9 +22,11 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class FavoriteBooksAdapter extends  RecyclerView.Adapter<FavoriteBooksAdapter.ViewHolder> {
+public class FavoriteBooksAdapter extends RecyclerView.Adapter<FavoriteBooksAdapter.ViewHolder> {
 
     private static final String TAG = FavoriteBooksAdapter.class.getSimpleName();
+
+
     private final AuthorHostActivity.BooksListner booksListner;
     Context context;
     ArrayList<BookData> arrayList = new ArrayList<>();
@@ -91,7 +93,7 @@ public class FavoriteBooksAdapter extends  RecyclerView.Adapter<FavoriteBooksAda
             });
 
         } catch (Exception e) {
-            Debug.i(TAG,"onBindViewHolder Exception : " + e.getLocalizedMessage());
+            Debug.i(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
 
     }

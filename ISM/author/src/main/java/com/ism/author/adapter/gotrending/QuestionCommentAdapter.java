@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.object.Global;
 import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.model.Comment;
@@ -49,8 +51,10 @@ public class QuestionCommentAdapter extends RecyclerView.Adapter<QuestionComment
 
         try {
 
+            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrListQuestionComments.get(position).getProfilePic(),
+                    holder.imgCommentorDp, ISMAuthor.options);
 
-            holder.txtCommentorName.setText(arrListQuestionComments.get(position).getCommentBy());
+            holder.txtCommentorName.setText(arrListQuestionComments.get(position).getUsername());
             holder.txtComment.setText(arrListQuestionComments.get(position).getCommentText());
 
         } catch (Exception e) {
@@ -83,7 +87,7 @@ public class QuestionCommentAdapter extends RecyclerView.Adapter<QuestionComment
         public ViewHolder(View itemView) {
             super(itemView);
 
-            imgCommentorDp = (CircleImageView) itemView.findViewById(R.id.img_commenter_dp);
+            imgCommentorDp = (CircleImageView) itemView.findViewById(R.id.img_user_dp);
             txtCommentorName = (TextView) itemView.findViewById(R.id.txt_commentor_name);
             txtComment = (TextView) itemView.findViewById(R.id.txt_comment);
 

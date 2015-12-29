@@ -23,8 +23,9 @@ public class TutorialTopic extends RealmObject {
     private User user;
     private Subjects subject;
     private Topics topic;
-    private int topicDay;
+    private String topicDay;
     private int allocationCount;
+	private int createdBy;
     private int status;
     private boolean isCompleted;
     private Date createdDate;
@@ -110,11 +111,11 @@ public class TutorialTopic extends RealmObject {
         this.topic = topic;
     }
 
-    public int getTopicDay() {
+    public String getTopicDay() {
         return topicDay;
     }
 
-    public void setTopicDay(int topicDay) {
+    public void setTopicDay(String topicDay) {
         this.topicDay = topicDay;
     }
 
@@ -126,7 +127,15 @@ public class TutorialTopic extends RealmObject {
         this.allocationCount = allocationCount;
     }
 
-    public int getStatus() {
+	public int getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(int createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public int getStatus() {
         return status;
     }
 

@@ -372,9 +372,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
                 case FRAGMENT_PAST_TRENDING_QUESTIONS:
 
-                    setBackStackFragmentKey(AppConstant.FRAGMENT_PAST_QUESTIONS);
+                    setBackStackFragmentKey(AppConstant.FRAGMENT_PAST_TRENDING_QUESTIONS);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            PastTrendingQuestionsFragment.newInstance(), AppConstant.FRAGMENT_PAST_QUESTIONS).commit();
+                            PastTrendingQuestionsFragment.newInstance(), AppConstant.FRAGMENT_PAST_TRENDING_QUESTIONS).commit();
                     break;
 
                 case FRAGMENT_TRENDING_QUESTION_DETAIL:
@@ -470,6 +470,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                             AllStudymateRequestFragment.newInstance()).commit();
                     break;
             }
+
             currentMainFragment = fragment;
 
         } catch (Exception e) {
@@ -1017,7 +1018,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 break;
 
             case FRAGMENT_PAST_TRENDING_QUESTIONS:
-                PastTrendingQuestionsFragment pastTrendingQuestionsFragment = (PastTrendingQuestionsFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_PAST_QUESTIONS);
+                PastTrendingQuestionsFragment pastTrendingQuestionsFragment = (PastTrendingQuestionsFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_PAST_TRENDING_QUESTIONS);
                 pastTrendingQuestionsFragment.onBackClick();
                 break;
 

@@ -339,7 +339,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         imgLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PreferenceData.clearWholePreference(HostActivity.this);
+//                PreferenceData.clearWholePreference(HostActivity.this);
+                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, HostActivity.this, false);
                 Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
                 startActivity(intentLogin);
                 finish();
