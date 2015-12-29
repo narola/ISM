@@ -233,6 +233,9 @@ public class WebserviceWrapper {
                             case WebConstants.CHECK_FRIDAY_EXAM_STATUS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_CHECK_FRIDAY_EXAM_STATUS).execute(ResponseHandler.class, attribute);
                                 break;
+                            case WebConstants.GET_ALL_BOOKS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BOOKS).execute(ResponseHandler.class, attribute);
+                                break;
                         }
                     }
                 }

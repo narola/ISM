@@ -144,6 +144,8 @@ public class WebserviceConnector {
                         new File(mediaUploadAttribute.getArrListFile().get(i).getFileName()));
             }
 
+
+
             List<String> response = multipart.finish();
             Debug.e(TAG, "SERVER REPLIED:");
             for (String line : response) {

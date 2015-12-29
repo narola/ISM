@@ -105,7 +105,9 @@ public class PastTrendingQuestionsFragment extends Fragment implements Webservic
     }
 
     public void onBackClick() {
-        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_PAST_QUESTIONS);
+
+        getBundleArguments().remove(PastQuestionsAdapter.ARG_QUESTION_ID);
+        ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_PAST_TRENDING_QUESTIONS);
     }
 
     private void callApiForGetPastTrendingQuestions() {
@@ -174,5 +176,9 @@ public class PastTrendingQuestionsFragment extends Fragment implements Webservic
         } catch (Exception e) {
             Debug.i(TAG, "setUpData Exception : " + e.getLocalizedMessage());
         }
+    }
+
+    public Bundle getBundleArguments() {
+        return ((AuthorHostActivity) getActivity()).getBundle();
     }
 }

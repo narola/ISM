@@ -161,6 +161,8 @@ public class AuthorHelper {
                         realm.commitTransaction();
                     }
                 }
+
+
             }
         }, new Realm.Transaction.Callback() {
             @Override
@@ -194,6 +196,7 @@ public class AuthorHelper {
                 feedLike.setIsSync(1);
                 realm.copyToRealmOrUpdate(feedLike);
                 realm.commitTransaction();
+
             }
         }
         if (arrListUnlikeFeedId.size() > 0) {
@@ -223,6 +226,7 @@ public class AuthorHelper {
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(preferences);
             realm.commitTransaction();
+
 //            Log.e(TAG, "Records availbale in preferences table :" + realm.where(Preferences.class).findAll().size());
         } catch (Exception e) {
             Log.i(TAG, " saveAllPreferences Exceptions : " + e.getLocalizedMessage());

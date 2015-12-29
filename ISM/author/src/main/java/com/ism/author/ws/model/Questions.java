@@ -2,6 +2,7 @@ package com.ism.author.ws.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.Spanned;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -35,6 +36,7 @@ public class Questions implements Parcelable, Comparable<Questions> {
     private Boolean isQuestionAddedInPreview = false;
     private Boolean isDropdownOpen = false;
     private Boolean isEvaluated = false;
+    private Spanned span = null;
 
     public Questions() {
     }
@@ -324,6 +326,15 @@ public class Questions implements Parcelable, Comparable<Questions> {
     public Questions setQuestionScore(String questionScore) {
         this.questionScore = questionScore;
         return this;
+    }
+
+
+    public Spanned getSpan() {
+        return span;
+    }
+
+    public void setSpan(Spanned span) {
+        this.span = span;
     }
 
 }

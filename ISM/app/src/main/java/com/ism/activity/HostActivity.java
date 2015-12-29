@@ -15,7 +15,6 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -94,6 +93,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private ProgressGenerator progressGenerator;
 
     private HostListener listenerHost;
+    private BackHostListener backHostListener;
     private HostListenerAllNotification listenerHostAllNotification;
     private HostListenerAllMessage listenerHostAllMessage;
     private HostListenerProfileController listenerHostProfileController;
@@ -103,10 +103,9 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private BooksListner booksListner;
     private HostListenerEditAboutMe listenerEditAboutMe;
     public InsertSymbolListener insertSymbolListener;
-    private StudentHelper studentHelper;
     private HostSpinnerListener hostSpinnerListener;
 
-	private HostListenerQuestionPalette listenerQuestionPalette;
+    private HostListenerQuestionPalette listenerQuestionPalette;
     private TextView arrTxtMenu[];
     private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
     private ArrayList<ControllerTopMenuItem> controllerTopMenuAssessment;
@@ -146,6 +145,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
     public interface ScrollListener {
         public void isLastPosition();
+
         public void isFirstPosition();
     }
 
@@ -163,6 +163,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
     public interface HostListenerEditAboutMe {
         public void onAmbition();
+
         public void onAboutMe();
     }
 
@@ -200,10 +201,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         public void onAddToLibrary(String id);
 
         public void onRemoveFromLibrary(String id);
-
-       // public void onSearchFav(ArrayList<BookData> arrayList);
-
-       // public void onSearchSuggested(ArrayList<BookData> arrayList);
+        // public void onSearchFav(ArrayList<BookData> arrayList);
+        // public void onSearchSuggested(ArrayList<BookData> arrayList);
     }
 
     public interface ManageResourcesListner {
@@ -216,9 +215,13 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         public void onSearchSuggested(Object o);
     }
 
-	public interface HostListenerQuestionPalette {
-		public void showTutorialGroupData(TutorialGroupProfile tutorialGroupProfile);
-	}
+    public interface HostListenerQuestionPalette {
+        public void showTutorialGroupData(TutorialGroupProfile tutorialGroupProfile);
+    }
+
+    public interface BackHostListener {
+        public void onBackPress();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -259,7 +262,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
         inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        studentHelper = new StudentHelper(this);
+        Global.studentHelper = new StudentHelper(this);
 
         arrTxtMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
         progressGenerator = new ProgressGenerator();
@@ -270,9 +273,9 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         Debug.i(TAG, "User Image : " + WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this));
         Global.strProfilePic = WebConstants.HOST_IMAGE_USER + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
 //        Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
-	    Global.strTutorialGroupId = PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, HostActivity.this);
-	    Global.strTutorialGroupName = PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, HostActivity.this);
-	    Global.imageLoader = ImageLoader.getInstance();
+        Global.strTutorialGroupId = PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, HostActivity.this);
+        Global.strTutorialGroupName = PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, HostActivity.this);
+        Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
 
         if (Utility.isConnected(HostActivity.this)) {
@@ -470,6 +473,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     if (currentMainFragment != fragment) {
                         DeskFragment deskFragment = DeskFragment.newInstance(FRAGMENT_DESK);
                         listenerHost = deskFragment;
+                        backHostListener = deskFragment;
 //                        hostSpinnerListener= FavoriteFragment.newInstance();
                         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, deskFragment).commit();
                         if (currentRightFragment != FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL) {
@@ -712,7 +716,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         txtTitle.setText(Html.fromHtml("<font color='#ffffff'>" + getString(R.string.group_name)
                 + "</font><font color='#1BBC9B'>" + tutorialGroupProfile.getGroupName() + "</font>"));
         txtTitle.setVisibility(View.VISIBLE);
-	    listenerQuestionPalette.showTutorialGroupData(tutorialGroupProfile);
+        listenerQuestionPalette.showTutorialGroupData(tutorialGroupProfile);
     }
 
     @Override
@@ -795,7 +799,9 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                         listenerHostAllMessage.onControllerTopBackClick();
                         break;
                     case FRAGMENT_DESK:
-                        listenerHost.onControllerMenuItemClicked(DeskFragment.FRAGMENT_JOTTER);
+//                        switch ()
+//                        if(DeskFragment.FRAGMENT_ALL_BOOKS)
+                        backHostListener.onBackPress();
                         break;
                 }
 
@@ -854,6 +860,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                             if (listenerHost != null) {
                                 listenerHost.onControllerMenuItemClicked(i);
                             }
+
+
 //                            if(view==spSubmenu){
 //                                hostSpinnerListener.onControllerMenuSpinnerItemClicked(spSubmenu.getSelectedItem().toString());
 //                            }
@@ -869,6 +877,50 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
             Log.e(TAG, "onMenuItemClick Exception : " + e.toString());
         }
     }
+
+//    public void handleMenus(int j) {
+//        hideControllerTopControls();
+//        for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+//            if (i == j) {
+//                currentControllerTopMenu.get(i).setIsActive(true);
+//                arrTxtMenu[i].setTextColor(getResources().getColor(currentMainFragmentBg));
+//
+//                showControllerTopBackButton();
+//
+//                if (currentControllerTopMenu.get(i).getSubMenu() == null) {
+//                    startSlideAnimation(arrTxtMenu[i], -imgMenuBack.getWidth(), 0, 0, 0);
+//                    arrTxtMenu[i].setVisibility(View.VISIBLE);
+//                } else {
+//                    arrTxtMenu[i].setVisibility(View.GONE);
+//                    startSlideAnimation(spSubmenu, -imgMenuBack.getWidth(), 0, 0, 0);
+//                    spSubmenu.setEnabled(true);
+//                    spSubmenu.setVisibility(View.VISIBLE);
+//                    adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(i).getSubMenu(), HostActivity.this);
+//                    spSubmenu.setAdapter(adapterControllerTopSpinner);
+//                }
+//
+//                if (currentControllerTopMenu.get(i).getMenuItemAction() != null) {
+//                    startSlideAnimation(txtAction, rlControllerTopMenu.getWidth(), 0, 0, 0);
+//                    txtAction.setText(currentControllerTopMenu.get(i).getMenuItemAction());
+//                    txtAction.setVisibility(View.VISIBLE);
+//                } else {
+//                    txtAction.setVisibility(View.GONE);
+//                }
+//            }
+//            else{
+//                arrTxtMenu[i].setVisibility(View.GONE);
+//            }
+//        }
+//    }
+//    public void subFagmentMenuClicks(int position, boolean isVisibleActionButoon) {
+////        hideControllerTopControls();
+////        showControllerTopBackButton();
+////        txtOne.setText(txtMenu);
+////        startSlideAnimation(txtOne, -imgMenuBack.getWidth(), 0, 0, 0);
+////        txtOne.setVisibility(View.VISIBLE);
+//        spSubmenu.setSelection(position);
+//        spSubmenu.setEnabled(false);
+//    }
 
     public void showControllerTopBackButton() {
         startSlideAnimation(imgMenuBack, -1000, 0, 0, 0);
@@ -978,6 +1030,18 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
             Log.e(TAG, "On response Exception : " + e.getLocalizedMessage());
         }
     }
+    /*this bundle used to pass data between fragments and also managing backstack for the fragment*/
+    /*remove bundle data on backclcik of fragment as it is not necessory*/
+
+    public Bundle bundle = new Bundle();
+
+    public Bundle getBundle() {
+        return bundle;
+    }
+
+    public void setBundle(Bundle bundle) {
+        this.bundle = bundle;
+    }
 
     private void onResponseGetAllPreference(Object object, Exception error) {
         try {
@@ -1029,7 +1093,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                         for (int j = 0; j < arrayListUserPreferences.size(); j++) {
                             Debug.i(TAG, "j :" + j);
                             //generalSettingsFragment.setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getApplicationContext());
-                            PreferenceData.setStringPrefs(arrayListUserPreferences.get(j).getId(),this, arrayListUserPreferences.get(j).getPreferenceValue());
+                            PreferenceData.setStringPrefs(arrayListUserPreferences.get(j).getId(), this, arrayListUserPreferences.get(j).getPreferenceValue());
                         }
                     }
 
@@ -1097,6 +1161,14 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         public void onRemoveFromLibrary(String id);
     }
 
+    public void setBackHostListener(BackHostListener backHostListener) {
+        this.backHostListener = backHostListener;
+    }
+
+    public void setHostListener(HostListener listenerHost) {
+        this.listenerHost = listenerHost;
+    }
+
     public void setListenerResizeView(ResizeView resizeListView) {
         this.resizeListView = resizeListView;
     }
@@ -1113,9 +1185,9 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         this.addToLibraryListner = addToLibraryListner;
     }
 
-	public void setListenerQuestionPalette(HostListenerQuestionPalette listenerQuestionPalette) {
-		this.listenerQuestionPalette = listenerQuestionPalette;
-	}
+    public void setListenerQuestionPalette(HostListenerQuestionPalette listenerQuestionPalette) {
+        this.listenerQuestionPalette = listenerQuestionPalette;
+    }
 
     private void onResponseGetAllBadges(Object object, Exception error) {
         try {

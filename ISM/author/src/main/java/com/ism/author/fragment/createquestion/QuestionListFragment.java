@@ -304,12 +304,12 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                         }
                         Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL);
                         if (getBaseFragment().getBundleArguments() != null) {
-                            Debug.e(TAG, "THE BOOK NAME IS" + getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
-                            if (arrListAuthorBooks.contains(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)))) {
-                                spQuestionlistAuthorBooks.setSelection(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
-                            } else {
-                                spQuestionlistAuthorBooks.setSelection(1);
-                            }
+                            Debug.e(TAG, "THE BOOK NAME IS " + getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
+//                            if (arrListAuthorBooks.contains(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME))) {
+                            spQuestionlistAuthorBooks.setSelection(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
+//                            } else {
+//                                spQuestionlistAuthorBooks.setSelection(1);
+//                            }
                         }
                         tvNoDataMsg.setVisibility(View.GONE);
                     } else {
@@ -333,6 +333,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+
                     arrListQuestions.addAll(responseHandler.getQuestionBank());
                     setQuestionData(arrListQuestions);
 

@@ -14,12 +14,13 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.adapter.jotterAdapter.FavAssignmentsAdapter;
-import com.ism.adapter.jotterAdapter.FavBooksAdapter;
-import com.ism.adapter.jotterAdapter.FavEventsAdapter;
-import com.ism.adapter.jotterAdapter.FavExamsAdapter;
-import com.ism.adapter.jotterAdapter.FavLinksAdapter;
-import com.ism.adapter.jotterAdapter.FavNotesAdapter;
+import com.ism.adapter.deskAdapter.FavAssignmentsAdapter;
+import com.ism.adapter.deskAdapter.FavBooksAdapter;
+import com.ism.adapter.deskAdapter.FavEventsAdapter;
+import com.ism.adapter.deskAdapter.FavExamsAdapter;
+import com.ism.adapter.deskAdapter.FavLinksAdapter;
+import com.ism.adapter.deskAdapter.FavNotesAdapter;
+import com.ism.fragment.DeskFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
@@ -27,9 +28,16 @@ import com.ism.utility.Debug;
 /**
  * Created by c162 on 24/10/15.
  */
-public class FavoriteFragment extends Fragment{
+public class FavoriteFragment extends Fragment {
     private static final String TAG = FavoriteFragment.class.getSimpleName();
     private View view;
+
+//    public static final int FRAGMENT_ALL_BOOKS = 101;
+//    public static final int FRAGMENT_ALL_NOTES = 102;
+//    public static final int FRAGMENT_ALL_LINKS = 103;
+//    public static final int FRAGMENT_ALL_EVENTS = 104;
+//    public static final int FRAGMENT_ALL_ASSIGNMENTS = 105;
+//    public static final int FRAGMENT_ALL_EXAMS = 106;
 
     private FragmentListener fragListener;
     private HostActivity activityHost;
@@ -45,12 +53,15 @@ public class FavoriteFragment extends Fragment{
     private FavLinksAdapter linksAdapter;
     private FavEventsAdapter favEventsAdapter;
     private ScrollView scrollView;
+    private View.OnClickListener onClickItem;
+    private DeskFragment deskFragment;
+
+    public static int currentFragment=-1;
 
     public static FavoriteFragment newInstance() {
         FavoriteFragment fragDesk = new FavoriteFragment();
         return fragDesk;
     }
-
     public FavoriteFragment() {
         // Required empty public constructor
     }
@@ -183,7 +194,59 @@ public class FavoriteFragment extends Fragment{
         setUpExams();
         setUpLinks();
         setUpEvents();
-        onClicks();
+        onClickItem = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickItem(v);
+            }
+        };
+        txtViewAllNotes.setOnClickListener(onClickItem);
+        txtViewAllLinks.setOnClickListener(onClickItem);
+        txtViewAllBooks.setOnClickListener(onClickItem);
+        txtViewAllEvents.setOnClickListener(onClickItem);
+        txtViewAllExmas.setOnClickListener(onClickItem);
+        txtViewAllAssignment.setOnClickListener(onClickItem);
+    }
+
+    private Bundle getBundleArguments() {
+        return activityHost.getBundle();
+    }
+
+    private void onClickItem(View v) {
+        try {
+            if (txtViewAllNotes == v) {
+
+            } else if (txtViewAllBooks == v) {
+                loadFragment(DeskFragment.FRAGMENT_ALL_BOOKS);
+            }else if (txtViewAllAssignment == v) {
+                loadFragment(DeskFragment.FRAGMENT_ALL_ASSIGNMENTS);
+            }else if (txtViewAllExmas == v) {
+                loadFragment(DeskFragment.FRAGMENT_ALL_EXAMS);
+            }
+        } catch (Exception e) {
+            Debug.i(TAG, "onClickItem Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void loadFragment(int fragment) {
+        switch (fragment){
+            case DeskFragment.FRAGMENT_ALL_BOOKS:
+                currentFragment=fragment;
+                getFragmentManager().beginTransaction().replace(R.id.fl_desk, AllBooksFragment.newInstance()).commit();
+                break;
+            case DeskFragment.FRAGMENT_ALL_ASSIGNMENTS:
+                currentFragment = fragment;
+                getFragmentManager().beginTransaction().replace(R.id.fl_desk, AllAssignmentsFragment.newInstance()).commit();
+                break;
+            case DeskFragment.FRAGMENT_ALL_EXAMS:
+                currentFragment = fragment;
+                getFragmentManager().beginTransaction().replace(R.id.fl_desk, AllExamsFragment.newInstance()).commit();
+                break;
+        }
+    }
+
+    public static int getCurrentChildFragment() {
+        return currentFragment;
     }
 
     private void setUpEvents() {
@@ -196,19 +259,6 @@ public class FavoriteFragment extends Fragment{
         }
     }
 
-    private void onClicks() {
-        try {
-           txtViewAllNotes.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   
-               }
-           });
-
-        } catch (Exception e) {
-            Debug.i(TAG, "onClicks Exceptions : " + e.getLocalizedMessage());
-        }
-    }
 
     private void setUpLinks() {
         try {
@@ -265,4 +315,8 @@ public class FavoriteFragment extends Fragment{
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
 }

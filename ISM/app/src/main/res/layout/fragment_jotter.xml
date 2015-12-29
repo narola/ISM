@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/d10dp"
                 android:text="By : Admin "
-                android:textSize="@dimen/d18sp"
+                android:textSize="@dimen/d16sp"
                 android:textColor="@color/color_blue" />
 
             <EditText
@@ -125,8 +125,7 @@
                 android:layout_alignParentEnd="true"
                 android:background="@color/gray_light"
                 android:padding="@dimen/d10dp"
-                android:text="Physics"
-                android:textSize="@dimen/d18sp"
+                android:textSize="@dimen/d16sp"
                 android:hint="Enter subject"
                 android:textColor="@color/color_red" />
             <com.narola.kpa.richtexteditor.view.RichTextEditor
@@ -134,24 +133,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/txt_by"
+                android:visibility="visible"
                 android:background="@color/gray_light"
                 android:gravity="top|left"
                 android:padding="@dimen/d10dp"
                 />
         </RelativeLayout>
 
-        <!--<EditText-->
-            <!--android:id="@+id/et_notes"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_below="@id/rr_details"-->
-            <!--android:background="@color/gray_light"-->
-            <!--android:gravity="top|left"-->
-            <!--android:padding="@dimen/d10dp"-->
-            <!--android:text="Hii"-->
-            <!--android:textSize="@dimen/d18sp" />-->
-
-
+        <EditText
+            android:id="@+id/et_notes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rr_details"
+            android:background="@color/gray_light"
+            android:gravity="top|left"
+            android:visibility="gone"
+            android:padding="@dimen/d10dp"
+            android:textSize="@dimen/d18sp" />
 
     </RelativeLayout>
 </LinearLayout>

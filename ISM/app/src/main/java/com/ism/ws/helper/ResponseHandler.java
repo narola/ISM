@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.ws.model.AdminConfig;
+import com.ism.ws.model.AllBooks;
 import com.ism.ws.model.Badges;
 import com.ism.ws.model.BlockedUsers;
 import com.ism.ws.model.Books;
@@ -77,7 +78,7 @@ public class ResponseHandler {
     private ArrayList<Notes> notes;
     private ArrayList<FridayExamStatus> fridayExamStatus;
     private ArrayList<QuestionForFriday> questionForFriday;
-
+    private ArrayList<AllBooks> allBooks;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -402,5 +403,13 @@ public class ResponseHandler {
     public void setQuestionForFriday(ArrayList<QuestionForFriday> questionForFriday) {
         this.questionForFriday = questionForFriday;
     }
+    @JsonProperty("all_books")
+    public ArrayList<AllBooks> getAllBooks() {
+        return allBooks;
+    }
 
+    public ResponseHandler setAllBooks(ArrayList<AllBooks> allBooks) {
+        this.allBooks = allBooks;
+        return this;
+    }
 }

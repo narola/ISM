@@ -14,30 +14,66 @@ import com.ism.fragment.desk.BooksFragment;
 import com.ism.fragment.desk.FavoriteFragment;
 import com.ism.fragment.desk.JotterFragment;
 import com.ism.interfaces.FragmentListener;
+import com.ism.utility.Debug;
 
 /**
  * Created by c162 on --/10/15.
  */
-public class DeskFragment extends Fragment implements HostActivity.HostListener {
+public class DeskFragment extends Fragment implements HostActivity.HostListener, HostActivity.BackHostListener {
 
     private static final String TAG = DeskFragment.class.getSimpleName();
     public static final int FRAGMENT_JOTTER = 0;
-    private static final int FRAGMENT_FAVOURITES = 1;
-    private static final int FRAGMENT_TIMETABLE = 2;
-    private static final int FRAGMENT_BOOK = 3;
-    private static final String ARG_FRAGMENT = "deskfragment";
-    private static int fragment;
+    public static final int FRAGMENT_FAVOURITES = 1;
+    public static final int FRAGMENT_TIMETABLE = 2;
+    public static final int FRAGMENT_BOOK = 3;
+
+    public static final int FRAGMENT_ALL_BOOKS = 101;
+    public static final int FRAGMENT_ALL_NOTES = 102;
+    public static final int FRAGMENT_ALL_LINKS = 103;
+    public static final int FRAGMENT_ALL_EVENTS = 104;
+    public static final int FRAGMENT_ALL_ASSIGNMENTS = 105;
+    public static final int FRAGMENT_ALL_EXAMS = 106;
+    public static final String ARG_FRAGMENT = "deskfragment";
+    public static final String ARG_SUBFRAGMENT = "deskSubfragment";
+    private static int currentFragment = -1;
     private View view;
 
     private FragmentListener fragListener;
     AlertDismissListener alertDismissListener;
-
-    public interface AlertDismissListener{
-        public void onDismiss(int alertDialog,String note);
-    }
+    private HostActivity activityHost;
 
     public void setAlertDismissListener(AlertDismissListener alertDismissListener) {
         this.alertDismissListener = alertDismissListener;
+    }
+
+    @Override
+    public void onBackPress() {
+        try {
+//            getChildFragmentManager().popBackStack();
+                switch (currentFragment) {
+                    case FRAGMENT_JOTTER:
+//                    loadFragment(FRAGMENT_FAVOURITES);
+                        break;
+                    case FRAGMENT_FAVOURITES:
+                    case FRAGMENT_TIMETABLE:
+                    case FRAGMENT_BOOK:
+                        loadFragment(FRAGMENT_JOTTER);
+                        break;
+                    case FRAGMENT_ALL_BOOKS:
+                       // activityHost.handleMenus(1);
+                        loadFragment(FRAGMENT_FAVOURITES);
+                        break;
+                    default:
+                        break;
+
+            }
+        } catch (Exception e) {
+            Debug.i(TAG, "onBackPress Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+    public interface AlertDismissListener {
+        public void onDismiss(int alertDialog, String note);
     }
 
     public static DeskFragment newInstance(int fragment) {
@@ -56,9 +92,9 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            fragment = getArguments().getInt(ARG_FRAGMENT);
+            currentFragment = getArguments().getInt(ARG_FRAGMENT);
             if (fragListener != null) {
-                fragListener.onFragmentAttached(fragment);
+                fragListener.onFragmentAttached(currentFragment);
             }
         }
     }
@@ -80,9 +116,11 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
+            activityHost = (HostActivity) activity;
+            activityHost.setBackHostListener(this);
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                //fragListener.onFragmentAttached(fragment);
+                //fragListener.onFragmentAttached(currentFragment);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -94,7 +132,7 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener 
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(fragment);
+                fragListener.onFragmentDetached(HostActivity.FRAGMENT_DESK);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
@@ -114,21 +152,30 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener 
         loadFragment(position);
     }
 
-    private void loadFragment(int fragment) {
+    public void loadFragment(int fragment) {
         try {
             switch (fragment) {
                 case FRAGMENT_JOTTER:
+                    currentFragment = fragment;
+//                    getChildFragmentManager().beginTransaction().addToBackStack(null).add((R.id.fl_desk, JotterFragment.newInstance()).commit();
                     getChildFragmentManager().beginTransaction().replace(R.id.fl_desk, JotterFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_FAVOURITES:
+                    currentFragment = fragment;
                     getChildFragmentManager().beginTransaction().replace(R.id.fl_desk, FavoriteFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_TIMETABLE:
+                    currentFragment = fragment;
                     getChildFragmentManager().beginTransaction().replace(R.id.fl_desk, BooksFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_BOOK:
+                    currentFragment = fragment;
                     getChildFragmentManager().beginTransaction().replace(R.id.fl_desk, BooksFragment.newInstance()).commit();
                     break;
+//                case FRAGMENT_ALL_BOOKS:
+//                    currentFragment=fragment;
+//                    getChildFragmentManager().beginTransaction().replace(R.id.fl_desk, AllBooksFragment.newInstance()).commit();
+//                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "loadFragment Exception : " + e.toString());
@@ -136,6 +183,7 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener 
     }
 
     public static int getCurrentChildFragment() {
-        return fragment;
+        return currentFragment;
     }
+
 }

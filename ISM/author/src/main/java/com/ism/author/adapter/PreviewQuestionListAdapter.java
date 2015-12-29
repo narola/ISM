@@ -3,7 +3,9 @@ package com.ism.author.adapter;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.HtmlImageGetter;
 import com.ism.author.Utility.Utils;
 import com.ism.author.fragment.createquestion.AddQuestionContainerFragment;
 import com.ism.author.object.Global;
@@ -23,7 +27,7 @@ import java.util.ArrayList;
 /**
  * these adapter class is to set the list of previewquestions.
  */
-public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQuestionListAdapter.ViewHolder> {
+public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQuestionListAdapter.ViewHolder> implements HtmlImageGetter.RefreshDataAfterLoadImage {
 
 
     private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
@@ -57,7 +61,20 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
 
         holder.tvPreviewQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-        holder.tvPreviewQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
+//        holder.tvPreviewQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext, null), null));
+
+
+        if (arrListQuestions.get(position).getSpan() == null) {
+
+            arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                    new HtmlImageGetter(50, 50, mContext, this
+                    ), null));
+        } else {
+
+            holder.tvPreviewQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                    new HtmlImageGetter(50, 50, mContext, null
+                    ), null));
+        }
 
         if (arrListQuestions.get(position).getQuestionCreatorId().equals(Global.strUserId)) {
             holder.imgPreviewQuestionEdit.setVisibility(View.VISIBLE);
@@ -181,4 +198,16 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
     }
 
 
+    @Override
+    public void refreshData() {
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+                notifyDataSetChanged();
+                Debug.e(TAG, "notify data called");
+            }
+        };
+
+        handler.post(r);
+    }
 }

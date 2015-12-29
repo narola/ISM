@@ -3,6 +3,7 @@ package com.ism.object;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import io.realm.Realm;
+import realmhelper.StudentHelper;
 
 /**
  * Created by c161 on 05/11/15.
@@ -24,5 +25,6 @@ public class Global {
     }
 
     public static MyTypeFace myTypeFace;
+    public static StudentHelper studentHelper;
 
 }

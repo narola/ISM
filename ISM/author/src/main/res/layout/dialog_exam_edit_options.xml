@@ -34,31 +34,6 @@
                 android:text="@string/strscheduleexam"
                 android:textColor="@color/color_white" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/d1dp"
-                android:background="@color/exam_options_dialog_sep" />
-
-            <TextView
-                android:id="@+id/tv_copy_exam"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/d15dp"
-                android:text="@string/strcopyexam"
-                android:textColor="@color/color_white" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/d1dp"
-                android:background="@color/exam_options_dialog_sep" />
-
-            <TextView
-                android:id="@+id/tv_edit_exam"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/d15dp"
-                android:text="@string/streditexam"
-                android:textColor="@color/color_white" />
         </LinearLayout>
 
 

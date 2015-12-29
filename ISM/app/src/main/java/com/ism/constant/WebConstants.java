@@ -47,7 +47,7 @@ public class WebConstants {
     public static final int SUBMIT_QUESTION_FOR_FRIDAY = 37;
     public static final int GET_ALL_NOTES = 38;
     public static final int CHECK_FRIDAY_EXAM_STATUS = 39;
-
+	public static final int GET_ALL_BOOKS = 40;
 
     //general settings
 
@@ -149,6 +149,7 @@ public class WebConstants {
 	public static final String URL_MANAGE_BOOK_LIBRARY =  HOST_WS + "ManageBookLibrary";
 	public static final String URL_EDIT_PROFILE_PIC = " ";
 	public static final String URL_GET_BLOCKED_USER =  HOST_WS + "GetBlockedUser";
+	public static final String URL_GET_ALL_BOOKS = HOST_WS + "GetAllBooks";
 	public static final String URL_UNBLOCK_USER =  HOST_WS + "UnBlockUser";
 
 	/**

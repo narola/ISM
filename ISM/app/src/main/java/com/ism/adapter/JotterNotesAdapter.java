@@ -15,9 +15,9 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.fragment.desk.JotterFragment;
 import com.ism.object.Global;
-import com.ism.ws.model.Notes;
 
-import java.util.ArrayList;
+import io.realm.RealmResults;
+import model.Notes;
 
 /**
  * Created by c162 on 24/12/15.
@@ -28,20 +28,21 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
 
     private LayoutInflater inflater;
     private Context context;
-    private ArrayList<Notes> arrayList;
+    private RealmResults<model.Notes> arrayList;
     //	private HostActivity activityHost;
     ViewNoteListener viewNoteListener;
-    private int lastSelected = 0;
+    private int lastSelected;
 
     public void setViewNoteListener(ViewNoteListener viewNoteListener) {
         this.viewNoteListener = viewNoteListener;
     }
 
-    public JotterNotesAdapter(Context context, ArrayList<Notes> arrListNotice, JotterFragment jotterFragment) {
+    public JotterNotesAdapter(Context context, RealmResults<Notes> arrListNotice, JotterFragment jotterFragment, int lastPosition) {
         this.context = context;
         this.arrayList = arrListNotice;
         this.viewNoteListener = jotterFragment;
         inflater = LayoutInflater.from(context);
+        this.lastSelected = lastPosition;
     }
 
     @Override
@@ -59,9 +60,9 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
 //            if (position == 0) {
 //                holder.rrMain.setBackgroundColor(Color.parseColor("#D6DBDF"));
 //            }
-            holder.txtSubject.setText(arrayList.get(position).getTopicName());
-            holder.txtNotename.setText(arrayList.get(position).getNoteTitle());
-            holder.txtNoteBy.setText(arrayList.get(position).getNoteByUser());
+            holder.txtSubject.setText(arrayList.get(position).getNoteSubject());
+            holder.txtNotename.setText(arrayList.get(position).getNoteName());
+            holder.txtNoteBy.setText("By : " + arrayList.get(position).getUser().getFullName());
 
             holder.txtNoteBy.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,7 +72,9 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
 //					activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTICE, bundleAllNotice);
                 }
             });
-            if(lastSelected!=position){
+            if (lastSelected == position) {
+                holder.rrMain.setBackgroundColor(Color.parseColor("#D6DBDF"));
+            } else {
                 holder.rrMain.setBackgroundColor(Color.parseColor("#f7f7f7"));
             }
             holder.rrMain.setOnClickListener(new View.OnClickListener() {
@@ -83,13 +86,13 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
                     viewNoteListener.onNoteListener(position);
                 }
             });
-            if (arrayList.get(position).getAudioLink() != null && arrayList.get(position).getAudioLink().length() > 0) {
-                holder.imgMedia.setImageResource(R.drawable.ic_audio_gray);
-                holder.imgMedia.setVisibility(View.VISIBLE);
-            } else if (arrayList.get(position).getVideoLink() != null && arrayList.get(position).getVideoLink().length() > 0) {
-                holder.imgMedia.setVisibility(View.VISIBLE);
-                holder.imgMedia.setImageResource(R.drawable.ic_video_dark_gray);
-            }
+//            if (arrayList.get(position).getAudioLink() != null && arrayList.get(position).getAudioLink().length() > 0) {
+//                holder.imgMedia.setImageResource(R.drawable.ic_audio_gray);
+//                holder.imgMedia.setVisibility(View.VISIBLE);
+//            } else if (arrayList.get(position).getVideoLink() != null && arrayList.get(position).getVideoLink().length() > 0) {
+//                holder.imgMedia.setVisibility(View.VISIBLE);
+//                holder.imgMedia.setImageResource(R.drawable.ic_video_dark_gray);
+//            }
 
         } catch (Exception e) {
             Log.e(TAG, "onBindViewHolder Exception : " + e.toString());

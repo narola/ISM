@@ -25,11 +25,11 @@ import java.util.ArrayList;
  */
 public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdapter.ViewHolder> {
     private static final String TAG = PastQuestionsAdapter.class.getSimpleName();
-    private static final String ARG_QUESTION_ID = "questionId";
+    public static final String ARG_QUESTION_ID = "questionId";
     Context context;
     ArrayList<TrendingQuestion> arrayList = new ArrayList<>();
     private LayoutInflater inflater;
-    private int selectedView = -1;
+
 
     public PastQuestionsAdapter(Context context, ArrayList<TrendingQuestion> arrayList) {
         this.context = context;
@@ -57,7 +57,7 @@ public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdap
                 public void onClick(View v) {
 
                     /*this is to select the current student*/
-                    setBundleArgument(position);
+                    setBundleArgument(arrayList.get(position).getTrendingId());
                     ((AuthorHostActivity) context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRENDING_QUESTION_DETAIL);
 
 //
@@ -107,9 +107,9 @@ public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdap
         }
     }
 
-    public void setBundleArgument(int position) {
+    public void setBundleArgument(String questionId) {
 
-        getBundleArguments().putInt(PastQuestionsAdapter.ARG_QUESTION_ID, position);
+        getBundleArguments().putString(PastQuestionsAdapter.ARG_QUESTION_ID, questionId);
         notifyDataSetChanged();
 
     }

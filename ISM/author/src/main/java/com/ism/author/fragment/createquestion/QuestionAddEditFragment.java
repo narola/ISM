@@ -70,7 +70,7 @@ import java.util.List;
  * Created by c166 on 31/10/15.
  */
 public class QuestionAddEditFragment extends Fragment implements TokenCompleteTextView.TokenListener, View.OnClickListener,
-        WebserviceWrapper.WebserviceResponse, AddQuestionTextDialog.SelectMediaListener, AddQuestionTextDialog.AddTextListener {
+        WebserviceWrapper.WebserviceResponse, AddQuestionTextDialog.SelectMediaListener, AddQuestionTextDialog.AddTextListener, HtmlImageGetter.RefreshDataAfterLoadImage {
 
     private static final String TAG = QuestionAddEditFragment.class.getSimpleName();
     private View view;
@@ -533,11 +533,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
             setSpinnerData(questions.getQuestionFormat());
             if (questions.getQuestionText() != null) {
-                etAddquestionTitle.setText(Utils.formatHtml(questions.getQuestionText()));
+
+                etAddquestionTitle.setText(Html.fromHtml(questions.getQuestionText(), new HtmlImageGetter(50, 50, getActivity(), this), null));
+
             }
 
             if (questions.getEvaluationNotes() != null) {
                 etEvaluationNote1.setText(questions.getEvaluationNotes());
+
                 etSolution.setText(questions.getEvaluationNotes());
             }
             if (questions.getQuestionImageLink() != null && !questions.getQuestionImageLink().equals("")) {
@@ -548,8 +551,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
             setMcqAnswers(questions);
             setTags(questions);
-
-
         } catch (Exception e) {
             Debug.e(TAG, "isSetQuestionData Exception : " + e.toString());
         }
@@ -688,10 +689,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 break;
 
             case R.id.tv_addquestion_advance:
-
-//                htmlText = Html.toHtml(etAddquestionTitle.getText());
-//                htmlText = htmlText.replace("<p dir=\"ltr\"><img", "<img");
-//                htmlText = htmlText.replace(".png\"></p>", ".png\">");
 
                 addQuestionTextDialog = new AddQuestionTextDialog(getActivity(), (AddQuestionTextDialog.SelectMediaListener) this,
                         (AddQuestionTextDialog.AddTextListener) this, getHtmlQuestionText());
@@ -878,7 +875,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
             MediaUploadAttribute questionTextParam = new MediaUploadAttribute();
             questionTextParam.setParamName("question_text");
-            questionTextParam.setParamValue("test");
+            questionTextParam.setParamValue(getHtmlQuestionText());
 
             MediaUploadAttribute subjectIdParam = new MediaUploadAttribute();
             subjectIdParam.setParamName("subject_id");
@@ -912,27 +909,27 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             classroomIdParam.setParamName("classroom_id");
             classroomIdParam.setParamValue("0");
 
-            String test = "[ {\"choice_text\" :\"hello\", \"is_right\":1 },{\"choice_text\" : \"hello1\",  \"is_right\":0}]";
-//
-            MediaUploadAttribute answerChoicesParam = new MediaUploadAttribute();
-            answerChoicesParam.setParamName("answer_choices");
-            answerChoicesParam.setParamValue(test);
-            attribute.getArrListParam().add(answerChoicesParam);
 
             if (getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
-                getMcqAnswers();
+
+
+                String test = "[ {\"choice_text\" :\"java1\", \"is_right\":1},{\"choice_text\" : \"java3\",  \"is_right\":0}]";
+                MediaUploadAttribute answerChoicesParam = new MediaUploadAttribute();
                 answerChoicesParam.setParamName("answer_choices");
-                answerChoicesParam.setArrListMcqAnswerValue(arrListAnswerChioces);
+                answerChoicesParam.setParamValue(test);
                 attribute.getArrListParam().add(answerChoicesParam);
+
+
+//                getMcqAnswers();
+//                answerChoicesParam.setParamName("answer_choices");
+//                answerChoicesParam.setArrListMcqAnswerValue(arrListAnswerChioces);
+//                attribute.getArrListParam().add(answerChoicesParam);
             }
 
 
             MediaUploadAttribute hashTagParam = new MediaUploadAttribute();
             hashTagParam.setParamName("hashtag_data");
             hashTagParam.setParamValue(getHashTagData());
-
-
-            Debug.e(TAG, "The Question Text is::::" + getHtmlQuestionText());
 
 
             MediaUploadAttribute htmlTextParam = new MediaUploadAttribute();
@@ -1162,6 +1159,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
                     Debug.e(TAG, "The Image url is::" + responseHandler.getFileUploadResponse().getImageLink() + " question id is: " +
                             responseHandler.getFileUploadResponse().getQuestion_id());
+
                     Utils.showToast(getString(R.string.msg_success_imgupload_question), getActivity());
 
                     getBaseFragment().setQuestionDataAfterEditQuestion(getBaseFragment().getQuestionData(),
@@ -1193,7 +1191,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             question.setQuestionCreatorName(Global.strFullName);
             question.setQuestionCreatorId(Global.strUserId);
             question.setQuestionFormat(getQuestionFormat());
-            question.setQuestionText(responseHandlerCreateQuestion.getQuestion().get(0).getRichTextEditorImages());
+
+            if (imageSources.size() > 0) {
+                question.setQuestionText(responseHandlerCreateQuestion.getQuestion().get(0).getRichTextEditorImages());
+            } else {
+                question.setQuestionText(getHtmlQuestionText());
+            }
 
 
             question.setQuestionAssetsLink("");
@@ -1331,7 +1334,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     public void SetText(String text) {
         htmlText = text;
         richEditText = text;
-        etAddquestionTitle.setText(Html.fromHtml(text, new HtmlImageGetter(50, 50), null));
+        etAddquestionTitle.setText(Html.fromHtml(text, new HtmlImageGetter(50, 50, getActivity(), null), null));
 
         Debug.e(TAG, "RichEditor text is:::::::::::" + text);
         Debug.e(TAG, "Text Of Edittext is:::::::::::" + Html.toHtml(etAddquestionTitle.getText()));
@@ -1357,41 +1360,51 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
         Debug.e(TAG, "The RichEditText Is:::" + richEditText);
 
-        String richEditText;
-        imageSources.clear();
-        XmlPullParserFactory factory = null;
-        try {
-            factory = XmlPullParserFactory.newInstance();
+        if (richEditText != null) {
 
-            XmlPullParser xpp = factory.newPullParser();
-            richEditText = getHtmlQuestionText().replace("&nbsp;", " ");
-            xpp.setInput(new StringReader(richEditText));
-            int eventType = xpp.getEventType();
-            while (eventType != XmlPullParser.END_DOCUMENT) {
+            String richEditText;
+            imageSources.clear();
+            XmlPullParserFactory factory = null;
+            try {
+                factory = XmlPullParserFactory.newInstance();
 
-                if (eventType == XmlPullParser.START_TAG && "img".equals(xpp.getName())) {
-                    //found an image start tag, extract the attribute 'src' from here..
+                XmlPullParser xpp = factory.newPullParser();
+                richEditText = getHtmlQuestionText().replace("&nbsp;", " ");
+                xpp.setInput(new StringReader(richEditText));
+                int eventType = xpp.getEventType();
+                while (eventType != XmlPullParser.END_DOCUMENT) {
 
-                    if (xpp.getAttributeValue(0).contains("file://")) {
-                        String path = xpp.getAttributeValue(0).replace("file://", "");
-                        imageSources.add(path);
+                    if (eventType == XmlPullParser.START_TAG && "img".equals(xpp.getName())) {
+                        //found an image start tag, extract the attribute 'src' from here..
+
+                        if (xpp.getAttributeValue(0).contains("file://")) {
+                            String path = xpp.getAttributeValue(0).replace("file://", "");
+                            imageSources.add(path);
+                        }
                     }
+                    eventType = xpp.next();
                 }
-                eventType = xpp.next();
+
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
 
     }
 
 
     private AddQuestionContainerFragment getBaseFragment() {
         return (AddQuestionContainerFragment) mFragment;
+    }
+
+    @Override
+    public void refreshData() {
+
+        etAddquestionTitle.setText(Html.fromHtml(getBaseFragment().getQuestionData().getQuestionText(),
+                new HtmlImageGetter(50, 50, getActivity(), null), null));
+
     }
 
 
