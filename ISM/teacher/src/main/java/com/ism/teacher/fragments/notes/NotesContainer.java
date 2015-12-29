@@ -12,10 +12,12 @@ import android.widget.FrameLayout;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.activity.TeacherHostActivity;
+import com.ism.teacher.ws.model.Notes;
 
 /**
  * Created by c75 on 25/12/15.
  */
+
 public class NotesContainer extends Fragment {
 
     private static final String TAG = NotesContainer.class.getSimpleName();
@@ -24,6 +26,9 @@ public class NotesContainer extends Fragment {
 
     NotesAddEditFragment notesAddEditFragment;
     NotesListFragment notesListFragment;
+
+
+    public static final String ARG_NOTES_LECTURE_ID="lectureId";
 
     public static NotesContainer newInstance() {
         NotesContainer notesContainer = new NotesContainer();
@@ -83,6 +88,14 @@ public class NotesContainer extends Fragment {
 
     public Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
+    }
+
+
+    public void callNotesAddEditService(String lectureId, Notes notesObject)
+    {
+
+        getBundleArguments().putString(ARG_NOTES_LECTURE_ID,lectureId);
+        notesAddEditFragment.setTextinEditor(notesObject.getNoteId(),notesObject.getNoteTitle(),notesObject.getNoteText());
     }
 
 }

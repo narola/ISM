@@ -17,6 +17,7 @@
 package com.ism.teacher.listview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -211,7 +212,7 @@ public class DragNDropListView extends ExpandableListView {
 
         // Create a copy of the drawing cache so that it does not get recycled
         // by the framework when the list tries to clean up memory
-        // Bitmap bitmap = Bitmap.createBitmap(item.getDrawingCache());
+         Bitmap bitmap = Bitmap.createBitmap(item.getDrawingCache());
         item.setBackgroundColor(defaultBackgroundColor);
         WindowManager.LayoutParams mWindowParams = new WindowManager.LayoutParams();
         mWindowParams.gravity = Gravity.TOP;
@@ -230,7 +231,7 @@ public class DragNDropListView extends ExpandableListView {
 
         Context context = getContext();
         ImageView v = new ImageView(context);
-        //   v.setImageBitmap(bitmap);
+           v.setImageBitmap(bitmap);
 
         WindowManager mWindowManager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);

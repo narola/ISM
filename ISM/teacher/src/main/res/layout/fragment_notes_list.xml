@@ -7,6 +7,10 @@
     <com.ism.teacher.listview.DragNDropListView
         android:id="@+id/list_view_notes"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-    </com.ism.teacher.listview.DragNDropListView>
+        android:layout_height="fill_parent"
+        android:background="@color/white"
+        android:groupIndicator="@null"
+        android:divider="@color/text_gray"
+        android:dividerHeight="1dp"
+        />
 </LinearLayout>

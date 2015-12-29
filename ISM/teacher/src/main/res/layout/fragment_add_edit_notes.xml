@@ -62,6 +62,15 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/d10dp"
                 android:src="@drawable/img_edit_notes" />
+
+            <ImageView
+                android:id="@+id/img_options"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_menu_icon"
+                android:visibility="gone" />
+
         </LinearLayout>
 
         <RelativeLayout

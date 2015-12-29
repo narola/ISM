@@ -12,6 +12,9 @@
     <!-- Lesson Notes-->
     <color name="gray_light">#F5F5F5</color>
     <color name="rte_notes_bg">@android:color/darker_gray</color>
+    <color name="notes_group_row_bg">#f7f7f7</color>
+    <color name="text_gray">#C3C3C3</color>
+    <color name="child_divider">#D9D9D9</color>
 
     <!-- Tutorial-->
     <color name="color_txt_tutorial">#AE1F1B</color>

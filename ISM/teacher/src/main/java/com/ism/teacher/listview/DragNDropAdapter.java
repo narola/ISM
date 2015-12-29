@@ -16,13 +16,15 @@
 package com.ism.teacher.listview;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.ism.teacher.R;
+import com.ism.teacher.object.Global;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,34 +36,13 @@ import java.util.HashMap;
  *         (sreekumar.sh@gmail.com)
  */
 public final class DragNDropAdapter extends BaseExpandableListAdapter {
-
-    private int[] mIds;
-    private int[] mLayouts;
     private int selectedGroup;
     private int selectedChild;
     private Context mContext;
-    private LayoutInflater mInflater;
     private HashMap<String, ArrayList<String>> children;
     private ArrayList<String> listDataHeader;
 
     public DragNDropAdapter(Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<String>> child) {
-
-        init(context, new int[]{android.R.layout.simple_list_item_1},
-                new int[]{android.R.id.text1}, child, listDataHeader);
-    }
-
-//    public DragNDropAdapter(Context context, int[] itemLayouts, int[] itemIDs,
-//                            Map<String, ArrayList<String>> child) {
-//        init(context, itemLayouts, itemIDs, child);
-//    }
-
-
-    private void init(Context context, int[] layouts, int[] ids,
-                      HashMap<String, ArrayList<String>> child, ArrayList<String> listDataHeader) {
-        // Cache the LayoutInflate to avoid asking for a new one each time.
-        mInflater = LayoutInflater.from(context);
-        mIds = ids;
-        mLayouts = layouts;
 
         this.listDataHeader = new ArrayList<>();
         this.listDataHeader.addAll(listDataHeader);
@@ -77,7 +58,9 @@ public final class DragNDropAdapter extends BaseExpandableListAdapter {
     }
 
     static class ViewHolder {
-        TextView text;
+        TextView tvNoteTitle;
+        ImageView img_icon;
+
     }
 
     public void onDrop(int[] from, int[] to) {
@@ -111,22 +94,24 @@ public final class DragNDropAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
+//        final String childText = (String) getChild(groupPosition, childPosition);
+
         ViewHolder holder;
 
-        // When convertView is not null, we can reuse it directly, there is no
-        // need
-        // to reinflate it. We only inflate a new View when the convertView
-        // supplied
-        // by ListView is null.
         if (convertView == null) {
-            convertView = mInflater.inflate(mLayouts[0], null);
-
+            LayoutInflater infalInflater = (LayoutInflater) this.mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.notes_child_row, null);
             // Creates a ViewHolder and store references to the two children
             // views
             // we want to bind data to.
             holder = new ViewHolder();
-            holder.text = (TextView) convertView.findViewById(mIds[0]);
+            holder.tvNoteTitle = (TextView) convertView.findViewById(R.id.tv_note_title);
+            holder.img_icon = (ImageView) convertView.findViewById(R.id.img_icon);
+
+            holder.tvNoteTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
             convertView.setTag(holder);
+
         } else {
             // Get the ViewHolder back to get fast access to the TextView
             // and the ImageView.
@@ -134,7 +119,8 @@ public final class DragNDropAdapter extends BaseExpandableListAdapter {
         }
 
         // Bind the data efficiently with the holder.
-        holder.text.setText((String) (getChild(groupPosition, childPosition)));
+        holder.tvNoteTitle.setText((String) (getChild(groupPosition, childPosition)));
+
         if (groupPosition != selectedGroup && childPosition != selectedChild) {
             convertView.setVisibility(View.VISIBLE);
 //			ImageView iv = (ImageView) convertView
@@ -142,6 +128,7 @@ public final class DragNDropAdapter extends BaseExpandableListAdapter {
 //			iv.setVisibility(View.VISIBLE);
         }
         return convertView;
+
     }
 
     @Override
@@ -169,24 +156,27 @@ public final class DragNDropAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        TextView tv = getGenericView();
-        tv.setText(listDataHeader.get(groupPosition));
+        String headerTitle = (String) getGroup(groupPosition);
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this.mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.notes_group_row, null);
+        }
 
-        return tv;
-    }
+        TextView tvLectureName = (TextView) convertView.findViewById(R.id.tv_lecture_name);
+        ImageView imgIndicator = (ImageView) convertView.findViewById(R.id.img_indicator);
 
-    public TextView getGenericView() {
-        // Layout parameters for the ExpandableListView
-        AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 64);
+        tvLectureName.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvLectureName.setText(headerTitle);
 
-        TextView textView = new TextView(mContext);
-        textView.setLayoutParams(lp);
-        // Center the text vertically
-        textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-        // Set the text starting position
-        textView.setPadding(36, 0, 0, 0);
-        return textView;
+        if (isExpanded) {
+            imgIndicator.setImageResource(R.drawable.dropdown_close);
+        } else {
+            imgIndicator.setImageResource(R.drawable.dropdown_open);
+        }
+
+        return convertView;
+
     }
 
     @Override
