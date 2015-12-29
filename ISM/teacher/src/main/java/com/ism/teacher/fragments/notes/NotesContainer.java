@@ -55,8 +55,9 @@ public class NotesContainer extends Fragment {
         flLeftNoteContainer = (FrameLayout) rootview.findViewById(R.id.fl_left_note_container);
         flRightNoteContainer = (FrameLayout) rootview.findViewById(R.id.fl_right_note_container);
 
-        notesAddEditFragment = new NotesAddEditFragment(this);
         notesListFragment = new NotesListFragment(this);
+        notesAddEditFragment = new NotesAddEditFragment(this);
+
         loadFragmentInLeftContainer();
         loadFragmentInRightContainer();
 
@@ -78,6 +79,10 @@ public class NotesContainer extends Fragment {
             Debug.e(TAG, "loadFragmentInRightNote Exception : " + e.toString());
         }
 
+    }
+
+    public Bundle getBundleArguments() {
+        return ((TeacherHostActivity) getActivity()).getBundle();
     }
 
 }

@@ -342,6 +342,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
 
             case TeacherOfficeFragment.FRAGMENT_NOTES_CONTAINER:
                 getBundleArguments().remove(NotesAddEditFragment.ARG_IS_CREATE_NOTE);
+                getBundleArguments().remove(AllNotesAdapter.ARG_NOTES_SUBJECT_ID);
                 handleBackClick(AppConstant.FRAGMENT_TAG_NOTES_CONTAINER);
                 ((TeacherHostActivity) getActivity()).showSpinnerWithSubMenu(AppConstant.INDEX_NOTES);
                 break;
