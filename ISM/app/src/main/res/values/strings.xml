@@ -562,6 +562,9 @@
 	<string name="msg_question_data_missing"><![CDATA[>  Question or some of the options are missing.]]></string>
 	<string name="msg_question_hour">Question hour will begin soon</string>
 	<string name="msg_tutorialmates_getting_ready">Your Tutorialmates are getting ready with question...</string>
+	<string name="welcome_to_ism">Welcome to ISM</string>
+	<string name="high_school">High School</string>
+	<string name="msg_your_tutorial_group">Your Tutorial group is as per below</string>
 
 
 </resources>

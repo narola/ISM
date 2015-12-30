@@ -172,4 +172,6 @@
 	<dimen name="dp225">225dp</dimen>
 	<dimen name="dp2">2dp</dimen>
 	<dimen name="dp75">75dp</dimen>
+	<dimen name="sp21">21sp</dimen>
+	<dimen name="dp165">165dp</dimen>
 </resources>
