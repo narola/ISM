@@ -12,11 +12,11 @@
         android:padding="@dimen/d15dp"
         android:text="@string/strscheduleexam"
         android:textColor="@color/bg_controller_top_medium"
-        android:textSize="@dimen/d22dp" />
+        android:textSize="@dimen/d22sp" />
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/d1dp"
         android:background="@color/news_feed_separator_color" />
 
     <LinearLayout
@@ -37,7 +37,7 @@
             android:padding="@dimen/d10dp"
             android:text="@string/strclassroom"
             android:textColor="@color/question_color"
-            android:textSize="@dimen/d20dp" />
+            android:textSize="@dimen/d20sp" />
 
         <Spinner
             android:id="@+id/sp_exam_classroom"
@@ -70,7 +70,7 @@
             android:padding="@dimen/d10dp"
             android:text="@string/strstartdate"
             android:textColor="@color/question_color"
-            android:textSize="@dimen/d20dp" />
+            android:textSize="@dimen/d20sp" />
 
 
         <LinearLayout
@@ -94,14 +94,14 @@
                 android:paddingLeft="@dimen/d20dp"
                 android:textColor="@color/color_black"
                 android:textColorHint="@color/color_text_hint"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="-8dp"
+                android:layout_marginLeft="@dimen/d-8dp"
                 android:background="@drawable/btn_calendar" />
         </LinearLayout>
 

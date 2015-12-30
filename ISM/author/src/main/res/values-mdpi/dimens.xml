@@ -102,4 +102,6 @@
     <dimen name="text_size_emptylist_message_large">@dimen/d25sp</dimen>
 
 
+    <!-- new(ry)-->
+    <dimen name="d-8dp">-8dp</dimen>
 </resources>
