@@ -20,7 +20,7 @@
             android:paddingLeft="@dimen/d10dp"
             android:text="@string/strtest"
             android:textColor="@color/color_blue"
-            android:textSize="@dimen/d22dp" />
+            android:textSize="@dimen/d22sp" />
 
         <ImageView
             android:id="@+id/img_toggle_list"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/d10dp"
             android:src="@drawable/ic_grid" />
 
     </RelativeLayout>

@@ -14,12 +14,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="20dp">
+            android:padding="@dimen/d20dp">
 
             <com.ism.teacher.views.CircleImageView
                 android:id="@+id/img_dp_group"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="@dimen/d150dp"
+                android:layout_height="@dimen/d150dp"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/d15dp"
                 android:contentDescription="@string/app_name"
@@ -76,7 +76,7 @@
         <!-- top section over-->
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="@dimen/d2dp"
             android:background="@color/white" />
 
 
@@ -91,11 +91,11 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_tutorial_group"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="@dimen/d250dp"
                 android:layout_gravity="center_vertical"
-                android:paddingLeft="100dp"
-                android:paddingRight="100dp"
-                android:paddingTop="10dp">
+                android:paddingLeft="@dimen/d100dp"
+                android:paddingRight="@dimen/d100dp"
+                android:paddingTop="@dimen/d10dp">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -103,7 +103,7 @@
                 android:id="@+id/tv_topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+                android:layout_margin="@dimen/d15dp"
                 android:gravity="center"
                 android:padding="@dimen/d5dp"
                 android:text="@string/str_you_are_assigned_group"
@@ -115,9 +115,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/d10dp"
                 android:background="@drawable/btn_schedule_tutorial"
-                android:padding="10dp"
+                android:padding="@dimen/d10dp"
                 android:text="Schedule Exam"
                 android:textAllCaps="false"
                 android:textColor="@color/white"

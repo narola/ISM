@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/gray_light"
               android:orientation="vertical"
               tools:mContext="com.ism.activity.ProfileInformationActivity">
@@ -41,7 +41,7 @@
                     android:padding="@dimen/d10dp"
                     android:text="@string/strprofileinformation"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -77,7 +77,7 @@
                                     android:layout_weight="1"
                                     android:background="@drawable/selector"
                                     android:hint="@string/first_name"
-                                    android:padding="15sp"
+                                    android:padding="@dimen/d15dp"
                                     android:inputType="textPersonName"
                                     android:textColorHint="@color/color_text_hint" />
 
@@ -89,7 +89,7 @@
                                     android:layout_weight="1"
                                     android:background="@drawable/selector"
                                     android:hint="@string/last_name"
-                                    android:padding="15sp"
+                                    android:padding="@dimen/d15dp"
                                     android:inputType="textPersonName"
                                     android:textColorHint="@color/color_text_hint" />
                             </LinearLayout>
@@ -102,7 +102,7 @@
 		                        android:layout_weight="2"
 		                        android:background="@drawable/selector"
 		                        android:hint="@string/stremailaddress"
-		                        android:padding="15sp"
+		                        android:padding="@dimen/d15dp"
 		                        android:inputType="textPersonName"
 		                        android:textColorHint="@color/color_text_hint" />
 
@@ -130,7 +130,7 @@
                                     android:layout_weight="1"
                                     android:background="@drawable/selector"
                                     android:hint="@string/strcontactnumber"
-                                    android:padding="15sp"
+                                    android:padding="@dimen/d15dp"
                                     android:inputType="phone"
                                     android:textColorHint="@color/color_text_hint" />
 
@@ -150,7 +150,7 @@
                                     android:layout_weight="0.5"
                                     android:background="@drawable/selector"
                                     android:hint="@string/strdateofbirth"
-                                    android:padding="15sp"
+                                    android:padding="@dimen/d15dp"
                                     android:editable="false"
                                     android:textColorHint="@color/color_text_hint" />
 
@@ -162,7 +162,7 @@
                                     android:layout_weight="1.5"
                                     android:background="@drawable/selector"
                                     android:hint="@string/strage"
-                                    android:padding="15sp"
+                                    android:padding="@dimen/d15dp"
                                     android:inputType="numberDecimal"
                                     android:textColorHint="@color/color_text_hint" />
                             </LinearLayout>
@@ -170,13 +170,13 @@
                             <EditText
                                 android:id="@+id/et_homeAdd"
                                 android:layout_width="match_parent"
-                                android:layout_height="110sp"
+                                android:layout_height="@dimen/d110dp"
                                 android:layout_marginRight="@dimen/d5dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/selector"
                                 android:gravity="top|left"
                                 android:hint="@string/strhomeaddress"
-                                android:padding="15sp"
+                                android:padding="@dimen/d15dp"
                                 android:inputType="textPostalAddress"
                                 android:textColorHint="@color/color_text_hint" />
 
@@ -193,10 +193,9 @@
 
                             <com.ism.views.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                                 android:id="@+id/img_dp_post_creator"
-                                android:layout_width="200sp"
+                                android:layout_width="@dimen/d150dp"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
-
                                 android:layout_weight="0.5"
                                 android:contentDescription="@string/app_name"
                                 android:src="@drawable/img_default_dp" />
@@ -210,7 +209,7 @@
                                 android:padding="@dimen/d10dp"
                                 android:text="@string/struploadprofilepicture"
                                 android:textColor="@color/green"
-                                android:textSize="@dimen/d18dp" />
+                                android:textSize="@dimen/d18sp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -239,7 +238,7 @@
                             <com.ism.commonsource.view.ActionProcessButton
                                 android:id="@+id/prog_country"
                                 android:layout_width="match_parent"
-                                android:layout_height="5dp"
+                                android:layout_height="@dimen/height_progress"
                                 android:visibility="invisible"/>
                         </LinearLayout>
 
@@ -260,7 +259,7 @@
 		                    <com.ism.commonsource.view.ActionProcessButton
 			                    android:id="@+id/prog_state"
 			                    android:layout_width="match_parent"
-			                    android:layout_height="5dp"
+			                    android:layout_height="@dimen/height_progress"
 			                    android:visibility="invisible"/>
 	                    </LinearLayout>
 
@@ -280,7 +279,7 @@
 		                    <com.ism.commonsource.view.ActionProcessButton
 			                    android:id="@+id/prog_city"
 			                    android:layout_width="match_parent"
-			                    android:layout_height="5dp"
+			                    android:layout_height="@dimen/height_progress"
 			                    android:visibility="invisible"/>
 	                    </LinearLayout>
 
@@ -308,7 +307,7 @@
                     android:padding="@dimen/d10dp"
                     android:text="@string/strschoolinformation"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -335,7 +334,7 @@
                             android:paddingTop="@dimen/d10dp"
                             android:text="@string/stryouareregisteredforfollowingschool"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/d18dp" />
+                            android:textSize="@dimen/d18sp" />
 
                         <TextView
                             android:id="@+id/txt_clickhere"
@@ -349,7 +348,7 @@
                             android:text="@string/strclickhere"
                             android:onClick="onClickHere"
                             android:textColor="@color/green"
-                            android:textSize="@dimen/d18dp" />
+                            android:textSize="@dimen/d18sp" />
 
                         <TextView
                             android:id="@+id/txt_ifits_"
@@ -362,7 +361,7 @@
                             android:paddingTop="@dimen/d10dp"
                             android:text="@string/strifitisnotyourschool"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/d18dp" />
+                            android:textSize="@dimen/d18sp" />
                     </LinearLayout>
 
 
@@ -380,8 +379,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/selector"
                             android:hint="@string/strnameofschool"
-                            android:padding="15sp"
-                            android:textSize="20sp"
+                            android:padding="@dimen/d15dp"
+                            android:textSize="@dimen/d20sp"
                             android:gravity="center_vertical"
                             android:textColorHint="@color/color_text_hint" />
 
@@ -393,8 +392,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/selector"
                             android:hint="@string/strclass"
-                            android:padding="15sp"
-                            android:textSize="20sp"
+                            android:padding="@dimen/d15dp"
+                            android:textSize="@dimen/d20sp"
                             android:gravity="center_vertical"
                             android:textColorHint="@color/color_text_hint" />
 
@@ -406,8 +405,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/selector"
                             android:hint="@string/stracademicyear"
-                            android:padding="15sp"
-                            android:textSize="20sp"
+                            android:padding="@dimen/d15dp"
+                            android:textSize="@dimen/d20sp"
                             android:gravity="center_vertical"
                             android:textColorHint="@color/color_text_hint" />
 
@@ -427,7 +426,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/spinner_selector"
                             android:hint="@string/strgender"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/d20sp"
                             android:gravity="center_vertical"
                             android:padding="@dimen/d20dp"
                             android:textColorHint="@color/color_text_hint" />
@@ -440,8 +439,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/selector"
                             android:hint="@string/strdistrictofschool"
-                            android:padding="15sp"
-                            android:textSize="20sp"
+                            android:padding="@dimen/d15dp"
+                            android:textSize="@dimen/d20sp"
                             android:gravity="center_vertical"
                             android:textColorHint="@color/color_text_hint" />
 
@@ -454,7 +453,7 @@
                             android:hint="@string/strprogramcourse"
                             android:background="@drawable/spinner_selector"
                             android:padding="@dimen/d20dp"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/d20sp"
                             android:gravity="center_vertical"
                             android:textColorHint="@color/color_text_hint" />
                     </LinearLayout>
@@ -468,7 +467,6 @@
                 android:layout_marginBottom="@dimen/d10dp"
                 android:layout_marginTop="@dimen/d10dp"
                 android:background="@color/color_white"
-
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/d10dp">
 
@@ -506,7 +504,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/selector"
                             android:hint="@string/strusername"
-                            android:padding="15sp"
+                            android:padding="@dimen/d15dp"
                             android:textColorHint="@color/color_text_hint" />
 
                         <EditText
@@ -517,7 +515,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/selector"
                             android:hint="@string/strcurrentpwd"
-                            android:padding="15sp"
+                            android:padding="@dimen/d15dp"
                             android:inputType="textPassword"
                             android:textColorHint="@color/color_text_hint" />
 
@@ -537,7 +535,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/selector"
                             android:hint="@string/strnewpwd"
-                            android:padding="15sp"
+                            android:padding="@dimen/d15dp"
                             android:inputType="textPassword"
                             android:textColorHint="@color/color_text_hint" />
 
@@ -549,7 +547,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/selector"
                             android:hint="@string/strconfirmpwd"
-                            android:padding="15sp"
+                            android:padding="@dimen/d15dp"
                             android:inputType="textPassword"
                             android:textColorHint="@color/color_text_hint" />
                     </LinearLayout>
@@ -567,7 +565,7 @@
                 <Button
                     android:id="@+id/btn_cancel"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/button_height_normal"
                     android:layout_marginRight="@dimen/d10dp"
                     android:background="@drawable/bg_btn_dark"
                     android:gravity="center"
@@ -578,12 +576,12 @@
                     android:text="@string/strcancel"
                     android:onClick="onClickCancel"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <com.ism.commonsource.view.ActionProcessButton
 	                android:id="@+id/btn_submit"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/button_height_normal"
                     android:layout_marginLeft="@dimen/d10dp"
                     android:gravity="center"
                     android:paddingBottom="@dimen/d10dp"
@@ -593,7 +591,7 @@
                     android:text="@string/strsubmit"
                     android:onClick="onClickSubmit"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp"
+                    android:textSize="@dimen/d20sp"
                     app:pb_colorComplete="@color/green"
                     app:pb_colorNormal="@color/green"
                     app:pb_colorPressed="@color/green"

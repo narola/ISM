@@ -25,8 +25,8 @@
         android:orientation="horizontal">
 
         <com.ism.teacher.views.CircleImageView
-            android:layout_width="100sp"
-            android:layout_height="100sp"
+            android:layout_width="@dimen/d100dp"
+            android:layout_height="@dimen/d100dp"
             android:src="@drawable/userdp" />
 
         <LinearLayout
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:text="ADAM ROSS"
                 android:textAllCaps="true"
-                android:textSize="@dimen/d20dp"/>
+                android:textSize="@dimen/d20sp"/>
         </LinearLayout>
     </LinearLayout>
 

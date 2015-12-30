@@ -50,6 +50,8 @@ import com.ism.teacher.ws.model.HashTags;
 import com.ism.teacher.ws.model.Questions;
 import com.ism.teacher.ws.model.Tags;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -822,151 +824,147 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void callApiTempCreateQuestion() {
 
-        if (Utility.isConnected(getActivity())) {
-            ((TeacherHostActivity) getActivity()).showProgress();
+        try {
+            if (Utility.isConnected(getActivity())) {
+                ((TeacherHostActivity) getActivity()).showProgress();
 //            try {
-            Attribute attribute = new Attribute();
+                Attribute attribute = new Attribute();
 
 
-            MediaUploadAttribute userIdParam = new MediaUploadAttribute();
-            userIdParam.setParamName("user_id");
-            //userIdParam.setParamValue(Global.strUserId);
-            userIdParam.setParamValue(WebConstants.USER_ID_370);
-            Debug.e(TAG, "userid_tempcreate_question" + Global.strUserId);
+                MediaUploadAttribute userIdParam = new MediaUploadAttribute();
+                userIdParam.setParamName("user_id");
+                //userIdParam.setParamValue(Global.strUserId);
+                userIdParam.setParamValue(WebConstants.USER_ID_370);
+                Debug.e(TAG, "userid_tempcreate_question" + Global.strUserId);
 
-            MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
-            questionIdParam.setParamName("question_id");
+                MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
+                questionIdParam.setParamName("question_id");
 
-            if (getAddQuestionContainerFragment().getIsSetQuestionData() && !getAddQuestionContainerFragment().getIsCopy()) {
+                if (getAddQuestionContainerFragment().getIsSetQuestionData() && !getAddQuestionContainerFragment().getIsCopy()) {
                     /*for edit question*/
-                questionIdParam.setParamValue(getAddQuestionContainerFragment().getQuestionData().getQuestionId());
-            } else {
+                    questionIdParam.setParamValue(getAddQuestionContainerFragment().getQuestionData().getQuestionId());
+                } else {
                     /*for add question*/
-                questionIdParam.setParamValue("0");
-            }
+                    questionIdParam.setParamValue("0");
+                }
 //                questionIdParam.setParamValue("229");
 
 
-            MediaUploadAttribute questionTextParam = new MediaUploadAttribute();
-            questionTextParam.setParamName("question_text");
-            questionTextParam.setParamValue("test");
+                MediaUploadAttribute questionTextParam = new MediaUploadAttribute();
+                questionTextParam.setParamName("question_text");
+                questionTextParam.setParamValue(getHtmlQuestionText());
 
-            MediaUploadAttribute subjectIdParam = new MediaUploadAttribute();
-            subjectIdParam.setParamName("subject_id");
-            subjectIdParam.setParamValue(getAddQuestionContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID));
+                MediaUploadAttribute subjectIdParam = new MediaUploadAttribute();
+                subjectIdParam.setParamName("subject_id");
+                subjectIdParam.setParamValue(getAddQuestionContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID));
 
-            MediaUploadAttribute questionScoreParam = new MediaUploadAttribute();
-            questionScoreParam.setParamName("question_score");
-            questionScoreParam.setParamValue(arrListQuestionScore.get(spExamQuestionScore.getSelectedItemPosition()));
-
-
-            MediaUploadAttribute questionFormatParam = new MediaUploadAttribute();
-            questionFormatParam.setParamName("question_format");
-            questionFormatParam.setParamValue(getQuestionFormat());
+                MediaUploadAttribute questionScoreParam = new MediaUploadAttribute();
+                questionScoreParam.setParamName("question_score");
+                questionScoreParam.setParamValue(arrListQuestionScore.get(spExamQuestionScore.getSelectedItemPosition()));
 
 
-            MediaUploadAttribute evaluationNotesParam = new MediaUploadAttribute();
-            evaluationNotesParam.setParamName("evaluation_notes");
-            evaluationNotesParam.setParamValue(etEvaluationNote1.getText().toString());
-
-            MediaUploadAttribute solutionParam = new MediaUploadAttribute();
-            solutionParam.setParamName("solution");
-            solutionParam.setParamValue(etSolution.getText().toString());
+                MediaUploadAttribute questionFormatParam = new MediaUploadAttribute();
+                questionFormatParam.setParamName("question_format");
+                questionFormatParam.setParamValue(getQuestionFormat());
 
 
-            MediaUploadAttribute topicIdParam = new MediaUploadAttribute();
-            topicIdParam.setParamName("topic_id");
-            topicIdParam.setParamValue(getAddQuestionContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
+                MediaUploadAttribute evaluationNotesParam = new MediaUploadAttribute();
+                evaluationNotesParam.setParamName("evaluation_notes");
+                evaluationNotesParam.setParamValue(etEvaluationNote1.getText().toString());
+
+                MediaUploadAttribute solutionParam = new MediaUploadAttribute();
+                solutionParam.setParamName("solution");
+                solutionParam.setParamValue(etSolution.getText().toString());
 
 
-            MediaUploadAttribute classroomIdParam = new MediaUploadAttribute();
-            classroomIdParam.setParamName("classroom_id");
-            classroomIdParam.setParamValue(getAddQuestionContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
+                MediaUploadAttribute topicIdParam = new MediaUploadAttribute();
+                topicIdParam.setParamName("topic_id");
+                topicIdParam.setParamValue(getAddQuestionContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
 
 
-            MediaUploadAttribute answerChoicesParam = new MediaUploadAttribute();
-
-            if (getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
-                getMcqAnswers();
-                answerChoicesParam.setParamName("answer_choices");
-
-//                String myStrings[];
-//                myStrings = new String[arrListAnswerChioces.size()];
-//
-//                for (int i = 0; i < arrListAnswerChioces.size(); i++) {
-//                    myStrings[i] = arrListAnswerChioces.get(i).toString();
-//                }
-//
-//                StringBuilder builder = new StringBuilder();
-//
-//                for (String string : myStrings) {
-//                    if (builder.length() > 0) {
-//                        builder.append(",");
-//                    }
-//                    builder.append(string);
-//                }
-//                // Debug.e("test",""+builder.toString());
-//                answerChoicesParam.setParamValue(builder.toString());
-//                attribute.getArrListParam().add(answerChoicesParam);
+                MediaUploadAttribute classroomIdParam = new MediaUploadAttribute();
+                classroomIdParam.setParamName("classroom_id");
+                classroomIdParam.setParamValue(getAddQuestionContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
 
 
-                answerChoicesParam.setArrListMcqAnswerValue(arrListAnswerChioces);
-                attribute.getArrListParam().add(answerChoicesParam);
-            }
+                MediaUploadAttribute answerChoicesParam = new MediaUploadAttribute();
 
-            MediaUploadAttribute hashTagParam = new MediaUploadAttribute();
-            hashTagParam.setParamName("hashtag_data");
-            hashTagParam.setParamValue(getHashTagData());
+                if (getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
+                    getMcqAnswers();
 
+                    answerChoicesParam.setParamName("answer_choices");
+                    JSONObject mcqJsonObject = new JSONObject();
+                    JSONArray jArray = new JSONArray();
+                    for (AnswerChoices answerChoices : arrListAnswerChioces) {
+                        JSONObject mcqJson = new JSONObject();
+                        mcqJson.put("choice_text", answerChoices.getChoiceText());
+                        mcqJson.put("is_right", answerChoices.getIsRight());
+                        jArray.put(mcqJson);
+                    }
+                    mcqJsonObject.put("choices", jArray);
 
-            Debug.e(TAG, "The Question Text is::::" + getHtmlQuestionText());
-
-
-            MediaUploadAttribute htmlTextParam = new MediaUploadAttribute();
-            htmlTextParam.setParamName("html_text");
-            htmlTextParam.setParamValue(getHtmlQuestionText());
-
-
-            MediaUploadAttribute bookParam = new MediaUploadAttribute();
-            bookParam.setParamName("book_id");
-            bookParam.setParamValue("0");
-
-            attribute.getArrListParam().add(userIdParam);
-            attribute.getArrListParam().add(questionIdParam);
-            attribute.getArrListParam().add(questionTextParam);
-            attribute.getArrListParam().add(subjectIdParam);
-            attribute.getArrListParam().add(questionScoreParam);
-            attribute.getArrListParam().add(questionFormatParam);
-            attribute.getArrListParam().add(evaluationNotesParam);
-            attribute.getArrListParam().add(solutionParam);
-            attribute.getArrListParam().add(topicIdParam);
-            attribute.getArrListParam().add(classroomIdParam);
-            attribute.getArrListParam().add(hashTagParam);
-            attribute.getArrListParam().add(htmlTextParam);
-            attribute.getArrListParam().add(bookParam);
-
-
-            addImage();
-            if (imageSources.size() > 0) {
-                for (int i = 0; i < imageSources.size(); i++) {
-                    MediaUploadAttribute mediaFileParam = new MediaUploadAttribute();
-                    mediaFileParam.setParamName("" + i);
-                    mediaFileParam.setFileName(imageSources.get(i));
-                    attribute.getArrListFile().add(mediaFileParam);
+                    Debug.e(TAG, "mcq answers" + mcqJsonObject.toString());
+                    answerChoicesParam.setParamValue(mcqJsonObject.toString());
+                    attribute.getArrListParam().add(answerChoicesParam);
                 }
+
+                MediaUploadAttribute hashTagParam = new MediaUploadAttribute();
+                hashTagParam.setParamName("hashtag_data");
+                hashTagParam.setParamValue(getHashTagData());
+
+
+                Debug.e(TAG, "The Question Text is::::" + getHtmlQuestionText());
+
+
+                MediaUploadAttribute htmlTextParam = new MediaUploadAttribute();
+                htmlTextParam.setParamName("html_text");
+                htmlTextParam.setParamValue(getHtmlQuestionText());
+
+
+                MediaUploadAttribute bookParam = new MediaUploadAttribute();
+                bookParam.setParamName("book_id");
+                bookParam.setParamValue("0");
+
+                attribute.getArrListParam().add(userIdParam);
+                attribute.getArrListParam().add(questionIdParam);
+                attribute.getArrListParam().add(questionTextParam);
+                attribute.getArrListParam().add(subjectIdParam);
+                attribute.getArrListParam().add(questionScoreParam);
+                attribute.getArrListParam().add(questionFormatParam);
+                attribute.getArrListParam().add(evaluationNotesParam);
+                attribute.getArrListParam().add(solutionParam);
+                attribute.getArrListParam().add(topicIdParam);
+                attribute.getArrListParam().add(classroomIdParam);
+                attribute.getArrListParam().add(hashTagParam);
+                attribute.getArrListParam().add(htmlTextParam);
+                attribute.getArrListParam().add(bookParam);
+
+
+                addImage();
+                if (imageSources.size() > 0) {
+                    for (int i = 0; i < imageSources.size(); i++) {
+                        MediaUploadAttribute mediaFileParam = new MediaUploadAttribute();
+                        mediaFileParam.setParamName("" + i);
+                        mediaFileParam.setFileName(imageSources.get(i));
+                        attribute.getArrListFile().add(mediaFileParam);
+                    }
+                }
+
+                MediaUploadAttribute numberOfImagesParam = new MediaUploadAttribute();
+                numberOfImagesParam.setParamName("number_of_images");
+                numberOfImagesParam.setParamValue(String.valueOf(imageSources.size()));
+                attribute.getArrListParam().add(numberOfImagesParam);
+
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.TEMP_CREATE_QUESTION);
+
+            } else {
+                Utility.toastOffline(getActivity());
             }
-
-            MediaUploadAttribute numberOfImagesParam = new MediaUploadAttribute();
-            numberOfImagesParam.setParamName("number_of_images");
-            numberOfImagesParam.setParamValue(String.valueOf(imageSources.size()));
-            attribute.getArrListParam().add(numberOfImagesParam);
-
-            new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                    .execute(WebConstants.TEMP_CREATE_QUESTION);
-
-        } else {
-            Utility.toastOffline(getActivity());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
 
     }
 

@@ -73,7 +73,7 @@
 
     <!--This is for the login activity-->
 
-    <dimen name="login_box_width">500sp</dimen>
+    <dimen name="login_box_width">500dp</dimen>
 
     <!--this is for the newsfeed activity.-->
     <dimen name="controller_left_width">100dp</dimen>

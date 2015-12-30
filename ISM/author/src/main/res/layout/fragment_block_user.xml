@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/bg_highscore_subject"
         android:paddingBottom="@dimen/d10dp"
-        android:paddingLeft="20dp"
+        android:paddingLeft="@dimen/d20dp"
         android:paddingRight="@dimen/d20dp"
         android:paddingTop="@dimen/d10dp"
         android:text="@string/strBlockStudymatesRequest"
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:padding="3dp"
+            android:padding="@dimen/d3dp"
             android:textColor="@color/color_blue"
             android:textSize="@dimen/d20sp" />
 
@@ -78,7 +78,7 @@
 
         <EditText
             android:id="@+id/et_block_user"
-            android:layout_width="400dp"
+            android:layout_width="@dimen/d400dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_notification_name"
             android:layout_marginBottom="@dimen/d10dp"
@@ -118,7 +118,7 @@
         android:layout_below="@+id/rl_block_studymates"
         android:background="@drawable/bg_highscore_subject"
         android:paddingBottom="@dimen/d10dp"
-        android:paddingLeft="20dp"
+        android:paddingLeft="@dimen/d20dp"
         android:paddingRight="@dimen/d20dp"
         android:paddingTop="@dimen/d10dp"
         android:text="@string/strManageBlockUsers"
@@ -165,24 +165,24 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_contact_ism_admin"
         android:layout_margin="@dimen/d15dp"
-        android:paddingBottom="3dp"
+        android:paddingBottom="@dimen/d3dp"
         android:paddingLeft="@dimen/d30dp"
-        android:paddingRight="3dp"
+        android:paddingRight="@dimen/d3dp"
         android:linksClickable="true"
         android:textColor="#000032"
         android:autoLink="email"
-        android:paddingTop="3dp"
+        android:paddingTop="@dimen/d3dp"
         android:text="@string/strContactAdminEmailAddress"
         android:textSize="@dimen/d20sp" />
 
     <View
-        android:layout_width="16dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/d16dp"
+        android:layout_height="@dimen/d30dp"
         android:background="@drawable/shape_triangle_general_setting"
-        android:layout_marginTop="140dp" />
+        android:layout_marginTop="@dimen/d140dp" />
 
     <View
-        android:layout_width="2dp"
+        android:layout_width="@dimen/d2dp"
         android:layout_height="match_parent"
         android:background="@color/border_gray" />
 </RelativeLayout>

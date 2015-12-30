@@ -1,59 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="90sp"
-    android:layout_margin="5sp"
+    android:layout_height="@dimen/d90dp"
+    android:layout_margin="@dimen/d5sp"
     android:background="@color/white"
-    android:orientation="horizontal"
-    >
+    android:orientation="horizontal">
 
     <com.ism.teacher.views.CircleImageView
         android:id="@+id/img_hignScoredp"
-        android:layout_width="60sp"
-        android:layout_height="60sp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/userdp"
-        android:layout_margin="@dimen/d5dp"
+        android:layout_width="@dimen/d60dp"
+        android:layout_height="@dimen/d60dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_margin="@dimen/d5dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/userdp" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
         android:id="@+id/txt_highScoreStudentName"
-        android:padding="3sp"
-        android:textColor="@color/color_black"
-        android:text="name"
-        android:layout_marginTop="@dimen/d5dp"
-        android:textSize="16sp"
-        android:layout_alignRight="@+id/img_hignScoredp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_toEndOf="@+id/img_hignScoredp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/img_hignScoredp"
+        android:layout_marginTop="@dimen/d5dp"
+        android:layout_toEndOf="@+id/img_hignScoredp"
         android:gravity="left"
-        android:text="500"
-        android:padding="3sp"
-        android:id="@+id/txt_highScoreMarks"
-        android:textColor="@color/color_green"
-        android:textSize="@dimen/d20dp"
-        android:layout_below="@+id/txt_highScoreSchoolYearClass"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/img_hignScoredp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:padding="3sp"
+        android:padding="@dimen/d3dp"
+        android:text="name"
         android:textColor="@color/color_black"
+        android:textSize="@dimen/d16sp" />
+
+    <TextView
+        android:id="@+id/txt_highScoreMarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/txt_highScoreSchoolYearClass"
+        android:layout_toEndOf="@+id/img_hignScoredp"
+        android:gravity="left"
+        android:padding="@dimen/d3dp"
+        android:text="500"
+        android:textColor="@color/color_green"
+        android:textSize="@dimen/d20sp" />
+
+    <TextView
         android:id="@+id/txt_highScoreSchoolYearClass"
-        android:text="school"
-        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txt_highScoreStudentName"
         android:layout_below="@+id/txt_highScoreStudentName"
-        android:layout_alignStart="@+id/txt_highScoreStudentName" />
+        android:gravity="left"
+        android:padding="@dimen/d3dp"
+        android:text="school"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/d16sp" />
 </RelativeLayout>
