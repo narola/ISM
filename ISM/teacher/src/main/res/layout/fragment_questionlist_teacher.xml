@@ -95,7 +95,7 @@
                         android:padding="@dimen/d5dp"
                         android:textColor="@color/colorPrimary"
                         android:textColorHint="@color/color_graylight"
-                        android:textSize="@dimen/d18dp"
+                        android:textSize="@dimen/d18sp"
                         android:visibility="gone" />
                 </LinearLayout>
             </RelativeLayout>

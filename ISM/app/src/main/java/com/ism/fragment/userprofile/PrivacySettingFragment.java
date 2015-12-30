@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.Adapters;
-import com.ism.object.MyTypeFace;
+import com.ism.object.Global;
 import com.ism.utility.PreferenceData;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
@@ -27,7 +27,6 @@ import com.ism.ws.helper.WebserviceWrapper;
 public class PrivacySettingFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
     private View view;
     private TextView txtAlertsPersonalDetails, txtAlertsAcademicDetails, txtAcademicNotification, txtAcademicNotificationBD, txtAlertsExamScore;
-    MyTypeFace myTypeFace;
     private View includeAcademic, includeAcademicBirthDate;
     private RadioGroup radioGroupAcademic, radioGroupAcademicBD;
     private RadioButton radioButtonYesAcademic, radioButtonNoAcademic, radioButtonYesAcademicBD, radioButtonNoAcademicBD;
@@ -59,7 +58,6 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
     private void initGlobal() {
         generalSettingsFragment = com.ism.fragment.userProfile.GeneralSettingsFragment.newInstance();
 
-        myTypeFace = new MyTypeFace(getActivity());
         spViewers = (Spinner) view.findViewById(R.id.sp_viewers);
         txtAlertsPersonalDetails = (TextView) view.findViewById(R.id.txt_alerts_personal_details);
         txtAlertsAcademicDetails = (TextView) view.findViewById(R.id.txt_alerts_academic_details);
@@ -83,16 +81,16 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
         txtAlertsExamScore.setTextColor(getResources().getColor(R.color.color_blue));
         txtAlertsExamScore.setText(R.string.strAllowsViewersToViewMyExamScores);
         //set typeface
-        txtAlertsAcademicDetails.setTypeface(myTypeFace.getRalewayRegular());
-        txtAlertsPersonalDetails.setTypeface(myTypeFace.getRalewayRegular());
-        txtAcademicNotification.setTypeface(myTypeFace.getRalewayRegular());
-        txtAlertsExamScore.setTypeface(myTypeFace.getRalewayRegular());
-        txtAcademicNotificationBD.setTypeface(myTypeFace.getRalewayRegular());
+        txtAlertsAcademicDetails.setTypeface(Global.myTypeFace.getRalewayMedium());
+        txtAlertsPersonalDetails.setTypeface(Global.myTypeFace.getRalewayMedium());
+        txtAcademicNotification.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAlertsExamScore.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAcademicNotificationBD.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-        radioButtonYesAcademic.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonYesAcademicBD.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonNoAcademic.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonNoAcademicBD.setTypeface(myTypeFace.getRalewayRegular());
+        radioButtonYesAcademic.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonYesAcademicBD.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonNoAcademic.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonNoAcademicBD.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         radioButtonNoAcademicBD.setOnClickListener(this);
         radioButtonNoAcademic.setOnClickListener(this);
@@ -117,7 +115,7 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
 
         strArrayList = getActivity().getResources().getStringArray(R.array.viewers_array);
         Adapters.setUpSpinner(getActivity(), spViewers, getActivity().getResources().getStringArray(R.array.viewers_array)
-                , myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
+                , Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
         setDefaultValues();
 
     }
@@ -127,21 +125,21 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
         String key_value;
         key_value = getKeyPereference(PreferenceData.PS_VIWERS_VIEW_EXAMSCORE);
         // Debug.i(TAG,"Value: "+key+"::"+key_value);
-        if (key_value.equals("Studymates")) {
+        if (key_value.equals(getActivity().getResources().getString(R.string.strStudymates))) {
             spViewers.setSelection(2);
 
         } else {
             spViewers.setSelection(1);
         }
         key_value = getKeyPereference(PreferenceData.PS_VIWERS_VIEW_CONTACT);
-        if (key_value.equals("No")) {
+        if (key_value.equals(getActivity().getResources().getString(R.string.strNo))) {
             radioGroupAcademic.check(R.id.radiobutton_no);
 
         } else {
             radioGroupAcademic.check(R.id.radiobutton_yes);
         }
         key_value = getKeyPereference(PreferenceData.PS_VIWERS_VIEW_BIRTHDATE);
-        if (key_value.equals("No")) {
+        if (key_value.equals(getActivity().getResources().getString(R.string.strNo))) {
             radioGroupAcademicBD.check(R.id.radiobutton_no);
 
         } else {
@@ -176,14 +174,14 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
     @Override
     public void onClick(View v) {
         if (v == radioButtonNoAcademic) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_CONTACT, getActivity()), "No",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_CONTACT, getActivity()), getActivity().getResources().getString(R.string.strNo),getActivity());
 
         } else if (v == radioButtonYesAcademic) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_CONTACT, getActivity()), "Yes",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_CONTACT, getActivity()),  getActivity().getResources().getString(R.string.strYes),getActivity());
         } else if (v == radioButtonNoAcademicBD) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_BIRTHDATE, getActivity()), "No",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_BIRTHDATE, getActivity()),  getActivity().getResources().getString(R.string.strNo),getActivity());
         } else if (v == radioButtonYesAcademicBD) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_BIRTHDATE, getActivity()), "Yes",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.PS_VIWERS_VIEW_BIRTHDATE, getActivity()), getActivity().getResources().getString(R.string.strYes),getActivity());
         }
     }
 

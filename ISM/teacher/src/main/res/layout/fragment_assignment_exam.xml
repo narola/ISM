@@ -117,7 +117,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strexamname"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <EditText
                             android:id="@+id/et_exam_name"
@@ -148,7 +148,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d15dp"
                             android:text="@string/strclass"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_classroom"
@@ -184,7 +184,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strsubjectname"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_subjectname"
@@ -278,7 +278,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strexamassessor"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_assessor"
@@ -307,7 +307,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strexamtopic"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_subjecttopic"
@@ -342,7 +342,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strexamcategory"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_examcategory"
@@ -368,7 +368,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d15dp"
                             android:text="@string/strexammode"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_exammode"
@@ -395,7 +395,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d15dp"
                             android:text="@string/strexamduration"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_examduration"
@@ -422,7 +422,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strattemptcount"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <EditText
                             android:id="@+id/et_exam_attemptcount"
@@ -436,7 +436,7 @@
                             android:paddingLeft="@dimen/d20dp"
                             android:textColor="@color/color_black"
                             android:textColorHint="@color/color_text_hint"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -494,7 +494,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strstartdate"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <LinearLayout
                             android:id="@+id/ll_exam_startdate"
@@ -517,7 +517,7 @@
                                 android:paddingLeft="@dimen/d20dp"
                                 android:textColor="@color/color_black"
                                 android:textColorHint="@color/color_text_hint"
-                                android:textSize="@dimen/d20dp" />
+                                android:textSize="@dimen/d20sp" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -539,7 +539,7 @@
                             android:padding="@dimen/d10dp"
                             android:text="@string/strnotifystudent"
                             android:textColor="@color/color_text_hint"
-                            android:textSize="@dimen/d18dp" />
+                            android:textSize="@dimen/d18sp" />
                     </LinearLayout>
 
 
@@ -557,7 +557,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strstarttime"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
 
                         <LinearLayout
@@ -580,7 +580,7 @@
                                 android:paddingLeft="@dimen/d20dp"
                                 android:textColor="@color/color_black"
                                 android:textColorHint="@color/color_text_hint"
-                                android:textSize="@dimen/d20dp" />
+                                android:textSize="@dimen/d20sp" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -603,7 +603,7 @@
                             android:padding="@dimen/d10dp"
                             android:text="@string/strnotifystudent"
                             android:textColor="@color/color_text_hint"
-                            android:textSize="@dimen/d18dp" />
+                            android:textSize="@dimen/d18sp" />
                     </LinearLayout>
 
 

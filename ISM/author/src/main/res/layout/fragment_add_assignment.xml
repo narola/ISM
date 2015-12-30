@@ -82,7 +82,7 @@
             android:background="@drawable/selector"
             android:hint="Assignment Name"
             android:padding="@dimen/d10dp"
-            android:textSize="@dimen/d20dp" />
+            android:textSize="@dimen/d20sp" />
 
         <Spinner
             android:id="@+id/sp_books"

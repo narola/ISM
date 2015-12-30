@@ -55,14 +55,14 @@
 
                     <EditText
                         android:id="@+id/et_search_suggested"
-                        android:layout_width="200dp"
+                        android:layout_width="@dimen/d200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="@dimen/d20dp"
                         android:hint="@string/hint_search"
                         android:imeOptions="actionSearch"
                         android:inputType="text"
-                        android:padding="10dp"
+                        android:padding="@dimen/d10dp"
                         android:singleLine="true"
                         android:textColor="@color/color_blue"
                         android:textColorHint="@color/border_gray"
@@ -73,7 +73,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="260dp"
+                android:layout_height="@dimen/d260dp"
                 android:background="@color/color_white"
                 android:orientation="horizontal">
 
@@ -154,14 +154,14 @@
 
                     <EditText
                         android:id="@+id/et_search_fav"
-                        android:layout_width="200dp"
+                        android:layout_width="@dimen/d200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="@dimen/d20dp"
                         android:hint="@string/hint_search"
                         android:imeOptions="actionSearch"
                         android:inputType="text"
-                        android:padding="10dp"
+                        android:padding="@dimen/d10dp"
                         android:singleLine="true"
                         android:textColor="@color/colorPrimary"
                         android:textColorHint="@color/border_gray"
@@ -172,7 +172,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="260dp"
+                android:layout_height="@dimen/d260dp"
                 android:layout_weight="1"
                 android:background="@color/color_white"
                 android:orientation="horizontal">

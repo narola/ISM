@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:mContext="com.ism.author..activity.PostFeedActivity"
     android:orientation="vertical">
     <!--<ScrollView-->
     <!--android:layout_width="match_parent"-->
@@ -16,11 +15,11 @@
     <com.ism.commonsource.view.ActionProcessButton
         android:id="@+id/prog_host"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="@dimen/d5dp"
         android:visibility="gone"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60sp"
+        android:layout_height="@dimen/d60dp"
         android:background="@color/color_actionbar"
         android:orientation="horizontal">
 
@@ -30,7 +29,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/d20sp"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="@dimen/d5dp"
             android:id="@+id/txt_cancel"
             android:background="@drawable/bg_icon"
             android:text="@string/strcancel" />
@@ -46,7 +45,7 @@
             android:id="@+id/txt_post"
             android:gravity="center"
             android:layout_gravity="right"
-            android:paddingLeft="5dp"
+            android:paddingLeft="@dimen/d5dp"
             android:paddingRight="@dimen/d20dp"
             android:drawableRight="@drawable/arrow"
             android:background="@drawable/bg_icon"
@@ -55,7 +54,7 @@
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="670dp"
+        android:layout_height="@dimen/d670dp"
         android:layout_weight="1"
         android:background="@color/white"
         android:orientation="horizontal">
@@ -70,12 +69,12 @@
                 android:id="@+id/et_sayit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="85dp"
+                android:layout_marginRight="@dimen/d85dp"
                 android:layout_weight="0.8"
                 android:background="@color/white"
                 android:gravity="top"
                 android:hint="SAY IT"
-                android:padding="10dp" />
+                android:padding="@dimen/d10dp" />
 
             <com.ism.teacher.views.HorizontalListView
                 android:id="@+id/horilistview"
@@ -83,13 +82,13 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="85dp"
                 android:layout_weight="1"
-                android:padding="10dp"
+                android:padding="@dimen/d10dp"
                 android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_tools"
-            android:layout_width="85dp"
+            android:layout_width="@dimen/d85dp"
             android:layout_height="match_parent"
             android:layout_alignRight="@+id/rl_main"
             android:background="@drawable/sidebar"
@@ -203,8 +202,8 @@
                 android:id="@+id/ll_captureimg"
                 android:layout_width="250sp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="150dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginLeft="@dimen/d150dp"
+                android:layout_marginRight="@dimen/d50dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -223,15 +222,15 @@
                     android:gravity="center_vertical"
                     android:text=""
                     android:textColor="@color/color_black"
-                    android:textSize="30sp" />
+                    android:textSize="@dimen/d30sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_chooseimg"
                 android:layout_width="250sp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="150dp"
+                android:layout_marginLeft="@dimen/d50dp"
+                android:layout_marginRight="@dimen/d150dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -250,7 +249,7 @@
                     android:gravity="center_vertical"
                     android:text=""
                     android:textColor="@color/color_black"
-                    android:textSize="30sp" />
+                    android:textSize="@dimen/d30sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -269,7 +268,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="@dimen/d10dp"
                 android:src="@drawable/audio_done" />
 
             <RelativeLayout
@@ -278,15 +277,15 @@
 
                 <com.ism.teacher.views.CircularSeekBar
                     android:id="@+id/circularSeekBar"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    android:layout_margin="20dp"
-                    android:padding="20dp"
+                    android:layout_width="@dimen/d250dp"
+                    android:layout_height="@dimen/d250dp"
+                    android:layout_margin="@dimen/d20dp"
+                    android:padding="@dimen/d20dp"
                     app:circle_color="@color/white"
                     app:circle_progress_color="#EA4A51"
-                    app:circle_stroke_width="2dp"
-                    app:circle_x_radius="100dp"
-                    app:circle_y_radius="100dp"
+                    app:circle_stroke_width="@dimen/d2dp"
+                    app:circle_x_radius="@dimen/d100dp"
+                    app:circle_y_radius="@dimen/d100dp"
                     app:end_angle="90"
                     app:max="100"
                     app:pointer_alpha_ontouch="100"
@@ -310,7 +309,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/d10dp"
                 android:src="@drawable/img_stop" />
         </LinearLayout>
     </LinearLayout>

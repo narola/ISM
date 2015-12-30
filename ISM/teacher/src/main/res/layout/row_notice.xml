@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="160sp"
+    android:layout_height="@dimen/d160dp"
 
     android:background="@color/white"
     android:orientation="vertical">
@@ -10,10 +10,10 @@
         android:id="@+id/txt_noticeName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:padding="@dimen/d5dp"
         android:text=""
         android:textColor="#6b6b6b"
-        android:textSize="@dimen/d20dp"
+        android:textSize="@dimen/d20sp"
         android:visibility="gone" />
 
     <TextView
@@ -28,7 +28,7 @@
         android:paddingRight="10sp"
         android:text=""
         android:textColor="@color/color_black"
-        android:textSize="16sp"
+        android:textSize="@dimen/d16sp"
         android:visibility="gone" />
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/d5dp"
         android:gravity="right"
-        android:padding="5dp"
+        android:padding="@dimen/d5dp"
         android:text="Read more"
         android:textColor="@color/color_green"
         android:textSize="@dimen/d15dp"

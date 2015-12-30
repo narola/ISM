@@ -20,10 +20,10 @@
 		android:id="@+id/lv_all_notification"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:paddingLeft="20dp"
-		android:paddingRight="20dp"
-		android:paddingTop="5dp"
-		android:dividerHeight="2dp"
+		android:paddingLeft="@dimen/d20dp"
+		android:paddingRight="@dimen/d20dp"
+		android:paddingTop="@dimen/d5dp"
+		android:dividerHeight="@dimen/d2dp"
 		android:background="@drawable/bg_white_border_gray"
 		android:layout_margin="@dimen/padding_child_fragment_content"
 		android:layout_below="@id/txt_header_white"
@@ -34,7 +34,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:inflatedId="@+id/rl_post"
-		android:layout_margin="20dp"
+		android:layout_margin="@dimen/d20dp"
 		android:layout="@layout/list_item_post"
 		android:visibility="gone"/>
 </RelativeLayout>

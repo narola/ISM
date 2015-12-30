@@ -16,10 +16,10 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:textAllCaps="true"
-			android:textSize="16sp"
-			android:paddingTop="10dp"
-			android:paddingBottom="10dp"
-			android:paddingLeft="30dp"
+			android:textSize="@dimen/d16sp"
+			android:paddingTop="@dimen/d10dp"
+			android:paddingBottom="@dimen/d10dp"
+			android:paddingLeft="@dimen/d30dp"
 			android:textColor="@drawable/txt_color_studymate_label"
 			android:background="@drawable/bg_tab_studymate"
 			android:text="@string/your_studymates"/>
@@ -30,10 +30,10 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:textAllCaps="true"
-			android:textSize="16sp"
-			android:paddingTop="10dp"
-			android:paddingBottom="10dp"
-			android:paddingLeft="30dp"
+			android:textSize="@dimen/d16sp"
+			android:paddingTop="@dimen/d10dp"
+			android:paddingBottom="@dimen/d10dp"
+			android:paddingLeft="@dimen/d30dp"
 			android:textColor="@drawable/txt_color_studymate_label"
 			android:background="@drawable/bg_tab_studymate"
 			android:text="@string/find_more_studymates"/>
@@ -45,12 +45,12 @@
 		android:layout_height="match_parent"
 		android:layout_below="@id/ll_header"></android.support.v4.view.ViewPager>
 
-	<View
-		android:id="@+id/view_highlighter_triangle"
-		android:layout_width="20dp"
-		android:layout_height="30dp"
-		android:layout_marginTop="337dp"
-		android:layout_alignParentRight="true"
-		android:visibility="gone"
-		android:background="@drawable/shape_triangle_profile_controller" />
+	<!--<View-->
+		<!--android:id="@+id/view_highlighter_triangle"-->
+		<!--android:layout_width="20dp"-->
+		<!--android:layout_height="30dp"-->
+		<!--android:layout_marginTop="337dp"-->
+		<!--android:layout_alignParentRight="true"-->
+		<!--android:visibility="gone"-->
+		<!--android:background="@drawable/shape_triangle_profile_controller" />-->
 </RelativeLayout>

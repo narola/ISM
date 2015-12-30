@@ -279,6 +279,6 @@
     <com.ism.commonsource.view.ActionProcessButton
         android:id="@+id/prog_host"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="@dimen/d5dp"
         android:visibility="invisible"/>
 </RelativeLayout>

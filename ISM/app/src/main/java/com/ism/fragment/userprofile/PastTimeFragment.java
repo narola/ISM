@@ -79,25 +79,34 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
     private void initGlobal() {
 
         txtFavEmpty = (TextView) view.findViewById(R.id.txt_fav_empty);
+        txtFavEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtFavEmpty.setText(R.string.no_pastimes_available);
+
         txtSuggestedEmpty = (TextView) view.findViewById(R.id.txt_suggested_empty);
+        txtSuggestedEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtSuggestedEmpty.setText(R.string.no_pastimes_available);
+
         txtSuggestedPastimes = (TextView) view.findViewById(R.id.txt_read_books);
-        txtFavPastimes = (TextView) view.findViewById(R.id.txt_fav_books);
+        txtSuggestedPastimes.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtSuggestedPastimes.setText(R.string.strSuggestedPastimes);
+
+        txtFavPastimes = (TextView) view.findViewById(R.id.txt_fav_books);
+        txtFavPastimes.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtFavPastimes.setText(R.string.strFavPastimes);
+
         imgFavSearch = (ImageView) view.findViewById(R.id.img_search_fav);
+
         etFavSearch = (EditText) view.findViewById(R.id.et_search_fav);
-        imgSuggestedSearch = (ImageView) view.findViewById(R.id.img_search_suggested);
+        etFavSearch.setTypeface(Global.myTypeFace.getRalewayRegular());
+
         etSuggestedSearch = (EditText) view.findViewById(R.id.et_search_suggested);
+        etSuggestedSearch.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+        imgSuggestedSearch = (ImageView) view.findViewById(R.id.img_search_suggested);
         imgNextFav = (ImageView) view.findViewById(R.id.img_next_fav);
         imgPrevFav = (ImageView) view.findViewById(R.id.img_prev_fav);
         imgNextSuggested = (ImageView) view.findViewById(R.id.img_next_suggested);
         imgPrevSuggested = (ImageView) view.findViewById(R.id.img_prev_suggested);
-        //set typeface
-        txtFavEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
-        txtSuggestedEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
-
-        txtFavEmpty.setText(R.string.no_pastimes_available);
-        txtSuggestedEmpty.setText(R.string.no_pastimes_available);
 
         listViewFav = (RecyclerView) view.findViewById(R.id.lv_fav_books);
         listViewSuggested = (RecyclerView) view.findViewById(R.id.lv_suggested_books);

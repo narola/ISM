@@ -63,13 +63,13 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
 	}
 
 	private void initGlobal() {
-		viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
+		//viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
 		recyclerPostFeeds = (RecyclerView) view.findViewById(R.id.recycler_post);
 		rlNewPost = (RelativeLayout) view.findViewById(R.id.rl_new_post);
 		txtEmptyListMessage = (TextView) view.findViewById(R.id.txt_emptylist_message);
 
 		txtEmptyListMessage.setTypeface(Global.myTypeFace.getRalewayRegular());
-		viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
+		//viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
 		recyclerPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
 		RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {

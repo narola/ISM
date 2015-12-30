@@ -38,7 +38,7 @@
                 android:padding="@dimen/d10dp"
                 android:text="Introduction to waves"
                 android:textColor="@color/color_blue"
-                android:textSize="20sp" />
+                android:textSize="@dimen/d20sp" />
 
             <ImageView
                 android:id="@+id/img_share_note"
@@ -85,7 +85,8 @@
                 android:layout_height="match_parent"
                 android:background="@color/rte_notes_bg"
                 android:gravity="top|left"
-                android:padding="@dimen/d10dp" />
+                android:padding="@dimen/d10dp"
+                />
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

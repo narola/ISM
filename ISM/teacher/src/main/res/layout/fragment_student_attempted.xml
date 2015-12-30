@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_highscore_subjectlist"
     android:orientation="vertical"
-    android:paddingLeft="1dp">
+    android:paddingLeft="@dimen/d1dp">
 
     <TextView
         android:id="@+id/txt_student_attepted"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:background="@color/color_blue"
-        android:padding="10dp"
+        android:padding="@dimen/d10dp"
         android:text="@string/strStudentAttempted"
         android:textAllCaps="true"
         android:textAppearance="?android:attr/textAppearanceLarge"

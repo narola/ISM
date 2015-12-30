@@ -68,13 +68,13 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
 
     private void initGlobal() {
         preferencesList = new ArrayList<>();
-        viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
+       // viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
         txtPrivacySetting = (TextView) view.findViewById(R.id.txt_privacy_setting);
         txtSmsAlerts = (TextView) view.findViewById(R.id.txt_sms_alerts);
         txtBlockUsers = (TextView) view.findViewById(R.id.txt_block_users);
         txtNotifications = (TextView) view.findViewById(R.id.txt_notifications);
 
-        viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
+//        viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
         myTypeFace = new MyTypeFace(getActivity());
         txtBlockUsers.setTypeface(myTypeFace.getRalewayRegular());

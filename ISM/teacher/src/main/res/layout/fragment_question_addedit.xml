@@ -20,7 +20,7 @@
             android:padding="@dimen/d15dp"
             android:text="@string/straddnewquestion"
             android:textColor="@color/color_question"
-            android:textSize="@dimen/d22dp" />
+            android:textSize="@dimen/d22sp" />
 
         <TextView
             android:id="@+id/tv_addquestion_gotoquestionbank"
@@ -34,7 +34,7 @@
             android:padding="@dimen/d5dp"
             android:text="@string/strquestionbank"
             android:textColor="@color/color_blue"
-            android:textSize="@dimen/d18dp" />
+            android:textSize="@dimen/d18sp" />
     </RelativeLayout>
 
 
@@ -75,7 +75,7 @@
                             android:layout_centerVertical="true"
                             android:text="@string/strquestiontitle"
                             android:textColor="@color/color_blue"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/d20sp"
                             android:textStyle="bold" />
 
                         <LinearLayout
@@ -93,7 +93,7 @@
                                 android:layout_marginRight="@dimen/d10dp"
                                 android:text="@string/stradvance"
                                 android:textColor="@color/color_blue"
-                                android:textSize="20sp"
+                                android:textSize="@dimen/d20sp"
                                 android:textStyle="bold" />
 
 
@@ -128,7 +128,7 @@
                             android:layout_marginRight="@dimen/d5dp"
                             android:background="@drawable/selector"
                             android:inputType="textMultiLine"
-                            android:padding="15sp"
+                            android:padding="@dimen/d15dp"
                             android:textColorHint="@color/color_text_hint" />
 
                         <LinearLayout
@@ -145,7 +145,7 @@
                                 android:layout_weight="1"
                                 android:text="Question Type"
                                 android:textColor="@color/color_blue"
-                                android:textSize="@dimen/d20dp"
+                                android:textSize="@dimen/d20sp"
                                 android:textStyle="bold" />
 
                             <RelativeLayout
@@ -229,7 +229,7 @@
                         android:layout_gravity="center_vertical"
                         android:text="@string/strscorevalue"
                         android:textColor="@color/color_blue"
-                        android:textSize="@dimen/d20dp"
+                        android:textSize="@dimen/d20sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -258,7 +258,7 @@
                     android:hint="@string/strhinttheiranswer"
                     android:minLines="3"
                     android:padding="@dimen/d10dp"
-                    android:textSize="@dimen/d18dp" />
+                    android:textSize="@dimen/d18sp" />
 
 
                 <LinearLayout
@@ -283,7 +283,7 @@
                         android:layout_marginRight="@dimen/d20dp"
                         android:text="Question Type"
                         android:textColor="@color/color_blue"
-                        android:textSize="@dimen/d20dp"
+                        android:textSize="@dimen/d20sp"
                         android:textStyle="bold" />
 
 
@@ -299,7 +299,7 @@
                         android:nextFocusDown="@+id/editText"
                         android:paddingLeft="@dimen/d10dp"
                         android:textColor="@android:color/darker_gray"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
                 </LinearLayout>
 
@@ -327,7 +327,7 @@
                             android:text="@string/strevaluationnotes"
                             android:textAllCaps="true"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d15dp" />
+                            android:textSize="@dimen/d15sp" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -364,11 +364,11 @@
                             android:text="@string/strsolution"
                             android:textAllCaps="true"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d15dp" />
+                            android:textSize="@dimen/d15sp" />
 
                         <ImageView
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"
+                            android:layout_height="@dimen/d1dp"
                             android:background="@drawable/news_feed_post_box" />
 
                         <EditText
@@ -406,7 +406,7 @@
             android:checked="false"
             android:text="@string/straddquestiontopreview"
             android:textColor="@color/white"
-            android:textSize="@dimen/d20dp" />
+            android:textSize="@dimen/d20sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -427,7 +427,7 @@
                 android:paddingTop="@dimen/d5dp"
                 android:text="@string/strsave"
                 android:textColor="@color/white"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
 
             <TextView
@@ -442,7 +442,7 @@
                 android:paddingTop="@dimen/d5dp"
                 android:text="@string/strsaveandaddmore"
                 android:textColor="@color/white"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
         </LinearLayout>
     </RelativeLayout>

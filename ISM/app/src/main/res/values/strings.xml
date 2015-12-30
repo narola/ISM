@@ -266,10 +266,22 @@
 	<string name="reply">Reply</string>
 	<string name="your_studymates">Your Studymates</string>
 	<string name="find_more_studymates">Find more Studymates</string>
+
+	<!--user profile-->
 	<string name="strYourAmbitionInLife">YOUR AMBITION IN LIFE</string>
 	<string name="strClickTOAddAmbitionInLife">Click to add your ambition in life</string>
 	<string name="strAboutYou">ABOUT YOU</string>
 	<string name="strClickToWriteAboutYourSelf">Click to write detail about your self</string>
+	<string name="strSocial">SOCIAL</string>
+	<string name="strZero">0</string>
+	<string name="strAcademic">ACADEMIC</string>
+	<string name="strIsmScore">ISM Score</string>
+	<string name="strIsmRank">ISM Rank</string>
+	<string name="strExams">Exams</string>
+	<string name="strAssignments">Assignments</string>
+	<string name="strExcellence">EXCELLENCE</string>
+	<string name="strQuestionAsked">Question Asked</string>
+	<string name="strFavouriteQuestions">Favorite Questions</string>
 	<string name="notifications">Notifications</string>
 	<string name="messages">Messages</string>
 	<string name="respond_to_your">Respond to Your</string>
@@ -283,15 +295,6 @@
 	<string name="you_are_now_studymates">You are now Studymates.</string>
 	<string name="subject">Subject</string>
 	<string name="strEdit">Edit</string>
-	<string name="generate_coupon">Generate coupon</string>
-	<string name="generated_coupon">Generated coupon</string>
-	<string name="msg_generate_coupon">You can generate the coupon with amount less than wallet balance and use it in ISM Store</string>
-	<string name="enter_coupon_amount">Enter Coupon Amount:</string>
-	<string name="generate">Generate</string>
-	<string name="coupon_code">Coupon Code</string>
-	<string name="date">Date</string>
-	<string name="amount">Amount</string>
-	<string name="msg_server_connection">Can\'t connect to server!</string>
 	<string name="strBooksYouMayWantToRead">Books you may want to read</string>
 	<string name="strYourFavouriteBooks">Your Favourite Books</string>
 	<string name="strSuggestedRoleModels">Suggested role models</string>
@@ -300,7 +303,6 @@
 	<string name="strFavMovies">Your favourite movies</string>
 	<string name="strSuggestedPastimes">Suggested pastimes</string>
 	<string name="strFavPastimes">Your favourite pastimes</string>
-	<string name="connectivity_problem">Connectivity problem!</string>
 	<string name="strAuthor">Author :</string>
 	<string name="strPublisher">Publisher :</string>
 	<string name="strDescription">Description :</string>
@@ -324,6 +326,19 @@
 	<string name="strOrganization">Organization :</string>
 	<string name="strQuotes">Quotes :</string>
 	<string name="strActivities">Activities :</string>
+
+	<string name="generate_coupon">Generate coupon</string>
+	<string name="generated_coupon">Generated coupon</string>
+	<string name="msg_generate_coupon">You can generate the coupon with amount less than wallet balance and use it in ISM Store</string>
+	<string name="enter_coupon_amount">Enter Coupon Amount:</string>
+	<string name="generate">Generate</string>
+	<string name="coupon_code">Coupon Code</string>
+	<string name="date">Date</string>
+	<string name="amount">Amount</string>
+
+	<string name="msg_server_connection">Can\'t connect to server!</string>
+	<string name="connectivity_problem">Connectivity problem!</string>
+
 	<string name="topics_allocated">Topics Allocated</string>
 	<string name="assignment_submitted">Assignment Submitted</string>
 	<string name="exam_attempted">Exam Attempted</string>
@@ -363,7 +378,6 @@
 	<string name="msg_active_hours_finished">Active hours are finished!</string>
 	<string name="send">Send</string>
 	<string name="say_it">Say it...</string>
-
 
 	<!-- Tutorial Group Friday Exam Strings -->
 
@@ -560,6 +574,17 @@
 	<string name="inputs_missing">Inputs missing !</string>
 	<string name="msg_select_answer"><![CDATA[>  Please select the right answer.]]></string>
 	<string name="msg_question_data_missing"><![CDATA[>  Question or some of the options are missing.]]></string>
+	<string name="strSectionName">Section Name</string>
+	<string name="strViewAll">View all</string>
+    <string name="strHintEmailAddress">(Email Address)</string>
+    <string name="strBlock">Block</string>
+    <string name="strUnblock">UNBLOCK</string>
+    <string name="strEnterHere">Enter here</string>
+	<string name="strYes">Yes</string>
+	<string name="strNo">No</string>
+	<string name="strStudymates">Studymates</string>
+	<string name="strNotificationForCommentsandLike">Notification For Cooment And Like</string>
+	<string name="strNotificationforAuthor">Notification for Author</string>
 	<string name="msg_question_hour">Question hour will begin soon</string>
 	<string name="msg_tutorialmates_getting_ready">Your Tutorialmates are getting ready with question...</string>
 	<string name="welcome_to_ism">Welcome to ISM</string>

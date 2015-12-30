@@ -71,7 +71,7 @@
             android:layout_marginTop="@dimen/d10dp"
             android:text="@string/strquestion"
             android:textColor="@color/color_answer"
-            android:textSize="@dimen/d22dp"
+            android:textSize="@dimen/d22sp"
             android:textStyle="bold"
             android:visibility="gone" />
 

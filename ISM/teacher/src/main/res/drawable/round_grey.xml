@@ -6,7 +6,7 @@
     <solid android:color="@android:color/transparent" />
 
     <stroke
-        android:width="3dp"
+        android:width="@dimen/d3dp"
         android:color="@color/circular_image_border_color" />
     <size
         android:width="@dimen/d15dp"
