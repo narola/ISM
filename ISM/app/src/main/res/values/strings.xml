@@ -560,6 +560,8 @@
 	<string name="inputs_missing">Inputs missing !</string>
 	<string name="msg_select_answer"><![CDATA[>  Please select the right answer.]]></string>
 	<string name="msg_question_data_missing"><![CDATA[>  Question or some of the options are missing.]]></string>
+	<string name="msg_question_hour">Question hour will begin soon</string>
+	<string name="msg_tutorialmates_getting_ready">Your Tutorialmates are getting ready with question...</string>
 
 
 </resources>
