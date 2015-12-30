@@ -60,13 +60,13 @@ public class AllBooksFragment extends Fragment implements WebserviceWrapper.Webs
 
     private void initGlobal() {
 
-        rvBooksList = (RecyclerView) view.findViewById(R.id.rv_books_list);
+        rvBooksList = (RecyclerView) view.findViewById(R.id.recyclerview);
         rvBooksList.setHasFixedSize(true);
         rvBooksList.setLayoutManager(new LinearLayoutManager(getActivity()));
         booksAdapter = new BooksAdapter(getActivity());
         rvBooksList.setAdapter(booksAdapter);
 
-        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
+        tvNoDataMsg = (TextView) view.findViewById(R.id.txt_empty_view);
         tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvNoDataMsg.setVisibility(View.GONE);
         tvNoDataMsg.setText(getString(R.string.no_books_available));

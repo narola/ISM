@@ -47,14 +47,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/img_subject"
-        android:background="@color/divider"
+        android:background="#E4E4E4"
         android:paddingLeft="@dimen/d10dp"
         android:paddingRight="@dimen/d5dp"
         android:paddingBottom="@dimen/d5dp"
         android:paddingTop="@dimen/d5dp"
         android:text="Exam given by"
         android:textColor="@color/blue"
-        android:textSize="@dimen/d16sp" />
+        android:textSize="@dimen/d18sp" />
 
     <com.ism.views.CircleImageView
         android:id="@+id/img_user_pic"
@@ -62,7 +62,7 @@
         android:layout_height="80dp"
         android:layout_below="@+id/img_menu"
         android:layout_toEndOf="@+id/txt_subject"
-        android:padding="@dimen/d15dp"
+        android:layout_alignParentEnd="true"
         android:src="@drawable/img_default_dp" />
 
     <ImageView
@@ -105,7 +105,7 @@
         android:padding="10dp"
         android:text="Exam Name"
         android:textColor="@color/color_red"
-        android:textSize="@dimen/d18sp" />
+        android:textSize="@dimen/d20sp" />
 
     <ImageView
         android:id="@+id/line4"

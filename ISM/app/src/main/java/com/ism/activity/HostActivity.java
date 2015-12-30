@@ -103,7 +103,6 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private BooksListner booksListner;
     private HostListenerEditAboutMe listenerEditAboutMe;
     public InsertSymbolListener insertSymbolListener;
-    private StudentHelper studentHelper;
     private HostSpinnerListener hostSpinnerListener;
 
     private HostListenerQuestionPalette listenerQuestionPalette;
@@ -263,7 +262,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
         inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        studentHelper = new StudentHelper(this);
+        Global.studentHelper = new StudentHelper(this);
 
         arrTxtMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
         progressGenerator = new ProgressGenerator();

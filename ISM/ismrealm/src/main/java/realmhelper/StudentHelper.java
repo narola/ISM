@@ -11,6 +11,7 @@ import model.AdminConfig;
 import model.FeedComment;
 import model.FeedImage;
 import model.Feeds;
+import model.Notes;
 import model.Subjects;
 import model.TutorialGroupDiscussion;
 import model.TutorialTopic;
@@ -25,6 +26,7 @@ public class StudentHelper {
 
     Realm realm;
     private RealmResults<Feeds> feedsRealmResults;
+    private RealmResults<Notes> notesRealmResults;
 
     public StudentHelper(Context context) {
         realm = RealmAdaptor.getInstance(context);
@@ -95,7 +97,7 @@ public class StudentHelper {
 
     public AdminConfig getActiveHoursEndTime() {
         RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
-		        .equalTo("configKey", "activeHoursEndTime")
+                .equalTo("configKey", "activeHoursEndTime")
                 .findAll();
         if (adminConfigs != null && adminConfigs.size() > 0) {
             return adminConfigs.get(0);
@@ -261,40 +263,40 @@ public class StudentHelper {
 //    }
 
     public void saveTutorialGroupDiscussion(TutorialGroupDiscussion tutorialGroupDiscussion) {
-	    try {
-		    Number discussionId = realm.where(AdminConfig.class).max("tutorialGroupDiscussionId");
-		    long newId = 1;
-		    if (discussionId != null) {
-			    newId = (long) discussionId + 1;
-		    }
-		    realm.beginTransaction();
-		    tutorialGroupDiscussion.setTutorialGroupDiscussionId((int) newId);
-		    realm.copyToRealmOrUpdate(tutorialGroupDiscussion);
-		    realm.commitTransaction();
-	    } catch (Exception e) {
-		    Log.e(TAG, "saveTutorialGroupDiscussion Exception : " + e.toString());
-	    }
+        try {
+            Number discussionId = realm.where(TutorialGroupDiscussion.class).max("tutorialGroupDiscussionId");
+            long newId = 1;
+            if (discussionId != null) {
+                newId = (long) discussionId + 1;
+            }
+            realm.beginTransaction();
+            tutorialGroupDiscussion.setTutorialGroupDiscussionId((int) newId);
+            realm.copyToRealmOrUpdate(tutorialGroupDiscussion);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.e(TAG, "saveTutorialGroupDiscussion Exception : " + e.toString());
+        }
     }
 
-	public void saveTutorialGroupTopic(TutorialTopic tutorialTopic) {
-		try {
-			Number topicId = realm.where(AdminConfig.class).max("tutorialTopicId");
-			long newId = 1;
-			if (topicId != null) {
-				newId = (long) topicId + 1;
-			}
-			realm.beginTransaction();
-			tutorialTopic.setTutorialTopicId((int) newId);
-			realm.copyToRealmOrUpdate(tutorialTopic);
-			realm.commitTransaction();
-		} catch (Exception e) {
-			Log.e(TAG, "saveTutorialGroupTopic Exception : " + e.toString());
-		}
-	}
+    public void saveTutorialGroupTopic(TutorialTopic tutorialTopic) {
+        try {
+            Number topicId = realm.where(TutorialTopic.class).max("tutorialTopicId");
+            long newId = 1;
+            if (topicId != null) {
+                newId = (long) topicId + 1;
+            }
+            realm.beginTransaction();
+            tutorialTopic.setTutorialTopicId((int) newId);
+            realm.copyToRealmOrUpdate(tutorialTopic);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.e(TAG, "saveTutorialGroupTopic Exception : " + e.toString());
+        }
+    }
 
     public void saveSubjects(Subjects subjects) {
         try {
-            Number subjectId = realm.where(AdminConfig.class).max("subjectId");
+            Number subjectId = realm.where(Subjects.class).max("subjectId");
             long newId = 1;
             if (subjectId != null) {
                 newId = (long) subjectId + 1;
@@ -308,4 +310,70 @@ public class StudentHelper {
         }
     }
 
+    /**
+     * used for the save notes or jottings
+     *
+     * @param notes
+     */
+    public void saveNote(Notes notes) {
+        try {
+                Number id = realm.where(Notes.class).max("noteId");
+                long newId = 1;
+                if (id != null) {
+                    newId = (long) id + 1;
+                }
+                realm.beginTransaction();
+                notes.setNoteId((int) newId);
+                realm.copyToRealmOrUpdate(notes);
+                realm.commitTransaction();
+
+        } catch (Exception e) {
+            Log.e(TAG, "saveNote Exception : " + e.toString());
+        }
+    }
+
+    /**
+     * get all notes or jotting for user
+     *
+     * @param user
+     * @return
+     */
+    public RealmResults<Notes> getNotes(final User user) {
+        try {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                        notesRealmResults = realm.where(Notes.class).equalTo("user.userId", user.getUserId()).findAll();
+
+                }
+            });
+            Log.i(TAG, "getNotes notesRealmResults.size: " + notesRealmResults.size());
+        } catch (Exception e) {
+            Log.i(TAG, "getNotes Exception : " + e.getLocalizedMessage());
+        }
+        return notesRealmResults;
+    }
+
+    /**
+     * update the note(only for subject and note text)
+     * @param notes
+     * @param userId
+     */
+    public void updateNotes(final Notes notes, final int userId) {
+        try {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    notesRealmResults = realm.where(Notes.class).equalTo("user.userId", userId).equalTo("noteId", notes.getNoteId()).findAll();
+                    notesRealmResults.get(0).setModifiedDate(notes.getModifiedDate());
+                    notesRealmResults.get(0).setNoteSubject(notes.getNoteSubject());
+                    notesRealmResults.get(0).setNoteText(notes.getNoteText());
+
+                }
+            });
+            Log.i(TAG, "updateNotes : done  ");
+        } catch (Exception e) {
+            Log.i(TAG, "updateNotes Exception : " + e.getLocalizedMessage());
+        }
+    }
 }

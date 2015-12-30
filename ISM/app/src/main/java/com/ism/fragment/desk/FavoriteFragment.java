@@ -217,12 +217,11 @@ public class FavoriteFragment extends Fragment {
             if (txtViewAllNotes == v) {
 
             } else if (txtViewAllBooks == v) {
-//                getChildFragmentManager().beginTransaction().
-
-//               getBundleArguments().putString(DeskFragment.ARG_SUBFRAGMENT);
-              //  activityHost.subFagmentMenuClicks(2, false);
-               // deskListenrer.onViewAllListener(DeskFragment.FRAGMENT_ALL_BOOKS);
                 loadFragment(DeskFragment.FRAGMENT_ALL_BOOKS);
+            }else if (txtViewAllAssignment == v) {
+                loadFragment(DeskFragment.FRAGMENT_ALL_ASSIGNMENTS);
+            }else if (txtViewAllExmas == v) {
+                loadFragment(DeskFragment.FRAGMENT_ALL_EXAMS);
             }
         } catch (Exception e) {
             Debug.i(TAG, "onClickItem Exceptions : " + e.getLocalizedMessage());
@@ -234,6 +233,14 @@ public class FavoriteFragment extends Fragment {
             case DeskFragment.FRAGMENT_ALL_BOOKS:
                 currentFragment=fragment;
                 getFragmentManager().beginTransaction().replace(R.id.fl_desk, AllBooksFragment.newInstance()).commit();
+                break;
+            case DeskFragment.FRAGMENT_ALL_ASSIGNMENTS:
+                currentFragment = fragment;
+                getFragmentManager().beginTransaction().replace(R.id.fl_desk, AllAssignmentsFragment.newInstance()).commit();
+                break;
+            case DeskFragment.FRAGMENT_ALL_EXAMS:
+                currentFragment = fragment;
+                getFragmentManager().beginTransaction().replace(R.id.fl_desk, AllExamsFragment.newInstance()).commit();
                 break;
         }
     }
