@@ -9,6 +9,6 @@
     android:gravity="center_vertical|left"
     android:paddingLeft="@dimen/d5dp"
     android:singleLine="true"
-    android:text="Seletct"
+    android:text=""
     android:textColor="@color/color_text_hint"
     android:textSize="@dimen/d15dp" />

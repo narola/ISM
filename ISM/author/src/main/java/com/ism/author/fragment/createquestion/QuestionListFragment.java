@@ -119,13 +119,13 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         arrListFilter = new ArrayList<String>();
         arrListFilter.add(getString(R.string.strfilters));
         arrListFilter = Arrays.asList(getResources().getStringArray(R.array.questionsfilter));
-        Adapters.setUpSpinner(getActivity(), spQuestionlistFilter, arrListFilter, Adapters.ADAPTER_SMALL);
+        Adapters.setUpSpinner(getActivity(), spQuestionlistFilter, arrListFilter, Adapters.ADAPTER_SMALL,Global.myTypeFace.getRalewayRegular());
         spQuestionlistFilter.setSelection(1);
 
 
         arrListSort = new ArrayList<String>();
         arrListSort = Arrays.asList(getResources().getStringArray(R.array.questionsSorting));
-        Adapters.setUpSpinner(getActivity(), spQuestionlistSort, arrListSort, Adapters.ADAPTER_SMALL);
+        Adapters.setUpSpinner(getActivity(), spQuestionlistSort, arrListSort, Adapters.ADAPTER_SMALL,Global.myTypeFace.getRalewayRegular());
         spQuestionlistSort.setSelection(1);
 
 
@@ -302,7 +302,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                             authorBooks.add(authorbook.getBookName());
 
                         }
-                        Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL);
+                        Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL,Global.myTypeFace.getRalewayRegular());
                         if (getBaseFragment().getBundleArguments() != null) {
                             Debug.e(TAG, "THE BOOK NAME IS " + getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
 //                            if (arrListAuthorBooks.contains(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME))) {

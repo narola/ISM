@@ -14,7 +14,7 @@
         android:text="@string/strStudentAttempted"
         android:textAllCaps="true"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/d18dp" />
+        android:textSize="@dimen/d18sp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_studentattempted_list"

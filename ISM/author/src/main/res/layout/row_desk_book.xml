@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:id="@+id/ll_main"
-        android:layout_width="210dp"
+        android:layout_width="@dimen/d210dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/d5dp"
         android:background="@drawable/bg_desk_books"
@@ -19,19 +19,19 @@
             android:layout_marginBottom="@dimen/d5dp"
             android:layout_marginLeft="@dimen/d10dp"
             android:layout_marginRight="@dimen/d10dp"
-            android:layout_marginTop="7dp">
+            android:layout_marginTop="@dimen/d7dp">
 
             <ImageView
                 android:id="@+id/img_pic"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="@dimen/d180dp"
                 android:layout_alignParentTop="true"
                 android:scaleType="centerCrop" />
 
             <ImageView
                 android:id="@+id/img_book_info"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/d30dp"
+                android:layout_height="@dimen/d30dp"
                 android:layout_alignEnd="@+id/img_pic"
                 android:layout_alignParentTop="true"
                 android:layout_margin="@dimen/d5dp"
@@ -82,20 +82,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="1dp"
+                android:padding="@dimen/d1dp"
                 android:text="Book Name"
                 android:textColor="@color/cpb_red"
-                android:textSize="16sp" />
+                android:textSize="@dimen/d15sp" />
 
             <TextView
                 android:id="@+id/txt_author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="1dp"
+                android:padding="@dimen/d1dp"
                 android:text="Author Name"
-                android:textSize="15sp" />
-
+                android:textSize="@dimen/d15sp" />
         </LinearLayout>
 
     </LinearLayout>

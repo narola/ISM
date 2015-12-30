@@ -93,7 +93,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
         arrayListBooks = new ArrayList<>();
         arrayListBooks.add(getString(R.string.strSelectBook));
-        Adapters.setUpSpinner(getActivity(), spBooks, arrayListBooks, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spBooks, arrayListBooks, Adapters.ADAPTER_NORMAL, Global.myTypeFace.getRalewayRegular());
 
         txtCancel.setOnClickListener(this);
         txtSave.setOnClickListener(this);
@@ -235,7 +235,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                     for (AuthorBook authorBook : arrListAuthorBooks) {
                         authorBooks.add(authorBook.getBookName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spBooks, authorBooks, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spBooks, authorBooks, Adapters.ADAPTER_NORMAL, Global.myTypeFace.getRalewayRegular());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.i(TAG, "onResponseGetAuthorBooks  : failed");
                     Utils.showToast(responseHandler.getMessage(), getActivity());
