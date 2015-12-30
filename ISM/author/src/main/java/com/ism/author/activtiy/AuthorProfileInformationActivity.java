@@ -139,16 +139,16 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
 
         arrListDefalt = new ArrayList<>();
         arrListDefalt.add(getString(R.string.select));
-        Adapters.setUpSpinner(getActivity(), spCountry, arrListDefalt, Adapters.ADAPTER_NORMAL);
-        Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, Adapters.ADAPTER_NORMAL);
-        Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spCountry, arrListDefalt, Adapters.ADAPTER_NORMAL,myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, Adapters.ADAPTER_NORMAL,myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, Adapters.ADAPTER_NORMAL,myTypeFace.getRalewayRegular());
 
 
         arrListGender = new ArrayList<String>();
         arrListGender.add(getString(R.string.gender));
         arrListGender.add(getString(R.string.male));
         arrListGender.add(getString(R.string.female));
-        Adapters.setUpSpinner(getActivity(), spGender, arrListGender, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spGender, arrListGender, Adapters.ADAPTER_NORMAL,myTypeFace.getRalewayRegular());
 
 
         if (Utility.isConnected(getActivity())) {
@@ -178,7 +178,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                         Utility.toastOffline(getActivity());
                     }
                 } else {
-                    Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, Adapters.ADAPTER_NORMAL,myTypeFace.getRalewayRegular());
                 }
             }
 
@@ -198,7 +198,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                         Utility.toastOffline(getActivity());
                     }
                 } else {
-                    Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, Adapters.ADAPTER_NORMAL,myTypeFace.getRalewayRegular());
                 }
             }
 
@@ -567,7 +567,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                     for (Cities city : arrListCities) {
                         cities.add(city.getCityName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spCity, cities, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spCity, cities, Adapters.ADAPTER_NORMAL,myTypeFace.getRalewayRegular());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCities Failed");
                 }
@@ -593,7 +593,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                     for (States state : arrListStates) {
                         states.add(state.getStateName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spState, states, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spState, states, Adapters.ADAPTER_NORMAL,myTypeFace.getRalewayRegular());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseStates Failed");
                 }
@@ -620,7 +620,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                     for (Countries country : arrListCountries) {
                         countries.add(country.getCountryName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spCountry, countries, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spCountry, countries, Adapters.ADAPTER_NORMAL,myTypeFace.getRalewayRegular());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCountries Failed");
                 }

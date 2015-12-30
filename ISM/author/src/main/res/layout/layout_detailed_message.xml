@@ -10,11 +10,11 @@
         android:layout_width="@dimen/d120dp"
         android:layout_height="@dimen/d120dp"
         android:layout_gravity="center"
-        android:layout_marginTop="17dp"
-        android:layout_marginLeft="17dp"
-        android:layout_marginRight="7dp"
+        android:layout_marginLeft="@dimen/d17dp"
+        android:layout_marginRight="@dimen/d7dp"
+        android:layout_marginTop="@dimen/d17dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/userdp"/>
+        android:src="@drawable/userdp" />
 
     <TextView
         android:id="@+id/txt_name"
@@ -23,7 +23,7 @@
         android:layout_toRightOf="@id/img_dp"
         android:padding="@dimen/d10dp"
         android:textColor="@color/color_black"
-        android:textSize="@dimen/d25dp"/>
+        android:textSize="@dimen/d25sp" />
 
     <TextView
         android:id="@+id/txt_message"
@@ -33,7 +33,7 @@
         android:layout_toRightOf="@id/img_dp"
         android:padding="@dimen/d10dp"
         android:textColor="@color/color_gray"
-        android:textSize="@dimen/d18sp"/>
+        android:textSize="@dimen/d18sp" />
 
     <TextView
         android:id="@+id/txt_reply"
@@ -41,8 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_message"
         android:layout_toRightOf="@id/img_dp"
-        android:text="@string/reply"
         android:padding="@dimen/d10dp"
+        android:text="@string/reply"
         android:textColor="@color/color_green"
-        android:textSize="@dimen/d18dp"/>
+        android:textSize="@dimen/d18dp" />
 </RelativeLayout>

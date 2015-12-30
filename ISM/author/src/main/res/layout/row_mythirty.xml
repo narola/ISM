@@ -34,7 +34,7 @@
                     android:text="@string/strtest"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d17dp"
+                    android:textSize="@dimen/d17sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -47,7 +47,7 @@
                     android:singleLine="false"
                     android:text="@string/strexamtype"
                     android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/d15dp" />
+                    android:textSize="@dimen/d15sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -76,7 +76,7 @@
             android:paddingTop="@dimen/d10dp">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/strtest"
                     android:textColor="@color/color_violet_assignment"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <TextView
                     android:id="@+id/tv_exam_noof_student_avg"
@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="@string/stravg"
-                    android:textSize="@dimen/d15dp" />
+                    android:textSize="@dimen/d15sp" />
             </LinearLayout>
 
             <ImageView
@@ -105,7 +105,7 @@
                 android:background="@color/assignment_separator" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/strtest"
                     android:textColor="@color/color_red_assignment"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <TextView
                     android:id="@+id/tv_exam_attempted"
@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="@string/strattempted"
-                    android:textSize="@dimen/d15dp" />
+                    android:textSize="@dimen/d15sp" />
             </LinearLayout>
         </LinearLayout>
 

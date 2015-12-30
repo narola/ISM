@@ -55,7 +55,7 @@
                 android:layout_toRightOf="@id/img_back"
                 android:gravity="left|center_vertical"
                 android:paddingLeft="@dimen/d15dp"
-                android:text="dsdsdsds"
+                android:text=""
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/controller_top_menu_text_size"
                 android:visibility="gone" />
@@ -78,7 +78,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/controller_top_menu_text_size"
                 android:visibility="gone" />
-            <!--android:background="#323941"-->
         </RelativeLayout>
 
         <LinearLayout
@@ -104,16 +103,17 @@
 
             <EditText
                 android:id="@+id/et_search"
-                android:layout_width="200dp"
+                android:layout_width="@dimen/d200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="@dimen/d20dp"
                 android:hint="@string/hint_search"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
-                android:padding="10dp"
+                android:padding="@dimen/d10dp"
                 android:textColor="@color/color_blue"
                 android:textColorHint="@color/color_graylight"
+                android:textSize="@dimen/d18sp"
                 android:visibility="gone" />
         </LinearLayout>
 
@@ -243,7 +243,7 @@
     <com.ism.commonsource.view.ActionProcessButton
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="@dimen/d5dp"
         app:pb_colorComplete="@color/color_dark_gray"
         app:pb_colorNormal="@color/color_dark_gray"
         app:pb_colorPressed="@color/color_dark_gray"

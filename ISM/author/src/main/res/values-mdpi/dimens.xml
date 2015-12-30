@@ -1,0 +1,105 @@
+<resources>
+
+    <dimen name="d5sp">3.75sp</dimen>
+    <dimen name="d10sp">7.50sp</dimen>
+    <dimen name="d12sp">9sp</dimen>
+    <dimen name="d15sp">11.25sp</dimen>
+    <dimen name="d16sp">12sp</dimen>
+    <dimen name="d17sp">12.75sp</dimen>
+    <dimen name="d18sp">13.50sp</dimen>
+    <dimen name="d20sp">15sp</dimen>
+    <dimen name="d22sp">16.50sp</dimen>
+    <dimen name="d30sp">22.50sp</dimen>
+    <dimen name="d25sp">18.75sp</dimen>
+
+    <dimen name="d40sp">30sp</dimen>
+    <dimen name="d50sp">37.50sp</dimen>
+    <dimen name="d60sp">45sp</dimen>
+    <dimen name="d70sp">52.50sp</dimen>
+    <dimen name="d90sp">67.50sp</dimen>
+    <dimen name="d120sp">90sp</dimen>
+    <dimen name="d130sp">97.50sp</dimen>
+
+
+    <dimen name="d0dp">0dp</dimen>
+    <dimen name="d1dp">0.75dp</dimen>
+    <dimen name="d2dp">1.50dp</dimen>
+    <dimen name="d3dp">2.25dp</dimen>
+    <dimen name="d4dp">3dp</dimen>
+    <dimen name="d5dp">3.75dp</dimen>
+    <dimen name="d6dp">4.50dp</dimen>
+    <dimen name="d7dp">5.25dp</dimen>
+    <dimen name="d8dp">6dp</dimen>
+    <dimen name="d10dp">7.50dp</dimen>
+    <dimen name="d12dp">9dp</dimen>
+    <dimen name="d15dp">11.25dp</dimen>
+    <dimen name="d16dp">12dp</dimen>
+    <dimen name="d17dp">12.75dp</dimen>
+    <dimen name="d18dp">13.50dp</dimen>
+
+    <dimen name="d20dp">15dp</dimen>
+    <dimen name="d22dp">16.50dp</dimen>
+    <dimen name="d30dp">22.50dp</dimen>
+    <dimen name="d25dp">18.75dp</dimen>
+    <dimen name="d35dp">26.25dp</dimen>
+
+    <dimen name="d40dp">30dp</dimen>
+    <dimen name="d45dp">33.75dp</dimen>
+    <dimen name="d50dp">37.50dp</dimen>
+    <dimen name="d55dp">41.25dp</dimen>
+    <dimen name="d60dp">45dp</dimen>
+    <dimen name="d70dp">52.50dp</dimen>
+    <dimen name="d75dp">56.25dp</dimen>
+    <dimen name="d80dp">60dp</dimen>
+    <dimen name="d85dp">63.75dp</dimen>
+    <dimen name="d90dp">67.50dp</dimen>
+    <dimen name="d100dp">75dp</dimen>
+    <dimen name="d110dp">82.50dp</dimen>
+    <dimen name="d120dp">90dp</dimen>
+    <dimen name="d130dp">97.50dp</dimen>
+    <dimen name="d140dp">105dp</dimen>
+    <dimen name="d150dp">112.50dp</dimen>
+    <dimen name="d160dp">120dp</dimen>
+    <dimen name="d170dp">127.50dp</dimen>
+    <dimen name="d180dp">135dp</dimen>
+    <dimen name="d185dp">138.75dp</dimen>
+    <dimen name="d190dp">142.50dp</dimen>
+    <dimen name="d200dp">150dp</dimen>
+    <dimen name="d250dp">187.50dp</dimen>
+    <dimen name="d210dp">157.50dp</dimen>
+    <dimen name="d220dp">165dp</dimen>
+    <dimen name="d350dp">262.50dp</dimen>
+    <dimen name="d400dp">400dp</dimen>
+    <dimen name="d450dp">337.50dp</dimen>
+    <dimen name="d480dp">360dp</dimen>
+    <dimen name="d670dp">502.50dp</dimen>
+
+
+    <dimen name="login_box_width">375dp</dimen>
+    <dimen name="padding_header_white">@dimen/d20dp</dimen>
+    <dimen name="text_size_header_white">@dimen/d20sp</dimen>
+    <dimen name="padding_child_fragment_content">@dimen/d15dp</dimen>
+    <dimen name="controller_left_width">@dimen/d100dp</dimen>
+    <dimen name="controller_left_divider_height">3dp</dimen>
+    <dimen name="content_right_width">191dp</dimen>
+    <dimen name="nav_header_height">@dimen/d160dp</dimen>
+    <dimen name="controller_top_height">@dimen/d50dp</dimen>
+    <dimen name="controller_top_button_width">63.75dp</dimen>
+    <dimen name="controller_top_small_button_width">@dimen/d60dp</dimen>
+    <dimen name="controller_menu_text_padding">@dimen/d30dp</dimen>
+    <dimen name="controller_top_menu_text_size">@dimen/d20sp</dimen>
+    <dimen name="shadow_layer_width">@dimen/d2dp</dimen>
+    <dimen name="controller_left_heihgt">@dimen/d140dp</dimen>
+    <dimen name="circular_imageview_width_height">@dimen/d70sp</dimen>
+    <dimen name="circular_imageview_border_width">@dimen/d1dp</dimen>
+    <dimen name="dp_post_creater_image_width_height">@dimen/d160dp</dimen>
+    <dimen name="office_tab_width">236.25dp</dimen>
+    <dimen name="rich_text_editor_height">217.50dp</dimen>
+    <dimen name="notification_digit_text_size">@dimen/d16sp</dimen>
+    <dimen name="notification_digit_horizontal_padding">@dimen/d8dp</dimen>
+    <dimen name="text_size_emptylist_message_small">@dimen/d18sp</dimen>
+    <dimen name="text_size_emptylist_message_medium">@dimen/d22sp</dimen>
+    <dimen name="text_size_emptylist_message_large">@dimen/d25sp</dimen>
+
+
+</resources>

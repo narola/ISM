@@ -19,7 +19,7 @@
             android:paddingTop="@dimen/d10dp"
             android:text="@string/strtest"
             android:textColor="@color/question_color"
-            android:textSize="@dimen/d18dp" />
+            android:textSize="@dimen/d18sp" />
 
         <TextView
             android:id="@+id/tv_assignment_content"
@@ -30,7 +30,7 @@
             android:padding="@dimen/d10dp"
             android:text="@string/strtest"
             android:textColor="@color/color_answer"
-            android:textSize="@dimen/d18dp" />
+            android:textSize="@dimen/d18sp" />
     </LinearLayout>
 
 </LinearLayout>

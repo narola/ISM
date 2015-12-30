@@ -3,7 +3,7 @@
 
     <item>
         <shape>
-            <padding android:bottom="3dp" />
+            <padding android:bottom="@dimen/d3dp" />
             <solid android:color="@color/bg_office" />
         </shape>
     </item>

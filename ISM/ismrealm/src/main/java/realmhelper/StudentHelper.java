@@ -24,7 +24,7 @@ public class StudentHelper {
 
     private static final String TAG = StudentHelper.class.getSimpleName();
 
-    Realm realm;
+    public Realm realm;
     private RealmResults<Feeds> feedsRealmResults;
     private RealmResults<Notes> notesRealmResults;
 
@@ -148,6 +148,7 @@ public class StudentHelper {
     public User getUser(int user_id) {
         realm.beginTransaction();
         RealmResults<User> feedsRealmResults = realm.where(User.class).equalTo("userId", user_id).findAll();
+        Log.i(TAG, "getUser feedsRealmResults.size: " + feedsRealmResults.size());
         realm.commitTransaction();
         return feedsRealmResults.get(0);
     }
@@ -319,15 +320,17 @@ public class StudentHelper {
      */
     public void saveNote(Notes notes) {
         try {
-                Number id = realm.where(Notes.class).max("noteId");
+            if (notes.getLocalNoteId() == 0) {
+                Number id = realm.where(Notes.class).max("localNoteId");
                 long newId = 1;
                 if (id != null) {
                     newId = (long) id + 1;
                 }
-                realm.beginTransaction();
-                notes.setNoteId((int) newId);
-                realm.copyToRealmOrUpdate(notes);
-                realm.commitTransaction();
+                notes.setLocalNoteId((int) newId);
+            }
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(notes);
+            realm.commitTransaction();
 
         } catch (Exception e) {
             Log.e(TAG, "saveNote Exception : " + e.toString());
@@ -337,15 +340,15 @@ public class StudentHelper {
     /**
      * get all notes or jotting for user
      *
-     * @param user
+     * @param userId
      * @return
      */
-    public RealmResults<Notes> getNotes(final User user) {
+    public RealmResults<Notes> getNotes(final int userId) {
         try {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                        notesRealmResults = realm.where(Notes.class).equalTo("user.userId", user.getUserId()).findAll();
+                    notesRealmResults = realm.where(Notes.class).equalTo("user.userId", userId).findAll();
 
                 }
             });
@@ -356,26 +359,4 @@ public class StudentHelper {
         return notesRealmResults;
     }
 
-    /**
-     * update the note(only for subject and note text)
-     * @param notes
-     * @param userId
-     */
-    public void updateNotes(final Notes notes, final int userId) {
-        try {
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    notesRealmResults = realm.where(Notes.class).equalTo("user.userId", userId).equalTo("noteId", notes.getNoteId()).findAll();
-                    notesRealmResults.get(0).setModifiedDate(notes.getModifiedDate());
-                    notesRealmResults.get(0).setNoteSubject(notes.getNoteSubject());
-                    notesRealmResults.get(0).setNoteText(notes.getNoteText());
-
-                }
-            });
-            Log.i(TAG, "updateNotes : done  ");
-        } catch (Exception e) {
-            Log.i(TAG, "updateNotes Exception : " + e.getLocalizedMessage());
-        }
-    }
 }
