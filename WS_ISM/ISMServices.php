@@ -51,13 +51,14 @@ switch ($_REQUEST['Service'])
     case "GetStudentProfile":
     case "ManageBookLibrary":
     case "GetBlockedUser":
-    case "GetBooksForAuthor":
+    case "GetBooksByAuthors":
     case "RefreshToken":
     case "GetAdminConfig":
     case "UnBlockUser":
     case "UploadProfileImages":
     case "GetMyFollowers":
     case "GetRecommendedAuthors":
+    case "GetReportData":
     {
         include_once 'ProfileFunctions.php';
         $profile = new ProfileFunctions();

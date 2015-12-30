@@ -157,9 +157,9 @@ class ProfileFunctions
             }
                 break;
 
-            case "GetBooksForAuthor":
+            case "GetBooksByAuthors":
             {
-                return $this->getBooksForAuthor($postData);
+                return $this->getBooksByAuthors($postData);
             }
                 break;
 
@@ -197,6 +197,12 @@ class ProfileFunctions
                 return $this->getRecommendedAuthors($postData);
             }
             break;
+
+            case "GetReportData":
+            {
+                return $this->getReportData($postData);
+            }
+                break;
 
         }
     }
@@ -1791,7 +1797,6 @@ class ProfileFunctions
                 while ($val = mysqli_fetch_assoc($resultQuery)) {
                     $suggested['book_id'] = $val['id'];
                     $suggested['book_name'] = $val['book_name'];
-                    $suggested['book_image'] = $val['image_link'];
                     $suggested['ebook_link'] = $val['ebook_link'];
                     $suggested['front_cover_image'] = $val['front_cover_image'];
                     $suggested['back_cover_image'] = $val['back_cover_image'];
@@ -1855,7 +1860,6 @@ class ProfileFunctions
                 while ($val = mysqli_fetch_assoc($resultFavoriteQuery)) {
                     $favorite['book_id'] = $val['id'];
                     $favorite['book_name'] = $val['book_name'];
-                    $favorite['book_image'] = $val['image_link'];
                     $favorite['ebook_link'] = $val['ebook_link'];
                     $favorite['front_cover_image'] = $val['front_cover_image'];
                     $favorite['back_cover_image'] = $val['back_cover_image'];
@@ -2634,9 +2638,9 @@ class ProfileFunctions
     }
 
     /*
-   *getBooksForAuthor
+   *getBooksByAuthors
    */
-    public function getBooksForAuthor($postData)
+    public function getBooksByAuthors($postData)
     {
         $message ='';
         $status='';
@@ -2661,10 +2665,11 @@ class ProfileFunctions
 
             if($user_id==0)
             {
-                $selectQuery = "SELECT `id` as 'book_id' , `book_name`, `book_description`,`ebook_link`,`front_cover_image`,`back_cover_image` FROM ".TABLE_BOOKS ." WHERE is_delete=0";
+               // $selectQuery = "SELECT `id` as 'book_id' , `book_name`, `book_description`,`ebook_link`,`front_cover_image`,`back_cover_image` FROM ".TABLE_BOOKS ." WHERE is_delete=0";
             }
             else{
-                $selectQuery = "select book.*,autorBook.book_id as 'book_id' from ".TABLE_BOOKS ." book INNER JOIN ".TABLE_AUTHOR_BOOK." autorBook ON autorBook.book_id=book.id WHERE autorBook.is_delete=0 AND autorBook.user_id=".$user_id." ORDER BY book.id DESC";
+                $selectQuery = "select book.*,autorBook.book_id as 'book_id',users.full_name,users.profile_pic from ".TABLE_BOOKS ." book INNER JOIN ".TABLE_AUTHOR_BOOK." autorBook ON autorBook.book_id=book.id LEFT JOIN ".TABLE_USERS.
+                    " users ON users.id=autorBook.user_id  WHERE autorBook.is_delete=0 AND autorBook.user_id=".$user_id." ORDER BY book.id DESC";
             }
 
 
@@ -2678,13 +2683,29 @@ class ProfileFunctions
                     $suggested['front_cover_image'] = $val['front_cover_image'];
                     $suggested['back_cover_image'] = $val['back_cover_image'];
                     $suggested['ebook_link'] = $val['ebook_link'];
+                    $suggested['publisher_name'] = $val['publisher_name'];
+                    $suggested['description'] = $val['book_description'];
+                    $suggested['author_name'] = $val['full_name'];
+                    $suggested['author_image'] = $val['profile_pic'];
+                    $suggested['price'] = $val['price'];
 
-                  //  $suggested['author_name'] = $val['full_name'];
-                  //  $suggested['author_image'] = $val['profile_pic'];
-                   // $suggested['price'] = $val['price'];
+                    $tags=array();
+                    $tagQuery="SELECT tags.id as 'tag_id',tags.tag_name FROM ".TABLE_TAGS_BOOK." tag_books JOIN ".TABLE_TAGS." tags ON tags.id=tag_books.tag_id WHERE tag_books.book_id=".$val['id']." AND tags.is_delete=0 and tag_books.is_delete=0";
+                    $tagResult=mysqli_query($GLOBALS['con'], $tagQuery) or  $message= mysqli_error($GLOBALS['con']);
+                    if(mysqli_num_rows($tagResult))
+                    {
+
+                        while($rowGetTags=mysqli_fetch_assoc($tagResult)) {
+                            $tags[]=$rowGetTags;
+
+                        }
+                        $suggested['tags']=$tags;
+                    }
+                    else{
+                        $suggested['tags']=$tags;
+                    }
+
                     $data[] = $suggested;
-
-
 
                 }
 
@@ -2692,7 +2713,7 @@ class ProfileFunctions
                 $message=REQUEST_ACCEPTED;
                 $status = SUCCESS;
             } else {
-                $data[] = array();
+                $data = array();
                 $status=SUCCESS;
                 $message=DEFAULT_NO_RECORDS;
             }
@@ -3574,5 +3595,140 @@ class ProfileFunctions
 
         return $response;
     }
+
+
+    /*
+     * getReportData
+     */
+    public function getReportData($postData)
+    {
+        $message ='';
+        $status='';
+        $data = array();
+        $response = array();
+
+        $user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $role_id = validateObject($postData, 'role_id', "");
+        $role_id = addslashes($role_id);
+
+        $last_sync_date = validateObject($postData, 'last_sync_date', "");
+        $last_sync_date = addslashes($last_sync_date);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            if ($last_sync_date != NULL) {
+                $condition = " and `modified_date` > '" . $last_sync_date . "'";
+            }
+
+            if ($role_id == 3) {
+                $queryToGetSchoolClassroomId = "SELECT id FROM " . TABLE_SCHOOL_CLASSROOM . " WHERE class_incharge=" . $user_id . " AND is_delete=0";
+                $resultToGetSchoolClassroomId = mysqli_query($GLOBALS['con'], $queryToGetSchoolClassroomId) or $message = mysqli_error($GLOBALS['con']);
+
+                if (mysqli_num_rows($resultToGetSchoolClassroomId)) {
+                    while ($rowId = mysqli_fetch_assoc($resultToGetSchoolClassroomId)) {
+                        $queryToExamId = "SELECT * FROM " . TABLE_EXAM_PROFILE . " WHERE school_classroom_id=" . $rowId['id'] . " AND NOT academic_exam_subject_id =0 AND is_delete=0";
+                        $resultToExamId = mysqli_query($GLOBALS['con'], $queryToExamId) or $message = mysqli_error($GLOBALS['con']);
+
+                        if (mysqli_num_rows($resultToExamId)) {
+                            while ($rowExamProfile = mysqli_fetch_assoc($resultToExamId)) {
+                                $queryToGetAcademicExam = "SELECT * FROM " . TABLE_ACADEMIC_EXAM_SUBJECT . " WHERE academic_exam_subject_id=" . $rowId['academic_exam_subject_id'] . " AND is_delete=0";
+                                $resultToGetAcademicExam = mysqli_query($GLOBALS['con'], $queryToGetAcademicExam) or $message = mysqli_error($GLOBALS['con']);
+
+                                if (mysqli_num_rows($resultToGetAcademicExam)) {
+                                    while ($rowExamDetails = mysqli_fetch_assoc($resultToGetAcademicExam)) {
+                                        $queryToGetAcademicExamDetails = "SELECT * FROM " . TABLE_ACADEMIC_EXAM . " WHERE id=" . $rowExamDetails['academic_exam_id'] . " AND is_delete=0";
+                                        $resultToGetAcademicExamDetails = mysqli_query($GLOBALS['con'], $queryToGetAcademicExamDetails) or $message = mysqli_error($GLOBALS['con']);
+
+                                        if (mysqli_num_rows($resultToGetAcademicExamDetails)) {
+
+                                            while ($rowAcademicExam = mysqli_fetch_assoc($resultToGetAcademicExamDetails)) {
+                                                $exams = array();
+                                                $exams['exam_name'] = $rowAcademicExam['exam_name'];
+                                                $exams['exam_score'] = $rowAcademicExam['exam_score'];
+                                                $exams['internal_marks'] = $rowAcademicExam['internal_exam_score'];
+
+
+                                                $queryToGetAllData = "SELECT student_exam_score.*,users.full_name,users.profile_pic FROM " . TABLE_STUDENT_EXAM_SCORE . " student_exam_score INNER JOIN " . TABLE_USERS . " users ON student_exam_score.user_id=users.id JOIN " . TABLE_STUDENT_RESULT . " student_result ON student_exam_score.user_id=student_result.user_id WHERE student_exam_score.exam_id=" . $rowExamProfile['exam_id'] . "";
+                                                $resultToGetAllData = mysqli_query($GLOBALS['con'], $queryToGetAllData) or $message = mysqli_error($GLOBALS['con']);
+
+                                                if (mysqli_num_rows($resultToGetAllData)) {
+                                                    while ($val = mysqli_fetch_assoc($resultToGetAllData)) {
+                                                        $student = array();
+                                                        $student['student_id'] = $val['user_id'];
+                                                        $student['student_name'] = $val['full_name'];
+                                                        $student['student_pic'] = $val['profile_pic'];
+                                                        $student['student_score'] = $val['marks_obtained'];
+                                                        $student['percentage'] = $val['percentage'];
+                                                        $student['class_rank'] = $val['class_rank'];
+                                                        $student['grade'] = $val['grade'];
+                                                        $student['head_mistress_comment'] = $val['head_mistress_comment'];
+                                                        $student['class_mistress_remark'] = $val['class_mistress_remark'];
+
+                                                        $queryToGetSubjectWiseData = "SELECT * FROM " . TABLE_ACADEMIC_EXAM_SUBJECT . " WHERE subject_id=";
+                                                        $resultToGetSubjectWiseData = mysqli_query($GLOBALS['con'], $queryToGetSubjectWiseData) or $message = mysqli_error($GLOBALS['con']);
+
+                                                    }
+                                                    $exams['students_score'] = $student;
+                                                }
+                                            }
+                                            $post[] = $exams;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } elseif ($role_id == 2) {
+                $queryToGetSchoolClassroomId = "SELECT school_classroom_id FROM " . TABLE_STUDENT_PROFILE . " WHERE user_id=" . $user_id . " AND is_delete=0";
+                $resultToGetSchoolClassroomId = mysqli_query($GLOBALS['con'], $queryToGetSchoolClassroomId) or $message = mysqli_error($GLOBALS['con']);
+
+                if (mysqli_num_rows($resultToGetSchoolClassroomId)) {
+                    while ($rowId = mysqli_fetch_assoc($resultToGetSchoolClassroomId)) {
+
+                        $queryFromExamProfile = "SELECT * FROM " . TABLE_EXAM_PROFILE . " WHERE school_classroom_id=" . $rowId['school_classroom_id'] . " AND NOT academic_exam_subject_id =0 AND is_delete=0";
+                        $resultFromExamProfile = mysqli_query($GLOBALS['con'], $queryFromExamProfile) or $message = mysqli_error($GLOBALS['con']);
+
+                        if (mysqli_num_rows($resultFromExamProfile)) {
+
+                            while ($rowExamProfileData = mysqli_fetch_assoc($resultFromExamProfile)) {
+                                $queryToGetAcademicExam = "SELECT * FROM " . TABLE_ACADEMIC_EXAM_SUBJECT . " WHERE academic_exam_subject_id=" . $rowId['academic_exam_subject_id'] . " AND is_delete=0";
+                                $resultToGetAcademicExam = mysqli_query($GLOBALS['con'], $queryToGetAcademicExam) or $message = mysqli_error($GLOBALS['con']);
+
+                                if (mysqli_num_rows($resultToGetAcademicExam)) {
+                                    while ($rowExamDetails = mysqli_fetch_assoc($resultToGetAcademicExam)) {
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['class_performance']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+
+        return $response;
+    }
+
 }
 ?>

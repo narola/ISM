@@ -661,7 +661,7 @@ class TutorialGroup
 //                $condition=" AND week_no=".$weekNum." AND tutorial_group_topic_allocation.is_delete=0";
 //            }
 
-            $selData="DISTINCT tutorial_group_topic_allocation.*,tutorial_topic.topic_name,topic_description,tutorial_topic.created_by,subjects.subject_name,tutorial_topic.topic_day";
+            $selData="DISTINCT tutorial_group_topic_allocation.*,tutorial_topic.topic_name,topic_description,tutorial_topic.created_by,subjects.subject_name,subjects.id,tutorial_topic.topic_day";
 
               $queryToFetchTopics="SELECT ".$selData." FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." tutorial_group_topic_allocation
                          INNER JOIN ".TABLE_TUTORIAL_TOPIC." tutorial_topic ON tutorial_group_topic_allocation.tutorial_topic_id=tutorial_topic.id
@@ -684,7 +684,9 @@ class TutorialGroup
                     $topic_discussion['interface_type']=$topicGroups['interface_type'];
                     $topic_discussion['assigned_time']=$topicGroups['created_date'];
                     $topic_discussion['subject_name']=$topicGroups['subject_name'];
+                    $topic_discussion['subject_id']=$topicGroups['id'];
 
+                    /*
                     $queryForCurrentDay="SELECT * FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE DATE_FORMAT(created_date,'%y-%m-%d') = DATE_FORMAT(NOW(),'%y-%m-%d') AND group_id=".$group_id." AND tutorial_topic_id=".$topicGroups['tutorial_topic_id']." AND is_delete=0";
                     $resultForCurrentDay=mysqli_query($GLOBALS['con'], $queryForCurrentDay) or $message = mysqli_error($GLOBALS['con']);
                     if(mysqli_num_rows($resultForCurrentDay)>0)
@@ -694,6 +696,7 @@ class TutorialGroup
                     else{
                         $topic_discussion['is_current_day']="no";
                     }
+                    */
 
 
                     $queryToGetGroupScore="SELECT sum(group_score)  FROM ".TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION." WHERE group_id=".$group_id;
@@ -727,7 +730,7 @@ class TutorialGroup
                         while ($members = mysqli_fetch_assoc($resultToFetchMembers)) {
                             $groupMembers=array();
 
-                            $groupMembers['tutorial_topic_id']=$members['tutorial_topic_id'];
+//                            $groupMembers['tutorial_topic_id']=$members['tutorial_topic_id'];
                             $groupMembers['comment']=$members['message'];
                             $groupMembers['user_id']=$members['sender_id'];
                             $groupMembers['full_name']=$members['full_name'];

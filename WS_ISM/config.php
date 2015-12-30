@@ -18,6 +18,9 @@ date_default_timezone_set('UTC');
 $server = "192.168.1.201";
 $user = "ISM";
 $password = "69NC52j07761uvw";
+//$server = "52.28.165.231";
+//$user = "root";
+//$password = "ism4all";
 $dbname = "ism";
 
 global $con;

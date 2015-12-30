@@ -6,6 +6,8 @@
  * Time: 6:07 PM
  */
 
+define("TABLE_ACADEMIC_EXAM",   "academic_exam");
+define("TABLE_ACADEMIC_EXAM_SUBJECT",   "academic_exam_subject");
 define("TABLE_ADMIN_CONFIG",   "admin_config");
 define("TABLE_ANSWER_CHOICES",   "answer_choices");
 define("TABLE_ASSIGNMENT_SUBMISSION",   "assignment_submission");
@@ -30,6 +32,7 @@ define("TABLE_DISTRICTS",   "districts");
 define("TABLE_EXAM_QUESTION",   "exam_question");
 define("TABLE_EXAM_SCHEDULE",   "exam_schedule");
 define("TABLE_EXAMS",   "exams");
+define("TABLE_EXAM_PROFILE",   "exam_profile");
 define("TABLE_EXAM_EVALUATION",   "exam_evaluation");
 define("TABLE_FEED_COMMENT",   "feed_comment");
 define("TABLE_FEED_IMAGE",   "feed_image");
@@ -67,6 +70,7 @@ define("TABLE_STATES",   "states");
 define("TABLE_STUDENT_TEACHER",   "student_teacher");
 
 define("TABLE_STUDENT_OBJECTIVE_RESPONSE",   "student_objective_response");
+define("TABLE_STUDENT_RESULT",   "student_result");
 define("TABLE_STUDENT_EXAM_SCORE",   "student_exam_score");
 define("TABLE_STUDENT_PROFILE",   "student_profile");
 define("TABLE_STUDENT_SUBJECTIVE_EVALUATION",   "student_subjective_evaluation");

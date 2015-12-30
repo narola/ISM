@@ -16,6 +16,8 @@ define("SUB_QUESTION_IMAGE",  'images/question_sub_images/');
 
 define("RICH_TEXT_EDITOR_QUESTION_IMAGE",  'images/rich_text_editor_images/rich_questions/');
 
+define("RICH_TEXT_EDITOR_TRENDING_ANSWER_IMAGE",  'images/rich_text_editor_images/rich_trending_answers/');
+
 define("PASTTIME_IMAGE",  'images/pasttimes_images/');
 
 define("APP_IMAGES",  'images/app_images/');

@@ -1875,6 +1875,7 @@ class ExamFunctions
 
     public function tempCreateQuestion ($postData)
     {
+        //print_r($postData); exit;
         $message = '';
         $status = '';
         $data = array();
@@ -1900,8 +1901,8 @@ class ExamFunctions
         $secret_key = $_POST['secret_key'];
         $access_key = $_POST['access_key'];
 
-        //print_r($answer_choices); exit;
 
+        $arrayTagsID = array();
         $security=new SecurityFunctions();
         $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
@@ -1976,11 +1977,17 @@ class ExamFunctions
 
                     $post['hasgtag'] = $hashTag['message'];
 
+                   $answer_choices = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($answer_choices));
+                    $reqData[]=json_decode($answer_choices);
+                   // print_r(json_decode($answer_choices));die();
+                   $answerData = $reqData[0];
 
+
+                    $answerData1[]=$answerData->choices;
+                   // print_r($answerData1[0]);
                     if ($question_format == "MCQ") {
-                        if (is_array($answer_choices)) {
-
-                            foreach ($answer_choices as $row) {
+                        if (is_array($answerData1)) {
+                            foreach ($answerData1[0] as $row) {
 
                                 if ($question_id != 0) {
 
@@ -1990,7 +1997,7 @@ class ExamFunctions
                                     if (mysqli_num_rows($resultToChkRecordExist) > 0) {
                                         $updateFields = "`choice_text` ='" . $row->choice_text . "', `is_right`=" . (int)$row->is_right;
 
-                                        $updateQuestionQuery = "UPDATE " . TABLE_ANSWER_CHOICES . " SET " . $updateFields . " WHERE question_id=" . $questionId . " AND id= " . $row->id;
+                                         $updateQuestionQuery = "UPDATE " . TABLE_ANSWER_CHOICES . " SET " . $updateFields . " WHERE question_id=" . $questionId . " AND id= " . $row->id;
                                         $resultQuestionQuery = mysqli_query($GLOBALS['con'], $updateQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
 
                                         if ($resultQuestionQuery) {
@@ -3564,31 +3571,123 @@ class ExamFunctions
         $status='';
         $response=array();
 
-        $author_id = validateObject ($postData , 'author_id', "");
-        $author_id = addslashes($author_id);
+        $author_id=$_POST['author_id'];
+        $question_id=$_POST['question_id'];
+        $answer_text=$_POST['answer_text'];
+        $number_of_images = $_POST['number_of_images'];
+        $secret_key = $_POST['secret_key'];
+        $access_key = $_POST['access_key'];
 
-        $question_id = validateObject ($postData , 'question_id', "");
-        $question_id = addslashes($question_id);
-
-        $answer_text = validateObject ($postData , 'answer_text', "");
-        $answer_text = addslashes($answer_text);
-
-        $secret_key = validateObject($postData, 'secret_key', "");
-        $secret_key = addslashes($secret_key);
-
-        $access_key = validateObject($postData, 'access_key', "");
-        $access_key = addslashes($access_key);
+//        $author_id = validateObject ($postData , 'author_id', "");
+//        $author_id = addslashes($author_id);
+//
+//        $question_id = validateObject ($postData , 'question_id', "");
+//        $question_id = addslashes($question_id);
+//
+//        $answer_text = validateObject ($postData , 'answer_text', "");
+//        $answer_text = addslashes($answer_text);
+//
+//        $secret_key = validateObject($postData, 'secret_key', "");
+//        $secret_key = addslashes($secret_key);
+//
+//        $access_key = validateObject($postData, 'access_key', "");
+//        $access_key = addslashes($access_key);
 
         $security=new SecurityFunctions();
         $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
         if($isSecure==yes) {
 
-            $queryToChkRecordExist="SELECT * FROM ".TABLE_TRENDING_QUESTION." WHERE id= ".$question_id." AND question_for=".$author_id." AND is_delete=0";
+             $queryToChkRecordExist="SELECT * FROM ".TABLE_TRENDING_QUESTION." WHERE id= ".$question_id." AND question_for=".$author_id." AND is_delete=0";
             $resultToChkRecordExist=mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
 
             if(mysqli_num_rows($resultToChkRecordExist)>0) {
-                $updateField = "answer_text = '".$answer_text."'";
+
+               if($number_of_images>0)
+               {
+                   $question_media_dir = "answer_" . $question_id . "/";
+
+
+                   preg_match_all('/<img[^>]+>/i', $answer_text, $result);
+
+                   $img = array();
+
+                   foreach ($result as $img_tag) {
+
+                       foreach ($img_tag as $img_tag1) {
+                           //print_r($img_tag1);
+                           preg_match_all('/(src)=("[^"]*")/i', $img_tag1, $img[$img_tag1]);
+                       }
+                   }
+
+
+                   $img2 = array();
+                   $value = 0;
+                   foreach ($img as $img1) {
+                       //print_r($img1);
+                       $img2[$value] = $img1[2][0];
+                       $value++;
+                   }
+
+                   for ($i = 0; $i < $number_of_images; $i++) {
+
+
+
+                       $oldString = "";
+
+                       foreach ($img2 as $key => $value) {
+
+                           if (strpos($value, $_FILES[$i]['name']) !== false) {
+                               $oldString = $value;
+                           }
+                       }
+
+
+                       if (!is_dir(RICH_TEXT_EDITOR_TRENDING_ANSWER_IMAGE . $question_media_dir)) {
+                           mkdir(RICH_TEXT_EDITOR_TRENDING_ANSWER_IMAGE . $question_media_dir, 0777);
+                       }
+                       $dir = RICH_TEXT_EDITOR_TRENDING_ANSWER_IMAGE . $question_media_dir;
+
+
+
+                       $uploadFile = $dir . $_FILES[$i]['name'];//$mediaName;//
+
+
+                       if (isset($_FILES[$i]['tmp_name'])) {
+                           // echo "coming";
+                           if (!move_uploaded_file($_FILES[$i]['tmp_name'], $uploadFile)) {
+
+                               $answer_text[] = $uploadFile;
+                               $status = FAILED;
+                               $message = FAILED_TO_UPLOAD_MEDIA;
+                           } else
+                           {
+                               // echo "ready";
+                               // $client_server_path="http://clientapp.narolainfotech.com/pg/ISM/WS_ISM";
+                               ///rich_text_editor_images/rich_questions/
+
+                               if(stristr($oldString, 'http') === FALSE) {
+                                   // echo '"http" not found in string';
+                                   $answer_text = str_replace($oldString, "\"http://192.168.1.147/WS_ISM/".$dir . $_FILES[$i]['name'] . "\"", $answer_text);
+                               }
+                               else
+                               {
+                                   // echo '"http"  found in string';
+                                   $answer_text = $oldString;
+                               }
+
+                           }
+
+                       }
+
+                   }
+                   $updateField = "answer_text = '".$answer_text."'";
+               }
+                else
+                {
+                    $updateField = "answer_text = '".$answer_text."'";
+                }
+
 
                 $queryToUpdate = "UPDATE " . TABLE_TRENDING_QUESTION . " SET " . $updateField . " WHERE id = ".$question_id." AND question_for=".$author_id." AND is_delete=0";
                 $resultToUpdate = mysqli_query($GLOBALS['con'], $queryToUpdate) or $message = mysqli_error($GLOBALS['con']);
@@ -3596,11 +3695,16 @@ class ExamFunctions
                 if ($resultToUpdate) {
                     $status = SUCCESS;
                     $message = "question is answered";
+                    $data['rich_text_editor_images'] = $answer_text;
+
                 } else {
 
                     $status = FAILED;
                     $message = "failed to update answer";
+                    $data = array();
                 }
+
+
 
 //                $rowToFetchRecord=mysqli_fetch_row($resultToChkRecordExist);
 //
@@ -3612,11 +3716,10 @@ class ExamFunctions
             }
             else
             {
-
+                $data = array();
                 $status=SUCCESS;
                 $message=DEFAULT_NO_RECORDS;
             }
-            $data = array();
         }
         else
         {
@@ -3629,6 +3732,8 @@ class ExamFunctions
 
         return $response;
     }
+
+
 
 
     /*
@@ -3942,6 +4047,10 @@ class ExamFunctions
 
         return $response;
     }
+
+
+
+
 }
 
 
