@@ -46,7 +46,8 @@ public class WebConstants {
     public static final int GET_GROUP_PROFILE = 36;
     public static final int SUBMIT_QUESTION_FOR_FRIDAY = 37;
     public static final int GET_ALL_NOTES = 38;
-	public static final int GET_ALL_BOOKS = 39;
+    public static final int CHECK_FRIDAY_EXAM_STATUS = 39;
+	public static final int GET_ALL_BOOKS = 40;
 
     //general settings
 
@@ -82,8 +83,8 @@ public class WebConstants {
 //	public static final String HOST = "http://clientapp.narolainfotech.com/";                               // SERVER
     public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
 
-//    	private static final String DIR_PATH = "pg/ISM/WS_ISM/";    //  SERVER
-    private static final String DIR_PATH = "WS_ISM/";           //  KINJAL
+//    private static final String DIR_PATH = "pg/ISM/WS_ISM/";        //  SERVER
+    private static final String DIR_PATH = "WS_ISM/";             //  KINJAL
     private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
 	//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_images/";
 	public static final String HOST_IMAGE_USER = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
@@ -133,6 +134,7 @@ public class WebConstants {
 	public static final String URL_GET_GROUP_PROFILE = HOST_WS + "GetGroupProfile";
 	public static final String URL_SEND_REQUEST_STUDYMATE = HOST_WS + "SendRequestToStudymate";
 	public static final String URL_SUBMIT_QUESTION_FOR_FRIDAY = HOST_WS + "SubmitQuestionForFriday";
+	public static final String URL_CHECK_FRIDAY_EXAM_STATUS = HOST_WS + "CheckFridayExamStatus";
 
 	/*
 	* edit profile

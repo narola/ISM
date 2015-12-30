@@ -33,16 +33,16 @@ import com.ism.teacher.interfaces.FragmentListener;
  * The back navigation for classwall,notes,quiz,markscripts,progress and results are
  * controlled from onBackClick method which is called from TeacherHostActivity
  * ==================================================================================
- * <p>
+ * <p/>
  * Case BackClick:
  * When back arrow is pressed it finds the current frag inside TeacherOfficeFragment container and handle back navigation.
  * ==================================================================================
- * <p>
+ * <p/>
  * Case AddNotes,AddQuiz.... from particular active fragment:
  * For this AddTopicsListener is used which handles the addTopic to load into TeacherOfficeFragment.
  * ==================================================================================
  * Case setBackStackFragmentKey(String fragmentTag)
- * <p>
+ * <p/>
  * This method set the key as current frag (from which new frag is called) so on back click it determines that from which frag new fragmewnt was called
  * and we have to return on that (original) key fragment.
  */
@@ -343,6 +343,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
             case TeacherOfficeFragment.FRAGMENT_NOTES_CONTAINER:
                 getBundleArguments().remove(NotesAddEditFragment.ARG_IS_CREATE_NOTE);
                 getBundleArguments().remove(AllNotesAdapter.ARG_NOTES_SUBJECT_ID);
+                getBundleArguments().remove(NotesContainer.ARG_NOTES_LECTURE_ID);
                 handleBackClick(AppConstant.FRAGMENT_TAG_NOTES_CONTAINER);
                 ((TeacherHostActivity) getActivity()).showSpinnerWithSubMenu(AppConstant.INDEX_NOTES);
                 break;

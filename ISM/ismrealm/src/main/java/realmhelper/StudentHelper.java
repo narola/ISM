@@ -70,7 +70,9 @@ public class StudentHelper {
 	System.gc();*/
 
     public void destroy() {
-
+	    if (realm != null) {
+		    realm.close();
+	    }
     }
 
     public String getGlobalPassword() {
@@ -197,22 +199,22 @@ public class StudentHelper {
 
     public void updateTotalComments(Feeds feeds) {
         Feeds toUpdateFeeds = realm.where(Feeds.class).equalTo("feedId", feeds.getFeedId()).findFirst();
-        realm.beginTransaction();
+	    realm.beginTransaction();
         toUpdateFeeds.setTotalComment(feeds.getTotalComment() + 1);
         //toUpdateFeeds.getComments().add(feeds.getComments().get(0));
-        realm.commitTransaction();
+	    realm.commitTransaction();
     }
 
     public RealmResults<Feeds> getFeedLikes(boolean statusUpdation) {
 //    public RealmResults<Feeds> getFeedLikes(Date lastSynch, Date modified) {
         realm.beginTransaction();
         RealmResults<Feeds> feedsRealmResults = realm.where(Feeds.class).equalTo("isSync", 1).findAll();
-        Log.i(TAG, "getFeedLikes feedsRealmResults.size: " + feedsRealmResults.size());
+	    Log.i(TAG, "getFeedLikes feedsRealmResults.size: " + feedsRealmResults.size());
         if (statusUpdation) {
             for (int i = 0; i < feedsRealmResults.size(); i++)
                 feedsRealmResults.get(i).setIsSync(0);
         }
-        realm.commitTransaction();
+	    realm.commitTransaction();
         return feedsRealmResults;
     }
 
@@ -225,10 +227,10 @@ public class StudentHelper {
     public void saveComments(FeedComment feedComment) {
         try {
             Feeds feeds = feedComment.getFeed();
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(feedComment);
-            feeds.getComments().add(feedComment);
-            realm.commitTransaction();
+	        realm.beginTransaction();
+	        realm.copyToRealmOrUpdate(feedComment);
+	        feeds.getComments().add(feedComment);
+	        realm.commitTransaction();
         } catch (Exception e) {
             Log.i(TAG, "saveComments Exceptions : " + e.getLocalizedMessage());
         }
@@ -242,10 +244,10 @@ public class StudentHelper {
     public void saveFeedImages(FeedImage feedImage) {
         try {
             Feeds feeds = feedImage.getFeed();
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(feedImage);
-            feeds.getFeedImages().add(feedImage);
-            realm.commitTransaction();
+	        realm.beginTransaction();
+	        realm.copyToRealmOrUpdate(feedImage);
+	        feeds.getFeedImages().add(feedImage);
+	        realm.commitTransaction();
         } catch (Exception e) {
             Log.i(TAG, "saveFeedImages Exceptions : " + e.getLocalizedMessage());
         }
@@ -303,9 +305,9 @@ public class StudentHelper {
                 newId = (long) subjectId + 1;
             }
             realm.beginTransaction();
-            subjects.setSubjectId((int) newId);
-            realm.copyToRealmOrUpdate(subjects);
-            realm.commitTransaction();
+	        subjects.setSubjectId((int) newId);
+	        realm.copyToRealmOrUpdate(subjects);
+	        realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveSubjects Exception : " + e.toString());
         }

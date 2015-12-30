@@ -66,6 +66,8 @@ public class PreferenceData {
     //=> Block user
 
     public static final String LAST_MODIFIED_DATE = "lastModifieddate";
+    public static final String TUTORIAL_TOPIC_ID = "tutorialTopicId";
+    public static final String FRIDAY_EXAM_QUESTION_DATE = "fridayExamQuestionDate";
 
 
     public static void setBooleanPrefs(String prefKey, Context context, boolean value) {

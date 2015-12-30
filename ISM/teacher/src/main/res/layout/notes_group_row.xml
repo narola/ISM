@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/notes_group_row_bg"
+    android:padding="@dimen/d10dp">
+
+    <TextView
+        android:id="@+id/tv_lecture_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/d5dp"
+        android:gravity="center_vertical"
+        android:padding="@dimen/d5dp"
+        android:text="Lecture Name"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/d16sp" />
+
+    <ImageView
+        android:id="@+id/img_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/d10dp"
+        android:gravity="center_vertical" />
+</RelativeLayout>

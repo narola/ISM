@@ -1,5 +1,6 @@
 package com.ism.fragment.tutorialGroup;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Html;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -17,16 +19,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.utility.InputValidator;
+import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.AnswerChoice;
+import com.ism.ws.model.QuestionForFriday;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by c161 on 16/12/15.
@@ -40,15 +46,18 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 	private LinearLayout llOptions;
 	private TextView txtHelp, txtCreateQuestion, txtSetOptions, txtPreviewQuestion, txtUpload, txtQuestion;
 	private EditText etQuestion, etOption1, etOption2, etOption3, etOption4;
+	private CheckBox cbOption1, cbOption2, cbOption3, cbOption4;
 	private RadioButton rbOption1, rbOption2, rbOption3, rbOption4;
 	private Button btnUploadAndFreeze;
 
 	private EditText[] etOptions;
+	private CheckBox[] cbOptions;
 	private RadioButton[] rbOptions;
 
 	private ExamFragment.ExamListener listenerExam;
 	private View.OnClickListener onClickLable;
 	private InputValidator inputValidator;
+	private HostActivity activityHost;
 
 	private TextView[] txtLables;
 	private RelativeLayout[] viewLayouts;
@@ -99,6 +108,10 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		rbOption2 = (RadioButton) view.findViewById(R.id.rb_option2);
 		rbOption3 = (RadioButton) view.findViewById(R.id.rb_option3);
 		rbOption4 = (RadioButton) view.findViewById(R.id.rb_option4);
+		cbOption1 = (CheckBox) view.findViewById(R.id.check_option1);
+		cbOption2 = (CheckBox) view.findViewById(R.id.check_option2);
+		cbOption3 = (CheckBox) view.findViewById(R.id.check_option3);
+		cbOption4 = (CheckBox) view.findViewById(R.id.check_option4);
 		llOptions = (LinearLayout) view.findViewById(R.id.ll_options);
 		rlCreateQuestion = (RelativeLayout) view.findViewById(R.id.rl_create_question);
 		rlSetOptions = (RelativeLayout) view.findViewById(R.id.rl_set_options);
@@ -106,6 +119,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		rlUpload = (RelativeLayout) view.findViewById(R.id.rl_upload);
 
 		etOptions = new EditText[]{etOption1, etOption2, etOption3, etOption4};
+		cbOptions = new CheckBox[]{cbOption1, cbOption2, cbOption3, cbOption4};
 		rbOptions = new RadioButton[]{rbOption1, rbOption2, rbOption3, rbOption4};
 
 		((TextView) view.findViewById(R.id.txt_header)).setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -137,9 +151,18 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 
 		inputValidator = new InputValidator(getActivity());
 
-//		rlHeader.setVisibility(View.GONE);
-//		rlTutorialmateQuestion.setVisibility(View.GONE);
-//		rlWaiting.setVisibility(View.VISIBLE);
+		if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), "").equals(Utility.getDate())) {
+			rlHeader.setVisibility(View.GONE);
+			rlTutorialmateQuestion.setVisibility(View.GONE);
+			rlWaiting.setVisibility(View.VISIBLE);
+			callApiCheckFridayExamStatus();
+		}
+
+		etQuestion.setText("In the beginning by which name Java language was known?");
+		etOption1.setText("Java");
+		etOption2.setText("J Language");
+		etOption3.setText("Oak");
+		etOption4.setText("C Language");
 
 		onClickLable = new View.OnClickListener() {
 			@Override
@@ -185,13 +208,34 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		btnUploadAndFreeze.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (inputsValid()) {
-					callApiSubmitQuestionForFriday();
-					getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam, 0, false)).commit();
+				if (Utility.isConnected(getActivity())) {
+					if (inputsValid()) {
+						callApiSubmitQuestionForFriday();
+					}
+				} else {
+					Utility.alertOffline(getActivity());
 				}
 			}
 		});
 
+	}
+
+	private void callApiCheckFridayExamStatus() {
+		try {
+			Attribute attribute = new Attribute();
+			attribute.setGroupId(Global.strTutorialGroupId);
+//			attribute.setGroupId("134");
+			attribute.setTutorialTopicId(PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity()));
+//			attribute.setTutorialTopicId("14");
+
+			Log.e(TAG, "tutorial group id : " + Global.strTutorialGroupId);
+			Log.e(TAG, "tutorial topic id : " + PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity()));
+
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+					.execute(WebConstants.CHECK_FRIDAY_EXAM_STATUS);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiCheckFridayExamStatus Exception : " + e.toString());
+		}
 	}
 
 	private void callApiSubmitQuestionForFriday() {
@@ -212,12 +256,18 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 										"is_right":0
 								}
 							]
-							*/
+			*/
 
+			activityHost.showProgress();
 			Attribute attribute = new Attribute();
 			attribute.setGroupId(Global.strTutorialGroupId);
 			attribute.setUserId(Global.strUserId);
-			attribute.setTutorialTopicId("");
+			attribute.setTutorialTopicId(PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity()));
+
+			Log.e(TAG, "tutorial group id : " + Global.strTutorialGroupId);
+			Log.e(TAG, "tutorial user id : " + Global.strUserId);
+			Log.e(TAG, "tutorial topic id : " + PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity()));
+
 			attribute.setQuestionText(etQuestion.getText().toString().trim());
 			ArrayList<AnswerChoice> answerChoices = new ArrayList<>();
 			for (int i = 0; i < 4; i++) {
@@ -236,20 +286,28 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 	}
 
 	private boolean inputsValid() {
-		return inputValidator.validateStringPresence(etQuestion)
+		String alertMessage = "";
+
+		boolean inputsPresent = inputValidator.validateStringPresence(etQuestion)
 				& inputValidator.validateStringPresence(etOption1)
 				& inputValidator.validateStringPresence(etOption2)
 				& inputValidator.validateStringPresence(etOption3)
-				& inputValidator.validateStringPresence(etOption4)
-				& isAnswerSelected();
-	}
-
-	private boolean isAnswerSelected() {
-		boolean valid = rbOption1.isChecked() || rbOption2.isChecked() || rbOption3.isChecked() || rbOption4.isChecked();
-		if (!valid) {
-			Utility.alert(getActivity(), getString(R.string.title_select_answer), getString(R.string.msg_select_answer));
+				& inputValidator.validateStringPresence(etOption4);
+		if (!inputsPresent) {
+			alertMessage = getString(R.string.msg_question_data_missing);
 		}
-		return valid;
+
+		boolean answerSet = cbOption1.isChecked() || cbOption2.isChecked() || cbOption3.isChecked() || cbOption4.isChecked();
+		if (!answerSet) {
+			alertMessage += (alertMessage.length() > 0 ? "\n" : "") + getString(R.string.msg_select_answer);
+		}
+
+		if (inputsPresent && answerSet) {
+			return true;
+		} else {
+			Utility.alert(getActivity(), getString(R.string.inputs_missing), alertMessage);
+			return false;
+		}
 	}
 
 	private void showForm(RelativeLayout layoutForm) {
@@ -267,6 +325,13 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 			for (int i = 0; i < viewLayouts.length; i++) {
 				if (viewLayouts[i] == layoutForm) {
 					viewLayouts[i].setVisibility(View.VISIBLE);
+					if (layoutForm == rlPreviewQuestion) {
+						txtQuestion.setText(etQuestion.getText());
+						for (int j = 0; j < cbOptions.length; j++) {
+							rbOptions[j].setChecked(cbOptions[j].isChecked());
+							rbOptions[j].setText(etOptions[j].getText());
+						}
+					}
 				} else {
 					viewLayouts[i].setVisibility(View.GONE);
 				}
@@ -287,6 +352,12 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 	}
 
 	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		activityHost = (HostActivity) activity;
+	}
+
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -299,20 +370,52 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 				case WebConstants.SUBMIT_QUESTION_FOR_FRIDAY:
 					onResponseSubmitQuestionForFriday(object, error);
 					break;
+				case WebConstants.CHECK_FRIDAY_EXAM_STATUS:
+					onResponseCheckFridayExamStatus(object, error);
+					break;
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponse Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseSubmitQuestionForFriday(Object object, Exception error) {
+	private void onResponseCheckFridayExamStatus(Object object, Exception error) {
 		try {
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
-				if (responseHandler.getStatus() == WebConstants.SUCCESS) {
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					if (responseHandler.getFridayExamStatus() == null && responseHandler.getFridayExamStatus().size() > 0
+							&& responseHandler.getFridayExamStatus().get(0).getIsReady().equals("yes")) {
+						getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam, 0, false)).commit();
+					} else {
+						rlHeader.setVisibility(View.GONE);
+						rlTutorialmateQuestion.setVisibility(View.GONE);
+						rlWaiting.setVisibility(View.VISIBLE);
+					}
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "onResponseCheckFridayExamStatus failed : " + responseHandler.getMessage());
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseCheckFridayExamStatus api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseCheckFridayExamStatus Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseSubmitQuestionForFriday(Object object, Exception error) {
+		try {
+			activityHost.hideProgress();
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					Log.e(TAG, "question added successfully.");
-				} else if (responseHandler.getStatus() == WebConstants.FAILED) {
-					Log.e(TAG, "question failed to be added.");
+					QuestionForFriday questionForFriday = responseHandler.getQuestionForFriday().get(0);
+
+					PreferenceData.setStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), Utility.getDate());
+					callApiCheckFridayExamStatus();
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "SubmitQuestionForFriday failed : " + responseHandler.getMessage());
 				}
 			} else if (error != null) {
 				Log.e(TAG, "onResponseSubmitQuestionForFriday api Exception : " + error.toString());
