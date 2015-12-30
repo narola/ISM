@@ -40,7 +40,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/strpersonalinformation"
                     android:textAllCaps="true"
-                    android:textSize="@dimen/d18dp" />
+                    android:textSize="@dimen/d18sp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                         android:text="@string/strsave"
                         android:textAllCaps="true"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
                     <Button
                         android:id="@+id/btn_exam_setquestion"
@@ -70,7 +70,7 @@
                         android:text="@string/strsetquestion"
                         android:textAllCaps="true"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/d20dp"
+                        android:textSize="@dimen/d20sp"
                         android:visibility="gone" />
 
                     <Button
@@ -82,7 +82,7 @@
                         android:text="@string/strcancel"
                         android:textAllCaps="true"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -106,7 +106,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:orientation="vertical">
@@ -117,7 +117,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strexamname"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <EditText
                             android:id="@+id/et_exam_name"
@@ -131,7 +131,7 @@
                             android:paddingLeft="@dimen/d20dp"
                             android:textColor="@color/color_black"
                             android:textColorHint="@color/color_text_hint"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -146,7 +146,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d15dp"
                             android:text="@string/strclass"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_classroom"
@@ -169,7 +169,7 @@
 
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
@@ -180,7 +180,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strbookname"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_bookname"
@@ -207,7 +207,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strpassingpercent"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_passingpercent"
@@ -221,7 +221,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d10dp"
                         android:layout_weight="1"
@@ -233,7 +233,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strexamassessor"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_assessor"
@@ -258,7 +258,7 @@
 
                     <Spinner
                         android:id="@+id/sp_exam_subjecttopic"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d10dp"
                         android:layout_weight="1"
@@ -275,7 +275,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
@@ -286,7 +286,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strexamcategory"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_examcategory"
@@ -300,7 +300,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d10dp"
                         android:layout_weight="1"
@@ -312,7 +312,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d15dp"
                             android:text="@string/strexammode"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_exammode"
@@ -327,7 +327,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d10dp"
                         android:layout_weight="1"
@@ -339,7 +339,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d15dp"
                             android:text="@string/strexamduration"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <Spinner
                             android:id="@+id/sp_exam_examduration"
@@ -354,7 +354,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/d10dp"
                         android:layout_weight="1"
@@ -366,7 +366,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strattemptcount"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <EditText
                             android:id="@+id/et_exam_attemptcount"
@@ -380,7 +380,7 @@
                             android:paddingLeft="@dimen/d20dp"
                             android:textColor="@color/color_black"
                             android:textColorHint="@color/color_text_hint"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -403,7 +403,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/strexamschedule"
                 android:textAllCaps="true"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -422,7 +422,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/d10dp"
                         android:layout_weight="1"
@@ -434,7 +434,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strstartdate"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <LinearLayout
                             android:id="@+id/ll_exam_startdate"
@@ -457,7 +457,7 @@
                                 android:paddingLeft="@dimen/d20dp"
                                 android:textColor="@color/color_black"
                                 android:textColorHint="@color/color_text_hint"
-                                android:textSize="@dimen/d20dp" />
+                                android:textSize="@dimen/d20sp" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -485,7 +485,7 @@
 
                     <LinearLayout
                         android:id="@+id/ll_exam_startTime"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d10dp"
                         android:layout_weight="1"
@@ -497,7 +497,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d5dp"
                             android:text="@string/strstarttime"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
 
                         <LinearLayout
@@ -520,7 +520,7 @@
                                 android:paddingLeft="@dimen/d20dp"
                                 android:textColor="@color/color_black"
                                 android:textColorHint="@color/color_text_hint"
-                                android:textSize="@dimen/d20dp" />
+                                android:textSize="@dimen/d20sp" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -568,7 +568,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/strexaminstruction"
                 android:textAllCaps="true"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -595,7 +595,7 @@
                     android:padding="@dimen/d15dp"
                     android:text="@string/strexaminstruction"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d18dp"
+                    android:textSize="@dimen/d18sp"
                     android:visibility="gone" />
 
 
@@ -621,17 +621,17 @@
 
                     <TextView
                         android:id="@+id/tv_exam_declareresult"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/strdeclareresults"
                         android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
 
                     <RadioGroup
                         android:id="@+id/radio_declareresult"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:orientation="horizontal"
@@ -646,7 +646,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/stryes"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <RadioButton
                             android:id="@+id/radio_btn_declareresult_no"
@@ -658,7 +658,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/strno"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
                     </RadioGroup>
                 </LinearLayout>
 
@@ -672,26 +672,17 @@
 
                     <TextView
                         android:id="@+id/tv_exam_negativemarking"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/strnegativemarking"
                         android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
-                    <!--<Spinner-->
-                    <!--android:id="@+id/sp_exam_negativemarking"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="@dimen/d5dp"-->
-                    <!--android:background="@drawable/spinner_selector"-->
-                    <!--android:entries="@array/list"-->
-                    <!--android:padding="@dimen/d20dp"-->
-                    <!--android:spinnerMode="dropdown" />-->
 
                     <RadioGroup
                         android:id="@+id/radio_negativemarking"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:orientation="horizontal"
@@ -706,7 +697,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/stryes"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <RadioButton
                             android:id="@+id/radio_btn_negativemarking_no"
@@ -718,7 +709,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/strno"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
                     </RadioGroup>
                 </LinearLayout>
 
@@ -734,15 +725,15 @@
 
                     <TextView
                         android:id="@+id/tv_exam_addnegativemark"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/strnegativemark"
                         android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d20dp"
                         android:layout_weight="1">
@@ -756,7 +747,7 @@
                             android:inputType="number"
                             android:paddingLeft="@dimen/d20dp"
                             android:textColor="@color/color_black"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -772,17 +763,17 @@
 
                     <TextView
                         android:id="@+id/tv_exam_randomquestion"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/strrandomquestion"
                         android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
 
                     <RadioGroup
                         android:id="@+id/radio_exam_random_question"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:orientation="horizontal"
@@ -797,7 +788,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/stryes"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <RadioButton
                             android:id="@+id/radio_btn_randomquestion_no"
@@ -809,7 +800,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/strno"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
                     </RadioGroup>
                 </LinearLayout>
 
@@ -824,17 +815,17 @@
 
                     <TextView
                         android:id="@+id/tv_exam_usescore"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/strusescore"
                         android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
 
                     <RadioGroup
                         android:id="@+id/radio_exam_usescore"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:orientation="horizontal"
@@ -849,7 +840,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/stryes"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <RadioButton
                             android:id="@+id/radio_btn_examuserscore_no"
@@ -861,7 +852,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/strno"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
                     </RadioGroup>
                 </LinearLayout>
 
@@ -878,15 +869,15 @@
 
                     <TextView
                         android:id="@+id/tv_exam_questionscorevalue"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/strscorevalue"
                         android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d20dp"
                         android:layout_weight="1">

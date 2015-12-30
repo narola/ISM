@@ -18,10 +18,10 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shadow_separator"
             android:gravity="center"
-            android:padding="24dp"
+            android:padding="@dimen/d25dp"
             android:text="Question Most Follow"
             android:textColor="@color/color_blue"
-            android:textSize="20sp" />
+            android:textSize="@dimen/d20sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_trending_questions_list"
@@ -55,7 +55,7 @@
             android:padding="@dimen/d20dp"
             android:text="Your Answer"
             android:textColor="@color/color_white"
-            android:textSize="20sp" />
+            android:textSize="@dimen/d20sp" />
 
         <TextView
             android:id="@+id/txt_empty_answer"
@@ -133,7 +133,7 @@
                             android:gravity="center"
                             android:padding="@dimen/d5dp"
                             android:textColor="@color/color_red"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/d16sp" />
 
                     </LinearLayout>
 
@@ -155,13 +155,13 @@
                 <EditText
                     android:id="@+id/et_answer"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="@dimen/d250dp"
                     android:layout_below="@+id/ll_questions"
                     android:layout_margin="@dimen/d10dp"
                     android:background="@drawable/bg_edit_text"
                     android:gravity="left|top"
                     android:inputType="textMultiLine"
-                    android:padding="10dp"
+                    android:padding="@dimen/d10dp"
                     android:visibility="visible" />
 
                 <ImageView
