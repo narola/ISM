@@ -125,7 +125,7 @@
                                             <img src="<?php echo 'uploads/user_141/user6_14436733csdfs32.jpg'; ?>" 
                                             onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" >
                                         </div>
-                                        <h4><span>Group Name : </span> <?php echo $group['group_name'] ?> <span> [<?php echo $group['course_name'] ?> - <?php echo $group['class_name'] ?>] </span></h4>
+                                        <h4><span>Group Name : </span> <?php echo $group['group_name'] ?> <span> <br/>[<?php echo $group['course_name'] ?> - <?php echo $group['class_name'] ?>] </span></h4>
                                         <table class="group_members">
                                         <?php
                                             if(!empty($all_groups_members)) {
