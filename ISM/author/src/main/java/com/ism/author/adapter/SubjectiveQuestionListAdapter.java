@@ -3,6 +3,7 @@ package com.ism.author.adapter;
 import android.app.Fragment;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 17/11/15.
  */
-public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<SubjectiveQuestionListAdapter.ViewHolder> {
+public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<SubjectiveQuestionListAdapter.ViewHolder> implements HtmlImageGetter.RefreshDataAfterLoadImage {
 
     private static final String TAG = SubjectiveQuestionListAdapter.class.getSimpleName();
 
@@ -74,8 +75,21 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
             holder.tvSubjectiveQuestionNo.setText(mContext.getResources().getString(R.string.strquestion) + " : " + (position + 1));
 
-//            holder.tvSubjectiveQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
-            holder.tvSubjectiveQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext), null));
+//            holder.tvSubjectiveQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+//                    new HtmlImageGetter(50, 50, mContext, null), null));
+
+
+            if (arrListQuestions.get(position).getSpan() == null) {
+
+                arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                        new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+                        ), null));
+            } else {
+
+                holder.tvSubjectiveQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                        new HtmlImageGetter(50, 50, mContext, null
+                        ), null));
+            }
 
             holder.tvSubjectiveQuesEvaluationNotes.setText(arrListQuestions.get(position).getEvaluationNotes());
 
@@ -252,5 +266,19 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
     private SubjectiveQuestionsFragment getFragment() {
         return (SubjectiveQuestionsFragment) mFragment;
+    }
+
+
+    @Override
+    public void refreshData() {
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+                notifyDataSetChanged();
+                Debug.e(TAG, "notify data called");
+            }
+        };
+
+        handler.post(r);
     }
 }

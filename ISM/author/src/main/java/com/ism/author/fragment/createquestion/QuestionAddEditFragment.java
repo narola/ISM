@@ -70,7 +70,7 @@ import java.util.List;
  * Created by c166 on 31/10/15.
  */
 public class QuestionAddEditFragment extends Fragment implements TokenCompleteTextView.TokenListener, View.OnClickListener,
-        WebserviceWrapper.WebserviceResponse, AddQuestionTextDialog.SelectMediaListener, AddQuestionTextDialog.AddTextListener {
+        WebserviceWrapper.WebserviceResponse, AddQuestionTextDialog.SelectMediaListener, AddQuestionTextDialog.AddTextListener, HtmlImageGetter.RefreshDataAfterLoadImage {
 
     private static final String TAG = QuestionAddEditFragment.class.getSimpleName();
     private View view;
@@ -534,12 +534,13 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             setSpinnerData(questions.getQuestionFormat());
             if (questions.getQuestionText() != null) {
 
-                etAddquestionTitle.setText(Html.fromHtml(questions.getQuestionText(), new HtmlImageGetter(50, 50, getActivity()), null));
+                etAddquestionTitle.setText(Html.fromHtml(questions.getQuestionText(), new HtmlImageGetter(50, 50, getActivity(), this), null));
 
             }
 
             if (questions.getEvaluationNotes() != null) {
                 etEvaluationNote1.setText(questions.getEvaluationNotes());
+
                 etSolution.setText(questions.getEvaluationNotes());
             }
             if (questions.getQuestionImageLink() != null && !questions.getQuestionImageLink().equals("")) {
@@ -550,8 +551,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
             setMcqAnswers(questions);
             setTags(questions);
-
-
         } catch (Exception e) {
             Debug.e(TAG, "isSetQuestionData Exception : " + e.toString());
         }
@@ -690,10 +689,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 break;
 
             case R.id.tv_addquestion_advance:
-
-//                htmlText = Html.toHtml(etAddquestionTitle.getText());
-//                htmlText = htmlText.replace("<p dir=\"ltr\"><img", "<img");
-//                htmlText = htmlText.replace(".png\"></p>", ".png\">");
 
                 addQuestionTextDialog = new AddQuestionTextDialog(getActivity(), (AddQuestionTextDialog.SelectMediaListener) this,
                         (AddQuestionTextDialog.AddTextListener) this, getHtmlQuestionText());
@@ -1339,7 +1334,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     public void SetText(String text) {
         htmlText = text;
         richEditText = text;
-        etAddquestionTitle.setText(Html.fromHtml(text, new HtmlImageGetter(50, 50, getActivity()), null));
+        etAddquestionTitle.setText(Html.fromHtml(text, new HtmlImageGetter(50, 50, getActivity(), null), null));
 
         Debug.e(TAG, "RichEditor text is:::::::::::" + text);
         Debug.e(TAG, "Text Of Edittext is:::::::::::" + Html.toHtml(etAddquestionTitle.getText()));
@@ -1402,6 +1397,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private AddQuestionContainerFragment getBaseFragment() {
         return (AddQuestionContainerFragment) mFragment;
+    }
+
+    @Override
+    public void refreshData() {
+
+        etAddquestionTitle.setText(Html.fromHtml(getBaseFragment().getQuestionData().getQuestionText(),
+                new HtmlImageGetter(50, 50, getActivity(), null), null));
+
     }
 
 

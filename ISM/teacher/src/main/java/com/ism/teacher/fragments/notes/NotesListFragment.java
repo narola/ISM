@@ -19,8 +19,6 @@ import com.ism.teacher.listview.DragNDropListView;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
-import com.ism.teacher.ws.model.LessonNotes;
-import com.ism.teacher.ws.model.Notes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,15 +32,8 @@ public class NotesListFragment extends Fragment implements WebserviceWrapper.Web
     Fragment mFragment;
     DragNDropListView listViewNotes;
 
-
-    //ArrayList
-    ArrayList<LessonNotes> arrListLessonNotes = new ArrayList<>();
     ArrayList<String> listDataHeader = new ArrayList<>();
-    ArrayList<Notes> arrListNotes = new ArrayList<>();
-    ArrayList<String> arrListNotesTitle = new ArrayList<>();
-
     HashMap<String, ArrayList<String>> listDataChild;
-    HashMap<String, ArrayList<String>> test;
 
     public NotesListFragment() {
         // Required empty public constructor
@@ -126,38 +117,20 @@ public class NotesListFragment extends Fragment implements WebserviceWrapper.Web
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    listDataChild = new HashMap<>();
-                    test = new HashMap<>();
 
-                    arrListLessonNotes.clear();
+                    if (responseHandler.getLessonNotes().size() > 0) {
+                        listDataChild = new HashMap<>();
+                        for (int i = 0; i < responseHandler.getLessonNotes().size(); i++) {
 
-                    arrListLessonNotes.addAll(responseHandler.getLessonNotes());
-
-                    if (arrListLessonNotes.size() > 0) {
-
-                        Debug.e(TAG, "lesson notes count is " + arrListLessonNotes.size());
-                        for (int i = 0; i < arrListLessonNotes.size(); i++) {
-
-                            listDataHeader.add(arrListLessonNotes.get(i).getLectureName());
-
-                            Debug.e(TAG, "header count is " + listDataHeader.size());
-
-                            arrListNotes.clear();
-                            arrListNotesTitle.clear();
-
-                            arrListNotes.addAll(responseHandler.getLessonNotes().get(i).getNotes());
-
-                            Debug.e(TAG, "notes size is " + arrListNotes.size());
-
-                            for (int j = 0; j < arrListNotes.size(); j++) {
-                                arrListNotesTitle.add(arrListNotes.get(j).getNoteTitle());
+                            ArrayList<String> arrListNotesTitle = new ArrayList<>();
+                            for (int j = 0; j < responseHandler.getLessonNotes().get(i).getNotes().size(); j++) {
+                                arrListNotesTitle.add(responseHandler.getLessonNotes().get(i).getNotes().get(j).getNoteTitle());
                             }
-
-                            listDataChild.put(listDataHeader.get(i), arrListNotesTitle);
+                            listDataHeader.add(responseHandler.getLessonNotes().get(i).getLectureName());
+                            listDataChild.put(responseHandler.getLessonNotes().get(i).getLectureName(), arrListNotesTitle);
                         }
 
                         listViewNotes.setAdapter(new DragNDropAdapter(getActivity(), listDataHeader, listDataChild));
-
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
