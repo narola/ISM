@@ -42,7 +42,7 @@
                     android:padding="@dimen/d10dp"
                     android:text="@string/strprofileinformation"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -79,8 +79,9 @@
                                     android:background="@drawable/selector"
                                     android:hint="@string/first_name"
                                     android:inputType="textPersonName"
-                                    android:padding="15sp"
-                                    android:textColorHint="@color/color_text_hint" />
+                                    android:padding="@dimen/d15dp"
+                                    android:textColorHint="@color/color_text_hint"
+                                    android:textSize="@dimen/d18sp" />
 
                                 <EditText
                                     android:id="@+id/et_lastname"
@@ -91,8 +92,9 @@
                                     android:background="@drawable/selector"
                                     android:hint="@string/last_name"
                                     android:inputType="textPersonName"
-                                    android:padding="15sp"
-                                    android:textColorHint="@color/color_text_hint" />
+                                    android:padding="@dimen/d15dp"
+                                    android:textColorHint="@color/color_text_hint"
+                                    android:textSize="@dimen/d18sp" />
                             </LinearLayout>
 
 
@@ -111,8 +113,9 @@
                                     android:background="@drawable/selector"
                                     android:hint="@string/stremailaddress"
                                     android:inputType="textPersonName"
-                                    android:padding="15sp"
-                                    android:textColorHint="@color/color_text_hint" />
+                                    android:padding="@dimen/d15dp"
+                                    android:textColorHint="@color/color_text_hint"
+                                    android:textSize="@dimen/d18sp" />
 
                                 <EditText
                                     android:id="@+id/et_education"
@@ -123,8 +126,9 @@
                                     android:background="@drawable/selector"
                                     android:hint="@string/streducation"
                                     android:inputType="textPersonName"
-                                    android:padding="15sp"
-                                    android:textColorHint="@color/color_text_hint" />
+                                    android:padding="@dimen/d15dp"
+                                    android:textColorHint="@color/color_text_hint"
+                                    android:textSize="@dimen/d18sp" />
                             </LinearLayout>
 
 
@@ -153,8 +157,9 @@
                                     android:background="@drawable/selector"
                                     android:hint="@string/strcontactnumber"
                                     android:inputType="phone"
-                                    android:padding="15sp"
-                                    android:textColorHint="@color/color_text_hint" />
+                                    android:padding="@dimen/d15dp"
+                                    android:textColorHint="@color/color_text_hint"
+                                    android:textSize="@dimen/d18sp" />
 
                             </LinearLayout>
 
@@ -173,8 +178,9 @@
                                     android:background="@drawable/selector"
                                     android:editable="false"
                                     android:hint="@string/strdateofbirth"
-                                    android:padding="15sp"
-                                    android:textColorHint="@color/color_text_hint" />
+                                    android:padding="@dimen/d15dp"
+                                    android:textColorHint="@color/color_text_hint"
+                                    android:textSize="@dimen/d18sp" />
 
                                 <EditText
                                     android:id="@+id/et_age"
@@ -185,8 +191,9 @@
                                     android:background="@drawable/selector"
                                     android:hint="@string/strage"
                                     android:inputType="numberDecimal"
-                                    android:padding="15sp"
-                                    android:textColorHint="@color/color_text_hint" />
+                                    android:padding="@dimen/d15dp"
+                                    android:textColorHint="@color/color_text_hint"
+                                    android:textSize="@dimen/d18sp" />
                             </LinearLayout>
 
                             <EditText
@@ -199,8 +206,9 @@
                                 android:gravity="top|left"
                                 android:hint="@string/strhomeaddress"
                                 android:inputType="textPostalAddress"
-                                android:padding="15sp"
-                                android:textColorHint="@color/color_text_hint" />
+                                android:padding="@dimen/d15dp"
+                                android:textColorHint="@color/color_text_hint"
+                                android:textSize="@dimen/d18sp" />
 
                         </LinearLayout>
 
@@ -231,7 +239,7 @@
                                 android:padding="@dimen/d10dp"
                                 android:text="@string/struploadprofilepicture"
                                 android:textColor="@color/color_blue"
-                                android:textSize="@dimen/d18dp" />
+                                android:textSize="@dimen/d18sp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -260,7 +268,7 @@
                             <com.ism.commonsource.view.ActionProcessButton
                                 android:id="@+id/prog_country"
                                 android:layout_width="match_parent"
-                                android:layout_height="5dp"
+                                android:layout_height="@dimen/d5dp"
                                 android:visibility="invisible" />
                         </LinearLayout>
 
@@ -281,7 +289,7 @@
                             <com.ism.commonsource.view.ActionProcessButton
                                 android:id="@+id/prog_state"
                                 android:layout_width="match_parent"
-                                android:layout_height="5dp"
+                                android:layout_height="@dimen/d5dp"
                                 android:visibility="invisible" />
                         </LinearLayout>
 
@@ -301,7 +309,7 @@
                             <com.ism.commonsource.view.ActionProcessButton
                                 android:id="@+id/prog_city"
                                 android:layout_width="match_parent"
-                                android:layout_height="5dp"
+                                android:layout_height="@dimen/d5dp"
                                 android:visibility="invisible" />
                         </LinearLayout>
 
@@ -330,7 +338,7 @@
                     android:padding="@dimen/d10dp"
                     android:text="@string/strmanageaccount"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -354,8 +362,9 @@
                             android:layout_weight="1"
                             android:background="@drawable/selector"
                             android:hint="@string/strusername"
-                            android:padding="15sp"
-                            android:textColorHint="@color/color_text_hint" />
+                            android:padding="@dimen/d15dp"
+                            android:textColorHint="@color/color_text_hint"
+                            android:textSize="@dimen/d18sp" />
 
                         <EditText
                             android:id="@+id/et_currentpwd"
@@ -366,8 +375,9 @@
                             android:background="@drawable/selector"
                             android:hint="@string/strcurrentpwd"
                             android:inputType="textPassword"
-                            android:padding="15sp"
-                            android:textColorHint="@color/color_text_hint" />
+                            android:padding="@dimen/d15dp"
+                            android:textColorHint="@color/color_text_hint"
+                            android:textSize="@dimen/d18sp" />
 
                     </LinearLayout>
 
@@ -386,8 +396,9 @@
                             android:background="@drawable/selector"
                             android:hint="@string/strnewpwd"
                             android:inputType="textPassword"
-                            android:padding="15sp"
-                            android:textColorHint="@color/color_text_hint" />
+                            android:padding="@dimen/d15dp"
+                            android:textColorHint="@color/color_text_hint"
+                            android:textSize="@dimen/d18sp" />
 
                         <EditText
                             android:id="@+id/et_confirmpwd"
@@ -398,8 +409,9 @@
                             android:background="@drawable/selector"
                             android:hint="@string/strconfirmpwd"
                             android:inputType="textPassword"
-                            android:padding="15sp"
-                            android:textColorHint="@color/color_text_hint" />
+                            android:padding="@dimen/d15dp"
+                            android:textColorHint="@color/color_text_hint"
+                            android:textSize="@dimen/d18sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -415,7 +427,7 @@
                 <Button
                     android:id="@+id/btn_cancel"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/d50dp"
                     android:layout_marginRight="@dimen/d10dp"
                     android:background="@drawable/backgroundbtnlogin"
                     android:gravity="center"
@@ -426,12 +438,12 @@
                     android:paddingTop="@dimen/d10dp"
                     android:text="@string/strcancel"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <com.ism.commonsource.view.ActionProcessButton
                     android:id="@+id/btn_submit"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/d50dp"
                     android:layout_marginLeft="@dimen/d10dp"
                     android:background="@drawable/background_edittext"
                     android:gravity="center"
@@ -442,7 +454,7 @@
                     android:paddingTop="@dimen/d10dp"
                     android:text="@string/strsubmit"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp"
+                    android:textSize="@dimen/d20sp"
                     app:pb_colorComplete="@color/color_blue"
                     app:pb_colorNormal="@color/color_blue"
                     app:pb_colorPressed="@color/color_blue"

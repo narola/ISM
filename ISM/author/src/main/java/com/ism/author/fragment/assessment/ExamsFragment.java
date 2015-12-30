@@ -93,7 +93,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
         arrListAssessment = new ArrayList<String>();
         arrListAssessment = Arrays.asList(getResources().getStringArray(R.array.assessment_type));
-        Adapters.setUpSpinner(getActivity(), spExamEvaluationStatus, arrListAssessment, Adapters.ADAPTER_SMALL);
+        Adapters.setUpSpinner(getActivity(), spExamEvaluationStatus, arrListAssessment, Adapters.ADAPTER_SMALL, Global.myTypeFace.getRalewayRegular());
 
         txtSubmissionDate = (TextView) view.findViewById(R.id.txt_submission_date);
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
@@ -379,7 +379,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                         classrooms.add(classroom.getClassName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spExamClass, classrooms, Adapters.ADAPTER_SMALL);
+                    Adapters.setUpSpinner(getActivity(), spExamClass, classrooms, Adapters.ADAPTER_SMALL,Global.myTypeFace.getRalewayRegular());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
@@ -406,7 +406,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                         authorBooks.add(authorBook.getBookName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spExamAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL);
+                    Adapters.setUpSpinner(getActivity(), spExamAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL,Global.myTypeFace.getRalewayRegular());
                     spExamAuthorBooks.setSelection(1);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());

@@ -34,7 +34,7 @@
                 android:singleLine="true"
                 android:text="@string/strtest"
                 android:textColor="@color/color_gray"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
             <TextView
                 android:id="@+id/tv_student_roll_no"
@@ -43,7 +43,7 @@
                 android:layout_marginTop="@dimen/d5dp"
                 android:text="@string/strtest"
                 android:textColor="@color/color_gray"
-                android:textSize="@dimen/d12dp" />
+                android:textSize="@dimen/d12sp" />
         </LinearLayout>
 
 

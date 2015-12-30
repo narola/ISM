@@ -13,6 +13,6 @@
         android:padding="@dimen/d5dp"
         android:text="@string/strbiology"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/d18dp" />
+        android:textSize="@dimen/d18sp" />
 
 </com.ism.author.autocomplete.TokenLayout>

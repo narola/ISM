@@ -9,7 +9,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.object.Global;
 
 import java.util.List;
 
@@ -23,7 +22,8 @@ public class Adapters {
     public static int ADAPTER_SMALL = 0, ADAPTER_NORMAL = 1;
     static Integer layout;
 
-    public static void setUpSpinner(final Context context, Spinner spinner, List<String> strArr, int ADAPTER_TYPE) {
+    public static void setUpSpinner(final Context context, Spinner spinner, List<String> strArr, int ADAPTER_TYPE, final Typeface typeface) {
+
 
         if (ADAPTER_TYPE == ADAPTER_SMALL) {
 
@@ -38,7 +38,8 @@ public class Adapters {
 
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getView(position, convertView, parent);
-                textView.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+                textView.setTypeface(typeface);
                 if (position == 0) {
                     textView.setTextColor(context.getResources().getColor(R.color.color_text_hint));
                     return textView;
@@ -50,7 +51,8 @@ public class Adapters {
 
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getDropDownView(position, convertView, parent);
-                textView.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+                textView.setTypeface(typeface);
                 textView.setCompoundDrawables(null, null, null, null);
 
                 if (position == 0) {
@@ -69,6 +71,7 @@ public class Adapters {
         adapter.setDropDownViewResource(R.layout.row_spinner);
         spinner.setAdapter(adapter);
     }
+
     public static void setUpSpinner(final Context context, Spinner spinner, String[] strArr, final Typeface typeface, int resIdLayout) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, resIdLayout, strArr) {
 
@@ -86,6 +89,7 @@ public class Adapters {
         adapter.setDropDownViewResource(R.layout.row_spinner);
         spinner.setAdapter(adapter);
     }
+
     private static void setTextViewDropdown(Context context, int position, Typeface typeface, TextView textView) {
         if (typeface != null) {
             textView.setTypeface(typeface);

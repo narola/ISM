@@ -19,7 +19,7 @@
 
             <Spinner
                 android:id="@+id/sp_questionlist_author_books"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
@@ -29,7 +29,7 @@
 
             <Spinner
                 android:id="@+id/sp_questionlist_filter"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
@@ -39,7 +39,7 @@
 
             <Spinner
                 android:id="@+id/sp_questionlist_sorting"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
@@ -48,7 +48,7 @@
                 android:spinnerMode="dropdown" />
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
@@ -59,7 +59,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="1dp"
+                        android:layout_width="@dimen/d1dp"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="@dimen/d8dp"
                         android:layout_marginTop="@dimen/d8dp"
@@ -86,7 +86,7 @@
                         android:padding="@dimen/d5dp"
                         android:textColor="@color/colorPrimary"
                         android:textColorHint="@color/color_graylight"
-                        android:textSize="@dimen/d18dp"
+                        android:textSize="@dimen/d18sp"
                         android:visibility="gone" />
                 </LinearLayout>
             </RelativeLayout>
@@ -110,7 +110,7 @@
                 android:text="@string/strquestionbank"
                 android:textAllCaps="true"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/d15dp" />
+                android:textSize="@dimen/d15sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -154,7 +154,7 @@
                 android:padding="@dimen/d5dp"
                 android:text="@string/straddnewquestion"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
             <TextView
                 android:id="@+id/tv_questionlist_add_preview"
@@ -165,7 +165,7 @@
                 android:padding="@dimen/d5dp"
                 android:text="@string/straddtopreview"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
         </RelativeLayout>
 
     </LinearLayout>

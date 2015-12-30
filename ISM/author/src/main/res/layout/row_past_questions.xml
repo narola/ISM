@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/ll_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/d10dp"
     android:background="@drawable/bg_white_border_gray"
-    android:layout_height="wrap_content"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -15,33 +15,34 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/txt_no_of_followers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center|bottom"
             android:text="50"
-            android:id="@+id/txt_no_of_followers"
             android:textColor="@color/color_red"
             android:textSize="@dimen/d25sp" />
+
         <TextView
+            android:id="@+id/txt_followers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center|top"
             android:text="followers"
-            android:id="@+id/txt_followers"
             android:textSize="@dimen/d18sp" />
     </LinearLayout>
 
     <TextView
-        android:layout_width="2dp"
+        android:layout_width="@dimen/d2dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/d10dp"
         android:layout_marginBottom="@dimen/d10dp"
-        android:padding="@dimen/d10dp"
+        android:layout_marginTop="@dimen/d10dp"
         android:background="@color/divider_light"
+        android:gravity="center"
+        android:padding="@dimen/d10dp"
         android:textSize="@dimen/d25sp" />
 
     <LinearLayout
@@ -66,12 +67,12 @@
             android:id="@+id/txt_creator_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:gravity="center"
             android:padding="@dimen/d5dp"
-            android:layout_gravity="center"
             android:text="Adam Stanger"
             android:textColor="@color/color_blue"
-            android:textSize="15sp" />
+            android:textSize="@dimen/d15sp" />
 
     </LinearLayout>
 
@@ -104,11 +105,4 @@
             android:textSize="@dimen/d16sp" />
 
     </RelativeLayout>
-    <!--<TextView-->
-    <!--android:id="@+id/txt_bottom_line"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="1dp"-->
-    <!--android:background="@color/border_gray" />-->
-    <!-- -->
-
 </LinearLayout>
