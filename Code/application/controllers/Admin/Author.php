@@ -19,7 +19,7 @@ class Author extends ADMIN_Controller {
 
 		if(!empty($_GET['q']) || !empty($_GET['author']) || !empty($_GET['order']) ){
 
-			if (!empty($_GET['q'])) {$q = replace_invalid_chars($this->input->get('q'));}
+			if (!empty($_GET['q'])) { $q = replace_invalid_chars($this->input->get('q')); }
 			if( !empty($_GET['author']) ) { $author = $this->input->get('author'); }	
 			if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }		
 

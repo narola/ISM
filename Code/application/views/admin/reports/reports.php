@@ -21,7 +21,7 @@
                             <input id="date_range" class="form-control" type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
                                 <a class="icon icon_calendar_red"></a>
                             </div>
-                                <!-- <input type="text" class="form-control" placeholder="From">
+                            <!-- <input type="text" class="form-control" placeholder="From">
                             <div class="range_picker">
                             	<input type="text" class="form-control" placeholder="To">
                                 <a href="#" class="icon icon_calendar_red"></a>
