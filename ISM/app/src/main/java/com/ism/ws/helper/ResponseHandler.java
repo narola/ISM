@@ -12,6 +12,7 @@ import com.ism.ws.model.City;
 import com.ism.ws.model.Comment;
 import com.ism.ws.model.Country;
 import com.ism.ws.model.Feeds;
+import com.ism.ws.model.FridayExamStatus;
 import com.ism.ws.model.GroupDiscussionData;
 import com.ism.ws.model.Message;
 import com.ism.ws.model.Movies;
@@ -19,6 +20,7 @@ import com.ism.ws.model.Notes;
 import com.ism.ws.model.Notice;
 import com.ism.ws.model.Notification;
 import com.ism.ws.model.Pastime;
+import com.ism.ws.model.QuestionForFriday;
 import com.ism.ws.model.RoleModel;
 import com.ism.ws.model.SettingPreferences;
 import com.ism.ws.model.State;
@@ -74,6 +76,8 @@ public class ResponseHandler {
     private ArrayList<GroupDiscussionData> groupDiscussionData;
     private ArrayList<TutorialGroupProfile> tutorialGroupProfile;
     private ArrayList<Notes> notes;
+    private ArrayList<FridayExamStatus> fridayExamStatus;
+    private ArrayList<QuestionForFriday> questionForFriday;
     private ArrayList<AllBooks> allBooks;
 
     @JsonProperty("message")
@@ -382,6 +386,23 @@ public class ResponseHandler {
         this.notes = notes;
     }
 
+    @JsonProperty("friday_exam_status")
+    public ArrayList<FridayExamStatus> getFridayExamStatus() {
+        return this.fridayExamStatus;
+    }
+
+    public void setFridayExamStatus(ArrayList<FridayExamStatus> fridayExamStatus) {
+        this.fridayExamStatus = fridayExamStatus;
+    }
+
+	@JsonProperty("question_for_friday")
+    public ArrayList<QuestionForFriday> getQuestionForFriday() {
+        return this.questionForFriday;
+    }
+
+    public void setQuestionForFriday(ArrayList<QuestionForFriday> questionForFriday) {
+        this.questionForFriday = questionForFriday;
+    }
     @JsonProperty("all_books")
     public ArrayList<AllBooks> getAllBooks() {
         return allBooks;

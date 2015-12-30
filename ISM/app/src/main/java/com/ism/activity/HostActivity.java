@@ -103,7 +103,6 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private BooksListner booksListner;
     private HostListenerEditAboutMe listenerEditAboutMe;
     public InsertSymbolListener insertSymbolListener;
-    private StudentHelper studentHelper;
     private HostSpinnerListener hostSpinnerListener;
 
     private HostListenerQuestionPalette listenerQuestionPalette;
@@ -143,6 +142,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private InputMethodManager inputMethod;
     private ScrollListener scrollListener;
     private ResizeView resizeListView;
+    private StudentHelper studentHelper;
 
     public interface ScrollListener {
         public void isLastPosition();

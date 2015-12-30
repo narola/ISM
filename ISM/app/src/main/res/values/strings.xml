@@ -557,8 +557,9 @@
 	<!--ℑ-->
 	<string name="blackletter_capital_R">&#8476;</string>
 	<string name="exams">Exams</string>
-	<string name="title_select_answer">Select answer!</string>
-	<string name="msg_select_answer">Please select the right answer.</string>
+	<string name="inputs_missing">Inputs missing !</string>
+	<string name="msg_select_answer"><![CDATA[>  Please select the right answer.]]></string>
+	<string name="msg_question_data_missing"><![CDATA[>  Question or some of the options are missing.]]></string>
 
 
 </resources>

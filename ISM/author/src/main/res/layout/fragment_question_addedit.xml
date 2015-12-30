@@ -20,7 +20,7 @@
             android:padding="@dimen/d15dp"
             android:text="@string/straddnewquestion"
             android:textColor="@color/color_question"
-            android:textSize="@dimen/d22dp" />
+            android:textSize="@dimen/d22sp" />
 
         <TextView
             android:id="@+id/tv_addquestion_gotoquestionbank"
@@ -34,13 +34,13 @@
             android:padding="@dimen/d5dp"
             android:text="@string/strquestionbank"
             android:textColor="@color/color_blue"
-            android:textSize="@dimen/d18dp" />
+            android:textSize="@dimen/d18sp" />
     </RelativeLayout>
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/d0dp"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/d20dp"
         android:layout_weight="1">
@@ -75,7 +75,7 @@
                             android:layout_centerVertical="true"
                             android:text="@string/strquestiontitle"
                             android:textColor="@color/color_blue"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/d20sp"
                             android:textStyle="bold" />
 
                         <LinearLayout
@@ -93,7 +93,7 @@
                                 android:layout_marginRight="@dimen/d10dp"
                                 android:text="@string/stradvance"
                                 android:textColor="@color/color_blue"
-                                android:textSize="20sp"
+                                android:textSize="@dimen/d20sp"
                                 android:textStyle="bold" />
 
                             <ImageView

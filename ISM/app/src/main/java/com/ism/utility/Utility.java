@@ -59,8 +59,8 @@ public class Utility {
     public static final SimpleDateFormat DATE_FORMAT_DDMMMYY = new SimpleDateFormat("dd MMM yy", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_MMMDDYY_HHMMA = new SimpleDateFormat("MMM dd, yy  HH : mm aa", Locale.getDefault()); // Nov 25, 2015  7:10pm
     public static final SimpleDateFormat DATE_FORMAT_MMMDDYYYY = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-	private static StringBuilder mFormatBuilder = new StringBuilder();
-	private static Formatter mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
+    private static StringBuilder mFormatBuilder = new StringBuilder();
+    private static Formatter mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
     private static InputMethodManager inputMethod;
 
     /**
@@ -179,10 +179,10 @@ public class Utility {
             builder.setMessage(message);
         }
         AlertDialog dialog = builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-	        @Override
-	        public void onClick(DialogInterface dialog, int which) {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
-	        }
+            }
         }).create();
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();
@@ -563,25 +563,26 @@ public class Utility {
 
     }
 
-	public static String stringForTime(int timeMs) {
-		int totalSeconds = timeMs / 1000;
+    public static String stringForTime(int timeMs) {
+        int totalSeconds = timeMs / 1000;
 
-		int seconds = totalSeconds % 60;
-		int minutes = (totalSeconds / 60) % 60;
-		int hours   = totalSeconds / 3600;
+        int seconds = totalSeconds % 60;
+        int minutes = (totalSeconds / 60) % 60;
+        int hours = totalSeconds / 3600;
 
-		mFormatBuilder.setLength(0);
-		if (hours > 0) {
-			return mFormatter.format("%d:%02d:%02d", hours, minutes, seconds).toString();
-		} else {
-			return mFormatter.format("%02d:%02d", minutes, seconds).toString();
-		}
-	}
+        mFormatBuilder.setLength(0);
+        if (hours > 0) {
+            return mFormatter.format("%d:%02d:%02d", hours, minutes, seconds).toString();
+        } else {
+            return mFormatter.format("%02d:%02d", minutes, seconds).toString();
+        }
+    }
 
-	public static String formatNumber(int number) {
-		mFormatBuilder.setLength(0);
-		return mFormatter.format("%02d", number).toString();
-	}
+    public static String formatNumber(int number) {
+        mFormatBuilder.setLength(0);
+        return mFormatter.format("%02d", number).toString();
+    }
+
     /**
      * get the file path from the URI
      *
@@ -604,4 +605,23 @@ public class Utility {
         return result;
     }
 
+    /**
+     * Arti Patel
+     * hide the view
+     *
+     * @param view
+     */
+    public static void hideView(View view) {
+        view.setVisibility(View.GONE);
+    }
+
+    /**
+     * Arti patel
+     *  show the view
+     *
+     * @param view
+     */
+    public static void showView(View view) {
+        view.setVisibility(View.VISIBLE);
+    }
 }

@@ -105,7 +105,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			callApiGetAdminConfig();
 //			resumeApp();
 		} else {
-			PreferenceData.clearWholePreference(this);
+//			PreferenceData.clearWholePreference(this);
 			PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, WebConstants.NO_USERNAME);
 			WebConstants.ACCESS_KEY = WebConstants.NO_USERNAME;
 			WebConstants.SECRET_KEY = null;
@@ -551,8 +551,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						}
 						PreferenceData.setStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, LoginActivity.this,
 								Utility.formatDateMySql(Calendar.getInstance().getTime()));
-						isAdminConfigSet = true;
 					}
+					isAdminConfigSet = true;
 					resumeApp();
 
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {

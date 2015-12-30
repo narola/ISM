@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.ExpandableListView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
@@ -19,6 +19,7 @@ import com.ism.teacher.listview.DragNDropListView;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
+import com.ism.teacher.ws.model.LessonNotes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public class NotesListFragment extends Fragment implements WebserviceWrapper.Web
 
     ArrayList<String> listDataHeader = new ArrayList<>();
     HashMap<String, ArrayList<String>> listDataChild;
+    ArrayList<LessonNotes>arrListLessonNotes=new ArrayList<>();
 
     public NotesListFragment() {
         // Required empty public constructor
@@ -61,7 +63,7 @@ public class NotesListFragment extends Fragment implements WebserviceWrapper.Web
 
     private void initGlobal(View rootview) {
         listViewNotes = (DragNDropListView) rootview.findViewById(R.id.list_view_notes);
-        listViewNotes.setDragOnLongPress(true);
+       // listViewNotes.setDragOnLongPress(true);
 
         if (getNotesContainer().getBundleArguments().getString(AllNotesAdapter.ARG_NOTES_SUBJECT_ID) != null) {
             if (Utility.isInternetConnected(getActivity())) {
@@ -69,6 +71,16 @@ public class NotesListFragment extends Fragment implements WebserviceWrapper.Web
                 callApiLessonNotesWithDetails(getNotesContainer().getBundleArguments().getString(AllNotesAdapter.ARG_NOTES_SUBJECT_ID));
             }
         }
+
+        listViewNotes.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                getNotesContainer().callNotesAddEditService(arrListLessonNotes.get(groupPosition).getLectureId(),
+                        arrListLessonNotes.get(groupPosition).getNotes().get(childPosition));
+                return false;
+            }
+        });
 
     }
 
@@ -117,7 +129,7 @@ public class NotesListFragment extends Fragment implements WebserviceWrapper.Web
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-
+                    arrListLessonNotes=responseHandler.getLessonNotes();
                     if (responseHandler.getLessonNotes().size() > 0) {
                         listDataChild = new HashMap<>();
                         for (int i = 0; i < responseHandler.getLessonNotes().size(); i++) {

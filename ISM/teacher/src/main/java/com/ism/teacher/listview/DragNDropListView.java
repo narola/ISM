@@ -204,16 +204,15 @@ public class DragNDropListView extends ExpandableListView {
 
     // enable the drag view for dragging
     private void startDrag(int itemIndex, int y) {
-        // stopDrag(itemIndex);
 
         View item = getChildAt(itemIndex);
         if (item == null)
             return;
-        //hideItem(item, mStartPosition);
+        hideItem(item, mStartPosition);
 
         // Create a copy of the drawing cache so that it does not get recycled
         // by the framework when the list tries to clean up memory
-        Bitmap bitmap = Bitmap.createBitmap(item.getDrawingCache());
+         Bitmap bitmap = Bitmap.createBitmap(item.getDrawingCache());
         item.setBackgroundColor(defaultBackgroundColor);
         WindowManager.LayoutParams mWindowParams = new WindowManager.LayoutParams();
         mWindowParams.gravity = Gravity.TOP;
@@ -232,7 +231,7 @@ public class DragNDropListView extends ExpandableListView {
 
         Context context = getContext();
         ImageView v = new ImageView(context);
-        v.setImageBitmap(bitmap);
+           v.setImageBitmap(bitmap);
 
         WindowManager mWindowManager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
@@ -247,33 +246,33 @@ public class DragNDropListView extends ExpandableListView {
         this.adapter = (DragNDropAdapter) adapter;
     }
 
-//	private void hideItem(View itemView, int[] position) {
-//		if (adapter != null) {
-//			adapter.onPick(position);
-//		}
-//		itemView.setVisibility(View.INVISIBLE); // make the item invisible as we
-//												// have picked it
-//		itemView.setDrawingCacheEnabled(true);
-//		defaultBackgroundColor = itemView.getDrawingCacheBackgroundColor();
-//		itemView.setBackgroundColor(backgroundColor);
+    private void hideItem(View itemView, int[] position) {
+        if (adapter != null) {
+            adapter.onPick(position);
+        }
+        itemView.setVisibility(View.INVISIBLE); // make the item invisible as we
+        // have picked it
+        itemView.setDrawingCacheEnabled(true);
+        defaultBackgroundColor = itemView.getDrawingCacheBackgroundColor();
+        itemView.setBackgroundColor(backgroundColor);
 //		ImageView iv = (ImageView) itemView
 //				.findViewById(R.id.move_icon_customizer_item);
 //		if (iv != null)
 //			iv.setVisibility(View.INVISIBLE);
-//	}
-//
-//	public void showItem(View itemView) {
-//		if (itemView != null) {
-//			itemView.setVisibility(View.VISIBLE);
-//			itemView.setBackgroundColor(defaultBackgroundColor);
-//			itemView.setDrawingCacheEnabled(false);
+    }
+
+    public void showItem(View itemView) {
+        if (itemView != null) {
+            itemView.setVisibility(View.VISIBLE);
+            itemView.setBackgroundColor(defaultBackgroundColor);
+            itemView.setDrawingCacheEnabled(false);
 //			ImageView iv = (ImageView) itemView
 //					.findViewById(R.id.move_icon_customizer_item);
 //			if (iv != null)
 //				iv.setVisibility(View.VISIBLE);
-//		}
-//
-//	}
+        }
+
+    }
 
     /**
      * destroy the drag view
@@ -288,7 +287,7 @@ public class DragNDropListView extends ExpandableListView {
             if (wantedChild < 0 || wantedChild >= getChildCount()) {
                 // no need to do anything
             } else {
-                //showItem(getChildAt(wantedChild));
+                showItem(getChildAt(wantedChild));
             }
             mDragView.setVisibility(GONE);
             WindowManager wm = (WindowManager) getContext().getSystemService(

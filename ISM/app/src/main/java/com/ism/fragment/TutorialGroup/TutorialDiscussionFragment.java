@@ -23,6 +23,7 @@ import com.ism.assistantwebview.view.AssistantWebView;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.scientificcalc.view.Calc;
+import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
 import com.ism.whiteboard.view.Whiteboard;
@@ -277,8 +278,8 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	private void callApiGetGroupHistory() {
 		try {
 			Attribute attribute = new Attribute();
-//			attribute.setGroupId(Global.strTutorialGroupId);
-			attribute.setGroupId("134");
+			attribute.setGroupId(Global.strTutorialGroupId);
+//			attribute.setGroupId("134");
 			attribute.setWeekNo("1");
 			attribute.setDayNo("");
 
@@ -423,6 +424,14 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				arrListDiscussionData = responseHandler.getGroupDiscussionData();
+
+				for (int i = 0; i < arrListDiscussionData.size(); i++) {
+					if (arrListDiscussionData.get(i).getIsCurrentDay().equals("yes")) {
+						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity(), arrListDiscussionData.get(i).getTutorialTopicId());
+						break;
+					}
+				}
+				PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity(), arrListDiscussionData.get(1).getTutorialTopicId());
 
 //				Save data
 				/*for (int i = 0; i < arrListDiscussionData.size(); i++) {

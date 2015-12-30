@@ -132,7 +132,7 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(currentFragment);
+                fragListener.onFragmentDetached(HostActivity.FRAGMENT_DESK);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
