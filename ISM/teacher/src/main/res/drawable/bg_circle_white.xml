@@ -24,10 +24,10 @@
         <shape  android:shape="oval">
 
             <solid android:color="#90BABABA" />
-            <corners android:radius="5dp" />
+            <corners android:radius="@dimen/d5dp" />
             <size
-                android:width="75dp"
-                android:height="75dp"/>
+                android:width="@dimen/d75dp"
+                android:height="@dimen/d75dp"/>
 
         </shape>
     </item>
@@ -38,10 +38,10 @@
         <shape  android:shape="oval">
 
             <solid android:color="#FFFFFF" />
-            <corners android:radius="7dp" />
+            <corners android:radius="@dimen/d7dp" />
             <size
-                android:width="80dp"
-                android:height="80dp"/>
+                android:width="@dimen/d80dp"
+                android:height="@dimen/d80dp"/>
 
         </shape>
 

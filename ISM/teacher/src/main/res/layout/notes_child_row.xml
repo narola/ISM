@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp">
+        android:layout_height="@dimen/d55dp">
 
         <TextView
             android:id="@+id/tv_note_title"
@@ -16,7 +16,8 @@
             android:padding="@dimen/d5dp"
             android:text="Note Title"
             android:textSize="@dimen/d16sp"
-            android:textColor="@color/color_black"/>
+            android:textColor="@color/color_black"
+            android:layout_marginLeft="@dimen/d15dp"/>
 
         <ImageView
             android:id="@+id/img_icon"
@@ -29,6 +30,6 @@
     </RelativeLayout>
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/d1dp"
         android:background="@color/child_divider"/>
 </LinearLayout>

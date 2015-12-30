@@ -14,6 +14,7 @@ public class MediaUploadAttribute {
     private String paramName;
     private String paramValue;
     private String fileName;
+    private String mcqString;
     private ArrayList<AnswerChoices> arrListMcqAnswerValue;
 
     private JSONArray jsonArrayMCQ;
@@ -52,6 +53,16 @@ public class MediaUploadAttribute {
     public MediaUploadAttribute setArrListMcqAnswerValue(ArrayList<AnswerChoices> arrListMcqAnswerValue) {
         this.arrListMcqAnswerValue = arrListMcqAnswerValue;
         return this;
+    }
+
+    public void setMcqString(String mcqString)
+    {
+        this.mcqString=mcqString;
+    }
+
+    public String getMcqString()
+    {
+        return mcqString;
     }
 
 }

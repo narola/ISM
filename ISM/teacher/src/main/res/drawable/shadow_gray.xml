@@ -4,10 +4,10 @@
     <item>
         <shape>
             <padding
-                android:bottom="1px"
-                android:left="1px"
-                android:right="1px"
-                android:top="1px" />
+                android:bottom="@dimen/d1px"
+                android:left="@dimen/d1px"
+                android:right="@dimen/d1px"
+                android:top="@dimen/d1px" />
             <solid android:color="#00bababa" />
             <size android:height="@dimen/d50dp"/>
 
@@ -16,10 +16,10 @@
     <item>
         <shape>
             <padding
-                android:bottom="1px"
-                android:left="1px"
-                android:right="1px"
-                android:top="1px" />
+                android:bottom="@dimen/d1px"
+                android:left="@dimen/d1px"
+                android:right="@dimen/d1px"
+                android:top="@dimen/d1px" />
             <solid android:color="#10bababa" />
             <size android:height="@dimen/d50dp"/>
 
@@ -28,10 +28,10 @@
     <item>
         <shape>
             <padding
-                android:bottom="1px"
-                android:left="1px"
-                android:right="1px"
-                android:top="1px" />
+                android:bottom="@dimen/d1px"
+                android:left="@dimen/d1px"
+                android:right="@dimen/d1px"
+                android:top="@dimen/d1px" />
             <solid android:color="#20bababa" />
             <size android:height="@dimen/d50dp"/>
 
@@ -40,10 +40,10 @@
     <item>
         <shape>
             <padding
-                android:bottom="1px"
-                android:left="1px"
-                android:right="1px"
-                android:top="1px" />
+                android:bottom="@dimen/d1px"
+                android:left="@dimen/d1px"
+                android:right="@dimen/d1px"
+                android:top="@dimen/d1px"/>
             <solid android:color="#30bababa" />
             <size android:height="@dimen/d50dp"/>
 

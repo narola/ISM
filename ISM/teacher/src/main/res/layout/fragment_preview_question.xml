@@ -22,7 +22,7 @@
                 android:gravity="center"
                 android:text="Preview"
                 android:textColor="@color/color_question"
-                android:textSize="22sp" />
+                android:textSize="@dimen/d22sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
                 android:gravity="center"
                 android:text="Freeze"
                 android:textColor="@color/color_blue"
-                android:textSize="22sp" />
+                android:textSize="@dimen/d22sp" />
         </RelativeLayout>
 
 

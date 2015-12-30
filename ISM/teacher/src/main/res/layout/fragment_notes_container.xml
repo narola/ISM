@@ -6,7 +6,7 @@
 
     <FrameLayout
         android:id="@+id/fl_left_note_container"
-        android:layout_width="250dp"
+        android:layout_width="@dimen/d250dp"
         android:layout_height="match_parent">
 
     </FrameLayout>

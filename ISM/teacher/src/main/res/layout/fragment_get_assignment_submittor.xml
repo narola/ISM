@@ -20,7 +20,7 @@
             android:paddingLeft="@dimen/d10dp"
             android:text="@string/strtest"
             android:textColor="@color/color_blue"
-            android:textSize="@dimen/d22dp" />
+            android:textSize="@dimen/d22sp" />
 
         <ImageView
             android:id="@+id/img_toggle_list"
