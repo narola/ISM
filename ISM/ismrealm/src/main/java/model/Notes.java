@@ -12,23 +12,41 @@ import io.realm.annotations.PrimaryKey;
 public class Notes extends RealmObject {
 
     @PrimaryKey
-    private  int noteId;
+    private  int localNoteId;
+    private  int serverNoteId;
     private String noteName;
     private String noteText;
     private String video;
     private String audio;
     private NoteImage noteImage ;
     private User user;
+    private  int isSync;
     private String noteSubject;
     private Date createdDate;
     private Date modifiedDate;
 
-    public int getNoteId() {
-        return noteId;
+    public int getIsSync() {
+        return isSync;
     }
 
-    public void setNoteId(int noteId) {
-        this.noteId = noteId;
+    public void setIsSync(int isSync) {
+        this.isSync = isSync;
+    }
+
+    public int getLocalNoteId() {
+        return localNoteId;
+    }
+
+    public void setLocalNoteId(int localNoteId) {
+        this.localNoteId = localNoteId;
+    }
+
+    public int getServerNoteId() {
+        return serverNoteId;
+    }
+
+    public void setServerNoteId(int serverNoteId) {
+        this.serverNoteId = serverNoteId;
     }
 
     public String getNoteName() {

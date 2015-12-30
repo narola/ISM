@@ -24,7 +24,7 @@ public class StudentHelper {
 
     private static final String TAG = StudentHelper.class.getSimpleName();
 
-    Realm realm;
+    public Realm realm;
     private RealmResults<Feeds> feedsRealmResults;
     private RealmResults<Notes> notesRealmResults;
 
@@ -70,7 +70,9 @@ public class StudentHelper {
 	System.gc();*/
 
     public void destroy() {
-
+	    if (realm != null) {
+		    realm.close();
+	    }
     }
 
     public String getGlobalPassword() {
@@ -146,6 +148,7 @@ public class StudentHelper {
     public User getUser(int user_id) {
         realm.beginTransaction();
         RealmResults<User> feedsRealmResults = realm.where(User.class).equalTo("userId", user_id).findAll();
+        Log.i(TAG, "getUser feedsRealmResults.size: " + feedsRealmResults.size());
         realm.commitTransaction();
         return feedsRealmResults.get(0);
     }
@@ -196,22 +199,22 @@ public class StudentHelper {
 
     public void updateTotalComments(Feeds feeds) {
         Feeds toUpdateFeeds = realm.where(Feeds.class).equalTo("feedId", feeds.getFeedId()).findFirst();
-        realm.beginTransaction();
+	    realm.beginTransaction();
         toUpdateFeeds.setTotalComment(feeds.getTotalComment() + 1);
         //toUpdateFeeds.getComments().add(feeds.getComments().get(0));
-        realm.commitTransaction();
+	    realm.commitTransaction();
     }
 
     public RealmResults<Feeds> getFeedLikes(boolean statusUpdation) {
 //    public RealmResults<Feeds> getFeedLikes(Date lastSynch, Date modified) {
         realm.beginTransaction();
         RealmResults<Feeds> feedsRealmResults = realm.where(Feeds.class).equalTo("isSync", 1).findAll();
-        Log.i(TAG, "getFeedLikes feedsRealmResults.size: " + feedsRealmResults.size());
+	    Log.i(TAG, "getFeedLikes feedsRealmResults.size: " + feedsRealmResults.size());
         if (statusUpdation) {
             for (int i = 0; i < feedsRealmResults.size(); i++)
                 feedsRealmResults.get(i).setIsSync(0);
         }
-        realm.commitTransaction();
+	    realm.commitTransaction();
         return feedsRealmResults;
     }
 
@@ -224,10 +227,10 @@ public class StudentHelper {
     public void saveComments(FeedComment feedComment) {
         try {
             Feeds feeds = feedComment.getFeed();
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(feedComment);
-            feeds.getComments().add(feedComment);
-            realm.commitTransaction();
+	        realm.beginTransaction();
+	        realm.copyToRealmOrUpdate(feedComment);
+	        feeds.getComments().add(feedComment);
+	        realm.commitTransaction();
         } catch (Exception e) {
             Log.i(TAG, "saveComments Exceptions : " + e.getLocalizedMessage());
         }
@@ -241,10 +244,10 @@ public class StudentHelper {
     public void saveFeedImages(FeedImage feedImage) {
         try {
             Feeds feeds = feedImage.getFeed();
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(feedImage);
-            feeds.getFeedImages().add(feedImage);
-            realm.commitTransaction();
+	        realm.beginTransaction();
+	        realm.copyToRealmOrUpdate(feedImage);
+	        feeds.getFeedImages().add(feedImage);
+	        realm.commitTransaction();
         } catch (Exception e) {
             Log.i(TAG, "saveFeedImages Exceptions : " + e.getLocalizedMessage());
         }
@@ -302,9 +305,9 @@ public class StudentHelper {
                 newId = (long) subjectId + 1;
             }
             realm.beginTransaction();
-            subjects.setSubjectId((int) newId);
-            realm.copyToRealmOrUpdate(subjects);
-            realm.commitTransaction();
+	        subjects.setSubjectId((int) newId);
+	        realm.copyToRealmOrUpdate(subjects);
+	        realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveSubjects Exception : " + e.toString());
         }
@@ -317,15 +320,17 @@ public class StudentHelper {
      */
     public void saveNote(Notes notes) {
         try {
-                Number id = realm.where(Notes.class).max("noteId");
+            if (notes.getLocalNoteId() == 0) {
+                Number id = realm.where(Notes.class).max("localNoteId");
                 long newId = 1;
                 if (id != null) {
                     newId = (long) id + 1;
                 }
-                realm.beginTransaction();
-                notes.setNoteId((int) newId);
-                realm.copyToRealmOrUpdate(notes);
-                realm.commitTransaction();
+                notes.setLocalNoteId((int) newId);
+            }
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(notes);
+            realm.commitTransaction();
 
         } catch (Exception e) {
             Log.e(TAG, "saveNote Exception : " + e.toString());
@@ -335,15 +340,15 @@ public class StudentHelper {
     /**
      * get all notes or jotting for user
      *
-     * @param user
+     * @param userId
      * @return
      */
-    public RealmResults<Notes> getNotes(final User user) {
+    public RealmResults<Notes> getNotes(final int userId) {
         try {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                        notesRealmResults = realm.where(Notes.class).equalTo("user.userId", user.getUserId()).findAll();
+                    notesRealmResults = realm.where(Notes.class).equalTo("user.userId", userId).findAll();
 
                 }
             });
@@ -354,26 +359,4 @@ public class StudentHelper {
         return notesRealmResults;
     }
 
-    /**
-     * update the note(only for subject and note text)
-     * @param notes
-     * @param userId
-     */
-    public void updateNotes(final Notes notes, final int userId) {
-        try {
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    notesRealmResults = realm.where(Notes.class).equalTo("user.userId", userId).equalTo("noteId", notes.getNoteId()).findAll();
-                    notesRealmResults.get(0).setModifiedDate(notes.getModifiedDate());
-                    notesRealmResults.get(0).setNoteSubject(notes.getNoteSubject());
-                    notesRealmResults.get(0).setNoteText(notes.getNoteText());
-
-                }
-            });
-            Log.i(TAG, "updateNotes : done  ");
-        } catch (Exception e) {
-            Log.i(TAG, "updateNotes Exception : " + e.getLocalizedMessage());
-        }
-    }
 }

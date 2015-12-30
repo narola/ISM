@@ -1,0 +1,147 @@
+<resources>
+    <dimen name="controller_left_width">75dp</dimen><!-- edited -->
+    <dimen name="controller_left_divider_height">3dp</dimen><!-- edited -->
+    <dimen name="content_right_width">191dp</dimen><!-- edited -->
+    <dimen name="nav_header_vertical_spacing">12dp</dimen><!-- edited -->
+    <dimen name="nav_header_height">120dp</dimen><!-- edited -->
+    <dimen name="fab_margin">12dp</dimen><!-- edited -->
+    <dimen name="controller_top_height">38dp</dimen><!-- edited -->
+    <dimen name="controller_top_button_width">64dp</dimen><!-- edited -->
+    <dimen name="controller_top_small_button_width">45dp</dimen><!-- edited -->
+    <dimen name="controller_menu_text_padding">23dp</dimen><!-- edited -->
+    <dimen name="controller_top_menu_text_size">15sp</dimen><!-- edited -->
+    <dimen name="shadow_layer_width">2dp</dimen><!-- edited -->
+    <dimen name="week_day_padding">8dp</dimen><!-- edited -->
+
+
+    <!-- Arti -->
+    <dimen name="d5dp">4dp</dimen><!-- edited -->
+    <dimen name="d10dp">8dp</dimen><!-- edited -->
+    <dimen name="d15dp">11dp</dimen><!-- edited -->
+    <dimen name="d18dp">14dp</dimen><!-- edited -->
+    <dimen name="d20sp">15sp</dimen><!-- edited -->
+    <dimen name="d20dp">15dp</dimen><!-- edited -->
+    <dimen name="d30dp">23dp</dimen><!-- edited -->
+    <dimen name="d25dp">19dp</dimen><!-- edited -->
+
+    <dimen name="d40dp">30dp</dimen><!-- edited -->
+    <dimen name="d50dp">38dp</dimen><!-- edited -->
+    <dimen name="d60dp">45dp</dimen><!-- edited -->
+    <dimen name="d70dp">53dp</dimen><!-- edited -->
+    <dimen name="d90dp">68dp</dimen><!-- edited -->
+    <dimen name="d120dp">90dp</dimen><!-- edited -->
+    <dimen name="d130dp">123dp</dimen><!-- edited -->
+
+    <dimen name="exam_padding">15dp</dimen><!-- edited -->
+    <dimen name="button_corner_radius">4dp</dimen><!-- edited -->
+    <dimen name="button_margin_exam">5dp</dimen><!-- edited -->
+    <dimen name="button_padding_exam">15dp</dimen><!-- edited -->
+    <dimen name="button_height">32dp</dimen><!-- edited -->
+    <dimen name="post_feed_spacing">8dp</dimen><!-- edited -->
+    <dimen name="post_dp_size">90dp</dimen><!-- edited -->
+    <dimen name="post_dp_margin">13dp</dimen><!-- edited -->
+    <dimen name="dp_size_list_small">38dp</dimen><!-- edited -->
+    <dimen name="dp_margin_list">11dp</dimen><!-- edited -->
+    <dimen name="post_text_size">14sp</dimen><!-- edited -->
+    <dimen name="comment_padding">4dp</dimen><!-- edited -->
+    <dimen name="dialog_progress_margin">11dp</dimen><!-- edited -->
+    <dimen name="app_button_corner_radius">4dp</dimen><!-- edited -->
+    <dimen name="dialog_spacing">15dp</dimen><!-- edited -->
+    <dimen name="d150dp">138dp</dimen><!-- edited -->
+    <dimen name="d18sp">14sp</dimen><!-- edited -->
+    <dimen name="divider_height">2dp</dimen><!-- edited -->
+    <dimen name="header_white_height">45dp</dimen><!-- edited -->
+    <dimen name="header_white_spacing">11dp</dimen><!-- edited -->
+    <dimen name="notification_margin_top">4dp</dimen><!-- edited -->
+    <dimen name="notification_digit_radius">4dp</dimen><!-- edited -->
+    <dimen name="notification_digit_horizontal_padding">8dp</dimen>
+    <dimen name="notification_digit_text_size">12sp</dimen><!-- edited -->
+    <dimen name="notification_button_height">45dp</dimen><!-- edited -->
+    <dimen name="profile_label_text">16sp</dimen><!-- edited -->
+    <dimen name="profile_label_padding">15dp</dimen><!-- edited -->
+    <dimen name="profile_label_height">53dp</dimen><!-- edited -->
+    <dimen name="d3dp">2dp</dimen><!-- edited -->
+    <dimen name="d22sp">17sp</dimen><!-- edited -->
+    <dimen name="d110dp">75dp</dimen><!-- edited -->
+    <dimen name="d80dp">60dp</dimen><!-- edited -->
+    <dimen name="d25sp">19sp</dimen><!-- edited -->
+    <dimen name="padding_header_white">15dp</dimen><!-- edited -->
+    <dimen name="text_size_header_white">15sp</dimen><!-- edited -->
+    <dimen name="padding_child_fragment_content">11dp</dimen><!-- edited -->
+    <dimen name="edit_radius">4dp</dimen><!-- edited -->
+    <dimen name="padding_voucher_item">11dp</dimen><!-- edited -->
+    <dimen name="padding_my_activity">11dp</dimen><!-- edited -->
+    <dimen name="size_dot_timeline">9dp</dimen><!-- edited -->
+    <dimen name="padding_txt_timeline_table">4dp</dimen><!-- edited -->
+    <dimen name="txt_timeline_table">14sp</dimen><!-- edited -->
+    <dimen name="txt_timeline_table_small">12sp</dimen><!-- edited -->
+    <dimen name="dp_size_timeline">49dp</dimen><!-- edited -->
+    <dimen name="dp_size_list_notification">45dp</dimen><!-- edited -->
+    <dimen name="dp_size_list_studymates">60dp</dimen><!-- edited -->
+    <dimen name="status_ring_radius">4dp</dimen><!-- edited -->
+    <dimen name="status_ring_thickness">2dp</dimen><!-- edited -->
+    <dimen name="status_ring_size">12dp</dimen><!-- edited -->
+    <dimen name="button_small_corner_radius">2dp</dimen><!-- edited -->
+    <dimen name="find_studymate_tag_width">90dp</dimen><!-- edited -->
+    <dimen name="attachment_button_width">38dp</dimen><!-- edited -->
+    <dimen name="attachment_button_height">30dp</dimen><!-- edited -->
+    <dimen name="text_size_normal_chat">12sp</dimen><!-- edited -->
+    <dimen name="text_size_small_chat">11sp</dimen><!-- edited -->
+    <dimen name="margin_chat">4dp</dimen><!-- edited -->
+    <dimen name="text_size_emptylist_message_small">14sp</dimen><!-- edited -->
+    <dimen name="text_size_emptylist_message_medium">17sp</dimen><!-- edited -->
+    <dimen name="text_size_emptylist_message_large">19sp</dimen><!-- edited -->
+    <dimen name="controller_utility_height">38dp</dimen><!-- edited -->
+    <dimen name="member_item_width">138dp</dimen><!-- edited -->
+    <dimen name="dp_size_member_sunday">53dp</dimen><!-- edited -->
+    <dimen name="margin_text_member_sunday">4dp</dimen><!-- edited -->
+    <dimen name="text_school_member_sunday">12sp</dimen><!-- edited -->
+    <dimen name="text_name_member_sunday">15sp</dimen><!-- edited -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Tutorial Group Exam dimensions-->
+    <dimen name="result_padding">15dp</dimen><!-- edited -->
+    <dimen name="activity_horizontal_margin">12dp</dimen><!-- edited -->
+    <dimen name="activity_vertical_margin">12dp</dimen><!-- edited -->
+    <dimen name="question_palette_padding">4dp</dimen><!-- edited -->
+    <dimen name="queston_palette_text_size">12sp</dimen><!-- edited -->
+    <dimen name="notation_drawable_size">20dp</dimen><!-- edited -->
+    <dimen name="notation_drawable_padding">8dp</dimen><!-- edited -->
+    <dimen name="notation_vertical_padding">2dp</dimen><!-- edited -->
+    <dimen name="button_dark_corner_radius">4dp</dimen><!-- edited -->
+    <dimen name="button_dark_border_width">2dp</dimen><!-- edited -->
+    <dimen name="score_text_padding">15dp</dimen><!-- edited -->
+    <dimen name="score_spacing">8dp</dimen><!-- edited -->
+    <dimen name="score_spacing_double">15dp</dimen><!-- edited -->
+    <dimen name="score_title_text">15sp</dimen><!-- edited -->
+    <dimen name="score_text">19sp</dimen><!-- edited -->
+    <dimen name="text_option">14sp</dimen><!-- edited -->
+    <dimen name="height_createquestion_lable">75dp</dimen>
+    <dimen name="quesiton_navigatino_button_size">38dp</dimen><!-- edited -->
+    <dimen name="d15sp">11sp</dimen><!-- edited -->
+    <dimen name="d16sp">12sp</dimen><!-- edited -->
+
+
+
+	<!-- Currently added dimentions -->
+	<dimen name="login_layout_width">375dp</dimen>
+	<dimen name="login_logo_height">70dp</dimen>
+	<dimen name="btn_login_height">40dp</dimen>
+	<dimen name="login_logo_margin">20dp</dimen>
+</resources>

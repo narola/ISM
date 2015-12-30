@@ -142,6 +142,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private InputMethodManager inputMethod;
     private ScrollListener scrollListener;
     private ResizeView resizeListView;
+    private StudentHelper studentHelper;
 
     public interface ScrollListener {
         public void isLastPosition();
@@ -262,7 +263,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
         inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        Global.studentHelper = new StudentHelper(this);
+        studentHelper = new StudentHelper(this);
 
         arrTxtMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
         progressGenerator = new ProgressGenerator();
