@@ -5,12 +5,12 @@
 
     <com.ism.views.CircleImageView
         android:id="@+id/img_dp"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_width="@dimen/d60dp"
+        android:layout_height="@dimen/d60dp"
+        android:layout_marginTop="@dimen/d10dp"
+        android:layout_marginLeft="@dimen/d10dp"
+        android:layout_marginRight="@dimen/d10dp"
+        android:layout_marginBottom="@dimen/d10dp"
         android:src="@drawable/img_default_dp"/>
 
     <TextView
@@ -18,12 +18,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/img_dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginRight="@dimen/d5dp"
+        android:layout_marginTop="@dimen/d10dp"
         android:maxLines="3"
         android:ellipsize="end"
         android:textColor="@color/green"
-        android:textSize="17sp"/>
+        android:textSize="@dimen/d17sp"/>
 
     <TextView
         android:id="@+id/txt_school"
@@ -31,11 +31,11 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/img_dp"
         android:layout_below="@id/txt_user_name"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="@dimen/d5dp"
         android:maxLines="3"
         android:ellipsize="end"
         android:textColor="@color/bg_app_dark"
-        android:textSize="16sp"/>
+        android:textSize="@dimen/d16sp"/>
 
     <TextView
         android:id="@+id/txt_course"
@@ -43,11 +43,11 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/img_dp"
         android:layout_below="@id/txt_school"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="@dimen/d5dp"
         android:maxLines="3"
         android:ellipsize="end"
         android:textColor="@color/bg_app_dark"
-        android:textSize="16sp"/>
+        android:textSize="@dimen/d16sp"/>
 
     <TextView
         android:id="@+id/txt_time"
@@ -55,18 +55,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_course"
         android:layout_toRightOf="@id/img_dp"
-        android:paddingBottom="10dp"
+        android:paddingBottom="@dimen/d10dp"
         android:textColor="@color/text_gray"/>
 
 	<Button
 		android:id="@+id/btn_respond"
 		android:layout_width="wrap_content"
-		android:layout_height="35dp"
+		android:layout_height="@dimen/d35dp"
 		android:layout_below="@id/txt_course"
 		android:layout_alignParentRight="true"
-		android:layout_margin="10dp"
-		android:paddingLeft="5dp"
-		android:paddingRight="5dp"
+		android:layout_margin="@dimen/d10dp"
+		android:paddingLeft="@dimen/d5dp"
+		android:paddingRight="@dimen/d5dp"
 		android:textColor="@android:color/white"
 		android:background="@drawable/bg_btn_dark"
 		android:textAllCaps="false"

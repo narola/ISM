@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/bg_highscore_subject"
         android:paddingBottom="@dimen/d10dp"
-        android:paddingLeft="20dp"
+        android:paddingLeft="@dimen/d20dp"
         android:paddingRight="@dimen/d20dp"
         android:paddingTop="@dimen/d10dp"
         android:text="@string/strSMSAlertsForAssignments"

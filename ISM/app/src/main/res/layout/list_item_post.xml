@@ -124,7 +124,7 @@
 	<Button
 		android:id="@+id/btn_comment"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_height="@dimen/button_height_normal"
 		android:layout_below="@id/ll_comments"
 		android:layout_alignParentRight="true"
 		android:layout_marginRight="@dimen/d20dp"
@@ -135,5 +135,6 @@
 		android:text="@string/comment"
 		android:textColor="@color/color_white"
 		android:textSize="@dimen/d20sp"
-		android:textStyle="bold" />
+		android:textStyle="bold"
+		android:layout_alignBottom="@+id/et_comment" />
 </RelativeLayout>

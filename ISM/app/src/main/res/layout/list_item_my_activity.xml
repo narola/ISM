@@ -24,7 +24,7 @@
 			android:paddingRight="@dimen/d10dp"
 			android:textColor="@color/text_red_timeline"
 			android:visibility="gone"
-			android:textSize="@dimen/d17sp"/>
+			android:textSize="@dimen/d21sp"/>
 
 		<View
 			android:layout_width="match_parent"
@@ -48,7 +48,7 @@
 		android:layout_marginTop="@dimen/d15dp"
 		android:layout_marginBottom="@dimen/d15dp"
 		android:layout_marginLeft="@dimen/d30dp"
-		android:textSize="@dimen/d21sp"
+		android:textSize="@dimen/d18sp"
 		android:textColor="@color/bg_app_dark"/>
 
 	<FrameLayout

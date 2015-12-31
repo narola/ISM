@@ -6,31 +6,31 @@
 			<solid android:color="#14E9E9E9" />
 		</shape>
 	</item>
-	<item android:bottom="2dp">
+	<item android:bottom="@dimen/d2dp">
 		<shape android:shape="rectangle">
 			<!-- 40 opacity -->
 			<solid android:color="#28E9E9E9" />
 		</shape>
 	</item>
-	<item android:bottom="4dp">
+	<item android:bottom="@dimen/d4dp">
 		<shape android:shape="rectangle">
 			<!-- 100 opacity -->
 			<solid android:color="#64E9E9E9" />
 		</shape>
 	</item>
-	<item android:bottom="6dp">
+	<item android:bottom="@dimen/d6dp">
 		<shape android:shape="rectangle">
 			<!-- 150 opacity -->
 			<solid android:color="#96E9E9E9" />
 		</shape>
 	</item>
-	<item android:bottom="8dp">
+	<item android:bottom="@dimen/d8dp">
 		<shape android:shape="rectangle">
 			<!-- 256(full) opacity -->
 			<solid android:color="#E9E9E9" />
 		</shape>
 	</item>
-	<item android:bottom="10dp">
+	<item android:bottom="@dimen/d10dp">
 		<shape android:shape="rectangle">
 			<solid android:color="@color/color_white" />
 		</shape>

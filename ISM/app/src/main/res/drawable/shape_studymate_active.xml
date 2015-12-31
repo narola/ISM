@@ -2,13 +2,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 	<item>
 		<shape>
-			<padding android:bottom="2dp"/>
+			<padding android:bottom="@dimen/d2dp"/>
 			<solid android:color="@color/border_table"/>
 		</shape>
 	</item>
 	<item>
 		<shape>
-			<padding android:bottom="4dp"/>
+			<padding android:bottom="@dimen/d4dp"/>
 			<solid android:color="@color/orange"/>
 		</shape>
 	</item>

@@ -1,10 +1,13 @@
 package com.ism.adapter;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,7 +113,21 @@ public class PostFileAdapter extends BaseAdapter {
                 File file = new File(arrayList.get(position).getStrFilePath().getPath());
                 if (file != null) {
                     mMediaMetadataRetriever.setDataSource(context, arrayList.get(position).getStrFilePath());
+                    Debug.i(TAG, "Frame size : " + mMediaMetadataRetriever.getFrameAtTime());
+                    Debug.i(TAG,"Frame size : "+arrayList.get(position).getStrFilePath().getPath());
                     bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+                    ContentResolver crThumb = context.getContentResolver();
+                 //  String wholeID = DocumentsContract.getDocumentId(uri);
+                    // Split at colon, use second item in the array
+                //    String id = wholeID.split(":")[1];
+
+                    String[] column = {MediaStore.Video.Media.DATA};
+
+                    // where id is equal to
+                    String sel = MediaStore.Video.Media._ID + "=?";
+                    BitmapFactory.Options options=new BitmapFactory.Options();
+                    options.inSampleSize = 1;
+                   // Bitmap curThumb = MediaStore.Video.Thumbnails.getThumbnail(crThumb, arrayList.get(position).getStrFilePath().getPath(), MediaStore.Video.Thumbnails.MICRO_KIND, options);
                     imageView.setImageBitmap(bitmap);
                 } else {
                     imageView.setBackgroundColor(Color.BLACK);

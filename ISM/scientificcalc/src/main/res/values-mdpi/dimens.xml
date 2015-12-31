@@ -1,0 +1,17 @@
+<resources>
+
+    <dimen name="display_one_text_size">25sp</dimen>
+    <dimen name="display_two_text_size">20sp</dimen>
+
+    <dimen name="display_padding">5dp</dimen>
+    <dimen name="display_padding_vertical">2dp</dimen>
+
+    <dimen name="sci_button_height">30dp</dimen>
+    <dimen name="sci_header_height">15dp</dimen>
+    <dimen name="sci_header_text_size">11sp</dimen>
+
+    <dimen name="calc_column_spacing">1dp</dimen>
+    <dimen name="calc_column_spacing_sci">1dp</dimen>
+    <dimen name="button_text_size">38sp</dimen>
+
+</resources>

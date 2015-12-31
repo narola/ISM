@@ -86,7 +86,7 @@
 			<com.ism.commonsource.view.ActionProcessButton
 				android:id="@+id/btn_generate"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
+				android:layout_height="@dimen/d50dp"
 				android:layout_marginTop="@dimen/d30dp"
 				android:paddingLeft="@dimen/d90dp"
 				android:paddingRight="@dimen/d90dp"
