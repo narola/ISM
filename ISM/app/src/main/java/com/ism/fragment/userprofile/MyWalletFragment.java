@@ -70,7 +70,7 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 	}
 
 	private void initGlobal() {
-		viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
+		//viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
 		txtBalance = (TextView) view.findViewById(R.id.txt_wallet_balance);
 		txtEmptyListMessage = (TextView) view.findViewById(R.id.txt_emptylist_message);
 		etVoucherAmount = (EditText) view.findViewById(R.id.edit_voucher_amount);
@@ -79,7 +79,8 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 
 		txtEmptyListMessage.setTypeface(Global.myTypeFace.getRalewayRegular());
 		lvVoucher.setEmptyView(txtEmptyListMessage);
-		viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
+
+		//viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
 		progressGenerator = new ProgressGenerator();
 

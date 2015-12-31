@@ -4,11 +4,9 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:textColor="@color/bg_app_dark"
-          android:textSize="18sp"
+          android:textSize="@dimen/d18sp"
           android:gravity="center_vertical"
-          android:paddingLeft="20dp"
-          android:paddingRight="20dp"
-          android:paddingTop="5dp"
-          android:paddingBottom="5dp">
-
-</TextView>
+          android:paddingLeft="@dimen/d20dp"
+          android:paddingRight="@dimen/d20dp"
+          android:paddingTop="@dimen/d5dp"
+          android:paddingBottom="@dimen/d5dp"/>

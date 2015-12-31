@@ -51,7 +51,7 @@
 	<View
 		android:id="@+id/view_separator_mates"
 		android:layout_width="match_parent"
-		android:layout_height="1dp"
+		android:layout_height="@dimen/d1dp"
 		android:background="@color/color_shade_news_feed"/>
 </LinearLayout>
 
