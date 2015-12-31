@@ -26,20 +26,20 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginRight="2dp"
-                android:padding="@dimen/d10dp"
+                android:padding="@dimen/dp8"
                 android:text="Book Details"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/d20sp" />
+                android:textSize="@dimen/sp15" />
             <TextView
                 android:id="@+id/txt_book_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/d10dp"
+                android:layout_margin="@dimen/dp8"
                 android:background="@color/color_white"
                 android:gravity="center"
                 android:text="Write about your self"
-                android:padding="@dimen/d10dp"
-                android:textSize="@dimen/d20sp" />
+                android:padding="@dimen/dp8"
+                android:textSize="@dimen/sp15" />
 
 
         </LinearLayout>
@@ -55,9 +55,9 @@
             android:paddingBottom="10dp"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
-            android:paddingTop="@dimen/d10dp"
+            android:paddingTop="@dimen/dp8"
             android:text="Done"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/d20sp" />
+            android:textSize="@dimen/sp15" />
     </LinearLayout>
 </LinearLayout>

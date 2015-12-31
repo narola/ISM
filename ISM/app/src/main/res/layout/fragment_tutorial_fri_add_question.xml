@@ -16,20 +16,20 @@
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
 			android:gravity="center"
-			android:paddingLeft="@dimen/d20dp"
+			android:paddingLeft="@dimen/dp15"
 			android:textColor="@color/bg_app_dark"
 			android:text="@string/friday_internal_exam"
-			android:textSize="@dimen/d25sp"/>
+			android:textSize="@dimen/sp19"/>
 
 		<TextView
 			android:id="@+id/txt_help"
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
-			android:layout_marginRight="@dimen/d20dp"
+			android:layout_marginRight="@dimen/dp15"
 			android:gravity="center"
 			android:layout_alignParentRight="true"
 			android:textColor="@color/text_gray"
-			android:textSize="@dimen/d20sp"
+			android:textSize="@dimen/sp15"
 			android:drawableLeft="@drawable/ic_help"
 			android:textAllCaps="true"
 			android:text="@string/help"/>
@@ -43,7 +43,7 @@
 		android:background="@drawable/bg_white_border_gray"
 		android:layout_centerInParent="true"
 		android:padding="@dimen/dp1"
-		android:layout_margin="@dimen/d20dp">
+		android:layout_margin="@dimen/dp15">
 
 		<TextView
 			android:id="@+id/txt_title"
@@ -51,11 +51,11 @@
 			android:layout_height="wrap_content"
 			android:background="@color/green"
 			android:textColor="@color/color_white"
-			android:paddingTop="@dimen/d10dp"
-			android:paddingBottom="@dimen/d10dp"
-			android:paddingLeft="@dimen/d20dp"
-			android:paddingRight="@dimen/d20dp"
-			android:textSize="@dimen/d25sp"
+			android:paddingTop="@dimen/dp8"
+			android:paddingBottom="@dimen/dp8"
+			android:paddingLeft="@dimen/dp15"
+			android:paddingRight="@dimen/dp15"
+			android:textSize="@dimen/sp19"
 			android:text="@string/question_for_tutorialmate"/>
 
 		<LinearLayout
@@ -72,6 +72,7 @@
 				android:textColor="@color/bg_app_dark"
 				android:background="@drawable/bg_white_border_gray_bottom"
 				android:padding="@dimen/padding_createquestion_lable"
+				android:gravity="center_vertical"
 				android:textSize="@dimen/text_createquestion_lable"/>
 
 			<TextView
@@ -81,6 +82,7 @@
 				android:textColor="@color/bg_app_dark"
 				android:background="@drawable/bg_white_border_gray_bottom"
 				android:padding="@dimen/padding_createquestion_lable"
+				android:gravity="center_vertical"
 				android:textSize="@dimen/text_createquestion_lable"/>
 
 			<TextView
@@ -90,16 +92,17 @@
 				android:textColor="@color/bg_app_dark"
 				android:background="@drawable/bg_white_border_gray_bottom"
 				android:padding="@dimen/padding_createquestion_lable"
+				android:gravity="center_vertical"
 				android:textSize="@dimen/text_createquestion_lable"/>
 
 			<TextView
 				android:id="@+id/txt_upload"
 				android:layout_width="match_parent"
 				android:layout_height="@dimen/height_createquestion_lable"
-				android:gravity="center_vertical"
 				android:textColor="@color/bg_app_dark"
 				android:background="@drawable/bg_white_border_gray_bottom"
 				android:padding="@dimen/padding_createquestion_lable"
+				android:gravity="center_vertical"
 				android:textSize="@dimen/text_createquestion_lable"/>
 		</LinearLayout>
 
@@ -111,8 +114,8 @@
 			android:layout_below="@id/txt_title"
 			android:background="@drawable/bg_white_border_gray_left"
 			android:visibility="gone"
-			android:paddingRight="@dimen/d40dp"
-			android:paddingBottom="@dimen/d40dp">
+			android:paddingRight="@dimen/dp30"
+			android:paddingBottom="@dimen/dp30">
 
 			<TextView
 				android:id="@+id/txt_create_question_title"
@@ -128,23 +131,23 @@
 				android:id="@+id/et_question"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:textSize="@dimen/d20sp"
+				android:textSize="@dimen/sp15"
 				android:layout_below="@id/txt_create_question_title"
 				android:textColor="@color/bg_app_dark"
 				android:hint="@string/hint_type_question"
 				android:inputType="textMultiLine"
-				android:padding="@dimen/d20dp"
+				android:padding="@dimen/dp15"
 				android:gravity="start"
-				android:layout_marginTop="@dimen/d20dp"
-				android:layout_marginLeft="@dimen/d40dp"
+				android:layout_marginTop="@dimen/dp15"
+				android:layout_marginLeft="@dimen/dp30"
 				android:background="@drawable/bg_edit_gray"/>
 
-			<View
+			<!--<View
 				android:id="@+id/view_indicator"
 				android:layout_width="@dimen/width_indicator_add_question_form"
 				android:layout_height="@dimen/height_indicator_add_question_form"
 				android:layout_marginTop="@dimen/dp_n2"
-				android:background="@drawable/shape_triangle_general_setting"/>
+				android:background="@drawable/shape_triangle_general_setting"/>-->
 		</RelativeLayout>
 
 		<RelativeLayout
@@ -155,8 +158,8 @@
 			android:layout_below="@id/txt_title"
 			android:background="@drawable/bg_white_border_gray_left"
 			android:visibility="gone"
-			android:paddingRight="@dimen/d40dp"
-			android:paddingBottom="@dimen/d40dp">
+			android:paddingRight="@dimen/dp30"
+			android:paddingBottom="@dimen/dp30">
 
 			<TextView
 				android:id="@+id/txt_set_options_title"
@@ -280,11 +283,11 @@
 					android:button="@drawable/bg_checkbox_gray"/>
 			</LinearLayout>
 
-			<View
+			<!--<View
 				android:layout_width="@dimen/width_indicator_add_question_form"
 				android:layout_height="@dimen/height_indicator_add_question_form"
 				android:background="@drawable/shape_triangle_general_setting"
-				android:layout_marginTop="@dimen/dp55"/>
+				android:layout_marginTop="@dimen/dp55"/>-->
 		</RelativeLayout>
 
 		<RelativeLayout
@@ -295,8 +298,8 @@
 			android:layout_below="@id/txt_title"
 			android:background="@drawable/bg_white_border_gray_left"
 			android:visibility="gone"
-			android:paddingRight="@dimen/d40dp"
-			android:paddingBottom="@dimen/d40dp">
+			android:paddingRight="@dimen/dp30"
+			android:paddingBottom="@dimen/dp30">
 
 			<TextView
 				android:id="@+id/txt_preview_question_title"
@@ -324,16 +327,16 @@
 						android:id="@+id/txt_question"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:textSize="@dimen/d20sp"
+						android:textSize="@dimen/sp15"
 						android:textColor="@color/bg_app_dark"/>
 
 					<TextView
 						android:id="@+id/txt_options"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:textSize="@dimen/d18sp"
+						android:textSize="@dimen/sp14"
 						android:text="@string/options_lable"
-						android:layout_marginTop="@dimen/d20dp"
+						android:layout_marginTop="@dimen/dp15"
 						android:textColor="@color/bg_app_dark"/>
 
 					<RadioButton
@@ -342,7 +345,7 @@
 						android:layout_height="wrap_content"
 						android:textColor="@color/bg_app_dark"
 						android:textSize="@dimen/text_option"
-						android:layout_marginTop="@dimen/d20dp"
+						android:layout_marginTop="@dimen/dp15"
 						android:clickable="false"
 						android:button="@drawable/bg_rb"
 						android:paddingLeft="@dimen/padding_radio_option_add_question"/>
@@ -383,11 +386,11 @@
 				</LinearLayout>
 			</ScrollView>
 
-			<View
+			<!--<View
 				android:layout_width="@dimen/width_indicator_add_question_form"
 				android:layout_height="@dimen/height_indicator_add_question_form"
 				android:background="@drawable/shape_triangle_general_setting"
-				android:layout_marginTop="@dimen/dp110"/>
+				android:layout_marginTop="@dimen/dp110"/>-->
 		</RelativeLayout>
 
 		<RelativeLayout
@@ -398,16 +401,16 @@
 			android:layout_below="@id/txt_title"
 			android:background="@drawable/bg_white_border_gray_left"
 			android:visibility="gone"
-			android:paddingRight="@dimen/d40dp"
-			android:paddingBottom="@dimen/d40dp">
+			android:paddingRight="@dimen/dp30"
+			android:paddingBottom="@dimen/dp30">
 
 			<ImageView
 				android:id="@+id/img_logo"
 				android:layout_width="match_parent"
-				android:layout_height="@dimen/d60dp"
+				android:layout_height="@dimen/dp45"
 				android:scaleType="centerInside"
-				android:layout_marginTop="@dimen/d50dp"
-				android:layout_marginLeft="@dimen/d40dp"
+				android:layout_marginTop="@dimen/dp38"
+				android:layout_marginLeft="@dimen/dp30"
 				android:src="@drawable/img_logo_ism"/>
 
 			<TextView
@@ -415,32 +418,32 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:textColor="@color/bg_app_dark"
-				android:textSize="@dimen/d25sp"
+				android:textSize="@dimen/sp19"
 				android:gravity="center"
-				android:layout_marginTop="@dimen/d50dp"
-				android:layout_marginLeft="@dimen/d40dp"
+				android:layout_marginTop="@dimen/dp38"
+				android:layout_marginLeft="@dimen/dp30"
 				android:layout_below="@id/img_logo"
 				android:text="@string/upload_question_msg"/>
 
 			<Button
 				android:id="@+id/btn_upload"
 				android:layout_width="wrap_content"
-				android:layout_height="@dimen/d50dp"
+				android:layout_height="@dimen/dp38"
 				android:text="@string/upload_and_freeze"
 				android:textColor="@color/color_white"
-				android:layout_marginTop="@dimen/d50dp"
+				android:layout_marginTop="@dimen/dp38"
 				android:layout_below="@id/txt_upload_msg"
-				android:paddingLeft="@dimen/d20dp"
-				android:paddingRight="@dimen/d20dp"
-				android:textSize="@dimen/d20sp"
+				android:paddingLeft="@dimen/dp15"
+				android:paddingRight="@dimen/dp15"
+				android:textSize="@dimen/sp15"
 				android:background="@drawable/bg_button_green_light"
 				android:layout_centerHorizontal="true"/>
 
-			<View
+			<!--<View
 				android:layout_width="@dimen/width_indicator_add_question_form"
 				android:layout_height="@dimen/height_indicator_add_question_form"
 				android:background="@drawable/shape_triangle_general_setting"
-				android:layout_marginTop="@dimen/dp166"/>
+				android:layout_marginTop="@dimen/dp166"/>-->
 		</RelativeLayout>
 	</RelativeLayout>
 

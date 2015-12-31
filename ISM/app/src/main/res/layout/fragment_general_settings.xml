@@ -15,10 +15,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:background="@drawable/general_setting_left"
-                android:padding="@dimen/d20dp"
+                android:padding="@dimen/dp15"
                 android:text="@string/strPrivacySetting"
                 android:textColor="@color/color_dark_gray"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/dp15" />
 
             <TextView
                 android:id="@+id/txt_sms_alerts"
@@ -26,10 +26,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_privacy_setting"
                 android:background="@drawable/general_setting_left"
-                android:padding="@dimen/d20dp"
+                android:padding="@dimen/dp15"
                 android:text="@string/strSmsAlerts"
                 android:textColor="@color/color_dark_gray"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/dp15" />
 
             <TextView
                 android:id="@+id/txt_block_users"
@@ -37,10 +37,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_sms_alerts"
                 android:background="@drawable/general_setting_left"
-                android:padding="@dimen/d20dp"
+                android:padding="@dimen/dp15"
                 android:text="@string/strBlockUser"
                 android:textColor="@color/color_dark_gray"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/dp15" />
 
             <TextView
                 android:id="@+id/txt_notifications"
@@ -48,10 +48,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_block_users"
                 android:background="@drawable/general_setting_left"
-                android:padding="@dimen/d20dp"
+                android:padding="@dimen/dp15"
                 android:text="@string/strNotification"
                 android:textColor="@color/color_dark_gray"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/dp15" />
         </RelativeLayout>
 
 	<RelativeLayout

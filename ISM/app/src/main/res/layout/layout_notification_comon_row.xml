@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/d10dp"
-    android:paddingLeft="@dimen/d30dp"
+    android:layout_margin="@dimen/dp8"
+    android:paddingLeft="@dimen/dp23"
     android:orientation="vertical">
 
     <TextView
@@ -12,18 +12,18 @@
         android:layout_height="wrap_content"
         android:textColor="@color/color_blue"
         android:layout_alignParentTop="true"
-        android:padding="@dimen/d3dp"
-        android:textSize="@dimen/d20sp" />
+        android:padding="@dimen/dp2"
+        android:textSize="@dimen/sp15" />
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_notification_name"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/d5dp"
-        android:layout_marginBottom="@dimen/d5dp"
+        android:layout_marginTop="@dimen/dp4"
+        android:layout_marginBottom="@dimen/dp4"
         android:id="@+id/radigroup_yes_no"
-        android:paddingLeft="@dimen/d30dp">
+        android:paddingLeft="@dimen/dp23">
 
         <RadioButton
             android:id="@+id/radiobutton_yes"
@@ -32,16 +32,16 @@
             android:text="@string/strYes"
             android:textColor="#323232"
             android:textAllCaps="false"
-            android:textSize="@dimen/d18sp" />
+            android:textSize="@dimen/sp14" />
 
         <RadioButton
             android:id="@+id/radiobutton_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/d10dp"
+            android:layout_marginLeft="@dimen/dp8"
             android:text="@string/strNo"
             android:textColor="#323232"
-            android:textSize="@dimen/d18sp"
+            android:textSize="@dimen/sp14"
             android:textAllCaps="false" />
     </RadioGroup>
 

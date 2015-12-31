@@ -8,7 +8,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:background="@drawable/bg_popup_message"
-		android:layout_marginTop="@dimen/d12dp">
+		android:layout_marginTop="@dimen/dp9">
 
 		<TextView
 			android:id="@+id/txt_emptylist_message"
@@ -16,7 +16,6 @@
 			android:layout_height="wrap_content"
 			android:text="@string/no_message_available"
 			android:textSize="@dimen/text_size_emptylist_message_small"
-			android:textColor="@android:color/black"
 			android:layout_centerInParent="true"/>
 
 		<ListView
@@ -24,24 +23,24 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_above="@+id/btn_view_all"
-			android:paddingBottom="@dimen/d2dp"
-			android:paddingTop="@dimen/d2dp"
-			android:dividerHeight="@dimen/d2dp"
+			android:paddingBottom="@dimen/dp2"
+			android:paddingTop="@dimen/dp2"
+			android:dividerHeight="@dimen/dp2"
 			android:divider="@drawable/divider_gray_with_padding"></ListView>
 
 		<Button
 			android:id="@+id/btn_view_all"
 			android:layout_width="wrap_content"
-			android:layout_height="@dimen/d42dp"
+			android:layout_height="@dimen/dp32"
 			android:layout_alignParentBottom="true"
 			android:layout_centerHorizontal="true"
-			android:layout_margin="@dimen/d15dp"
+			android:layout_margin="@dimen/dp11"
 			android:background="@drawable/bg_button_green"
-			android:paddingLeft="@dimen/d40dp"
-			android:paddingRight="@dimen/d40dp"
+			android:paddingLeft="@dimen/dp30"
+			android:paddingRight="@dimen/dp30"
 			android:text="@string/view_all"
 			android:textColor="@color/color_white"
-			android:textSize="@dimen/d18sp"
+			android:textSize="@dimen/sp14"
 			android:visibility="gone"/>
 	</RelativeLayout>
 

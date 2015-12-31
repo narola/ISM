@@ -24,8 +24,8 @@
 				android:textAllCaps="true"
 				android:textColor="@android:color/white"
 				android:layout_centerInParent="true"
-				android:layout_marginTop="@dimen/d5dp"
-				android:layout_marginBottom="@dimen/d5dp"
+				android:layout_marginTop="@dimen/dp4"
+				android:layout_marginBottom="@dimen/dp4"
 				android:textSize="@dimen/sp11"/>
 
 			<TextView
@@ -42,11 +42,11 @@
 			<ImageView
 				android:id="@+id/img_expand_discussion"
 				android:layout_width="wrap_content"
-				android:layout_height="@dimen/d25dp"
+				android:layout_height="@dimen/dp19"
 				android:layout_alignParentRight="true"
 				android:layout_centerVertical="true"
 				android:src="@drawable/ic_expand_discussion"
-				android:layout_marginRight="@dimen/d5dp"/>
+				android:layout_marginRight="@dimen/dp4"/>
 		</RelativeLayout>
 
 		<RelativeLayout
@@ -54,21 +54,21 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/rl_topic"
-			android:padding="@dimen/d5dp"
+			android:padding="@dimen/dp4"
 			android:background="@drawable/bg_white_border_bottom_shadowed">
 
 			<com.ism.views.CircleImageView
 				android:id="@+id/img_admin_dp"
 				android:layout_width="@dimen/dp_size_list_small"
 				android:layout_height="@dimen/dp_size_list_small"
-				android:layout_marginBottom="@dimen/d10dp"
+				android:layout_marginBottom="@dimen/dp8"
 				android:src="@drawable/img_default_dp"/>
 
 			<TextView
 				android:id="@+id/txt_admin_name"
-				android:layout_width="@dimen/d60dp"
+				android:layout_width="@dimen/dp45"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="@dimen/d5dp"
+				android:layout_marginLeft="@dimen/dp4"
 				android:layout_toRightOf="@id/img_admin_dp"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"
@@ -77,13 +77,13 @@
 
 			<TextView
 				android:id="@+id/txt_admin_notice_time"
-				android:layout_width="@dimen/d60dp"
+				android:layout_width="@dimen/dp45"
 				android:layout_height="wrap_content"
 				android:layout_toRightOf="@id/img_admin_dp"
 				android:layout_below="@id/txt_admin_name"
-				android:layout_marginLeft="@dimen/d5dp"
-				android:layout_marginRight="@dimen/d5dp"
-				android:layout_marginBottom="@dimen/d10dp"
+				android:layout_marginLeft="@dimen/dp4"
+				android:layout_marginRight="@dimen/dp4"
+				android:layout_marginBottom="@dimen/dp8"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"
 				android:textSize="@dimen/text_size_small_chat"/>
@@ -93,7 +93,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_toRightOf="@id/txt_admin_name"
-				android:layout_marginBottom="@dimen/d10dp"
+				android:layout_marginBottom="@dimen/dp8"
 				android:maxLines="2"
 				android:ellipsize="end"
 				android:textColor="@color/bg_app_dark"
@@ -113,7 +113,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
-			android:textSize="@dimen/d20sp"
+			android:textSize="@dimen/sp15"
 			android:gravity="center"
 			android:text="@string/no_messages_found"
 			android:visibility="gone"/>
@@ -123,12 +123,12 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_above="@+id/ll_attachments"
-			android:layout_margin="@dimen/d10dp"
-			android:padding="@dimen/d10dp"
+			android:layout_margin="@dimen/dp8"
+			android:padding="@dimen/dp8"
 			android:gravity="center"
 			android:textColor="@color/orange"
 			android:background="@drawable/bg_text_alert"
-			android:textSize="@dimen/d16sp"
+			android:textSize="@dimen/sp12"
 			android:text="@string/msg_active_hours_finished"
 			android:visibility="gone"/>
 
@@ -179,17 +179,17 @@
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
 			android:layoutDirection="rtl"
-			android:padding="@dimen/d5dp"
+			android:padding="@dimen/dp4"
 			android:layout_alignParentBottom="true">
 
 			<Button
 				android:id="@+id/btn_send"
 				android:layout_width="wrap_content"
-				android:layout_height="@dimen/d40dp"
+				android:layout_height="@dimen/dp30"
 				android:background="@drawable/bg_btn_dark"
-				android:textSize="@dimen/d18sp"
-				android:paddingLeft="@dimen/d20dp"
-				android:paddingRight="@dimen/d20dp"
+				android:textSize="@dimen/sp14"
+				android:paddingLeft="@dimen/dp15"
+				android:paddingRight="@dimen/dp15"
 				android:text="@string/send"
 				android:layout_gravity="bottom"
 				android:textColor="@color/color_white"/>
@@ -201,9 +201,9 @@
 				android:inputType="textMultiLine"
 				android:gravity="start"
 				android:hint="@string/say_it"
-				android:layout_margin="@dimen/d5dp"
+				android:layout_margin="@dimen/dp4"
 				android:background="@android:color/transparent"
-				android:textSize="@dimen/d18sp"
+				android:textSize="@dimen/sp14"
 				android:textColor="@color/bg_app_dark"
 				android:maxLines="3"/>
 		</LinearLayout>
@@ -236,7 +236,7 @@
 			android:layout_height="match_parent"
 			android:layout="@layout/layout_assistant_webview"
 			android:inflatedId="@+id/utility_assistant_webview"
-			android:layout_marginLeft="@dimen/d1dp"
+			android:layout_marginLeft="@dimen/dp1"
 			android:layout_above="@+id/ll_controller_utility"></ViewStub>
 
 		<LinearLayout

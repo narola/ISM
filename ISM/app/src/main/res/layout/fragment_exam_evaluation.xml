@@ -9,13 +9,13 @@
 	<TextView
 		android:id="@+id/txt_header"
 		android:layout_width="match_parent"
-		android:layout_height="@dimen/d60dp"
+		android:layout_height="@dimen/dp45"
 		android:background="@drawable/bg_header_white"
 		android:gravity="center_vertical"
-		android:paddingLeft="@dimen/d20dp"
+		android:paddingLeft="@dimen/dp15"
 		android:text="@string/question_hour_evaluation"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="@dimen/d25sp"/>
+		android:textSize="@dimen/sp19"/>
 
 	<RelativeLayout
 		android:id="@+id/rl_question"
@@ -23,34 +23,34 @@
 		android:layout_height="match_parent"
 		android:layout_below="@id/txt_header"
 		android:layout_above="@+id/ll_studymates"
-		android:layout_margin="@dimen/d10dp"
+		android:layout_margin="@dimen/dp8"
 		android:background="@color/border_table"
-		android:padding="@dimen/d1dp">
+		android:padding="@dimen/dp1">
 
 		<RelativeLayout
 			android:id="@+id/rl_header"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/d1dp"
+			android:layout_marginBottom="@dimen/dp1"
 			android:background="@color/gray_light"
-			android:paddingRight="@dimen/d10dp">
+			android:paddingRight="@dimen/dp8">
 
 			<TextView
 				android:id="@+id/txt_header_question"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_centerVertical="true"
-				android:paddingLeft="@dimen/d20dp"
+				android:paddingLeft="@dimen/dp15"
 				android:text="Quesiton : 1"
 				android:textColor="@color/green"
-				android:textSize="@dimen/d18sp"/>
+				android:textSize="@dimen/sp14"/>
 
 			<ImageView
 				android:id="@+id/img_previous"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_centerVertical="true"
-				android:layout_marginRight="@dimen/d5dp"
+				android:layout_marginRight="@dimen/dp4"
 				android:layout_toLeftOf="@+id/img_next"
 				android:src="@drawable/ic_previous_green"/>
 
@@ -72,66 +72,66 @@
 			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:paddingLeft="@dimen/d20dp"
-				android:paddingRight="@dimen/d20dp">
+				android:paddingLeft="@dimen/dp15"
+				android:paddingRight="@dimen/dp15">
 
 				<TextView
 					android:id="@+id/txt_question"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:background="@drawable/bg_white_border_gray_bottom"
-					android:paddingTop="@dimen/d10dp"
-					android:paddingBottom="@dimen/d10dp"
-					android:paddingLeft="@dimen/d5dp"
-					android:paddingRight="@dimen/d5dp"
+					android:paddingTop="@dimen/dp8"
+					android:paddingBottom="@dimen/dp8"
+					android:paddingLeft="@dimen/dp4"
+					android:paddingRight="@dimen/dp4"
 					android:text="When parallel elements meet, which reaction occurs?"
 					android:textColor="@color/bg_app_dark"
-					android:textSize="@dimen/d25sp"/>
+					android:textSize="@dimen/sp19"/>
 
 				<TextView
 					android:id="@+id/txt_your_answer"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_below="@id/txt_question"
-					android:layout_marginTop="@dimen/d10dp"
-					android:paddingLeft="@dimen/d5dp"
+					android:layout_marginTop="@dimen/dp8"
+					android:paddingLeft="@dimen/dp4"
 					android:text="@string/your_answer"
 					android:textColor="@color/bg_app_dark"
-					android:textSize="@dimen/d17sp"/>
+					android:textSize="@dimen/sp13"/>
 
 				<TextView
 					android:id="@+id/txt_correct_answer"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_below="@id/txt_your_answer"
-					android:layout_marginBottom="@dimen/d5dp"
+					android:layout_marginBottom="@dimen/dp4"
 					android:background="@drawable/bg_white_border_gray_bottom"
-					android:paddingLeft="@dimen/d5dp"
-					android:paddingBottom="@dimen/d10dp"
+					android:paddingLeft="@dimen/dp4"
+					android:paddingBottom="@dimen/dp8"
 					android:text="@string/correct_answer"
 					android:textColor="@color/bg_app_dark"
-					android:textSize="@dimen/d17sp"/>
+					android:textSize="@dimen/sp13"/>
 
 				<TextView
 					android:id="@+id/txt_solution"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_below="@id/txt_correct_answer"
-					android:layout_marginLeft="@dimen/d5dp"
-					android:layout_marginTop="@dimen/d10dp"
+					android:layout_marginLeft="@dimen/dp4"
+					android:layout_marginTop="@dimen/dp8"
 					android:text="@string/solution"
 					android:textColor="@color/bg_app_dark"
-					android:textSize="@dimen/d18sp"/>
+					android:textSize="@dimen/sp14"/>
 
 				<TextView
 					android:id="@+id/txt_solution_content"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:layout_below="@id/txt_solution"
-					android:layout_marginLeft="@dimen/d5dp"
+					android:layout_marginLeft="@dimen/dp4"
 					android:text="(X + 5)2"
 					android:textColor="@color/bg_app_dark"
-					android:textSize="@dimen/d18sp"/>
+					android:textSize="@dimen/sp14"/>
 			</RelativeLayout>
 		</ScrollView>
 	</RelativeLayout>
@@ -139,7 +139,7 @@
 	<LinearLayout
 		android:id="@+id/ll_studymates"
 		android:layout_width="match_parent"
-		android:layout_height="@dimen/d180dp"
+		android:layout_height="@dimen/dp135"
 		android:orientation="horizontal"
 		android:background="@color/bg_layout_tutorialmate_answers"
 		android:layout_alignParentBottom="true">
@@ -148,13 +148,13 @@
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:padding="@dimen/d5dp"
+			android:padding="@dimen/dp4"
 			android:orientation="vertical">
 
 			<com.ism.views.CircleImageView
 				android:id="@+id/img_tutorialmate_dp1"
 				android:layout_width="match_parent"
-				android:layout_height="@dimen/d100dp"
+				android:layout_height="@dimen/dp75"
 				android:layout_gravity="center"
 				android:src="@drawable/img_default_dp"
 				app:civ_border_width="@dimen/dp3"
@@ -164,8 +164,8 @@
 				android:id="@+id/txt_tutorialmate_name1"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/d5dp"
-				android:textSize="@dimen/d20sp"
+				android:layout_marginTop="@dimen/dp4"
+				android:textSize="@dimen/sp15"
 				android:text="Adam Ross"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
@@ -174,30 +174,30 @@
 				android:id="@+id/txt_answered_option1"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/d5dp"
-				android:textSize="@dimen/d18sp"
+				android:layout_marginTop="@dimen/dp4"
+				android:textSize="@dimen/sp14"
 				android:text="Answer : A"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 		</LinearLayout>
 
 		<View
-			android:layout_width="@dimen/d1dp"
+			android:layout_width="@dimen/dp1"
 			android:layout_height="match_parent"
 			android:background="@color/border_layout_tutorialmate_answers"
-			android:layout_marginTop="@dimen/d20dp"></View>
+			android:layout_marginTop="@dimen/dp15"></View>
 
 		<LinearLayout
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:padding="@dimen/d5dp"
+			android:padding="@dimen/dp4"
 			android:orientation="vertical">
 
 			<com.ism.views.CircleImageView
 				android:id="@+id/img_tutorialmate_dp2"
 				android:layout_width="match_parent"
-				android:layout_height="@dimen/d100dp"
+				android:layout_height="@dimen/dp75"
 				android:layout_gravity="center"
 				android:src="@drawable/img_default_dp"
 				app:civ_border_width="@dimen/dp3"
@@ -207,8 +207,8 @@
 				android:id="@+id/txt_tutorialmate_name2"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/d5dp"
-				android:textSize="@dimen/d20sp"
+				android:layout_marginTop="@dimen/dp4"
+				android:textSize="@dimen/sp15"
 				android:text="Adam Ross"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
@@ -217,30 +217,30 @@
 				android:id="@+id/txt_answered_option2"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/d5dp"
-				android:textSize="@dimen/d18sp"
+				android:layout_marginTop="@dimen/dp4"
+				android:textSize="@dimen/sp14"
 				android:text="Answer : A"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 		</LinearLayout>
 
 		<View
-			android:layout_width="@dimen/d1dp"
+			android:layout_width="@dimen/dp1"
 			android:layout_height="match_parent"
 			android:background="@color/border_layout_tutorialmate_answers"
-			android:layout_marginTop="@dimen/d20dp"></View>
+			android:layout_marginTop="@dimen/dp15"></View>
 
 		<LinearLayout
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:padding="@dimen/d5dp"
+			android:padding="@dimen/dp4"
 			android:orientation="vertical">
 
 			<com.ism.views.CircleImageView
 				android:id="@+id/img_tutorialmate_dp3"
 				android:layout_width="match_parent"
-				android:layout_height="@dimen/d100dp"
+				android:layout_height="@dimen/dp75"
 				android:layout_gravity="center"
 				android:src="@drawable/img_default_dp"
 				app:civ_border_width="@dimen/dp3"
@@ -250,8 +250,8 @@
 				android:id="@+id/txt_tutorialmate_name3"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/d5dp"
-				android:textSize="@dimen/d20sp"
+				android:layout_marginTop="@dimen/dp4"
+				android:textSize="@dimen/sp15"
 				android:text="Adam Ross"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
@@ -260,30 +260,30 @@
 				android:id="@+id/txt_answered_option3"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/d5dp"
-				android:textSize="@dimen/d18sp"
+				android:layout_marginTop="@dimen/dp4"
+				android:textSize="@dimen/sp14"
 				android:text="Answer : A"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 		</LinearLayout>
 
 		<View
-			android:layout_width="@dimen/d1dp"
+			android:layout_width="@dimen/dp1"
 			android:layout_height="match_parent"
 			android:background="@color/border_layout_tutorialmate_answers"
-			android:layout_marginTop="@dimen/d20dp"></View>
+			android:layout_marginTop="@dimen/dp15"></View>
 
 		<LinearLayout
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:padding="@dimen/d5dp"
+			android:padding="@dimen/dp4"
 			android:orientation="vertical">
 
 			<com.ism.views.CircleImageView
 				android:id="@+id/img_tutorialmate_dp4"
 				android:layout_width="match_parent"
-				android:layout_height="@dimen/d100dp"
+				android:layout_height="@dimen/dp75"
 				android:layout_gravity="center"
 				android:src="@drawable/img_default_dp"
 				app:civ_border_width="@dimen/dp3"
@@ -293,8 +293,8 @@
 				android:id="@+id/txt_tutorialmate_name4"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/d5dp"
-				android:textSize="@dimen/d20sp"
+				android:layout_marginTop="@dimen/dp4"
+				android:textSize="@dimen/sp15"
 				android:text="Adam Ross"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
@@ -303,30 +303,30 @@
 				android:id="@+id/txt_answered_option4"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/d5dp"
-				android:textSize="@dimen/d18sp"
+				android:layout_marginTop="@dimen/dp4"
+				android:textSize="@dimen/sp14"
 				android:text="Answer : A"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 		</LinearLayout>
 
 		<View
-			android:layout_width="@dimen/d1dp"
+			android:layout_width="@dimen/dp1"
 			android:layout_height="match_parent"
 			android:background="@color/border_layout_tutorialmate_answers"
-			android:layout_marginTop="@dimen/d20dp"></View>
+			android:layout_marginTop="@dimen/dp15"></View>
 
 		<LinearLayout
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:padding="@dimen/d5dp"
+			android:padding="@dimen/dp4"
 			android:orientation="vertical">
 
 			<com.ism.views.CircleImageView
 				android:id="@+id/img_tutorialmate_dp5"
 				android:layout_width="match_parent"
-				android:layout_height="@dimen/d100dp"
+				android:layout_height="@dimen/dp75"
 				android:layout_gravity="center"
 				android:src="@drawable/img_default_dp"
 				app:civ_border_width="@dimen/dp3"
@@ -336,8 +336,8 @@
 				android:id="@+id/txt_tutorialmate_name5"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/d5dp"
-				android:textSize="@dimen/d20sp"
+				android:layout_marginTop="@dimen/dp4"
+				android:textSize="@dimen/sp15"
 				android:text="Adam Ross"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
@@ -346,8 +346,8 @@
 				android:id="@+id/txt_answered_option5"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/d5dp"
-				android:textSize="@dimen/d18sp"
+				android:layout_marginTop="@dimen/dp4"
+				android:textSize="@dimen/sp14"
 				android:text="Answer : A"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>

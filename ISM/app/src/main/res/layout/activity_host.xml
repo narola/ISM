@@ -158,14 +158,15 @@
 
             <EditText
                 android:id="@+id/et_search"
-                android:layout_width="200dp"
+                android:layout_width="@dimen/dp150"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="@dimen/dp15"
                 android:hint="@string/hint_search"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
-                android:padding="10dp"
+                android:padding="@dimen/dp8"
+                android:textSize="@dimen/sp14"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/gray_light"
                 android:visibility="gone" />
@@ -279,6 +280,6 @@
     <com.ism.commonsource.view.ActionProcessButton
         android:id="@+id/prog_host"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/d5dp"
+        android:layout_height="@dimen/dp4"
         android:visibility="invisible"/>
 </RelativeLayout>
