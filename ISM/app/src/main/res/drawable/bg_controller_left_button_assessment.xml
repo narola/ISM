@@ -3,19 +3,19 @@
 
     <item>
         <shape>
-            <padding android:bottom="@dimen/d2dp" />
+            <padding android:bottom="@dimen/bg_controller_border" />
             <solid android:color="@color/shadow_divider_dark" />
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:bottom="@dimen/d2dp" />
+            <padding android:bottom="@dimen/bg_controller_border" />
             <solid android:color="@color/shadow_divider_light" />
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:left="@dimen/d4dp" />
+            <padding android:left="@dimen/bg_controller_border_double" />
             <solid android:color="@color/bg_assessment" />
         </shape>
     </item>

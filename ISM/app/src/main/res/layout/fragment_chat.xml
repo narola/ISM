@@ -9,8 +9,8 @@
 
     <com.ism.views.AccordionView
         android:id="@+id/accordion_view_chat"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="#fff5f5f5"
         android:orientation="vertical"
         accordion:header_layout_fold_button_id="@id/foldButton"
@@ -41,7 +41,7 @@
             <Button
                 android:id="@+id/btn_suggested_studymates"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/button_height"
                 android:layout_marginLeft="@dimen/margin_chat"
                 android:layout_marginRight="@dimen/margin_chat"
                 android:layout_marginBottom="@dimen/margin_chat"
@@ -53,7 +53,7 @@
             <Button
                 android:id="@+id/btn_find_more_studymates"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/button_height"
                 android:layout_marginLeft="@dimen/margin_chat"
                 android:layout_marginRight="@dimen/margin_chat"
                 android:layout_marginBottom="@dimen/margin_chat"

@@ -175,7 +175,7 @@
 				android:background="@drawable/bg_button_green"
 				android:layout_below="@id/btn_answers"
 				android:layout_toLeftOf="@+id/btn_no"
-				android:layout_marginRight="@dimen/score_spacing_double"
+				android:layout_marginRight="@dimen/score_spacing"
 				android:text="@string/yes"
 				android:textSize="@dimen/d18sp"
 				android:textColor="@android:color/white"/>
@@ -188,7 +188,7 @@
 				android:background="@drawable/bg_button_dark_solid"
 				android:layout_below="@id/btn_answers"
 				android:layout_alignParentRight="true"
-				android:layout_marginRight="@dimen/score_spacing_double"
+				android:layout_marginRight="@dimen/score_spacing"
 				android:text="@string/no"
 				android:textSize="@dimen/d18sp"
 				android:textColor="@android:color/white"/>

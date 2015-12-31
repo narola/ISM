@@ -208,6 +208,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		btnUploadAndFreeze.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+//				getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam, 0, false)).commit();
 				if (Utility.isConnected(getActivity())) {
 					if (inputsValid()) {
 						callApiSubmitQuestionForFriday();
