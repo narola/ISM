@@ -35,18 +35,19 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     private static final String TAG = TeacherHomeFragment.class.getSimpleName();
 
+    //Views
     private View rootview;
     private RecyclerView recyclerviewPost;
     private FragmentListener fragListener;
     private TextView tvNoFeeds;
 
-    PostFeedsAdapter postFeedsAdapter;
-
     //to open new post
     LinearLayout llPost;
     EditText etWritePost;
+
     View.OnClickListener onClickAttachFile;
 
+    PostFeedsAdapter postFeedsAdapter;
 
     public static TeacherHomeFragment newInstance() {
         TeacherHomeFragment fragTeacherHome = new TeacherHomeFragment();
@@ -184,7 +185,6 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
                     {
                         tvNoFeeds.setVisibility(View.VISIBLE);
                     }
-
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), getActivity());

@@ -308,7 +308,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/rl_controller_top"
         android:layout_toLeftOf="@+id/fl_fragment_container_right"
-        android:layout_toRightOf="@id/ll_controller_left"></FrameLayout>
+        android:layout_toRightOf="@id/ll_controller_left" />
 
     <FrameLayout
         android:id="@+id/fl_fragment_container_right"
@@ -316,7 +316,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_below="@id/rl_controller_top"
-        android:background="@android:color/darker_gray"></FrameLayout>
+        android:background="@android:color/darker_gray" />
 
     <com.ism.commonsource.view.ActionProcessButton
         android:id="@+id/progress_bar"

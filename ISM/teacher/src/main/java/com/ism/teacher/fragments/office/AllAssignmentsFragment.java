@@ -298,7 +298,6 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
         if (Utility.isConnected(getActivity())) {
             try {
-                //   Utility.showSpinnerProgress(progAssignmentClass);
                 Attribute attribute = new Attribute();
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_CLASSROOMS);
@@ -316,7 +315,6 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
         if (Utility.isConnected(getActivity())) {
             try {
-                // Utility.showSpinnerProgress(progAssignmentSubject);
                 Attribute attribute = new Attribute();
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_SUBJECT);
@@ -354,24 +352,13 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
             switch (apicode) {
                 case WebConstants.GET_ALL_ASSIGNMENTS:
-                    if (getActivity() != null && isAdded()) {
-                        ((TeacherHostActivity) getActivity()).hideProgress();
-                        onResponseGetAllAssignments(object);
-                    }
+                    onResponseGetAllAssignments(object);
                     break;
                 case WebConstants.GET_CLASSROOMS:
-                    if (getActivity() != null && isAdded()) {
-                        ((TeacherHostActivity) getActivity()).hideProgress();
-                        onResponseGetClassrooms(object, error);
-
-                    }
+                    onResponseGetClassrooms(object, error);
                     break;
                 case WebConstants.GET_SUBJECT:
-                    if (getActivity() != null && isAdded()) {
-                        ((TeacherHostActivity) getActivity()).hideProgress();
-                        onResponseGetSubjects(object, error);
-
-                    }
+                    onResponseGetSubjects(object, error);
                     break;
             }
 
@@ -437,6 +424,7 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
     private void onResponseGetAllAssignments(Object object) {
 
+        ((TeacherHostActivity) getActivity()).hideProgress();
         if (object != null) {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

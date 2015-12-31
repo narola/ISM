@@ -150,7 +150,7 @@
 
                             <RelativeLayout
                                 android:layout_width="0dp"
-                                android:layout_height="@dimen/d40dp"
+                                android:layout_height="@dimen/d45dp"
                                 android:layout_weight="1">
 
                                 <Spinner
@@ -243,7 +243,8 @@
                             android:layout_height="match_parent"
                             android:background="@drawable/shadow_grey_small_size"
                             android:entries="@array/list"
-                            android:spinnerMode="dropdown" />
+                            android:spinnerMode="dropdown"
+                            />
                     </LinearLayout>
 
                 </LinearLayout>

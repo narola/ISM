@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -67,7 +66,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private CheckBox cbExamStartdateNotify, cbExamEnddateNotify;
     private RadioGroup radioDeclareresult, radioNegativemarking, radioExamRandomQuestion, radioExamUsescore;
     private LinearLayout llAddQuestionscore, llAddNegativeMark, llExamStartdate, llExamStartTime, llTopicSpinner;
-    private Button btnExamSave, btnExamSetquestion, btnExamCancel;
+    private TextView tvExamSave, tvExamSetquestion, tvExamCancel;
     private RichTextEditor rteTrialExam;
     private ScrollView svCreateExam;
 
@@ -208,13 +207,13 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         svCreateExam = (ScrollView) view.findViewById(R.id.sv_create_exam);
 
 
-        btnExamSave = (Button) view.findViewById(R.id.btn_exam_save);
-        btnExamSetquestion = (Button) view.findViewById(R.id.btn_exam_setquestion);
-        btnExamCancel = (Button) view.findViewById(R.id.btn_exam_cancel);
+        tvExamSave = (TextView) view.findViewById(R.id.tv_exam_save);
+        tvExamSetquestion = (TextView) view.findViewById(R.id.tv_exam_setquestion);
+        tvExamCancel = (TextView) view.findViewById(R.id.tv_exam_cancel);
 
-        btnExamSave.setTypeface(Global.myTypeFace.getRalewayRegular());
-        btnExamSetquestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-        btnExamCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamSave.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamSetquestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         llAddQuestionscore = (LinearLayout) view.findViewById(R.id.ll_add_questionscore);
         llAddNegativeMark = (LinearLayout) view.findViewById(R.id.ll_add_negative_mark);
@@ -253,9 +252,9 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         Adapters.setUpSpinner(mContext, spExamExamCategory, arrListExamCategory, Adapters.ADAPTER_NORMAL);
 
 
-        btnExamSave.setOnClickListener(this);
-        btnExamSetquestion.setOnClickListener(this);
-        btnExamCancel.setOnClickListener(this);
+        tvExamSave.setOnClickListener(this);
+        tvExamSetquestion.setOnClickListener(this);
+        tvExamCancel.setOnClickListener(this);
 
         llExamStartdate.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -315,7 +314,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
 
         rteTrialExam = (RichTextEditor) view.findViewById(R.id.rte_trial_exam);
-        rteTrialExam.getRichEditor().setEditorFontSize(25);
+        rteTrialExam.getRichEditor().setEditorFontSize(20);
         rteTrialExam.hideMediaControls();
 
 
@@ -387,14 +386,14 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         //For New Exam
 
         if (getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
-            btnExamSetquestion.setVisibility(View.GONE);
-            btnExamSave.setVisibility(View.VISIBLE);
+            tvExamSetquestion.setVisibility(View.GONE);
+            tvExamSave.setVisibility(View.VISIBLE);
 
         }
         //for edit exam
         else {
             setExamDetails();
-            btnExamSetquestion.setVisibility(View.VISIBLE);
+            tvExamSetquestion.setVisibility(View.VISIBLE);
             spExamExammode.setEnabled(false);
             spExamSubjectname.setEnabled(false);
         }
@@ -430,14 +429,14 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             /*we cant change the exam mode and subject for that particular exam if it once created*/
         if (getBaseFragment().getBundleArguments().getBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
 
-            btnExamSetquestion.setVisibility(View.GONE);
-            btnExamSave.setVisibility(View.VISIBLE);
+            tvExamSetquestion.setVisibility(View.GONE);
+            tvExamSave.setVisibility(View.VISIBLE);
 
         } else {
 
-            btnExamSetquestion.setVisibility(View.VISIBLE);
-            btnExamSave.setVisibility(View.VISIBLE);
-            btnExamSave.setText(getString(R.string.streditexam));
+            tvExamSetquestion.setVisibility(View.VISIBLE);
+            tvExamSave.setVisibility(View.VISIBLE);
+            tvExamSave.setText(getString(R.string.streditexam));
 
         }
         etExamName.setText(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
@@ -770,7 +769,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utility.showToast(Utility.getString(R.string.msg_success_createexam, mContext), mContext);
-                    btnExamSetquestion.setVisibility(View.VISIBLE);
+                    tvExamSetquestion.setVisibility(View.VISIBLE);
                     getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
                     setBundleArguments();
 
@@ -809,18 +808,18 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     @Override
     public void onClick(View v) {
-        if (v == btnExamSave) {
+        if (v == tvExamSave) {
             if (isInputsValid()) {
                 callApiCreateExam();
             } else {
                 svCreateExam.fullScroll(ScrollView.FOCUS_UP);
             }
-        } else if (v == btnExamSetquestion) {
+        } else if (v == tvExamSetquestion) {
             ((CreateExamAssignmentContainerFragment) fragmentContext).hideTopBar();
             getFragmentManager().beginTransaction().
                     replace(R.id.fl_fragment_assignment_container, AddQuestionContainerFragment.newInstance())
                     .commit();
-        } else if (v == btnExamCancel) {
+        } else if (v == tvExamCancel) {
             backToTrialScreen();
         }
 
