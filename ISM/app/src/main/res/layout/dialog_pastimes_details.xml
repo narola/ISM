@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/d400dp"
-    android:layout_height="@dimen/d450dp"
+    android:layout_width="@dimen/dp300"
+    android:layout_height="@dimen/dp330"
     android:layout_gravity="center"
     android:background="@drawable/bg_about_me"
     android:orientation="vertical">
@@ -12,15 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/d2dp"
-        android:layout_marginRight="@dimen/d2dp"
-        android:layout_marginTop="@dimen/d2dp"
+        android:layout_marginLeft="@dimen/dp2"
+        android:layout_marginRight="@dimen/dp2"
+        android:layout_marginTop="@dimen/dp2"
         android:background="@color/green"
         android:gravity="center"
-        android:padding="@dimen/d10dp"
+        android:padding="@dimen/dp8"
         android:text="Pastimes Details"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/d25sp" />
+        android:textSize="@dimen/sp19" />
 
 
     <LinearLayout
@@ -28,15 +28,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_pastimes_details"
         android:layout_above="@+id/txt_done"
-        android:layout_margin="@dimen/d10dp"
+        android:layout_margin="@dimen/dp8"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/img_image"
-            android:layout_width="@dimen/d200dp"
-            android:layout_height="@dimen/d200dp"
+            android:layout_width="@dimen/dp150"
+            android:layout_height="@dimen/dp150"
             android:scaleType="fitXY"
-            android:layout_margin="@dimen/d10dp"
+            android:layout_margin="@dimen/dp8"
             android:background="@drawable/bg_white_border_gray"
             android:src="@drawable/img_no_cover_available" />
 
@@ -45,18 +45,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:padding="@dimen/d5dp"
+            android:padding="@dimen/dp4"
             android:text="@string/strPastTimes"
             android:textColor="@color/bg_app_dark"
-            android:textSize="@dimen/d20sp" />
+            android:textSize="@dimen/sp15" />
 
         <TextView
             android:id="@+id/txt_pastimes_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:padding="@dimen/d5dp"
-            android:textSize="@dimen/d18sp" />
+            android:padding="@dimen/dp4"
+            android:textSize="@dimen/sp14" />
     </LinearLayout>
 
     <TextView
@@ -66,14 +66,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/d5dp"
+        android:layout_margin="@dimen/dp4"
         android:background="@drawable/bg_button_green"
         android:gravity="center"
-        android:paddingBottom="@dimen/d10dp"
-        android:paddingLeft="@dimen/d25dp"
-        android:paddingRight="@dimen/d25dp"
-        android:paddingTop="@dimen/d10dp"
+        android:paddingBottom="@dimen/dp8"
+        android:paddingLeft="@dimen/dp19"
+        android:paddingRight="@dimen/dp19"
+        android:paddingTop="@dimen/dp8"
         android:text="@string/strclose"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/d20sp" />
+        android:textSize="@dimen/sp15" />
 </RelativeLayout>

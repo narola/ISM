@@ -10,22 +10,22 @@
         android:id="@+id/txt_note_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/d3dp"
-        android:layout_marginLeft="@dimen/d5dp"
-        android:layout_marginRight="@dimen/d5dp"
+        android:padding="@dimen/dp2"
+        android:layout_marginLeft="@dimen/dp4"
+        android:layout_marginRight="@dimen/dp4"
         android:textColor="@color/bg_app_dark"
         android:text="Introduction of waves"
-        android:textSize="@dimen/d20sp" />
+        android:textSize="@dimen/sp15" />
 
     <TextView
         android:id="@+id/txt_notes_by"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_note_name"
-        android:padding="@dimen/d3dp"
-        android:textSize="@dimen/d16sp"
-        android:layout_marginLeft="@dimen/d5dp"
-        android:layout_marginRight="@dimen/d5dp"
+        android:padding="@dimen/dp2"
+        android:textSize="@dimen/sp12"
+        android:layout_marginLeft="@dimen/dp4"
+        android:layout_marginRight="@dimen/dp4"
         android:text="By Admin"
         android:textColor="@color/text_red_timeline" />
 
@@ -35,11 +35,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/txt_note_name"
-        android:layout_marginLeft="@dimen/d5dp"
-        android:layout_marginRight="@dimen/d5dp"
-        android:padding="@dimen/d3dp"
+        android:layout_marginLeft="@dimen/dp4"
+        android:layout_marginRight="@dimen/dp4"
+        android:padding="@dimen/dp2"
         android:text="Physics"
-        android:textSize="@dimen/d16sp"
+        android:textSize="@dimen/sp12"
         android:textColor="@color/text_red_timeline" />
 
     <ImageView
@@ -47,9 +47,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/img_media_video"
         android:src="@drawable/ic_video_dark_gray"
-        android:layout_marginLeft="@dimen/d5dp"
+        android:layout_marginLeft="@dimen/dp4"
         android:visibility="gone"
-        android:layout_marginRight="@dimen/d5dp"
+        android:layout_marginRight="@dimen/dp4"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
     <ImageView
@@ -63,7 +63,7 @@
         android:layout_toLeftOf="@+id/img_media_video"/>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/d1dp"
+        android:layout_height="@dimen/dp1"
         android:layout_below="@id/txt_notes_by"
         android:background="@color/text_gray"/>
 </RelativeLayout>

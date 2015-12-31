@@ -50,10 +50,10 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
                 android:background="@color/color_pink_dark"
-                android:padding="@dimen/d10dp"
+                android:padding="@dimen/dp8"
                 android:text="Exams"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/d20sp" />
+                android:textSize="@dimen/sp15" />
 
             <!--<TextView-->
             <!--android:layout_width="wrap_content"-->
@@ -69,9 +69,9 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview_exams"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/d300dp"
-                android:layout_marginLeft="@dimen/d5dp"
-                android:layout_marginRight="@dimen/d5dp"
+                android:layout_height="@dimen/dp225"
+                android:layout_marginLeft="@dimen/dp4"
+                android:layout_marginRight="@dimen/dp4"
                 android:layout_weight="8"
                 android:background="@color/color_white" />
 
@@ -81,12 +81,12 @@
                 android:layout_height="0dp"
                 android:layout_alignEnd="@+id/recyclerview"
                 android:layout_gravity="end"
-                android:layout_marginRight="@dimen/d10dp"
+                android:layout_marginRight="@dimen/dp8"
                 android:layout_weight="0.5"
-                android:padding="@dimen/d5dp"
+                android:padding="@dimen/dp4"
                 android:text="@string/strViewAll"
                 android:textColor="@color/blue"
-                android:textSize="@dimen/d20sp" />
+                android:textSize="@dimen/sp15" />
         </LinearLayout>
 
         <include

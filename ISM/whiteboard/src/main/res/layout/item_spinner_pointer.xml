@@ -11,7 +11,7 @@
 		android:layout_width="@dimen/whiteboard_control_height"
 		android:layout_height="@dimen/whiteboard_control_height"
 		android:layout_margin="10dp"
-		android:scaleType="center"></ImageView>
+		android:scaleType="centerInside"></ImageView>
 
 	<View
 		android:layout_width="match_parent"

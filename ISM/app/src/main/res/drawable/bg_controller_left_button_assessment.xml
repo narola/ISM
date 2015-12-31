@@ -15,7 +15,7 @@
     </item>
     <item>
         <shape>
-            <padding android:left="@dimen/bg_controller_border_double" />
+            <padding android:left="@dimen/bg_controller_border_left" />
             <solid android:color="@color/bg_assessment" />
         </shape>
     </item>

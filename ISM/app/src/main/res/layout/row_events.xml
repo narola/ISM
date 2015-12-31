@@ -8,8 +8,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/d5dp"
-        android:paddingTop="@dimen/d5dp">
+        android:paddingLeft="@dimen/dp4"
+        android:paddingTop="@dimen/dp4">
 
         <LinearLayout
             android:id="@+id/ll_calender"
@@ -18,10 +18,10 @@
             android:layout_marginTop="5sp"
             android:background="@drawable/bg_darkgray"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/d10dp"
-            android:paddingLeft="@dimen/d10dp"
-            android:paddingRight="@dimen/d10dp"
-            android:paddingTop="@dimen/d20dp">
+            android:paddingBottom="@dimen/dp8"
+            android:paddingLeft="@dimen/dp8"
+            android:paddingRight="@dimen/dp8"
+            android:paddingTop="@dimen/dp15">
 
             <TextView
                 android:id="@+id/txt_eventDate"
@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:text="10"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/dp15" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                     android:gravity="left"
                     android:text="OCT"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d10dp" />
+                    android:textSize="@dimen/dp8" />
 
                 <TextView
                     android:id="@+id/txt_eventYear"
@@ -55,7 +55,7 @@
                     android:layout_weight="1"
                     android:text="2015"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d10dp" />
+                    android:textSize="@dimen/dp8" />
             </LinearLayout>
         </LinearLayout>
 
@@ -78,10 +78,10 @@
         android:id="@+id/txt_eventName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/d5dp"
+        android:padding="@dimen/dp4"
         android:text="Connexions 2015-"
         android:textColor="@color/bg_tutorial"
-        android:textSize="@dimen/d18dp"
+        android:textSize="@dimen/dp14"
 
         />
 
@@ -89,12 +89,12 @@
         android:id="@+id/txt_eventDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/d5dp"
-        android:paddingLeft="@dimen/d5dp"
-        android:paddingRight="@dimen/d5dp"
+        android:paddingBottom="@dimen/dp4"
+        android:paddingLeft="@dimen/dp4"
+        android:paddingRight="@dimen/dp4"
         android:text="Presentation live chat with Roger Pressman"
         android:textColor="@color/black"
-        android:textSize="@dimen/d18dp"
+        android:textSize="@dimen/dp14"
 
         />
 </LinearLayout>

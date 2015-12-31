@@ -12,17 +12,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@drawable/bg_highscore_subject"
-        android:paddingBottom="@dimen/d10dp"
-        android:paddingLeft="@dimen/d20dp"
-        android:paddingRight="@dimen/d20dp"
-        android:paddingTop="@dimen/d10dp"
+        android:paddingBottom="@dimen/dp8"
+        android:paddingLeft="@dimen/dp15"
+        android:paddingRight="@dimen/dp15"
+        android:paddingTop="@dimen/dp8"
         android:text="@string/strNotificationForTags"
         android:textColor="#323232"
-        android:textSize="@dimen/d22sp" />
+        android:textSize="@dimen/sp17" />
 
     <include
         android:id="@+id/include_tags"
-        android:layout_marginTop="@dimen/d5dp"
+        android:layout_marginTop="@dimen/dp4"
         layout="@layout/layout_notification_comon_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,16 +34,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/include_tags"
         android:background="@drawable/bg_highscore_subject"
-        android:paddingBottom="@dimen/d10dp"
-        android:paddingLeft="@dimen/d20dp"
+        android:paddingBottom="@dimen/dp8"
+        android:paddingLeft="@dimen/dp15"
         android:textColor="#323232"
-        android:paddingRight="@dimen/d20dp"
-        android:paddingTop="@dimen/d10dp"
+        android:paddingRight="@dimen/dp15"
+        android:paddingTop="@dimen/dp8"
         android:text="@string/strNotificationforAuthor"
-        android:textSize="@dimen/d22sp" />
+        android:textSize="@dimen/sp17" />
 
     <include
-        android:layout_marginTop="@dimen/d5dp"
+        android:layout_marginTop="@dimen/dp4"
         android:id="@+id/include_author"
         layout="@layout/layout_notification_comon_row"
         android:layout_width="match_parent"
@@ -56,19 +56,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/include_author"
         android:background="@drawable/bg_highscore_subject"
-        android:paddingBottom="@dimen/d10dp"
-        android:paddingLeft="@dimen/d20dp"
+        android:paddingBottom="@dimen/dp8"
+        android:paddingLeft="@dimen/dp15"
         android:textColor="#323232"
-        android:paddingRight="@dimen/d20dp"
-        android:paddingTop="@dimen/d10dp"
+        android:paddingRight="@dimen/dp15"
+        android:paddingTop="@dimen/dp8"
         android:text="@string/strNotificationForNoticeBoard"
-        android:textSize="@dimen/d22sp" />
+        android:textSize="@dimen/sp17" />
 
     <include
         android:id="@+id/include_notice_board"
         layout="@layout/layout_notification_comon_row"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/d5dp"
+        android:layout_marginTop="@dimen/dp4"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_alerts_notice_board" />
 
@@ -78,16 +78,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/include_notice_board"
         android:background="@drawable/bg_highscore_subject"
-        android:paddingBottom="@dimen/d10dp"
-        android:paddingLeft="@dimen/d20dp"
+        android:paddingBottom="@dimen/dp8"
+        android:paddingLeft="@dimen/dp15"
         android:textColor="#323232"
-        android:paddingRight="@dimen/d20dp"
-        android:paddingTop="@dimen/d10dp"
+        android:paddingRight="@dimen/dp15"
+        android:paddingTop="@dimen/dp8"
         android:text="@string/strNotificationForCommentsandLike"
-        android:textSize="@dimen/d22sp" />
+        android:textSize="@dimen/sp17" />
 
     <include
-        android:layout_marginTop="@dimen/d5dp"
+        android:layout_marginTop="@dimen/dp4"
         android:id="@+id/include_comment"
         layout="@layout/layout_notification_comon_row"
         android:layout_width="match_parent"
@@ -109,7 +109,7 @@
     <!--android:layout_alignParentStart="true"-->
     <!--/>-->
     <View
-        android:layout_width="@dimen/d2dp"
+        android:layout_width="@dimen/dp2"
         android:layout_height="match_parent"
         android:background="@color/border_gray"/>
 </RelativeLayout>

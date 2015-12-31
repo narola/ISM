@@ -14,7 +14,7 @@
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/d10dp" />
+            android:layout_margin="@dimen/dp8" />
 
         <include
             layout="@layout/empty_view"

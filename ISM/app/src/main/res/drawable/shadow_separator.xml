@@ -3,49 +3,49 @@
 
     <item>
         <shape>
-            <padding android:bottom="@dimen/d1dp" />
+            <padding android:bottom="@dimen/dp1" />
             <solid android:color="#00bababa" />
-            <size android:height="@dimen/d30dp" />
+            <size android:height="@dimen/dp23" />
 
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:bottom="@dimen/d1dp" />
+            <padding android:bottom="@dimen/dp1" />
             <solid android:color="#10bababa" />
-            <size android:height="@dimen/d30dp" />
+            <size android:height="@dimen/dp23" />
 
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:bottom="@dimen/d1dp" />
+            <padding android:bottom="@dimen/dp1" />
             <solid android:color="#20bababa" />
-            <size android:height="@dimen/d30dp" />
+            <size android:height="@dimen/dp23" />
 
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:bottom="@dimen/d1dp" />
+            <padding android:bottom="@dimen/dp1" />
             <solid android:color="#30bababa" />
-            <size android:height="@dimen/d30dp" />
+            <size android:height="@dimen/dp23" />
 
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:bottom="@dimen/d1dp" />
+            <padding android:bottom="@dimen/dp1" />
             <solid android:color="#20bababa" />
-            <size android:height="@dimen/d30dp" />
+            <size android:height="@dimen/dp23" />
 
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:bottom="@dimen/d1dp" />
+            <padding android:bottom="@dimen/dp1" />
             <solid android:color="#f9f9f9" />
-            <size android:height="@dimen/d30dp" />
+            <size android:height="@dimen/dp23" />
         </shape>
     </item>
 

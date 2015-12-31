@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/d15dp"
-    android:layout_marginRight="@dimen/d15dp"
+    android:layout_marginLeft="@dimen/dp11"
+    android:layout_marginRight="@dimen/dp11"
     android:orientation="vertical">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/d1dp"
-        android:layout_marginLeft="@dimen/d15dp"
-        android:layout_marginRight="@dimen/d15dp"
-        android:layout_marginTop="@dimen/d15dp"
+        android:layout_height="@dimen/dp1"
+        android:layout_marginLeft="@dimen/dp11"
+        android:layout_marginRight="@dimen/dp11"
+        android:layout_marginTop="@dimen/dp11"
         android:background="@color/news_feed_post_box_color" />
 
     <LinearLayout
@@ -21,11 +21,11 @@
 
         <com.ism.views.CircleImageView
             android:id="@+id/img_commenter_dp"
-            android:layout_width="@dimen/d50dp"
-            android:layout_height="@dimen/d50dp"
-            android:layout_marginLeft="@dimen/d15dp"
-            android:layout_marginTop="@dimen/d15dp"
-            android:padding="@dimen/d10dp"
+            android:layout_width="@dimen/dp38"
+            android:layout_height="@dimen/dp38"
+            android:layout_marginLeft="@dimen/dp11"
+            android:layout_marginTop="@dimen/dp11"
+            android:padding="@dimen/dp8"
             android:src="@drawable/img_default_dp" />
 
         <LinearLayout
@@ -36,28 +36,28 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/d15dp"
+                android:layout_margin="@dimen/dp11"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/txt_commenter_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/d5dp"
+                    android:padding="@dimen/dp4"
                     android:text="Adam Stanger"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/d18sp" />
+                    android:textSize="@dimen/sp14" />
 
                 <TextView
                     android:id="@+id/txt_commenter_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d10dp"
+                    android:layout_marginLeft="@dimen/dp8"
                     android:ellipsize="end"
-                    android:padding="@dimen/d5dp"
+                    android:padding="@dimen/dp4"
                     android:text="Hi...how are you?"
                     android:textColor="@color/color_gray"
-                    android:textSize="@dimen/d18dp" />
+                    android:textSize="@dimen/dp14" />
 
             </LinearLayout>
 
@@ -66,9 +66,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rl_comments"
-                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_marginLeft="@dimen/dp11"
                 android:layout_toRightOf="@+id/img_commenter_dp"
-                android:padding="@dimen/d5dp"
+                android:padding="@dimen/dp4"
                 android:text="1 day" />
         </LinearLayout>
     </LinearLayout>

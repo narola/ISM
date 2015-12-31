@@ -2,6 +2,7 @@ package com.ism.fragment.tutorialGroup;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -32,7 +33,6 @@ import com.ism.ws.model.AnswerChoice;
 import com.ism.ws.model.QuestionForFriday;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by c161 on 16/12/15.
@@ -63,6 +63,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 	private RelativeLayout[] viewLayouts;
 
 	private boolean isExpanded = false;
+	private int intPaddingLable;
 
 	public static TutorialFriAddQuestionFragment newInstance(ExamFragment.ExamListener listenerExam) {
 		TutorialFriAddQuestionFragment fragment = new TutorialFriAddQuestionFragment();
@@ -146,9 +147,11 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		((TextView) view.findViewById(R.id.txt_message)).setTypeface(Global.myTypeFace.getRalewaySemiBold());
 		((TextView) view.findViewById(R.id.txt_message2)).setTypeface(Global.myTypeFace.getRalewaySemiBold());
 
+
 		txtLables = new TextView[] {txtCreateQuestion, txtSetOptions, txtPreviewQuestion, txtUpload};
 		viewLayouts = new RelativeLayout[] {rlCreateQuestion, rlSetOptions, rlPreviewQuestion, rlUpload};
 
+		intPaddingLable = getResources().getDimensionPixelOffset(R.dimen.padding_createquestion_lable);
 		inputValidator = new InputValidator(getActivity());
 
 		if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), "").equals(Utility.getDate())) {
@@ -344,9 +347,12 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		if (isExpanded) {
 			for (int i = 0; i < txtLables.length; i++) {
 				if (txtLables[i] == textView) {
-					txtLables[i].setBackgroundResource(R.color.border_gray);
+					txtLables[i].setBackgroundColor(getResources().getColor(R.color.border_gray));
 				} else {
 					txtLables[i].setBackgroundResource(R.drawable.bg_white_border_gray_bottom);
+					if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+						txtLables[i].setPadding(intPaddingLable, intPaddingLable, intPaddingLable, intPaddingLable);
+					}
 				}
 			}
 		}

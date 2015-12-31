@@ -5,10 +5,10 @@
 			<solid android:color="@android:color/white"></solid>
 
 			<stroke
-				android:width="@dimen/d1dp"
+				android:width="@dimen/dp1"
 				android:color="@color/border_gray"/>
 
-			<corners android:radius="@dimen/d4dp"/>
+			<corners android:radius="@dimen/dp3"/>
 		</shape>
 	</item>
 	<item>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:left="@dimen/d10dp" android:right="@dimen/d10dp">
+	<item android:left="@dimen/dp8" android:right="@dimen/dp8">
 		<shape>
 			<solid android:color="@color/divider_light"/>
 		</shape>

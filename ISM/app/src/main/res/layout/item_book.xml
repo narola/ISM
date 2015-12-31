@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/d190dp"
-    android:layout_height="@dimen/d230dp"
-    android:layout_marginBottom="@dimen/d10dp"
-    android:layout_marginTop="@dimen/d10dp"
-    android:layout_marginLeft="@dimen/d5dp"
-    android:layout_marginRight="@dimen/d5dp"
+    android:layout_width="@dimen/dp143"
+    android:layout_height="@dimen/dp172"
+    android:layout_marginBottom="@dimen/dp8"
+    android:layout_marginTop="@dimen/dp8"
+    android:layout_marginLeft="@dimen/dp4"
+    android:layout_marginRight="@dimen/dp4"
     android:background="@drawable/bg_user_books"
     android:orientation="vertical">
 
         <ImageView
             android:id="@+id/img_pic"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/d170dp"
-            android:layout_margin="@dimen/d7dp"
+            android:layout_height="@dimen/dp127"
+            android:layout_margin="@dimen/dp5"
             android:layout_alignParentTop="true"
             android:scaleType="centerCrop"
             android:src="@color/black" />
 
         <ImageView
             android:id="@+id/img_book_info"
-            android:layout_width="@dimen/d30dp"
-            android:layout_height="@dimen/d30dp"
+            android:layout_width="@dimen/dp23"
+            android:layout_height="@dimen/dp23"
             android:layout_alignEnd="@+id/img_pic"
             android:layout_alignParentTop="true"
-            android:layout_margin="@dimen/d5dp"
+            android:layout_margin="@dimen/dp4"
             android:src="@drawable/img_i"
             android:visibility="gone" />
 
@@ -37,21 +37,21 @@
 
             <ImageView
                 android:id="@+id/img_book_add"
-                android:layout_width="@dimen/d30dp"
-                android:layout_height="@dimen/d30dp"
+                android:layout_width="@dimen/dp23"
+                android:layout_height="@dimen/dp23"
                 android:layout_centerVertical="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="@dimen/d10dp"
+                android:layout_marginLeft="@dimen/dp8"
                 android:src="@drawable/selector_library"
                 android:visibility="visible" />
 
             <ImageView
                 android:id="@+id/img_add_fav"
-                android:layout_width="@dimen/d30dp"
-                android:layout_height="@dimen/d30dp"
+                android:layout_width="@dimen/dp23"
+                android:layout_height="@dimen/dp23"
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
-                android:layout_marginRight="@dimen/d10dp"
+                android:layout_marginRight="@dimen/dp8"
                 android:src="@drawable/img_unlike_red"
                 android:visibility="visible" />
         </RelativeLayout>
@@ -64,12 +64,12 @@
         android:gravity="center"
         android:lines="1"
         android:background="@color/color_white"
-        android:layout_marginBottom="@dimen/d5dp"
-        android:layout_marginLeft="@dimen/d5dp"
-        android:layout_marginRight="@dimen/d5dp"
+        android:layout_marginBottom="@dimen/dp4"
+        android:layout_marginLeft="@dimen/dp4"
+        android:layout_marginRight="@dimen/dp4"
         android:layout_below="@+id/img_pic"
-        android:padding="@dimen/d1dp"
+        android:padding="@dimen/dp1"
         android:text="Book Name"
         android:textColor="@color/cpb_red"
-        android:textSize="@dimen/d15sp" />
+        android:textSize="@dimen/sp11" />
 </RelativeLayout>

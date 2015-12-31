@@ -14,24 +14,24 @@
 			android:layout_alignParentLeft="true"
 			android:gravity="center_vertical"
 			android:orientation="horizontal"
-			android:padding="@dimen/d15dp">
+			android:padding="@dimen/dp11">
 
 			<com.ism.views.CircleImageView
 				android:id="@+id/img_studymate_dp"
-				android:layout_width="@dimen/d50dp"
-				android:layout_height="@dimen/d50dp"
-				android:layout_marginLeft="@dimen/d15dp"
-				android:padding="@dimen/d10dp"
+				android:layout_width="@dimen/dp38"
+				android:layout_height="@dimen/dp38"
+				android:layout_marginLeft="@dimen/dp11"
+				android:padding="@dimen/dp8"
 				android:src="@drawable/img_default_dp"/>
 
 			<TextView
 				android:id="@+id/txt_studymate_name"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="@dimen/d15dp"
+				android:layout_marginLeft="@dimen/dp11"
 				android:text="Adam Stanger"
 				android:textColor="@color/green"
-				android:textSize="@dimen/d18sp"/>
+				android:textSize="@dimen/sp14"/>
 		</LinearLayout>
 
 		<CheckBox
@@ -40,18 +40,18 @@
 			android:layout_height="wrap_content"
 			android:layout_alignParentRight="true"
 			android:layout_centerInParent="true"
-			android:layout_marginTop="@dimen/d20dp"
+			android:layout_marginTop="@dimen/dp15"
 			android:button="@drawable/custom_checkbox"
 			android:checked="false"
-			android:padding="@dimen/d10dp"
+			android:padding="@dimen/dp8"
 			android:textColor="@color/color_gray1"
-			android:textSize="@dimen/d18dp"/>
+			android:textSize="@dimen/dp14"/>
 	</RelativeLayout>
 
 	<View
 		android:id="@+id/view_separator_mates"
 		android:layout_width="match_parent"
-		android:layout_height="@dimen/d1dp"
+		android:layout_height="@dimen/dp1"
 		android:background="@color/color_shade_news_feed"/>
 </LinearLayout>
 

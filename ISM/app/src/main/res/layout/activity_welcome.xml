@@ -23,7 +23,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
-			android:layout_margin="@dimen/d30dp"
+			android:layout_margin="@dimen/dp23"
 			android:src="@drawable/img_welcome_to_ism"/>
 
 		<TextView
@@ -38,7 +38,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
-			android:layout_margin="@dimen/d30dp"
+			android:layout_margin="@dimen/dp23"
 			android:orientation="horizontal">
 
 			<LinearLayout
@@ -64,8 +64,8 @@
 				android:id="@+id/gif_book"
 				android:layout_width="@dimen/dp75"
 				android:layout_height="@dimen/dp75"
-				android:layout_margin="@dimen/d10dp"
-				android:padding="@dimen/d10dp"
+				android:layout_margin="@dimen/dp8"
+				android:padding="@dimen/dp8"
 				app:src="@drawable/loading3"/>
 
 			<LinearLayout
@@ -94,6 +94,6 @@
 			android:layout_height="wrap_content"
 			android:gravity="center"
 			android:textColor="@color/color_white"
-			android:textSize="@dimen/d30dp"/>
+			android:textSize="@dimen/dp23"/>
 	</LinearLayout>
 </RelativeLayout>

@@ -38,10 +38,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="@dimen/d10dp"
+                android:padding="@dimen/dp8"
                 android:text="@string/strViewAll"
                 android:textColor="@color/green"
-                android:textSize="@dimen/d20sp"
+                android:textSize="@dimen/sp15"
                 android:visibility="gone" />
         </LinearLayout>
 
