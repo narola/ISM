@@ -688,7 +688,7 @@
                         android:orientation="horizontal"
                         android:paddingLeft="@dimen/d15dp">
 
-                        <RadioButton
+                        <RadioButt
                             android:id="@+id/radio_btn_negativemarking_yes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
