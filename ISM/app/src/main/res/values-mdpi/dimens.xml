@@ -62,7 +62,7 @@
     <dimen name="profile_label_height">53dp</dimen><!-- edited -->
     <dimen name="d3dp">2dp</dimen><!-- edited -->
     <dimen name="d22sp">17sp</dimen><!-- edited -->
-    <dimen name="d110dp">75dp</dimen><!-- edited -->
+    <dimen name="d110dp">83dp</dimen><!-- edited -->
     <dimen name="d80dp">60dp</dimen><!-- edited -->
     <dimen name="d25sp">19sp</dimen><!-- edited -->
     <dimen name="padding_header_white">15dp</dimen><!-- edited -->
@@ -92,7 +92,7 @@
     <dimen name="text_size_emptylist_message_medium">17sp</dimen><!-- edited -->
     <dimen name="text_size_emptylist_message_large">19sp</dimen><!-- edited -->
     <dimen name="controller_utility_height">38dp</dimen><!-- edited -->
-    <dimen name="member_item_width">138dp</dimen><!-- edited -->
+    <dimen name="member_item_width">113dp</dimen><!-- edited -->
     <dimen name="dp_size_member_sunday">53dp</dimen><!-- edited -->
     <dimen name="margin_text_member_sunday">4dp</dimen><!-- edited -->
     <dimen name="text_school_member_sunday">12sp</dimen><!-- edited -->
@@ -108,7 +108,7 @@
     <dimen name="notation_drawable_padding">8dp</dimen><!-- edited -->
     <dimen name="notation_vertical_padding">2dp</dimen><!-- edited -->
     <dimen name="button_dark_corner_radius">4dp</dimen><!-- edited -->
-    <dimen name="button_dark_border_width">2dp</dimen><!-- edited -->
+    <dimen name="button_dark_border_width">1dp</dimen><!-- edited -->
     <dimen name="score_text_padding">15dp</dimen><!-- edited -->
     <dimen name="score_spacing">8dp</dimen><!-- edited -->
     <dimen name="score_spacing_double">15dp</dimen><!-- edited -->
@@ -129,53 +129,53 @@
 
 
     <!-- newest-->
-    <dimen name="d2dp">1.50dp</dimen>
-    <dimen name="d6dp">6dp</dimen>
-    <dimen name="d63dp">63dp</dimen>
+    <dimen name="d2dp">2dp</dimen>
+    <dimen name="d6dp">5dp</dimen>
+    <dimen name="d63dp">47dp</dimen>
     <dimen name="d600dp">600dp</dimen>
     <dimen name="d38dp">29dp</dimen>
-    <dimen name="d57dp">57dp</dimen>
-    <dimen name="d75dp">75dp</dimen>
-    <dimen name="d72dp">72dp</dimen>
-    <dimen name="d45dp">45dp</dimen>
+    <dimen name="d57dp">43dp</dimen>
+    <dimen name="d75dp">56dp</dimen>
+    <dimen name="d72dp">54dp</dimen>
+    <dimen name="d45dp">34dp</dimen>
     <dimen name="d83dp">62dp</dimen>
     <dimen name="d250dp">187dp</dimen>
     <dimen name="d610dp">458dp</dimen>
     <dimen name="d200dp">150dp</dimen>
     <dimen name="d170dp">127dp</dimen>
-    <dimen name="d35dp">26.25dp</dimen>
-    <dimen name="d1dp">0.75dp</dimen>
+    <dimen name="d35dp">26dp</dimen>
+    <dimen name="d1dp">1dp</dimen>
     <dimen name="d230dp">172dp</dimen>
-    <dimen name="d7dp">5.25dp</dimen>
-    <dimen name="d21dp">15.75dp</dimen>
-    <dimen name="d55dp">41.25dp</dimen>
+    <dimen name="d7dp">5dp</dimen>
+    <dimen name="d21dp">16dp</dimen>
+    <dimen name="d55dp">41dp</dimen>
     <dimen name="d16dp">12dp</dimen>
     <dimen name="d140dp">105dp</dimen>
-    <dimen name="d100dp">100dp</dimen>
+    <dimen name="d100dp">75dp</dimen>
     <dimen name="d260dp">195dp</dimen>
     <dimen name="d670dp">502dp</dimen>
     <dimen name="d240dp">180dp</dimen>
-    <dimen name="d210dp">157.50dp</dimen>
+    <dimen name="d210dp">158dp</dimen>
     <dimen name="d180dp">135dp</dimen>
-    <dimen name="d17dp">12.75dp</dimen>
+    <dimen name="d17dp">13dp</dimen>
     <dimen name="d408dp">306dp</dimen>
-    <dimen name="d17sp">12.75sp</dimen>
-    <dimen name="d21sp">15.75sp</dimen>
-    <dimen name="d145dp">108.75dp</dimen>
-    <dimen name="d266dp">199.50dp</dimen>
+    <dimen name="d17sp">13sp</dimen>
+    <dimen name="d21sp">16sp</dimen>
+    <dimen name="d145dp">109dp</dimen>
+    <dimen name="d266dp">200dp</dimen>
     <dimen name="d28dp">21dp</dimen>
     <dimen name="d400dp">300dp</dimen>
-    <dimen name="d35sp">26.25sp</dimen>
-    <dimen name="d225dp">168.75dp</dimen>
-    <dimen name="d450dp">337.50sp</dimen>
-    <dimen name="d13sp">9.75sp</dimen>
-    <dimen name="d350dp">262.50dp</dimen>
+    <dimen name="d35sp">26sp</dimen>
+    <dimen name="d225dp">169dp</dimen>
+    <dimen name="d450dp">338sp</dimen>
+    <dimen name="d13sp">10sp</dimen>
+    <dimen name="d350dp">263dp</dimen>
     <dimen name="d220dp">165dp</dimen>
     <dimen name="d160dp">120dp</dimen>
     <dimen name="d12dp">9dp</dimen>
-    <dimen name="d42dp">31.50dp</dimen>
-    <dimen name="d33dp">24.75dp</dimen>
-    <dimen name="d19sp">14.25sp</dimen>
+    <dimen name="d42dp">32dp</dimen>
+    <dimen name="d33dp">25dp</dimen>
+    <dimen name="d19sp">15sp</dimen>
     
 	<!-- Currently added dimentions -->
 	<dimen name="dp450">450dp</dimen>
@@ -212,6 +212,15 @@
 	<dimen name="dp75">75dp</dimen>
 	<dimen name="sp21">21sp</dimen>
 	<dimen name="dp165">165dp</dimen>
+    <dimen name="d40sp">30sp</dimen>
+    <dimen name="d300dp">225dp</dimen>
+    <dimen name="d950dp">712.50dp</dimen>
+    <dimen name="d800dp">600dp</dimen>
+    <dimen name="d500dp">375dp</dimen>
+    <dimen name="d4dp">3dp</dimen>
+    <dimen name="d99dp">74dp</dimen>
+    <dimen name="d8dp">6dp</dimen>
+
     <dimen name="dp3">3dp</dimen>
     <dimen name="padding_rb_exam">@dimen/d5dp</dimen>
     <dimen name="text_rb_exam">@dimen/d18sp</dimen>
@@ -222,4 +231,10 @@
     <dimen name="sp9">9sp</dimen>
     <dimen name="dp_n120">-120dp</dimen>
     <dimen name="sp20">20sp</dimen>
+    <dimen name="text_week_days">@dimen/d17sp</dimen>
+    <dimen name="sp8">8sp</dimen>
+    <dimen name="dp20">20dp</dimen>
+    <dimen name="dp10">10dp</dimen>
+    <dimen name="bg_controller_border">@dimen/d1dp</dimen>
+    <dimen name="bg_controller_border_double">@dimen/d2dp</dimen>
 </resources>

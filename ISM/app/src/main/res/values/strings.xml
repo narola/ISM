@@ -590,6 +590,8 @@
 	<string name="welcome_to_ism">Welcome to ISM</string>
 	<string name="high_school">High School</string>
 	<string name="msg_your_tutorial_group">Your Tutorial group is as per below</string>
+	<string name="strEnterYourCategoryName">Enter your category name</string>
+	<string name="strPastTimes">Pastimes :</string>
 
 
 </resources>

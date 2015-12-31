@@ -192,4 +192,6 @@
     <dimen name="d33dp">33dp</dimen>
     <dimen name="d19sp">19sp</dimen>
 	<dimen name="text_add_question_form_title">@dimen/sp23</dimen>
+    <dimen name="d99dp">99dp</dimen>
+    <dimen name="d8dp">8dp</dimen>
 </resources>

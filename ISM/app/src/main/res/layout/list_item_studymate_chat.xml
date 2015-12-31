@@ -7,9 +7,9 @@
         android:id="@+id/img_dp"
         android:layout_width="@dimen/dp_size_list_notification"
         android:layout_height="@dimen/dp_size_list_notification"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="@dimen/d10dp"
+        android:layout_marginRight="@dimen/d10dp"
+        android:layout_marginBottom="@dimen/d10dp"
         android:src="@drawable/img_default_dp"/>
 
 	<View
@@ -25,12 +25,12 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/img_dp"
         android:layout_toLeftOf="@id/view_status"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginTop="@dimen/d10dp"
+        android:layout_marginRight="@dimen/d5dp"
         android:maxLines="3"
         android:ellipsize="end"
         android:textColor="@color/bg_app_dark"
-        android:textSize="17sp"/>
+        android:textSize="@dimen/d17sp"/>
 
 	<TextView
         android:id="@+id/txt_school"
@@ -39,9 +39,9 @@
         android:layout_toRightOf="@id/img_dp"
         android:layout_toLeftOf="@id/view_status"
         android:layout_below="@id/txt_user_name"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="@dimen/d5dp"
         android:maxLines="3"
         android:ellipsize="end"
         android:textColor="@color/bg_app_dark"
-        android:textSize="16sp"/>
+        android:textSize="@dimen/d16sp"/>
 </RelativeLayout>

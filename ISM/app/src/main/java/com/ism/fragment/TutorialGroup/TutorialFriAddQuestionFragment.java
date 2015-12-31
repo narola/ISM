@@ -151,7 +151,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 
 		inputValidator = new InputValidator(getActivity());
 
-		if (!PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), "").equals(Utility.getDate())) {
+		if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), "").equals(Utility.getDate())) {
 			rlHeader.setVisibility(View.GONE);
 			rlTutorialmateQuestion.setVisibility(View.GONE);
 			rlWaiting.setVisibility(View.VISIBLE);
@@ -208,14 +208,14 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		btnUploadAndFreeze.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam, 0, false)).commit();
-//				if (Utility.isConnected(getActivity())) {
-//					if (inputsValid()) {
-//						callApiSubmitQuestionForFriday();
-//					}
-//				} else {
-//					Utility.alertOffline(getActivity());
-//				}
+//				getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam, 0, false)).commit();
+				if (Utility.isConnected(getActivity())) {
+					if (inputsValid()) {
+						callApiSubmitQuestionForFriday();
+					}
+				} else {
+					Utility.alertOffline(getActivity());
+				}
 			}
 		});
 

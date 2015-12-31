@@ -7,7 +7,7 @@
 	<com.ism.commonsource.view.ActionProcessButton
 		android:id="@+id/progress"
 		android:layout_width="match_parent"
-		android:layout_height="5dp"
+		android:layout_height="@dimen/d5dp"
 		android:layout_marginTop="@dimen/dialog_progress_margin"
 		android:visibility="gone"/>
 </LinearLayout>

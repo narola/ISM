@@ -278,8 +278,8 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	private void callApiGetGroupHistory() {
 		try {
 			Attribute attribute = new Attribute();
-			attribute.setGroupId(Global.strTutorialGroupId);
-//			attribute.setGroupId("134");
+//			attribute.setGroupId(Global.strTutorialGroupId);
+			attribute.setGroupId("134");
 			attribute.setWeekNo("1");
 			attribute.setDayNo("");
 
