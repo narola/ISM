@@ -124,7 +124,7 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
             rrMain = (RelativeLayout) view.findViewById(R.id.rr_main);
 
             txtSubject.setTypeface(Global.myTypeFace.getRalewayRegular());
-            txtNotename.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtNotename.setTypeface(Global.myTypeFace.getRalewayMedium());
             txtNoteBy.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         }

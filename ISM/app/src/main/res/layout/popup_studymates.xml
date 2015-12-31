@@ -44,10 +44,10 @@
 			android:visibility="gone"/>
 	</RelativeLayout>
 
-	<View
-		android:layout_width="@dimen/d25dp"
-		android:layout_height="@dimen/d15dp"
-		android:layout_alignParentRight="true"
-		android:layout_marginRight="@dimen/d20dp"
-		android:background="@drawable/shape_triangle_message"/>
+	<!--<View-->
+		<!--android:layout_width="@dimen/d25dp"-->
+		<!--android:layout_height="@dimen/d15dp"-->
+		<!--android:layout_alignParentRight="true"-->
+		<!--android:layout_marginRight="@dimen/d20dp"-->
+		<!--android:background="@drawable/shape_triangle_message"/>-->
 </RelativeLayout>

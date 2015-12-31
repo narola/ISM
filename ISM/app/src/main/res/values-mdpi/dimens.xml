@@ -236,5 +236,6 @@
     <dimen name="dp20">20dp</dimen>
     <dimen name="dp10">10dp</dimen>
     <dimen name="bg_controller_border">@dimen/d1dp</dimen>
-    <dimen name="bg_controller_border_double">@dimen/d2dp</dimen>
+    <dimen name="bg_controller_border_left">@dimen/dp3</dimen>
+    <dimen name="d190dp">143dp</dimen>
 </resources>

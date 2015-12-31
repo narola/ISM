@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="220dp"
-    android:layout_height="260dp"
+    android:layout_width="@dimen/d220dp"
+    android:layout_height="@dimen/d250dp"
     android:layout_marginBottom="@dimen/d10dp"
     android:layout_marginEnd="@dimen/d5dp"
     android:layout_marginLeft="@dimen/d5dp"
@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/img_link"
-        android:layout_width="205dp"
-        android:layout_height="200dp"
+        android:layout_width="@dimen/d210dp"
+        android:layout_height="@dimen/d190dp"
         android:padding="@dimen/d5dp"
         android:src="@color/pink" />
 
@@ -26,8 +26,8 @@
         android:src="@drawable/like_fill" />
 
     <TextView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="@dimen/d70dp"
+        android:layout_height="@dimen/d70dp"
         android:background="@drawable/shape_event_date"
         android:gravity="center"
         android:text="30th May"
@@ -41,6 +41,7 @@
         android:text="Event NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent Name"
         android:ellipsize="end"
         android:lines="2"
+        android:textSize="@dimen/d16sp"
         android:gravity="center"
         android:paddingRight="@dimen/d20sp"
         android:paddingLeft="@dimen/d5dp"

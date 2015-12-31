@@ -8,9 +8,9 @@
 		android:id="@+id/txt_header"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingTop="5dp"
-		android:paddingBottom="5dp"
-		android:paddingLeft="10dp"
+		android:paddingTop="@dimen/d5dp"
+		android:paddingBottom="@dimen/d5dp"
+		android:paddingLeft="@dimen/d10dp"
 		android:textSize="@dimen/txt_timeline_table"
 		android:textAllCaps="true"
 		android:text="Inertia"
@@ -19,7 +19,7 @@
 
 	<LinearLayout
 		android:id="@+id/ll_content1"
-		android:layout_width="300dp"
+		android:layout_width="@dimen/d300dp"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txt_header"
 		android:background="@drawable/bg_white_border_gray"
@@ -51,7 +51,7 @@
 		android:layout_below="@id/txt_header"
 		android:layout_toRightOf="@id/ll_content1"
 		android:background="@drawable/bg_white_border_gray"
-		android:padding="5dp"
+		android:padding="@dimen/d5dp"
 		android:orientation="vertical">
 
 		<TextView

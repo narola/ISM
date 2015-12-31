@@ -11,7 +11,6 @@ import android.widget.GridView;
 
 import com.ism.activity.HostActivity;
 import com.ism.object.Global;
-import com.ism.utility.Debug;
 
 
 /**
@@ -47,9 +46,10 @@ public class ScientificGridAdaptor extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final Button btnSymbol = new Button(mContext);
 
-        btnSymbol.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        btnSymbol.setTypeface(Global.myTypeFace.getRalewayExtraBold(), Typeface.BOLD);
-        btnSymbol.setTextSize(32);
+        btnSymbol.setLayoutParams(new GridView.LayoutParams(btnsize,btnsize));
+//        btnSymbol.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        btnSymbol.setTypeface(Global.myTypeFace.getRalewayMedium(), Typeface.BOLD);
+        btnSymbol.setTextSize(20);
         btnSymbol.setBackgroundColor(Color.TRANSPARENT);
        // btnSymbol.setBackgroundResource(R.drawable.border);
         btnSymbol.setText(formulas[position]);

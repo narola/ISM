@@ -10,7 +10,9 @@
         android:id="@+id/txt_note_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/d5dp"
+        android:padding="@dimen/d3dp"
+        android:layout_marginLeft="@dimen/d5dp"
+        android:layout_marginRight="@dimen/d5dp"
         android:textColor="@color/bg_app_dark"
         android:text="Introduction of waves"
         android:textSize="@dimen/d20sp" />
@@ -20,9 +22,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_note_name"
-        android:padding="@dimen/d5dp"
+        android:padding="@dimen/d3dp"
+        android:textSize="@dimen/d16sp"
+        android:layout_marginLeft="@dimen/d5dp"
+        android:layout_marginRight="@dimen/d5dp"
         android:text="By Admin"
-        android:textStyle="bold"
         android:textColor="@color/text_red_timeline" />
 
     <TextView
@@ -31,9 +35,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/txt_note_name"
-        android:padding="@dimen/d5dp"
+        android:layout_marginLeft="@dimen/d5dp"
+        android:layout_marginRight="@dimen/d5dp"
+        android:padding="@dimen/d3dp"
         android:text="Physics"
-        android:textStyle="bold"
+        android:textSize="@dimen/d16sp"
         android:textColor="@color/text_red_timeline" />
 
     <ImageView

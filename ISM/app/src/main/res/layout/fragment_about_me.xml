@@ -58,6 +58,7 @@
                 android:layout_marginLeft="@dimen/d35dp"
                 android:layout_marginRight="@dimen/d40dp"
                 android:paddingBottom="@dimen/d10dp"
+                android:gravity="center"
                 android:textAllCaps="false"
                 android:textColor="@color/green"
                 android:textSize="@dimen/d20sp" />

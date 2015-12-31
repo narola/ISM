@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/d-8dp"
+                android:layout_marginLeft="@dimen/d_8dp"
                 android:background="@drawable/btn_calendar" />
         </LinearLayout>
 
