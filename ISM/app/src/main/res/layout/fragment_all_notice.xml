@@ -15,9 +15,9 @@
 
 		<Spinner
 			android:id="@+id/sp_notice_sortby"
-			android:layout_width="230dp"
+			android:layout_width="@dimen/d230dp"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="2dp"
+			android:layout_marginBottom="@dimen/d2dp"
 			android:layout_marginLeft="@dimen/header_white_spacing"
 			android:background="@drawable/bg_spinner_header"></Spinner>
 	</LinearLayout>

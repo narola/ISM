@@ -21,7 +21,6 @@ import com.ism.activity.HostActivity;
 import com.ism.adapter.BlockedUserAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
-import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
 import com.ism.utility.Utility;
@@ -38,7 +37,6 @@ import java.util.List;
  */
 public class BlockUserFragment extends Fragment implements View.OnClickListener, WebserviceWrapper.WebserviceResponse,HostActivity.ResizeView {
     private View view;
-    private MyTypeFace myTypeFace;
     private TextView txtBlockAssign, txtManageBlockUser, txtContactISMAdmin, txtContactDetails, txtEmailAddress, txtBlockUser, txtNotification, txtBlock;
     private EditText etBlockUser, etEmailAddress;
     private ListView listView;
@@ -75,7 +73,6 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
     }
 
     private void initGlobal() {
-        myTypeFace = new MyTypeFace(getActivity());
         inputValidator = new InputValidator(getActivity());
         txtBlockAssign = (TextView) view.findViewById(R.id.txt_block_studymates);
         txtEmpty = (TextView) view.findViewById(R.id.txt_empty);
@@ -97,18 +94,18 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
         listView = (ListView) view.findViewById(R.id.listview);
 
         //set typeface
-        txtEmpty.setTypeface(myTypeFace.getRalewayRegular());
-        txtBlockAssign.setTypeface(myTypeFace.getRalewayRegular());
-        txtContactISMAdmin.setTypeface(myTypeFace.getRalewayRegular());
-        txtManageBlockUser.setTypeface(myTypeFace.getRalewayRegular());
-        txtContactDetails.setTypeface(myTypeFace.getRalewayThin());
-        //txtEmailAddress.setTypeface(myTypeFace.getRalewayRegular());
-        txtBlockUser.setTypeface(myTypeFace.getRalewayRegular());
-        etBlockUser.setTypeface(myTypeFace.getRalewayRegular());
-        txtNotification.setTypeface(myTypeFace.getRalewayRegular());
-        txtBlock.setTypeface(myTypeFace.getRalewayRegular());
+        txtEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtBlockAssign.setTypeface(Global.myTypeFace.getRalewayMedium());
+        txtContactISMAdmin.setTypeface(Global.myTypeFace.getRalewayMedium());
+        txtManageBlockUser.setTypeface(Global.myTypeFace.getRalewayMedium());
+        txtContactDetails.setTypeface(Global.myTypeFace.getRalewayThin());
+        //txtEmailAddress.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtBlockUser.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etBlockUser.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtNotification.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtBlock.setTypeface(Global.myTypeFace.getRalewayRegular());
         listView.setEmptyView(txtEmpty);
-        //etEmailAddress.setTypeface(myTypeFace.getRalewayRegular());
+        //etEmailAddress.setTypeface(Global.myTypeFace.getRalewayRegular());
         callApiForBlockedUser();
         txtBlock.setOnClickListener(this);
         txtContactDetails.setOnClickListener(this);

@@ -405,6 +405,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private void updateFeedLike(int feedId) {
         try {
+
             Feeds feeds = studentHelper.getFeeds(feedId).get(0);
             studentHelper.updateFeedLikes(feeds);
             arrListFeeds = studentHelper.getFeeds(-1);

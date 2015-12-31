@@ -8,7 +8,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/d1dp"
         android:layout_marginLeft="@dimen/d15dp"
         android:layout_marginRight="@dimen/d15dp"
         android:layout_marginTop="@dimen/d15dp"
