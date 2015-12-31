@@ -30,7 +30,7 @@
     <dimen name="d70dp">53dp</dimen><!-- edited -->
     <dimen name="d90dp">68dp</dimen><!-- edited -->
     <dimen name="d120dp">90dp</dimen><!-- edited -->
-    <dimen name="d130dp">123dp</dimen><!-- edited -->
+    <dimen name="d130dp">98dp</dimen><!-- edited -->
 
     <dimen name="exam_padding">15dp</dimen><!-- edited -->
     <dimen name="button_corner_radius">4dp</dimen><!-- edited -->
@@ -144,7 +144,7 @@
     <dimen name="d200dp">150dp</dimen>
     <dimen name="d170dp">127dp</dimen>
     <dimen name="d35dp">26.25dp</dimen>
-    <dimen name="d1dp">0.75dp</dimen>
+    <dimen name="d1dp">1dp</dimen>
     <dimen name="d230dp">172dp</dimen>
     <dimen name="d7dp">5.25dp</dimen>
     <dimen name="d21dp">15.75dp</dimen>
@@ -221,4 +221,14 @@
     <dimen name="d99dp">74.25dp</dimen>
     <dimen name="d8dp">6dp</dimen>
 
+    <dimen name="dp3">3dp</dimen>
+    <dimen name="padding_rb_exam">@dimen/d5dp</dimen>
+    <dimen name="text_rb_exam">@dimen/d18sp</dimen>
+    <dimen name="text_btn_exam">@dimen/d18sp</dimen>
+    <dimen name="sp30">30sp</dimen>
+    <dimen name="sp11">11sp</dimen>
+    <dimen name="margin_left_attachment">@dimen/d10dp</dimen>
+    <dimen name="sp9">9sp</dimen>
+    <dimen name="dp_n120">-120dp</dimen>
+    <dimen name="sp20">20sp</dimen>
 </resources>

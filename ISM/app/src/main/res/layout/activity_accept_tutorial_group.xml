@@ -16,13 +16,12 @@
 
 		<com.ism.views.CircleImageView
 			android:id="@+id/img_user_dp"
-			android:layout_width="@dimen/d150dp"
-			android:layout_height="@dimen/d150dp"
+			android:layout_width="@dimen/d140dp"
+			android:layout_height="@dimen/d140dp"
 			android:layout_marginTop="@dimen/d10dp"
 			android:layout_marginBottom="@dimen/d10dp"
 			android:layout_marginLeft="@dimen/d40dp"
 			android:layout_marginRight="@dimen/d40dp"
-			android:padding="@dimen/d15dp"
 			android:src="@drawable/img_default_dp"/>
 
 		<LinearLayout
@@ -91,12 +90,12 @@
 		android:gravity="center_horizontal"
 		android:horizontalSpacing="@dimen/d10dp"
 		android:numColumns="2"
-		android:verticalSpacing="@dimen/d30dp"></GridView>
+		android:verticalSpacing="@dimen/d10dp"></GridView>
 
 	<com.ism.commonsource.view.ActionProcessButton
 		android:id="@+id/btn_accept"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_height="@dimen/button_height_normal"
 		android:layout_gravity="center"
 		android:layout_margin="@dimen/d10dp"
 		android:gravity="center"
