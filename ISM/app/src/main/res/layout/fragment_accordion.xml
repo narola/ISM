@@ -39,9 +39,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/d10dp"
-                android:text="View all"
+                android:text="@string/strViewAll"
                 android:textColor="@color/green"
-                android:textSize="@dimen/d20dp"
+                android:textSize="@dimen/d20sp"
                 android:visibility="gone" />
         </LinearLayout>
 

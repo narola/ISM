@@ -35,22 +35,32 @@
 
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_activity_save"
+
+            <TextView
+                android:id="@+id/tv_activity_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_green"
+                android:paddingBottom="@dimen/d10dp"
+                android:paddingLeft="@dimen/d15dp"
+                android:paddingRight="@dimen/d15dp"
+                android:paddingTop="@dimen/d10dp"
                 android:text="@string/strsave"
                 android:textAllCaps="true"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/d20sp" />
 
-            <Button
-                android:id="@+id/btn_activity_cancel"
+
+            <TextView
+                android:id="@+id/tv_activity_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/d15dp"
                 android:background="@drawable/btn_cancel"
+                android:paddingBottom="@dimen/d10dp"
+                android:paddingLeft="@dimen/d15dp"
+                android:paddingRight="@dimen/d15dp"
+                android:paddingTop="@dimen/d10dp"
                 android:text="@string/strcancel"
                 android:textAllCaps="true"
                 android:textColor="@color/color_white"

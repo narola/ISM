@@ -31,10 +31,10 @@
             android:name=".activity.LoginActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+	        <intent-filter>
+		        <action android:name="android.intent.action.MAIN"/>
+		        <category android:name="android.intent.category.LAUNCHER"/>
+	        </intent-filter>
         </activity>
 	    <activity
             android:name=".activity.ProfileInformationActivity"
@@ -46,11 +46,11 @@
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape" >
 	    </activity>
-        <activity
+	    <activity
             android:name=".activity.AcceptTutorialGroupActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape">
-        </activity>
+	    </activity>
         <activity
             android:name=".activity.HostActivity"
             android:windowSoftInputMode="adjustResize"

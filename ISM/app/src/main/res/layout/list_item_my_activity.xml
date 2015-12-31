@@ -20,24 +20,24 @@
 			android:id="@+id/txt_time_header"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:paddingLeft="10dp"
-			android:paddingRight="10dp"
+			android:paddingLeft="@dimen/d10dp"
+			android:paddingRight="@dimen/d10dp"
 			android:textColor="@color/text_red_timeline"
 			android:visibility="gone"
-			android:textSize="17sp"/>
+			android:textSize="@dimen/d21sp"/>
 
 		<View
 			android:layout_width="match_parent"
-			android:layout_height="1dp"
+			android:layout_height="@dimen/d1dp"
 			android:background="@color/border_timeline"/>
 	</LinearLayout>
 
 	<View
-		android:layout_width="15dp"
-		android:layout_height="1dp"
+		android:layout_width="@dimen/d15dp"
+		android:layout_height="@dimen/d1dp"
 		android:layout_below="@id/ll_header"
-		android:layout_marginTop="25dp"
-		android:layout_marginLeft="7dp"
+		android:layout_marginTop="@dimen/d25dp"
+		android:layout_marginLeft="@dimen/d7dp"
 		android:background="@color/border_timeline"/>
 
 	<TextView
@@ -45,10 +45,10 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/ll_header"
-		android:layout_marginTop="15dp"
-		android:layout_marginBottom="15dp"
-		android:layout_marginLeft="30dp"
-		android:textSize="21sp"
+		android:layout_marginTop="@dimen/d15dp"
+		android:layout_marginBottom="@dimen/d15dp"
+		android:layout_marginLeft="@dimen/d30dp"
+		android:textSize="@dimen/d18sp"
 		android:textColor="@color/bg_app_dark"/>
 
 	<FrameLayout
@@ -56,5 +56,5 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txt_activity_title"
-		android:layout_marginLeft="30dp"/>
+		android:layout_marginLeft="@dimen/d30dp"/>
 </RelativeLayout>

@@ -305,7 +305,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 if (!file.isFile()) {
                     Debug.e(TAG, "Source File Does not exist");
                 } else {
-                    new com.ism.fragment.userProfile.EditProfileImageAsync(file).execute();
+                   // new com.ism.fragment.userProfile.EditProfileImageAsync(file).execute();
                 }
                 // hostListenerAboutMe.onSelectImage(bitmap);
                 // strDpBase64 = Utility.getBase64ForImage(bitmap);
@@ -437,6 +437,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 Debug.i(TAG, "Details are available!");
             } else {
                 txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
+                txtClickAddAboutMe.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
                 imgEditAboutMe.setVisibility(View.GONE);
                 Debug.i(TAG, "Details are not available!");
             }
@@ -448,6 +449,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             } else {
                 Debug.i(TAG, "Details are not available!");
                 txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
+                txtClickAddAmbitions.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
                 imgEditAmbition.setVisibility(View.GONE);
             }
 
@@ -573,8 +575,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             Debug.i(TAG, "Details are available!");
         } else {
             Debug.i(TAG, "Details are not available!");
-            txtClickAddAmbitions.setCompoundDrawables(null, null, getResources().getDrawable(R.drawable.aroow_gray), null);
-            txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
+            txtClickAddAmbitions.setText(getActivity().getResources().getString(R.string.strClickTOAddAmbitionInLife));
+            txtClickAddAmbitions.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
             imgEditAmbition.setVisibility(View.GONE);
         }
     }
@@ -586,8 +588,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             imgEditAboutMe.setVisibility(View.VISIBLE);
             Debug.i(TAG, "Details are available!");
         } else {
-            txtClickAddAboutMe.setCompoundDrawables(null, null,getResources().getDrawable(R.drawable.aroow_gray), null);
             txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
+            txtClickAddAboutMe.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
             imgEditAboutMe.setVisibility(View.GONE);
             Debug.i(TAG, "Details are not available!");
         }

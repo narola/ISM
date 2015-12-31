@@ -9,7 +9,7 @@
         android:id="@+id/txt_noticeName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
+        android:paddingLeft="@dimen/d5dp"
         android:paddingRight="@dimen/d5dp"
         android:text=""
         android:textColor="#313131"
@@ -24,10 +24,10 @@
         android:ellipsize="end"
         android:lines="5"
         android:paddingLeft="@dimen/d10dp"
-        android:paddingRight="10sp"
+        android:paddingRight="@dimen/d10dp"
         android:text=""
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="@dimen/d16sp" />
 
     <TextView
         android:id="@+id/txt_noticeReadMore"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/d5dp"
         android:gravity="right"
-        android:padding="5dp"
+        android:padding="@dimen/d5dp"
         android:text="@string/read_more"
         android:textColor="@color/green"
         android:textSize="@dimen/d15dp" />

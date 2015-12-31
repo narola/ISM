@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="@string/strunasssessed"
-                    android:textSize="@dimen/d20sp" />
+                    android:textSize="@dimen/d15sp" />
             </LinearLayout>
 
             <ImageView

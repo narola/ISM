@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="180dp"
+    android:layout_width="@dimen/d300dp"
+    android:layout_height="@dimen/d180dp"
     android:layout_centerInParent="true"
     android:layout_gravity="center"
     android:background="@android:color/white"
@@ -16,7 +16,7 @@
         android:padding="@dimen/d10dp"
         android:text="@string/steAddnewCategory"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/d25dp"
+        android:textSize="@dimen/d25sp"
         android:textStyle="bold" />
 
     <ImageView
@@ -24,14 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/d5dp"
+        android:padding="@dimen/d5dp"
         android:background="@drawable/edit_profile"
-        android:gravity="center"
-        android:text="@string/strclose"
-        android:textAllCaps="true"
-        android:textColor="@color/color_white"
-        android:textSize="@dimen/d40dp"
-        android:textStyle="bold" />
+        android:gravity="center"/>
 
     <EditText
         android:id="@+id/et_category_name"
@@ -41,8 +36,9 @@
         android:layout_marginLeft="@dimen/d10dp"
         android:layout_marginRight="@dimen/d10dp"
         android:layout_marginTop="@dimen/d30dp"
+        android:textSize="@dimen/d18sp"
         android:background="@drawable/bg_edit_gray"
-        android:hint="Enter your category name"
+        android:hint="@string/strEnterYourCategoryName"
         android:padding="@dimen/d10dp"
         android:singleLine="true" />
 </RelativeLayout>

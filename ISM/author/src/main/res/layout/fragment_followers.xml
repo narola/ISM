@@ -23,10 +23,10 @@
     </RelativeLayout>
 
     <View
-        android:layout_width="20dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/d20dp"
+        android:layout_height="@dimen/d30dp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="359dp"
+        android:layout_marginTop="@dimen/d359dp"
         android:background="@drawable/shape_triangle_profile_controller" />
 
 </RelativeLayout>

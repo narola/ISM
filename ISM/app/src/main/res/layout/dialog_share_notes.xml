@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="400dp"
-    android:layout_height="220dp"
+    android:layout_width="@dimen/d400dp"
+    android:layout_height="@dimen/d220dp"
     android:layout_centerInParent="true"
     android:layout_gravity="center"
     android:background="@android:color/white"
@@ -25,23 +25,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/d5dp"
-        android:background="@drawable/ic_share_notes_deactive"
-        android:gravity="center"
-        android:text="@string/strclose"
-        android:textAllCaps="true"
-        android:textColor="@color/color_white"
-        android:textSize="@dimen/d40dp"
-        android:textStyle="bold" />
+        android:background="@drawable/ic_share_notes_deactive" />
 
     <TextView
         android:id="@+id/txt_share_with"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_share_note_title"
-        android:gravity="left"
         android:layout_marginLeft="@dimen/d10dp"
         android:layout_marginRight="@dimen/d10dp"
         android:layout_marginTop="@dimen/d30dp"
+        android:gravity="left"
         android:padding="@dimen/d10dp"
         android:text="Share with"
         android:textSize="@dimen/d20dp" />
@@ -57,5 +51,6 @@
         android:drawableLeft="@drawable/edit_profile"
         android:hint="Studymate Name"
         android:padding="@dimen/d10dp"
+        android:textSize="@dimen/d18sp"
         android:singleLine="true" />
 </RelativeLayout>

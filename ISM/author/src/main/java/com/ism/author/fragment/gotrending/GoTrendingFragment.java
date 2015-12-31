@@ -31,10 +31,17 @@ import com.ism.author.dialog.AddQuestionTextDialog;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
+import com.ism.author.ws.helper.MediaUploadAttribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.TrendingQuestion;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 
 
@@ -177,12 +184,50 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
             try {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setAuthorId(Global.strUserId);
-                attribute.setQuestionid(trendingId);
-                attribute.setAnswerText(etAnswer.getText().toString().trim());
+
+                MediaUploadAttribute authorIdParam = new MediaUploadAttribute();
+                authorIdParam.setParamName("author_id");
+                authorIdParam.setParamValue(Global.strUserId);
+
+
+                MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
+                questionIdParam.setParamName("question_id");
+                questionIdParam.setParamValue(trendingId);
+
+
+                MediaUploadAttribute answerTextParam = new MediaUploadAttribute();
+                answerTextParam.setParamName("answer_text");
+                answerTextParam.setParamValue(getHtmlQuestionText());
+
+                addImage();
+                if (imageSources.size() > 0) {
+                    for (int i = 0; i < imageSources.size(); i++) {
+                        MediaUploadAttribute mediaFileParam = new MediaUploadAttribute();
+                        mediaFileParam.setParamName("" + i);
+                        mediaFileParam.setFileName(imageSources.get(i));
+                        attribute.getArrListFile().add(mediaFileParam);
+                    }
+                }
+
+                MediaUploadAttribute numberOfImagesParam = new MediaUploadAttribute();
+                numberOfImagesParam.setParamName("number_of_images");
+                numberOfImagesParam.setParamValue(String.valueOf(imageSources.size()));
+
+
+                attribute.getArrListParam().add(authorIdParam);
+                attribute.getArrListParam().add(questionIdParam);
+                attribute.getArrListParam().add(answerTextParam);
+                attribute.getArrListParam().add(numberOfImagesParam);
+
+
+//                attribute.setAuthorId(Global.strUserId);
+//                attribute.setQuestionid(trendingId);
+//                attribute.setAnswerText(etAnswer.getText().toString().trim());
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.SUBMIT_TRENDING_ANSWER);
+
+
             } catch (Exception e) {
                 Log.e(TAG, "callApiForSubmitTrendingAnswer Exception : " + e.toString());
             }
@@ -260,6 +305,8 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
                     arrayListTrendingQuestions.remove(visibleQuestionPosition);
                     setQuestion(arrayListTrendingQuestions.size() - 1 > visibleQuestionPosition ? visibleQuestionPosition - 1 : visibleQuestionPosition + 1);
                     questionsMostFollowAdapter.notifyDataSetChanged();
+
+
                     if (arrayListTrendingQuestions.size() == 0) setEmptyView(true);
                     else setEmptyView(false);
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
@@ -335,6 +382,10 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
 
     }
 
+    /**
+     * richeditor text.
+     */
+
     AddQuestionTextDialog addRichTextDialog;
     String htmlText;
     String richEditText;
@@ -399,6 +450,43 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
         return htmlText;
     }
 
+    public void addImage() {
+
+        Debug.e(TAG, "The RichEditText Is:::" + richEditText);
+
+        if (richEditText != null) {
+            String richEditText;
+            imageSources.clear();
+            XmlPullParserFactory factory = null;
+            try {
+                factory = XmlPullParserFactory.newInstance();
+
+                XmlPullParser xpp = factory.newPullParser();
+                richEditText = getHtmlQuestionText().replace("&nbsp;", " ");
+                xpp.setInput(new StringReader(richEditText));
+                int eventType = xpp.getEventType();
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+
+                    if (eventType == XmlPullParser.START_TAG && "img".equals(xpp.getName())) {
+                        //found an image start tag, extract the attribute 'src' from here..
+
+                        if (xpp.getAttributeValue(0).contains("file://")) {
+                            String path = xpp.getAttributeValue(0).replace("file://", "");
+                            imageSources.add(path);
+                        }
+                    }
+                    eventType = xpp.next();
+                }
+
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     private void openImage() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
@@ -443,7 +531,6 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
                                 final Uri videoUri = returnedIntent.getData();
                                 String videoPath = Utility.getRealPathFromURI(videoUri, getActivity());
                                 addRichTextDialog.insertVideo(videoPath);
-
                             }
 
                         } catch (Exception e) {

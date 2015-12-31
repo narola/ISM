@@ -9,7 +9,6 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -61,27 +60,34 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
             holder.txtEvoluationsNotes.setTypeface(Global.myTypeFace.getRalewayBold());
             holder.txtSolution.setTypeface(Global.myTypeFace.getRalewayBold());
 
-            holder.etEvoluationsNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.etSolution.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvEvoluationsNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
+            holder.tvSolution.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             holder.txtQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
             holder.txtQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
             holder.txtQuestionNo.setPaintFlags(holder.txtQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 //            holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext, null), null));
-            if (arrListQuestions.get(position).getSpan() == null) {
 
-                arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
-                        new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
-                        ), null));
+
+            if (arrListQuestions.get(position).getQuestionText().contains("img") || arrListQuestions.get(position).getQuestionText().contains("http:")
+                    || arrListQuestions.get(position).getQuestionText().contains("https:")) {
+                if (arrListQuestions.get(position).getSpan() == null) {
+
+                    arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                            new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+                            ), null));
+                } else {
+
+                    holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                            new HtmlImageGetter(50, 50, mContext, null
+                            ), null));
+                }
             } else {
-
-                holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
-                        new HtmlImageGetter(50, 50, mContext, null
-                        ), null));
+                holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText()));
             }
 
-            holder.etEvoluationsNotes.setText(Utils.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
-            holder.etSolution.setText(Utils.formatHtml(arrListQuestions.get(position).getSolution()));
+            holder.tvEvoluationsNotes.setText(Utils.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
+            holder.tvSolution.setText(Utils.formatHtml(arrListQuestions.get(position).getSolution()));
             if (getBundleArguments().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_NAME)) {
                 holder.txtStudentnameAnswer.setText(getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME) + " " +
                         mContext.getString(R.string.stranswer));
@@ -175,8 +181,8 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtQuestionNo, txtQuestionText, txtCorrectAnswer, txtAnswer, txtStudentnameAnswer, txtStudentAnswer, txtEvoluationsNotes,
-                txtSolution;
-        EditText etEvoluationsNotes, etSolution;
+                txtSolution, tvEvoluationsNotes, tvSolution;
+
         LinearLayout llQuestionsOptions, llAnswerContainer, llEvaluationContainer, llCorrectAnswer;
 
         public ViewHolder(View itemView) {
@@ -191,8 +197,8 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
                 txtEvoluationsNotes = (TextView) itemView.findViewById(R.id.txt_evoluations_notes);
                 txtSolution = (TextView) itemView.findViewById(R.id.txt_solution);
 
-                etEvoluationsNotes = (EditText) itemView.findViewById(R.id.et_evoluations_notes);
-                etSolution = (EditText) itemView.findViewById(R.id.et_solution);
+                tvEvoluationsNotes = (TextView) itemView.findViewById(R.id.tv_evoluations_notes);
+                tvSolution = (TextView) itemView.findViewById(R.id.tv_title_solution);
 
                 llQuestionsOptions = (LinearLayout) itemView.findViewById(R.id.ll_questions_options);
                 llAnswerContainer = (LinearLayout) itemView.findViewById(R.id.ll_answer_container);

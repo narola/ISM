@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
-import com.ism.object.MyTypeFace;
+import com.ism.object.Global;
 import com.ism.utility.PreferenceData;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
@@ -24,7 +24,6 @@ import com.ism.ws.helper.WebserviceWrapper;
  */
 public class NotificationFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
     private View view;
-    private MyTypeFace myTypeFace;
     private TextView txtAlertsTags, txtAlertsAuthor, txtAlertsCommentLike, txtAlertsNoticeBoard, txtCommentNotification, txtLikeNotification, txtNoticeBoardNotification, txtAuthorNotification, txtTagNotification;
     private View includeComment, includeLike, includeNoticeBoard, includeTag, includeAuthor;
     private RadioGroup radioGroupComment, radioGroupLike, radioGroupNoticeBoard, radioGroupAuthor, radioGroupTag;
@@ -54,7 +53,6 @@ public class NotificationFragment extends Fragment implements WebserviceWrapper.
 
     private void initGlobal() {
         generalSettingsFragment=GeneralSettingsFragment.newInstance();
-        myTypeFace = new MyTypeFace(getActivity());
         txtAlertsTags = (TextView) view.findViewById(R.id.txt_alerts_tags);
         txtAlertsAuthor = (TextView) view.findViewById(R.id.txt_alerts_author);
         txtAlertsNoticeBoard = (TextView) view.findViewById(R.id.txt_alerts_notice_board);
@@ -103,28 +101,28 @@ public class NotificationFragment extends Fragment implements WebserviceWrapper.
 
 
         //set typeface
-        txtAlertsAuthor.setTypeface(myTypeFace.getRalewayRegular());
-        txtAlertsCommentLike.setTypeface(myTypeFace.getRalewayRegular());
-        txtAlertsNoticeBoard.setTypeface(myTypeFace.getRalewayRegular());
-        txtAlertsTags.setTypeface(myTypeFace.getRalewayRegular());
+        txtAlertsAuthor.setTypeface(Global.myTypeFace.getRalewayMedium());
+        txtAlertsCommentLike.setTypeface(Global.myTypeFace.getRalewayMedium());
+        txtAlertsNoticeBoard.setTypeface(Global.myTypeFace.getRalewayMedium());
+        txtAlertsTags.setTypeface(Global.myTypeFace.getRalewayMedium());
 
-        txtCommentNotification.setTypeface(myTypeFace.getRalewayRegular());
-        txtLikeNotification.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonNoComment.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonNoLike.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonYesComment.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonYesLike.setTypeface(myTypeFace.getRalewayRegular());
-        txtNoticeBoardNotification.setTypeface(myTypeFace.getRalewayRegular());
-        txtAuthorNotification.setTypeface(myTypeFace.getRalewayRegular());
-        txtTagNotification.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonNoAuthor.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonNoNoticeBoard.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonYesAuthor.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonYesNoticeBoard.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonNoTag.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonYesTag.setTypeface(myTypeFace.getRalewayRegular());
-//        radioButtonNoNoticeBoard.setTypeface(myTypeFace.getRalewayRegular());
-//        radioButtonYesAuthor.setTypeface(myTypeFace.getRalewayRegular());
+        txtCommentNotification.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtLikeNotification.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonNoComment.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonNoLike.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonYesComment.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonYesLike.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtNoticeBoardNotification.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAuthorNotification.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtTagNotification.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonNoAuthor.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonNoNoticeBoard.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonYesAuthor.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonYesNoticeBoard.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonNoTag.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonYesTag.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        radioButtonNoNoticeBoard.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        radioButtonYesAuthor.setTypeface(Global.myTypeFace.getRalewayRegular());
         radioButtonNoComment.setOnClickListener(this);
         radioButtonYesComment.setOnClickListener(this);
         radioButtonNoLike.setOnClickListener(this);
@@ -156,25 +154,25 @@ public class NotificationFragment extends Fragment implements WebserviceWrapper.
     public void onClick(View v) {
         String key_value,strPref = null,value = null;
         if (v == radioButtonNoAuthor) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_FOLLOWED_AUTHOR_POST, getActivity()), "No",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_FOLLOWED_AUTHOR_POST, getActivity()), getActivity().getResources().getString(R.string.strNo),getActivity());
         } else if (v == radioButtonYesAuthor) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_FOLLOWED_AUTHOR_POST, getActivity()), "Yes",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_FOLLOWED_AUTHOR_POST, getActivity()), getActivity().getResources().getString(R.string.strYes),getActivity());
         } else if (v == radioButtonNoComment) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_COMMENT, getActivity()), "No",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_COMMENT, getActivity()), getActivity().getResources().getString(R.string.strNo),getActivity());
         } else if (v == radioButtonYesComment) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_COMMENT, getActivity()), "Yes",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_COMMENT, getActivity()), getActivity().getResources().getString(R.string.strYes),getActivity());
         } else if (v == radioButtonNoLike) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_LIKE, getActivity()), "No",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_LIKE, getActivity()), getActivity().getResources().getString(R.string.strNo),getActivity());
         } else if (v == radioButtonYesLike) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_LIKE, getActivity()), "Yes",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_LIKE, getActivity()), getActivity().getResources().getString(R.string.strYes),getActivity());
         } else if (v == radioButtonNoTag) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_TAGGED, getActivity()), "No",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_TAGGED, getActivity()), getActivity().getResources().getString(R.string.strNo),getActivity());
         } else if (v == radioButtonYesTag) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_TAGGED, getActivity()), "Yes",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_TAGGED, getActivity()), getActivity().getResources().getString(R.string.strYes),getActivity());
         } else if (v == radioButtonNoNoticeBoard) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_NOTIFICATION_NOTICEBOARD, getActivity()), "No",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_NOTIFICATION_NOTICEBOARD, getActivity()), getActivity().getResources().getString(R.string.strNo),getActivity());
         } else if (v == radioButtonYesNoticeBoard) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_NOTIFICATION_NOTICEBOARD, getActivity()), "Yes",getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.NOTI_NOTIFICATION_NOTICEBOARD, getActivity()), getActivity().getResources().getString(R.string.strYes),getActivity());
         }
     }
 
@@ -202,35 +200,35 @@ public class NotificationFragment extends Fragment implements WebserviceWrapper.
 
         key_value=getKeyPereference(PreferenceData.NOTI_NOTIFICATION_NOTICEBOARD);
        // Debug.i(TAG,"Value: "+key+"::"+key_value);
-        if (key_value.equals("No")) {
+        if (key_value.equals(getActivity().getResources().getString(R.string.strNo))) {
             radioGroupNoticeBoard.check(R.id.radiobutton_no);
 
         } else {
             radioGroupNoticeBoard.check(R.id.radiobutton_yes);
         }
         key_value=getKeyPereference(PreferenceData.NOTI_COMMENT);
-        if (key_value.equals("No")) {
+        if (key_value.equals(getActivity().getResources().getString(R.string.strNo))) {
             radioGroupComment.check(R.id.radiobutton_no);
 
         } else {
             radioGroupComment.check(R.id.radiobutton_yes);
         }
         key_value=getKeyPereference(PreferenceData.NOTI_LIKE);
-        if (key_value.equals("No")) {
+        if (key_value.equals(getActivity().getResources().getString(R.string.strNo))) {
             radioGroupLike.check(R.id.radiobutton_no);
 
         } else {
             radioGroupLike.check(R.id.radiobutton_yes);
         }
         key_value=getKeyPereference(PreferenceData.NOTI_FOLLOWED_AUTHOR_POST);
-        if (key_value.equals("No")) {
+        if (key_value.equals(getActivity().getResources().getString(R.string.strNo))) {
             radioGroupAuthor.check(R.id.radiobutton_no);
 
         } else {
             radioGroupAuthor.check(R.id.radiobutton_yes);
         }
         key_value=getKeyPereference(PreferenceData.NOTI_TAGGED);
-        if (key_value.equals("No")) {
+        if (key_value.equals(getActivity().getResources().getString(R.string.strNo))) {
             radioGroupTag.check(R.id.radiobutton_no);
 
         } else {

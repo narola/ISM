@@ -8,8 +8,7 @@
         android:id="@+id/txt_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Adan Smith"
+        android:padding="@dimen/d10dp"
         android:textColor="@color/color_blue"
         android:textSize="@dimen/d20sp" />
 
@@ -17,8 +16,7 @@
         android:id="@+id/txt_email_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Adan.@gmail.com"
+        android:padding="@dimen/d10dp"
         android:textColor="@color/bg_app_dark"
         android:textSize="@dimen/d20sp" />
 
@@ -26,8 +24,8 @@
         android:id="@+id/txt_unblock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="UNBLOCK"
+        android:padding="@dimen/d10dp"
+        android:text="@string/strUnblock"
         android:textColor="@color/red_error"
         android:textSize="@dimen/d20sp" />
 </LinearLayout>

@@ -905,6 +905,16 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     MediaUploadAttribute answerChoicesParam = new MediaUploadAttribute();
                     answerChoicesParam.setParamName("answer_choices");
                     answerChoicesParam.setParamValue(getMcqAnswers());
+                    JSONObject mcqJsonObject = new JSONObject();
+                    JSONArray jArray = new JSONArray();
+                    for (AnswerChoices answerChoices : arrListAnswerChioces) {
+                        JSONObject mcqJson = new JSONObject();
+                        mcqJson.put("choice_text", answerChoices.getChoiceText());
+                        mcqJson.put("is_right", answerChoices.getIsRight());
+                        jArray.put(mcqJson);
+                    }
+                    mcqJsonObject.put("choices", jArray);
+                    answerChoicesParam.setParamValue(mcqJsonObject.toString());
                     attribute.getArrListParam().add(answerChoicesParam);
                 }
 

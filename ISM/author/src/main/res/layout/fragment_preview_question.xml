@@ -25,7 +25,7 @@
                 android:padding="@dimen/d15dp"
                 android:text="@string/strpreview"
                 android:textColor="@color/color_question"
-                android:textSize="@dimen/d22dp" />
+                android:textSize="@dimen/d22sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/strtotalquestions"
                         android:textColor="@color/color_blue"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
                     <TextView
                         android:id="@+id/tv_preview_total_question_no"
@@ -58,7 +58,7 @@
                         android:layout_alignParentLeft="true"
                         android:gravity="center"
                         android:textColor="@color/color_green"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
                 </LinearLayout>
 
@@ -84,7 +84,7 @@
                         android:gravity="center"
                         android:text="@string/strtotalscore"
                         android:textColor="@color/color_blue"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
                     <TextView
                         android:id="@+id/tv_preview_total_score_no"
@@ -93,7 +93,7 @@
                         android:layout_alignParentLeft="true"
                         android:gravity="center"
                         android:textColor="@color/color_green"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -108,7 +108,7 @@
                 android:gravity="center"
                 android:text="@string/strfreeze"
                 android:textColor="@color/color_blue"
-                android:textSize="@dimen/d22dp" />
+                android:textSize="@dimen/d22sp" />
         </RelativeLayout>
 
 

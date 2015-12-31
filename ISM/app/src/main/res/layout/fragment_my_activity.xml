@@ -10,7 +10,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:background="@drawable/bg_my_activity"
-		android:padding="17dp"/>
+		android:padding="@dimen/d17dp"/>
 
 	<TextView
 		android:id="@+id/txt_emptylist_message"
@@ -21,12 +21,12 @@
 		android:visibility="gone"
 		android:layout_centerInParent="true"/>
 
-	<View
-		android:id="@+id/view_highlighter_triangle"
-		android:layout_width="20dp"
-		android:layout_height="30dp"
-		android:layout_alignParentRight="true"
-		android:layout_marginTop="408dp"
-		android:visibility="gone"
-		android:background="@drawable/shape_triangle_profile_controller"/>
+	<!--<View-->
+	<!--android:id="@+id/view_highlighter_triangle"-->
+	<!--android:layout_width="@dimen/d20dp"-->
+	<!--android:layout_height="@dimen/d30dp"-->
+	<!--android:layout_alignParentRight="true"-->
+	<!--android:layout_marginTop="@dimen/d408dp"-->
+	<!--android:visibility="gone"-->
+	<!--android:background="@drawable/shape_triangle_profile_controller"/>-->
 </RelativeLayout>

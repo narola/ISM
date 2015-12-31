@@ -55,6 +55,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
     public static final String TAG = PostFeedActivity.class.getSimpleName();
     public static final String IMAGE = "image";
     public static final String VIDEO = "video";
+    private static final String AUDIO = "audio";
     private InputMethodManager inputMethod;
     private TextView txtPost, txtCaptue, txtChoose, txtCancel;
     private EditText etSayIt;
@@ -141,18 +142,31 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         listview = (HorizontalListView) findViewById(R.id.horilistview);
         inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         //llBlank.setVisibility(View.VISIBLE);
-        imgKeyboard.setBackgroundColor(getResources().getColor(R.color.color_blue));
+        toolSelected(imgKeyboard);
     }
 
     public void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        try {
+            Utility.hideKeyboard(this,etSayIt);
+//            View view = this.getCurrentFocus();
+//            if (view != null) {
+//                inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//            }
+        } catch (Exception e) {
+            Debug.i(TAG, "hideKeyboard Exceptions : " + e.getLocalizedMessage());
         }
     }
 
     public void showKeyboard() {
-        inputMethod.showSoftInput(etSayIt, InputMethodManager.SHOW_IMPLICIT);
+        try {
+            etSayIt.requestFocus();
+//            InputMethodManager inputMethodManager=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//            inputMethodManager.showSoftInput(etSayIt,InputMethodManager.SHOW_FORCED);
+           Utility.showSoftKeyboard(etSayIt,this);
+        } catch (Exception e) {
+            Debug.i(TAG, "showKeyboard Exceptions : " + e.getLocalizedMessage());
+        }
+        //inputMethod.showSoftInput(etSayIt, InputMethodManager.SHOW_IMPLICIT);
     }
 
     public void showProgress() {
@@ -182,8 +196,8 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
     public void onClick(View v) {
         if (v == imgImage) {
             toolSelected(v);
-            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.img_camera));
-            Toast.makeText(getApplicationContext(), "Images", Toast.LENGTH_SHORT).show();
+            imgCapture.setImageResource(R.drawable.img_camera);
+            Toast.makeText(getApplicationContext(), IMAGE, Toast.LENGTH_SHORT).show();
             hideKeyboard();
             llContainer.setVisibility(View.VISIBLE);
             txtCaptue.setText(getResources().getString(R.string.strcaptureimageusingcamera));
@@ -192,17 +206,17 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 
         } else if (v == imgAudio) {
             toolSelected(v);
-            Toast.makeText(getApplicationContext(), "Audio", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), AUDIO, Toast.LENGTH_SHORT).show();
             hideKeyboard();
-            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_recorder));
+            imgCapture.setImageResource(R.drawable.img_camera);
             llContainer.setVisibility(View.VISIBLE);
             txtCaptue.setText(getResources().getString(R.string.strrecordyouraudio));
             txtChoose.setText(getResources().getString(R.string.strchooseyouraudio));
             //loadFragment(FRAGMENT_AUDIO);
         } else if (v == imgVideo) {
             toolSelected(v);
-            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.img_camera));
-            Toast.makeText(getApplicationContext(), "Video", Toast.LENGTH_SHORT).show();
+            imgCapture.setImageResource(R.drawable.img_camera);
+            Toast.makeText(getApplicationContext(), VIDEO, Toast.LENGTH_SHORT).show();
             hideKeyboard();
             llContainer.setVisibility(View.VISIBLE);
             txtCaptue.setText(getResources().getString(R.string.strcapturevideousingcamera));
@@ -297,7 +311,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         } else if (v == imgKeyboard) {
             toolSelected(v);
             //llBlank.setVisibility(View.VISIBLE);
-            showKeyboard();
+           // showKeyboard();
         } else if (v == txtCancel) {
             hideKeyboard();
 
@@ -613,16 +627,16 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
                 feed_id = responseHandler.getFeed().get(0).getFeedId();
                 if (arrayList != null) {
                     for (int i = 0; i < arrayList.size(); i++) {
-                        if (arrayList.get(i).getStrFileType().equals("video")) {
-                            mediaType = "video";
+                        if (arrayList.get(i).getStrFileType().equals(VIDEO)) {
+                            mediaType = VIDEO;
                             uploadUri = getPathVideo(arrayList.get(i).getStrFilePath());
-                        } else if (arrayList.get(i).getStrFileType().equals("audio")) {
+                        } else if (arrayList.get(i).getStrFileType().equals(AUDIO)) {
                             uploadUri = getPathAudio(arrayList.get(i).getStrFilePath());
-                            mediaType = "audio";
-                        } else if (arrayList.get(i).getStrFileType().equals("image")) {
-                            mediaType = "image";
+                            mediaType = AUDIO;
+                        } else if (arrayList.get(i).getStrFileType().equals(IMAGE)) {
+                            mediaType = IMAGE;
                             uploadUri = getPathImage(arrayList.get(i).getStrFilePath());
-                        } else if (arrayList.get(i).getStrFileType().equals("video")) {
+                        } else if (arrayList.get(i).getStrFileType().equals(VIDEO)) {
                             MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
                             mMediaMetadataRetriever.setDataSource(this, arrayList.get(i).getStrFilePath());
                             Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
@@ -689,38 +703,43 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             String path = data.getData().toString();
             Uri uri = data.getData();
             Log.i("uri", uri + "");
-            model = new PostFileModel("image", uri, "");
+            model = new PostFileModel(IMAGE, uri, "");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+            listview.setAdapter(new PostFileAdapter(arrayList, this));
             // adapter.notifyDataSetChanged();
         } else if (requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK) {
-            model = new PostFileModel("image", uriFile, "");
+            model = new PostFileModel(IMAGE, uriFile, "");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         } else if (requestCode == MEDIA_TYPE_VIDEO && resultCode == RESULT_OK) {
             Uri uri = data.getData();
+
             Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory());
             Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory() + uri.getPath());
-            model = new PostFileModel("video", uri, "");
+            model = new PostFileModel(VIDEO, uri, "");
+            MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+            mMediaMetadataRetriever.setDataSource(this, uri);
+            Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+            Debug.i(TAG,"Bitmat of video frame : "+bitmap);
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+            listview.setAdapter(new PostFileAdapter(arrayList, this));
         } else if (requestCode == CAPTURE_VIDEO && resultCode == RESULT_OK) {
             Uri uri = data.getData();
             Log.i(TAG, uri.getPath() + "");
-            model = new PostFileModel("video", uri, "");
+            model = new PostFileModel(VIDEO, uri, "");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+            listview.setAdapter(new PostFileAdapter(arrayList, this));
         } else if (requestCode == MEDIA_TYPE_AUDIO && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             Log.i(TAG, uri + "");
             listview.setVisibility(View.VISIBLE);
-            model = new PostFileModel("audio", uri, "");
+            model = new PostFileModel(AUDIO, uri, "");
             arrayList.add(model);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+            listview.setAdapter(new PostFileAdapter(arrayList, this));
         }
     }
 
@@ -781,6 +800,8 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         imgEmoticons.setBackground(getResources().getDrawable(R.drawable.sidebar));
         imgLink.setBackground(getResources().getDrawable(R.drawable.sidebar));
         v.setBackgroundColor(getResources().getColor(R.color.green));
+        if(v==imgKeyboard)
+            showKeyboard();
 //        if (v == imgImage) {
 //            imgImage.setBackgroundColor(getResources().getColor(R.color.color_green));
 //        }
@@ -853,9 +874,9 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 
     public boolean checkMediaFile() {
         for (int i = 0; i < arrayList.size(); i++) {
-            if (arrayList.get(i).getStrFileType().equals("video")) {
+            if (arrayList.get(i).getStrFileType().equals(VIDEO)) {
                 return true;
-            } else if (arrayList.get(i).getStrFileType().equals("audio")) {
+            } else if (arrayList.get(i).getStrFileType().equals(AUDIO)) {
                 return true;
             }
         }

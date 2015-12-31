@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/d15dp"
+    android:layout_margin="@dimen/d10dp"
     android:paddingLeft="@dimen/d30dp"
     android:orientation="vertical">
 
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/color_blue"
         android:layout_alignParentTop="true"
-        android:padding="3dp"
+        android:padding="@dimen/d3dp"
         android:textSize="@dimen/d20sp" />
 
     <RadioGroup
@@ -20,8 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_notification_name"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/d10dp"
-        android:layout_marginBottom="@dimen/d10dp"
+        android:layout_marginTop="@dimen/d5dp"
+        android:layout_marginBottom="@dimen/d5dp"
         android:id="@+id/radigroup_yes_no"
         android:paddingLeft="@dimen/d30dp">
 
@@ -29,7 +29,7 @@
             android:id="@+id/radiobutton_yes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Yes"
+            android:text="@string/strYes"
             android:textColor="#323232"
             android:textAllCaps="false"
             android:textSize="@dimen/d18sp" />
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/d10dp"
-            android:text="No"
+            android:text="@string/strNo"
             android:textColor="#323232"
             android:textSize="@dimen/d18sp"
             android:textAllCaps="false" />

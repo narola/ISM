@@ -13,10 +13,10 @@
 		android:paddingBottom="@dimen/padding_voucher_item"
 		android:gravity="center"
 		android:textColor="@color/color_red"
-		android:textSize="18sp"/>
+		android:textSize="@dimen/d18sp"/>
 
 	<View
-		android:layout_width="1dp"
+		android:layout_width="@dimen/d1dp"
 		android:layout_height="match_parent"
 	    android:background="@color/color_dark_gray"/>
 
@@ -29,10 +29,10 @@
 		android:paddingBottom="@dimen/padding_voucher_item"
 		android:gravity="center"
 		android:textColor="@color/color_blue"
-		android:textSize="18sp"/>
+		android:textSize="@dimen/d18sp"/>
 
 	<View
-		android:layout_width="1dp"
+		android:layout_width="@dimen/d1dp"
 		android:layout_height="match_parent"
 		android:background="@color/color_dark_gray"/>
 
@@ -45,5 +45,5 @@
 		android:paddingBottom="@dimen/padding_voucher_item"
 		android:gravity="center"
 		android:textColor="@color/green"
-		android:textSize="18sp"/>
+		android:textSize="@dimen/d18sp"/>
 </LinearLayout>

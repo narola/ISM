@@ -2,21 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="@dimen/d10dp"
 				android:background="@drawable/bg_white_border_gray_bottom">
 
 	<View
 		android:id="@+id/view_status"
 		android:layout_width="@dimen/status_ring_size"
 		android:layout_height="@dimen/status_ring_size"
-		android:layout_marginTop="33dp"/>
+		android:layout_marginTop="@dimen/d33dp"/>
 
     <com.ism.views.CircleImageView
         android:id="@+id/img_dp"
         android:layout_width="@dimen/dp_size_list_studymates"
         android:layout_height="@dimen/dp_size_list_studymates"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="@dimen/d10dp"
+        android:layout_marginRight="@dimen/d10dp"
         android:layout_toRightOf="@id/view_status"
         android:src="@drawable/img_default_dp"/>
 
@@ -25,20 +25,20 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/img_dp"
-		android:layout_marginLeft="10dp"
-		android:layout_marginTop="5dp"
+		android:layout_marginLeft="@dimen/d10dp"
+		android:layout_marginTop="@dimen/d5dp"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="19sp"/>
+		android:textSize="@dimen/d19sp"/>
 
 	<TextView
 		android:id="@+id/txt_school"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/img_dp"
-		android:layout_marginLeft="10dp"
+		android:layout_marginLeft="@dimen/d10dp"
 		android:layout_below="@id/txt_user_name"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="18sp"/>
+		android:textSize="@dimen/d18sp"/>
 
 	<TextView
 		android:id="@+id/txt_following"
@@ -48,7 +48,7 @@
 		android:layout_marginLeft="10dp"
 		android:layout_below="@id/txt_school"
 		android:textColor="@color/green"
-		android:textSize="15sp"/>
+		android:textSize="@dimen/d15sp"/>
 
 	<LinearLayout
 		android:layout_width="wrap_content"
@@ -59,25 +59,25 @@
 
 		<Button
 			android:id="@+id/btn_view_profile"
-			android:layout_width="180dp"
-			android:layout_height="35dp"
+			android:layout_width="@dimen/d180dp"
+			android:layout_height="@dimen/d35dp"
 			android:text="@string/view_profile"
 			android:background="@drawable/bg_button_green_small"
 			android:textColor="@android:color/white"
 			android:layout_alignParentRight="true"
 			android:textAllCaps="false"
-			android:textSize="17sp"
-			android:layout_marginRight="10dp"/>
+			android:textSize="@dimen/d17sp"
+			android:layout_marginRight="@dimen/d10dp"/>
 
 		<com.ism.views.SelectAgainSpinner
 			android:id="@+id/spinner_studymate_options"
-			android:layout_width="180dp"
-			android:layout_height="35dp"
+			android:layout_width="@dimen/d180dp"
+			android:layout_height="@dimen/d35dp"
 			android:layout_below="@id/btn_view_profile"
-			android:layout_marginTop="10dp"
+			android:layout_marginTop="@dimen/d10dp"
 			android:layout_alignParentRight="true"
 			android:entries="@array/studymate_options"
 			android:background="@drawable/bg_spinner_simple"
-			android:layout_marginRight="10dp"></com.ism.views.SelectAgainSpinner>
+			android:layout_marginRight="@dimen/d10dp"></com.ism.views.SelectAgainSpinner>
 	</LinearLayout>
 </RelativeLayout>

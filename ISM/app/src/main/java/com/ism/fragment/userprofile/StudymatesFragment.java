@@ -64,13 +64,13 @@ public class StudymatesFragment extends Fragment implements HostActivity.HostLis
 	}
 
 	private void initGlobal() {
-		viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
+	//	viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
 		txtStudymates = (TextView) view.findViewById(R.id.txt_studymates);
 		txtFindStudymates = (TextView) view.findViewById(R.id.txt_find_studymates);
 		flFragmentContainer = (FrameLayout) view.findViewById(R.id.fl_fragment_container);
 		vpStudymates = (ViewPager) view.findViewById(R.id.vp_studymates);
 
-		viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
+		//viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
 		adpStudymatesPager = new StudymatesPagerAdapter(activityHost.getSupportFragmentManager());
 		vpStudymates.setAdapter(adpStudymatesPager);
