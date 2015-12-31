@@ -228,7 +228,6 @@
 			android:layout_height="match_parent"
 			android:layout="@layout/layout_whiteboard"
 			android:inflatedId="@+id/utility_whiteboard"
-			android:layout_marginLeft="@dimen/d1dp"
 			android:layout_above="@+id/ll_controller_utility"></ViewStub>
 
 		<ViewStub
