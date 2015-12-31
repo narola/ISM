@@ -2367,3 +2367,6 @@ body{
 .filter.order_authors .form-group::before{
 	height: 39.5px;
 }
+#login_bgs, .appconfig_tabs{
+	padding:10px;
+}

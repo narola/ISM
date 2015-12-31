@@ -13,7 +13,7 @@ class Book extends ADMIN_Controller {
 
 	// function to list down the books author wise.
 	public function index(){
-
+		
 		// get the authors
 		$authors = select(TBL_USERS,TBL_USERS.'.id',
 										array('where'=>array(

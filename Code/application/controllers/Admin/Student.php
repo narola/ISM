@@ -29,7 +29,7 @@ class Student extends ADMIN_Controller {
 			$this->send_invitation();
 		}
 
-		$this->data['page_title'] = 'Users';
+		$this->data['page_title'] = 'Students';
 		$order = '';
 		$where['where'][TBL_USERS.'.is_delete']=FALSE;
 		$where['where'][TBL_USERS.'.role_id']=2;
@@ -170,7 +170,7 @@ class Student extends ADMIN_Controller {
 
 	public function add(){
 
-		$this->data['page_title'] = 'Users Add';
+		$this->data['page_title'] = 'Add Student';
 
 		$this->data['countries']  =select(TBL_COUNTRIES);
 		$this->data['states'] =select(TBL_STATES);
@@ -238,7 +238,7 @@ class Student extends ADMIN_Controller {
 
 	public function update($id){
 
-		$this->data['page_title'] = 'Users Update';
+		$this->data['page_title'] = 'Update Student';
 
 		if(empty($id) && !is_numeric($id)){
 			redirect('admin');
@@ -370,7 +370,7 @@ class Student extends ADMIN_Controller {
 	 **/
 	public function send_message($id){
 		
-		$this->data['page_title'] = 'User Send Message';
+		$this->data['page_title'] = 'Send Message';
 
 		if(empty($id) && !is_numeric($id)){
 			redirect('admin');
@@ -521,7 +521,7 @@ class Student extends ADMIN_Controller {
 
 	public function send_messages(){
 		
-		$this->data['page_title'] = 'Users Send Messages';
+		$this->data['page_title'] = 'Send Messages';
 $this->data['is_scl'] = 0;
 		if($_POST){
 			
@@ -671,7 +671,7 @@ $this->data['is_scl'] = 0;
 
 	public function activity($id)
 	{
-		$data['page_title'] = 'ISM - MY Activities';
+		$data['page_title'] = 'Student Activities';
 		$user_data = select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>TRUE));
 		$user_group_data = select(TBL_TUTORIAL_GROUP_MEMBER,FALSE,array('where'=>array('user_id'=>$id)),array('single'=>TRUE));
 		
