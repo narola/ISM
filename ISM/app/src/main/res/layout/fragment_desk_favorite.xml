@@ -69,7 +69,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview_exams"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="@dimen/d300dp"
                 android:layout_marginLeft="@dimen/d5dp"
                 android:layout_marginRight="@dimen/d5dp"
                 android:layout_weight="8"
@@ -84,7 +84,7 @@
                 android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="0.5"
                 android:padding="@dimen/d5dp"
-                android:text="View all"
+                android:text="@string/strViewAll"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/d20sp" />
         </LinearLayout>

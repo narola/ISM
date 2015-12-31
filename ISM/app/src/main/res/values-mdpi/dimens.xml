@@ -212,4 +212,13 @@
 	<dimen name="dp75">75dp</dimen>
 	<dimen name="sp21">21sp</dimen>
 	<dimen name="dp165">165dp</dimen>
+    <dimen name="d40sp">30sp</dimen>
+    <dimen name="d300dp">225dp</dimen>
+    <dimen name="d950dp">712.50dp</dimen>
+    <dimen name="d800dp">600dp</dimen>
+    <dimen name="d500dp">375dp</dimen>
+    <dimen name="d4dp">3dp</dimen>
+    <dimen name="d99dp">74.25dp</dimen>
+    <dimen name="d8dp">6dp</dimen>
+
 </resources>
