@@ -301,7 +301,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETBOOKSFORAUTHOR);
+                        .execute(WebConstants.GETBOOKSBYAUTHOR);
             } catch (Exception e) {
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -324,7 +324,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                     onResponseGetClassrooms(object, error);
                     break;
 
-                case WebConstants.GETBOOKSFORAUTHOR:
+                case WebConstants.GETBOOKSBYAUTHOR:
                     onResponseGetAuthorBooks(object, error);
                     break;
             }

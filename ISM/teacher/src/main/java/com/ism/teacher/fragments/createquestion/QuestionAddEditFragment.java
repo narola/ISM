@@ -902,8 +902,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         jArray.put(mcqJson);
                     }
                     mcqJsonObject.put("choices", jArray);
-
-                    Debug.e(TAG, "mcq answers" + mcqJsonObject.toString());
                     answerChoicesParam.setParamValue(mcqJsonObject.toString());
                     attribute.getArrListParam().add(answerChoicesParam);
                 }

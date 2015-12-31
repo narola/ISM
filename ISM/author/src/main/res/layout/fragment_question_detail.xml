@@ -64,7 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d15dp"
-                    android:text="Jackson JSR-310 module fails to  deserialize simplest offsetDatetime format?"
+                    android:text=""
                     android:textColor="@color/color_blue"
                     android:textSize="@dimen/d18sp" />
 

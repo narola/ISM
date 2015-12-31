@@ -18,6 +18,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.gotrending.PastQuestionsAdapter;
 import com.ism.author.adapter.gotrending.QuestionCommentAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
@@ -103,7 +104,7 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setQuestionid("2");
-//                attribute.setQuestionid((((AuthorHostActivity) getActivity()).getBundle().getString(PastQuestionsAdapter.ARG_QUESTION_ID)));
+                attribute.setQuestionid((((AuthorHostActivity) getActivity()).getBundle().getString(PastQuestionsAdapter.ARG_QUESTION_ID)));
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GET_TRENDING_QUESTION_DETAIL);

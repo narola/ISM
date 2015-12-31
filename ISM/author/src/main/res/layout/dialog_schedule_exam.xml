@@ -41,7 +41,7 @@
 
         <Spinner
             android:id="@+id/sp_exam_classroom"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/d0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/d5dp"
             android:layout_weight="1.50"
@@ -64,7 +64,7 @@
 
         <TextView
             android:id="@+id/tv_exam_start_date"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/d0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
             android:padding="@dimen/d10dp"
@@ -75,7 +75,7 @@
 
         <LinearLayout
             android:id="@+id/ll_exam_startdate"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/d0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/d5dp"
             android:layout_weight="1.50"
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/d_8dp"
+                android:layout_marginLeft="@dimen/dMinus8dp"
                 android:background="@drawable/btn_calendar" />
         </LinearLayout>
 
@@ -116,7 +116,11 @@
         android:layout_marginBottom="@dimen/d25dp"
         android:layout_marginTop="@dimen/d25dp"
         android:background="@drawable/btn_blue"
+        android:paddingBottom="@dimen/d10dp"
+        android:paddingLeft="@dimen/d20dp"
+        android:paddingRight="@dimen/d20dp"
+        android:paddingTop="@dimen/d10dp"
         android:text="@string/strsave"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/d20sp" />
+        android:textSize="@dimen/d22sp" />
 </LinearLayout>

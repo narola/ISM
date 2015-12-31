@@ -109,7 +109,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-                        .execute(WebConstants.GETBOOKSFORAUTHOR);
+                        .execute(WebConstants.GETBOOKSBYAUTHOR);
             } catch (Exception e) {
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -150,7 +150,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 case WebConstants.CREATEASSIGNMENT:
                     onResponseAddAssignment(object, error);
                     break;
-                case WebConstants.GETBOOKSFORAUTHOR:
+                case WebConstants.GETBOOKSBYAUTHOR:
                     onResponseGetAuthorBooks(object, error);
                     break;
             }

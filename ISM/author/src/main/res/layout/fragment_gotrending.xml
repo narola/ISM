@@ -5,7 +5,6 @@
     android:orientation="horizontal"
     tools:mContext="com.ism.author.fragment.gotrending.GoTrendingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -162,6 +161,7 @@
                     android:gravity="left|top"
                     android:inputType="textMultiLine"
                     android:padding="@dimen/d10dp"
+                    android:textSize="@dimen/d18sp"
                     android:visibility="visible" />
 
                 <ImageView
@@ -206,7 +206,6 @@
                         android:text="@string/strsubmit"
                         android:textColor="@color/color_white"
                         android:textSize="@dimen/d18sp" />
-
                 </RelativeLayout>
             </RelativeLayout>
         </ScrollView>

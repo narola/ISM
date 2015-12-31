@@ -241,8 +241,8 @@ public class WebserviceWrapper {
                             case WebConstants.MANAGE_BOOK_LIBRARY:
                                 responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_BOOK_LIBRARY).execute(ResponseHandler.class, attribute);
                                 break;
-                            case WebConstants.GETBOOKSFORAUTHOR:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GETBOOKSFORAUTHOR).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GETBOOKSBYAUTHOR:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GETBOOKSBYAUTHOR).execute(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.UPLOADMEDIAFORQUESTION:
                                 responseObject = new WebserviceConnector(WebConstants.URL_UPLOADMEDIAFORQUESTION).uploadMedia(ResponseHandler.class,

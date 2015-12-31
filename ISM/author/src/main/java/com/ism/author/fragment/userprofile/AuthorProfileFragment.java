@@ -253,7 +253,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             }
         });
 
-        popupMessage.showAtLocation(imgMessage, Gravity.END, 10, 80);
+        popupMessage.showAtLocation(imgMessage, Gravity.END, 10, 90);
     }
 
     private void loadFragmentAllMessage(int position) {
@@ -313,7 +313,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             }
         });
 
-        popupNotification.showAtLocation(imgNotification, Gravity.END, 10, 80);
+        popupNotification.showAtLocation(imgNotification, Gravity.END, 10, 90);
     }
 
     private void loadFragmentAllNotification(int position) {
@@ -400,7 +400,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             }
         });
 
-        popupFriendRequest.showAtLocation(imgStudymatesRequest, Gravity.END, 10, 80);
+        popupFriendRequest.showAtLocation(imgStudymatesRequest, Gravity.END, 10, 90);
     }
 
     private void loadFragmentAllStudymateRequest(int position) {
