@@ -50,7 +50,7 @@
         android:text="@string/strWhoShouldSeeMyPersonalAcademicDetails"
         android:textColor="#323232"
         android:textSize="@dimen/d22sp" />
-    
+
     <TextView
         android:id="@+id/txt_alerts_exam_score"
         android:layout_width="match_parent"

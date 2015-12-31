@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.GridView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
 
 /**
  * Created by c85 on 06/11/15.
@@ -48,7 +47,7 @@ public class GridAdaptor extends BaseAdapter {
 
         btnSymbol.setLayoutParams(new GridView.LayoutParams(btnsize, btnsize));
         btnSymbol.setTypeface(null, Typeface.BOLD);
-        btnSymbol.setTextSize(25);
+        btnSymbol.setTextSize(20);
         btnSymbol.setBackgroundColor(Color.TRANSPARENT);
         btnSymbol.setBackgroundResource(R.drawable.border);
         btnSymbol.setText(formulas[position]);

@@ -1,5 +1,6 @@
 <resources>
 
+    <dimen name="d0sp">0sp</dimen>
     <dimen name="d5sp">3.75sp</dimen>
     <dimen name="d10sp">7.50sp</dimen>
     <dimen name="d12sp">9sp</dimen>
@@ -108,5 +109,5 @@
 
 
     <!-- new(ry)-->
-    <dimen name="d-8dp">-8dp</dimen>
+    <dimen name="dMinus8dp">-8dp</dimen>
 </resources>

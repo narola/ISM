@@ -201,7 +201,8 @@
             android:background="@drawable/selector"
             android:hint="@string/strwriteyourcommenthere"
             android:padding="@dimen/d15dp"
-            android:textColorHint="@color/color_text_hint" />
+            android:textColorHint="@color/color_text_hint"
+            android:textSize="@dimen/d18sp" />
 
         <TextView
             android:id="@+id/txt_add_comment"
@@ -216,7 +217,7 @@
             android:text="@string/strcomment"
             android:textAllCaps="true"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/d20sp"
+            android:textSize="@dimen/d18sp"
             android:textStyle="bold" />
     </RelativeLayout>
 </LinearLayout>

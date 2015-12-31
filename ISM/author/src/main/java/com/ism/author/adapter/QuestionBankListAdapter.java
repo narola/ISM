@@ -81,17 +81,25 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
             holder.tvQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
 
+//            holder.tvQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText()));
 
-            if (arrListQuestions.get(position).getSpan() == null) {
+            if (arrListQuestions.get(position).getQuestionText().contains("img") || arrListQuestions.get(position).getQuestionText().contains("http:")
+                    || arrListQuestions.get(position).getQuestionText().contains("https:")) {
 
-                arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
-                        new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
-                        ), null));
+                if (arrListQuestions.get(position).getSpan() == null) {
+
+                    arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                            new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+                            ), null));
+
+                } else {
+
+                    holder.tvQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                            new HtmlImageGetter(50, 50, mContext, null
+                            ), null));
+                }
             } else {
-
-                holder.tvQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
-                        new HtmlImageGetter(50, 50, mContext, null
-                        ), null));
+                holder.tvQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText()));
             }
 
             if (arrListQuestions.get(position).getQuestionCreatorId().equals(Global.strUserId)) {

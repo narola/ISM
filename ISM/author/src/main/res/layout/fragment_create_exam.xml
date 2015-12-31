@@ -51,34 +51,46 @@
                     android:layout_marginRight="@dimen/d15dp"
                     android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/btn_exam_save"
+                    <TextView
+                        android:id="@+id/tv_exam_save"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/btn_green"
+                        android:paddingBottom="@dimen/d10dp"
+                        android:paddingLeft="@dimen/d15dp"
+                        android:paddingRight="@dimen/d15dp"
+                        android:paddingTop="@dimen/d10dp"
                         android:text="@string/strsave"
                         android:textAllCaps="true"
                         android:textColor="@color/color_white"
                         android:textSize="@dimen/d20sp" />
 
-                    <Button
-                        android:id="@+id/btn_exam_setquestion"
+                    <TextView
+                        android:id="@+id/tv_exam_setquestion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d15dp"
                         android:background="@drawable/btn_setquestion"
+                        android:paddingBottom="@dimen/d10dp"
+                        android:paddingLeft="@dimen/d15dp"
+                        android:paddingRight="@dimen/d15dp"
+                        android:paddingTop="@dimen/d10dp"
                         android:text="@string/strsetquestion"
                         android:textAllCaps="true"
                         android:textColor="@color/color_white"
                         android:textSize="@dimen/d20sp"
                         android:visibility="gone" />
 
-                    <Button
-                        android:id="@+id/btn_exam_cancel"
+                    <TextView
+                        android:id="@+id/tv_exam_cancel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d15dp"
                         android:background="@drawable/btn_cancel"
+                        android:paddingBottom="@dimen/d10dp"
+                        android:paddingLeft="@dimen/d15dp"
+                        android:paddingRight="@dimen/d15dp"
+                        android:paddingTop="@dimen/d10dp"
                         android:text="@string/strcancel"
                         android:textAllCaps="true"
                         android:textColor="@color/color_white"
@@ -688,7 +700,7 @@
                         android:orientation="horizontal"
                         android:paddingLeft="@dimen/d15dp">
 
-                        <RadioButt
+                        <RadioButton
                             android:id="@+id/radio_btn_negativemarking_yes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

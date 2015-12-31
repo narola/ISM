@@ -8,20 +8,21 @@
 
     <ImageView
         android:id="@+id/img_ans_radio"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/d0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
         android:src="@drawable/mcq_selector" />
 
     <EditText
         android:id="@+id/et_add_mcq_answer"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/d0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/d10dp"
         android:layout_weight="3.5"
         android:background="@drawable/shadow_gray"
-        android:gravity="left"
-        android:padding="@dimen/d10dp" />
+        android:gravity="left|center_vertical"
+        android:padding="@dimen/d10dp"
+        android:textSize="@dimen/d18sp" />
 
     <LinearLayout
         android:layout_width="0dp"

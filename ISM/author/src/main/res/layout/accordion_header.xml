@@ -8,10 +8,10 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/d5dp"
-
         android:gravity="center_horizontal"
-        android:orientation="horizontal">
+
+        android:orientation="horizontal"
+        android:padding="@dimen/d5dp">
 
         <com.ism.views.ToggleImageLabeledButton
             android:id="@+id/foldButton"
@@ -26,14 +26,14 @@
             android:id="@+id/txt_headerName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
             android:layout_marginLeft="@dimen/d8dp"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/d15sp"
-            android:textAllCaps="true"
-            android:paddingTop="@dimen/d7dp"
+            android:gravity="left"
             android:paddingBottom="@dimen/d7dp"
-            android:text="Section Name" />
+            android:paddingTop="@dimen/d7dp"
+            android:text="Section Name"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d15sp" />
     </RelativeLayout>
 
 </LinearLayout>
