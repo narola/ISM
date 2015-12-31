@@ -36,6 +36,7 @@
         android:layout_marginLeft="@dimen/d10dp"
         android:layout_marginRight="@dimen/d10dp"
         android:layout_marginTop="@dimen/d30dp"
+        android:textSize="@dimen/d18sp"
         android:background="@drawable/bg_edit_gray"
         android:hint="@string/strEnterYourCategoryName"
         android:padding="@dimen/d10dp"

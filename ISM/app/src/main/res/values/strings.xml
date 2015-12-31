@@ -592,6 +592,7 @@
 	<string name="msg_your_tutorial_group">Your Tutorial group is as per below</string>
 	<string name="strEnterYourCategoryName">Enter your category name</string>
 	<string name="strPastTimes">Pastimes :</string>
+	<string name="strVideo">Video</string>
 
 
 </resources>

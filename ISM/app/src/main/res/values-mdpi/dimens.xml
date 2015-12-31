@@ -231,4 +231,5 @@
     <dimen name="sp9">9sp</dimen>
     <dimen name="dp_n120">-120dp</dimen>
     <dimen name="sp20">20sp</dimen>
+    <dimen name="d190dp">143dp</dimen>
 </resources>

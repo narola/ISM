@@ -106,13 +106,15 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
 
 
     private void initGlobal() {
-        studentHelper=new StudentHelper(getActivity());
+        studentHelper = new StudentHelper(getActivity());
+
         shareNoteDialog = new ShareNoteDialog(getActivity(), this);
 
         etNotes = (EditText) view.findViewById(R.id.et_notes);
         etNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         layoutText = (RelativeLayout) view.findViewById(R.id.rr_details);
+
         rteNotes = (RichTextEditor) view.findViewById(R.id.rte_notes);
         rteNotes.getRichEditor().setEditorFontSize(20);
         rteNotes.getRichEditor().setOnTextChangeListener(this);
@@ -166,14 +168,15 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
                         rteNotes.setVisibility(View.VISIBLE);
                         testHorizontalScrollView.setVisibility(View.VISIBLE);
                     }
-                }
-                else{
-                 //   Utility.showToast();
+                } else {
+                    //   Utility.showToast();
                 }
             }
         });
+
         listView = (RecyclerView) view.findViewById(R.id.recyclerview_notes);
         listView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 //        jotterNotesAdapter = new JotterNotesAdapter(getActivity(), null);
 //        listView.setAdapter(jotterNotesAdapter);
 
@@ -184,6 +187,8 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
                 newNoteDialog.show();
             }
         });
+
+
 //        arraylistNotes=Global.studentHelper.getNotes(Global.studentHelper.getUser(Integer.parseInt(Global.strUserId)),null);
         setUpData();
 
@@ -196,7 +201,6 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
             objNotes.setNoteSubject(subject);
             objNotes.setIsSync(1);
             objNotes.setModifiedDate(Utility.getDateMySql());
-            objNotes.setNoteText(noteText);
             studentHelper.realm.commitTransaction();
 //
             setUpData();
@@ -331,7 +335,7 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
     public void copyDataToRealm(String noteName, String noteText, String noteSubject) {
         model.Notes notes = new model.Notes();
         notes.setUser(studentHelper.getUser(Integer.parseInt(Global.strUserId)));
-        notes.setNoteName(noteText);
+        notes.setNoteName(noteName);
         notes.setServerNoteId(0);
         notes.setLocalNoteId(0);
         notes.setIsSync(1);
@@ -354,10 +358,6 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
 
     }
 
-    @Override
-    public void onTextChange(String text) {
-        richtext = text;
-    }
 
     @Override
     public void imagePicker() {
@@ -457,7 +457,7 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
                 Utility.hideView(etSubject);
                 Utility.hideView(imgUser);
             } else {
-                objNotes=notes;
+                objNotes = notes;
                 strNoteId = String.valueOf(notes.getLocalNoteId());
                 imgEdit.setActivated(false);
                 imgShare.setActivated(false);
@@ -474,4 +474,8 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
     }
 
 
+    @Override
+    public void onTextChange(String text) {
+        richtext = text;
+    }
 }

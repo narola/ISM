@@ -160,8 +160,8 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
     public void showKeyboard() {
         try {
             etSayIt.requestFocus();
-            InputMethodManager inputMethodManager=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.showSoftInput(etSayIt,InputMethodManager.SHOW_FORCED);
+//            InputMethodManager inputMethodManager=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//            inputMethodManager.showSoftInput(etSayIt,InputMethodManager.SHOW_FORCED);
            Utility.showSoftKeyboard(etSayIt,this);
         } catch (Exception e) {
             Debug.i(TAG, "showKeyboard Exceptions : " + e.getLocalizedMessage());
@@ -311,7 +311,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         } else if (v == imgKeyboard) {
             toolSelected(v);
             //llBlank.setVisibility(View.VISIBLE);
-            showKeyboard();
+           // showKeyboard();
         } else if (v == txtCancel) {
             hideKeyboard();
 
@@ -706,7 +706,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             model = new PostFileModel(IMAGE, uri, "");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+            listview.setAdapter(new PostFileAdapter(arrayList, this));
             // adapter.notifyDataSetChanged();
         } else if (requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK) {
             model = new PostFileModel(IMAGE, uriFile, "");
@@ -715,26 +715,31 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         } else if (requestCode == MEDIA_TYPE_VIDEO && resultCode == RESULT_OK) {
             Uri uri = data.getData();
+
             Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory());
             Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory() + uri.getPath());
             model = new PostFileModel(VIDEO, uri, "");
+            MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+            mMediaMetadataRetriever.setDataSource(this, uri);
+            Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+            Debug.i(TAG,"Bitmat of video frame : "+bitmap);
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+            listview.setAdapter(new PostFileAdapter(arrayList, this));
         } else if (requestCode == CAPTURE_VIDEO && resultCode == RESULT_OK) {
             Uri uri = data.getData();
             Log.i(TAG, uri.getPath() + "");
             model = new PostFileModel(VIDEO, uri, "");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+            listview.setAdapter(new PostFileAdapter(arrayList, this));
         } else if (requestCode == MEDIA_TYPE_AUDIO && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             Log.i(TAG, uri + "");
             listview.setVisibility(View.VISIBLE);
             model = new PostFileModel(AUDIO, uri, "");
             arrayList.add(model);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+            listview.setAdapter(new PostFileAdapter(arrayList, this));
         }
     }
 
@@ -795,6 +800,8 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         imgEmoticons.setBackground(getResources().getDrawable(R.drawable.sidebar));
         imgLink.setBackground(getResources().getDrawable(R.drawable.sidebar));
         v.setBackgroundColor(getResources().getColor(R.color.green));
+        if(v==imgKeyboard)
+            showKeyboard();
 //        if (v == imgImage) {
 //            imgImage.setBackgroundColor(getResources().getColor(R.color.color_green));
 //        }

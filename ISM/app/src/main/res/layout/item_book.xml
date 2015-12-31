@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="190dp"
-    android:layout_height="230dp"
+    android:layout_width="@dimen/d190dp"
+    android:layout_height="@dimen/d230dp"
     android:layout_marginBottom="@dimen/d10dp"
     android:layout_marginTop="@dimen/d10dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
+    android:layout_marginLeft="@dimen/d5dp"
+    android:layout_marginRight="@dimen/d5dp"
     android:background="@drawable/bg_user_books"
     android:orientation="vertical">
 
         <ImageView
             android:id="@+id/img_pic"
             android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:layout_margin="7dp"
+            android:layout_height="@dimen/d170dp"
+            android:layout_margin="@dimen/d7dp"
             android:layout_alignParentTop="true"
             android:scaleType="centerCrop"
             android:src="@color/black" />
 
         <ImageView
             android:id="@+id/img_book_info"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/d30dp"
+            android:layout_height="@dimen/d30dp"
             android:layout_alignEnd="@+id/img_pic"
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/d5dp"
@@ -39,10 +39,11 @@
                 android:id="@+id/img_book_add"
                 android:layout_width="@dimen/d30dp"
                 android:layout_height="@dimen/d30dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="@dimen/d5dp"
+                android:layout_marginLeft="@dimen/d10dp"
                 android:src="@drawable/selector_library"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <ImageView
                 android:id="@+id/img_add_fav"
@@ -50,9 +51,9 @@
                 android:layout_height="@dimen/d30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
-                android:layout_margin="@dimen/d5dp"
+                android:layout_marginRight="@dimen/d10dp"
                 android:src="@drawable/img_unlike_red"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </RelativeLayout>
 
     <TextView
@@ -67,8 +68,8 @@
         android:layout_marginLeft="@dimen/d5dp"
         android:layout_marginRight="@dimen/d5dp"
         android:layout_below="@+id/img_pic"
-        android:padding="1dp"
+        android:padding="@dimen/d1dp"
         android:text="Book Name"
         android:textColor="@color/cpb_red"
-        android:textSize="15sp" />
+        android:textSize="@dimen/d15sp" />
 </RelativeLayout>
