@@ -20,8 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3.2"
-            android:padding="@dimen/d8dp"
-            >
+            android:padding="@dimen/d8dp">
 
             <TextView
                 android:id="@+id/tv_subjective_question_no"
@@ -35,7 +34,7 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="1dp"
+            android:layout_width="@dimen/d1dp"
             android:layout_height="match_parent"
             android:background="@color/border_gray" />
 
@@ -53,13 +52,12 @@
                 android:singleLine="true"
                 android:text="@string/strScore"
                 android:textAllCaps="true"
-
                 android:textColor="@color/color_question"
-                android:textSize="@dimen/d15dp" />
+                android:textSize="@dimen/d15sp" />
         </LinearLayout>
 
         <ImageView
-            android:layout_width="1dp"
+            android:layout_width="@dimen/d1dp"
             android:layout_height="match_parent"
             android:background="@color/border_gray" />
 
@@ -80,7 +78,7 @@
                 android:text="@string/strComments"
                 android:textAllCaps="true"
                 android:textColor="@color/color_question"
-                android:textSize="@dimen/d15dp" />
+                android:textSize="@dimen/d15sp" />
 
             <ImageView
                 android:id="@+id/img_copy_comment"
@@ -138,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/stryouranswer"
                 android:textColor="@color/color_answer"
-                android:textSize="@dimen/d15dp" />
+                android:textSize="@dimen/d15sp" />
 
             <TextView
                 android:id="@+id/tv_subjective_question_ans"
@@ -179,7 +177,7 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="1dp"
+            android:layout_width="@dimen/d1dp"
             android:layout_height="match_parent"
             android:background="@color/border_gray" />
 
@@ -205,7 +203,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/d1dp"
                 android:background="@color/border_gray" />
 
             <TextView
@@ -256,7 +254,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/d1dp"
                 android:background="@color/border_gray" />
 
 
@@ -293,7 +291,7 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="1dp"
+            android:layout_width="@dimen/d1dp"
             android:layout_height="match_parent"
             android:background="@color/border_gray" />
 

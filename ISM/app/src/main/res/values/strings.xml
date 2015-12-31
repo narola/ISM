@@ -180,6 +180,7 @@
 	<string name="strpost">Post</string>
 	<string name="strcreatepost">Create Post</string>
 	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="strviewall">7</string>
 	<string name="last_name">Last Name</string>
 	<string name="first_name">First Name</string>
 	<string name="android">Android</string>
@@ -584,5 +585,8 @@
 	<string name="strStudymates">Studymates</string>
 	<string name="strNotificationForCommentsandLike">Notification For Cooment And Like</string>
 	<string name="strNotificationforAuthor">Notification for Author</string>
+	<string name="msg_question_hour">Question hour will begin soon</string>
+	<string name="msg_tutorialmates_getting_ready">Your Tutorialmates are getting ready with question...</string>
+
 
 </resources>

@@ -3,7 +3,7 @@
 
     <item>
         <shape>
-            <padding android:left="2dp" />
+            <padding android:left="@dimen/d2dp" />
             <solid android:color="@color/questionpalette_notattemted" />
             <size
                 android:width="@dimen/d25dp"

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:accordion="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_mainlayout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -9,7 +8,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:padding="@dimen/d5dp"
 
         android:gravity="center_horizontal"
         android:orientation="horizontal">
@@ -18,8 +17,8 @@
             android:id="@+id/foldButton"
             android:layout_width="0dip"
             android:layout_height="0dip"
-            android:layout_marginLeft="8sp"
-            android:layout_marginTop="4sp" />
+            android:layout_marginLeft="@dimen/d8dp"
+            android:layout_marginTop="@dimen/d4dp" />
 
         <!-- paddingRight added to center text correctly -->
 
@@ -28,12 +27,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:layout_marginLeft="8sp"
+            android:layout_marginLeft="@dimen/d8dp"
             android:textColor="@color/color_white"
-            android:textSize="15sp"
+            android:textSize="@dimen/d15sp"
             android:textAllCaps="true"
-            android:paddingTop="7sp"
-            android:paddingBottom="7sp"
+            android:paddingTop="@dimen/d7dp"
+            android:paddingBottom="@dimen/d7dp"
             android:text="Section Name" />
     </RelativeLayout>
 

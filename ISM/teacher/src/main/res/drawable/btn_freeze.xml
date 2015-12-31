@@ -6,8 +6,8 @@
         android:left="@dimen/d5dp"
         android:right="@dimen/d5dp"
         android:top="@dimen/d5dp" />
-    <corners android:radius="5sp" />
+    <corners android:radius="@dimen/d5dp" />
     <stroke
-        android:width="1dip"
+        android:width="@dimen/d1dp"
         android:color="#41B1E3" />
 </shape>

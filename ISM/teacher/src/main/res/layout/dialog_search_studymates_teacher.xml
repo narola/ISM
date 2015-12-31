@@ -29,7 +29,7 @@
                 android:background="@drawable/ic_search_active_teacher" />
 
             <ImageView
-                android:layout_width="1dp"
+                android:layout_width="@dimen/d1dp"
                 android:layout_height="match_parent"
                 android:background="@color/color_shade_news_feed" />
 
@@ -46,7 +46,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/d1dp"
             android:background="@color/color_shade_news_feed" />
 
 
@@ -73,14 +73,14 @@
                 android:text="TAG"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/d40dp"
+                android:textSize="@dimen/d40sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_dialog_close"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
+                android:layout_marginLeft="@dimen/d3dp"
                 android:layout_weight="1"
                 android:background="@color/color_blue"
                 android:gravity="center"
@@ -89,7 +89,7 @@
                 android:text="@string/strclose"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/d40dp"
+                android:textSize="@dimen/d40sp"
                 android:textStyle="bold" />
         </LinearLayout>
 

@@ -64,10 +64,10 @@
     <item>
         <shape>
             <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
+                android:bottom="@dimen/d1dp"
+                android:left="@dimen/d1dp"
+                android:right="@dimen/d1dp"
+                android:top="@dimen/d1dp" />
 
             <solid android:color="#ffffff" />
             <size android:height="@dimen/d50dp" />

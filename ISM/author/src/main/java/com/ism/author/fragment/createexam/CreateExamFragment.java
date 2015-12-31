@@ -238,30 +238,30 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
 
         getPassingPercentSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), spExamPassingpercent, arrListPassingPercent, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spExamPassingpercent, arrListPassingPercent, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
 
         getExamDurationSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), spExamExamduration, arrListExamDuration, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spExamExamduration, arrListExamDuration, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
 
         getQuestionScoreSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), spExamQuestionScore, arrListQuestionScore, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spExamQuestionScore, arrListQuestionScore, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
         spExamQuestionScore.setSelection(1);
 
         arrListExamMode = new ArrayList<String>();
         arrListExamMode = Arrays.asList(getResources().getStringArray(R.array.exammode));
-        Adapters.setUpSpinner(getActivity(), spExamExammode, arrListExamMode, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spExamExammode, arrListExamMode, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
 
 
         arrListExamCategory = new ArrayList<String>();
         arrListExamCategory = Arrays.asList(getResources().getStringArray(R.array.examname));
-        Adapters.setUpSpinner(getActivity(), spExamExamCategory, arrListExamCategory, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spExamExamCategory, arrListExamCategory, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
 
 
         arrListExamAssessor = new ArrayList<String>();
         arrListExamAssessor.add(getString(R.string.strexamassessor));
         arrListExamAssessor.add(getString(R.string.strnoassessor));
         arrListExamAssessor.add(Global.strFullName);
-        Adapters.setUpSpinner(getActivity(), spExamAssessor, arrListExamAssessor, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spExamAssessor, arrListExamAssessor, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
 
 
         llExamStartdate.setOnTouchListener(new View.OnTouchListener() {
@@ -700,7 +700,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                         classrooms.add(classroom.getClassName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
 //                    if (!getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
                     spExamClassroom.setSelection(classrooms.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME)));
 //                    }
@@ -732,7 +732,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     for (AuthorBook authorBook : arrListAuthorBooks) {
                         authorBooks.add(authorBook.getBookName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spExamBookname, authorBooks, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spExamBookname, authorBooks, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
 
 
 //                    if (!getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {

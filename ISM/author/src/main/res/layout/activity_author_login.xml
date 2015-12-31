@@ -11,7 +11,7 @@
         android:layout_width="@dimen/login_box_width"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/d60dp"
-        android:layout_marginTop="@dimen/d50dp"
+        android:layout_marginTop="@dimen/d60dp"
         android:background="@drawable/background_transparent"
         android:gravity="center"
         android:orientation="vertical">
@@ -47,7 +47,7 @@
                 android:singleLine="true"
                 android:textColor="@color/color_white"
                 android:textColorHint="@color/color_white"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
             <EditText
                 android:id="@+id/et_pwd"
@@ -63,7 +63,7 @@
                 android:singleLine="true"
                 android:textColor="@color/color_white"
                 android:textColorHint="@color/color_white"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
             <CheckBox
                 android:id="@+id/chk_rememberme"
@@ -76,12 +76,12 @@
                 android:padding="@dimen/d10dp"
                 android:text="@string/strrememberme"
                 android:textColor="@color/color_gray1"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
             <com.ism.commonsource.view.ActionProcessButton
                 android:id="@+id/btn_login"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/d50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/d20dp"
                 android:drawablePadding="@dimen/d10dp"
@@ -92,7 +92,7 @@
                 android:paddingRight="@dimen/d90dp"
                 android:text="@string/strlogin"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/d20dp"
+                android:textSize="@dimen/d20sp"
                 app:pb_colorComplete="@color/color_dark_gray"
                 app:pb_colorNormal="@color/color_dark_gray"
                 app:pb_colorPressed="@color/color_dark_gray"
@@ -105,12 +105,12 @@
                 android:id="@+id/txt_forgotpwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/d70dp"
+                android:layout_marginTop="@dimen/d40dp"
                 android:gravity="center"
                 android:onClick="onClickForgotPassword"
                 android:text="@string/strforgotpwd"
                 android:textColor="@color/color_black"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -126,7 +126,7 @@
                     android:gravity="right"
                     android:text="@string/strdonothavecredentials"
                     android:textColor="@color/color_gray"
-                    android:textSize="@dimen/d18dp" />
+                    android:textSize="@dimen/d18sp" />
 
                 <TextView
                     android:id="@+id/txt_clickhere"
@@ -137,7 +137,7 @@
                     android:paddingLeft="@dimen/d5dp"
                     android:text="@string/strclickhereu"
                     android:textColor="@color/color_black"
-                    android:textSize="@dimen/d18dp" />
+                    android:textSize="@dimen/d18sp" />
 
             </LinearLayout>
 

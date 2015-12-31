@@ -63,7 +63,7 @@
                     android:padding="@dimen/d5dp"
                     android:text="Hi...how are you?"
                     android:textColor="@color/color_gray"
-                    android:textSize="@dimen/d18dp" />
+                    android:textSize="@dimen/d18sp" />
 
             </LinearLayout>
 

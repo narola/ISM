@@ -21,7 +21,7 @@
 
             <Spinner
                 android:id="@+id/sp_exam_authorbooks"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
@@ -45,7 +45,7 @@
 
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1">
@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/d10dp"
                     android:src="@drawable/ic_grid" />
             </RelativeLayout>
         </LinearLayout>
@@ -79,10 +79,10 @@
                 android:paddingLeft="@dimen/d10dp"
                 android:text="@string/strsubmissiondate"
                 android:textColor="@color/color_question"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/d10dp"
                 android:layout_weight="1"
@@ -99,7 +99,7 @@
                     android:paddingLeft="@dimen/d10dp"
                     android:textColor="@color/color_black"
                     android:textColorHint="@color/color_text_hint"
-                    android:textSize="@dimen/d15dp" />
+                    android:textSize="@dimen/d15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/d10dp"
                 android:layout_weight="1"
@@ -128,7 +128,7 @@
                     android:paddingLeft="@dimen/d10dp"
                     android:textColor="@color/color_black"
                     android:textColorHint="@color/color_text_hint"
-                    android:textSize="@dimen/d15dp" />
+                    android:textSize="@dimen/d15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -139,7 +139,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/d15dp"
                 android:layout_weight="1"></RelativeLayout>

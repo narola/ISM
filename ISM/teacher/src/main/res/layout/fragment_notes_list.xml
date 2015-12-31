@@ -11,6 +11,6 @@
         android:background="@color/white"
         android:groupIndicator="@null"
         android:divider="@color/text_gray"
-        android:dividerHeight="1dp"
+        android:dividerHeight="@dimen/d1dp"
         />
 </LinearLayout>

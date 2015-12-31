@@ -44,7 +44,7 @@
                     android:gravity="center"
                     android:text="Adam Stanger"
                     android:textColor="@color/color_red"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/d16sp" />
 
             </LinearLayout>
 

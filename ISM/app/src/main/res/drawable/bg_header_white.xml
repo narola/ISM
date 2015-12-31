@@ -5,7 +5,7 @@
 			<solid android:color="@android:color/white"/>
 		</shape>
 	</item>
-	<item android:top="@dimen/d55dp">
+	<item android:top="@dimen/padding_top_header_white">
 		<shape android:shape="rectangle">
 			<gradient android:startColor="#E7E7E7" android:endColor="@color/gray_light" android:angle="270"/>
 		</shape>

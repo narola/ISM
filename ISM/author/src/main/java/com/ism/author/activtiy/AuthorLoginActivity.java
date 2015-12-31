@@ -260,7 +260,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                         Utility.alertOffline(getActivity());
                     }
                 } else {
-                    Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, Adapters.ADAPTER_NORMAL, myTypeFace.getRalewayRegular());
                 }
             }
 
@@ -280,7 +280,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                         Utility.alertOffline(getActivity());
                     }
                 } else {
-                    Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, Adapters.ADAPTER_NORMAL, myTypeFace.getRalewayRegular());
                 }
             }
 
@@ -617,7 +617,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                     for (Countries country : arrListCountries) {
                         countries.add(country.getCountryName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spCountry, countries, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spCountry, countries, Adapters.ADAPTER_NORMAL, myTypeFace.getRalewayRegular());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCountries Failed");
                 }
@@ -643,7 +643,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                     for (States state : arrListStates) {
                         states.add(state.getStateName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spState, states, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spState, states, Adapters.ADAPTER_NORMAL, myTypeFace.getRalewayRegular());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseStates Failed");
                 }
@@ -669,7 +669,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                     for (Cities city : arrListCities) {
                         cities.add(city.getCityName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spCity, cities, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spCity, cities, Adapters.ADAPTER_NORMAL, myTypeFace.getRalewayRegular());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCities Failed");
                 }

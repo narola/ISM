@@ -146,7 +146,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                         Utility.toastOffline(getActivity());
                     }
                 } else {
-                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
                 }
             }
 
@@ -158,7 +158,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
         arrListDefalt = new ArrayList<String>();
         arrListDefalt.add(getString(R.string.strtopic));
-        Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
 
 
         callApiGetClassRooms();
@@ -339,7 +339,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                         classrooms.add(classroom.getClassName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
@@ -368,7 +368,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                         subjects.add(subject.getSubjectName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
@@ -394,9 +394,9 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                         topics.add(topic.getTopicName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spActivityTopic, topics, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spActivityTopic, topics, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL,Global.myTypeFace.getRalewayRegular());
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {

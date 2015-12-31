@@ -1,15 +1,15 @@
 <resources>
-    <dimen name="controller_left_width">@dimen/d75dp</dimen><!-- edited -->
+    <dimen name="controller_left_width">75dp</dimen><!-- edited -->
     <dimen name="controller_left_divider_height">3dp</dimen><!-- edited -->
     <dimen name="content_right_width">191dp</dimen><!-- edited -->
     <dimen name="nav_header_vertical_spacing">12dp</dimen><!-- edited -->
     <dimen name="nav_header_height">120dp</dimen><!-- edited -->
     <dimen name="fab_margin">12dp</dimen><!-- edited -->
-    <dimen name="controller_top_height">@dimen/d50dp</dimen><!-- edited -->
+    <dimen name="controller_top_height">38dp</dimen><!-- edited -->
     <dimen name="controller_top_button_width">64dp</dimen><!-- edited -->
     <dimen name="controller_top_small_button_width">45dp</dimen><!-- edited -->
     <dimen name="controller_menu_text_padding">23dp</dimen><!-- edited -->
-    <dimen name="controller_top_menu_text_size">@dimen/d20sp</dimen><!-- edited -->
+    <dimen name="controller_top_menu_text_size">15sp</dimen><!-- edited -->
     <dimen name="shadow_layer_width">2dp</dimen><!-- edited -->
     <dimen name="week_day_padding">8dp</dimen><!-- edited -->
 
@@ -31,6 +31,7 @@
     <dimen name="d90dp">68dp</dimen><!-- edited -->
     <dimen name="d120dp">90dp</dimen><!-- edited -->
     <dimen name="d130dp">123dp</dimen><!-- edited -->
+
     <dimen name="exam_padding">15dp</dimen><!-- edited -->
     <dimen name="button_corner_radius">4dp</dimen><!-- edited -->
     <dimen name="button_margin_exam">5dp</dimen><!-- edited -->
@@ -53,7 +54,7 @@
     <dimen name="header_white_spacing">11dp</dimen><!-- edited -->
     <dimen name="notification_margin_top">4dp</dimen><!-- edited -->
     <dimen name="notification_digit_radius">4dp</dimen><!-- edited -->
-    <dimen name="notification_digit_horizontal_padding">8dp</dimen>
+    <dimen name="notification_digit_horizontal_padding">6dp</dimen><!-- edited -->
     <dimen name="notification_digit_text_size">12sp</dimen><!-- edited -->
     <dimen name="notification_button_height">45dp</dimen><!-- edited -->
     <dimen name="profile_label_text">16sp</dimen><!-- edited -->
@@ -96,8 +97,7 @@
     <dimen name="margin_text_member_sunday">4dp</dimen><!-- edited -->
     <dimen name="text_school_member_sunday">12sp</dimen><!-- edited -->
     <dimen name="text_name_member_sunday">15sp</dimen><!-- edited -->
-
-
+    
     <!-- Tutorial Group Exam dimensions-->
     <dimen name="result_padding">15dp</dimen><!-- edited -->
     <dimen name="activity_horizontal_margin">12dp</dimen><!-- edited -->
@@ -115,17 +115,17 @@
     <dimen name="score_title_text">15sp</dimen><!-- edited -->
     <dimen name="score_text">19sp</dimen><!-- edited -->
     <dimen name="text_option">14sp</dimen><!-- edited -->
-    <dimen name="height_createquestion_lable">75dp</dimen>
+    <dimen name="height_createquestion_lable">56dp</dimen><!-- edited -->
     <dimen name="quesiton_navigatino_button_size">38dp</dimen><!-- edited -->
     <dimen name="d15sp">11sp</dimen><!-- edited -->
     <dimen name="d16sp">12sp</dimen><!-- edited -->
 
 
-    <!-- Currently added dimentions -->
-    <dimen name="login_layout_width">375dp</dimen>
-    <dimen name="login_logo_height">70dp</dimen>
-    <dimen name="btn_login_height">40dp</dimen>
-    <dimen name="login_logo_margin">20dp</dimen>
+    <!--&lt;!&ndash; Currently added dimentions &ndash;&gt;-->
+    <!--<dimen name="login_layout_width">375dp</dimen>-->
+    <!--<dimen name="login_logo_height">70dp</dimen>-->
+    <!--<dimen name="btn_login_height">40dp</dimen>-->
+    <!--<dimen name="login_logo_margin">20dp</dimen>-->
 
 
     <!-- newest-->
@@ -176,4 +176,38 @@
     <dimen name="d42dp">31.50dp</dimen>
     <dimen name="d33dp">24.75dp</dimen>
     <dimen name="d19sp">14.25sp</dimen>
+    
+	<!-- Currently added dimentions -->
+	<dimen name="dp450">450dp</dimen>
+	<dimen name="dp1">1dp</dimen>
+	<dimen name="dp59">59dp</dimen>
+	<dimen name="dp_n2">-2dp</dimen>
+	<dimen name="dp55">55dp</dimen>
+	<dimen name="dp110">110dp</dimen>
+	<dimen name="dp166">166dp</dimen>
+
+	<dimen name="sp23">23sp</dimen>
+	<dimen name="sp19">19sp</dimen>
+
+	<dimen name="login_layout_width">375dp</dimen>
+	<dimen name="login_logo_height">70dp</dimen>
+	<dimen name="btn_login_height">40dp</dimen>
+	<dimen name="login_logo_margin">20dp</dimen>
+	<dimen name="padding_createquestion_lable">@dimen/d25dp</dimen>
+	<dimen name="text_createquestion_lable">@dimen/d20sp</dimen>
+	<dimen name="margin_top_text_add_question_form_title">@dimen/d20dp</dimen>
+	<dimen name="margin_left_text_add_question_form_title">@dimen/d40dp</dimen>
+	<dimen name="width_indicator_add_question_form">@dimen/d30dp</dimen>
+	<dimen name="height_indicator_add_question_form">@dimen/dp59</dimen>
+	<dimen name="padding_edit_option">@dimen/d10dp</dimen>
+	<dimen name="margin_right_option">@dimen/d10dp</dimen>
+	<dimen name="padding_radio_option_add_question">@dimen/d10dp</dimen>
+	<dimen name="margin_top_radio_option_add_question">@dimen/d10dp</dimen>
+	<dimen name="padding_top_header_white">41dp</dimen>
+	<dimen name="width_border">1dp</dimen>
+	<dimen name="height_progress">@dimen/d5dp</dimen>
+	<dimen name="button_height_normal">40dp</dimen>
+	<dimen name="dp225">225dp</dimen>
+	<dimen name="dp2">2dp</dimen>
+	<dimen name="dp75">75dp</dimen>
 </resources>

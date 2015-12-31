@@ -1,140 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-				android:background="@drawable/bg_white_border_gray">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_border_gray">
 
-	<com.ism.author.views.CircleImageView
-		android:id="@+id/img_dp"
-		android:layout_width="@dimen/d120dp"
-		android:layout_height="@dimen/d120dp"
-		android:layout_gravity="center"
-		android:layout_marginTop="17dp"
-		android:layout_marginLeft="17dp"
-		android:layout_marginRight="7dp"
-		android:contentDescription="@string/app_name"
-		android:src="@drawable/userdp"/>
+    <com.ism.author.views.CircleImageView
+        android:id="@+id/img_dp"
+        android:layout_width="@dimen/d120dp"
+        android:layout_height="@dimen/d120dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/d17dp"
+        android:layout_marginRight="@dimen/d7dp"
+        android:layout_marginTop="@dimen/d17dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/userdp" />
 
-	<TextView
-		android:id="@+id/txt_name"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_toRightOf="@id/img_dp"
-		android:padding="@dimen/d10dp"
-		android:text="Emma Mall"
-		android:textColor="@color/color_black"
-		android:textSize="@dimen/d25dp"/>
+    <TextView
+        android:id="@+id/txt_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/img_dp"
+        android:padding="@dimen/d10dp"
+        android:text="Emma Mall"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/d25sp" />
 
-	<TextView
-		android:id="@+id/txt_post"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/txt_name"
-		android:layout_toRightOf="@id/img_dp"
-		android:ellipsize="end"
-		android:lines="4"
-		android:padding="@dimen/d10dp"
-		android:text="@string/strsentence"
-		android:textColor="@color/color_gray"
-		android:textSize="@dimen/d18sp"/>
+    <TextView
+        android:id="@+id/txt_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_name"
+        android:layout_toRightOf="@id/img_dp"
+        android:ellipsize="end"
+        android:lines="4"
+        android:padding="@dimen/d10dp"
+        android:text="@string/strsentence"
+        android:textColor="@color/color_gray"
+        android:textSize="@dimen/d18sp" />
 
-	<ImageView
-		android:id="@+id/img_like"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/txt_post"
-		android:layout_gravity="center"
-		android:layout_toRightOf="@id/img_dp"
-		android:padding="@dimen/d5dp"
-		android:src="@drawable/selector_like"/>
+    <ImageView
+        android:id="@+id/img_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_post"
+        android:layout_gravity="center"
+        android:layout_toRightOf="@id/img_dp"
+        android:padding="@dimen/d5dp"
+        android:src="@drawable/selector_like" />
 
-	<TextView
-		android:id="@+id/txt_likes"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/txt_post"
-		android:layout_toRightOf="@id/img_like"
-		android:padding="@dimen/d10dp"
-		android:textColor="@color/color_black"
-		android:textSize="@dimen/d18dp"/>
+    <TextView
+        android:id="@+id/txt_likes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_post"
+        android:layout_toRightOf="@id/img_like"
+        android:padding="@dimen/d10dp"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/d18sp" />
 
-	<ImageView
-		android:id="@+id/img_comment"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/txt_post"
-		android:layout_gravity="center"
-		android:layout_toRightOf="@id/txt_likes"
-		android:padding="@dimen/d5dp"
-		android:src="@drawable/ic_comment"/>
+    <ImageView
+        android:id="@+id/img_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_post"
+        android:layout_gravity="center"
+        android:layout_toRightOf="@id/txt_likes"
+        android:padding="@dimen/d5dp"
+        android:src="@drawable/ic_comment" />
 
-	<TextView
-		android:id="@+id/txt_comments"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/txt_post"
-		android:layout_toRightOf="@id/img_comment"
-		android:padding="@dimen/d10dp"
-		android:textColor="@color/color_black"
-		android:textSize="@dimen/d18dp"/>
+    <TextView
+        android:id="@+id/txt_comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_post"
+        android:layout_toRightOf="@id/img_comment"
+        android:padding="@dimen/d10dp"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/d18sp" />
 
-	<TextView
-		android:id="@+id/txt_view_all"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/txt_post"
-		android:layout_toRightOf="@id/txt_comments"
-		android:padding="@dimen/d10dp"
-		android:text="@string/strviewall"
-		android:textColor="@color/color_blue"
-		android:textSize="@dimen/d18dp"/>
+    <TextView
+        android:id="@+id/txt_view_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_post"
+        android:layout_toRightOf="@id/txt_comments"
+        android:padding="@dimen/d10dp"
+        android:text="@string/strviewall"
+        android:textColor="@color/color_blue"
+        android:textSize="@dimen/d18sp" />
 
-	<ImageView
-		android:id="@+id/img_tag_study_mates"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/txt_post"
-		android:layout_alignParentRight="true"
-		android:layout_marginRight="20dp"
-		android:src="@drawable/ic_friend_tag_active"/>
+    <ImageView
+        android:id="@+id/img_tag_study_mates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/txt_post"
+        android:layout_marginRight="@dimen/d20dp"
+        android:src="@drawable/ic_friend_tag_active" />
 
-	<LinearLayout
-		android:id="@+id/ll_comments"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/img_like"
-		android:orientation="vertical">
-	</LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_like"
+        android:orientation="vertical"></LinearLayout>
 
-	<EditText
-		android:id="@+id/et_comment"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/ll_comments"
-		android:layout_marginBottom="@dimen/d10dp"
-		android:layout_marginLeft="@dimen/d15dp"
-		android:layout_marginRight="@dimen/d15dp"
-		android:layout_marginTop="@dimen/d15dp"
-		android:layout_toLeftOf="@+id/btn_comment"
-		android:background="@drawable/selector"
-		android:hint="@string/strwriteyourcommenthere"
-		android:padding="15sp"
-		android:inputType="textMultiLine"
-		android:textColorHint="@color/color_text_hint"/>
+    <EditText
+        android:id="@+id/et_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_comments"
+        android:layout_marginBottom="@dimen/d10dp"
+        android:layout_marginLeft="@dimen/d15dp"
+        android:layout_marginRight="@dimen/d15dp"
+        android:layout_marginTop="@dimen/d15dp"
+        android:layout_toLeftOf="@+id/btn_comment"
+        android:background="@drawable/selector"
+        android:hint="@string/strwriteyourcommenthere"
+        android:inputType="textMultiLine"
+        android:padding="@dimen/d15dp"
+        android:textColorHint="@color/color_text_hint" />
 
-	<Button
-		android:id="@+id/btn_comment"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/ll_comments"
-		android:layout_alignParentRight="true"
-		android:layout_marginRight="@dimen/d20dp"
-		android:layout_marginTop="21dp"
-		android:background="@color/color_dark_gray"
-		android:paddingLeft="10dp"
-		android:paddingRight="10dp"
-		android:text="@string/strcomment"
-		android:textColor="@color/color_white"
-		android:textSize="@dimen/d20sp"
-		android:textStyle="bold" />
+    <Button
+        android:id="@+id/btn_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/ll_comments"
+        android:layout_marginRight="@dimen/d20dp"
+        android:layout_marginTop="@dimen/d20dp"
+        android:background="@color/color_dark_gray"
+        android:paddingLeft="@dimen/d10dp"
+        android:paddingRight="@dimen/d10dp"
+        android:text="@string/strcomment"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/d20sp"
+        android:textStyle="bold" />
 </RelativeLayout>

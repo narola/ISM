@@ -9,7 +9,7 @@
     <dimen name="controller_top_button_width">85dp</dimen>
     <dimen name="controller_top_small_button_width">60dp</dimen>
     <dimen name="controller_menu_text_padding">30dp</dimen>
-    <dimen name="controller_top_menu_text_size">@dimen/d20sp</dimen>
+    <dimen name="controller_top_menu_text_size">20sp</dimen>
     <dimen name="shadow_layer_width">2dp</dimen>
     <dimen name="week_day_padding">10dp</dimen>
 
@@ -19,7 +19,7 @@
     <dimen name="d10dp">10dp</dimen>
     <dimen name="d15dp">15dp</dimen>
     <dimen name="d18dp">18dp</dimen>
-    <dimen name="d20sp">15sp</dimen>
+    <dimen name="d20sp">20sp</dimen>
     <dimen name="d20dp">20dp</dimen>
     <dimen name="d30dp">30dp</dimen>
     <dimen name="d25dp">25dp</dimen>
@@ -191,4 +191,5 @@
     <dimen name="d42dp">42dp</dimen>
     <dimen name="d33dp">33dp</dimen>
     <dimen name="d19sp">19sp</dimen>
+	<dimen name="text_add_question_form_title">@dimen/sp23</dimen>
 </resources>

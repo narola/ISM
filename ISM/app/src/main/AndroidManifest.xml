@@ -36,11 +36,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
+	    <activity
             android:name=".activity.ProfileInformationActivity"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
+            android:windowSoftInputMode="stateHidden">
+	    </activity>
+	    <activity
             android:name=".activity.WelComeActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape" >

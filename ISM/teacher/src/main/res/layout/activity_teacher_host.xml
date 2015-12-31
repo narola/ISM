@@ -321,7 +321,7 @@
     <com.ism.commonsource.view.ActionProcessButton
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="@dimen/d5dp"
         app:pb_colorComplete="@color/color_dark_gray"
         app:pb_colorNormal="@color/color_dark_gray"
         app:pb_colorPressed="@color/color_dark_gray"

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
@@ -35,7 +36,7 @@ public class NotesListFragment extends Fragment implements WebserviceWrapper.Web
 
     ArrayList<String> listDataHeader = new ArrayList<>();
     HashMap<String, ArrayList<String>> listDataChild;
-    ArrayList<LessonNotes>arrListLessonNotes=new ArrayList<>();
+    ArrayList<LessonNotes> arrListLessonNotes = new ArrayList<>();
 
     public NotesListFragment() {
         // Required empty public constructor
@@ -63,7 +64,7 @@ public class NotesListFragment extends Fragment implements WebserviceWrapper.Web
 
     private void initGlobal(View rootview) {
         listViewNotes = (DragNDropListView) rootview.findViewById(R.id.list_view_notes);
-       // listViewNotes.setDragOnLongPress(true);
+        listViewNotes.setDragOnLongPress(true);
 
         if (getNotesContainer().getBundleArguments().getString(AllNotesAdapter.ARG_NOTES_SUBJECT_ID) != null) {
             if (Utility.isInternetConnected(getActivity())) {
@@ -129,7 +130,7 @@ public class NotesListFragment extends Fragment implements WebserviceWrapper.Web
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListLessonNotes=responseHandler.getLessonNotes();
+                    arrListLessonNotes = responseHandler.getLessonNotes();
                     if (responseHandler.getLessonNotes().size() > 0) {
                         listDataChild = new HashMap<>();
                         for (int i = 0; i < responseHandler.getLessonNotes().size(); i++) {

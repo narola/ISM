@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="130sp"
-    android:layout_height="130sp"
+    android:layout_width="@dimen/d130dp"
+    android:layout_height="@dimen/d130dp"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="@dimen/d10dp">
 
     <RelativeLayout
         android:id="@+id/rl_image"
@@ -26,26 +26,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="gone" />
-        <!--<VideoView-->
-        <!--android:id="@+id/video"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:visibility="gone" />-->
 
-        <!--<ImageView-->
-        <!--android:id="@+id/img_audio"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:visibility="gone" />-->
 
     </RelativeLayout>
 
     <TextView
         android:id="@+id/txt_video"
-        android:layout_width="20sp"
-        android:layout_height="20sp"
+        android:layout_width="@dimen/d20dp"
+        android:layout_height="@dimen/d20dp"
         android:layout_alignBottom="@+id/rl_image"
         android:layout_alignLeft="@+id/rl_image"
         android:textColor="@color/color_blue"
@@ -53,8 +41,8 @@
 
     <ImageView
         android:id="@+id/img_cancel"
-        android:layout_width="15sp"
-        android:layout_height="15sp"
+        android:layout_width="@dimen/d15dp"
+        android:layout_height="@dimen/d15dp"
         android:layout_alignRight="@+id/rl_image"
         android:layout_alignTop="@+id/rl_image"
         android:background="@drawable/img_red_circle"
@@ -64,12 +52,12 @@
 
     <ImageView
         android:id="@+id/img_edit"
-        android:layout_width="20sp"
-        android:layout_height="20sp"
+        android:layout_width="@dimen/d20dp"
+        android:layout_height="@dimen/d20dp"
         android:layout_alignBottom="@+id/rl_image"
         android:layout_alignRight="@+id/rl_image"
         android:background="@drawable/img_edit"
         android:gravity="center"
-        android:padding="5dp"
+        android:padding="@dimen/d5dp"
         android:visibility="gone" />
 </RelativeLayout>

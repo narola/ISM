@@ -9,7 +9,7 @@
 
     <FrameLayout
         android:id="@+id/fl_tab_activity"
-        android:layout_width="170dp"
+        android:layout_width="@dimen/d170dp"
         android:layout_height="wrap_content">
 
         <LinearLayout

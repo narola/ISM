@@ -14,12 +14,11 @@
 
         <com.ism.author.views.CircleImageView
             android:id="@+id/img_user_pic"
-            android:layout_width="60sp"
-            android:layout_height="60sp"
+            android:layout_width="@dimen/d60dp"
+            android:layout_height="@dimen/d60dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_margin="5sp"
-            android:layout_marginRight="5dp"
+            android:layout_margin="@dimen/d5dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/userdp" />
 
@@ -29,13 +28,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignRight="@+id/img_user_pic"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/d5dp"
             android:layout_toEndOf="@+id/img_user_pic"
             android:gravity="left"
-            android:padding="1sp"
+            android:padding="@dimen/d1dp"
             android:text="Student name"
             android:textColor="@color/color_question"
-            android:textSize="16sp" />
+            android:textSize="@dimen/d16sp" />
 
         <TextView
             android:id="@+id/txt_student_school"
@@ -46,10 +45,10 @@
             android:layout_below="@+id/txt_student_name"
             android:layout_toEndOf="@+id/img_user_pic"
             android:gravity="left"
-            android:padding="1sp"
+            android:padding="@dimen/d1dp"
             android:text="Scholl Name"
             android:textColor="#75767A"
-            android:textSize="15sp" />
+            android:textSize="@dimen/d16sp" />
 
         <TextView
             android:id="@+id/txt_student_marks"
@@ -58,10 +57,10 @@
             android:layout_below="@+id/txt_student_class"
             android:layout_toEndOf="@+id/img_user_pic"
             android:gravity="left"
-            android:padding="1sp"
+            android:padding="@dimen/d1dp"
             android:text="500"
             android:textColor="@color/color_red"
-            android:textSize="@dimen/d18dp" />
+            android:textSize="@dimen/d18sp" />
 
         <TextView
             android:id="@+id/txt_student_class"
@@ -70,10 +69,10 @@
             android:layout_alignStart="@+id/txt_student_name"
             android:layout_below="@+id/txt_student_school"
             android:gravity="left"
-            android:padding="1sp"
+            android:padding="@dimen/d1dp"
             android:text="Class name"
             android:textColor="#75767A"
-            android:textSize="15sp" />
+            android:textSize="@dimen/d15sp" />
 
         <TextView
             android:id="@+id/txt_bottom_line"

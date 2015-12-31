@@ -47,14 +47,14 @@
             android:checked="false"
             android:padding="@dimen/d10dp"
             android:textColor="@color/color_gray1"
-            android:textSize="@dimen/d18dp" />
+            android:textSize="@dimen/d18sp" />
 
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/img_separator_mates"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/d1dp"
         android:background="@color/color_shade_news_feed" />
 </LinearLayout>
 

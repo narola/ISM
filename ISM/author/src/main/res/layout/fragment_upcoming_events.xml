@@ -33,7 +33,7 @@
             <ListView
                 android:id="@+id/lv_notice"
                 android:layout_width="match_parent"
-                android:layout_height="350sp"
+                android:layout_height="@dimen/d350dp"
                 android:padding="@dimen/d5dp" />
 
             <TextView
@@ -44,7 +44,7 @@
                 android:padding="@dimen/d10dp"
                 android:text="View all"
                 android:textColor="@color/color_green"
-                android:textSize="@dimen/d20dp"
+                android:textSize="@dimen/d20sp"
                 android:visibility="gone" />
 
         </LinearLayout>
@@ -52,13 +52,13 @@
         <ListView
             android:id="@+id/lv_highScore"
             android:layout_width="match_parent"
-            android:layout_height="450sp"
+            android:layout_height="@dimen/d450dp"
             android:background="@drawable/bg_highscore_subjectlist" />
 
         <ListView
             android:id="@+id/lv_events"
             android:layout_width="match_parent"
-            android:layout_height="480sp"
+            android:layout_height="@dimen/d480dp"
             android:padding="@dimen/d5dp" />
 
 
