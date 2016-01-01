@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,15 +37,15 @@ import jp.wasabeef.richeditor.RichEditor;
 /**
  * Created by c166 on 28/10/15.
  */
-public class CreateActivityFragment extends Fragment implements WebserviceWrapper.WebserviceResponse,View.OnClickListener{
-
+public class CreateActivityFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
     private static final String TAG = CreateActivityFragment.class.getSimpleName();
     private View view;
 
-    TextView tvActivityTitle, tvActivityAssignmentname, tvActivityCoursename, tvActivityClass, tvActivitySubject, tvActivitySubmissiondate, tvActivityTopic;
+    TextView tvActivityTitle, tvActivityAssignmentname, tvActivityCoursename, tvActivityClass,
+            tvActivitySubject, tvActivitySubmissiondate, tvActivityTopic, tvActivitySave, tvActivityCancel;
     EditText etActivityAssignmentname, etActivityCoursename, etActivitySubmissionDate;
-    Button btnActivitySave, btnActivityCancel;
+    // Button btnActivitySave, btnActivityCancel;
     Spinner spActivityClass, spActivitySubject, spActivityTopic;
     RichTextEditor rteTrialActivity;
     private ArrayList<Classrooms> arrListClassRooms;
@@ -55,7 +54,7 @@ public class CreateActivityFragment extends Fragment implements WebserviceWrappe
     private List<String> arrListDefalt;
     private DatePickerDialog datePickerDob;
     private Calendar calDob;
-    private String strDob="", strAssignmenttext = "",strSubmissionDate="";
+    private String strDob = "", strAssignmenttext = "", strSubmissionDate = "";
     private long lngMaxDob;
     private InputValidator inputValidator;
 
@@ -94,15 +93,14 @@ public class CreateActivityFragment extends Fragment implements WebserviceWrappe
         etActivityAssignmentname = (EditText) view.findViewById(R.id.et_activity_assignmentname);
         etActivityCoursename = (EditText) view.findViewById(R.id.et_activity_coursename);
 
-        btnActivitySave = (Button) view.findViewById(R.id.btn_activity_save);
-        btnActivityCancel = (Button) view.findViewById(R.id.btn_activity_cancel);
+        tvActivitySave = (TextView) view.findViewById(R.id.tv_activity_save);
+        tvActivityCancel = (TextView) view.findViewById(R.id.tv_activity_cancel);
 
         spActivityClass = (Spinner) view.findViewById(R.id.sp_activity_class);
         spActivitySubject = (Spinner) view.findViewById(R.id.sp_activity_subject);
         spActivityTopic = (Spinner) view.findViewById(R.id.sp_activity_topic);
 
         rteTrialActivity = (RichTextEditor) view.findViewById(R.id.rte_trial_activity);
-
 
 
         tvActivityTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -114,29 +112,29 @@ public class CreateActivityFragment extends Fragment implements WebserviceWrappe
         etActivitySubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
         etActivityAssignmentname.setTypeface(Global.myTypeFace.getRalewayRegular());
         etActivityCoursename.setTypeface(Global.myTypeFace.getRalewayRegular());
-        btnActivitySave.setTypeface(Global.myTypeFace.getRalewayRegular());
-        btnActivityCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivitySave.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvActivityTopic.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
-        btnActivitySave.setOnClickListener(new View.OnClickListener() {
-                                               @Override
-                                               public void onClick(View v) {
-                                                   if (isInputsValid()) {
-                                                       //callApiCreateAssignment();
-                                                   }
+        tvActivitySave.setOnClickListener(new View.OnClickListener() {
+                                              @Override
+                                              public void onClick(View v) {
+                                                  if (isInputsValid()) {
+                                                      //callApiCreateAssignment();
+                                                  }
 
 
-                                               }
-                                           }
+                                              }
+                                          }
         );
 
-        btnActivityCancel.setOnClickListener(new View.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(View v) {
-                                                     backToTrialScreen();
-                                                 }
-                                             }
+        tvActivityCancel.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    backToTrialScreen();
+                                                }
+                                            }
         );
 
 
@@ -151,7 +149,7 @@ public class CreateActivityFragment extends Fragment implements WebserviceWrappe
         });
 
 
-        rteTrialActivity.getRichEditor().setEditorFontSize(25);
+        rteTrialActivity.getRichEditor().setEditorFontSize(20);
 
         rteTrialActivity.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override
@@ -440,11 +438,11 @@ public class CreateActivityFragment extends Fragment implements WebserviceWrappe
 
     @Override
     public void onClick(View v) {
-        if (v == btnActivitySave) {
+        if (v == tvActivitySave) {
             if (isInputsValid()) {
                 //callApiCreateAssignment();
             }
-        } else if (v == btnActivityCancel) {
+        } else if (v == tvActivityCancel) {
             backToTrialScreen();
         }
     }

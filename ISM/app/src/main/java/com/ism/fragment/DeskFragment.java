@@ -19,7 +19,7 @@ import com.ism.utility.Debug;
 /**
  * Created by c162 on --/10/15.
  */
-public class DeskFragment extends Fragment implements HostActivity.HostListener, HostActivity.BackHostListener {
+public class DeskFragment extends Fragment implements HostActivity.HostListener, HostActivity.HostListenerDesk {
 
     private static final String TAG = DeskFragment.class.getSimpleName();
     public static final int FRAGMENT_JOTTER = 0;
@@ -33,6 +33,15 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
     public static final int FRAGMENT_ALL_EVENTS = 104;
     public static final int FRAGMENT_ALL_ASSIGNMENTS = 105;
     public static final int FRAGMENT_ALL_EXAMS = 106;
+
+//    public static final int FRAGMENT_ALL_FAVORITES = 0;
+//    public static final int FRAGMENT_ALL_NOTES = 1;
+//    public static final int FRAGMENT_ALL_BOOKS =2 ;
+//    public static final int FRAGMENT_ALL_ASSIGNMENTS = 3;
+//    public static final int FRAGMENT_ALL_EXAMS = 4;
+//    public static final int FRAGMENT_ALL_LINKS = 5;
+//    public static final int FRAGMENT_ALL_EVENTS =6 ;
+
     public static final String ARG_FRAGMENT = "deskfragment";
     public static final String ARG_SUBFRAGMENT = "deskSubfragment";
     private static int currentFragment = -1;
@@ -46,29 +55,36 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
         this.alertDismissListener = alertDismissListener;
     }
 
+
     @Override
-    public void onBackPress() {
+    public void onBackMenuItemClick() {
         try {
 //            getChildFragmentManager().popBackStack();
-                switch (currentFragment) {
-                    case FRAGMENT_JOTTER:
+
+            switch (currentFragment) {
+                case FRAGMENT_JOTTER:
 //                    loadFragment(FRAGMENT_FAVOURITES);
-                        break;
-                    case FRAGMENT_FAVOURITES:
-                    case FRAGMENT_TIMETABLE:
-                    case FRAGMENT_BOOK:
-                        loadFragment(FRAGMENT_JOTTER);
-                        break;
-                    case FRAGMENT_ALL_BOOKS:
-                       // activityHost.handleMenus(1);
-                        loadFragment(FRAGMENT_FAVOURITES);
-                        break;
-                    default:
-                        break;
+                    break;
+                case FRAGMENT_FAVOURITES:
+                case FRAGMENT_TIMETABLE:
+                case FRAGMENT_BOOK:
+                    loadFragment(FRAGMENT_JOTTER);
+                    break;
+                case FRAGMENT_ALL_BOOKS:
+                case FRAGMENT_ALL_ASSIGNMENTS:
+                case FRAGMENT_ALL_EVENTS:
+                case FRAGMENT_ALL_EXAMS:
+                case FRAGMENT_ALL_LINKS:
+                case FRAGMENT_ALL_NOTES:
+                    // activityHost.handleMenus(1);
+                    loadFragment(FRAGMENT_FAVOURITES);
+                    break;
+                default:
+                    break;
 
             }
         } catch (Exception e) {
-            Debug.i(TAG, "onBackPress Exceptions : " + e.getLocalizedMessage());
+            Debug.i(TAG, "onBackMenuItemClick Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -180,6 +196,10 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
         } catch (Exception e) {
             Log.e(TAG, "loadFragment Exception : " + e.toString());
         }
+    }
+
+    public static void setCurrentFragment(int currentFragment) {
+        DeskFragment.currentFragment = currentFragment;
     }
 
     public static int getCurrentChildFragment() {

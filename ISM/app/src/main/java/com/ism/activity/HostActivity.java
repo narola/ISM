@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -35,6 +36,7 @@ import com.ism.fragment.ChatFragment;
 import com.ism.fragment.ClassroomFragment;
 import com.ism.fragment.DeskFragment;
 import com.ism.fragment.ReportCardFragment;
+import com.ism.fragment.desk.FavoriteFragment;
 import com.ism.fragment.desk.JotterScientificSymbolFragment;
 import com.ism.fragment.tutorialGroup.QuestionPaletteFragment;
 import com.ism.fragment.tutorialGroup.TutorialFragment;
@@ -93,9 +95,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private ProgressGenerator progressGenerator;
 
     private HostListener listenerHost;
-    private BackHostListener backHostListener;
+    private HostListenerDesk hostListenerDesk;
     private HostListenerAllNotification listenerHostAllNotification;
     private HostListenerAllMessage listenerHostAllMessage;
+    private HostListenerItemChange listenerItemChange;
     private HostListenerProfileController listenerHostProfileController;
     private ProfileControllerPresenceListener listenerProfileControllerPresence;
     private HostListenerStudymates listenerHostStudymates;
@@ -143,6 +146,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private ScrollListener scrollListener;
     private ResizeView resizeListView;
     private StudentHelper studentHelper;
+    private boolean isUpdateActionBar = true;
+    private int intSubItemSelection;
 
     public interface ScrollListener {
         public void isLastPosition();
@@ -170,6 +175,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
     public interface HostListenerAllMessage {
         public void onControllerTopBackClick();
+    }
+
+    public interface HostListenerItemChange {
+        public void onControllerTopItemChange(int position);
     }
 
     public interface HostListenerProfileController {
@@ -220,8 +229,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         public void showTutorialGroupData(TutorialGroupProfile tutorialGroupProfile);
     }
 
-    public interface BackHostListener {
-        public void onBackPress();
+    public interface HostListenerDesk {
+        public void onBackMenuItemClick();
     }
 
     @Override
@@ -411,6 +420,19 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         txtFour.setOnClickListener(onClickMenuItem);
         txtFive.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
+        spSubmenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Debug.i(TAG,"spinner position : "+position);
+               if (!isUpdateActionBar )
+                    listenerItemChange.onControllerTopItemChange(position);
+                //if(position==1)
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
     }
 
@@ -474,8 +496,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     if (currentMainFragment != fragment) {
                         DeskFragment deskFragment = DeskFragment.newInstance(FRAGMENT_DESK);
                         listenerHost = deskFragment;
-                        backHostListener = deskFragment;
-//                        hostSpinnerListener= FavoriteFragment.newInstance();
+                        hostListenerDesk = deskFragment;
+                        listenerItemChange = FavoriteFragment.newInstance();
                         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, deskFragment).commit();
                         if (currentRightFragment != FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL) {
                             loadFragment(FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL, null);
@@ -664,6 +686,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     loadControllerTopMenu(null);
                     break;
                 case FRAGMENT_DESK:
+                    isUpdateActionBar = true;
                     imgDesk.setActivated(false);
                     loadControllerTopMenu(null);
                     break;
@@ -781,17 +804,18 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                  * Controller top back button click
                  */
 
-                hideControllerTopControls();
 
-                if (currentControllerTopMenu != null) {
-                    for (int i = 0; i < currentControllerTopMenu.size(); i++) {
-                        arrTxtMenu[i].setTextColor(Color.WHITE);
-                        currentControllerTopMenu.get(i).setIsActive(false);
-                        startSlideAnimation(arrTxtMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
-                        arrTxtMenu[i].setVisibility(View.VISIBLE);
+                if (isUpdateActionBar) {
+                    hideControllerTopControls();
+                    if (currentControllerTopMenu != null) {
+                        for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+                            arrTxtMenu[i].setTextColor(Color.WHITE);
+                            currentControllerTopMenu.get(i).setIsActive(false);
+                            startSlideAnimation(arrTxtMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
+                            arrTxtMenu[i].setVisibility(View.VISIBLE);
+                        }
                     }
                 }
-
                 switch (currentMainFragment) {
                     case FRAGMENT_ALL_NOTIFICATION:
                         listenerHostAllNotification.onControllerTopBackClick();
@@ -802,7 +826,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     case FRAGMENT_DESK:
 //                        switch ()
 //                        if(DeskFragment.FRAGMENT_ALL_BOOKS)
-                        backHostListener.onBackPress();
+                        hostListenerDesk.onBackMenuItemClick();
                         break;
                 }
 
@@ -878,50 +902,6 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
             Log.e(TAG, "onMenuItemClick Exception : " + e.toString());
         }
     }
-
-//    public void handleMenus(int j) {
-//        hideControllerTopControls();
-//        for (int i = 0; i < currentControllerTopMenu.size(); i++) {
-//            if (i == j) {
-//                currentControllerTopMenu.get(i).setIsActive(true);
-//                arrTxtMenu[i].setTextColor(getResources().getColor(currentMainFragmentBg));
-//
-//                showControllerTopBackButton();
-//
-//                if (currentControllerTopMenu.get(i).getSubMenu() == null) {
-//                    startSlideAnimation(arrTxtMenu[i], -imgMenuBack.getWidth(), 0, 0, 0);
-//                    arrTxtMenu[i].setVisibility(View.VISIBLE);
-//                } else {
-//                    arrTxtMenu[i].setVisibility(View.GONE);
-//                    startSlideAnimation(spSubmenu, -imgMenuBack.getWidth(), 0, 0, 0);
-//                    spSubmenu.setEnabled(true);
-//                    spSubmenu.setVisibility(View.VISIBLE);
-//                    adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(i).getSubMenu(), HostActivity.this);
-//                    spSubmenu.setAdapter(adapterControllerTopSpinner);
-//                }
-//
-//                if (currentControllerTopMenu.get(i).getMenuItemAction() != null) {
-//                    startSlideAnimation(txtAction, rlControllerTopMenu.getWidth(), 0, 0, 0);
-//                    txtAction.setText(currentControllerTopMenu.get(i).getMenuItemAction());
-//                    txtAction.setVisibility(View.VISIBLE);
-//                } else {
-//                    txtAction.setVisibility(View.GONE);
-//                }
-//            }
-//            else{
-//                arrTxtMenu[i].setVisibility(View.GONE);
-//            }
-//        }
-//    }
-//    public void subFagmentMenuClicks(int position, boolean isVisibleActionButoon) {
-////        hideControllerTopControls();
-////        showControllerTopBackButton();
-////        txtOne.setText(txtMenu);
-////        startSlideAnimation(txtOne, -imgMenuBack.getWidth(), 0, 0, 0);
-////        txtOne.setVisibility(View.VISIBLE);
-//        spSubmenu.setSelection(position);
-//        spSubmenu.setEnabled(false);
-//    }
 
     public void showControllerTopBackButton() {
         startSlideAnimation(imgMenuBack, -1000, 0, 0, 0);
@@ -1140,6 +1120,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         this.listenerHostAllMessage = listenerHostAllMessage;
     }
 
+    public void setListenerItemChange(HostListenerItemChange listenerItemChange) {
+        this.listenerItemChange = listenerItemChange;
+    }
+
     public void setListenerHostProfileController(HostListenerProfileController listenerHostProfileController) {
         this.listenerHostProfileController = listenerHostProfileController;
     }
@@ -1162,8 +1146,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         public void onRemoveFromLibrary(String id);
     }
 
-    public void setBackHostListener(BackHostListener backHostListener) {
-        this.backHostListener = backHostListener;
+    public void setBackHostListener(HostListenerDesk hostListenerDesk) {
+        this.hostListenerDesk = hostListenerDesk;
     }
 
     public void setHostListener(HostListener listenerHost) {
@@ -1220,4 +1204,16 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     public void onBackPressed() {
         finish();
     }
+
+    public void onChildFragmentAttached(boolean isUpdateActionBar) {
+        this.isUpdateActionBar = isUpdateActionBar;
+    }
+
+    public void onSetPositionSpinner(int position) {
+        intSubItemSelection = position;
+        spSubmenu.setSelection(intSubItemSelection);
+//        if(position == AppConstant.FRAGMENT_ALL_FAVORITES) spSubmenu.setEnabled(true); else spSubmenu.setEnabled(false);
+    }
+
+
 }

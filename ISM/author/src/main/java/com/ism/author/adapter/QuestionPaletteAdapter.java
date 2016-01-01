@@ -48,8 +48,6 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
 
         try {
             holder.tvQuestionStatus.setText("" + (position + 1));
-            holder.tvQuestionStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
-
 
             setQuestionStatus(holder.tvQuestionStatus, getQuestionStatus(arrListQuestions.get(position).getQuestionId()));
 
@@ -132,6 +130,8 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
         public ViewHolder(View itemView) {
             super(itemView);
             tvQuestionStatus = (TextView) itemView.findViewById(R.id.tv_question_status);
+
+            tvQuestionStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         }
     }

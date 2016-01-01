@@ -47,11 +47,8 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private Fragment mFragment;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
 
-    public static GetStudentsFragment newInstance(Fragment fragment, Bundle bundleArgument) {
+    public static GetStudentsFragment newInstance(Fragment fragment) {
         GetStudentsFragment getStudentsFragment = new GetStudentsFragment();
-        if (bundleArgument != null) {
-            getStudentsFragment.setArguments(bundleArgument);
-        }
         getStudentsFragment.mFragment = fragment;
         return getStudentsFragment;
     }
@@ -148,15 +145,16 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
             Attribute attribute = new Attribute();
 
             if (getBundleArguments() != null) {
+//                attribute.setExamId(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
                 attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
-                attribute.setUserId(WebConstants.USER_ID_340);
+                attribute.setUserId(WebConstants.USER_ID_370);
                 attribute.setRole(WebConstants.TEACHER_ROLE_ID);
 
             }
 
             ((TeacherHostActivity) getActivity()).showProgress();
             new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                    .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
+                    .execute(WebConstants.GET_EXAM_SUBMISSION);
 
 
         } catch (Exception e) {
@@ -170,7 +168,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         try {
             ((TeacherHostActivity) getActivity()).hideProgress();
             switch (api_code) {
-                case WebConstants.GET_ALL_EXAM_SUBMISSION:
+                case WebConstants.GET_EXAM_SUBMISSION:
                     onResponseMyStudents(object);
                     break;
             }
@@ -188,6 +186,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
             myStudentsAdapter.addAll(arrListExamSubmittor);
             myStudentsAdapter.notifyDataSetChanged();
 
+            getBaseFragment().setTitleDetails();
         }
     }
 
@@ -204,6 +203,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         return (SubjectiveQuestionsContainerFragment) mFragment;
 
     }
+
     private Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }

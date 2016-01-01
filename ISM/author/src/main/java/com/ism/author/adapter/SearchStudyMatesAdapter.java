@@ -13,6 +13,7 @@ import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
+import com.ism.author.object.Global;
 import com.ism.author.ws.model.Studymates;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -107,6 +108,7 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
             imgStudymateDp = (ImageView) itemView.findViewById(R.id.img_studymate_dp);
             txtStudymateName = (TextView) itemView.findViewById(R.id.txt_studymate_name);
             chkAddusertotag = (CheckBox) itemView.findViewById(R.id.chk_addusertotag);
+            txtStudymateName.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         }
     }

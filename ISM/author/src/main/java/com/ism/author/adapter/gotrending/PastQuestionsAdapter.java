@@ -2,7 +2,9 @@ package com.ism.author.adapter.gotrending;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.HtmlImageGetter;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.Global;
@@ -23,7 +26,7 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 17/12/15.
  */
-public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdapter.ViewHolder> {
+public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdapter.ViewHolder> implements HtmlImageGetter.RefreshDataAfterLoadImage {
     private static final String TAG = PastQuestionsAdapter.class.getSimpleName();
     public static final String ARG_QUESTION_ID = "questionId";
     Context context;
@@ -52,6 +55,29 @@ public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdap
             holder.txtNoOfFollowers.setText(arrayList.get(position).getFollowerCount());
             holder.txtQuestion.setText(arrayList.get(position).getQuestionText());
             Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrayList.get(position).getPostedByPic(), holder.imgDpPostCreator, ISMAuthor.options);
+
+
+//            holder.txtAnswer.setText(Html.fromHtml(arrayList.get(position).getAnswerText()));
+
+            if (arrayList.get(position).getAnswerText().contains("img") || arrayList.get(position).getAnswerText().contains("http:")
+                    || arrayList.get(position).getAnswerText().contains("https:")) {
+
+                if (arrayList.get(position).getSpan() == null) {
+                    Debug.e(TAG, "The answer_text is::::" + arrayList.get(position).getAnswerText());
+                    arrayList.get(position).setSpan(Html.fromHtml(arrayList.get(position).getAnswerText(),
+                            new HtmlImageGetter(50, 50, context, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+                            ), null));
+
+                } else {
+                    Debug.e(TAG, "The answer_text is::::" + arrayList.get(position).getAnswerText());
+                    holder.txtAnswer.setText(Html.fromHtml(arrayList.get(position).getAnswerText(),
+                            new HtmlImageGetter(50, 50, context, null
+                            ), null));
+                }
+            } else {
+                holder.txtAnswer.setText(Html.fromHtml(arrayList.get(position).getAnswerText()));
+            }
+
             holder.llMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -84,7 +110,7 @@ public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdap
             super(view);
             imgDpPostCreator = (CircleImageView) itemView
                     .findViewById(R.id.img_user_dp);
-            txtAnswer = (TextView) view.findViewById(R.id.txt_answer);
+            txtAnswer = (TextView) view.findViewById(R.id.txt_author_answer);
             txtAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             txtFollowers = (TextView) view.findViewById(R.id.txt_followers);
@@ -117,5 +143,23 @@ public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdap
     private Bundle getBundleArguments() {
         return ((AuthorHostActivity) context).getBundle();
     }
+
+    @Override
+    public void refreshData() {
+
+
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+
+                notifyDataSetChanged();
+                Debug.e(TAG, "notify data called");
+
+            }
+        };
+
+        handler.post(r);
+    }
+
 
 }

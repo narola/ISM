@@ -68,7 +68,7 @@ public class WebserviceWrapper {
             currentApiCode = params[0];
             try {
 
-                URL url = new URL(WebConstants.URL_KINJAL_HOST);
+                URL url = new URL(WebConstants.URL_HOST);
                 HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
                 urlc.setRequestProperty("Connection", "close");
                 urlc.setConnectTimeout(2000); // Timeout 2 seconds.
@@ -81,19 +81,19 @@ public class WebserviceWrapper {
                         String globalPassword = new StudentHelper(mContext).getGlobalPassword();
                         if (globalPassword != null) {
                             WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, PreferenceData.getStringPrefs(PreferenceData.USER_NAME, mContext));
-                            responseObject = new WebserviceConnector(WebConstants.URL_REFRESHTOKEN).execute(ResponseHandler.class, new Attribute(WebConstants.ACCESS_KEY));
+                            responseObject = new WebserviceConnector(WebConstants.URL_REFRESH_TOKEN).execute(ResponseHandler.class, new Attribute(WebConstants.ACCESS_KEY));
                         }
                     } else {
                         switch (params[0]) {
                             case WebConstants.REFRESH_TOKEN:
-                                responseObject = new WebserviceConnector(WebConstants.URL_REFRESHTOKEN).execute(ResponseHandler.class, attribute);
+                                responseObject = new WebserviceConnector(WebConstants.URL_REFRESH_TOKEN).execute(ResponseHandler.class, attribute);
                                 break;
-                            case WebConstants.GETADMINCONFIG:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GETADMINCONFIG).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GET_ADMIN_CONFIG:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_ADMIN_CONFIG).execute(ResponseHandler.class, attribute);
                                 break;
 
-                            case WebConstants.REGISTERUSER:
-                                responseObject = new WebserviceConnector(WebConstants.URL_REGISTERUSER).execute(ResponseHandler.class, attribute);
+                            case WebConstants.REGISTER_USER:
+                                responseObject = new WebserviceConnector(WebConstants.URL_REGISTER_USER).execute(ResponseHandler.class, attribute);
                                 break;
 
                             case WebConstants.LOGIN:
@@ -179,8 +179,8 @@ public class WebserviceWrapper {
                             case WebConstants.GET_ALL_ASSIGNMENTS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_ASSIGNMENTS).execute(ResponseHandler.class, attribute);
                                 break;
-                            case WebConstants.GET_ALL_EXAM_SUBMISSION:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_EXAM_SUBMISSION).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GET_EXAM_SUBMISSION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_EXAM_SUBMISSION).execute(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.GET_EXAM_QUESTIONS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_EXAM_QUESTIONS).execute(ResponseHandler.class, attribute);

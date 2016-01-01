@@ -53,7 +53,7 @@ public class DragNDropListView extends ExpandableListView {
     private float screenHeight;
     private float dragRatio;
     private ImageView mDragView;
-    private DragNDropAdapter adapter;
+    private NotesExpandableListAdapter adapter;
     private DragNDropListeners listeners;
     private int dragOffset = 50;
     private boolean dragOnLongPress;
@@ -243,7 +243,7 @@ public class DragNDropListView extends ExpandableListView {
     public void setAdapter(ExpandableListAdapter adapter) {
         // TODO Auto-generated method stub
         super.setAdapter(adapter);
-        this.adapter = (DragNDropAdapter) adapter;
+        this.adapter = (NotesExpandableListAdapter) adapter;
     }
 
     private void hideItem(View itemView, int[] position) {

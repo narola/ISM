@@ -20,5 +20,6 @@
     <string name="no_exams">No exams created yet!</string>
     <string name="no_books_added">No books added by admin!</string>
     <string name="no_filter_exams">No exams found to filter!</string>
+    <string name="no_comments">No comments available!</string>
 
 </resources>

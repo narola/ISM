@@ -20,7 +20,6 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.AssignmentsAdapter;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -298,7 +297,6 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
         if (Utility.isConnected(getActivity())) {
             try {
-                //   Utility.showSpinnerProgress(progAssignmentClass);
                 Attribute attribute = new Attribute();
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_CLASSROOMS);
@@ -316,7 +314,6 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
         if (Utility.isConnected(getActivity())) {
             try {
-                // Utility.showSpinnerProgress(progAssignmentSubject);
                 Attribute attribute = new Attribute();
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_SUBJECT);
@@ -335,7 +332,7 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
                 ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(WebConstants.USER_ID_370);
-                attribute.setRole(AppConstant.TEACHER_ROLE_ID);
+                attribute.setRole(WebConstants.TEACHER_ROLE_ID);
                 attribute.setExamCategory("");
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_ASSIGNMENTS);
@@ -354,24 +351,13 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
             switch (apicode) {
                 case WebConstants.GET_ALL_ASSIGNMENTS:
-                    if (getActivity() != null && isAdded()) {
-                        ((TeacherHostActivity) getActivity()).hideProgress();
-                        onResponseGetAllAssignments(object);
-                    }
+                    onResponseGetAllAssignments(object);
                     break;
                 case WebConstants.GET_CLASSROOMS:
-                    if (getActivity() != null && isAdded()) {
-                        ((TeacherHostActivity) getActivity()).hideProgress();
-                        onResponseGetClassrooms(object, error);
-
-                    }
+                    onResponseGetClassrooms(object, error);
                     break;
                 case WebConstants.GET_SUBJECT:
-                    if (getActivity() != null && isAdded()) {
-                        ((TeacherHostActivity) getActivity()).hideProgress();
-                        onResponseGetSubjects(object, error);
-
-                    }
+                    onResponseGetSubjects(object, error);
                     break;
             }
 
@@ -437,6 +423,7 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
     private void onResponseGetAllAssignments(Object object) {
 
+        ((TeacherHostActivity) getActivity()).hideProgress();
         if (object != null) {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

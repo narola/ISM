@@ -99,4 +99,6 @@
 
 
     <dimen name="d1px">1px</dimen>
+
+    <dimen name="dminus8dp">-8dp</dimen>
 </resources>

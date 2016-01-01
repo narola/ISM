@@ -87,6 +87,7 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
         rvQuestionCommentsList.setAdapter(questionCommentAdapter);
         rvQuestionCommentsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        tvNoDataMsg.setText(getResources().getString(R.string.no_comments));
         setEmptyView(true);
 
         callApiGetTrendingQuestionDetail();
@@ -94,6 +95,7 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
 
 
     private void setEmptyView(boolean isEnable) {
+
         tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         rvQuestionCommentsList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
@@ -103,7 +105,6 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setQuestionid("2");
                 attribute.setQuestionid((((AuthorHostActivity) getActivity()).getBundle().getString(PastQuestionsAdapter.ARG_QUESTION_ID)));
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
@@ -140,12 +141,13 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 
 
+                    setData(responseHandler.getQuestionComments().get(0));
+
                     if (responseHandler.getQuestionComments().size() > 0) {
                         arrListComments.addAll(responseHandler.getQuestionComments().get(0).getComment());
                         questionCommentAdapter.addAll(arrListComments);
                         questionCommentAdapter.notifyDataSetChanged();
                         setEmptyView(false);
-                        setData(responseHandler.getQuestionComments().get(0));
 
                     } else {
                         setEmptyView(true);

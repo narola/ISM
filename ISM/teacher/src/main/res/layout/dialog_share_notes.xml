@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/d5dp"
-        android:background="@drawable/ic_share_notes_deactive"
+        android:background="@drawable/ic_share_note_white"
         android:gravity="center"
         android:text="@string/strclose"
         android:textAllCaps="true"
@@ -54,7 +54,7 @@
         android:layout_marginLeft="@dimen/d10dp"
         android:layout_marginRight="@dimen/d10dp"
         android:background="@drawable/bg_edit_gray"
-        android:drawableLeft="@drawable/edit_profile"
+        android:drawableLeft="@drawable/ic_add_studymates"
         android:hint="Studymate Name"
         android:padding="@dimen/d10dp"
         android:singleLine="true" />

@@ -1,13 +1,10 @@
 package com.ism.adapter;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +19,6 @@ import com.ism.R;
 import com.ism.activity.PostFeedActivity;
 import com.ism.model.PostFileModel;
 import com.ism.utility.Debug;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -89,14 +85,14 @@ public class PostFileAdapter extends BaseAdapter {
                 if (arrayList.get(position).getStrFilePath() != null) {
                     //  Uri uri = Uri.fromFile(new File(arrayList.get(position).getStrFilePath()));
                     // Global.imageLoader.displayImage(arrayList.get(position).getStrFilePath().getPathImage(), imageView, ISMStudent.options);
-                    Picasso.with(context)
-                            .load(arrayList.get(position).getStrFilePath())
-                            .error(R.drawable.ic_launcher)
-                            .placeholder(R.drawable.selector_loading)
-                            .into(imageView);
+//                    Picasso.with(context)
+//                            .load(arrayList.get(position).getStrFilePath())
+//                            .error(R.drawable.ic_launcher)
+//                            .placeholder(R.drawable.selector_loading)
+//                            .into(imageView);
                     // bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(arrayList.get(position).getStrFilePath()));
 
-                    // imageView.setImageBitmap(bitmap);
+                     imageView.setImageURI(arrayList.get(position).getStrFilePath());
 
                 }
 
@@ -114,32 +110,18 @@ public class PostFileAdapter extends BaseAdapter {
                 if (file != null) {
                     mMediaMetadataRetriever.setDataSource(context, arrayList.get(position).getStrFilePath());
                     Debug.i(TAG, "Frame size : " + mMediaMetadataRetriever.getFrameAtTime());
-                    Debug.i(TAG,"Frame size : "+arrayList.get(position).getStrFilePath().getPath());
+                    Debug.i(TAG, "Frame size : " + arrayList.get(position).getStrFilePath().getPath());
                     bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-                    ContentResolver crThumb = context.getContentResolver();
-                 //  String wholeID = DocumentsContract.getDocumentId(uri);
-                    // Split at colon, use second item in the array
-                //    String id = wholeID.split(":")[1];
-
-                    String[] column = {MediaStore.Video.Media.DATA};
-
-                    // where id is equal to
-                    String sel = MediaStore.Video.Media._ID + "=?";
-                    BitmapFactory.Options options=new BitmapFactory.Options();
-                    options.inSampleSize = 1;
-                   // Bitmap curThumb = MediaStore.Video.Thumbnails.getThumbnail(crThumb, arrayList.get(position).getStrFilePath().getPath(), MediaStore.Video.Thumbnails.MICRO_KIND, options);
+                    // MICRO_KIND: 96 x 96 thumbnail
                     imageView.setImageBitmap(bitmap);
                 } else {
                     imageView.setBackgroundColor(Color.BLACK);
                 }
-                // videoIndicator.setText(mediaPlayer.getDuration() + "");
-               // videoIndicator.setVisibility(View.VISIBLE);
                 imgPlay.setVisibility(View.VISIBLE);
 
 
             } else if (arrayList.get(position).getStrFileType().equals("audio")) {
                 imgClose.setVisibility(View.VISIBLE);
-                //videoIndicator.setText(mediaPlayer.getDuration() + "");
                 videoIndicator.setVisibility(View.VISIBLE);
                 imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.audioplay));
             }

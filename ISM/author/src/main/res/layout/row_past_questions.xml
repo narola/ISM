@@ -89,19 +89,19 @@
             android:layout_marginLeft="@dimen/d10dp"
             android:layout_marginTop="@dimen/d15dp"
             android:layout_weight="1"
-            android:text="Jackson JSR-310 module fails to  deserialize simplest offsetDatetime format?"
+            android:text=""
             android:textColor="#BE76B6"
             android:textSize="@dimen/d18sp" />
 
         <TextView
-            android:id="@+id/txt_answer"
+            android:id="@+id/txt_author_answer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_question"
             android:layout_marginLeft="@dimen/d10dp"
             android:layout_marginTop="@dimen/d10dp"
-            android:text="Jackson JSR-310 module fails to  deserialize simplest offsetDatetime format?Jackson JSR-310 module fails to  deserialize simplest offsetDatetime format?"
-            android:textColor="#A4A4A4"
+            android:text=""
+            android:textColor="@color/color_answer"
             android:textSize="@dimen/d16sp" />
 
     </RelativeLayout>

@@ -69,7 +69,7 @@ public class SubjectiveQuestionsContainerFragment extends Fragment {
 
     private void initGlobal(View view) {
 
-        getStudentsFragment = GetStudentsFragment.newInstance(this,getBundleArguments());
+        getStudentsFragment = GetStudentsFragment.newInstance(this);
         subjectiveQuestionsFragment = new SubjectiveQuestionsFragment(this);
         questionPaletteFragment = new QuestionPaletteFragment(this);
 
@@ -118,6 +118,14 @@ public class SubjectiveQuestionsContainerFragment extends Fragment {
         flGetsubjectiveAssignmentContainerLeft.setVisibility(View.VISIBLE);
         flGetsubjectiveAssignmentContainerRight.setVisibility(View.VISIBLE);
     }
+
+    /*
+    this is to set title details in subjective questions fragment from bundle arguments.
+     */
+    public void setTitleDetails() {
+        subjectiveQuestionsFragment.setTitleDetails();
+    }
+
 
     public Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();

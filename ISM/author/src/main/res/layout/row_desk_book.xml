@@ -10,7 +10,7 @@
         android:layout_width="@dimen/d210dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/d5dp"
-        android:background="@drawable/bg_desk_books"
+        android:background="@drawable/bg_author_books"
         android:orientation="vertical">
 
         <RelativeLayout

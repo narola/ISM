@@ -56,11 +56,9 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         holder.tvPreviewQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
-        holder.tvPreviewQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
         holder.tvPreviewQuestionNo.setPaintFlags(holder.tvPreviewQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
 
-        holder.tvPreviewQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
 //        holder.tvPreviewQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext, null), null));
 
 
@@ -83,7 +81,6 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         }
 
         if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
-            holder.tvPreviewQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
             holder.tvPreviewQuestionAns.setText(arrListQuestions.get(position).getSolution());
 
 
@@ -176,6 +173,11 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
             imgPreviewQuestionEdit = (ImageView) itemView.findViewById(R.id.img_preview_question_edit);
             imgPreviewQuestionCopy = (ImageView) itemView.findViewById(R.id.img_preview_question_copy);
             imgPreviewQuestionDelete = (ImageView) itemView.findViewById(R.id.img_preview_question_delete);
+
+
+            tvPreviewQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvPreviewQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvPreviewQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         }

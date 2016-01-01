@@ -30,7 +30,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/spinner_selector"
+                android:background="@android:color/transparent"
                 android:entries="@array/list"
                 android:padding="@dimen/d10dp"
                 android:spinnerMode="dropdown" />
@@ -40,7 +40,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/spinner_selector"
+                android:background="@android:color/transparent"
                 android:entries="@array/list"
                 android:padding="@dimen/d10dp"
                 android:spinnerMode="dropdown" />
@@ -51,7 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/spinner_selector"
+                android:background="@android:color/transparent"
                 android:entries="@array/list"
                 android:padding="@dimen/d10dp"
                 android:spinnerMode="dropdown" />
@@ -68,7 +68,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="1dp"
+                        android:layout_width="@dimen/d1dp"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="@dimen/d5dp"
                         android:layout_marginTop="@dimen/d5dp"
@@ -132,8 +132,7 @@
             android:id="@+id/rv_questionlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1" />
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -18,7 +18,6 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
 import com.ism.teacher.adapters.AssignmentsAdapter;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
@@ -58,6 +57,7 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
             Log.e(TAG, "onAttach Exception : " + e.toString());
         }
     }
+
     public static AssignmentsSubmitterFragment newInstance() {
         AssignmentsSubmitterFragment assignmentsSubmitterFragment = new AssignmentsSubmitterFragment();
 
@@ -95,13 +95,15 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
     private void callApiGetExamSubmission() {
         if (Utility.isInternetConnected(getActivity())) {
             try {
+                ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
+               // attribute.setExamId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
                 attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
                 attribute.setUserId(WebConstants.USER_ID_370);
-                attribute.setRole(AppConstant.TEACHER_ROLE_ID);
+                attribute.setRole(WebConstants.TEACHER_ROLE_ID);
 
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
+                        .execute(WebConstants.GET_EXAM_SUBMISSION);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -115,7 +117,7 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
     public void onResponse(int apicode, Object object, Exception error) {
         try {
             switch (apicode) {
-                case WebConstants.GET_ALL_EXAM_SUBMISSION:
+                case WebConstants.GET_EXAM_SUBMISSION:
                     onResponseGetAllExamSubmission(object);
                     break;
             }
@@ -129,8 +131,8 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
 
     private void onResponseGetAllExamSubmission(Object object) {
 
-        if(object!=null)
-        {
+        ((TeacherHostActivity) getActivity()).hideProgress();
+        if (object != null) {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
@@ -146,9 +148,7 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
 
                 Utility.showToast(getString(R.string.web_service_issue), getActivity());
             }
-        }
-        else
-        {
+        } else {
             Debug.e(TAG, "onResponseGetAllSubmission Exception : " + "response object may be returning null");
         }
 
