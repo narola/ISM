@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.assesment.SubjectiveQuestionsContainerFragment;
@@ -48,11 +47,8 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private Fragment mFragment;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
 
-    public static GetStudentsFragment newInstance(Fragment fragment, Bundle bundleArgument) {
+    public static GetStudentsFragment newInstance(Fragment fragment) {
         GetStudentsFragment getStudentsFragment = new GetStudentsFragment();
-        if (bundleArgument != null) {
-            getStudentsFragment.setArguments(bundleArgument);
-        }
         getStudentsFragment.mFragment = fragment;
         return getStudentsFragment;
     }
@@ -149,7 +145,8 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
             Attribute attribute = new Attribute();
 
             if (getBundleArguments() != null) {
-                attribute.setExamId(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
+//                attribute.setExamId(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
+                attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
                 attribute.setUserId(WebConstants.USER_ID_370);
                 attribute.setRole(WebConstants.TEACHER_ROLE_ID);
 
@@ -189,6 +186,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
             myStudentsAdapter.addAll(arrListExamSubmittor);
             myStudentsAdapter.notifyDataSetChanged();
 
+            getBaseFragment().setTitleDetails();
         }
     }
 

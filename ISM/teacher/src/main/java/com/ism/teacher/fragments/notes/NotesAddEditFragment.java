@@ -21,6 +21,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
+import com.ism.teacher.dialog.ShareNoteDialog;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.richeditor.Formula;
 import com.ism.teacher.richeditor.GridAdaptor;
@@ -39,7 +40,6 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
      * Hide the text edit options when user is just reading note.
      * enable the options to edit text when user need to edit
      */
-
     private HorizontalScrollView richEditorEditControls;
     private RichTextEditor rteNotes;
     private Formula formula;
@@ -51,9 +51,13 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
     Uri selectedUri = null;
 
 
+    private ShareNoteDialog shareNoteDialog;
     Fragment mFragment;
     //To know user is viewing note or creating new note
     public static String ARG_IS_CREATE_NOTE = "isCreateNote";
+
+
+    private Boolean editFlag = false;
 
     public NotesAddEditFragment() {
         // Required empty public constructor
@@ -109,6 +113,9 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
 
             Utility.hideView(richEditorEditControls);
         }
+
+        shareNoteDialog = new ShareNoteDialog(getActivity(), this);
+
     }
 
     @Override
@@ -118,8 +125,18 @@ public class NotesAddEditFragment extends Fragment implements View.OnClickListen
             case R.id.img_edit_note:
                 Utility.showView(richEditorEditControls);
                 Utility.showView(imgOptions);
+
+                if (!editFlag) {
+                    imgEditNote.setActivated(true);
+                    editFlag = true;
+                } else {
+                    imgEditNote.setActivated(false);
+                    editFlag = false;
+                }
+
                 break;
             case R.id.img_share_note:
+                shareNoteDialog.show();
                 break;
             case R.id.img_options:
 

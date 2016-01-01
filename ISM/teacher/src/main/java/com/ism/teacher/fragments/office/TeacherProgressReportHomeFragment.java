@@ -25,7 +25,6 @@ public class TeacherProgressReportHomeFragment extends Fragment {
 
     private static final String TAG = TeacherProgressReportHomeFragment.class.getSimpleName();
 
-
     //Views
     Spinner spExamType;
     private List<String> arrListDefault=new ArrayList<>();

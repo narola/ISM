@@ -15,7 +15,7 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.notes.AllNotesAdapter;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.listview.DragNDropAdapter;
+import com.ism.teacher.listview.NotesExpandableListAdapter;
 import com.ism.teacher.listview.DragNDropListView;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -143,7 +143,7 @@ public class NotesListFragment extends Fragment implements WebserviceWrapper.Web
                             listDataChild.put(responseHandler.getLessonNotes().get(i).getLectureName(), arrListNotesTitle);
                         }
 
-                        listViewNotes.setAdapter(new DragNDropAdapter(getActivity(), listDataHeader, listDataChild));
+                        listViewNotes.setAdapter(new NotesExpandableListAdapter(getActivity(), listDataHeader, listDataChild));
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {

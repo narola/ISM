@@ -38,6 +38,15 @@ public class AllNotesAdapter extends RecyclerView.Adapter<AllNotesAdapter.ViewHo
         fragmentManager = ((Activity) mContext).getFragmentManager();
     }
 
+    @Override
+    public AllNotesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View assignments_view = inflater.inflate(R.layout.row_notes, parent, false);
+        ViewHolder viewHolder = new ViewHolder(assignments_view);
+        return viewHolder;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         RelativeLayout rlNotes;
@@ -70,14 +79,7 @@ public class AllNotesAdapter extends RecyclerView.Adapter<AllNotesAdapter.ViewHo
         }
     }
 
-    @Override
-    public AllNotesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View assignments_view = inflater.inflate(R.layout.row_notes, parent, false);
-        ViewHolder viewHolder = new ViewHolder(assignments_view);
-        return viewHolder;
-    }
 
     @Override
     public void onBindViewHolder(AllNotesAdapter.ViewHolder holder, final int position) {

@@ -172,8 +172,8 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
             try {
                 ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setExamId(getBaseFragment().getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID));
-//                attribute.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
+                //  attribute.setExamId(getBaseFragment().getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID));
+                attribute.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
 //                request.setStudentId("1");
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_EVALUATIONS);
@@ -252,9 +252,10 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
                     subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
 
                     updateStatusForEvaluation();
-                    setTitleDetails();
                     getBaseFragment().setQuestionStatusData(arrListQuestions,
                             responseObjGetExamEvaluation.getExamEvaluation().get(0).getQuestionPalette());
+
+                    setTitleDetails();
 
 
                 } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
@@ -339,7 +340,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         rvSubjectiveQuestionsList.smoothScrollToPosition(position);
     }
 
-    private void setTitleDetails() {
+    public void setTitleDetails() {
 
         arrListExamSubmittor = getBaseFragment().getBundleArguments().getParcelableArrayList(MyStudentsAdapter.ARG_ARR_LIST_STUDENTS);
         tvStudentEvalutionNo.setText(getActivity().getResources().getString(R.string.strevaluation) + " " +
@@ -356,7 +357,6 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         tvAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + " " +
                 getBaseFragment().getBundleArguments().getInt(AssignmentsAdapter.ARG_ASSIGNMENT_NO));
         tvAssignmentTitle.setText(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
-
 
     }
 
@@ -389,22 +389,14 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     private void setExamQuestions() {
 
         if (responseObjGetAllExamQuestions != null) {
-
             getBaseFragment().getBundleArguments().putParcelableArrayList(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS, arrListQuestions);
             getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getString(R.string.strsubjective));
-
-//            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
-//                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getArguments());
 //
 //            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
 //                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
 
             TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) mFragment.getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
             teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
-
-//            mFragment.getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
-//                    CreateExamAssignmentContainerFragment.newInstance()).commit();
-
         }
 
     }
