@@ -1,5 +1,5 @@
 <resources>
-    <dimen name="button_dimen">40dp</dimen>
+    <dimen name="button_dimen">35dp</dimen>
     <dimen name="controlbar_padding">8dp</dimen>
     <integer name="font_size">15</integer>
     <dimen name="dialog_title_font_size">20sp</dimen>

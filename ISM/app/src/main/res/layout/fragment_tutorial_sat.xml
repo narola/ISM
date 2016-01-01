@@ -4,13 +4,13 @@
              android:layout_height="match_parent"
              android:orientation="vertical"
              android:gravity="center"
-              android:paddingBottom="@dimen/d50dp"
+              android:paddingBottom="@dimen/dp38"
               android:background="@drawable/bg_saturday"
              tools:mContext=".fragment.tutorialGroup.TutorialSatFragment">
 
 	<ImageView
-		android:layout_width="@dimen/d130dp"
-		android:layout_height="@dimen/d130dp"
+		android:layout_width="@dimen/dp98"
+		android:layout_height="@dimen/dp98"
 		android:layout_centerHorizontal="true"
 		android:src="@drawable/img_smile"/>
 
@@ -18,7 +18,7 @@
 		android:id="@+id/txt_message"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="@dimen/d10dp"
+		android:layout_marginTop="@dimen/dp8"
 		android:gravity="center"
 		android:textSize="@dimen/sp23"
 		android:textColor="@color/bg_app_dark"

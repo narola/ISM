@@ -2,28 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/d5dp"
-                android:paddingLeft="@dimen/d5dp"
-                android:paddingRight="@dimen/d5dp">
+                android:paddingTop="@dimen/dp4"
+                android:paddingLeft="@dimen/dp4"
+                android:paddingRight="@dimen/dp4">
 
 	<com.ism.views.CircleImageView
 		android:id="@+id/img_dp"
-		android:layout_width="@dimen/d60dp"
-		android:layout_height="@dimen/d60dp"
-		android:layout_marginTop="@dimen/d5dp"
-		android:layout_marginLeft="@dimen/d5dp"
-		android:layout_marginBottom="@dimen/d5dp"
-		android:layout_marginRight="@dimen/d10dp"
+		android:layout_width="@dimen/dp45"
+		android:layout_height="@dimen/dp45"
+		android:layout_marginTop="@dimen/dp4"
+		android:layout_marginLeft="@dimen/dp4"
+		android:layout_marginBottom="@dimen/dp4"
+		android:layout_marginRight="@dimen/dp8"
 		android:src="@drawable/img_default_dp"/>
 
 	<TextView
 		android:id="@+id/txt_student_name"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="@dimen/d5dp"
+		android:layout_marginTop="@dimen/dp4"
 		android:layout_toRightOf="@+id/img_dp"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="@dimen/d18sp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<TextView
 		android:id="@+id/txt_school"
@@ -32,7 +32,7 @@
 		android:layout_below="@+id/txt_student_name"
 		android:layout_toRightOf="@+id/img_dp"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="@dimen/d16sp"/>
+		android:textSize="@dimen/sp12"/>
 
 	<TextView
 		android:id="@+id/txt_score"
@@ -40,16 +40,16 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/txt_school"
 		android:layout_toRightOf="@+id/img_dp"
-		android:layout_marginBottom="@dimen/d5dp"
+		android:layout_marginBottom="@dimen/dp4"
 		android:textColor="@color/green"
-		android:textSize="@dimen/d25sp"/>
+		android:textSize="@dimen/sp19"/>
 
 	<View
 		android:id="@+id/divider"
 		android:layout_width="match_parent"
 		android:layout_height="1dp"
 		android:background="@color/divider"
-		android:layout_marginLeft="@dimen/d5dp"
-		android:layout_marginRight="@dimen/d5dp"
+		android:layout_marginLeft="@dimen/dp4"
+		android:layout_marginRight="@dimen/dp4"
 		android:layout_alignParentBottom="true"/>
 </RelativeLayout>

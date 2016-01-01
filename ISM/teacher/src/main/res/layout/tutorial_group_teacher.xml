@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d5dp"
-                    android:text="Group Name: Venice Beauty"
+                    android:text=""
                     android:textColor="@color/color_txt_balck_tutorial"
                     android:textSize="@dimen/d25sp" />
 
@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d5dp"
-                    android:text="(Comnputer Science FY)"
+                    android:text=""
                     android:textColor="@color/color_txt_balck_tutorial"
                     android:textSize="@dimen/d18sp" />
 
@@ -56,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d5dp"
-                    android:text="Group Scores"
+                    android:text=""
                     android:textColor="@color/color_txt_balck_tutorial"
                     android:textSize="@dimen/d18sp" />
 
@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d5dp"
-                    android:text="Group Rank"
+                    android:text=""
                     android:textColor="@color/color_txt_balck_tutorial"
                     android:textSize="@dimen/d18sp" />
 
@@ -106,22 +106,23 @@
                 android:layout_margin="@dimen/d15dp"
                 android:gravity="center"
                 android:padding="@dimen/d5dp"
-                android:text="@string/str_you_are_assigned_group"
+                android:text=""
                 android:textColor="@color/color_txt_balck_tutorial"
                 android:textSize="@dimen/d25sp" />
 
-            <Button
-                android:id="@+id/btn_schedule_exam"
+            <TextView
+                android:id="@+id/tv_schedule_exam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="@dimen/d10dp"
                 android:background="@drawable/btn_schedule_tutorial"
                 android:padding="@dimen/d10dp"
-                android:text="Schedule Exam"
+                android:text="@string/str_schedule_exam"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="@dimen/d16sp" />
+                android:textSize="@dimen/d16sp"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <TextView
@@ -130,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@string/no_group_members_assigned"
+            android:text=""
             android:visibility="gone" />
 
     </LinearLayout>

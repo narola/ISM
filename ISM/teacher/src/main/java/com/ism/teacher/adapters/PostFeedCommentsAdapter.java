@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.model.Data;
 import com.ism.teacher.ws.model.CommentList;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View contactView = inflater.inflate(R.layout.post_comments_list_item, parent, false);
+        View contactView = inflater.inflate(R.layout.row_post_commenter, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
     }
@@ -42,7 +41,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.txtCommenterUsername.setText(arrListComment.get(position).getFullName());
         holder.txtCommenterComment.setText(arrListComment.get(position).getComment());
-        holder.txtCommentDuration.setText(arrListComment.get(position).getCommentBy());
+      //  holder.txtCommentDuration.setText(arrListComment.get(position).getCreatedDate());
 
 
         if (position == 0) {

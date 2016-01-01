@@ -6,7 +6,7 @@ package com.ism.author.constant;
 public class WebConstants {
 
 
-    public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";
+//    public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";
 
 
     public static final String FEED_MEDIA_KINJAL = "http://192.168.1.147/WS_ISM/Images/feeds/";
@@ -20,7 +20,7 @@ public class WebConstants {
     public static final String USER_IMAGES_TEST = "http://192.168.1.147/WS_ISM/Images/users_images/";
 
     public static final String HOST_202 = "http://192.168.1.202/pg/ISM/";      // pg
-//    public static final String URL_KINJAL_HOST = HOST_202 + "WS_ISM/ISMServices.php?Service=";
+    public static final String URL_KINJAL_HOST = HOST_202 + "WS_ISM/ISMServices.php?Service=";
 
     public static final String URL_HOST_202 = HOST_202 + "WS_ISM/ISMServices.php?Service=";
 
@@ -92,7 +92,7 @@ public class WebConstants {
 
     public static final int TEMPCREATEQUESTION = 33;
 
-    public static final int GETBOOKSFORAUTHOR = 34;
+    public static final int GETBOOKSBYAUTHOR = 34;
 
     public static final int UPLOADMEDIAFORQUESTION = 35;
 
@@ -201,7 +201,7 @@ public class WebConstants {
 
     public static final String URL_GETALLCOURSES = URL_KINJAL_HOST + "GetAllCourses";
 
-    public static final String URL_GETBOOKSFORAUTHOR = URL_KINJAL_HOST + "GetBooksForAuthor";
+    public static final String URL_GETBOOKSBYAUTHOR = URL_KINJAL_HOST + "GetBooksByAuthors";
 
     public static final String URL_GETTRENDINGQUESTIONS = URL_KINJAL_HOST + "GetTrendingQuestions";
 

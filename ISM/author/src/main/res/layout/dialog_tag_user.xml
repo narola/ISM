@@ -50,7 +50,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/d1dp"
             android:background="@color/news_feed_separator_color" />
 
 
@@ -68,7 +68,7 @@
 
             <TextView
                 android:id="@+id/tv_tag_users"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/color_blue"
@@ -78,16 +78,16 @@
                 android:text="@string/strtag"
                 android:textAllCaps="true"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/d40sp"
+                android:textSize="@dimen/d25sp"
                 android:textStyle="bold" />
 
             <ImageView
-                android:layout_width="1dp"
+                android:layout_width="@dimen/d1dp"
                 android:layout_height="fill_parent" />
 
             <TextView
                 android:id="@+id/tv_dialog_close"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/color_blue"
@@ -97,7 +97,7 @@
                 android:text="@string/strclose"
                 android:textAllCaps="true"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/d40sp"
+                android:textSize="@dimen/d25sp"
                 android:textStyle="bold" />
 
         </LinearLayout>

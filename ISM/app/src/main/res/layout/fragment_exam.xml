@@ -8,11 +8,11 @@
 	<TextView
 		android:id="@+id/txt_header"
 		android:layout_width="match_parent"
-		android:layout_height="@dimen/d60dp"
+		android:layout_height="@dimen/dp45"
 		android:background="@drawable/bg_exam_header"
-		android:padding="@dimen/d15dp"
+		android:padding="@dimen/dp11"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="@dimen/d18sp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<LinearLayout
 		android:id="@+id/ll_instruct"
@@ -24,17 +24,17 @@
 		android:layout_marginTop="@dimen/exam_padding"
 		android:background="@color/green"
 		android:orientation="horizontal"
-		android:padding="@dimen/d10dp">
+		android:padding="@dimen/dp8">
 
 		<TextView
 			android:id="@+id/txt_instruct"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"
-			android:layout_marginRight="@dimen/d10dp"
+			android:layout_marginRight="@dimen/dp8"
 			android:text="Assessment No : 30"
 			android:textColor="@android:color/white"
-			android:textSize="@dimen/d18sp"/>
+			android:textSize="@dimen/sp14"/>
 
 		<TextView
 			android:id="@+id/txt_subject"
@@ -43,7 +43,7 @@
 			android:layout_gravity="center_vertical"
 			android:text="ORGANIC CHEMISTRY"
 			android:textColor="@android:color/white"
-			android:textSize="@dimen/d20sp"
+			android:textSize="@dimen/sp15"
 			android:textStyle="bold"/>
 	</LinearLayout>
 
@@ -66,7 +66,7 @@
 		<View
 			android:id="@+id/view_divider"
 			android:layout_width="match_parent"
-			android:layout_height="@dimen/d1dp"
+			android:layout_height="@dimen/dp1"
 			android:background="@color/border_gray"
 			android:layout_above="@+id/btn_start_test"/>
 
@@ -75,15 +75,15 @@
 			android:layout_width="wrap_content"
 			android:layout_height="@dimen/button_height"
 			android:layout_alignParentBottom="true"
-			android:layout_marginBottom="@dimen/d20dp"
-			android:layout_marginTop="@dimen/d20dp"
+			android:layout_marginBottom="@dimen/dp15"
+			android:layout_marginTop="@dimen/dp15"
 			android:text="@string/start_test"
 			android:textColor="@android:color/white"
 			android:paddingLeft="@dimen/button_padding_exam"
 			android:paddingRight="@dimen/button_padding_exam"
 			android:background="@drawable/bg_button_green"
 			android:drawableRight="@drawable/arrow"
-			android:drawablePadding="@dimen/d10dp"
+			android:drawablePadding="@dimen/dp8"
 			android:layout_centerHorizontal="true"/>
 	</RelativeLayout>
 
@@ -112,30 +112,30 @@
 					android:id="@+id/txt_question"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_margin="@dimen/d10dp"
+					android:layout_margin="@dimen/dp8"
 					android:background="@drawable/bg_question"
 					android:gravity="center"
-					android:paddingLeft="@dimen/d30dp"
-					android:paddingRight="@dimen/d30dp"
+					android:paddingLeft="@dimen/dp23"
+					android:paddingRight="@dimen/dp23"
 					android:text="When parallel elements meet, which reaction occurs?\nline 2\nQuestion line 3\n\n\n\nHello"
-					android:textSize="@dimen/d20sp"/>
+					android:textSize="@dimen/sp15"/>
 
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="@dimen/d30dp"
+					android:layout_marginLeft="@dimen/dp23"
 					android:text="Options:"
-					android:textSize="@dimen/d18sp"
+					android:textSize="@dimen/sp14"
 					android:textStyle="bold"/>
 
 				<RadioGroup
 					android:id="@+id/rg_options"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_marginTop="@dimen/d20dp"
-					android:layout_marginRight="@dimen/d30dp"
-					android:layout_marginLeft="@dimen/d30dp"
-					android:layout_marginBottom="@dimen/d30dp"
+					android:layout_marginTop="@dimen/dp15"
+					android:layout_marginRight="@dimen/dp23"
+					android:layout_marginLeft="@dimen/dp23"
+					android:layout_marginBottom="@dimen/dp23"
 					android:orientation="vertical">
 
 					<RadioButton

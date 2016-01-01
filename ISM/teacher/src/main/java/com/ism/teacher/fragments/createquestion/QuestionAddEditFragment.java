@@ -700,15 +700,29 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     }
 
-    private void getMcqAnswers() {
-        arrListAnswerChioces.clear();
-        for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
-            View v = llAddMcqanswer.getChildAt(i);
-            AnswerChoices answerChoices = new AnswerChoices();
-            answerChoices.setChoiceText(((EditText) v.findViewById(R.id.et_add_mcq_answer)).getText().toString());
-            answerChoices.setIsRight(getIsSelected((ImageView) v.findViewById(R.id.img_ans_radio)));
-            arrListAnswerChioces.add(answerChoices);
+    private String getMcqAnswers() {
+
+        JSONObject mcqJsonObject = null;
+        try {
+            mcqJsonObject = new JSONObject();
+            JSONArray jArray = new JSONArray();
+            for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
+
+                View v = llAddMcqanswer.getChildAt(i);
+                JSONObject mcqJson = new JSONObject();
+
+                mcqJson.put("choice_text", ((EditText) v.findViewById(R.id.et_add_mcq_answer)).getText().toString());
+                mcqJson.put("is_right", getIsSelected((ImageView) v.findViewById(R.id.img_ans_radio)));
+
+                jArray.put(mcqJson);
+
+            }
+            mcqJsonObject.put("choices", jArray);
+        } catch (Exception e) {
+            Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
         }
+
+        return mcqJsonObject.toString();
 
     }
 
@@ -887,12 +901,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 classroomIdParam.setParamValue(getAddQuestionContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
 
 
-                MediaUploadAttribute answerChoicesParam = new MediaUploadAttribute();
-
                 if (getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
-                    getMcqAnswers();
-
+                    MediaUploadAttribute answerChoicesParam = new MediaUploadAttribute();
                     answerChoicesParam.setParamName("answer_choices");
+                    answerChoicesParam.setParamValue(getMcqAnswers());
                     JSONObject mcqJsonObject = new JSONObject();
                     JSONArray jArray = new JSONArray();
                     for (AnswerChoices answerChoices : arrListAnswerChioces) {
@@ -902,8 +914,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         jArray.put(mcqJson);
                     }
                     mcqJsonObject.put("choices", jArray);
-
-                    Debug.e(TAG, "mcq answers" + mcqJsonObject.toString());
                     answerChoicesParam.setParamValue(mcqJsonObject.toString());
                     attribute.getArrListParam().add(answerChoicesParam);
                 }

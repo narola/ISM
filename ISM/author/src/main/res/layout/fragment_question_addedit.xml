@@ -93,7 +93,7 @@
                                 android:layout_marginRight="@dimen/d10dp"
                                 android:text="@string/stradvance"
                                 android:textColor="@color/color_blue"
-                                android:textSize="@dimen/d20sp"
+                                android:textSize="@dimen/d18sp"
                                 android:textStyle="bold" />
 
                             <ImageView
@@ -129,7 +129,8 @@
                             android:background="@drawable/selector"
                             android:inputType="textMultiLine"
                             android:padding="@dimen/d15dp"
-                            android:textColorHint="@color/color_text_hint" />
+                            android:textColorHint="@color/color_text_hint"
+                            android:textSize="@dimen/d18sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -187,8 +188,8 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginRight="@dimen/d20dp"
-                            android:layout_marginTop="@dimen/d20dp"
+                            android:layout_marginRight="@dimen/d10dp"
+                            android:layout_marginTop="@dimen/d10dp"
                             android:background="@drawable/news_feed_post_box">
 
                             <ImageView
@@ -213,7 +214,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
-                            android:background="@drawable/btn_close" />
+                            android:background="@drawable/btn_close_blue" />
 
                     </RelativeLayout>
                 </LinearLayout>
@@ -323,7 +324,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_evaluation_note1"
+                            android:id="@+id/tv_title_evaluation_note"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/fragment_background_color"
@@ -340,7 +341,7 @@
                             android:background="@drawable/news_feed_post_box" />
 
                         <EditText
-                            android:id="@+id/et_evaluation_note1"
+                            android:id="@+id/et_evaluation_note"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/d170dp"
                             android:background="@android:color/transparent"
@@ -348,7 +349,8 @@
                             android:hint=""
                             android:inputType="textMultiLine"
                             android:minLines="8"
-                            android:padding="@dimen/d10dp" />
+                            android:padding="@dimen/d10dp"
+                            android:textSize="@dimen/d18sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -360,7 +362,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_solution"
+                            android:id="@+id/tv_title_solution"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/fragment_background_color"
@@ -384,7 +386,8 @@
                             android:gravity="top"
                             android:hint=""
                             android:inputType="textMultiLine"
-                            android:padding="@dimen/d10dp" />
+                            android:padding="@dimen/d10dp"
+                            android:textSize="@dimen/d18sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

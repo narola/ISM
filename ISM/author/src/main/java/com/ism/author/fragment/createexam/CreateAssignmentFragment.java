@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -54,9 +53,8 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     }
 
     private TextView tvActivityTitle, tvActivityAssignmentname, tvActivityCoursename, tvActivityClass, tvActivitySubject,
-            tvActivitySubmissiondate, tvActivityTopic;
+            tvActivitySubmissiondate, tvActivityTopic, tvActivitySave, tvActivityCancel;
     private EditText etActivityAssignmentname, etActivityCoursename, etActivitySubmissionDate;
-    private Button btnActivitySave, btnActivityCancel;
     private Spinner spActivityClass, spActivitySubject, spActivityTopic;
     private ArrayList<Classrooms> arrListClassRooms;
     private ArrayList<Subjects> arrListSubject;
@@ -93,8 +91,8 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         etActivityAssignmentname = (EditText) view.findViewById(R.id.et_activity_assignmentname);
         etActivityCoursename = (EditText) view.findViewById(R.id.et_activity_coursename);
 
-        btnActivitySave = (Button) view.findViewById(R.id.btn_activity_save);
-        btnActivityCancel = (Button) view.findViewById(R.id.btn_activity_cancel);
+        tvActivitySave = (TextView) view.findViewById(R.id.tv_activity_save);
+        tvActivityCancel = (TextView) view.findViewById(R.id.tv_activity_cancel);
 
         spActivityClass = (Spinner) view.findViewById(R.id.sp_activity_class);
         spActivitySubject = (Spinner) view.findViewById(R.id.sp_activity_subject);
@@ -110,13 +108,13 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         etActivitySubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
         etActivityAssignmentname.setTypeface(Global.myTypeFace.getRalewayRegular());
         etActivityCoursename.setTypeface(Global.myTypeFace.getRalewayRegular());
-        btnActivitySave.setTypeface(Global.myTypeFace.getRalewayRegular());
-        btnActivityCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivitySave.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvActivityTopic.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
-        btnActivitySave.setOnClickListener(this);
-        btnActivityCancel.setOnClickListener(this);
+        tvActivitySave.setOnClickListener(this);
+        tvActivityCancel.setOnClickListener(this);
 
         etActivitySubmissionDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -434,11 +432,11 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     @Override
     public void onClick(View v) {
-        if (v == btnActivitySave) {
+        if (v == tvActivitySave) {
             if (isInputsValid()) {
                 callApiCreateAssignment();
             }
-        } else if (v == btnActivityCancel) {
+        } else if (v == tvActivityCancel) {
             backToTrialScreen();
         }
 

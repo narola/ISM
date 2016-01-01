@@ -7,5 +7,5 @@
 	android:layout_gravity="center"
 	android:textColor="@android:color/white"
 	android:textStyle="bold"
-	android:textSize="@dimen/d18sp"
+	android:textSize="@dimen/sp14"
 	android:gravity="center"/>

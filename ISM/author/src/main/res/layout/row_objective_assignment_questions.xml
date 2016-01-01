@@ -165,15 +165,16 @@
                             android:textColor="@color/color_green"
                             android:textSize="@dimen/d16sp" />
 
-                        <EditText
-                            android:id="@+id/et_evoluations_notes"
+                        <TextView
+                            android:id="@+id/tv_evoluations_notes"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/color_white"
                             android:editable="false"
                             android:gravity="left|top"
-                            android:inputType="textMultiLine" />
+                            android:inputType="textMultiLine"
+                            android:textSize="@dimen/d18sp" />
 
                     </LinearLayout>
 
@@ -198,15 +199,16 @@
                             android:textColor="@color/color_green"
                             android:textSize="@dimen/d16sp" />
 
-                        <EditText
-                            android:id="@+id/et_solution"
+                        <TextView
+                            android:id="@+id/tv_title_solution"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/color_white"
                             android:editable="false"
                             android:gravity="left|top"
-                            android:inputType="textMultiLine" />
+                            android:inputType="textMultiLine"
+                            android:textSize="@dimen/d18sp" />
 
                     </LinearLayout>
                 </LinearLayout>

@@ -7,9 +7,9 @@
           android:background="@drawable/bg_controller_top"
           android:textSize="@dimen/controller_top_menu_text_size"
           android:gravity="center_vertical"
-          android:paddingLeft="@dimen/d20dp"
-          android:paddingRight="@dimen/d20dp"
-          android:paddingTop="@dimen/d10dp"
-          android:paddingBottom="@dimen/d10dp">
+          android:paddingLeft="@dimen/dp15"
+          android:paddingRight="@dimen/dp15"
+          android:paddingTop="@dimen/dp8"
+          android:paddingBottom="@dimen/dp8">
 
 </TextView>

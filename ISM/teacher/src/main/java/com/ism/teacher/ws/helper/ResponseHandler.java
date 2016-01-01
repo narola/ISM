@@ -3,7 +3,6 @@ package com.ism.teacher.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ism.teacher.model.Data;
 import com.ism.teacher.ws.model.AdminConfig;
 import com.ism.teacher.ws.model.Cities;
 import com.ism.teacher.ws.model.Classrooms;
@@ -40,7 +39,7 @@ import java.util.ArrayList;
 public class ResponseHandler {
 
     private String message;
-    private ArrayList<Data> data;
+//    private ArrayList<Data> data;
     private String status;
 
     private String mediaType;
@@ -60,13 +59,13 @@ public class ResponseHandler {
         this.message = message;
     }
 
-    public ArrayList<Data> getData() {
-        return this.data;
-    }
-
-    public void setData(ArrayList<Data> data) {
-        this.data = data;
-    }
+//    public ArrayList<Data> getData() {
+//        return this.data;
+//    }
+//
+//    public void setData(ArrayList<Data> data) {
+//        this.data = data;
+//    }
 
     public String getStatus() {
         return this.status;

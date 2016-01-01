@@ -7,10 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 
 import com.ism.teacher.R;
+import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.interfaces.FragmentListener;
+import com.ism.teacher.adapters.Adapters;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -20,9 +25,10 @@ public class TeacherProgressReportHomeFragment extends Fragment {
 
     private static final String TAG = TeacherProgressReportHomeFragment.class.getSimpleName();
 
-    private View view;
 
-    private FragmentListener fragListener;
+    //Views
+    Spinner spExamType;
+    private List<String> arrListDefault=new ArrayList<>();
 
     public static TeacherProgressReportHomeFragment newInstance() {
         TeacherProgressReportHomeFragment teacherQuizHomeFragment = new TeacherProgressReportHomeFragment();
@@ -35,25 +41,24 @@ public class TeacherProgressReportHomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_teacher_progressreport_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_progress_report_detail, container, false);
 
-        initGlobal();
+        initGlobal(view);
 
         return view;
     }
 
-    private void initGlobal() {
+    private void initGlobal(View rootview) {
 
+        spExamType =(Spinner)rootview.findViewById(R.id.sp_exam_type);
+        arrListDefault.add(Utility.getString(R.string.select, getActivity()));
+        Adapters.setUpSpinner(getActivity(), spExamType, arrListDefault, Adapters.ADAPTER_NORMAL);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            fragListener = (FragmentListener) activity;
-            if (fragListener != null) {
-                // fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_TEACHER_OFFICE);
-            }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
         }
@@ -63,14 +68,11 @@ public class TeacherProgressReportHomeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         try {
-            if (fragListener != null) {
-                // fragListener.onFragmentDetached(TeacherHostActivity.FRAGMENT_TEACHER_OFFICE);
-            }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
         }
-        fragListener = null;
     }
+
     private Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }

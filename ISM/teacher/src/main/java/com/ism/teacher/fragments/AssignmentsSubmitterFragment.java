@@ -58,6 +58,7 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
             Log.e(TAG, "onAttach Exception : " + e.toString());
         }
     }
+
     public static AssignmentsSubmitterFragment newInstance() {
         AssignmentsSubmitterFragment assignmentsSubmitterFragment = new AssignmentsSubmitterFragment();
 
@@ -95,6 +96,7 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
     private void callApiGetExamSubmission() {
         if (Utility.isInternetConnected(getActivity())) {
             try {
+                ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
                 attribute.setUserId(WebConstants.USER_ID_370);
@@ -129,8 +131,8 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
 
     private void onResponseGetAllExamSubmission(Object object) {
 
-        if(object!=null)
-        {
+        ((TeacherHostActivity) getActivity()).hideProgress();
+        if (object != null) {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
@@ -146,9 +148,7 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
 
                 Utility.showToast(getString(R.string.web_service_issue), getActivity());
             }
-        }
-        else
-        {
+        } else {
             Debug.e(TAG, "onResponseGetAllSubmission Exception : " + "response object may be returning null");
         }
 

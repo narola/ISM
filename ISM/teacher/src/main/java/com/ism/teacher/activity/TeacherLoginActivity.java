@@ -488,7 +488,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             attribute.setLastSyncDate(PreferenceData.getStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, getActivity(), ""));
 
             new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-                    .execute(WebConstants.GETADMINCONFIG);
+                    .execute(WebConstants.GET_ADMIN_CONFIG);
         } catch (Exception e) {
             Log.e(TAG, "callApiAuthenticateUser Exception : " + e.getLocalizedMessage());
         }
@@ -510,7 +510,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
 
         try {
             switch (apiCode) {
-                case WebConstants.GETADMINCONFIG:
+                case WebConstants.GET_ADMIN_CONFIG:
                     onResponseGetAdminConfig(object, error);
                     break;
                 case WebConstants.LOGIN:

@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,10 +67,14 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview, tvNoDataMsg;
     private RecyclerView rvQuestionlist;
     private QuestionBankListAdapter questionBankListAdapter;
-    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
+    public ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private ImageView imgSearchQuestions;
     private RelativeLayout rlSortQuestionBank;
     public boolean isSorted = false;
+
+
+    public ArrayList<Questions> copylistOfQuestionBank = new ArrayList<Questions>();
+    public ArrayList<Questions> filterlistOfQuestionBank = new ArrayList<Questions>();
 
 
     @Override
@@ -119,13 +124,13 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         arrListFilter = new ArrayList<String>();
         arrListFilter.add(getString(R.string.strfilters));
         arrListFilter = Arrays.asList(getResources().getStringArray(R.array.questionsfilter));
-        Adapters.setUpSpinner(getActivity(), spQuestionlistFilter, arrListFilter, Adapters.ADAPTER_SMALL,Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spQuestionlistFilter, arrListFilter, Adapters.ADAPTER_SMALL, Global.myTypeFace.getRalewayRegular());
         spQuestionlistFilter.setSelection(1);
 
 
         arrListSort = new ArrayList<String>();
         arrListSort = Arrays.asList(getResources().getStringArray(R.array.questionsSorting));
-        Adapters.setUpSpinner(getActivity(), spQuestionlistSort, arrListSort, Adapters.ADAPTER_SMALL,Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spQuestionlistSort, arrListSort, Adapters.ADAPTER_SMALL, Global.myTypeFace.getRalewayRegular());
         spQuestionlistSort.setSelection(1);
 
 
@@ -237,7 +242,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETBOOKSFORAUTHOR);
+                        .execute(WebConstants.GETBOOKSBYAUTHOR);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -272,7 +277,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     public void onResponse(int apiCode, Object object, Exception error) {
         try {
             switch (apiCode) {
-                case WebConstants.GETBOOKSFORAUTHOR:
+                case WebConstants.GETBOOKSBYAUTHOR:
                     onResponseGetBooksForAuthor(object, error);
                     break;
 
@@ -302,7 +307,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                             authorBooks.add(authorbook.getBookName());
 
                         }
-                        Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL,Global.myTypeFace.getRalewayRegular());
+                        Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL, Global.myTypeFace.getRalewayRegular());
                         if (getBaseFragment().getBundleArguments() != null) {
                             Debug.e(TAG, "THE BOOK NAME IS " + getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
 //                            if (arrListAuthorBooks.contains(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME))) {
@@ -486,9 +491,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     }
 
 
-    public ArrayList<Questions> copylistOfQuestionBank = new ArrayList<Questions>();
-    public ArrayList<Questions> filterlistOfQuestionBank = new ArrayList<Questions>();
-
     private void filterBooks(String bookId) {
         copylistOfQuestionBank.clear();
         if (arrListQuestions.size() > 0) {
@@ -534,10 +536,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     }
                     if (!(filterlistOfQuestionBank.size() > 0)) {
 
-//                        Utils.showToast(getString(R.string.msg_validation_no_questions_filter), getActivity());
                         showMsgNoFilterData(true);
 
                     }
+
+                    questionBankListAdapter.notifyDataSetChanged();
                     break;
                 case 3:
                     filterlistOfQuestionBank.clear();
@@ -545,15 +548,16 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                         showMsgNoFilterData(false);
                         for (Questions wp : copylistOfQuestionBank) {
                             if (wp.getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
+                                Log.e(TAG, "The Question Text is:::" + wp.getQuestionText());
                                 filterlistOfQuestionBank.add(wp);
                             }
                         }
                         questionBankListAdapter.addAll(filterlistOfQuestionBank);
                     }
                     if (!(filterlistOfQuestionBank.size() > 0)) {
-//                        Utils.showToast(getString(R.string.msg_validation_no_questions_filter), getActivity());
                         showMsgNoFilterData(true);
                     }
+                    questionBankListAdapter.notifyDataSetChanged();
                     break;
                 case 4:
                     break;

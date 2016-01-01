@@ -1,6 +1,5 @@
 package com.ism.teacher.adapters;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +28,6 @@ import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.ism.teacher.ws.model.CommentList;
-import com.ism.teacher.ws.model.FeedImages;
 import com.ism.teacher.ws.model.Feeds;
 
 import java.util.ArrayList;
@@ -43,10 +41,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private ArrayList<Feeds> arrListFeeds = new ArrayList<Feeds>();
     Context mContext;
 
-    Fragment fragment;
-    View.OnClickListener viewAllCommetsListener;
     String likePrefData, unlikePrefData;
-    private LayoutInflater inflater;
 
 
     private int addCommentFeedPosition = -1;
@@ -54,7 +49,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     public PostFeedsAdapter(Context mContext) {
         this.mContext = mContext;
-        inflater = LayoutInflater.from(mContext);
     }
 
 
@@ -111,7 +105,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 
     /**
-     * USed to create static class for all the view if listitem child
+     * USed to create static class for all the view of list item child
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
@@ -276,35 +270,37 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         // holder.rlImage.setVisibility(View.GONE);
         //video
-        if (!arrListFeeds.get(position).getVideoThumbnail().equals("")) {
+
+
+        if (arrListFeeds.get(position).getVideoThumbnail() != null && !arrListFeeds.get(position).getVideoThumbnail().equals("")) {
 
             holder.imgVideo.setVisibility(View.VISIBLE);
             holder.imgPlay.setVisibility(View.VISIBLE);
 
-            Log.i(TAG, WebConstants.FEED_MEDIA + arrListFeeds.get(position).getVideoThumbnail() + "");
+            //  Log.i(TAG, WebConstants.FEED_MEDIA + arrListFeeds.get(position).getVideoThumbnail() + "");
             Global.imageLoader.displayImage(WebConstants.FEED_MEDIA + arrListFeeds.get(position).getVideoThumbnail(), holder.imgVideo, ISMTeacher.options);
 
         }
         //audio
-        if (!arrListFeeds.get(position).getAudioLink().equals("")) {
+        if (arrListFeeds.get(position).getAudioLink() != null && !arrListFeeds.get(position).getAudioLink().equals("")) {
 
             holder.imgAudio.setVisibility(View.VISIBLE);
         }
+
         // images
-        if (arrListFeeds.get(position).getFeedImages().size() != 0) {
-
-            holder.imgImage.setVisibility(View.VISIBLE);
-
-            ArrayList<FeedImages> feedImages = new ArrayList<FeedImages>();
-            feedImages = arrListFeeds.get(position).getFeedImages();
-            for (int i = 0; i < feedImages.size(); i++) {
-                Log.i(TAG, WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink() + "");
-                Global.imageLoader.displayImage(WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink(), holder.imgImage, ISMTeacher.options);
-
-            }
-
-        }
-
+//        if (arrListFeeds.get(position).getFeedImages().size() != 0) {
+//
+//            holder.imgImage.setVisibility(View.VISIBLE);
+//
+//            ArrayList<FeedImages> feedImages = new ArrayList<FeedImages>();
+//            feedImages = arrListFeeds.get(position).getFeedImages();
+//            for (int i = 0; i < feedImages.size(); i++) {
+//                Log.i(TAG, WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink() + "");
+//                Global.imageLoader.displayImage(WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink(), holder.imgImage, ISMTeacher.options);
+//
+//            }
+//
+//        }
 
     }
 
@@ -384,7 +380,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private View getCommentInflaterView(CommentList commentList) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        View view = layoutInflater.inflate(R.layout.post_comments_list_item, null, false);
+        View view = layoutInflater.inflate(R.layout.row_post_commenter, null, false);
 
         ImageView img_dp_commenter = (CircleImageView) view.findViewById(R.id.img_dp_commenter);
         TextView txtCommenterUsername = (TextView) view.findViewById(R.id.txt_username_commenter);

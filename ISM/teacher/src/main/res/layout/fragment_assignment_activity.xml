@@ -34,26 +34,26 @@
             android:layout_centerVertical="true"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_activity_save"
+            <TextView
+                android:id="@+id/tv_activity_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_save_assignment"
                 android:text="@string/strsave"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/d20sp" />
+                android:textSize="@dimen/d18sp" />
 
-            <Button
-                android:id="@+id/btn_activity_cancel"
+            <TextView
+                android:id="@+id/tv_activity_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/d15dp"
-                android:background="@drawable/btn_cancel_assignment"
+                android:background="@drawable/btn_cancel_activity"
                 android:text="@string/strcancel"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/d20sp" />
+                android:textSize="@dimen/d18sp" />
 
 
         </LinearLayout>
@@ -252,9 +252,9 @@
 
 
         <com.narola.kpa.richtexteditor.view.RichTextEditor
-        android:id="@+id/rte_trial_activity"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/rich_text_editor_height"></com.narola.kpa.richtexteditor.view.RichTextEditor>
+            android:id="@+id/rte_trial_activity"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/rich_text_editor_height" />
     </LinearLayout>
 
 

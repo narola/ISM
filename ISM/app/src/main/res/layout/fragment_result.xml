@@ -10,9 +10,9 @@
 		android:layout_width="match_parent"
 		android:layout_height="@dimen/header_white_height"
 		android:background="@drawable/bg_exam_header"
-		android:padding="@dimen/d15dp"
+		android:padding="@dimen/dp11"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="@dimen/d18sp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<TextView
 		android:id="@+id/txt_score"
@@ -41,7 +41,7 @@
 			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:background="@drawable/bg_white_border_gray"
-			android:padding="@dimen/d1dp"
+			android:padding="@dimen/dp1"
 			android:layout_marginRight="@dimen/result_padding"
 			android:paddingBottom="@dimen/score_spacing_double">
 
@@ -65,7 +65,7 @@
 				android:textColor="@color/green"
 				android:textStyle="bold"
 				android:paddingRight="@dimen/score_text_padding"
-				android:paddingTop="@dimen/d16dp"/>
+				android:paddingTop="@dimen/dp12"/>
 
 			<TextView
 				android:id="@+id/txt_incorrect"
@@ -88,7 +88,7 @@
 				android:textColor="@color/color_red"
 				android:textStyle="bold"
 				android:paddingRight="@dimen/score_text_padding"
-				android:paddingTop="@dimen/d16dp"/>
+				android:paddingTop="@dimen/dp12"/>
 
 			<TextView
 				android:id="@+id/txt_unattempted"
@@ -111,7 +111,7 @@
 				android:textStyle="bold"
 				android:textColor="@color/yellow"
 				android:paddingRight="@dimen/score_text_padding"
-				android:paddingTop="@dimen/d16dp"/>
+				android:paddingTop="@dimen/dp12"/>
 
 			<TextView
 				android:id="@+id/txt_time_spent"
@@ -131,28 +131,28 @@
 				android:layout_below="@id/txt_unattempted"
 				android:layout_alignParentRight="true"
 				android:drawableLeft="@drawable/ic_clock"
-				android:drawablePadding="@dimen/d5dp"
+				android:drawablePadding="@dimen/dp4"
 				android:textSize="@dimen/score_title_text"
 				android:paddingRight="@dimen/score_text_padding"
-				android:paddingTop="@dimen/d16dp"/>
+				android:paddingTop="@dimen/dp12"/>
 
 			<Button
 				android:id="@+id/btn_answers"
 				android:layout_width="match_parent"
-				android:layout_height="@dimen/d50dp"
+				android:layout_height="@dimen/dp38"
 				android:layout_below="@id/txt_time_spent"
 				android:layout_marginTop="@dimen/score_spacing"
 				android:layout_marginBottom="@dimen/score_spacing"
 				android:layout_marginLeft="@dimen/score_spacing_double"
 				android:layout_marginRight="@dimen/score_spacing_double"
 				android:background="@drawable/bg_button_green"
-				android:textSize="@dimen/d18sp"
+				android:textSize="@dimen/sp14"
 				android:text="@string/click_view_answers"
 				android:textColor="@android:color/white"/>
 
 			<View
 				android:layout_width="match_parent"
-				android:layout_height="@dimen/d2dp"
+				android:layout_height="@dimen/dp2"
 				android:background="@color/gray_light"
 				android:layout_below="@id/btn_answers"/>
 
@@ -163,7 +163,7 @@
 				android:gravity="center_vertical"
 				android:paddingLeft="@dimen/score_text_padding"
 				android:layout_below="@id/btn_answers"
-				android:textSize="@dimen/d18sp"
+				android:textSize="@dimen/sp14"
 				android:text="@string/make_score_public"
 				android:textColor="@color/bg_app_dark"/>
 
@@ -177,7 +177,7 @@
 				android:layout_toLeftOf="@+id/btn_no"
 				android:layout_marginRight="@dimen/score_spacing"
 				android:text="@string/yes"
-				android:textSize="@dimen/d18sp"
+				android:textSize="@dimen/sp14"
 				android:textColor="@android:color/white"/>
 
 			<Button
@@ -190,7 +190,7 @@
 				android:layout_alignParentRight="true"
 				android:layout_marginRight="@dimen/score_spacing"
 				android:text="@string/no"
-				android:textSize="@dimen/d18sp"
+				android:textSize="@dimen/sp14"
 				android:textColor="@android:color/white"/>
 		</RelativeLayout>
 
@@ -200,9 +200,9 @@
 			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:background="@drawable/bg_white_border_gray"
-			android:paddingTop="@dimen/d1dp"
-			android:paddingLeft="@dimen/d1dp"
-			android:paddingRight="@dimen/d1dp"
+			android:paddingTop="@dimen/dp1"
+			android:paddingLeft="@dimen/dp1"
+			android:paddingRight="@dimen/dp1"
 			android:visibility="gone"
 			android:paddingBottom="@dimen/score_spacing_double">
 
@@ -215,13 +215,13 @@
 			<Button
 				android:id="@+id/btn_view_evaluation_graph"
 				android:layout_width="match_parent"
-				android:layout_height="@dimen/d50dp"
+				android:layout_height="@dimen/dp38"
 				android:layout_alignParentBottom="true"
 				android:layout_marginTop="@dimen/score_spacing_double"
 				android:layout_marginLeft="@dimen/score_spacing_double"
 				android:layout_marginRight="@dimen/score_spacing_double"
 				android:background="@drawable/bg_button_dark_solid"
-				android:textSize="@dimen/d18sp"
+				android:textSize="@dimen/sp14"
 				android:text="@string/view_evaluation"
 				android:textColor="@android:color/white"/>
 		</RelativeLayout>

@@ -11,22 +11,22 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shadow_separator"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/d10dp"
-        android:paddingRight="@dimen/d10dp"
-        android:paddingTop="@dimen/d10dp">
+        android:paddingLeft="@dimen/dp8"
+        android:paddingRight="@dimen/dp8"
+        android:paddingTop="@dimen/dp8">
 
         <Spinner
             android:id="@+id/spinner_subject"
-            android:layout_width="@dimen/d200dp"
+            android:layout_width="@dimen/dp150"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/d5dp"
+            android:layout_margin="@dimen/dp4"
             android:background="@drawable/bg_spinner_header" />
 
         <Spinner
             android:id="@+id/spinner_sort_by"
-            android:layout_width="@dimen/d200dp"
+            android:layout_width="@dimen/dp150"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/d5dp"
+            android:layout_margin="@dimen/dp4"
             android:background="@drawable/bg_spinner_header" />
 
     </LinearLayout>
@@ -39,9 +39,9 @@
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/d5dp"
+            android:layout_margin="@dimen/dp4"
             android:layout_weight="1"
-            android:padding="@dimen/d10dp" />
+            android:padding="@dimen/dp8" />
 
         <include
             layout="@layout/empty_view"

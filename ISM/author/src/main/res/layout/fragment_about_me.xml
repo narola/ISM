@@ -31,11 +31,11 @@
             android:layout_margin="@dimen/d10dp"
             android:gravity="center"
             android:textColor="@color/color_green"
-            android:textSize="@dimen/d22sp" />
+            android:textSize="@dimen/d20sp" />
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/d1dp"
             android:background="@color/assignment_separator" />
 
         <TextView
@@ -98,11 +98,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:background="@color/fragment_background_color"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -121,7 +120,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="@dimen/d0dp"
                     android:layout_weight="1.25"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -204,7 +203,6 @@
                         android:id="@+id/txt_total_post"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         android:text="0"
                         android:textColor="@color/color_violet_assignment"
                         android:textSize="@dimen/d20sp" />
@@ -227,7 +225,7 @@
                 android:background="@color/assignment_separator" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -248,7 +246,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="@dimen/d0dp"
                     android:layout_weight="1.25"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -321,7 +319,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="@dimen/d0dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical">
@@ -353,7 +351,7 @@
                 android:background="@color/assignment_separator" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -373,7 +371,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="@dimen/d0dp"
                     android:layout_weight="1.25"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -450,7 +448,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="@dimen/d0dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical">
@@ -490,8 +488,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/d10dp"
                 android:layout_marginLeft="@dimen/d10dp"
-                android:layout_marginTop="@dimen/d10dp"
                 android:layout_marginRight="@dimen/d10dp"
+                android:layout_marginTop="@dimen/d10dp"
                 android:background="@drawable/bg_white_border_gray">
 
                 <LinearLayout
@@ -510,7 +508,7 @@
                         android:text=""
                         android:textAllCaps="true"
                         android:textColor="@color/btn_save"
-                        android:textSize="@dimen/d22sp" />
+                        android:textSize="@dimen/d20sp" />
 
                     <TextView
                         android:id="@+id/txt_About_author_details"

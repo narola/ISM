@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,13 +38,26 @@ public class TutorialGroupFragment extends Fragment implements WebserviceWrapper
     //Views
     private LinearLayout llGroupMembers;
     private RecyclerView rvTutorialGroup;
-    private TextView tvGroupName, tvGroupClassName, tvGroupScores, tvGroupRank, tvTopic, tvNoGroupMembers;
-    private Button btnScheduleExam;
+    private TextView tvGroupName, tvGroupClassName, tvGroupScores, tvGroupRank, tvTopic, tvNoGroupMembers, tvScheduleExam;
 
     //Objects
     private FragmentListener fragListener;
 
     private TutorialGroupAdapter tutorialGroupAdapter;
+
+    //Arguments
+    public static String ARG_TUTORIAL_GROUP_ID = "tutorialGroupId";
+    public static String ARG_TUTORIAL_GROUP_NAME = "tutorialGroupName";
+    public static String ARG_TUTORIAL_GROUP_RANK = "tutorialGroupRank";
+    public static String ARG_TUTORIAL_GROUP_CLASS = "tutorialGroupClass";
+    public static String ARG_TUTORIAL_TOPIC_ID = "tutorialTopicId";
+    public static String ARG_TUTORIAL_TOPIC_NAME = "tutorialTopicName";
+    public static String ARG_TUTORIAL_EXAM_ID = "tutorialExamId";
+    public static String ARG_TUTORIAL_EXAM_NAME = "tutorialExamName";
+    public static String ARG_TUTORIAL_EXAM_TYPE = "tutorialExamType";
+    public static String ARG_TUTORIAL_GROUP_SCORE = "tutorialGroupScore";
+    public static String ARG_TUTORIAL_SUBJECT_NAME = "tutorialSubjectName";
+
 
     public static TutorialGroupFragment newInstance() {
         TutorialGroupFragment tutorialGroupFragment = new TutorialGroupFragment();
@@ -101,8 +113,8 @@ public class TutorialGroupFragment extends Fragment implements WebserviceWrapper
         tvGroupScores = (TextView) rootview.findViewById(R.id.tv_group_scores);
         tvGroupRank = (TextView) rootview.findViewById(R.id.tv_group_rank);
         tvTopic = (TextView) rootview.findViewById(R.id.tv_topic);
-        btnScheduleExam = (Button) rootview.findViewById(R.id.btn_schedule_exam);
-        btnScheduleExam.setOnClickListener(this);
+        tvScheduleExam = (TextView) rootview.findViewById(R.id.tv_schedule_exam);
+        tvScheduleExam.setOnClickListener(this);
 
         rvTutorialGroup.setHasFixedSize(true);
         rvTutorialGroup.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -136,7 +148,7 @@ public class TutorialGroupFragment extends Fragment implements WebserviceWrapper
         tvGroupScores.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvGroupRank.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvTopic.setTypeface(Global.myTypeFace.getRalewayBold());
-        btnScheduleExam.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvScheduleExam.setTypeface(Global.myTypeFace.getRalewayRegular());
     }
 
 
@@ -168,6 +180,7 @@ public class TutorialGroupFragment extends Fragment implements WebserviceWrapper
 
                         setTutorialGroupDetails(responseHandler.getGroup());
                         tutorialGroupAdapter.addAll(responseHandler.getGroup().get(0).getGroupMembers());
+                        Utility.showView(tvScheduleExam);
                     } else {
                         Utility.hideView(llGroupMembers);
                         Utility.showView(tvNoGroupMembers);
@@ -208,17 +221,7 @@ public class TutorialGroupFragment extends Fragment implements WebserviceWrapper
 
     }
 
-    public static String ARG_TUTORIAL_GROUP_ID = "tutorialGroupId";
-    public static String ARG_TUTORIAL_GROUP_NAME = "tutorialGroupName";
-    public static String ARG_TUTORIAL_GROUP_RANK = "tutorialGroupRank";
-    public static String ARG_TUTORIAL_GROUP_CLASS = "tutorialGroupClass";
-    public static String ARG_TUTORIAL_TOPIC_ID = "tutorialTopicId";
-    public static String ARG_TUTORIAL_TOPIC_NAME = "tutorialTopicName";
-    public static String ARG_TUTORIAL_EXAM_ID = "tutorialExamId";
-    public static String ARG_TUTORIAL_EXAM_NAME = "tutorialExamName";
-    public static String ARG_TUTORIAL_EXAM_TYPE = "tutorialExamType";
-    public static String ARG_TUTORIAL_GROUP_SCORE = "tutorialGroupScore";
-    public static String ARG_TUTORIAL_SUBJECT_NAME = "tutorialSubjectName";
+
 
     private void setBundleArguments(ArrayList<Group> group) {
 
@@ -239,7 +242,7 @@ public class TutorialGroupFragment extends Fragment implements WebserviceWrapper
 
     @Override
     public void onClick(View v) {
-        if (v == btnScheduleExam) {
+        if (v == tvScheduleExam) {
             ((TeacherHostActivity) getActivity()).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_SCHEDULE_EXAM);
         }
     }

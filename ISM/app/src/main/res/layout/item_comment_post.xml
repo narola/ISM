@@ -2,16 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/d15dp"
-                android:layout_marginRight="@dimen/d15dp">
+                android:layout_marginLeft="@dimen/dp11"
+                android:layout_marginRight="@dimen/dp11">
 
 	<View
 		android:id="@+id/view_divider"
 		android:layout_width="match_parent"
 		android:layout_height="1dp"
 		android:layout_marginTop="@dimen/dp_margin_list"
-		android:layout_marginLeft="@dimen/d15dp"
-		android:layout_marginRight="@dimen/d15dp"
+		android:layout_marginLeft="@dimen/dp11"
+		android:layout_marginRight="@dimen/dp11"
 		android:background="@color/divider"/>
 
 	<com.ism.views.CircleImageView

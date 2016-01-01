@@ -72,7 +72,9 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
 
             holder.tvAssignmentSubmittorName.setText(arrListExamSubmittor.get(position).getStudentName());
             holder.tvAssignmentSubmittorRollno.setText(mContext.getString(R.string.strrollno) + " " + arrListExamSubmittor.get(position).getStudentId());/*this data set is left*/
-            holder.tvAssignmentSubmissionDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", arrListExamSubmittor.get(position).getSubmissionDate()));
+            if (arrListExamSubmittor.get(position).getSubmissionDate() != null) {
+                holder.tvAssignmentSubmissionDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", arrListExamSubmittor.get(position).getSubmissionDate()));
+            }
             if (arrListExamSubmittor.get(position).getExamStatus().equalsIgnoreCase("finished")) {
                 holder.tvAssessmentStatus.setText(arrListExamSubmittor.get(position).getExamStatus());
             } else {

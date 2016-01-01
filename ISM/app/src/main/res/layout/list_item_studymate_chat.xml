@@ -7,9 +7,9 @@
         android:id="@+id/img_dp"
         android:layout_width="@dimen/dp_size_list_notification"
         android:layout_height="@dimen/dp_size_list_notification"
-        android:layout_marginTop="@dimen/d10dp"
-        android:layout_marginRight="@dimen/d10dp"
-        android:layout_marginBottom="@dimen/d10dp"
+        android:layout_marginTop="@dimen/dp8"
+        android:layout_marginRight="@dimen/dp8"
+        android:layout_marginBottom="@dimen/dp8"
         android:src="@drawable/img_default_dp"/>
 
 	<View
@@ -25,12 +25,12 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/img_dp"
         android:layout_toLeftOf="@id/view_status"
-        android:layout_marginTop="@dimen/d10dp"
-        android:layout_marginRight="@dimen/d5dp"
+        android:layout_marginTop="@dimen/dp8"
+        android:layout_marginRight="@dimen/dp4"
         android:maxLines="3"
         android:ellipsize="end"
         android:textColor="@color/bg_app_dark"
-        android:textSize="@dimen/d17sp"/>
+        android:textSize="@dimen/sp13"/>
 
 	<TextView
         android:id="@+id/txt_school"
@@ -39,9 +39,9 @@
         android:layout_toRightOf="@id/img_dp"
         android:layout_toLeftOf="@id/view_status"
         android:layout_below="@id/txt_user_name"
-        android:layout_marginRight="@dimen/d5dp"
+        android:layout_marginRight="@dimen/dp4"
         android:maxLines="3"
         android:ellipsize="end"
         android:textColor="@color/bg_app_dark"
-        android:textSize="@dimen/d16sp"/>
+        android:textSize="@dimen/sp12"/>
 </RelativeLayout>

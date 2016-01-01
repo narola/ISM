@@ -19,7 +19,7 @@
 		android:visibility="gone"
 		android:hint="@string/say_it"
 		android:lines="4"
-		android:padding="@dimen/d10dp"
+		android:padding="@dimen/dp8"
 		android:textColorHint="@color/color_text_hint"/>
 
 	<!--<ImageView
@@ -32,7 +32,7 @@
 
 	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="@dimen/d45dp"
+		android:layout_height="@dimen/dp34"
 		android:layout_below="@id/et_writePost"
 		android:background="@color/green">
 
@@ -60,15 +60,15 @@
 			android:layout_height="match_parent"
 			android:layout_alignParentRight="true"
 			android:background="@color/color_dark_gray"
-			android:drawablePadding="@dimen/d10dp"
+			android:drawablePadding="@dimen/dp8"
 			android:drawableRight="@drawable/arrow"
 			android:gravity="center"
-			android:paddingLeft="@dimen/d40dp"
-			android:paddingRight="@dimen/d40dp"
+			android:paddingLeft="@dimen/dp30"
+			android:paddingRight="@dimen/dp30"
 			android:text="@string/strpost"
 			android:textAllCaps="true"
 			android:textColor="@color/color_white"
-			android:textSize="@dimen/d20dp"
+			android:textSize="@dimen/dp15"
 			android:textStyle="bold"/>
 	</RelativeLayout>
 </RelativeLayout>
