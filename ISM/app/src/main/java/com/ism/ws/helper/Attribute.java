@@ -656,14 +656,23 @@ public class Attribute {
         this.audioLink = audioLink;
     }
 
-    public List<String> getImages() {
-        return this.images;
-    }
+//    public List<String> getImages() {
+//        return this.images;
+//    }
+//
+//    @JsonProperty("images")
+//    public void setImages(List<String> images) {
+//        this.images = images;
+//    }
 
-    @JsonProperty("images")
-    public void setImages(List<String> images) {
-        this.images = images;
-    }
+	public List<String> getImages() {
+		return this.images;
+	}
+
+	@JsonProperty("images")
+	public void setImages(List<String> images) {
+		this.images = images;
+	}
 
     public String getPostedOn() {
         return this.postedOn;

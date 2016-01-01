@@ -8,7 +8,7 @@
 	<com.ism.views.TimerView
 		android:id="@+id/timer_exam"
 		android:layout_width="wrap_content"
-		android:layout_height="@dimen/d110dp"
+		android:layout_height="@dimen/dp83"
 		android:layout_centerHorizontal="true"></com.ism.views.TimerView>
 
 	<TextView
@@ -16,55 +16,55 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/timer_exam"
-		android:layout_marginLeft="@dimen/d1dp"
-		android:paddingLeft="@dimen/d5dp"
-		android:paddingRight="@dimen/d5dp"
-		android:paddingBottom="@dimen/d5dp"
+		android:layout_marginLeft="@dimen/dp1"
+		android:paddingLeft="@dimen/dp4"
+		android:paddingRight="@dimen/dp4"
+		android:paddingBottom="@dimen/dp4"
 		android:gravity="center"
 		android:background="@drawable/bg_white_border_gray_bottom"
-		android:textSize="@dimen/d18sp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<TextView
 		android:id="@+id/txt_active_comments"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txt_group_score"
-		android:layout_marginLeft="@dimen/d1dp"
-		android:padding="@dimen/d5dp"
+		android:layout_marginLeft="@dimen/dp1"
+		android:padding="@dimen/dp4"
 		android:text="@string/active_comments"
 		android:background="@drawable/bg_white_border_gray_bottom"
-		android:textSize="@dimen/d18sp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<TextView
 		android:id="@+id/txt_active_comments_value"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txt_group_score"
-		android:padding="@dimen/d5dp"
+		android:padding="@dimen/dp4"
 		android:layout_alignParentRight="true"
 		android:textColor="@color/green"
-		android:textSize="@dimen/d18sp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<TextView
 		android:id="@+id/txt_group_rank"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txt_active_comments"
-		android:layout_marginLeft="@dimen/d1dp"
-		android:padding="@dimen/d5dp"
+		android:layout_marginLeft="@dimen/dp1"
+		android:padding="@dimen/dp4"
 		android:text="@string/group_rank"
 		android:background="@drawable/bg_white_border_gray_bottom"
-		android:textSize="@dimen/d18sp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<TextView
 		android:id="@+id/txt_group_rank_value"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txt_active_comments"
-		android:padding="@dimen/d5dp"
+		android:padding="@dimen/dp4"
 		android:layout_alignParentRight="true"
 		android:textColor="@color/green"
-		android:textSize="@dimen/d18sp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<TextView
 		android:id="@+id/txt_title"
@@ -72,11 +72,11 @@
 		android:layout_height="wrap_content"
 		android:background="@color/green"
 		android:layout_below="@id/txt_group_rank"
-		android:layout_marginLeft="@dimen/d1dp"
-		android:paddingBottom="@dimen/d5dp"
-		android:paddingLeft="@dimen/d10dp"
-		android:paddingRight="@dimen/d10dp"
-		android:paddingTop="@dimen/d5dp"
+		android:layout_marginLeft="@dimen/dp1"
+		android:paddingBottom="@dimen/dp4"
+		android:paddingLeft="@dimen/dp8"
+		android:paddingRight="@dimen/dp8"
+		android:paddingTop="@dimen/dp4"
 		android:text="@string/tutorial_group"
 		android:textAllCaps="true"
 		android:textColor="@android:color/white"
@@ -102,10 +102,10 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_above="@+id/txt_answered"
-			android:paddingLeft="@dimen/d10dp"
+			android:paddingLeft="@dimen/dp8"
 			android:text="@string/legend"
 			android:textAllCaps="true"
-			android:textSize="@dimen/d16sp"
+			android:textSize="@dimen/sp12"
 			android:textStyle="bold"/>
 
 		<TextView
@@ -201,17 +201,17 @@
 		<Button
 			android:id="@+id/btn_end_test"
 			android:layout_width="wrap_content"
-			android:layout_height="@dimen/d35dp"
+			android:layout_height="@dimen/dp26"
 			android:layout_alignParentBottom="true"
 			android:layout_centerHorizontal="true"
 			android:layout_marginBottom="@dimen/exam_padding"
 			android:background="@drawable/bg_button_dark"
-			android:paddingLeft="@dimen/d40dp"
-			android:paddingRight="@dimen/d40dp"
+			android:paddingLeft="@dimen/dp30"
+			android:paddingRight="@dimen/dp30"
 			android:text="@string/end_test"
 			android:textAllCaps="true"
 			android:textColor="@android:color/white"
-			android:textSize="@dimen/d18sp"/>
+			android:textSize="@dimen/sp14"/>
 	</RelativeLayout>
 
 	<ListView

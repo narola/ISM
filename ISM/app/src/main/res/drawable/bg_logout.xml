@@ -5,7 +5,7 @@
 			<solid android:color="@color/bg_logout" />
 		</shape>
 	</item>
-	<item android:left="@dimen/d99dp">
+	<item android:left="@dimen/dp74">
 		<shape>
 			<solid android:color="#28000000"/>
 		</shape>

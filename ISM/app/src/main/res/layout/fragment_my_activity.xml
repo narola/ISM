@@ -10,7 +10,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:background="@drawable/bg_my_activity"
-		android:padding="@dimen/d17dp"/>
+		android:padding="@dimen/dp13"/>
 
 	<TextView
 		android:id="@+id/txt_emptylist_message"

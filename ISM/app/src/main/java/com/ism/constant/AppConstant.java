@@ -66,4 +66,15 @@ public class AppConstant {
     public static final String FRAGMENT_FAVOURITE = "favourites";
     public static final String FRAGMENT_BOOKS = "books";
     public static final String FRAGMENT_TIMETABLE = "timetable";
+
+//    public static final int FRAGMENT_ALL_FAVORITES = 0;
+//    public static final int FRAGMENT_ALL_NOTES = 1;
+//    public static final int FRAGMENT_ALL_BOOKS =2 ;
+//    public static final int FRAGMENT_ALL_ASSIGNMENTS = 3;
+//    public static final int FRAGMENT_ALL_EXAMS = 4;
+//    public static final int FRAGMENT_ALL_LINKS = 5;
+//    public static final int FRAGMENT_ALL_EVENTS =6 ;
+
+
+
 }

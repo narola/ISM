@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/d240dp"
-    android:layout_height="@dimen/d240dp"
-    android:layout_marginBottom="@dimen/d10dp"
-    android:layout_marginEnd="@dimen/d5dp"
-    android:layout_marginLeft="@dimen/d5dp"
-    android:layout_marginRight="@dimen/d5dp"
-    android:layout_marginStart="@dimen/d5dp"
-    android:layout_marginTop="@dimen/d10dp">
+    android:layout_width="@dimen/dp180"
+    android:layout_height="@dimen/dp180"
+    android:layout_marginBottom="@dimen/dp8"
+    android:layout_marginEnd="@dimen/dp4"
+    android:layout_marginLeft="@dimen/dp4"
+    android:layout_marginRight="@dimen/dp4"
+    android:layout_marginStart="@dimen/dp4"
+    android:layout_marginTop="@dimen/dp8">
 
     <ImageView
         android:id="@+id/img_link"

@@ -11,7 +11,6 @@
         android:background="@drawable/shadow_bg_assessment"
         android:orientation="vertical">
 
-
         <!-- First row for spinner-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,57 +20,32 @@
             android:paddingRight="@dimen/d10dp"
             android:paddingTop="@dimen/d10dp">
 
-
-            <!-- First spinner-->
-            <LinearLayout
+            <Spinner
+                android:id="@+id/sp_assignment_subject"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:background="@drawable/shadow_grey_small_size"
+                android:padding="@dimen/d10dp"/>
 
-                <Spinner
-                    android:id="@+id/sp_assignment_subject"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_grey_small_size" />
-
-                <!--<com.ism.commonsource.view.ActionProcessButton-->
-                <!--android:id="@+id/prog_assignment_subject"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="5dp"-->
-                <!--android:visibility="invisible" />-->
-            </LinearLayout>
-            <!-- Second spinner-->
-            <LinearLayout
+            <Spinner
+                android:id="@+id/sp_assignment_classwise"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:background="@drawable/shadow_grey_small_size"
+                android:padding="@dimen/d10dp"/>
 
-                <Spinner
-                    android:id="@+id/sp_assignment_classwise"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_grey_small_size" />
-            </LinearLayout>
-
-            <!-- Third spinner-->
-            <LinearLayout
+            <Spinner
+                android:id="@+id/sp_assignent_assessed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
-
-                <Spinner
-                    android:id="@+id/sp_assignent_assessed"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_grey_small_size" />
-
-            </LinearLayout>
+                android:background="@drawable/shadow_grey_small_size"
+                android:padding="@dimen/d10dp"/>
 
             <!-- Fourth image-->
             <RelativeLayout

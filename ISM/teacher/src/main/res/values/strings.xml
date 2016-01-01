@@ -14,6 +14,8 @@
     <!-- Progress Report Details-->
     <string name="str_date_range">Date Range:</string>
     <string name="str_class_score">Class Score</string>
+    <string name="str_from">From</string>
+    <string name="str_to">To</string>
 
     <!-- Tutorial Group-->
     <string name="str_tutorial">Tutorial</string>
@@ -23,10 +25,13 @@
     <string name="str_group_name">Group Name</string>
     <string name="str_group_scores">Group Scores</string>
     <string name="str_group_rank">Group Rank</string>
+    <string name="str_schedule_exam">Schedule Exam</string>
 
     <!-- Result-->
     <string name="str_freezeresult">Freeze Result</string>
 
+    <!-- Progress Report-->
+    <string name="str_date_">Freeze Result</string>
 
     <string name="str_personal_info">PERSONAL INFORMATION</string>
     <string name="str_manage_credential">MANAGE CREDENTIAL</string>
@@ -358,6 +363,7 @@
 
     <!-- Assignment-->
     <string name="classwise">Class Wise</string>
+    <string name="str_status">Status</string>
     <string name="submission_date">Submission Date</string>
     <string-array name="assignment_status">
         <item>Assessed Status</item>
@@ -376,6 +382,7 @@
     <string name="strStudentAttempted">Student Attempted</string>
     <string name="strScore">Score</string>
     <string name="strComments">Comments</string>
+    <string name="strComment">Comment</string>
     <string name="strexamtype_colon">Exam Type :</string>
     <string name="strClass_colon">Class :</string>
     <string name="strcorrect_answer">Correct Answer :</string>

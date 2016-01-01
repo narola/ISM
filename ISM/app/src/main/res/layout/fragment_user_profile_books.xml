@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/studymate_tab_bg"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/d10dp">
+                android:paddingLeft="@dimen/dp8">
 
                 <TextView
                     android:id="@+id/txt_read_books"
@@ -32,7 +32,7 @@
                     android:layout_centerVertical="true"
                     android:text="@string/strBooksYouMayWantToRead"
                     android:textColor="@color/bg_app_dark"
-                    android:textSize="@dimen/d20sp" />
+                    android:textSize="@dimen/sp15" />
 
                 <!--<ImageView-->
                 <!--android:id="@+id/img_filter_read_books"-->
@@ -67,14 +67,14 @@
 
                     <EditText
                         android:id="@+id/et_search_suggested"
-                        android:layout_width="@dimen/d200dp"
+                        android:layout_width="@dimen/dp150"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/d20dp"
+                        android:layout_marginRight="@dimen/dp15"
                         android:hint="@string/hint_search"
                         android:imeOptions="actionSearch"
                         android:inputType="text"
-                        android:textSize="@dimen/d18sp"
+                        android:textSize="@dimen/sp14"
                         android:singleLine="true"
                         android:textColor="@color/colorPrimary"
                         android:textColorHint="@color/border_gray"
@@ -92,7 +92,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/d240dp"
+                android:layout_height="@dimen/dp180"
                 android:background="@color/color_white"
                 android:orientation="horizontal">
 
@@ -108,8 +108,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
-                    android:layout_marginLeft="@dimen/d5dp"
-                    android:layout_marginRight="@dimen/d5dp"
+                    android:layout_marginLeft="@dimen/dp4"
+                    android:layout_marginRight="@dimen/dp4"
                     android:layout_toLeftOf="@+id/img_next_suggested"
                     android:layout_toRightOf="@+id/img_prev_suggested"
                     android:background="@color/color_white" />
@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/studymate_tab_bg"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/d10dp">
+                android:paddingLeft="@dimen/dp8">
 
                 <TextView
                     android:id="@+id/txt_fav_books"
@@ -149,7 +149,7 @@
                     android:layout_centerVertical="true"
                     android:text="@string/strYourFavouriteBooks"
                     android:textColor="@color/bg_app_dark"
-                    android:textSize="@dimen/d20sp" />
+                    android:textSize="@dimen/sp15" />
 
                 <!--<ImageView-->
                 <!--android:id="@+id/img_filter_fav_books"-->
@@ -184,14 +184,14 @@
 
                     <EditText
                         android:id="@+id/et_search_fav"
-                        android:layout_width="@dimen/d200dp"
+                        android:layout_width="@dimen/dp150"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/d20dp"
+                        android:layout_marginRight="@dimen/dp15"
                         android:hint="@string/hint_search"
                         android:imeOptions="actionSearch"
                         android:inputType="text"
-                        android:textSize="@dimen/d18sp"
+                        android:textSize="@dimen/sp14"
                         android:singleLine="true"
                         android:textColor="@color/colorPrimary"
                         android:textColorHint="@color/border_gray"
@@ -209,7 +209,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/d240dp"
+                android:layout_height="@dimen/dp180"
                 android:background="@color/color_white"
                 android:orientation="horizontal">
 
@@ -235,8 +235,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:layout_marginLeft="@dimen/d5dp"
-                    android:layout_marginRight="@dimen/d5dp"
+                    android:layout_marginLeft="@dimen/dp4"
+                    android:layout_marginRight="@dimen/dp4"
                     android:layout_toLeftOf="@+id/img_next_fav"
                     android:layout_toRightOf="@+id/img_prev_fav"
                     android:background="@color/color_white" />

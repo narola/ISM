@@ -158,13 +158,12 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
                 if (strNoteByID == Integer.parseInt(Global.strUserId)) {
                     if (imgEdit.isActivated()) {
                         imgEdit.setActivated(false);
+                        testHorizontalScrollView.setVisibility(View.GONE);
                         etSubject.setEnabled(false);
                         editNote(etSubject.getText().toString().trim(), rteNotes.getHtml().toString());
                     } else {
                         etSubject.setEnabled(true);
                         imgEdit.setActivated(true);
-                        rteNotes.setEnabled(true);
-                        rteNotes.requestFocus();
                         rteNotes.setVisibility(View.VISIBLE);
                         testHorizontalScrollView.setVisibility(View.VISIBLE);
                     }

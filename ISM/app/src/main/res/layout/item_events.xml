@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/d220dp"
-    android:layout_height="@dimen/d250dp"
-    android:layout_marginBottom="@dimen/d10dp"
-    android:layout_marginEnd="@dimen/d5dp"
-    android:layout_marginLeft="@dimen/d5dp"
-    android:layout_marginRight="@dimen/d5dp"
-    android:layout_marginStart="@dimen/d5dp"
-    android:layout_marginTop="@dimen/d10dp">
+    android:layout_width="@dimen/dp165"
+    android:layout_height="@dimen/dp187"
+    android:layout_marginBottom="@dimen/dp8"
+    android:layout_marginEnd="@dimen/dp4"
+    android:layout_marginLeft="@dimen/dp4"
+    android:layout_marginRight="@dimen/dp4"
+    android:layout_marginStart="@dimen/dp4"
+    android:layout_marginTop="@dimen/dp8">
 
     <ImageView
         android:id="@+id/img_link"
-        android:layout_width="@dimen/d210dp"
-        android:layout_height="@dimen/d190dp"
-        android:padding="@dimen/d5dp"
+        android:layout_width="@dimen/dp158"
+        android:layout_height="@dimen/dp143"
+        android:padding="@dimen/dp4"
         android:src="@color/pink" />
 
     <ImageView
@@ -22,17 +22,17 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/img_link"
         android:layout_alignEnd="@+id/img_link"
-        android:layout_margin="@dimen/d5dp"
+        android:layout_margin="@dimen/dp4"
         android:src="@drawable/like_fill" />
 
     <TextView
-        android:layout_width="@dimen/d70dp"
-        android:layout_height="@dimen/d70dp"
+        android:layout_width="@dimen/dp53"
+        android:layout_height="@dimen/dp53"
         android:background="@drawable/shape_event_date"
         android:gravity="center"
         android:text="30th May"
         android:textColor="@color/green"
-        android:textSize="@dimen/d20sp"
+        android:textSize="@dimen/sp15"
         android:layout_alignParentTop="true"
         android:layout_alignEnd="@+id/textView" />
     <TextView
@@ -41,12 +41,12 @@
         android:text="Event NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent NameEvent Name"
         android:ellipsize="end"
         android:lines="2"
-        android:textSize="@dimen/d16sp"
+        android:textSize="@dimen/sp12"
         android:gravity="center"
-        android:paddingRight="@dimen/d20sp"
-        android:paddingLeft="@dimen/d5dp"
-        android:paddingTop="@dimen/d5dp"
-        android:paddingBottom="@dimen/d5dp"
+        android:paddingRight="@dimen/sp15"
+        android:paddingLeft="@dimen/dp4"
+        android:paddingTop="@dimen/dp4"
+        android:paddingBottom="@dimen/dp4"
         android:layout_below="@+id/img_link"
         android:textColor="@color/color_red"
         android:id="@+id/textView" />

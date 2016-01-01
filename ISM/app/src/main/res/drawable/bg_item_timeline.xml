@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-	<item android:left="@dimen/d6dp">
+	<item android:left="@dimen/dp4">
 		<shape>
 		    <solid android:color="@color/border_timeline" />
 		</shape>
 	</item>
-	<item android:left="@dimen/d7dp">
+	<item android:left="@dimen/dp5">
 		<shape>
 			<solid android:color="@android:color/white" />
 		</shape>

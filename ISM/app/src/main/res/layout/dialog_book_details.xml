@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/d50dp"
-    android:layout_marginLeft="@dimen/d100dp"
-    android:layout_marginRight="@dimen/d100dp"
-    android:layout_marginTop="@dimen/d50dp"
+    android:layout_marginBottom="@dimen/dp38"
+    android:layout_marginLeft="@dimen/dp75"
+    android:layout_marginRight="@dimen/dp75"
+    android:layout_marginTop="@dimen/dp38"
     android:background="@drawable/bg_about_me"
     android:orientation="vertical">
 
@@ -15,15 +15,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/d2dp"
-        android:layout_marginRight="@dimen/d2dp"
-        android:layout_marginTop="@dimen/d2dp"
+        android:layout_marginLeft="@dimen/dp2"
+        android:layout_marginRight="@dimen/dp2"
+        android:layout_marginTop="@dimen/dp2"
         android:background="@color/green"
         android:gravity="center"
-        android:padding="@dimen/d10dp"
+        android:padding="@dimen/dp8"
         android:text="Book Details"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/d25sp" />
+        android:textSize="@dimen/sp19" />
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -45,9 +45,9 @@
 
                 <ImageView
                     android:id="@+id/img_book_image"
-                    android:layout_width="@dimen/d200dp"
-                    android:layout_height="@dimen/d200dp"
-                    android:layout_margin="@dimen/d10dp"
+                    android:layout_width="@dimen/dp150"
+                    android:layout_height="@dimen/dp150"
+                    android:layout_margin="@dimen/dp8"
                     android:scaleType="fitXY"
                     android:background="@drawable/bg_white_border_gray"
                     android:src="@drawable/img_no_cover_available" />
@@ -62,38 +62,38 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:padding="@dimen/d5dp"
+                        android:padding="@dimen/dp4"
                         android:text="@string/strBook"
                         android:textColor="@color/bg_app_dark"
-                        android:textSize="@dimen/d20sp" />
+                        android:textSize="@dimen/sp15" />
 
                     <TextView
                         android:id="@+id/txt_book_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:padding="@dimen/d5dp"
+                        android:padding="@dimen/dp4"
                         android:text=""
-                        android:textSize="@dimen/d18sp" />
+                        android:textSize="@dimen/sp14" />
 
                     <TextView
                         android:id="@+id/txt_ebook_for_link"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:padding="@dimen/d5dp"
+                        android:padding="@dimen/dp4"
                         android:text="@string/strEbookLink"
                         android:textColor="@color/bg_app_dark"
-                        android:textSize="@dimen/d20sp" />
+                        android:textSize="@dimen/sp15" />
 
                     <TextView
                         android:id="@+id/txt_ebook_link"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:padding="@dimen/d5dp"
+                        android:padding="@dimen/dp4"
                         android:text=""
-                        android:textSize="@dimen/d18sp" />
+                        android:textSize="@dimen/sp14" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -106,9 +106,9 @@
 
                 <ImageView
                     android:id="@+id/img_author"
-                    android:layout_width="@dimen/d200dp"
-                    android:layout_height="@dimen/d200dp"
-                    android:layout_margin="@dimen/d10dp"
+                    android:layout_width="@dimen/dp150"
+                    android:layout_height="@dimen/dp150"
+                    android:layout_margin="@dimen/dp8"
                     android:background="@drawable/bg_white_border_gray"
                     android:scaleType="centerInside"
                     android:src="@drawable/img_default_dp" />
@@ -116,8 +116,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d10dp"
-                    android:layout_marginRight="@dimen/d10dp"
+                    android:layout_marginLeft="@dimen/dp8"
+                    android:layout_marginRight="@dimen/dp8"
                     android:orientation="vertical">
 
                     <TextView
@@ -125,65 +125,65 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:padding="@dimen/d5dp"
+                        android:padding="@dimen/dp4"
                         android:text="@string/strAuthor"
                         android:textColor="@color/bg_app_dark"
-                        android:textSize="@dimen/d20sp" />
+                        android:textSize="@dimen/sp15" />
 
                     <TextView
                         android:id="@+id/txt_author_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:padding="@dimen/d5dp"
+                        android:padding="@dimen/dp4"
                         android:text=""
-                        android:textSize="@dimen/d18sp" />
+                        android:textSize="@dimen/sp14" />
 
                     <TextView
                         android:id="@+id/txt_publisher"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:padding="@dimen/d5dp"
+                        android:padding="@dimen/dp4"
                         android:text="@string/strPublisher"
                         android:textColor="@color/bg_app_dark"
-                        android:textSize="@dimen/d20sp" />
+                        android:textSize="@dimen/sp15" />
 
                     <TextView
                         android:id="@+id/txt_publisher_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:padding="@dimen/d5dp"
+                        android:padding="@dimen/dp4"
                         android:text=""
-                        android:textSize="@dimen/d18sp" />
+                        android:textSize="@dimen/sp14" />
 
                     <TextView
                         android:id="@+id/txt_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:padding="@dimen/d5dp"
+                        android:padding="@dimen/dp4"
                         android:text="@string/strPrice"
                         android:textColor="@color/bg_app_dark"
-                        android:textSize="@dimen/d20sp" />
+                        android:textSize="@dimen/sp15" />
 
                     <TextView
                         android:id="@+id/txt_price_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:padding="@dimen/d5dp"
+                        android:padding="@dimen/dp4"
                         android:text=""
-                        android:textSize="@dimen/d18sp" />
+                        android:textSize="@dimen/sp14" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/d10dp"
-                android:layout_marginRight="@dimen/d10dp"
+                android:layout_marginLeft="@dimen/dp8"
+                android:layout_marginRight="@dimen/dp8"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -192,19 +192,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:padding="@dimen/d5dp"
+                    android:padding="@dimen/dp4"
                     android:text="@string/strDescription"
                     android:textColor="@color/bg_app_dark"
-                    android:textSize="@dimen/d20sp" />
+                    android:textSize="@dimen/sp15" />
 
                 <TextView
                     android:id="@+id/txt_desc_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:padding="@dimen/d5dp"
+                    android:padding="@dimen/dp4"
                     android:text="Details"
-                    android:textSize="@dimen/d18sp" />
+                    android:textSize="@dimen/sp14" />
 
             </LinearLayout>
 
@@ -221,14 +221,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/d5dp"
+        android:layout_margin="@dimen/dp4"
         android:background="@drawable/bg_button_green"
         android:gravity="center"
         android:paddingBottom="10dp"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
-        android:paddingTop="@dimen/d10dp"
+        android:paddingTop="@dimen/dp8"
         android:text="@string/strclose"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/d20sp" />
+        android:textSize="@dimen/sp15" />
 </RelativeLayout>
