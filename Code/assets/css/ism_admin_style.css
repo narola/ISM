@@ -2370,3 +2370,18 @@ body{
 #login_bgs, .appconfig_tabs{
 	padding:10px;
 }
+.thumbnails ul li {
+    float: left;
+    margin-bottom: 12px;
+    margin-right: 26px;
+}
+.thumbnails {
+    display: block;
+    margin-bottom: 10px;
+}
+.thumbnails ul{
+	list-style: outside none none;
+}
+#login_bgs .tab-content {
+    padding: 10px;
+}

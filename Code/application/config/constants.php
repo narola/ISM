@@ -190,3 +190,4 @@ define('TBL_WORD_WATCH','word_watch');
 define('TBL_TUTORIAL_TOPIC_EXAM','tutorial_topic_exam');
 define('TBL_EXAM_QUESTION','exam_question');
 
+define('TBL_APP_IMAGES','app_images');

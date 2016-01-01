@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" media="all" href="assets/css/jquery.lightbox-0.5.css">
 <div class="col-sm-7 main main2 add_book_page general_cred mCustomScrollbar" data-mcs-theme="minimal-dark">
 	<!--breadcrumb-->
 	 <div class="row page_header">
@@ -26,16 +27,31 @@
 
   <div class="tab-content">
     <div id="author" class="tab-pane fade in active">
-      <h3>Author</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <div id="author_thumbnails" class="thumbnails">
+        <ul class="clearfix">
+        <?php foreach ($author_images as $image) { ?>
+          <li><a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a></li>
+        <?php } ?>
+        </ul>
+      </div>
     </div>
     <div id="student" class="tab-pane fade">
-      <h3>Student</h3>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <div id="student_thumbnails" class="thumbnails">
+        <ul class="clearfix">
+        <?php foreach ($student_images as $image) { ?>
+          <li><a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a></li>
+        <?php } ?>
+      </ul>
+      </div>
     </div>
     <div id="teacher" class="tab-pane fade">
-      <h3>Teacher</h3>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+      <div id="teacher_thumbnails" class="thumbnails">
+        <ul class="clearfix">
+        <?php foreach ($teacher_images as $image) { ?>
+          <li><a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a></li>
+        <?php } ?>
+      </ul>
+      </div>
     </div>
     
   </div>
@@ -43,8 +59,11 @@
   </div>
   </div>
 </div>
+<script type="text/javascript" src="assets/js/jquery.lightbox-0.5.min.js"></script>
   <script type="text/javascript">
-    $(document).ready(function() {
-       
-    });
+  $(function() {
+    $('#author_thumbnails a').lightBox();
+    $('#student_thumbnails a').lightBox();
+    $('#teacher_thumbnails a').lightBox();
+  });
 </script>

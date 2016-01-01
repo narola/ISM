@@ -134,6 +134,7 @@ $url = uri_string();
                                     </ul>
                                 </li>
                                 <li <?php echo ($url == 'admin/classroom') ? 'class="active"' : ''; ?>><a href="admin/classroom">Classrooms</a></li>
+                                <li <?php echo ($url == 'admin/appconfig') ? 'class="active"' : ''; ?>><a href="admin/appconfig">App Config</a></li>
                                 
                             </ul>
                         </li>

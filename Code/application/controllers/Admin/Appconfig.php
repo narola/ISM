@@ -17,6 +17,22 @@ class Appconfig extends ADMIN_Controller {
 	 */
 	public function index(){
 		$this->data['page_title'] = 'App Config';
+
+		$author_images = select(TBL_APP_IMAGES,'image_url, status', array('where'=>array(
+											'is_delete'=>0,
+											'app_name'=>'Author'
+			)));
+		$student_images = select(TBL_APP_IMAGES,'image_url, status', array('where'=>array(
+											'is_delete'=>0,
+											'app_name'=>'Student'
+			)));
+		$teacher_images = select(TBL_APP_IMAGES,'image_url, status', array('where'=>array(
+											'is_delete'=>0,
+											'app_name'=>'Teacher'
+			)));
+		$this->data['author_images'] = $author_images;
+		$this->data['student_images'] = $student_images;
+		$this->data['teacher_images'] = $teacher_images;
 		$this->template->load('admin/default','admin/appconfig/index',$this->data);
 	}
 }
