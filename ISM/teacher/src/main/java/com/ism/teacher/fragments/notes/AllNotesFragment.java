@@ -17,7 +17,6 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.notes.AllNotesAdapter;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -259,7 +258,7 @@ public class AllNotesFragment extends Fragment implements WebserviceWrapper.Webs
                 ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(WebConstants.USER_ID_370);
-                attribute.setRoleId(AppConstant.TEACHER_ROLE_ID);
+                attribute.setRoleId(WebConstants.TEACHER_ROLE_ID);
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.ALL_LESSON_NOTES);
             } catch (Exception e) {

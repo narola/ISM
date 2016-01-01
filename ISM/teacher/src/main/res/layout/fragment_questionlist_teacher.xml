@@ -32,7 +32,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:entries="@array/list"
-                android:padding="@dimen/d15dp"
+                android:padding="@dimen/d10dp"
                 android:spinnerMode="dropdown" />
 
             <Spinner
@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:entries="@array/list"
-                android:padding="@dimen/d15dp"
+                android:padding="@dimen/d10dp"
                 android:spinnerMode="dropdown" />
 
 
@@ -53,7 +53,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:entries="@array/list"
-                android:padding="@dimen/d15dp"
+                android:padding="@dimen/d10dp"
                 android:spinnerMode="dropdown" />
 
             <RelativeLayout

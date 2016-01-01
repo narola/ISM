@@ -179,8 +179,8 @@ public class WebserviceWrapper {
                             case WebConstants.GET_ALL_ASSIGNMENTS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_ASSIGNMENTS).execute(ResponseHandler.class, attribute);
                                 break;
-                            case WebConstants.GET_ALL_EXAM_SUBMISSION:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_EXAM_SUBMISSION).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GET_EXAM_SUBMISSION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_EXAM_SUBMISSION).execute(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.GET_EXAM_QUESTIONS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_EXAM_QUESTIONS).execute(ResponseHandler.class, attribute);

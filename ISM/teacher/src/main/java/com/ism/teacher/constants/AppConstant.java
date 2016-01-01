@@ -45,14 +45,6 @@ public class AppConstant {
     public static final String AUDIO_CAPTURE_PATH = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Audios";
 
 
-    public static final String TEST_GET_ALL_FEEDS = "141";
-    public static final String TEST_GETSTUDYMATES = "167";
-    public static final String TEST_FEEDID = "240";
-    public static final String TEST_TAGGED_BY = "134";
-    public static final String[] tagUserArray = new String[]{"141", "167"};
-    public static final String AUTHOR_ROLE_ID = "4";
-    public static final String TEACHER_ROLE_ID = "3";
-
     /**
      * Managing Teacher office Fragment by using tags
      */

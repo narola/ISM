@@ -393,12 +393,12 @@
     <!-- Dummy strings-->
     <string name="question">For testing this question text..how this question will look like if its a very long question..will it wrap to next line? or it will behave in some unexpected way..</string>
     <string name="stryouranswer">Answer:</string>
-    <string name="strexcellent">Excellent</string>
-    <string name="strgood">Good</string>
-    <string name="strfair">Fair</string>
-    <string name="straverage">Average</string>
-    <string name="strpoor">Poor</string>
-    <string name="strincorrect">InCorrect</string>
+    <string name="strexcellent">5 Excellent</string>
+    <string name="strgood">4 Good</string>
+    <string name="strfair">3 Fair</string>
+    <string name="straverage">2 Average</string>
+    <string name="strpoor">1 Poor</string>
+    <string name="strincorrect">0 Incorrect</string>
 
     <!-- MyStudents-->
     <string name="strmystudents">My Students</string>

@@ -188,7 +188,6 @@
                     android:textSize="@dimen/d15sp" />
             </LinearLayout>
 
-
         </LinearLayout>
 
         <ImageView
