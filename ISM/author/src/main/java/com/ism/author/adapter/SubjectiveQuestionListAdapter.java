@@ -56,21 +56,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
         try {
 
-            holder.tvSubjectiveQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvSubjectiveQuestionScore.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvSubjectiveQuestionComment.setTypeface(Global.myTypeFace.getRalewayBold());
 
-            holder.tvSubjectiveQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvSubjectiveQuestionAnsTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvSubjectiveQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvSubjectiveQuesEvaluationNotesTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvSubjectiveQuesEvaluationNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvScoreExcellent.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvScoreGood.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvScoreFair.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvScoreAverage.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvScorePoor.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvScoreIncorrect.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
             holder.tvSubjectiveQuestionNo.setText(mContext.getResources().getString(R.string.strquestion) + " : " + (position + 1));
@@ -218,6 +204,23 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
                 etAddComment = (EditText) itemView.findViewById(R.id.et_add_comment);
                 scoreTextArray = new TextView[]{tvScoreExcellent, tvScoreGood, tvScoreFair, tvScoreAverage, tvScorePoor, tvScoreIncorrect};
+
+
+                tvSubjectiveQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
+                tvSubjectiveQuestionScore.setTypeface(Global.myTypeFace.getRalewayBold());
+                tvSubjectiveQuestionComment.setTypeface(Global.myTypeFace.getRalewayBold());
+
+                tvSubjectiveQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvSubjectiveQuestionAnsTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvSubjectiveQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvSubjectiveQuesEvaluationNotesTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvSubjectiveQuesEvaluationNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvScoreExcellent.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvScoreGood.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvScoreFair.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvScoreAverage.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvScorePoor.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvScoreIncorrect.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
             } catch (Exception e) {

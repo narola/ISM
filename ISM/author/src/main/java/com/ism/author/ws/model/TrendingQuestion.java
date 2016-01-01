@@ -1,5 +1,7 @@
 package com.ism.author.ws.model;
 
+import android.text.Spanned;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,6 +23,9 @@ public class TrendingQuestion {
     private String postedByPic;
     private String postedByUserId;
     private String followerCount;
+    private String answerText;
+    private Spanned span = null;
+
 
     @JsonProperty("question_text")
     public String getQuestionText() {
@@ -92,6 +97,26 @@ public class TrendingQuestion {
 
     public void setFollowerCount(String followerCount) {
         this.followerCount = followerCount;
+    }
+
+
+    @JsonProperty("answer_text")
+    public String getAnswerText() {
+        return answerText;
+    }
+
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
+
+    }
+
+
+    public Spanned getSpan() {
+        return span;
+    }
+
+    public void setSpan(Spanned span) {
+        this.span = span;
     }
 
 

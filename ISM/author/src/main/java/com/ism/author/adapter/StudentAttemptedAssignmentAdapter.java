@@ -57,10 +57,7 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                     holder.imgUserPic, ISMAuthor.options);
 
-            holder.txtStudentName.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.txtStudentSchool.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.txtStudentMarks.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.txtStudentClass.setTypeface(Global.myTypeFace.getRalewayRegular());
+
 
             holder.txtStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
 //            holder.txtStudentSchool.setText(arrListExamSubmittor.get(position).getSchoolName());
@@ -128,6 +125,12 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
                 txtStudentClass = (TextView) convertView.findViewById(R.id.txt_student_class);
                 llMain = (LinearLayout) convertView.findViewById(R.id.ll_main);
                 txt_bottom_line = (TextView) convertView.findViewById(R.id.txt_bottom_line);
+
+
+                txtStudentName.setTypeface(Global.myTypeFace.getRalewayBold());
+                txtStudentSchool.setTypeface(Global.myTypeFace.getRalewayRegular());
+                txtStudentMarks.setTypeface(Global.myTypeFace.getRalewayRegular());
+                txtStudentClass.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             } catch (Exception e) {
                 Debug.e(TAG, "ViewHolder Exceptions :" + e.toString());

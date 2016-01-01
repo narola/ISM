@@ -51,20 +51,9 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
     public void onBindViewHolder(ViewHolder holder, int position) {
         try {
 
-            holder.txtQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.txtQuestionText.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.txtCorrectAnswer.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.txtAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.txtStudentnameAnswer.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.txtStudentAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.txtEvoluationsNotes.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.txtSolution.setTypeface(Global.myTypeFace.getRalewayBold());
 
-            holder.tvEvoluationsNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvSolution.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             holder.txtQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
-            holder.txtQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
             holder.txtQuestionNo.setPaintFlags(holder.txtQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 //            holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext, null), null));
 
@@ -180,8 +169,8 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtQuestionNo, txtQuestionText, txtCorrectAnswer, txtAnswer, txtStudentnameAnswer, txtStudentAnswer, txtEvoluationsNotes,
-                txtSolution, tvEvoluationsNotes, tvSolution;
+        TextView txtQuestionNo, txtQuestionText, txtCorrectAnswer, txtAnswer, txtStudentnameAnswer, txtStudentAnswer, txtEvoluationsNotesTitle,
+                txtSolutionTitle, tvEvoluationsNotes, tvSolution;
 
         LinearLayout llQuestionsOptions, llAnswerContainer, llEvaluationContainer, llCorrectAnswer;
 
@@ -191,11 +180,11 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
                 txtQuestionNo = (TextView) itemView.findViewById(R.id.txt_question_no);
                 txtQuestionText = (TextView) itemView.findViewById(R.id.txt_question_text);
                 txtCorrectAnswer = (TextView) itemView.findViewById(R.id.txt_correct_answer);
-                txtAnswer = (TextView) itemView.findViewById(R.id.txt_answer);
+                txtAnswer = (TextView) itemView.findViewById(R.id.txt_author_answer);
                 txtStudentnameAnswer = (TextView) itemView.findViewById(R.id.txt_studentname_answer);
                 txtStudentAnswer = (TextView) itemView.findViewById(R.id.txt_student_answer);
-                txtEvoluationsNotes = (TextView) itemView.findViewById(R.id.txt_evoluations_notes);
-                txtSolution = (TextView) itemView.findViewById(R.id.txt_solution);
+                txtEvoluationsNotesTitle = (TextView) itemView.findViewById(R.id.txt_evoluations_notes_title);
+                txtSolutionTitle = (TextView) itemView.findViewById(R.id.txt_solution_title);
 
                 tvEvoluationsNotes = (TextView) itemView.findViewById(R.id.tv_evoluations_notes);
                 tvSolution = (TextView) itemView.findViewById(R.id.tv_title_solution);
@@ -205,6 +194,20 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
                 llEvaluationContainer = (LinearLayout) itemView.findViewById(R.id.ll_evaluation_container);
 
                 llCorrectAnswer = (LinearLayout) itemView.findViewById(R.id.ll_correct_answer);
+
+
+
+                txtQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
+                txtQuestionText.setTypeface(Global.myTypeFace.getRalewayRegular());
+                txtCorrectAnswer.setTypeface(Global.myTypeFace.getRalewayBold());
+                txtAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
+                txtStudentnameAnswer.setTypeface(Global.myTypeFace.getRalewayBold());
+                txtStudentAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
+                txtEvoluationsNotesTitle.setTypeface(Global.myTypeFace.getRalewayBold());
+                txtSolutionTitle.setTypeface(Global.myTypeFace.getRalewayBold());
+                tvEvoluationsNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvSolution.setTypeface(Global.myTypeFace.getRalewayRegular());
+
 
             } catch (Exception e) {
                 Debug.e(TAG, "ViewHolder Exceptions :" + e.toString());

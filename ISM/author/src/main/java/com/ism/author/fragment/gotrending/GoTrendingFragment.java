@@ -183,6 +183,7 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
         if (Utility.isConnected(getActivity())) {
             try {
                 activityHost.showProgress();
+
                 Attribute attribute = new Attribute();
 
                 MediaUploadAttribute authorIdParam = new MediaUploadAttribute();
@@ -200,6 +201,7 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
                 answerTextParam.setParamValue(getHtmlQuestionText());
 
                 addImage();
+
                 if (imageSources.size() > 0) {
                     for (int i = 0; i < imageSources.size(); i++) {
                         MediaUploadAttribute mediaFileParam = new MediaUploadAttribute();

@@ -286,7 +286,7 @@ public class WebserviceWrapper {
                                         attribute);
                                 break;
                             case WebConstants.SUBMIT_TRENDING_ANSWER:
-                                responseObject = new WebserviceConnector(WebConstants.URL_SUBMIT_TRENDING_ANSWER).execute(ResponseHandler.class,
+                                responseObject = new WebserviceConnector(WebConstants.URL_SUBMIT_TRENDING_ANSWER).uploadMedia(ResponseHandler.class,
                                         attribute);
                                 break;
 
