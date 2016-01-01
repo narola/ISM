@@ -3,7 +3,6 @@
     android:layout_width="@dimen/d100dp"
     android:layout_height="@dimen/d100dp"
     android:padding="@dimen/d10dp"
-
     android:orientation="vertical">
 
     <RelativeLayout

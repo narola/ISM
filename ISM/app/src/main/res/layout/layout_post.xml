@@ -73,7 +73,7 @@
             <EditText
                 android:id="@+id/et_sayit"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginRight="@dimen/d63dp"
                 android:layout_weight="0.8"
                 android:background="@color/color_white"
@@ -84,7 +84,7 @@
             <com.ism.views.HorizontalListView
                 android:id="@+id/horilistview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginRight="@dimen/d63dp"
                 android:layout_weight="1"
                 android:padding="@dimen/d10dp"

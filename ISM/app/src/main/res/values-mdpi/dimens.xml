@@ -238,4 +238,7 @@
     <dimen name="bg_controller_border">@dimen/d1dp</dimen>
     <dimen name="bg_controller_border_double">@dimen/d2dp</dimen>
     <dimen name="d190dp">143dp</dimen>
+    <dimen name="d502dp">420dp</dimen>
+    <dimen name="d187dp">187dp</dimen>
+
 </resources>

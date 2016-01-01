@@ -593,6 +593,7 @@
 	<string name="strEnterYourCategoryName">Enter your category name</string>
 	<string name="strPastTimes">Pastimes :</string>
 	<string name="strVideo">Video</string>
+	<string name="strAskQuestion">Ask Question</string>
 
 
 </resources>

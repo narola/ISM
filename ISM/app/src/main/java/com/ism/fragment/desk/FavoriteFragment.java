@@ -28,7 +28,7 @@ import com.ism.utility.Debug;
 /**
  * Created by c162 on 24/10/15.
  */
-public class FavoriteFragment extends Fragment {
+public class FavoriteFragment extends Fragment implements HostActivity.HostListenerItemChange {
     private static final String TAG = FavoriteFragment.class.getSimpleName();
     private View view;
 
@@ -56,12 +56,13 @@ public class FavoriteFragment extends Fragment {
     private View.OnClickListener onClickItem;
     private DeskFragment deskFragment;
 
-    public static int currentFragment=-1;
+    public static int currentFragment = -1;
 
     public static FavoriteFragment newInstance() {
         FavoriteFragment fragDesk = new FavoriteFragment();
         return fragDesk;
     }
+
     public FavoriteFragment() {
         // Required empty public constructor
     }
@@ -208,9 +209,6 @@ public class FavoriteFragment extends Fragment {
         txtViewAllAssignment.setOnClickListener(onClickItem);
     }
 
-    private Bundle getBundleArguments() {
-        return activityHost.getBundle();
-    }
 
     private void onClickItem(View v) {
         try {
@@ -218,9 +216,9 @@ public class FavoriteFragment extends Fragment {
 
             } else if (txtViewAllBooks == v) {
                 loadFragment(DeskFragment.FRAGMENT_ALL_BOOKS);
-            }else if (txtViewAllAssignment == v) {
+            } else if (txtViewAllAssignment == v) {
                 loadFragment(DeskFragment.FRAGMENT_ALL_ASSIGNMENTS);
-            }else if (txtViewAllExmas == v) {
+            } else if (txtViewAllExmas == v) {
                 loadFragment(DeskFragment.FRAGMENT_ALL_EXAMS);
             }
         } catch (Exception e) {
@@ -229,24 +227,29 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void loadFragment(int fragment) {
-        switch (fragment){
+        switch (fragment) {
             case DeskFragment.FRAGMENT_ALL_BOOKS:
-                currentFragment=fragment;
+                currentFragment = fragment;
+                activityHost.onChildFragmentAttached(false);
+                activityHost.onSetPositionSpinner(2);
+                deskFragment.setCurrentFragment(fragment);
                 getFragmentManager().beginTransaction().replace(R.id.fl_desk, AllBooksFragment.newInstance()).commit();
                 break;
             case DeskFragment.FRAGMENT_ALL_ASSIGNMENTS:
                 currentFragment = fragment;
+                deskFragment.setCurrentFragment(fragment);
+                activityHost.onChildFragmentAttached(false);
+                activityHost.onSetPositionSpinner(3);
                 getFragmentManager().beginTransaction().replace(R.id.fl_desk, AllAssignmentsFragment.newInstance()).commit();
                 break;
             case DeskFragment.FRAGMENT_ALL_EXAMS:
                 currentFragment = fragment;
+                deskFragment.setCurrentFragment(fragment);
+                activityHost.onChildFragmentAttached(false);
+                activityHost.onSetPositionSpinner(4);
                 getFragmentManager().beginTransaction().replace(R.id.fl_desk, AllExamsFragment.newInstance()).commit();
                 break;
         }
-    }
-
-    public static int getCurrentChildFragment() {
-        return currentFragment;
     }
 
     private void setUpEvents() {
@@ -310,6 +313,9 @@ public class FavoriteFragment extends Fragment {
         super.onAttach(activity);
         try {
             activityHost = (HostActivity) activity;
+            activityHost.onChildFragmentAttached(false);
+//            activityHost.onSetPositionSpinner(0);
+            deskFragment = DeskFragment.newInstance(currentFragment);
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
         }
@@ -319,4 +325,32 @@ public class FavoriteFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
+    @Override
+    public void onControllerTopItemChange(int position) {
+        switch (position){
+//            case 1:
+//                deskFragment.loadFragment( DeskFragment.FRAGMENT_FAVOURITES);
+//                break;
+            case 1:
+                loadFragment( DeskFragment.FRAGMENT_ALL_NOTES);
+                break;
+            case 2:
+                loadFragment( DeskFragment.FRAGMENT_ALL_BOOKS);
+                break;
+            case 3:
+                loadFragment( DeskFragment.FRAGMENT_ALL_ASSIGNMENTS);
+                break;
+            case 4:
+                loadFragment( DeskFragment.FRAGMENT_ALL_EXAMS);
+                break;
+            case 5:
+                loadFragment( DeskFragment.FRAGMENT_ALL_LINKS);
+                break;
+            case 6:
+                loadFragment( DeskFragment.FRAGMENT_ALL_EVENTS);
+                break;
+        }
+    }
+
 }
