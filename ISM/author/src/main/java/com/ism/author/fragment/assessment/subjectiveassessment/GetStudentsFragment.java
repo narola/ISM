@@ -1,4 +1,4 @@
-package com.ism.author.fragment.assessment.objectiveassessment;
+package com.ism.author.fragment.assessment.subjectiveassessment;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -23,7 +23,6 @@ import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -185,6 +184,10 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
                     arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
                     myStudentListAdapter.addAll(arrListExamSubmittor);
                     myStudentListAdapter.notifyDataSetChanged();
+
+
+                    getBaseFragment().setTitleDetails();
+
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());

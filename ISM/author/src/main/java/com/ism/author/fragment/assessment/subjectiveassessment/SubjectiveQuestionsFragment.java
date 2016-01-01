@@ -204,19 +204,19 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     @Override
     public void onResponse(int apiCode, Object object, Exception error) {
-//        try {
-        switch (apiCode) {
-            case WebConstants.GETEXAMQUESTIONS:
-                onResponseGetAllExamQuestions(object, error);
-                break;
-            case WebConstants.GETEXAMEVALUATIONS:
-                onResponseGetExamEvaluation(object, error);
-                break;
-        }
+        try {
+            switch (apiCode) {
+                case WebConstants.GETEXAMQUESTIONS:
+                    onResponseGetAllExamQuestions(object, error);
+                    break;
+                case WebConstants.GETEXAMEVALUATIONS:
+                    onResponseGetExamEvaluation(object, error);
+                    break;
+            }
 
-//        } catch (Exception e) {
-//            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-//        }
+        } catch (Exception e) {
+            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+        }
 
     }
 
@@ -251,11 +251,11 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
                     loading = true;
 
                     subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
-
                     updateStatusForEvaluation();
-                    setTitleDetails();
                     getBaseFragment().setQuestionStatusData(arrListQuestions,
                             responseObjGetExamEvaluation.getExamEvaluation().get(0).getQuestionPalette());
+
+                    setTitleDetails();
 
 
                 } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
@@ -279,6 +279,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     ArrayList<Examsubmittor> arrListExamSubmittor;
 
     private void loadNextStudentData() {
+
         isFromLeft = false;
         int position = getBaseFragment().getBundleArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
         if (position < arrListExamSubmittor.size() - 1) {
@@ -288,6 +289,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     }
 
     private void loadPreviousStudentData() {
+
         isFromLeft = true;
         int position = getBaseFragment().getBundleArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
         if (position >= 1) {
@@ -318,6 +320,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     }
 
     public void loadStudentEvaluationData() {
+
         if (getBaseFragment().getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID) != null) {
             setQuestions();
             callAPiGetExamEvaluation();
@@ -330,7 +333,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         rvSubjectiveQuestionsList.smoothScrollToPosition(position);
     }
 
-    private void setTitleDetails() {
+    public void setTitleDetails() {
 
         arrListExamSubmittor = getBaseFragment().getBundleArguments().getParcelableArrayList(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
 

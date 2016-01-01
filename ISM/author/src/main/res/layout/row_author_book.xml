@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_author_books"
+        android:padding="@dimen/d15dp">
+
+
+        <ImageView
+            android:id="@+id/img_book_cover"
+            android:layout_width="@dimen/d200dp"
+            android:layout_height="@dimen/d200dp"
+            android:layout_alignParentTop="true"
+            android:scaleType="centerCrop" />
+
+
+        <ImageView
+            android:id="@+id/img_book_info"
+            android:layout_width="@dimen/d50dp"
+            android:layout_height="@dimen/d50dp"
+            android:layout_alignEnd="@+id/img_book_cover"
+            android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/d10dp"
+            android:src="@drawable/img_i"
+            android:visibility="visible" />
+
+
+        <TextView
+            android:id="@+id/txt_book_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/img_book_cover"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/d10dp"
+            android:gravity="center"
+            android:padding="@dimen/d1dp"
+            android:text="Book"
+            android:textColor="@color/cpb_red"
+            android:textSize="@dimen/d20sp" />
+
+
+        <TextView
+            android:id="@+id/txt_book_viewers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txt_name"
+            android:layout_below="@+id/txt_name"
+            android:layout_marginTop="@dimen/d10dp"
+            android:gravity="center"
+            android:padding="@dimen/d1dp"
+            android:text="Book"
+            android:textColor="@color/color_dark_gray"
+            android:textSize="@dimen/d18sp" />
+    </RelativeLayout>
+
+
+</LinearLayout>

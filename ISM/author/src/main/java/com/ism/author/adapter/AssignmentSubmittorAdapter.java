@@ -60,12 +60,6 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         try {
-            holder.tvAssignmentSubmittorName.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvAssignmentSubmittorRollno.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvAssignmentSubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvSubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvAssessmentStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                     holder.imgAssignmentSubmittorDp, ISMAuthor.options);
@@ -156,6 +150,13 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
             tvStatus = (TextView) itemView.findViewById(R.id.tv_status);
 
             llAssignmentSubmittorContainer = (LinearLayout) itemView.findViewById(R.id.ll_assignment_submittor_container);
+
+            tvAssignmentSubmittorName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvAssignmentSubmittorRollno.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvAssignmentSubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvSubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvAssessmentStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         }

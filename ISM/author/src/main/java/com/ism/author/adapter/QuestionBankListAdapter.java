@@ -63,23 +63,20 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
         try {
             holder.tvQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
-            holder.tvQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
             holder.tvQuestionNo.setPaintFlags(holder.tvQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-            holder.tvQuestionBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
+
             holder.tvQuestionBookName.setText(mContext.getString(R.string.strbook));
 
             holder.tvQuestionBookName.append(Utility.getSpannableString(" " + arrListQuestions.get(position).getBookName(),
                     mContext.getResources().getColor(R.color.color_green)));
 
-            holder.tvQuestionCreatedby.setTypeface(Global.myTypeFace.getRalewayRegular());
+
             holder.tvQuestionCreatedby.setText(mContext.getString(R.string.strcreatedby));
 
             holder.tvQuestionCreatedby.append(Utility.getSpannableString(" " + arrListQuestions.get(position).getQuestionCreatorName(),
                     mContext.getResources().getColor(R.color.color_green)));
 
-
-            holder.tvQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 //            holder.tvQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText()));
 
@@ -109,7 +106,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             }
 
             if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
-                holder.tvQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
+
                 holder.tvQuestionAns.setText(arrListQuestions.get(position).getSolution());
             } else {
                 holder.llQuestionAnswers.removeAllViews();
@@ -302,6 +299,13 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             imgQuestionAddtofavourite = (ImageView) itemView.findViewById(R.id.img_question_addtofavourite);
 
             chkSelectQuestion = (CheckBox) itemView.findViewById(R.id.chk_select_question);
+
+
+            tvQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvQuestionBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvQuestionCreatedby.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
         }
     }
 

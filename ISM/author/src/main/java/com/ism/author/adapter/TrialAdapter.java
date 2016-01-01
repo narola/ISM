@@ -50,12 +50,6 @@ public class TrialAdapter extends RecyclerView.Adapter<TrialAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         try {
 
-            holder.tvExamBookName.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamType.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamNoofStudent.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamNoofStudentAvg.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamNoofStudentAttempted.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamAttempted.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             holder.tvExamBookName.setText(arrListExams.get(position).getBookName());
             holder.tvExamType.setText(arrListExams.get(position).getExamMode());
@@ -136,6 +130,14 @@ public class TrialAdapter extends RecyclerView.Adapter<TrialAdapter.ViewHolder> 
             tvExamNoofStudentAttempted = (TextView) itemView.findViewById(R.id.tv_exam_noof_student_attempted);
             tvExamAttempted = (TextView) itemView.findViewById(R.id.tv_exam_attempted);
             llExamEditOptions = (LinearLayout) itemView.findViewById(R.id.ll_exam_edit_options);
+
+            tvExamBookName.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvExamType.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvExamNoofStudent.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvExamNoofStudentAvg.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvExamNoofStudentAttempted.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvExamAttempted.setTypeface(Global.myTypeFace.getRalewayRegular());
+
         }
     }
 
