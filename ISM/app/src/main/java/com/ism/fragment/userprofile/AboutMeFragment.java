@@ -207,7 +207,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                     calDob.set(Calendar.YEAR, year);
                     calDob.set(Calendar.MONTH, monthOfYear);
                     calDob.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    strDob = Utility.formatDateApi(calDob.getTime());
+                    strDob = Utility.formatDate(calDob.getTime(), Utility.DATE_FORMAT_API);
                     etDob.setText(dateFormat(strDob));
                 }
             }, calDob.get(Calendar.YEAR), calDob.get(Calendar.MONTH), calDob.get(Calendar.DAY_OF_MONTH));

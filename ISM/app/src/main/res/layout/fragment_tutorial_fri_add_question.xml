@@ -436,6 +436,7 @@
 				android:paddingLeft="@dimen/dp15"
 				android:paddingRight="@dimen/dp15"
 				android:textSize="@dimen/sp15"
+				android:textAllCaps="true"
 				android:background="@drawable/bg_button_green_light"
 				android:layout_centerHorizontal="true"/>
 
