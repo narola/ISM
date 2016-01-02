@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
@@ -25,7 +26,7 @@ import java.util.Calendar;
 /**
  * Created by c161 on --/10/15.
  */
-public class TutorialFragment extends Fragment implements TutorialDiscussionFragment.TutorialDiscussionFragmentListener, WebserviceWrapper.WebserviceResponse {
+public class TutorialFragment extends Fragment implements TutorialDiscussionFragment.TutorialDiscussionFragmentListener, WebserviceWrapper.WebserviceResponse, HostActivity.HostListenerTutorial {
 
     private static final String TAG = TutorialFragment.class.getSimpleName();
 
@@ -62,16 +63,17 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 	private static int intCurrentFragment = -1;
 	private static int intCurrentDay = -1;
 
-    public static TutorialFragment newInstance(ExamFragment.ExamListener examListener) {
+    public static TutorialFragment newInstance(Bundle fragmentArguments, ExamFragment.ExamListener examListener) {
         TutorialFragment fragmentTutorial = new TutorialFragment();
 	    fragmentTutorial.setExamListener(examListener);
+	    fragmentTutorial.setArguments(fragmentArguments);
         return fragmentTutorial;
     }
 
     public TutorialFragment() {
     }
 
-    @Override
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	    view = inflater.inflate(R.layout.fragment_tutorial, container, false);
 
@@ -141,28 +143,32 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 	    txtSunday.setOnClickListener(listenerOnWeekDayClick);
 
 	    Calendar cal = Calendar.getInstance();
-	    switch (cal.get(Calendar.DAY_OF_WEEK)) {
-		    case Calendar.MONDAY:
-			    txtMonday.performClick();
-			    break;
-		    case Calendar.TUESDAY:
-			    txtTuesday.performClick();
-			    break;
-		    case Calendar.WEDNESDAY:
-			    txtWednesday.performClick();
-			    break;
-		    case Calendar.THURSDAY:
-			    txtThursday.performClick();
-			    break;
-		    case Calendar.FRIDAY:
-			    txtFriday.performClick();
-			    break;
-		    case Calendar.SATURDAY:
-			    txtSaturday.performClick();
-			    break;
-		    case Calendar.SUNDAY:
-			    txtSunday.performClick();
-			    break;
+	    if (getArguments() != null && getArguments().getString(AppConstant.ACTION).equals(AppConstant.ACTION_FRIDAY_EXAM)) {
+		    txtFriday.performClick();
+	    } else {
+		    switch (cal.get(Calendar.DAY_OF_WEEK)) {
+			    case Calendar.MONDAY:
+				    txtMonday.performClick();
+				    break;
+			    case Calendar.TUESDAY:
+				    txtTuesday.performClick();
+				    break;
+			    case Calendar.WEDNESDAY:
+				    txtWednesday.performClick();
+				    break;
+			    case Calendar.THURSDAY:
+				    txtThursday.performClick();
+				    break;
+			    case Calendar.FRIDAY:
+				    txtFriday.performClick();
+				    break;
+			    case Calendar.SATURDAY:
+				    txtSaturday.performClick();
+				    break;
+			    case Calendar.SUNDAY:
+				    txtSunday.performClick();
+				    break;
+		    }
 	    }
 
     }
@@ -230,6 +236,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
         try {
             fragListener = (FragmentListener) activity;
 	        activityHost = (HostActivity) activity;
+	        activityHost.setListenerHostTutorial(this);
             if (fragListener != null) {
                 fragListener.onFragmentAttached(HostActivity.FRAGMENT_TUTORIAL);
             }
@@ -242,6 +249,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
     public void onDetach() {
         super.onDetach();
         try {
+	        activityHost.setListenerHostTutorial(null);
             if (fragListener != null) {
                 fragListener.onFragmentDetached(HostActivity.FRAGMENT_TUTORIAL);
             }
@@ -292,4 +300,10 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 		}
 	}
 
+	@Override
+	public void setNewFragmentArguments(Bundle fragmentArguments) {
+		if (fragmentArguments != null && fragmentArguments.getString(AppConstant.ACTION).equals(AppConstant.ACTION_FRIDAY_EXAM)) {
+			txtFriday.performClick();
+		}
+	}
 }

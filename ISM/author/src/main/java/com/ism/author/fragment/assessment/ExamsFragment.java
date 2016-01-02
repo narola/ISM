@@ -29,7 +29,7 @@ import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.AuthorBook;
+import com.ism.author.ws.model.BookData;
 import com.ism.author.ws.model.Classrooms;
 import com.ism.author.ws.model.Exams;
 import com.ism.author.ws.model.Questions;
@@ -52,7 +52,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private FragmentListener fragListener;
     private Spinner spExamAuthorBooks, spExamClass, spExamEvaluationStatus;
     private ImageView imgToggleList;
-    private ArrayList<AuthorBook> arrListAuthorBooks;
+    private ArrayList<BookData> arrListAuthorBooks;
     private ArrayList<Classrooms> arrListClassRooms;
     private List<String> arrListAssessment;
 
@@ -79,6 +79,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void initGlobal() {
 
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         rvExamsList = (RecyclerView) view.findViewById(R.id.rv_exams_list);
         examsAdapter = new ExamsAdapter(getActivity());
 
@@ -93,18 +94,15 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
         arrListAssessment = new ArrayList<String>();
         arrListAssessment = Arrays.asList(getResources().getStringArray(R.array.assessment_type));
-        Adapters.setUpSpinner(getActivity(), spExamEvaluationStatus, arrListAssessment, Adapters.ADAPTER_SMALL, Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spExamEvaluationStatus, arrListAssessment, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
 
         txtSubmissionDate = (TextView) view.findViewById(R.id.txt_submission_date);
-        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         etExamStartdate = (EditText) view.findViewById(R.id.et_exam_startdate);
         etExamEnddate = (EditText) view.findViewById(R.id.et_exam_startTime);
 
 
         txtSubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_exams));
+
         etExamStartdate.setTypeface(Global.myTypeFace.getRalewayRegular());
         etExamEnddate.setTypeface(Global.myTypeFace.getRalewayRegular());
 
@@ -128,6 +126,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             }
         });
 
+        setEmptyView(false);
         callApiGetAuthorBooks();
         callApiGetClassrooms();
         callApiGetAllExams();
@@ -216,12 +215,11 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     private void showMsgNoFilterData(Boolean showMsg) {
-        if (showMsg) {
-            tvNoDataMsg.setText(getString(R.string.no_filter_exams));
-            tvNoDataMsg.setVisibility(View.VISIBLE);
-        } else {
-            tvNoDataMsg.setVisibility(View.GONE);
-        }
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_filter_exams));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(showMsg ? View.VISIBLE : View.GONE);
+        rvExamsList.setVisibility(showMsg ? View.GONE : View.VISIBLE);
     }
 
     private void filterClassroomWiseAssignments(String classroom_id) {
@@ -346,9 +344,12 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                         arrListExams.addAll(responseHandler.getExams());
                         examsAdapter.addAll(arrListExams);
                         examsAdapter.notifyDataSetChanged();
-                        tvNoDataMsg.setVisibility(View.GONE);
+                        setEmptyView(false);
+
                     } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+
+                        setEmptyView(true);
+
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -379,7 +380,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                         classrooms.add(classroom.getClassName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spExamClass, classrooms, Adapters.ADAPTER_SMALL,Global.myTypeFace.getRalewayRegular());
+                    Adapters.setUpSpinner(getActivity(), spExamClass, classrooms, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
@@ -397,16 +398,16 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListAuthorBooks = new ArrayList<AuthorBook>();
+                    arrListAuthorBooks = new ArrayList<BookData>();
                     arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
                     List<String> authorBooks = new ArrayList<String>();
                     authorBooks.add(getString(R.string.strbookname));
                     authorBooks.add(getString(R.string.strall));
-                    for (AuthorBook authorBook : arrListAuthorBooks) {
+                    for (BookData authorBook : arrListAuthorBooks) {
                         authorBooks.add(authorBook.getBookName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spExamAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL,Global.myTypeFace.getRalewayRegular());
+                    Adapters.setUpSpinner(getActivity(), spExamAuthorBooks, authorBooks, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
                     spExamAuthorBooks.setSelection(1);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
@@ -487,5 +488,15 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
     public Bundle getBundleArguments() {
         return ((AuthorHostActivity) getActivity()).getBundle();
+    }
+
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_exams));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvExamsList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+
     }
 }

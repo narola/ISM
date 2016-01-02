@@ -108,6 +108,8 @@ public class Attribute {
     private String audioLink;
     private List<String> images;
     private String postedOn;
+	private String authorId;
+	private String bookId;
 
 	public Attribute() {
 		setAccessKey(WebConstants.ACCESS_KEY);
@@ -803,5 +805,23 @@ public class Attribute {
 	@JsonProperty("answer_choices")
 	public void setAnswerChoices(ArrayList<AnswerChoice> answerChoices) {
 		this.answerChoices = answerChoices;
+	}
+
+	@JsonProperty("author_id")
+	public String getAuthorId() {
+		return authorId;
+	}
+
+	public void setAuthorId(String authorId) {
+		this.authorId = authorId;
+	}
+
+	public String getBookId() {
+		return this.bookId;
+	}
+
+	@JsonProperty("book_id")
+	public void setBookId(String bookId) {
+		this.bookId = bookId;
 	}
 }

@@ -27,6 +27,7 @@ import com.ism.author.adapter.SubjectiveQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.assessment.objectiveassessment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.createexam.CreateExamFragment;
+import com.ism.author.object.Global;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.helper.Attribute;
@@ -64,7 +65,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private CircleImageView imgStudentProfilePic;
     private TextView tvStudentName, tvStudentRollNo, tvAssignmentNo, tvAssignmentTitle, tvSubjectiveScore, tvSubjectiveMarks,
-            tvStudentEvalutionNo;
+            tvStudentEvalutionNo, tvNoDataMsg;
     private RecyclerView rvSubjectiveQuestionsList;
     private MyTypeFace myTypeFace;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
@@ -77,6 +78,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
@@ -142,6 +144,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
             }
         });
 
+        setEmptyView(false);
         callApiGetExamQuestions();
     }
 
@@ -303,19 +306,31 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private void setQuestions() {
 
-        arrListQuestions.clear();
-        arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
-        subjectiveQuestionListAdapter.addAll(arrListQuestions);
-        subjectiveQuestionListAdapter.notifyDataSetChanged();
 
-        Animation animation;
-        if (isFromLeft) {
-            animation = AnimationUtils.loadAnimation(getActivity(), R.anim.enter_from_left);
+        if (responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions().size() > 0) {
+
+            setEmptyView(false);
+
+            arrListQuestions.clear();
+            arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
+            subjectiveQuestionListAdapter.addAll(arrListQuestions);
+            subjectiveQuestionListAdapter.notifyDataSetChanged();
+
+            Animation animation;
+            if (isFromLeft) {
+                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.enter_from_left);
+            } else {
+                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.enter_from_right);
+            }
+
+            rvSubjectiveQuestionsList.setAnimation(animation);
+
         } else {
-            animation = AnimationUtils.loadAnimation(getActivity(), R.anim.enter_from_right);
+
+            setEmptyView(true);
+
         }
 
-        rvSubjectiveQuestionsList.setAnimation(animation);
 
     }
 
@@ -411,5 +426,13 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         arrListQuestions.get(position).setIsEvaluated(true);
     }
 
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_exam_questions));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvSubjectiveQuestionsList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+    }
 
 }

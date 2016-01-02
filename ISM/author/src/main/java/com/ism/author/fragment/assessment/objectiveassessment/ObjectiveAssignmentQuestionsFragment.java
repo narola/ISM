@@ -82,8 +82,8 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         tvObjectiveAssignmentTitle = (TextView) view.findViewById(R.id.tv_objective_assignment_title);
         tvObjectiveAssignmentDateTitle = (TextView) view.findViewById(R.id.tv_objective_assignment_date_title);
         tvObjectiveAssignmentDate = (TextView) view.findViewById(R.id.tv_objective_assignment_date);
-        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
 
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         imgEditExam = (ImageView) view.findViewById(R.id.img_edit_exam);
         imgCopyExam = (ImageView) view.findViewById(R.id.img_copy_exam);
 
@@ -93,9 +93,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         tvObjectiveAssignmentTitle.setTypeface(Global.myTypeFace.getRalewayBold());
         tvObjectiveAssignmentDateTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvObjectiveAssignmentDate.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_exam_questions));
+
 
         rvGetObjectiveAssignmentQuestionslist = (RecyclerView) view.findViewById(R.id.rv_getObjective_assignment_questionslist);
         objectiveAssignmentQuestionsAdapter = new ObjectiveAssignmentQuestionsAdapter(getActivity());
@@ -123,6 +121,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
             }
         });
 
+        setEmptyView(false);
 
     }
 
@@ -240,9 +239,12 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                         if (getBundleArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                             callAPiGetExamEvaluation();
                         }
-                        tvNoDataMsg.setVisibility(View.GONE);
+
+                        setEmptyView(false);
+
                     } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+
+                        setEmptyView(true);
                     }
 
                 } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.FAILED)) {
@@ -268,6 +270,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                         if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() > 0) {
                             objectiveAssignmentQuestionsAdapter.setEvaluationData(responseHandler.getExamEvaluation().get(0).getEvaluation());
                         }
+
                     } else {
                         objectiveAssignmentQuestionsAdapter.setEvaluationData(null);
                     }
@@ -320,4 +323,11 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
     }
 
 
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_exam_questions));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvGetObjectiveAssignmentQuestionslist.setVisibility(isEnable ? View.INVISIBLE : View.VISIBLE);
+    }
 }

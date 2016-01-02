@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.ws.model.AdminConfig;
 import com.ism.ws.model.AllBooks;
+import com.ism.ws.model.Assignment;
+import com.ism.ws.model.AuthorBookAssignment;
 import com.ism.ws.model.Badges;
 import com.ism.ws.model.BlockedUsers;
 import com.ism.ws.model.Books;
@@ -79,6 +81,8 @@ public class ResponseHandler {
     private ArrayList<FridayExamStatus> fridayExamStatus;
     private ArrayList<QuestionForFriday> questionForFriday;
     private ArrayList<AllBooks> allBooks;
+    private ArrayList<AuthorBookAssignment> authorBookAssignment;
+    private ArrayList<Assignment> assignment;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -411,5 +415,23 @@ public class ResponseHandler {
     public ResponseHandler setAllBooks(ArrayList<AllBooks> allBooks) {
         this.allBooks = allBooks;
         return this;
+    }
+
+    @JsonProperty("book_assignments")
+    public ArrayList<AuthorBookAssignment> getAuthorBookAssignment() {
+        return this.authorBookAssignment;
+    }
+
+    public void setAuthorBookAssignment(ArrayList<AuthorBookAssignment> authorBookAssignment) {
+        this.authorBookAssignment = authorBookAssignment;
+    }
+
+    @JsonProperty("assignment")
+    public ArrayList<Assignment> getAssignment() {
+        return this.assignment;
+    }
+
+    public void setAssignment(ArrayList<Assignment> assignment) {
+        this.assignment = assignment;
     }
 }

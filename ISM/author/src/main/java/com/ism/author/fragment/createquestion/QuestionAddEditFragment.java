@@ -184,7 +184,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         spExamQuestionScore = (Spinner) view.findViewById(R.id.sp_exam_question_score);
 
         getQuestionScoreSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), spExamQuestionScore, arrListQuestionScore, Adapters.ADAPTER_SMALL, Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spExamQuestionScore, arrListQuestionScore, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner_small);
 
         llAddMcqanswer = (LinearLayout) view.findViewById(R.id.ll_add_mcqanswer);
         llAddQuestionscore = (LinearLayout) view.findViewById(R.id.ll_add_questionscore);
@@ -197,7 +197,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         arrListQuestionType = new ArrayList<String>();
         arrListQuestionType.add(getString(R.string.strquestiontype));
         arrListQuestionType = Arrays.asList(getResources().getStringArray(R.array.question_type));
-        Adapters.setUpSpinner(getActivity(), spAddquestionType, arrListQuestionType, Adapters.ADAPTER_SMALL, Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spAddquestionType, arrListQuestionType, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner_small);
 
         spAddquestionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

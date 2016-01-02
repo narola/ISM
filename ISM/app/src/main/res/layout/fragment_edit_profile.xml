@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/txt_about_me"
-            android:layout_width="@dimen/dp105"
+            android:layout_width="@dimen/controller_desk_tab_width"
             android:layout_height="match_parent"
             android:background="@drawable/bg_tab_edit_profile"
             android:gravity="center"
@@ -34,7 +34,7 @@
 
         <TextView
             android:id="@+id/txt_books"
-            android:layout_width="@dimen/dp105"
+            android:layout_width="@dimen/controller_desk_tab_width"
             android:layout_height="match_parent"
             android:background="@drawable/bg_tab_edit_profile"
             android:gravity="center"
@@ -51,7 +51,7 @@
 
         <TextView
             android:id="@+id/txt_movies"
-            android:layout_width="@dimen/dp105"
+            android:layout_width="@dimen/controller_desk_tab_width"
             android:layout_height="match_parent"
             android:background="@drawable/bg_tab_edit_profile"
             android:gravity="center"
@@ -68,7 +68,7 @@
 
         <TextView
             android:id="@+id/txt_role_models"
-            android:layout_width="@dimen/dp105"
+            android:layout_width="@dimen/controller_desk_tab_width"
             android:layout_height="match_parent"
             android:background="@drawable/bg_tab_edit_profile"
             android:gravity="center"
@@ -85,7 +85,7 @@
 
         <TextView
             android:id="@+id/txt_pasttime"
-            android:layout_width="@dimen/dp105"
+            android:layout_width="@dimen/controller_desk_tab_width"
             android:layout_height="match_parent"
             android:background="@drawable/bg_tab_edit_profile"
             android:gravity="center"
