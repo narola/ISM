@@ -68,9 +68,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
 
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_books_added));
+        setEmptyView(false);
 
         callApiGetAllBooks();
     }
@@ -120,9 +118,11 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                         arrListAuthorBooks.addAll(responseHandler.getAllBooks());
                         booksAdapter.addAll(arrListAuthorBooks);
                         booksAdapter.notifyDataSetChanged();
-                        tvNoDataMsg.setVisibility(View.GONE);
+
+                        setEmptyView(false);
                     } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+
+                        setEmptyView(true);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -160,5 +160,14 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
             Debug.e(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
+    }
+
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setText(getString(R.string.no_books_added));
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvBooksList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
 }

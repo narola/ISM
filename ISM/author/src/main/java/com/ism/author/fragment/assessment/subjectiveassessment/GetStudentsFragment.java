@@ -46,7 +46,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
 
     private ImageView imgSearchMystudents;
     private EditText etSearchMystudents;
-    private TextView tvTitleMystudents;
+    private TextView tvTitleMystudents, tvNoDataMsg;
     private RecyclerView rvMystudentList;
     private MyStudentListAdapter myStudentListAdapter;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
@@ -65,6 +65,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         imgSearchMystudents = (ImageView) view.findViewById(R.id.img_search_mystudents);
         etSearchMystudents = (EditText) view.findViewById(R.id.et_search_mystudents);
         tvTitleMystudents = (TextView) view.findViewById(R.id.tv_title_mystudents);
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         rvMystudentList = (RecyclerView) view.findViewById(R.id.rv_mystudent_list);
         myStudentListAdapter = new MyStudentListAdapter(getActivity(), mFragment);
         rvMystudentList.setAdapter(myStudentListAdapter);
@@ -73,6 +74,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         etSearchMystudents.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvTitleMystudents.setTypeface(Global.myTypeFace.getRalewayRegular());
 
+        setEmptyView(false);
         callApiGetExamSubmission();
 
         imgSearchMystudents.setOnClickListener(new View.OnClickListener() {
@@ -181,12 +183,16 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
-                    myStudentListAdapter.addAll(arrListExamSubmittor);
-                    myStudentListAdapter.notifyDataSetChanged();
+                    if (responseHandler.getExamSubmission().get(0).getExamsubmittor().size() > 0) {
+                        arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
+                        myStudentListAdapter.addAll(arrListExamSubmittor);
+                        myStudentListAdapter.notifyDataSetChanged();
+                        getBaseFragment().setTitleDetails();
+                        setEmptyView(false);
 
-
-                    getBaseFragment().setTitleDetails();
+                    } else {
+                        setEmptyView(true);
+                    }
 
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -204,6 +210,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     /*this is to refresh adapter for student navigation button in subjective questions fragment*/
 
     public void setBundleArgument(int position) {
+
         myStudentListAdapter.setBundleArgument(position);
 
     }
@@ -211,6 +218,15 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private SubjectiveAssignmentQuestionsContainerFragment getBaseFragment() {
         return (SubjectiveAssignmentQuestionsContainerFragment) mFragment;
 
+    }
+
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_exam_submittor));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvMystudentList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
 
 }

@@ -84,9 +84,8 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         etWritePost.setEnabled(true);
 
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_post_feeds));
+
+        setEmptyView(false);
 
         onClickAttachFile = new OnClickListener() {
             @Override
@@ -210,9 +209,11 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
                     if (responseHandler.getFeeds().size() > 0) {
                         postFeedsAdapter.addAll(responseHandler.getFeeds());
-                        tvNoDataMsg.setVisibility(View.GONE);
+                        setEmptyView(false);
+
                     } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+
+                        setEmptyView(true);
                     }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
@@ -295,5 +296,14 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         } catch (Exception e) {
             Debug.e(TAG, "onResponseLikeFeeds Exception : " + e.toString());
         }
+    }
+
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setText(getString(R.string.no_post_feeds));
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvPostFeeds.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
 }

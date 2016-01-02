@@ -46,12 +46,13 @@ import com.ism.author.fragment.mydesk.MyDeskFragment;
 import com.ism.author.fragment.userprofile.AllMessageFragment;
 import com.ism.author.fragment.userprofile.AllNotificationFragment;
 import com.ism.author.fragment.userprofile.AllStudymateRequestFragment;
+import com.ism.author.fragment.userprofile.AuthorBooksFragment;
 import com.ism.author.fragment.userprofile.AuthorProfileFragment;
 import com.ism.author.fragment.userprofile.FollowersFragment;
 import com.ism.author.fragment.userprofile.HighScoreFragment;
 import com.ism.author.fragment.userprofile.MyActivityFragment;
 import com.ism.author.fragment.userprofile.MyFeedsFragment;
-import com.ism.author.fragment.userprofile.StudentAttemptedAssignmentFragment;
+import com.ism.author.fragment.assessment.StudentAttemptedAssignmentFragment;
 import com.ism.author.fragment.userprofile.generalsetting.GeneralSettingsFragment;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.ControllerTopMenuItem;
@@ -129,6 +130,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_FOLLOWERS = 36;
     public static final int FRAGMENT_MY_ACTIVITY = 37;
     public static final int FRAGMENT_GENERAL_SETTING = 18;
+    public static final int FRAGMENT_MY_BOOKS = 19;
 
     public static int currentMainFragment;
     public static int currentRightFragment;
@@ -453,6 +455,12 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                             MyActivityFragment.newInstance()).commit();
                     break;
 
+                case FRAGMENT_MY_BOOKS:
+
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AuthorBooksFragment.newInstance()).commit();
+                    break;
+
 
                 case FRAGMENT_ALL_NOTIFICATION:
 
@@ -761,6 +769,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
 
                 case FRAGMENT_GENERAL_SETTING:
+                case FRAGMENT_MY_BOOKS:
                 case FRAGMENT_MY_FEEDS:
                 case FRAGMENT_FOLLOWERS:
                 case FRAGMENT_MY_ACTIVITY:

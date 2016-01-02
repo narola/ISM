@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
@@ -38,6 +39,7 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
     private PostFeedsAdapter adpPostFeeds;
     private RecyclerView recyclerPostFeeds;
     private LinearLayout llNewPost;
+    private TextView tvNoDataMsg;
 
     public static MyFeedsFragment newInstance() {
         MyFeedsFragment fragBooks = new MyFeedsFragment();
@@ -89,6 +91,10 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
 //              Start post activity
             }
         });
+
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
+
+        setEmptyView(false);
     }
 
     @Override
@@ -139,12 +145,19 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Log.e(TAG, "onResponseGetMyFeeds success : "+responseHandler.getFeeds().size());
-                    adpPostFeeds.addAll(responseHandler.getFeeds());
+
+
+                    if (responseHandler.getFeeds().size() > 0) {
+                        adpPostFeeds.addAll(responseHandler.getFeeds());
+                        setEmptyView(false);
+                    } else {
+                        setEmptyView(true);
+                    }
+
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetMyFeeds Failed : " + responseHandler.getMessage());
                 }
-            } else if(error != null) {
+            } else if (error != null) {
                 Log.e(TAG, "onResponseGetMyFeeds apiCall Exception : " + error.toString());
             }
         } catch (Exception e) {
@@ -163,5 +176,14 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());
         }
+    }
+
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setText(getString(R.string.no_user_post));
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        recyclerPostFeeds.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
 }

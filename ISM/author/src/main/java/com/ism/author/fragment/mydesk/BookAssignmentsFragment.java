@@ -66,7 +66,6 @@ public class BookAssignmentsFragment extends Fragment implements WebserviceWrapp
 
     private void initGlobal() {
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         rvBookAssignmentsList = (RecyclerView) view.findViewById(R.id.rv_book_assignments_list);
         bookAssignmentsAdapter = new BookAssignmentsAdapter(mFragment, getActivity());
@@ -191,10 +190,10 @@ public class BookAssignmentsFragment extends Fragment implements WebserviceWrapp
                         arrListAuthorBooksAssignment.addAll(responseHandler.getAssignment());
                         bookAssignmentsAdapter.addAll(arrListAuthorBooksAssignment);
                         bookAssignmentsAdapter.notifyDataSetChanged();
+                        setEmptyView(false);
 
-                        tvNoDataMsg.setVisibility(View.GONE);
                     } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+                        setEmptyView(true);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -207,6 +206,17 @@ public class BookAssignmentsFragment extends Fragment implements WebserviceWrapp
         } catch (Exception e) {
             Debug.e(TAG, "onResponseGetAssignmentByBook Exception : " + e.toString());
         }
+    }
+
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_book_assignments));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+
+        rvBookAssignmentsList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+
     }
 
 }

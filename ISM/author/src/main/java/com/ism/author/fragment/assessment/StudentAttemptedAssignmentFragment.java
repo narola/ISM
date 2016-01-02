@@ -1,4 +1,4 @@
-package com.ism.author.fragment.userprofile;
+package com.ism.author.fragment.assessment;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -45,7 +45,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
     }
 
     private MyTypeFace myTypeFace;
-    private TextView tvTitleStudentattempted;
+    private TextView tvTitleStudentattempted, tvNoDataMsg;
     private RecyclerView rvStudentattemptedList;
     private StudentAttemptedAssignmentAdapter studentAttemptedAssignmentAdapter;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
@@ -62,11 +62,13 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
 
         myTypeFace = new MyTypeFace(getActivity());
         tvTitleStudentattempted = (TextView) view.findViewById(R.id.tv_title_studentattempted);
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         rvStudentattemptedList = (RecyclerView) view.findViewById(R.id.rv_studentattempted_list);
         studentAttemptedAssignmentAdapter = new StudentAttemptedAssignmentAdapter(getActivity());
         rvStudentattemptedList.setAdapter(studentAttemptedAssignmentAdapter);
         rvStudentattemptedList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        setEmptyView(false);
         callApiGetExamSubmission();
 
     }
@@ -113,9 +115,16 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
-                    studentAttemptedAssignmentAdapter.addAll(arrListExamSubmittor);
-                    studentAttemptedAssignmentAdapter.notifyDataSetChanged();
+
+                    if (responseHandler.getExamSubmission().size() > 0) {
+                        setEmptyView(false);
+                        arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
+                        studentAttemptedAssignmentAdapter.addAll(arrListExamSubmittor);
+                        studentAttemptedAssignmentAdapter.notifyDataSetChanged();
+                    } else {
+                        setEmptyView(true);
+                    }
+
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
@@ -126,6 +135,14 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
         } catch (Exception e) {
             Debug.e(TAG, "onResponseGetAllExamSubmission Exception : " + e.toString());
         }
+    }
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_exam_submittor));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvStudentattemptedList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
 
     private Bundle getBundleArguments() {

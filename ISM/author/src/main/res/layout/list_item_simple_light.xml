@@ -3,11 +3,13 @@
     android:id="@+id/text"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:ellipsize="end"
     android:gravity="center_vertical"
     android:paddingBottom="@dimen/d5dp"
-    android:paddingLeft="@dimen/d20dp"
-    android:paddingRight="@dimen/d20dp"
+    android:paddingLeft="@dimen/d10dp"
+    android:paddingRight="@dimen/d25dp"
     android:paddingTop="@dimen/d5dp"
+    android:singleLine="true"
     android:textColor="@color/bg_app_dark"
     android:textSize="@dimen/d18sp">
 

@@ -224,7 +224,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
                         for (int j = 0; j < arrayListUserPreferences.size(); j++) {
                             Debug.i(TAG, "j :" + j);
                             //setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getActivity());
-                            PreferenceData.setStringPrefs(arrayListUserPreferences.get(j).getId(),getActivity(), arrayListUserPreferences.get(j).getPreferenceValue());
+                            PreferenceData.setStringPrefs(arrayListUserPreferences.get(j).getId(), getActivity(), arrayListUserPreferences.get(j).getPreferenceValue());
                         }
                     }
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {

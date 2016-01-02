@@ -193,9 +193,7 @@ public class MyDeskFragment extends Fragment {
         ((AuthorHostActivity) getActivity()).getBundle().remove(MyDeskAssignmentsAdapter.ARG_BOOK_ID);
 
         if (currentFragment == FRAGMENT_BOOKASSIGNMENT) {
-
             loadFragment(FRAGMENT_ASSIGNMENTS);
-
         } else {
             ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYDESK);
         }

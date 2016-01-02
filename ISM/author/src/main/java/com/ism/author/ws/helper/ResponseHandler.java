@@ -7,10 +7,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.author.ws.model.AdminConfig;
 import com.ism.author.ws.model.AllBooks;
 import com.ism.author.ws.model.Assignment;
-import com.ism.author.ws.model.AuthorBook;
 import com.ism.author.ws.model.AuthorBookAssignment;
 import com.ism.author.ws.model.Badges;
 import com.ism.author.ws.model.BlockedUsers;
+import com.ism.author.ws.model.BookData;
 import com.ism.author.ws.model.Books;
 import com.ism.author.ws.model.Cities;
 import com.ism.author.ws.model.Classrooms;
@@ -117,7 +117,7 @@ public class ResponseHandler {
     private ArrayList<Questions> questionBank;
     private ArrayList<Question> question;
     private ArrayList<HashTags> tags;
-    private ArrayList<AuthorBook> authorBook;
+    private ArrayList<BookData> authorBook;
     private ArrayList<Token> token;
     private ArrayList<AdminConfig> adminConfig;
     private ArrayList<Assignment> assignment;
@@ -392,11 +392,11 @@ public class ResponseHandler {
     }
 
     @JsonProperty("author_book")
-    public ArrayList<AuthorBook> getAuthorBook() {
+    public ArrayList<BookData> getAuthorBook() {
         return this.authorBook;
     }
 
-    public void setAuthorBook(ArrayList<AuthorBook> authorBook) {
+    public void setAuthorBook(ArrayList<BookData> authorBook) {
         this.authorBook = authorBook;
     }
 

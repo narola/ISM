@@ -21,5 +21,10 @@
     <string name="no_books_added">No books added by admin!</string>
     <string name="no_filter_exams">No exams found to filter!</string>
     <string name="no_comments">No comments available!</string>
+    <string name="no_book_assignments">No Assignment added for the book!</string>
+    <string name="no_assignments">No Assignment created!</string>
+    <string name="no_past_trending_questions">No Past trending questions available!</string>
+    <string name="no_author_books">No author books available!</string>
+    <string name="no_user_post">No post added by you,to start click on the post button!</string>
 
 </resources>
