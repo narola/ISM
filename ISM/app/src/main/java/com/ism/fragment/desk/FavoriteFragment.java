@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -28,7 +29,7 @@ import com.ism.utility.Debug;
 /**
  * Created by c162 on 24/10/15.
  */
-public class FavoriteFragment extends Fragment implements HostActivity.HostListenerItemChange {
+public class FavoriteFragment extends Fragment implements HostActivity.HostListenerFavourites {
     private static final String TAG = FavoriteFragment.class.getSimpleName();
     private View view;
 
@@ -57,6 +58,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
     private DeskFragment deskFragment;
 
     public static int currentFragment = -1;
+    private LinearLayout llExams;
 
     public static FavoriteFragment newInstance() {
         FavoriteFragment fragDesk = new FavoriteFragment();
@@ -78,7 +80,9 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
 
     private void initGlobal() {
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
+//        scrollView.smoothScrollTo(0, scrollView.getMaxScrollAmount());
 
+        //   scrollView.
         // inclue notes
         includeNotes = view.findViewById(R.id.include_notes);
 
@@ -136,6 +140,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
 //        rrExams = (RelativeLayout) includeExams.findViewById(R.id.rr_fav);
 //        rrExams.setBackgroundColor(getResources().getColor(R.color.color_pink_dark));
 
+        llExams=(LinearLayout)view.findViewById(R.id.ll_exam);
         txtExams = (TextView) view.findViewById(R.id.txt_fav_exam);
         txtExams.setTypeface(Global.myTypeFace.getRalewayMedium());
 //        txtExams.setText(R.string.exams);
@@ -207,6 +212,9 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
         txtViewAllEvents.setOnClickListener(onClickItem);
         txtViewAllExmas.setOnClickListener(onClickItem);
         txtViewAllAssignment.setOnClickListener(onClickItem);
+//        listViewLinks.setFocusable(true);
+        scrollView.setSmoothScrollingEnabled(true);
+//        scrollView.smoothScrollTo(0,txtLinks.getScrollY());
     }
 
 
@@ -230,8 +238,6 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
         switch (fragment) {
             case DeskFragment.FRAGMENT_ALL_BOOKS:
                 currentFragment = fragment;
-                activityHost.onChildFragmentAttached(false);
-                activityHost.onSetPositionSpinner(2);
                 deskFragment.setCurrentFragment(fragment);
                 getFragmentManager().beginTransaction().replace(R.id.fl_desk, AllBooksFragment.newInstance()).commit();
                 break;
@@ -313,8 +319,9 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
         super.onAttach(activity);
         try {
             activityHost = (HostActivity) activity;
-            activityHost.onChildFragmentAttached(false);
-//            activityHost.onSetPositionSpinner(0);
+            activityHost.setListenerFavourites(this);
+            activityHost.onChildFragmentAttached(true);
+            activityHost.onSetPositionSpinner(0);
             deskFragment = DeskFragment.newInstance(currentFragment);
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -327,30 +334,38 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
     }
 
     @Override
-    public void onControllerTopItemChange(int position) {
-        switch (position){
-//            case 1:
-//                deskFragment.loadFragment( DeskFragment.FRAGMENT_FAVOURITES);
-//                break;
+    public void onControllerTopItemChanged(int position) {
+        switch (position) {
+            case 0:
+                //deskFragment.loadFragment( DeskFragment.FRAGMENT_FAVOURITES);
+                scrollView.requestChildFocus(includeNotes,includeNotes);
+                break;
             case 1:
-                loadFragment( DeskFragment.FRAGMENT_ALL_NOTES);
+                //loadFragment(DeskFragment.FRAGMENT_ALL_NOTES);
+                scrollView.requestChildFocus(includeNotes, includeNotes);
                 break;
             case 2:
-                loadFragment( DeskFragment.FRAGMENT_ALL_BOOKS);
+                //loadFragment(DeskFragment.FRAGMENT_ALL_BOOKS);
+                scrollView.requestChildFocus(includeBooks,includeBooks);
                 break;
             case 3:
-                loadFragment( DeskFragment.FRAGMENT_ALL_ASSIGNMENTS);
+                //loadFragment(DeskFragment.FRAGMENT_ALL_ASSIGNMENTS);
+                scrollView.requestChildFocus(includeAssignments, includeAssignments);
                 break;
             case 4:
-                loadFragment( DeskFragment.FRAGMENT_ALL_EXAMS);
+                //loadFragment(DeskFragment.FRAGMENT_ALL_EXAMS);
+                scrollView.requestChildFocus(llExams,llExams);
                 break;
             case 5:
-                loadFragment( DeskFragment.FRAGMENT_ALL_LINKS);
+                //loadFragment(DeskFragment.FRAGMENT_ALL_LINKS);
+                scrollView.requestChildFocus(includeLinks,includeLinks);
                 break;
             case 6:
-                loadFragment( DeskFragment.FRAGMENT_ALL_EVENTS);
+                //loadFragment(DeskFragment.FRAGMENT_ALL_EVENTS);
+                scrollView.requestChildFocus(includeEvents,includeEvents);
                 break;
         }
+
     }
 
 }

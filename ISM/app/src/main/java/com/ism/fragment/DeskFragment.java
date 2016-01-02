@@ -93,10 +93,11 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
     }
 
     public static DeskFragment newInstance(int fragment) {
+        currentFragment=fragment;
         DeskFragment deskFragment = new DeskFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_FRAGMENT, fragment);
-        deskFragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putInt(ARG_FRAGMENT, fragment);
+//        deskFragment.setArguments(args);
         return deskFragment;
     }
 
@@ -104,16 +105,16 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            currentFragment = getArguments().getInt(ARG_FRAGMENT);
-            if (fragListener != null) {
-                fragListener.onFragmentAttached(currentFragment);
-            }
-        }
-    }
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        if (getArguments() != null) {
+//            currentFragment = getArguments().getInt(ARG_FRAGMENT);
+//            if (fragListener != null) {
+//                fragListener.onFragmentAttached(currentFragment);
+//            }
+//        }
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -136,7 +137,7 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
             activityHost.setBackHostListener(this);
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                //fragListener.onFragmentAttached(currentFragment);
+                fragListener.onFragmentAttached(currentFragment);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -178,7 +179,9 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
                     break;
                 case FRAGMENT_FAVOURITES:
                     currentFragment = fragment;
-                    getChildFragmentManager().beginTransaction().replace(R.id.fl_desk, FavoriteFragment.newInstance()).commit();
+                    FavoriteFragment favoriteFragment=FavoriteFragment.newInstance();
+                    activityHost.setListenerFavourites(favoriteFragment);
+                    getChildFragmentManager().beginTransaction().replace(R.id.fl_desk, favoriteFragment).commit();
                     break;
                 case FRAGMENT_TIMETABLE:
                     currentFragment = fragment;

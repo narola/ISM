@@ -35,8 +35,7 @@ import com.ism.fragment.AssessmentFragment;
 import com.ism.fragment.ChatFragment;
 import com.ism.fragment.ClassroomFragment;
 import com.ism.fragment.DeskFragment;
-import com.ism.fragment.ReportCardFragment;
-import com.ism.fragment.desk.FavoriteFragment;
+import com.ism.fragment.MyAuthorFragment;
 import com.ism.fragment.desk.JotterScientificSymbolFragment;
 import com.ism.fragment.tutorialGroup.QuestionPaletteFragment;
 import com.ism.fragment.tutorialGroup.TutorialFragment;
@@ -98,7 +97,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private HostListenerDesk hostListenerDesk;
     private HostListenerAllNotification listenerHostAllNotification;
     private HostListenerAllMessage listenerHostAllMessage;
-    private HostListenerItemChange listenerItemChange;
+    private HostListenerFavourites listenerFavourites;
     private HostListenerProfileController listenerHostProfileController;
     private ProfileControllerPresenceListener listenerProfileControllerPresence;
     private HostListenerStudymates listenerHostStudymates;
@@ -106,7 +105,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private BooksListner booksListner;
     private HostListenerEditAboutMe listenerEditAboutMe;
     public InsertSymbolListener insertSymbolListener;
-    private HostSpinnerListener hostSpinnerListener;
+    private HostListenerMyAuthor listenerHostMyAuthor;
 
     private HostListenerQuestionPalette listenerQuestionPalette;
     private TextView arrTxtMenu[];
@@ -121,7 +120,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     public static final int FRAGMENT_CLASSROOM = 2;
     public static final int FRAGMENT_ASSESSMENT = 3;
     public static final int FRAGMENT_DESK = 4;
-    public static final int FRAGMENT_REPORT_CARD = 5;
+    public static final int FRAGMENT_MY_AUTHOR = 5;
     public static final int FRAGMENT_NOTES = 6;
     public static final int FRAGMENT_PROFILE_CONTROLLER = 7;
     public static final int FRAGMENT_CHAT = 8;
@@ -136,6 +135,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 17;
     public static final int FRAGMENT_EDIT_PROFILE = 18;
     public static final int FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL = 19;
+
+    //My Author
+    public static final int FRAGMENT_AUTHOR_DESK = 31;
+
     private int currentMainFragment = -1;
     private int currentRightFragment;
     private int currentMainFragmentBg;
@@ -159,10 +162,6 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         public void onControllerMenuItemClicked(int position);
     }
 
-    public interface HostSpinnerListener {
-        public void onControllerMenuSpinnerItemClicked(String item);
-    }
-
     public interface HostListenerAllNotification {
         public void onControllerTopBackClick();
     }
@@ -176,9 +175,12 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     public interface HostListenerAllMessage {
         public void onControllerTopBackClick();
     }
+    public interface HostListenerMyAuthor {
+        public void onControllerTopBackClick();
+    }
 
-    public interface HostListenerItemChange {
-        public void onControllerTopItemChange(int position);
+    public interface HostListenerFavourites {
+        public void onControllerTopItemChanged(int position);
     }
 
     public interface HostListenerProfileController {
@@ -341,7 +343,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         imgReportCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(FRAGMENT_REPORT_CARD, null);
+                loadFragment(FRAGMENT_MY_AUTHOR, null);
             }
         });
 
@@ -420,12 +422,13 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         txtFour.setOnClickListener(onClickMenuItem);
         txtFive.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
+
         spSubmenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Debug.i(TAG,"spinner position : "+position);
-               if (!isUpdateActionBar )
-                    listenerItemChange.onControllerTopItemChange(position);
+                Debug.i(TAG, "spinner position : " + position);
+                if (isUpdateActionBar && spSubmenu.isEnabled())
+                    listenerFavourites.onControllerTopItemChanged(position);
                 //if(position==1)
             }
 
@@ -497,16 +500,15 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                         DeskFragment deskFragment = DeskFragment.newInstance(FRAGMENT_DESK);
                         listenerHost = deskFragment;
                         hostListenerDesk = deskFragment;
-                        listenerItemChange = FavoriteFragment.newInstance();
                         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, deskFragment).commit();
                         if (currentRightFragment != FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL) {
                             loadFragment(FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL, null);
                         }
                     }
                     break;
-                case FRAGMENT_REPORT_CARD:
+                case FRAGMENT_MY_AUTHOR:
                     if (currentMainFragment != fragment) {
-                        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ReportCardFragment.newInstance()).commit();
+                        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyAuthorFragment.newInstance()).commit();
                     }
                     break;
                 case FRAGMENT_NOTES:
@@ -605,7 +607,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     txtAction.setTextColor(getResources().getColor(R.color.bg_desk));
                     loadControllerTopMenu(controllerTopMenuDesk);
                     break;
-                case FRAGMENT_REPORT_CARD:
+                case FRAGMENT_MY_AUTHOR:
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_report_card;
                     imgReportCard.setActivated(true);
@@ -690,7 +692,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     imgDesk.setActivated(false);
                     loadControllerTopMenu(null);
                     break;
-                case FRAGMENT_REPORT_CARD:
+                case FRAGMENT_MY_AUTHOR:
                     imgReportCard.setActivated(false);
                     loadControllerTopMenu(null);
                     break;
@@ -828,6 +830,9 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 //                        if(DeskFragment.FRAGMENT_ALL_BOOKS)
                         hostListenerDesk.onBackMenuItemClick();
                         break;
+                    case FRAGMENT_MY_AUTHOR:
+                        listenerHostMyAuthor.onControllerTopBackClick();
+                        break;
                 }
 
             } else if (view == txtAction) {
@@ -920,7 +925,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         }
     }
 
-    private void hideControllerTopBackButton() {
+    public void hideControllerTopBackButton() {
         startSlideAnimation(imgMenuBack, 0, -1000, 0, 0);
         imgMenuBack.setVisibility(View.GONE);
     }
@@ -1120,17 +1125,14 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         this.listenerHostAllMessage = listenerHostAllMessage;
     }
 
-    public void setListenerItemChange(HostListenerItemChange listenerItemChange) {
-        this.listenerItemChange = listenerItemChange;
+    public void setListenerHostMyAuthor(HostListenerMyAuthor listenerHostMyAuthor) {
+        this.listenerHostMyAuthor = listenerHostMyAuthor;
     }
 
     public void setListenerHostProfileController(HostListenerProfileController listenerHostProfileController) {
         this.listenerHostProfileController = listenerHostProfileController;
     }
 
-    public void setHostSpinnerListener(HostSpinnerListener hostSpinnerListener) {
-        this.hostSpinnerListener = hostSpinnerListener;
-    }
 
     public void setListenerProfileControllerPresence(ProfileControllerPresenceListener listenerProfileControllerPresence) {
         this.listenerProfileControllerPresence = listenerProfileControllerPresence;
@@ -1138,6 +1140,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
     public void setListenerHostStudymates(HostListenerStudymates listenerHostStudymates) {
         this.listenerHostStudymates = listenerHostStudymates;
+    }
+
+    public void setListenerFavourites(HostListenerFavourites listenerFavourites) {
+        this.listenerFavourites = listenerFavourites;
     }
 
     public interface AddToLibraryListner {
@@ -1212,7 +1218,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     public void onSetPositionSpinner(int position) {
         intSubItemSelection = position;
         spSubmenu.setSelection(intSubItemSelection);
-//        if(position == AppConstant.FRAGMENT_ALL_FAVORITES) spSubmenu.setEnabled(true); else spSubmenu.setEnabled(false);
+        if (position == 0) spSubmenu.setEnabled(true);
+        else spSubmenu.setEnabled(false);
     }
 
 

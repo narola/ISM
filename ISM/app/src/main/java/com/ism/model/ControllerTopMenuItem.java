@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class ControllerTopMenuItem {
 
     private static final String TAG = ControllerTopMenuItem.class.getSimpleName();
+    private String strSubMenuItem;
 
     private String strMenuItemTitle;
     private String strMenuItemAction;
@@ -23,10 +24,11 @@ public class ControllerTopMenuItem {
 
     }
 
-    public ControllerTopMenuItem(String strMenuItemTitle, String strMenuItemAction, ArrayList<String> arrListSubMenu) {
+    public ControllerTopMenuItem(String strMenuItemTitle, String strMenuItemAction, ArrayList<String> arrListSubMenu,String strSubMenuItem) {
         this.strMenuItemTitle = strMenuItemTitle;
         this.strMenuItemAction = strMenuItemAction;
         this.arrListSubMenu = arrListSubMenu;
+        this.strSubMenuItem = strSubMenuItem;
     }
 
     public String getMenuItemTitle() {
@@ -65,10 +67,10 @@ public class ControllerTopMenuItem {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.classwall), null, null));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.lesson_notes), context.getString(R.string.add_notes), null));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.assignment), null, null));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.exam), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.classwall), null, null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.lesson_notes), context.getString(R.string.add_notes), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.assignment), null, null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.exam), null, null, null));
         } catch (Exception e) {
             Log.e(TAG, "getMenuClassRoom Exception : " + e.toString());
         }
@@ -79,32 +81,41 @@ public class ControllerTopMenuItem {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.ism_mock), null, null));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.wassce), null, null));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.end_of_term), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.ism_mock), null, null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.wassce), null, null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.end_of_term), null, null, null));
         } catch (Exception e) {
             Log.e(TAG, "getMenuAssessment Exception : " + e.toString());
         }
         return menu;
     }
 
+    public String getStrSubMenuItem() {
+        return strSubMenuItem;
+    }
+
+    public void setStrSubMenuItem(String strSubMenuItem) {
+        this.strSubMenuItem = strSubMenuItem;
+    }
+
     public static ArrayList<ControllerTopMenuItem> getMenuDesk(Context context) {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.jotter), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.jotter), null, null, null));
             ArrayList<String> favorites = new ArrayList<String>();
             favorites.add(context.getString(R.string.favorite));
             favorites.add(context.getString(R.string.notes));
+
             favorites.add(context.getString(R.string.books));
             favorites.add(context.getString(R.string.assignments));
             favorites.add(context.getString(R.string.exams));
             favorites.add(context.getString(R.string.links));
             favorites.add(context.getString(R.string.events));
 //            favorites.add(context.getString(R.string.Authors));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.favorite), context.getString(R.string.add_new_favorite), favorites));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.timetable), context.getString(R.string.strAskQuestion), null));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.books), context.getString(R.string.add_book), null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.favorite), context.getString(R.string.add_new_favorite), favorites, "yes"));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.timetable), context.getString(R.string.strAskQuestion), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.books), context.getString(R.string.add_book), null, null));
 //            menu.add(new ControllerTopMenuItem(context.getString(R.string.forum), context.getString(R.string.add_question), null));
         } catch (Exception e) {
             Log.e(TAG, "getMenuDesk Exception : " + e.toString());
@@ -116,7 +127,7 @@ public class ControllerTopMenuItem {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.progress_report), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.strMyAuthors), null, null, null));
         } catch (Exception e) {
             Log.e(TAG, "getMenuReportCard Exception : " + e.toString());
         }
@@ -128,12 +139,12 @@ public class ControllerTopMenuItem {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.gotrending), context.getString(R.string.stradd), null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.gotrending), context.getString(R.string.stradd), null, null));
             ArrayList<String> setquiz = new ArrayList<String>();
             setquiz.add(context.getString(R.string.setquiz));
             setquiz.add(context.getString(R.string.settrial));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.setquiz), context.getString(R.string.straddnew), setquiz));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.progress_report), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.setquiz), context.getString(R.string.straddnew), setquiz, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.progress_report), null, null, null));
 
         } catch (Exception e) {
             Log.e(TAG, "getMenuAuthorOffice Exception : " + e.toString());

@@ -24,8 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/dp4"
-        android:background="@drawable/ic_share_notes_deactive" />
+        android:background="@drawable/ic_share_transparent" />
 
     <TextView
         android:id="@+id/txt_share_with"
@@ -48,7 +47,7 @@
         android:layout_marginLeft="@dimen/dp8"
         android:layout_marginRight="@dimen/dp8"
         android:background="@drawable/bg_edit_gray"
-        android:drawableLeft="@drawable/edit_profile"
+        android:drawableLeft="@drawable/ic_add_student"
         android:hint="Studymate Name"
         android:padding="@dimen/dp8"
         android:textSize="@dimen/sp14"

@@ -24,8 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:padding="@dimen/dp4"
-        android:background="@drawable/edit_profile"
+        android:background="@drawable/ic_save_transparent"
         android:gravity="center"/>
 
     <EditText

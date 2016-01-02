@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class BookAssignmentsAdapter extends RecyclerView.Adapter<BookAssignmentsAdapter.ViewHolder> {
 
 
-    private static final String TAG = ExamsAdapter.class.getSimpleName();
+    private static final String TAG = BookAssignmentsAdapter.class.getSimpleName();
     private Fragment mFragment;
     private ArrayList<Assignment> arrListBookAssignment = new ArrayList<Assignment>();
     private LayoutInflater inflater;
