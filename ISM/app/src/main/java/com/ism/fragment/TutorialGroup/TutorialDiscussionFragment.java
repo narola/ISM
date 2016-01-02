@@ -425,8 +425,9 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				arrListDiscussionData = responseHandler.getGroupDiscussionData();
 
+				String today = Utility.getDate();
 				for (int i = 0; i < arrListDiscussionData.size(); i++) {
-					if (arrListDiscussionData.get(i).getIsCurrentDay().equals("yes")) {
+					if (today.equals(Utility.DATE_FORMAT_API.format(Utility.DATE_FORMAT_MY_SQL.parse(arrListDiscussionData.get(i).getAssignedTime())))) {
 						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity(), arrListDiscussionData.get(i).getTutorialTopicId());
 						break;
 					}

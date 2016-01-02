@@ -29,14 +29,12 @@ public class WebConstants {
     public static final String EXAM_ID_9_OBJECTIVE = "9";
     public static final String STUDENT_ID_202_OBJECCTIVE = "202";
     public static final String USER_ID_370 = "370";
-    public static final String USER_ID_340 = "340";
     public static final String TEST_GETSTUDYMATES = "167";
 
 
     public static final String TEACHER_ROLE_ID = "3";
     public static final String TEST_USER_ID_52 = "52";
     public static final String TEST_USER_NAME = "Admin";
-
     /**
      * Api IDs
      */
@@ -67,7 +65,7 @@ public class WebConstants {
 
 
     public static final int GET_ALL_ASSIGNMENTS = 21;
-    public static final int GET_ALL_EXAM_SUBMISSION = 22;
+    public static final int GET_EXAM_SUBMISSION = 22;
     public static final int GET_EXAM_QUESTIONS = 23;
     public static final int GET_EXAM_EVALUATIONS = 24;
     public static final int GET_MY_STUDENTS = 25;
@@ -125,7 +123,7 @@ public class WebConstants {
     public static final String URL_GET_MY_STUDENTS = URL_HOST + "GetMyStudents";
 
 
-    public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_HOST + "GetExamSubmission";
+    public static final String URL_GET_EXAM_SUBMISSION = URL_HOST + "GetExamSubmission";
 
     public static final String URL_GET_CITIES = URL_HOST + "GetCities";
     public static final String URL_GET_STATES = URL_HOST + "GetStates";

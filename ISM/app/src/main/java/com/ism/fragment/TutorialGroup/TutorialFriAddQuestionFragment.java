@@ -23,6 +23,7 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
+import com.ism.utility.Alarm;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
@@ -33,6 +34,7 @@ import com.ism.ws.model.AnswerChoice;
 import com.ism.ws.model.QuestionForFriday;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by c161 on 16/12/15.
@@ -398,6 +400,16 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 						rlHeader.setVisibility(View.GONE);
 						rlTutorialmateQuestion.setVisibility(View.GONE);
 						rlWaiting.setVisibility(View.VISIBLE);
+
+						/**
+						 * Set alarm to check Exam status every 5mins.
+						 */
+						Calendar calendar = Calendar.getInstance();
+						calendar.add(Calendar.SECOND, 10);
+
+//						Alarm.setAlarm(getActivity(), Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS, Alarm.MINUTE * 5, Alarm.MINUTE * 5);
+						Alarm.setAlarm(getActivity(), Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS, calendar.getTimeInMillis(), Alarm.SECOND * 10);
+						Log.e(TAG, "alarm set");
 					}
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseCheckFridayExamStatus failed : " + responseHandler.getMessage());

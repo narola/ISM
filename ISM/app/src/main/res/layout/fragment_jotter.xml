@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:background="@color/color_blue"
             android:gravity="center"
-            android:drawableLeft="@drawable/img_add_book"
+            android:drawableLeft="@drawable/ic_plus_transparent"
             android:padding="@dimen/dp8"
             android:text="Add"
             android:layout_gravity="center"

@@ -594,6 +594,39 @@
 	<string name="strPastTimes">Pastimes :</string>
 	<string name="strVideo">Video</string>
 	<string name="strAskQuestion">Ask Question</string>
-
-
+	<string name="strtotalquestions">Total Questions</string>
+	<string name="strtotalscore">Total Score</string>
+	<string name="stravg">Avrage %</string>
+	<string name="strattempted">Attempted</string>
+	<string name="streducation">Education</string>
+	<string name="strsocial">SOCIAL</string>
+	<string name="stracademic">Academic</string>
+	<string name="strexcellence">Excellence</string>
+	<string name="strfollowing">Following</string>
+	<string name="strexamcreated">Exam Created</string>
+	<string name="strassignmentcreated">Assignment Created</string>
+	<string name="strquestionanswered">Question Answered</string>
+	<string name="strfavouritequestions">Favourite Questions</string>
+	<string name="strbadgesearned">Badges Earned</string>
+	<string name="strfollowers">Followers</string>
+	<string name="strFindMoreAuthors">Find more Authors</string>
+	<string name="strMyAuthors">My Authors</string>
+	<string name="strmydesk">My Desk</string>
+	<string name="strgotrending">Go Trending</string>
+	<string name="strmy30th">My 30th</string>
+	<string name="strassessment">Assessment</string>
+	<string name="strmydeskinfo">Explore author\'s desk to reach his resources</string>
+	<string name="strgotrendinginfo">In rich your Knowlege with trending question</string>
+	<string name="strtrialinfo">Attempt trial and check your Knowlege</string>
+	<string name="strmy30thinfo">My 30th will help you access your Progress</string>
+	<string name="strassessmentinfo">Check Your score and reports of progress</string>
+	<string name="stractivity">Activity</string>
+	<string name="strexam">Exam</string>
+	<string name="strismmock">ISM_Mock</string>
+	<string name="strwassce">WASSCE</string>
+	<string name="strendofterm">EndOfTerm</string>
+	<string name="strtutorial">Tutorial</string>
+	<string name="strtrial">Trial</string>
+	<string name="strmy30">My30th</string>
+	<string name="strTrial">Trial</string>
 </resources>

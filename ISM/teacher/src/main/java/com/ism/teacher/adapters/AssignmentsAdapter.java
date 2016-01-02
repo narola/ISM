@@ -117,16 +117,19 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             txtUnassessedLabel = (TextView) itemView.findViewById(R.id.txt_unassessed_label);
             txtQuestionLabel = (TextView) itemView.findViewById(R.id.txt_question_label);
 
-            //        holder.txtExamName.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtAssignmentDate.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtAssignmentClassName.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtAssessedLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtNumberAssessedQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtUnassessedLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtNumberUnassessedQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtQuestionLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtAssignmentType.setTypeface(Global.myTypeFace.getRalewayRegular());
 
+            //applying fonts
+            txtExamName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtAssignmentDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtAssignmentClassName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtAssessedLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtNumberAssessedQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtUnassessedLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtNumberUnassessedQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtNumberTotalQuestions.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtQuestionLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtAssignmentType.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtAssignmentSubject.setTypeface(Global.myTypeFace.getRalewayBold());
         }
     }
 
@@ -134,18 +137,43 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        holder.txtAssignmentSubject.setTypeface(Global.myTypeFace.getRalewayBold());
-
-
         holder.txtAssignmentSubject.setText(arrayListAssignments.get(position).getSubjectName());
         holder.txtExamName.setText(arrayListAssignments.get(position).getExamName());
         holder.txtAssignmentClassName.setText(arrayListAssignments.get(position).getClassroomName());
-        holder.txtAssignmentDate.setText(Html.fromHtml("<font color='#0E970C'>Assignment Date:" + "</font>" + (Utility.getFormattedDate("dd-MMM-yyyy", arrayListAssignments.get(position).getExamCreatedDate()))));
 
-        holder.txtNumberAssessedQuestion.setText(arrayListAssignments.get(position).getTotalAssessed());
-        holder.txtNumberUnassessedQuestion.setText(arrayListAssignments.get(position).getTotalUnassessed());
-        holder.txtNumberTotalQuestions.setText(arrayListAssignments.get(position).getTotalQuestion());
-        holder.txtAssignmentType.setText(Html.fromHtml("<font color='#77C2EA'>Assignment Type:" + arrayListAssignments.get(position).getExamMode() + "</font>"));
+        if (arrayListAssignments.get(position).getExamCreatedDate() != null && !arrayListAssignments.get(position).getExamCreatedDate().equals("")) {
+            holder.txtAssignmentDate.setText(Html.fromHtml("<font color='#0E970C'>Assignment Date:" + "</font>" + " " + (Utility.getFormattedDate("dd-MMM-yyyy", arrayListAssignments.get(position).getExamCreatedDate()))));
+
+        } else {
+            holder.txtAssignmentDate.setText(Html.fromHtml("<font color='#0E970C'>Assignment Date:" + "</font>" + " " + "--"));
+
+        }
+
+        if (arrayListAssignments.get(position).getTotalAssessed() != null && !arrayListAssignments.get(position).getTotalAssessed().equals("")) {
+            holder.txtNumberAssessedQuestion.setText(arrayListAssignments.get(position).getTotalAssessed());
+
+        } else {
+            holder.txtNumberAssessedQuestion.setText("--");
+
+        }
+
+        if (arrayListAssignments.get(position).getTotalUnassessed() != null && !arrayListAssignments.get(position).getTotalUnassessed().equals("")) {
+            holder.txtNumberUnassessedQuestion.setText(arrayListAssignments.get(position).getTotalUnassessed());
+
+        } else {
+            holder.txtNumberUnassessedQuestion.setText("--");
+
+        }
+
+        if (arrayListAssignments.get(position).getTotalQuestion() != null && !arrayListAssignments.get(position).getTotalQuestion().equals("")) {
+            holder.txtNumberTotalQuestions.setText(arrayListAssignments.get(position).getTotalQuestion());
+
+        } else {
+            holder.txtNumberTotalQuestions.setText("--");
+
+        }
+
+        holder.txtAssignmentType.setText(Html.fromHtml("<font color='#77C2EA'>Assignment Type:" + " " + arrayListAssignments.get(position).getExamMode() + "</font>"));
 
 
         if (position % 2 == 0) {

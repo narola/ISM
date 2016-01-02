@@ -550,7 +550,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 							studentHelper.saveAdminConfig(adminConfig);
 						}
 						PreferenceData.setStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, LoginActivity.this,
-								Utility.formatDateMySql(Calendar.getInstance().getTime()));
+								Utility.formatDate(Calendar.getInstance().getTime(), Utility.DATE_FORMAT_MY_SQL));
 					}
 					isAdminConfigSet = true;
 					resumeApp();

@@ -1,203 +1,326 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
-    <!-- ll Top row -->
-    <LinearLayout
-        android:id="@+id/ll_date_range"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_date_range"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="@string/str_date_range"
-            android:textSize="@dimen/d20sp" />
-
-        <!-- Containerof right side controls of date range-->
+        <!-- ll Top row -->
         <LinearLayout
+            android:id="@+id/ll_date_range"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/d5dp"
+            android:layout_height="@dimen/d70dp"
             android:orientation="horizontal">
 
-            <!-- Ll report from-->
+
+            <!-- Containerof right side controls of date range-->
             <LinearLayout
-                android:id="@+id/ll_report_from"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_marginTop="@dimen/d5dp"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/et_startdate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector"
-                    android:editable="false"
+                <TextView
+                    android:id="@+id/tv_date_range"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:hint="@string/str_from"
-                    android:textColor="@color/color_black"
-                    android:textColorHint="@color/color_text_hint"
-                    android:textSize="@dimen/d20sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dminus8dp"
-                    android:background="@drawable/btn_calendar" />
-            </LinearLayout>
-
-            <!-- Ll report two-->
-            <LinearLayout
-                android:id="@+id/ll_report_to"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/d10dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/et_enddate"
+                    android:text="@string/str_date_range"
+                    android:textSize="@dimen/d16sp" />
+                <!-- Ll report from-->
+                <LinearLayout
+                    android:id="@+id/ll_report_from"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/d45dp"
                     android:layout_weight="1"
-                    android:background="@drawable/selector"
-                    android:editable="false"
                     android:gravity="center_vertical"
-                    android:hint="@string/str_to"
-                    android:textColor="@color/color_black"
-                    android:textColorHint="@color/color_text_hint"
-                    android:textSize="@dimen/d20sp" />
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dminus8dp"
-                    android:background="@drawable/btn_calendar" />
+                    <EditText
+                        android:id="@+id/et_startdate"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector"
+                        android:editable="false"
+                        android:gravity="center_vertical"
+                        android:hint="@string/str_from"
+                        android:textColor="@color/color_black"
+                        android:textColorHint="@color/color_text_hint"
+                        android:textSize="@dimen/d20sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/d40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dminus8dp"
+                        android:background="@drawable/btn_calendar" />
+                </LinearLayout>
+
+                <!-- Ll report two-->
+                <LinearLayout
+                    android:id="@+id/ll_report_to"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/d45dp"
+                    android:layout_marginStart="@dimen/d10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_enddate"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector"
+                        android:editable="false"
+                        android:gravity="center_vertical"
+                        android:hint="@string/str_to"
+                        android:textColor="@color/color_black"
+                        android:textColorHint="@color/color_text_hint"
+                        android:textSize="@dimen/d20sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/d40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dminus8dp"
+                        android:background="@drawable/btn_calendar" />
+                </LinearLayout>
+
+                <!-- Spinner exam type-->
+                <LinearLayout
+                    android:id="@+id/ll_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/d45dp"
+                    android:layout_marginStart="@dimen/d10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/sp_exam_type"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_selector"
+                        android:entries="@array/list"
+                        android:padding="@dimen/d10dp"
+                        android:spinnerMode="dropdown" />
+
+                </LinearLayout>
+
+                <!-- Ll  toggle report view-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/img_graph_report"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_graph_enabled" />
+
+                    <ImageView
+                        android:id="@+id/img_list_report"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_detail_enabled" />
+                </LinearLayout>
+
             </LinearLayout>
-
-            <!-- Spinner exam type-->
-            <Spinner
-                android:id="@+id/sp_exam_type"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/d10dp"
-                android:layout_weight="1"
-                android:background="@drawable/spinner_selector"
-                android:entries="@array/list"
-                android:padding="@dimen/d10dp"
-                android:spinnerMode="dropdown" />
-
-            <!-- Ll  toggle report view-->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.75"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/img_graph_report"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_grid" />
-
-                <ImageView
-                    android:id="@+id/img_list_report"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_grid" />
-            </LinearLayout>
-
         </LinearLayout>
-    </LinearLayout>
-
-
-    <!-- Middle student info-->
-    <RelativeLayout
-        android:id="@+id/rl_student_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_date_range"
-        android:padding="@dimen/d10dp">
 
         <ImageView
-            android:id="@+id/img_student"
-            android:layout_width="@dimen/d50dp"
-            android:layout_height="@dimen/d50dp"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/userdp" />
+            android:id="@+id/img_separator_one"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d2dp"
+            android:layout_below="@+id/ll_date_range"
+            android:background="#DADADA" />
+
+        <!-- Middle student info-->
+        <RelativeLayout
+            android:id="@+id/rl_student_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/img_separator_one"
+            android:padding="@dimen/d10dp">
+
+            <ImageView
+                android:id="@+id/img_student"
+                android:layout_width="@dimen/d50dp"
+                android:layout_height="@dimen/d50dp"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/userdp" />
+
+            <LinearLayout
+                android:id="@+id/ll_student_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d20dp"
+                android:layout_toRightOf="@+id/img_student"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_student_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Adam Ross"
+                    android:textColor="@color/color_pink"
+                    android:textSize="@dimen/d18sp" />
+
+                <TextView
+                    android:id="@+id/tv_student_school"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="St. Xavier"
+                    android:textSize="@dimen/d16sp" />
+
+                <TextView
+                    android:id="@+id/tv_student_class"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12 Science"
+                    android:textSize="@dimen/d14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Average"
+                    android:textSize="@dimen/d18sp" />
+
+                <TextView
+                    android:id="@+id/tv_position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Position"
+                    android:textSize="@dimen/d18sp" />
+
+                <TextView
+                    android:id="@+id/tv_grade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grade"
+                    android:textSize="@dimen/d18sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Last Student Subject Report-->
+        <ImageView
+            android:id="@+id/img_separator_blank"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d1dp"
+            android:layout_below="@+id/rl_student_details"
+            android:background="#DADADA" />
+
+        <TableLayout
+            android:id="@+id/table_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d400dp"
+            android:layout_below="@+id/img_separator_blank">
+
+        </TableLayout>
+
+        <ImageView
+            android:id="@+id/img_separator_blank_new"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d1dp"
+            android:layout_below="@+id/table_layout"
+            android:background="#DADADA" />
+
+        <!--layout for head mistress remarks-->
 
         <LinearLayout
-            android:id="@+id/ll_student_info"
-            android:layout_width="wrap_content"
+            android:id="@+id/ll_head_mistress_remarks"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/d20dp"
-            android:layout_toRightOf="@+id/img_student"
-            android:orientation="vertical">
+            android:layout_below="@+id/img_separator_blank_new"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_student_name"
+                android:id="@+id/tv_head_mistress_label"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/strtest"
-                android:textSize="@dimen/d18sp"
-                android:textColor="@color/color_pink"/>
+                android:layout_height="match_parent"
+                android:padding="@dimen/d10dp"
+                android:text="@string/str_head_mistress_remarks"
+                android:textSize="@dimen/d20sp" />
 
-            <TextView
-                android:id="@+id/tv_student_school"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/strtest"
-                android:textSize="@dimen/d16sp" />
+            <ImageView
+                android:layout_width="@dimen/d1dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/d5dp"
+                android:background="#DADADA" />
 
-            <TextView
-                android:id="@+id/tv_student_class"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/strtest"
-                android:textSize="@dimen/d14sp" />
+            <EditText
+                android:id="@+id/et_head_mistress_remarks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/d5dp"
+                android:layout_toRightOf="@+id/tv_head_mistress_label"
+                android:background="@android:color/transparent"
+                android:text=""
+                android:textSize="@dimen/d20sp" />
 
         </LinearLayout>
+        <!--layout for class mistress remarks-->
+        <ImageView
+            android:id="@+id/img_separator_two"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d1dp"
+            android:layout_below="@+id/ll_head_mistress_remarks"
+            android:background="#DADADA" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/ll_class_mistress_remarks"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:orientation="vertical">
+            android:layout_below="@+id/img_separator_two"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_average"
+                android:id="@+id/tv_class_mistress_label"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/strtest"
-                android:textSize="@dimen/d18sp" />
+                android:layout_height="match_parent"
+                android:padding="@dimen/d10dp"
+                android:text="@string/str_class_mistress_remarks"
+                android:textSize="@dimen/d20sp" />
 
-            <TextView
-                android:id="@+id/tv_position"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/strtest"
-                android:textSize="@dimen/d18sp" />
+            <ImageView
+                android:layout_width="@dimen/d1dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/d3dp"
+                android:background="#DADADA" />
 
-            <TextView
-                android:id="@+id/tv_grade"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/strtest"
-                android:textSize="@dimen/d18sp" />
+            <EditText
+                android:id="@+id/et_class_mistress_remarks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/d5dp"
+                android:layout_toRightOf="@+id/tv_class_mistress_label"
+                android:background="@android:color/transparent"
+                android:textSize="@dimen/d20sp" />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_separator_three"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d1dp"
+            android:layout_below="@+id/ll_class_mistress_remarks"
+            android:background="#DADADA" />
     </RelativeLayout>
-
-    <!-- Last STudent Subject Report-->
-
-</RelativeLayout>
+</ScrollView>

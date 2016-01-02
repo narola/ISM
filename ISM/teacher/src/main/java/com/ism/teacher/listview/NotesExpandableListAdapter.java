@@ -1,18 +1,4 @@
-/*
- * Copyright (C) 2012 Sreekumar SH
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package com.ism.teacher.listview;
 
 import android.content.Context;
@@ -30,19 +16,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Adapter for the drag and drop listview
- *
- * @author <a href="http://sreekumar.sh" >Sreekumar SH </a>
- *         (sreekumar.sh@gmail.com)
+ * Adapter for the expandable listview
  */
-public final class DragNDropAdapter extends BaseExpandableListAdapter {
+public final class NotesExpandableListAdapter extends BaseExpandableListAdapter {
     private int selectedGroup;
     private int selectedChild;
     private Context mContext;
     private HashMap<String, ArrayList<String>> children;
     private ArrayList<String> listDataHeader;
 
-    public DragNDropAdapter(Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<String>> child) {
+    public NotesExpandableListAdapter(Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<String>> child) {
 
         this.listDataHeader = new ArrayList<>();
         this.listDataHeader.addAll(listDataHeader);
@@ -170,13 +153,12 @@ public final class DragNDropAdapter extends BaseExpandableListAdapter {
         tvLectureName.setText(headerTitle);
 
         if (isExpanded) {
-            imgIndicator.setImageResource(R.drawable.dropdown_close);
+            imgIndicator.setImageResource(R.drawable.ic_arrow_close);
         } else {
-            imgIndicator.setImageResource(R.drawable.dropdown_open);
+            imgIndicator.setImageResource(R.drawable.ic_arrow_open);
         }
 
         return convertView;
-
     }
 
     @Override
