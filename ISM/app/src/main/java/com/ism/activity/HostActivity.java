@@ -28,6 +28,7 @@ import com.ism.R;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
+import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.fragment.AccordionFragment;
 import com.ism.fragment.AllStudymateRequestFragment;
@@ -40,6 +41,7 @@ import com.ism.fragment.desk.FavoriteFragment;
 import com.ism.fragment.desk.JotterScientificSymbolFragment;
 import com.ism.fragment.tutorialGroup.QuestionPaletteFragment;
 import com.ism.fragment.tutorialGroup.TutorialFragment;
+import com.ism.fragment.tutorialGroup.TutorialFriAddQuestionFragment;
 import com.ism.fragment.userProfile.AllMessageFragment;
 import com.ism.fragment.userProfile.AllNoticeFragment;
 import com.ism.fragment.userProfile.AllNotificationFragment;
@@ -95,6 +97,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private ProgressGenerator progressGenerator;
 
     private HostListener listenerHost;
+    private HostListenerTutorial listenerHostTutorial;
     private HostListenerDesk hostListenerDesk;
     private HostListenerAllNotification listenerHostAllNotification;
     private HostListenerAllMessage listenerHostAllMessage;
@@ -189,6 +192,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         public void onSubFragmentDetached(int fragmentId);
     }
 
+    public interface HostListenerTutorial {
+        public void setNewFragmentArguments(Bundle fragmentArguments);
+    }
+
     public interface HostListenerStudymates {
         public void setNewFragmentArguments(Bundle fragmentArguments);
     }
@@ -242,7 +249,19 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
     }
 
-    private void initGlobal() {
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Log.e(TAG, "onNewIntent");
+		setIntent(intent);
+		if (getIntent().getAction() != null && getIntent().getAction().equals(AppConstant.ACTION_FRIDAY_EXAM)) {
+			Bundle bundle = new Bundle();
+			bundle.putString(AppConstant.ACTION, AppConstant.ACTION_FRIDAY_EXAM);
+			loadFragment(FRAGMENT_TUTORIAL, bundle);
+		}
+	}
+
+	private void initGlobal() {
         Global.myTypeFace = new MyTypeFace(HostActivity.this);
         llControllerLeft = (LinearLayout) findViewById(R.id.ll_controller_left);
         flFragmentContainerMain = (FrameLayout) findViewById(R.id.fl_fragment_container_main);
@@ -296,8 +315,14 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
             Utility.alertOffline(HostActivity.this);
         }
 
-        loadFragment(FRAGMENT_HOME, null);
-        loadFragment(FRAGMENT_CHAT, null);
+	    if (getIntent().getAction() != null && getIntent().getAction().equals(AppConstant.ACTION_FRIDAY_EXAM)) {
+		    Bundle bundle = new Bundle();
+		    bundle.putString(AppConstant.ACTION, AppConstant.ACTION_FRIDAY_EXAM);
+		    loadFragment(FRAGMENT_TUTORIAL, bundle);
+	    } else {
+		    loadFragment(FRAGMENT_HOME, null);
+		    loadFragment(FRAGMENT_CHAT, null);
+	    }
 
         controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(HostActivity.this);
         controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(HostActivity.this);
@@ -471,13 +496,18 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                 case FRAGMENT_TUTORIAL:
                     if (currentMainFragment != fragment) {
                         QuestionPaletteFragment questionPaletteFragment = QuestionPaletteFragment.newInstance(true);
-                        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance(questionPaletteFragment)).commit();
+                        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+		                        TutorialFragment.newInstance(fragmentArguments, questionPaletteFragment)).commit();
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                         fragmentTransaction.addToBackStack(QuestionPaletteFragment.class.getSimpleName());
                         fragmentTransaction.replace(R.id.fl_fragment_container_right, questionPaletteFragment).commit();
                         imgNotes.setActivated(false);
                         imgStudyMates.setActivated(false);
                         imgChat.setActivated(false);
+                    } else if (fragmentArguments != null) {
+	                    if (listenerHostTutorial != null) {
+		                    listenerHostTutorial.setNewFragmentArguments(fragmentArguments);
+	                    }
                     }
                     break;
                 case FRAGMENT_CLASSROOM:
@@ -561,7 +591,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     break;
             }
         } catch (Exception e) {
-            Log.e(TAG, "loadFragment Exception : " + e.toString());
+	        Log.e(TAG, "loadFragment Exception : " + e.toString());
         }
     }
 
@@ -1108,7 +1138,11 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         this.listenerEditAboutMe = listenerHostEditAboutMe;
     }
 
-    public void setListenerHostScroll(ScrollListener scrollListner) {
+	public void setListenerHostTutorial(HostListenerTutorial listenerHostTutorial) {
+		this.listenerHostTutorial = listenerHostTutorial;
+	}
+
+	public void setListenerHostScroll(ScrollListener scrollListner) {
         this.scrollListener = scrollListner;
     }
 

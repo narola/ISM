@@ -1,21 +1,29 @@
 package com.ism.broadcastReceiver;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
+import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.fragment.tutorialGroup.ExamFragment;
 import com.ism.object.Global;
 import com.ism.utility.Alarm;
 import com.ism.utility.PreferenceData;
+import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
+
+import java.util.Calendar;
 
 /**
  * Created by c161 on 01/01/16.
@@ -31,10 +39,31 @@ public class AlarmReceiver extends BroadcastReceiver implements WebserviceWrappe
 
 		this.context = context;
 
-		switch (intent.getIntExtra(Alarm.REQUEST_CODE, -1)) {
-			case Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS:
-				callApiCheckFridayExamStatus();
-				break;
+		Log.e(TAG, "onReceive : " + intent.getAction());
+
+		if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+			Log.e(TAG, "boot completed");
+			if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, context, "").equals(Utility.getDate())
+					&& PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, context)) {
+//			if (!PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, context)) {
+
+				/**
+				 * Set alarm to check Exam status every 5mins.
+				 */
+				Calendar calendar = Calendar.getInstance();
+				calendar.add(Calendar.MINUTE, 5);
+//				calendar.add(Calendar.SECOND, 10);
+
+				Log.e(TAG, "alarm set");
+				Alarm.setAlarm(context, Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS, calendar.getTimeInMillis(), Alarm.MINUTE * 5);
+//				Alarm.setAlarm(context, Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS, calendar.getTimeInMillis(), Alarm.SECOND * 10);
+			}
+		} else {
+			switch (intent.getIntExtra(Alarm.REQUEST_CODE, -1)) {
+				case Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS:
+					callApiCheckFridayExamStatus();
+					break;
+			}
 		}
 	}
 
@@ -69,8 +98,23 @@ public class AlarmReceiver extends BroadcastReceiver implements WebserviceWrappe
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					if (responseHandler.getFridayExamStatus() == null && responseHandler.getFridayExamStatus().size() > 0
 							&& responseHandler.getFridayExamStatus().get(0).getIsReady().equals("yes")) {
+						PreferenceData.setBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, context, true);
 						Alarm.cancelAlarm(context, Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS);
+
+						NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+						NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+								.setSmallIcon(R.drawable.ic_chat)
+								.setContentTitle(context.getString(R.string.app_name))
+								.setContentText("Today's tutorial group exam is ready!")
+								.setAutoCancel(true);
+
+						Intent intentFridayExam = new Intent(context, HostActivity.class);
+						intentFridayExam.setAction(AppConstant.ACTION_FRIDAY_EXAM);
+						PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intentFridayExam, PendingIntent.FLAG_UPDATE_CURRENT);
+						notificationBuilder.setContentIntent(pendingIntent);
+						notificationManager.notify(AppConstant.ID_NOTIFICATION_FRIDAY_EXAM, notificationBuilder.build());
 					} else {
+						PreferenceData.setBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, context, false);
 						Toast.makeText(context, "exam not ready", Toast.LENGTH_SHORT).show();
 					}
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
