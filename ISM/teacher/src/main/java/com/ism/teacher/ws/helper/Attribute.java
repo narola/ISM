@@ -106,6 +106,11 @@ public class Attribute {
     private String lastSyncDate;
     private int credentialId;
 
+
+    private String readCategory;
+    private ArrayList<String> recordIds;
+
+
     private ArrayList<String> unfavoriteResourceId;
     private ArrayList<String> favResourceId;
     public Attribute() {
@@ -118,6 +123,24 @@ public class Attribute {
         setAccessKey(accessKey);
     }
 
+
+    @JsonProperty("read_category")
+    public void setReadCategory(String readCategory) {
+        this.readCategory = readCategory;
+    }
+
+    public String getReadCategory() {
+        return readCategory;
+    }
+
+    public ArrayList<String> getRecordIds() {
+        return recordIds;
+    }
+
+    @JsonProperty("record_id")
+    public void setRecordIds(ArrayList<String> recordIds) {
+        this.recordIds = recordIds;
+    }
 
     public String getSecretKey() {
         return secretKey;

@@ -86,6 +86,10 @@ public class WebConstants {
     public static final int ALL_LESSON_NOTES = 38;
     public static final int LESSON_NOTES_WITH_DETAILS = 39;
 
+    //User Profile
+    public static final int GET_NOTIFICATION = 40;
+    public static final int UPDATE_READ_STATUS = 41;
+
 
     public static final String Image_url = "http://192.168.1.147/WS_ISM/Images/questions_images/";
 
@@ -150,4 +154,18 @@ public class WebConstants {
 
     //lesson notes with detail for subject id
     public static final String URL_LESSON_NOTES_WITH_DETAILS = URL_HOST + "GetLessonNotesWithDetails";
+
+
+    public static final String STUDYMATE_REQUEST = "studymate_request";
+
+    public static final String MESSAGES = "messages";
+
+    public static final String NOTIFICATION = "notification";
+
+    /**
+     * User profile urls
+     */
+    public static final String URL_GET_NOTIFICATION = URL_HOST + "GetNotification";
+    public static final String URL_UPDATE_READ_STATUS = URL_HOST + "UpdateReadStatus"; // studymate_request, messages, notification
+
 }

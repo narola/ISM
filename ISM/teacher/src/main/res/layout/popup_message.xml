@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/d12dp"
+        android:background="@drawable/bg_popup_message">
+
+        <ListView
+            android:id="@+id/lv_message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btn_view_all"
+            android:divider="@drawable/divider_gray_with_padding"
+            android:dividerHeight="@dimen/d2dp"
+            android:paddingBottom="@dimen/d2dp"
+            android:paddingTop="@dimen/d2dp"></ListView>
+
+        <Button
+            android:id="@+id/btn_view_all"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/d40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/d15dp"
+            android:background="@drawable/bg_button_blue"
+            android:paddingLeft="@dimen/d40dp"
+            android:paddingRight="@dimen/d40dp"
+            android:text="@string/strviewall"
+            android:textColor="@color/bg_app_dark"
+            android:textSize="@dimen/d18sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txt_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/strNoRecordFound"
+        android:textSize="@dimen/d20sp"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="@dimen/d25dp"
+        android:layout_height="@dimen/d15dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/d100dp"
+         />
+</RelativeLayout>
