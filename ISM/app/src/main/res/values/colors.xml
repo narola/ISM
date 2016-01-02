@@ -74,7 +74,11 @@
     <color name="color_green_events">#36C2A9</color>
     <color name="color_orange">#FF4F30</color>
     <color name="dark_grey">#3C4650</color>
-
+    <color name="title_bg"> #D6DBDF</color>
+    <color name="color_answer">#6F6F74</color>
+    <color name="question_color">#74777C</color>
+    <color name="btn_save">#26AF61</color>
+    <color name="color_violet_assignment">#A44B99</color>
 
     <!-- Tutorial Group Friday Exam Colors -->
 
@@ -86,6 +90,7 @@
     <color name="bg_layout_tutorialmate_answers">#DCDCDC</color>
     <color name="border_layout_tutorialmate_answers">#BBBBBB</color>
     <color name="transparent">#00000000</color>
+    <color name="assignment_separator">#DEDCDD</color>
 
     <!-- ################################# -->
 </resources>

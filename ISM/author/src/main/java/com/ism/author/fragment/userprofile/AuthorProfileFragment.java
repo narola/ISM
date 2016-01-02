@@ -57,7 +57,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
     private TextView txtUserName;
     private AuthorHostActivity activityHost;
     private TextView txtMessageNo, txtNotification, txtstudymatesRequest;
-    private TextView txtMyFeeds, txtMyActivity, txtGeneralSetting, txtFollowers;
+    private TextView txtMyFeeds, txtMyActivity, txtGeneralSetting, txtFollowers, txtMyBooks;
     private ListView lvNotifications;
     private Button btnViewAll;
     private ImageView imgNotification;
@@ -105,6 +105,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         txtGeneralSetting = (TextView) view.findViewById(R.id.txt_general_setting);
         txtFollowers = (TextView) view.findViewById(R.id.txt_followers);
         txtMyFeeds = (TextView) view.findViewById(R.id.txt_myfeeds);
+        txtMyBooks = (TextView) view.findViewById(R.id.txt_mybooks);
         imgNotification = (ImageView) view.findViewById(R.id.img_notification);
         imgMessage = (ImageView) view.findViewById(R.id.img_message);
         imgStudymatesRequest = (ImageView) view.findViewById(R.id.img_friend_request);
@@ -119,6 +120,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         txtGeneralSetting.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtMyFeeds.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtMyActivity.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtMyBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         arrImgNotificationIcon = new ImageView[]{imgNotification, imgMessage, imgStudymatesRequest};
 
@@ -147,6 +149,9 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                     case R.id.rr_view_profile:
                     case R.id.txt_user_name:
                         activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
+                        break;
+                    case R.id.txt_mybooks:
+                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_BOOKS);
                         break;
                 }
             }
@@ -180,6 +185,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         imgNotification.setOnClickListener(onClickNotificationItems);
         imgMessage.setOnClickListener(onClickNotificationItems);
         imgStudymatesRequest.setOnClickListener(onClickNotificationItems);
+        txtMyBooks.setOnClickListener(onClickLabel);
         showBadges();
 
 

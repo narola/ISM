@@ -57,7 +57,7 @@ public class MyDeskAssignmentsFragment extends Fragment implements WebserviceWra
     private void initGlobal() {
 
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+
 
         rvAssignmentsList = (RecyclerView) view.findViewById(R.id.rv_assignments_list);
         assignmentAdapter = new MyDeskAssignmentsAdapter(mFragment, getActivity());
@@ -66,6 +66,7 @@ public class MyDeskAssignmentsFragment extends Fragment implements WebserviceWra
         rvAssignmentsList.setAdapter(assignmentAdapter);
 
 
+        setEmptyView(false);
         callApiGetAuthorBookAssignment();
 
 
@@ -120,9 +121,9 @@ public class MyDeskAssignmentsFragment extends Fragment implements WebserviceWra
                         assignmentAdapter.addAll(arrListAuthorBooksAssignment);
                         assignmentAdapter.notifyDataSetChanged();
 
-                        tvNoDataMsg.setVisibility(View.GONE);
+                        setEmptyView(false);
                     } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+                        setEmptyView(true);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -136,5 +137,15 @@ public class MyDeskAssignmentsFragment extends Fragment implements WebserviceWra
             Debug.e(TAG, "onResponseGetAuthorBookAssignment Exception : " + e.toString());
         }
     }
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setText(getResources().getString(R.string.no_assignments));
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvAssignmentsList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+
+    }
+
 
 }

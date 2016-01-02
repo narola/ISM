@@ -14,37 +14,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="@dimen/d10dp">
 
 
             <Spinner
                 android:id="@+id/sp_questionlist_author_books"
                 android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_spinner_header"
                 android:entries="@array/list"
-                android:padding="@dimen/d10dp"
                 android:spinnerMode="dropdown" />
 
             <Spinner
                 android:id="@+id/sp_questionlist_filter"
                 android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_spinner_header"
                 android:entries="@array/list"
-                android:padding="@dimen/d10dp"
                 android:spinnerMode="dropdown" />
 
             <Spinner
                 android:id="@+id/sp_questionlist_sorting"
                 android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_spinner_header"
                 android:entries="@array/list"
-                android:padding="@dimen/d10dp"
                 android:spinnerMode="dropdown" />
 
             <RelativeLayout

@@ -71,11 +71,10 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rvAssignmentSubmittorList.setAdapter(assignmentSubmittorAdapter);
         tvSubmittorTitle.setTypeface(Global.myTypeFace.getRalewayBold());
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_exam_submittor));
+
         tvSubmittorTitle.setText(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
 
+        setEmptyView(false);
         callApiGetExamSubmission();
 
 
@@ -126,9 +125,11 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
                         arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
                         assignmentSubmittorAdapter.addAll(arrListExamSubmittor);
                         assignmentSubmittorAdapter.notifyDataSetChanged();
-                        tvNoDataMsg.setVisibility(View.GONE);
+                        setEmptyView(false);
+
                     } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+
+                        setEmptyView(true);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -241,5 +242,13 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
 
     private Bundle getBundleArguments() {
         return ((AuthorHostActivity) getActivity()).getBundle();
+    }
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_exam_submittor));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvAssignmentSubmittorList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
 }

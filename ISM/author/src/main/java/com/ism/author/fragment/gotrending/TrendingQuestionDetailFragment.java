@@ -80,14 +80,14 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
         txtDate.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtTotalFollowers.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtTotalComments.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+
 
         rvQuestionCommentsList = (RecyclerView) view.findViewById(R.id.rv_question_comments_list);
         questionCommentAdapter = new QuestionCommentAdapter(this, getActivity());
         rvQuestionCommentsList.setAdapter(questionCommentAdapter);
         rvQuestionCommentsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        tvNoDataMsg.setText(getResources().getString(R.string.no_comments));
+
         setEmptyView(true);
 
         callApiGetTrendingQuestionDetail();
@@ -96,6 +96,8 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
 
     private void setEmptyView(boolean isEnable) {
 
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setText(getResources().getString(R.string.no_comments));
         tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         rvQuestionCommentsList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
@@ -147,10 +149,13 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
                         arrListComments.addAll(responseHandler.getQuestionComments().get(0).getComment());
                         questionCommentAdapter.addAll(arrListComments);
                         questionCommentAdapter.notifyDataSetChanged();
+
                         setEmptyView(false);
 
                     } else {
+
                         setEmptyView(true);
+
                     }
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Debug.i(TAG, "onResponseGetTrendingQuestionDetail : " + WebConstants.FAILED);

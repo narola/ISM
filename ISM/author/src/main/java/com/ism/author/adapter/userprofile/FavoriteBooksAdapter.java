@@ -63,8 +63,8 @@ public class FavoriteBooksAdapter extends RecyclerView.Adapter<FavoriteBooksAdap
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    myPopup(position);
-                    BookDetailsDialog bookDetailsDialog = new BookDetailsDialog(context, arrayList, position, Global.imageLoader);
+
+                    BookDetailsDialog bookDetailsDialog = new BookDetailsDialog(context,arrayList.get(position));
                     bookDetailsDialog.show();
                 }
             });

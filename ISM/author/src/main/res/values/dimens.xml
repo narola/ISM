@@ -104,4 +104,5 @@
     <dimen name="text_size_emptylist_message_large">25sp</dimen>
     <dimen name="d80dp">80dp</dimen>
 
+
 </resources>

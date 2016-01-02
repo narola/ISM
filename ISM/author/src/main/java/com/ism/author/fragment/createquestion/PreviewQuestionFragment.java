@@ -87,9 +87,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
         tvPreviewTotalQuestionNo.setText("0");
         tvPreviewTotalScoreNo.setText("0");
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_preview_questions));
 
 
         rvPreviewquestionlist = (RecyclerView) view.findViewById(R.id.rv_previewquestionlist);
@@ -115,6 +112,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 callApiFreezeQuestions();
             }
         });
+
+        setEmptyView(false);
     }
 
     public void setExamQuestions(ArrayList<Questions> arrListExamQuestions) {
@@ -141,10 +140,11 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     int totalScore = 0;
 
     public void UpdateQuestionInfo() {
+
         if (totalQuestions > 0) {
-            tvNoDataMsg.setVisibility(View.GONE);
+            setEmptyView(false);
         } else {
-            tvNoDataMsg.setVisibility(View.VISIBLE);
+            setEmptyView(true);
         }
 
         tvPreviewTotalQuestionNo.setText(String.valueOf(totalQuestions));
@@ -302,4 +302,13 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         return (AddQuestionContainerFragment) mFragment;
     }
 
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_preview_questions));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvPreviewquestionlist.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+
+    }
 }

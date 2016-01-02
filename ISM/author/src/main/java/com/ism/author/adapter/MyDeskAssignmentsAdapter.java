@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 public class MyDeskAssignmentsAdapter extends RecyclerView.Adapter<MyDeskAssignmentsAdapter.ViewHolder> {
 
-    private static final String TAG = ExamsAdapter.class.getSimpleName();
+    private static final String TAG = MyDeskAssignmentsAdapter.class.getSimpleName();
     private Fragment mFragment;
     private ArrayList<AuthorBookAssignment> arrListAuthorBooksAssignments = new ArrayList<AuthorBookAssignment>();
     private LayoutInflater inflater;

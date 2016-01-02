@@ -66,13 +66,16 @@ public class PastTrendingQuestionsFragment extends Fragment implements Webservic
         rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+
 
         setEmptyView(true);
         callApiForGetPastTrendingQuestions();
     }
 
     private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setText(getResources().getString(R.string.no_past_trending_questions));
         tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         rvList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }

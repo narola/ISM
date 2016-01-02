@@ -114,4 +114,8 @@
     <dimen name="bg_controller_border">@dimen/dp1</dimen>
     <dimen name="bg_controller_border_left">@dimen/dp3</dimen>
     <dimen name="text_add_question_form_title">@dimen/dp23</dimen>
+    <dimen name="controller_desk_tab_width">@dimen/dp105</dimen>
+    <dimen name="author_image_height">@dimen/dp143</dimen>
+    <dimen name="row_width_author">@dimen/dp110</dimen>
+    <dimen name="author_tab_width">@dimen/dp236</dimen>
 </resources>

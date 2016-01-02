@@ -12,6 +12,9 @@ import android.net.Uri;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -575,5 +578,38 @@ public class Utility {
      */
     public static void showView(View view) {
         view.setVisibility(View.VISIBLE);
+    }
+
+    public static SpannableString f;
+
+    /**
+     *
+     * @param spanString
+     * @param color
+     * @return
+     */
+    public static SpannableString getSpannableString(String spanString, Integer color) {
+
+        f = new SpannableString(spanString);
+        f.setSpan(new ForegroundColorSpan(color), 0,
+                spanString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return f;
+
+    }
+
+    /**
+     *
+     * @param original
+     * @param tobeChecked
+     * @param caseSensitive
+     * @return
+     */
+    public static boolean containsString(String original, String tobeChecked, boolean caseSensitive) {
+        if (caseSensitive) {
+            return original.contains(tobeChecked);
+        } else {
+            return original.toLowerCase().contains(tobeChecked.toLowerCase());
+        }
+
     }
 }

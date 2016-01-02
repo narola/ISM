@@ -67,11 +67,12 @@
 
         <View
             android:id="@+id/view_highlighter_triangle"
-            android:layout_width="@dimen/d20dp"
-            android:layout_height="@dimen/d30dp"
+            android:layout_width="@dimen/d35dp"
+            android:layout_height="@dimen/d35dp"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dMinus10dp"
             android:layout_marginTop="@dimen/d235dp"
-            android:background="@drawable/shape_triangle_profile_controller"
+            android:background="@drawable/indicator_dark_grey"
             android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

@@ -71,6 +71,13 @@ public class WebConstants {
     public static final int POSTFEED = 62;
 	public static final int LIKE_FEED =63 ;
 
+
+	/**
+	 * my author
+	 */
+
+	public static final int GET_AUTHOR_BOOK_ASSIGNMENT = 101;
+	public static final int GETASSIGNMENTBYBOOK = 102;
 	/**
 	 *  URLs
 	 */
@@ -153,6 +160,12 @@ public class WebConstants {
 	public static final String URL_GET_ALL_BOOKS = HOST_WS + "GetAllBooks";
 	public static final String URL_UNBLOCK_USER =  HOST_WS + "UnBlockUser";
 
+	/**
+	 * my author
+	 */
+
+	public static final String URL_GET_AUTHOR_BOOK_ASSIGNMENT = HOST_WS + "GetAuthorBookAssignment";
+	public static final String URL_GET_ASSIGNMENT_BY_BOOK = HOST_WS + "GetAssignmentByBook";
 	/**
 	 * Parameter value Constants
 	 */

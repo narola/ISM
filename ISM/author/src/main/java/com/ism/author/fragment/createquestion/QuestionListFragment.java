@@ -34,7 +34,7 @@ import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.AuthorBook;
+import com.ism.author.ws.model.BookData;
 import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private Spinner spQuestionlistFilter, spQuestionlistAuthorBooks, spQuestionlistSort;
     private List<String> arrListFilter, arrListSort;
-    private List<AuthorBook> arrListAuthorBooks;
+    private List<BookData> arrListAuthorBooks;
     private EditText etSearchQuestions;
     private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview, tvNoDataMsg;
     private RecyclerView rvQuestionlist;
@@ -99,9 +99,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         tvQuestionlistAddNewQuestion = (TextView) view.findViewById(R.id.tv_questionlist_add_new_question);
         tvQuestionlistAddPreview = (TextView) view.findViewById(R.id.tv_questionlist_add_preview);
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_questions_in_questionbank));
 
         rvQuestionlist = (RecyclerView) view.findViewById(R.id.rv_questionlist);
         questionBankListAdapter = new QuestionBankListAdapter(getActivity(), mFragment);
@@ -124,13 +121,13 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         arrListFilter = new ArrayList<String>();
         arrListFilter.add(getString(R.string.strfilters));
         arrListFilter = Arrays.asList(getResources().getStringArray(R.array.questionsfilter));
-        Adapters.setUpSpinner(getActivity(), spQuestionlistFilter, arrListFilter, Adapters.ADAPTER_SMALL, Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spQuestionlistFilter, arrListFilter, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
         spQuestionlistFilter.setSelection(1);
 
 
         arrListSort = new ArrayList<String>();
         arrListSort = Arrays.asList(getResources().getStringArray(R.array.questionsSorting));
-        Adapters.setUpSpinner(getActivity(), spQuestionlistSort, arrListSort, Adapters.ADAPTER_SMALL, Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spQuestionlistSort, arrListSort, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
         spQuestionlistSort.setSelection(1);
 
 
@@ -298,16 +295,17 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     if (responseHandler.getAuthorBook().size() > 0) {
-                        arrListAuthorBooks = new ArrayList<AuthorBook>();
+                        arrListAuthorBooks = new ArrayList<BookData>();
                         arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
                         List<String> authorBooks = new ArrayList<String>();
                         authorBooks.add(getString(R.string.strbookname));
 //                    authorBooks.add(getString(R.string.strall));
-                        for (AuthorBook authorbook : arrListAuthorBooks) {
+                        for (BookData authorbook : arrListAuthorBooks) {
                             authorBooks.add(authorbook.getBookName());
 
                         }
-                        Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks, Adapters.ADAPTER_SMALL, Global.myTypeFace.getRalewayRegular());
+                        Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks,
+                                Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
                         if (getBaseFragment().getBundleArguments() != null) {
                             Debug.e(TAG, "THE BOOK NAME IS " + getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
 //                            if (arrListAuthorBooks.contains(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME))) {
@@ -316,9 +314,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 //                                spQuestionlistAuthorBooks.setSelection(1);
 //                            }
                         }
-                        tvNoDataMsg.setVisibility(View.GONE);
-                    } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -339,8 +334,14 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListQuestions.addAll(responseHandler.getQuestionBank());
-                    setQuestionData(arrListQuestions);
+                    if (responseHandler.getQuestionBank().size() > 0) {
+                        arrListQuestions.addAll(responseHandler.getQuestionBank());
+                        setQuestionData(arrListQuestions);
+                        setEmptyView(false);
+                    } else {
+                        setEmptyView(true);
+                    }
+
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
@@ -570,14 +571,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
     }
 
-    private void showMsgNoFilterData(Boolean showMsg) {
-        if (showMsg) {
-            tvNoDataMsg.setText(getString(R.string.no_filter_questions));
-            tvNoDataMsg.setVisibility(View.VISIBLE);
-        } else {
-            tvNoDataMsg.setVisibility(View.GONE);
-        }
-    }
 
     /**
      * Perform sorting always on latestlistOfQuestionBank to sort the latest list after filter.
@@ -614,5 +607,26 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
     }
 
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_questions_in_questionbank));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvQuestionlist.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+
+
+    }
+
+
+    private void showMsgNoFilterData(Boolean showMsg) {
+
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_filter_questions));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(showMsg ? View.VISIBLE : View.GONE);
+        rvQuestionlist.setVisibility(showMsg ? View.INVISIBLE : View.VISIBLE);
+
+    }
 
 }

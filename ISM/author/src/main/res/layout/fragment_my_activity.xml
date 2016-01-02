@@ -11,10 +11,11 @@
         android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
     <View
-        android:layout_width="@dimen/d20dp"
-        android:layout_height="@dimen/d30dp"
+        android:layout_width="@dimen/d35dp"
+        android:layout_height="@dimen/d35dp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/d425dp"
-        android:background="@drawable/shape_triangle_profile_controller" />
+        android:layout_marginTop="@dimen/d368dp"
+        android:layout_marginRight="@dimen/dMinus10dp"
+        android:background="@drawable/indicator_dark_grey" />
 
 </RelativeLayout>

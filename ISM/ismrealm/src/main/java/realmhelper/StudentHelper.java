@@ -8,6 +8,7 @@ import com.realm.ismrealm.RealmAdaptor;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.AdminConfig;
+import model.AuthorProfile;
 import model.FeedComment;
 import model.FeedImage;
 import model.Feeds;
@@ -363,4 +364,28 @@ public class StudentHelper {
         return notesRealmResults;
     }
 
+    /**
+     * save author profile information
+     *
+     * @param authorProfile
+     */
+    public void saveAuthorProfile(AuthorProfile authorProfile) {
+        try {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(authorProfile);
+            realm.commitTransaction();
+//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
+        } catch (Exception e) {
+            Log.i(TAG, " saveAuthorProfile Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+    public AuthorProfile getAuthorprofile(int userId) {
+        try {
+            return realm.where(AuthorProfile.class).equalTo("authorId", userId).findFirst();
+        } catch (Exception e) {
+            Log.i(TAG, "getUser Exceptions : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
 }

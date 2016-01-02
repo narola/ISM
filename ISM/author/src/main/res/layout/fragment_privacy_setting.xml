@@ -80,7 +80,7 @@
         android:layout_height="@dimen/d30dp"
         android:layout_above="@+id/include_contact_info"
         android:layout_alignParentStart="true"
-        android:background="@drawable/shape_triangle_general_setting" />
+        android:background="@drawable/indicator_light_grey" />
 
     <View
         android:layout_width="@dimen/d2dp"

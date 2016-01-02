@@ -68,7 +68,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_user_profile_books, container, false);
+        view = inflater.inflate(R.layout.fragment_desk_books, container, false);
 
         initGlobal();
 
