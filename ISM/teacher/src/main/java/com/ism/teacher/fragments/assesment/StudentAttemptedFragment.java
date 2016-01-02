@@ -27,7 +27,6 @@ import com.ism.teacher.ws.helper.WebserviceWrapper;
 import java.util.List;
 
 
-
 public class StudentAttemptedFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
     private static final String TAG = StudentAttemptedFragment.class.getSimpleName();
     private View view;
@@ -67,7 +66,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
         Attribute attribute = new Attribute();
         attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
-        attribute.setUserId(WebConstants.USER_ID_340);
+        attribute.setUserId(WebConstants.USER_ID_370);
         attribute.setRole(WebConstants.TEACHER_ROLE_ID);
 
         callapigetExamSubmission(attribute);
@@ -83,7 +82,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
             try {
 //                 ((TeacherHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
+                        .execute(WebConstants.GET_EXAM_SUBMISSION);
             } catch (Exception e) {
                 Log.i(TAG, "callApi GET_EXAM_QUESTIONS ::" + e.getLocalizedMessage());
             }
@@ -145,7 +144,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
         try {
 
             switch (API_METHOD) {
-                case WebConstants.GET_ALL_EXAM_SUBMISSION:
+                case WebConstants.GET_EXAM_SUBMISSION:
                     onResponseGetAllStudentAttempted(object);
                     break;
                 case WebConstants.GET_EXAM_QUESTIONS:

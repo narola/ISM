@@ -107,7 +107,7 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 				holder.txtMessage.setBackgroundResource(R.drawable.bg_chat_received);
 			}
 
-			holder.txtTime.setText(Utility.formatPHPDateToMMMDDYY_HHMMA(arrListDiscussion.get(position).getCommentTimestamp()));
+			holder.txtTime.setText(Utility.formatMySqlDate(arrListDiscussion.get(position).getCommentTimestamp(), Utility.DATE_FORMAT_MMMDDYY_HHMMA));
 			holder.txtUserName.setText(arrListDiscussion.get(position).getFullName());
 			holder.txtMessage.setText(arrListDiscussion.get(position).getComment());
 		} catch (Exception e) {

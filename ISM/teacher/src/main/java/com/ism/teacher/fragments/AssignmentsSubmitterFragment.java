@@ -18,7 +18,6 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.AssignmentSubmitterAdapter;
 import com.ism.teacher.adapters.AssignmentsAdapter;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
@@ -98,12 +97,13 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
             try {
                 ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
+               // attribute.setExamId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
                 attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
                 attribute.setUserId(WebConstants.USER_ID_370);
-                attribute.setRole(AppConstant.TEACHER_ROLE_ID);
+                attribute.setRole(WebConstants.TEACHER_ROLE_ID);
 
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
+                        .execute(WebConstants.GET_EXAM_SUBMISSION);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -117,7 +117,7 @@ public class AssignmentsSubmitterFragment extends Fragment implements Webservice
     public void onResponse(int apicode, Object object, Exception error) {
         try {
             switch (apicode) {
-                case WebConstants.GET_ALL_EXAM_SUBMISSION:
+                case WebConstants.GET_EXAM_SUBMISSION:
                     onResponseGetAllExamSubmission(object);
                     break;
             }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape>
+            <padding android:bottom="@dimen/d2dp" />
+            <padding android:left="@dimen/d5dp" />
+            <padding android:right="@dimen/d5dp" />
+            <padding android:top="@dimen/d5dp" />
+            <corners android:radius="@dimen/d5dp" />
+            <solid android:color="@color/desk_tab_bg" />
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <gradient
+                android:angle="0"
+                android:centerColor="#ffffff"
+                android:endColor="#f1f1f1"
+                android:startColor="#f1f1f1" />
+        </shape>
+    </item>
+</layer-list>

@@ -3,8 +3,9 @@ package com.ism.teacher.adapters;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
-import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
+import com.ism.teacher.Utility.Debug;
+import com.ism.teacher.Utility.HtmlImageGetter;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.createquestion.AddQuestionContainerFragment;
 import com.ism.teacher.object.Global;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 /**
  * these adapter class is to set the list of questionbank.
  */
-public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankListAdapter.ViewHolder> {
+public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankListAdapter.ViewHolder> implements HtmlImageGetter.RefreshDataAfterLoadImage {
 
 
     private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
@@ -68,6 +70,21 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         View questionListview = inflater.inflate(R.layout.row_questionlist_teacher, parent, false);
         ViewHolder viewHolder = new ViewHolder(questionListview);
         return viewHolder;
+    }
+
+    @Override
+    public void refreshData() {
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+
+                notifyDataSetChanged();
+                Debug.e(TAG, "notify data called");
+
+            }
+        };
+
+        handler.post(r);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -117,7 +134,32 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         holder.tvQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
-        holder.tvQuestion.setText(Utility.formatHtml(arrListQuestions.get(position).getQuestionText()));
+//        holder.tvQuestion.setText(Utility.formatHtml(arrListQuestions.get(position).getQuestionText()));
+
+        /**
+         * Show thumbs for question containing image
+         */
+
+        if (arrListQuestions.get(position).getQuestionText().contains("img") || arrListQuestions.get(position).getQuestionText().contains("http:")
+                || arrListQuestions.get(position).getQuestionText().contains("https:")) {
+
+            if (arrListQuestions.get(position).getSpan() == null) {
+
+                arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                        new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+                        ), null));
+
+            } else {
+
+                holder.tvQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                        new HtmlImageGetter(50, 50, mContext, null
+                        ), null));
+            }
+        } else {
+            holder.tvQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText()));
+        }
+
+
         /**
          * hide the edit question
          */
@@ -200,7 +242,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                     if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strquestionformatmcq))) {
 
-                        if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                        if (getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
                                 (mContext.getString(R.string.strobjective))) {
                             isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                         } else {
@@ -210,7 +252,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                     } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
                             (mContext.getString(R.string.strquestionformatdescriptive))) {
 
-                        if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                        if (getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
                                 (mContext.getString(R.string.strsubjective))) {
                             isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                         } else {
@@ -220,7 +262,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                     } else if (arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase
                             (mContext.getString(R.string.strquestionformatfillups))) {
-                        if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
+                        if (getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase
                                 (mContext.getString(R.string.strsubjective))) {
                             isValidationForAddToPreview(arrListQuestions.get(position), holder.chkSelectQuestion);
                         } else {
@@ -325,7 +367,8 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         return isPresent;
     }
 
-    private Bundle getBundleArguments() {
-        return ((TeacherHostActivity) mContext).getBundle();
+    private AddQuestionContainerFragment getBaseFragment() {
+        return (AddQuestionContainerFragment) mFragment;
     }
+
 }

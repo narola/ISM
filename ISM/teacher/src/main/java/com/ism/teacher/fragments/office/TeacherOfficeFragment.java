@@ -69,8 +69,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
     //container to view objective/subjective questions only
     public static final int FRAGMENT_OBJECTIVE_QUESTIONS_VIEW = 9;
     public static final int FRAGMENT_SUBJECTIVE_QUESTIONS = 10;
-    // public static final int FRAGMENT_NOTES_ADD_EDIT = 11;
-    public static final int FRAGMENT_NOTES_CONTAINER = 12;
+    public static final int FRAGMENT_NOTES_CONTAINER = 11;
 
     public static int current_office_fragment;
 
@@ -220,17 +219,6 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                             replace(R.id.fl_teacher_office_home,
                                     CreateExamAssignmentContainerFragment.newInstance(), AppConstant.FRAGMENT_TAG_CREATE_EXAM_CONTAINER).commit();
                     break;
-
-
-//                case FRAGMENT_NOTES_ADD_EDIT:
-//                    Debug.e(AppConstant.back_tag + "child added=>>>>>>>>>>>>>>>>>>>", AppConstant.FRAGMENT_TAG_NOTES_ADD_EDIT);
-//                    setBackStackFragmentKey(AppConstant.FRAGMENT_TAG_NOTES_ADD_EDIT);
-//                    getFragmentManager().beginTransaction().
-//                            replace(R.id.fl_teacher_office_home,
-//                                    NotesAddEditFragment.newInstance(), AppConstant.FRAGMENT_TAG_NOTES_ADD_EDIT).commit();
-//                    ((TeacherHostActivity) getActivity()).showRightContainerFragment();
-//                    ((TeacherHostActivity) getActivity()).showAddOption();
-//                    break;
 
                 case FRAGMENT_NOTES_CONTAINER:
                     Debug.e(AppConstant.back_tag + "child added=>>>>>>>>>>>>>>>>>>>", AppConstant.FRAGMENT_TAG_NOTES_CONTAINER);

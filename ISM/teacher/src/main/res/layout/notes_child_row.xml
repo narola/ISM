@@ -24,9 +24,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/d10dp"
+            android:layout_marginRight="@dimen/d5dp"
             android:gravity="center_vertical"
-            android:visibility="gone" />
+            android:background="@drawable/ic_video_active"
+            />
     </RelativeLayout>
     <ImageView
         android:layout_width="match_parent"

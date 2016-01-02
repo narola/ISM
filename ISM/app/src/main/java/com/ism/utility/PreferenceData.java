@@ -2,6 +2,9 @@ package com.ism.utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.ism.model.TestActivity;
 
 /**
  * Created by c161 on --/10/15.

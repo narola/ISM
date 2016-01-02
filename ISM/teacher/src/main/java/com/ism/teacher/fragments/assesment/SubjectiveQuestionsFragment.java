@@ -45,10 +45,27 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private static final String TAG = SubjectiveQuestionsFragment.class.getSimpleName();
 
-
+    //Views
     private View view;
-    Fragment mFragment;
 
+    private CircleImageView imgStudentProfilePic;
+    private TextView tvStudentName, tvStudentRollNo, tvAssignmentNo, tvAssignmentTitle, tvSubjectiveScore, tvSubjectiveMarks,
+            tvStudentEvalutionNo;
+    private RecyclerView rvSubjectiveQuestionsList;
+    private LinearLayoutManager mLayoutManager;
+    private LinearLayout llPrevStudent, llNextStudent;
+    private RelativeLayout rlBottomEvaluationTab;
+    private ImageView imgEditExam, imgCopyExam;
+
+
+    private Fragment mFragment;
+
+
+    //Arraylist
+    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
+
+    //Adapter
+    private SubjectiveQuestionListAdapter subjectiveQuestionListAdapter;
 
     public SubjectiveQuestionsFragment() {
     }
@@ -64,24 +81,10 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         return view;
     }
 
-    private CircleImageView imgStudentProfilePic;
-    private TextView tvStudentName, tvStudentRollNo, tvAssignmentNo, tvAssignmentTitle, tvSubjectiveScore, tvSubjectiveMarks,
-            tvStudentEvalutionNo;
-    private RecyclerView rvSubjectiveQuestionsList;
-    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
-    private SubjectiveQuestionListAdapter subjectiveQuestionListAdapter;
-    private LinearLayoutManager mLayoutManager;
-    private LinearLayout llPrevStudent, llNextStudent;
-    private RelativeLayout rlBottomEvaluationTab;
-    private ImageView imgEditExam, imgCopyExam;
-
     private void initGlobal() {
-
         imgEditExam = (ImageView) view.findViewById(R.id.img_edit_exam);
         imgCopyExam = (ImageView) view.findViewById(R.id.img_copy_exam);
-
         imgStudentProfilePic = (CircleImageView) view.findViewById(R.id.img_student_profile_pic);
-
         rlBottomEvaluationTab = (RelativeLayout) view.findViewById(R.id.rl_bottom_evaluation_tab);
 
         tvStudentName = (TextView) view.findViewById(R.id.tv_student_name);
@@ -98,7 +101,6 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         rvSubjectiveQuestionsList.setAdapter(subjectiveQuestionListAdapter);
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvSubjectiveQuestionsList.setLayoutManager(mLayoutManager);
-
 
         tvStudentName.setTypeface(Global.myTypeFace.getRalewayBold());
         tvStudentRollNo.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -151,9 +153,9 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
             try {
                 ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
-//                request.setExamId(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                attribute.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
-                Debug.e(TAG, "The exam ID is::" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
+                attribute.setExamId(getBaseFragment().getArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
+//                attribute.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
+                Debug.e(TAG, "The exam ID is::" + getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_QUESTIONS);
             } catch (Exception e) {
@@ -170,7 +172,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
             try {
                 ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setExamId(getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID));
+                //  attribute.setExamId(getBaseFragment().getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID));
                 attribute.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
 //                request.setStudentId("1");
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -215,7 +217,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
                      * condition to call evaluation based on flag
                      */
 
-                    if (getBundleArguments().getBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                    if (getBaseFragment().getBundleArguments().getBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                         loadStudentEvaluationData();
                         // getBaseFragment().showGetStudentsandPalleteFragment();
                         rlBottomEvaluationTab.setVisibility(View.VISIBLE);
@@ -250,9 +252,10 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
                     subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
 
                     updateStatusForEvaluation();
-                    setTitleDetails();
                     getBaseFragment().setQuestionStatusData(arrListQuestions,
                             responseObjGetExamEvaluation.getExamEvaluation().get(0).getQuestionPalette());
+
+                    setTitleDetails();
 
 
                 } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
@@ -287,7 +290,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private void loadNextStudentData() {
         isFromLeft = false;
-        int position = getBundleArguments().getInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION);
+        int position = getBaseFragment().getBundleArguments().getInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION);
         if (position < arrListExamSubmittor.size() - 1) {
             position++;
             setStudentData(position);
@@ -296,10 +299,10 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private void loadPreviousStudentData() {
         isFromLeft = true;
-        int position = getBundleArguments().getInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION);
+        int position = getBaseFragment().getBundleArguments().getInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION);
         if (position >= 1) {
             position--;
-            getBundleArguments().putInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION, position);
+            getBaseFragment().getBundleArguments().putInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION, position);
             setStudentData(position);
         }
     }
@@ -325,7 +328,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     }
 
     public void loadStudentEvaluationData() {
-        if (getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID) != null) {
+        if (getBaseFragment().getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID) != null) {
             setQuestions();
             callAPiGetExamEvaluation();
             scrollToSpecificQuestion(0);
@@ -337,24 +340,23 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         rvSubjectiveQuestionsList.smoothScrollToPosition(position);
     }
 
-    private void setTitleDetails() {
+    public void setTitleDetails() {
 
-        arrListExamSubmittor = getBundleArguments().getParcelableArrayList(MyStudentsAdapter.ARG_ARR_LIST_STUDENTS);
+        arrListExamSubmittor = getBaseFragment().getBundleArguments().getParcelableArrayList(MyStudentsAdapter.ARG_ARR_LIST_STUDENTS);
         tvStudentEvalutionNo.setText(getActivity().getResources().getString(R.string.strevaluation) + " " +
-                (getBundleArguments().getInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION) + 1) + " " +
+                (getBaseFragment().getBundleArguments().getInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION) + 1) + " " +
                 getActivity().getResources().getString(R.string.strof) + " " +
                 arrListExamSubmittor.size());
 
         Global.imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                 imgStudentProfilePic, ISMTeacher.options);
 
-        tvStudentName.setText(getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_NAME));
+        tvStudentName.setText(getBaseFragment().getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_NAME));
         tvStudentRollNo.setText(getResources().getString(R.string.strrollno) + " " +
-                (getBundleArguments().getInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION) + 1));
+                (getBaseFragment().getBundleArguments().getInt(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION) + 1));
         tvAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + " " +
-                getBundleArguments().getInt(AssignmentsAdapter.ARG_ASSIGNMENT_NO));
-        tvAssignmentTitle.setText(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
-
+                getBaseFragment().getBundleArguments().getInt(AssignmentsAdapter.ARG_ASSIGNMENT_NO));
+        tvAssignmentTitle.setText(getBaseFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_NAME));
 
     }
 
@@ -387,27 +389,16 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     private void setExamQuestions() {
 
         if (responseObjGetAllExamQuestions != null) {
-
-            getBundleArguments().putParcelableArrayList(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS, arrListQuestions);
-            getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getString(R.string.strsubjective));
-
-//            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
-//                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getArguments());
+            getBaseFragment().getBundleArguments().putParcelableArrayList(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS, arrListQuestions);
+            getBaseFragment().getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getString(R.string.strsubjective));
 //
 //            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
 //                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
 
             TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) mFragment.getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
             teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_CREATE_EXAM_CONTAINER);
-
-//            mFragment.getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
-//                    CreateExamAssignmentContainerFragment.newInstance()).commit();
-
         }
 
     }
 
-    private Bundle getBundleArguments() {
-        return ((TeacherHostActivity) getActivity()).getBundle();
-    }
 }

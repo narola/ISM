@@ -20,7 +20,6 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.AssignmentsAdapter;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -333,7 +332,7 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
                 ((TeacherHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(WebConstants.USER_ID_370);
-                attribute.setRole(AppConstant.TEACHER_ROLE_ID);
+                attribute.setRole(WebConstants.TEACHER_ROLE_ID);
                 attribute.setExamCategory("");
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_ASSIGNMENTS);

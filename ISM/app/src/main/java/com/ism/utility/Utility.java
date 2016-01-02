@@ -182,10 +182,10 @@ public class Utility {
             builder.setMessage(message);
         }
         AlertDialog dialog = builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+	        @Override
+	        public void onClick(DialogInterface dialog, int which) {
 
-            }
+	        }
         }).create();
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();
@@ -216,92 +216,44 @@ public class Utility {
                 confirmationListener.onConfirmationResponse(requestId, true);
             }
         }).setNegativeButton(R.string.strcancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                confirmationListener.onConfirmationResponse(requestId, false);
-            }
+	        @Override
+	        public void onClick(DialogInterface dialog, int which) {
+		        confirmationListener.onConfirmationResponse(requestId, false);
+	        }
         }).create();
         dialog.setCancelable(cancelable);
 //        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();
     }
 
-    /**
-     * Krunal Panchal
-     * Format date to pass in api.
-     *
-     * @param date
-     * @return String : formatted date to pass in api.
-     */
-    public static String formatDateApi(Date date) {
-        return DATE_FORMAT_API.format(date);
+	/**
+	 * Krunal Panchal
+	 * Get formatted date as String in required format.
+	 *
+	 * @param date
+	 * @param dateFormat
+	 * @return Formatted date as String
+	 */
+	public static String formatDate(Date date, SimpleDateFormat dateFormat) {
+        return dateFormat.format(date);
     }
 
-    /**
-     * Krunal Panchal
-     * Format date to pass in api with MySql format.
-     *
-     * @param date
-     * @return
-     */
-    public static String formatDateMySql(Date date) {
-        return DATE_FORMAT_MY_SQL.format(date);
-    }
-
-    /**
-     * Format date to display in app.
-     *
-     * @param date
-     * @return String : formatted date for display in app.
-     */
-    public static String formatDateDisplay(Date date) {
-        return DATE_FORMAT_DISPLAY.format(date);
-    }
-
-    /**
-     * Krunal Panchal
-     *
-     * @param strDate
-     * @return String : fromatted date. eg. : 6 jul 15
-     */
-    public static String formatPHPDateToDMY(String strDate) {
-        try {
-            return DATE_FORMAT_DDMMMYY.format(DATE_FORMAT_MY_SQL.parse(strDate));
-        } catch (ParseException e) {
-            Log.e(TAG, "formatPHPDateToDMY Exception : " + e.toString());
-            return null;
-        }
-    }
-
-    /**
-     * Krunal Panchal
-     *
-     * @param strDate
-     * @return String : fromatted date. eg. : Nov 25, 2015  7:10pm
-     */
-    public static String formatPHPDateToMMMDDYY_HHMMA(String strDate) {
-        try {
-            return DATE_FORMAT_MMMDDYY_HHMMA.format(DATE_FORMAT_MY_SQL.parse(strDate));
-        } catch (ParseException e) {
-            Log.e(TAG, "formatPHPDateToDMY Exception : " + e.toString());
-            return null;
-        }
-    }
-
-    /**
-     * Krunal Panchal
-     *
-     * @param strDate
-     * @return String : fromatted date. eg. : 6 jul 15
-     */
-    public static String formatMySqlDateToMMMDDYYYY(String strDate) {
-        try {
-            return DATE_FORMAT_MMMDDYYYY.format(DATE_FORMAT_MY_SQL.parse(strDate));
-        } catch (ParseException e) {
-            Log.e(TAG, "formatMySqlDateToMMMDDYYYY Exception : " + e.toString());
-            return null;
-        }
-    }
+	/**
+	 * Krunal Panchal
+	 * Formate MySql formatted date to required format.
+	 *
+	 * @param mySqlFormattedDate
+	 * @param dateFormat
+	 * @return Formatted String date.
+	 */
+	public static String formatMySqlDate(String mySqlFormattedDate, SimpleDateFormat dateFormat) {
+		try {
+			return dateFormat.format(DATE_FORMAT_MY_SQL.parse(mySqlFormattedDate));
+		} catch (ParseException e) {
+			Log.e(TAG, "formatMySqlDate Exception : " + e.toString());
+			return null;
+		}
+	}
 
     /**
      * Arti

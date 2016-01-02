@@ -78,17 +78,6 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         try {
-            holder.tvExamBookName.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamName.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamDate.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamClassName.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamNoofAssessed.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamAssessed.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamNoofUnassessed.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamUnassessed.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamNoofQuestion.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamType.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
             holder.tvExamBookName.setText(arrListExams.get(position).getBookName());
@@ -206,6 +195,19 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             tvExamType = (TextView) itemView.findViewById(R.id.tv_assignment_type);
             llExamContainer = (LinearLayout) itemView.findViewById(R.id.ll_exam_container);
             llViewExamQuestions = (LinearLayout) itemView.findViewById(R.id.ll_view_exam_questions);
+
+
+            tvExamBookName.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvExamName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvExamDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvExamClassName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvExamNoofAssessed.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvExamAssessed.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvExamNoofUnassessed.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvExamUnassessed.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvExamNoofQuestion.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvExamQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvExamType.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         }
