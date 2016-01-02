@@ -27,31 +27,61 @@
 
   <div class="tab-content">
     <div id="author" class="tab-pane fade in active">
+      <form id="author_frm" method="post" enctype="multipart/form-data">
       <div id="author_thumbnails" class="thumbnails">
         <ul class="clearfix">
         <?php foreach ($author_images as $image) { ?>
-          <li><a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a></li>
+          <li class="col-md-3 text-center">
+            <div class="row">
+              <a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a>
+            </div>
+            <div class="row">
+              <input type="checkbox" name="author[]" value="<?php echo $image['id']; ?>" />
+            </div>
+          </li>
         <?php } ?>
         </ul>
       </div>
+      <button name="author_btn" type="submit" class="btn btn_red">Save</button>
+    </form>
     </div>
     <div id="student" class="tab-pane fade">
+      <form id="student_frm" method="post" enctype="multipart/form-data">
       <div id="student_thumbnails" class="thumbnails">
         <ul class="clearfix">
         <?php foreach ($student_images as $image) { ?>
-          <li><a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a></li>
+          <li class="col-md-3 text-center">
+            <div class="row">
+              <a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a>
+            </div>
+            <div class="row">
+              <input type="checkbox" name="student[]" value="<?php echo $image['id']; ?>" />
+            </div>
+          </li>
         <?php } ?>
       </ul>
       </div>
+      <button name="student_btn" type="submit" class="btn btn_red">Save</button>
+    </form>
     </div>
     <div id="teacher" class="tab-pane fade">
+      <form id="teacher_frm" method="post" enctype="multipart/form-data">
       <div id="teacher_thumbnails" class="thumbnails">
         <ul class="clearfix">
         <?php foreach ($teacher_images as $image) { ?>
-          <li><a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a></li>
+          <li class="col-md-3 text-center">
+            <div class="row">
+              <a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a>
+            </div>
+            <div class="row">
+              <input type="checkbox" name="teacher[]" value="<?php echo $image['id']; ?>" />
+            </div>
+          </li>
         <?php } ?>
       </ul>
       </div>
+      <button name="teacher_btn" type="submit" class="btn btn_red">Save</button>
+    </form>
     </div>
     
   </div>

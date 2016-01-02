@@ -18,15 +18,25 @@ class Appconfig extends ADMIN_Controller {
 	public function index(){
 		$this->data['page_title'] = 'App Config';
 
-		$author_images = select(TBL_APP_IMAGES,'image_url, status', array('where'=>array(
+		if(isset($_POST['author_btn'])){
+			
+		}
+		if(isset($_POST['author_btn'])){
+			
+		}
+		if(isset($_POST['author_btn'])){
+			
+		}
+
+		$author_images = select(TBL_APP_IMAGES,'id,image_url, status', array('where'=>array(
 											'is_delete'=>0,
 											'app_name'=>'Author'
 			)));
-		$student_images = select(TBL_APP_IMAGES,'image_url, status', array('where'=>array(
+		$student_images = select(TBL_APP_IMAGES,'id,image_url, status', array('where'=>array(
 											'is_delete'=>0,
 											'app_name'=>'Student'
 			)));
-		$teacher_images = select(TBL_APP_IMAGES,'image_url, status', array('where'=>array(
+		$teacher_images = select(TBL_APP_IMAGES,'id,image_url, status', array('where'=>array(
 											'is_delete'=>0,
 											'app_name'=>'Teacher'
 			)));

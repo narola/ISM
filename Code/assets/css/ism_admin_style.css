@@ -2373,7 +2373,7 @@ body{
 .thumbnails ul li {
     float: left;
     margin-bottom: 12px;
-    margin-right: 26px;
+    /*margin-right: 26px;*/
 }
 .thumbnails {
     display: block;
@@ -2384,4 +2384,10 @@ body{
 }
 #login_bgs .tab-content {
     padding: 10px;
+}
+#login_bgs ul.nav li a{
+	color: #ff6b6b;
+}
+#login_bgs ul.nav li.active a{
+	color: #333;
 }
