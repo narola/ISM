@@ -113,7 +113,7 @@ public class ControllerTopMenuItem {
             favorites.add(context.getString(R.string.links));
             favorites.add(context.getString(R.string.events));
 //            favorites.add(context.getString(R.string.Authors));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.favorite), context.getString(R.string.add_new_favorite), favorites, "yes"));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.favorite), context.getString(R.string.add_new_favorite), favorites, null));
             menu.add(new ControllerTopMenuItem(context.getString(R.string.timetable), context.getString(R.string.strAskQuestion), null, null));
             menu.add(new ControllerTopMenuItem(context.getString(R.string.books), context.getString(R.string.add_book), null, null));
 //            menu.add(new ControllerTopMenuItem(context.getString(R.string.forum), context.getString(R.string.add_question), null));
@@ -123,13 +123,26 @@ public class ControllerTopMenuItem {
         return menu;
     }
 
-    public static ArrayList<ControllerTopMenuItem> getMenuReportCard(Context context) {
+    public static ArrayList<ControllerTopMenuItem> getMenuMyAuthor(Context context) {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
             menu.add(new ControllerTopMenuItem(context.getString(R.string.strMyAuthors), null, null, null));
+
         } catch (Exception e) {
-            Log.e(TAG, "getMenuReportCard Exception : " + e.toString());
+            Log.e(TAG, "getMenuMyAuthor Exception : " + e.toString());
+        }
+        return menu;
+    }
+
+    public static ArrayList<ControllerTopMenuItem> getMenuMyAuthorDesk(Context context) {
+        ArrayList<ControllerTopMenuItem> menu = null;
+        try {
+            menu = new ArrayList<ControllerTopMenuItem>();
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.strAuthorsDesk), null, null, null));
+
+        } catch (Exception e) {
+            Log.e(TAG, "getMenuMyAuthorDesk Exception : " + e.toString());
         }
         return menu;
     }

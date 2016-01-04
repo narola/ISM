@@ -80,6 +80,7 @@ public class AuthorDeskAssignmentsFragment extends Fragment implements Webservic
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setAuthorId(Global.strUserId);
+                attribute.setAuthorId("53");
 
                 new WebserviceWrapper(getActivity(), attribute,this).new WebserviceCaller()
                         .execute(WebConstants.GET_AUTHOR_BOOK_ASSIGNMENT);

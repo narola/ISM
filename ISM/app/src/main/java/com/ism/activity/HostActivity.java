@@ -28,6 +28,7 @@ import com.ism.R;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
+import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.fragment.AccordionFragment;
 import com.ism.fragment.AllStudymateRequestFragment;
@@ -137,7 +138,12 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     public static final int FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL = 19;
 
     //My Author
-    public static final int FRAGMENT_AUTHOR_DESK = 31;
+    public static final int FRAGMENT_AUTHOR_OFFICE = 31;
+    public static final int FRAGMENT_AUTHOR_DESK = 32;
+    public static final int FRAGMENT_GOTRENDING = 33;
+    public static final int FRAGMENT_TRIAL = 34;
+    public static final int FRAGMENT_MYTHIRTY = 35;
+    public static final int FRAGMENT_AUTHOR_ASSESSMENT =36;
 
     private int currentMainFragment = -1;
     private int currentRightFragment;
@@ -151,6 +157,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private StudentHelper studentHelper;
     private boolean isUpdateActionBar = true;
     private int intSubItemSelection;
+    private ArrayList<ControllerTopMenuItem> controllerTopMenuAutorDesk;
 
     public interface ScrollListener {
         public void isLastPosition();
@@ -304,7 +311,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(HostActivity.this);
         controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(HostActivity.this);
         controllerTopMenuDesk = ControllerTopMenuItem.getMenuDesk(HostActivity.this);
-        controllerTopMenuReportCard = ControllerTopMenuItem.getMenuReportCard(HostActivity.this);
+        controllerTopMenuReportCard = ControllerTopMenuItem.getMenuMyAuthor(HostActivity.this);
+        controllerTopMenuAutorDesk= ControllerTopMenuItem.getMenuMyAuthorDesk(HostActivity.this);
 
         imgHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -497,13 +505,13 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     break;
                 case FRAGMENT_DESK:
                     if (currentMainFragment != fragment) {
-                        DeskFragment deskFragment = DeskFragment.newInstance(FRAGMENT_DESK);
+                        DeskFragment deskFragment = DeskFragment.newInstance();
                         listenerHost = deskFragment;
                         hostListenerDesk = deskFragment;
                         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, deskFragment).commit();
-                        if (currentRightFragment != FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL) {
-                            loadFragment(FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL, null);
-                        }
+//                        if (currentRightFragment != FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL) {
+//                            loadFragment(FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL, null);
+//                        }
                     }
                     break;
                 case FRAGMENT_MY_AUTHOR:
@@ -660,10 +668,37 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                 case FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL:
                     Log.i(TAG, "FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL attached");
                     break;
+                case FRAGMENT_AUTHOR_OFFICE:
+                    loadControllerTopCustomMenu();
+                    break;
+                case FRAGMENT_AUTHOR_DESK:
+//                    loadControllerTopMenu(controllerTopMenuAutorDesk);
+                    loadTopMenuItem("Author's Desk");
+                    Log.i(TAG, "FRAGMENT_AUTHOR_DESK attached");
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
         }
+    }
+
+    private void loadControllerTopCustomMenu() {
+        try{
+
+            if(getBundle().containsKey(AppConstant.AUTHOR_NAME)){
+                loadTopMenuItem(getBundle().getString(AppConstant.AUTHOR_NAME));
+            }
+        }catch (Exception e){
+            Log.e(TAG, "loadControllerTopCustomMenu Exception : " + e.toString());
+        }
+    }
+
+    private void loadTopMenuItem(String text) {
+        hideControllerTopControls();
+        showControllerTopBackButton();
+        txtOne.setText(text);
+        startSlideAnimation(txtOne, rlControllerTopMenu.getWidth(), 0, 0, 0);
+        txtOne.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -731,7 +766,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                 case FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL:
                     Log.i(TAG, "FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL detached");
                     break;
-
+                case FRAGMENT_AUTHOR_DESK:
+                    showControllerTopBackButton();
+                    loadControllerTopMenu(controllerTopMenuReportCard);
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentDetached Exception : " + e.toString());
@@ -1077,7 +1115,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                         ArrayList<UserPreferences> arrayListUserPreferences = new ArrayList<>();
                         arrayListUserPreferences = responseObject.getUserPreference();
                         for (int j = 0; j < arrayListUserPreferences.size(); j++) {
-                            Debug.i(TAG, "j :" + j);
+                            Log.e(TAG, "j :" + j);
                             //generalSettingsFragment.setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getApplicationContext());
                             PreferenceData.setStringPrefs(arrayListUserPreferences.get(j).getId(), this, arrayListUserPreferences.get(j).getPreferenceValue());
                         }
@@ -1093,7 +1131,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
         } catch (Exception e) {
 
-            Debug.i(TAG, "onResponseGetUserPreference :" + e.getLocalizedMessage());
+            Log.e(TAG, "onResponseGetUserPreference :" + e.getLocalizedMessage());
 
         }
     }
@@ -1105,7 +1143,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
             requestObject.setUserId(Global.strUserId);
             new WebserviceWrapper(this, requestObject, this).new WebserviceCaller().execute(WebConstants.GET_USER_PREFERENCES);
         } catch (Exception e) {
-            Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
+            Log.e(TAG, "General setting Pereference :" + e.getLocalizedMessage());
         }
     }
 
@@ -1152,7 +1190,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         public void onRemoveFromLibrary(String id);
     }
 
-    public void setBackHostListener(HostListenerDesk hostListenerDesk) {
+    public void setOnControllerTopBackHostListener(HostListenerDesk hostListenerDesk) {
         this.hostListenerDesk = hostListenerDesk;
     }
 

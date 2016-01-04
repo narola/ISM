@@ -236,6 +236,9 @@ public class WebserviceWrapper {
                             case WebConstants.GET_ALL_BOOKS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BOOKS).execute(ResponseHandler.class, attribute);
                                 break;
+                            case WebConstants.GET_AUTHOR_BOOK_ASSIGNMENT:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_AUTHOR_BOOK_ASSIGNMENT).execute(ResponseHandler.class, attribute);
+                                break;
                         }
                     }
                 }

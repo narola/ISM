@@ -44,7 +44,7 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
 
     public static final String ARG_FRAGMENT = "deskfragment";
     public static final String ARG_SUBFRAGMENT = "deskSubfragment";
-    private static int currentFragment = -1;
+    private static int currentFragment ;
     private View view;
 
     private FragmentListener fragListener;
@@ -55,13 +55,30 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
         this.alertDismissListener = alertDismissListener;
     }
 
+//    public static DeskFragment newInstance(int fragment) {
+//        currentFragment=fragment;
+//        DeskFragment deskFragment = new DeskFragment();
+//        Bundle args = new Bundle();
+//        args.putInt(ARG_FRAGMENT, fragment);
+//        deskFragment.setArguments(args);
+//        return deskFragment;
+//    }
+
+    public static DeskFragment newInstance() {
+        DeskFragment deskFragment = new DeskFragment();
+        return deskFragment;
+    }
+
+    public DeskFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onBackMenuItemClick() {
         try {
 //            getChildFragmentManager().popBackStack();
 
-            switch (currentFragment) {
+            switch (getCurrentChildFragment()) {
                 case FRAGMENT_JOTTER:
 //                    loadFragment(FRAGMENT_FAVOURITES);
                     break;
@@ -92,29 +109,16 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
         public void onDismiss(int alertDialog, String note);
     }
 
-    public static DeskFragment newInstance(int fragment) {
-        currentFragment=fragment;
-        DeskFragment deskFragment = new DeskFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(ARG_FRAGMENT, fragment);
-//        deskFragment.setArguments(args);
-        return deskFragment;
-    }
-
-    public DeskFragment() {
-        // Required empty public constructor
-    }
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 //        if (getArguments() != null) {
 //            currentFragment = getArguments().getInt(ARG_FRAGMENT);
 //            if (fragListener != null) {
 //                fragListener.onFragmentAttached(currentFragment);
 //            }
 //        }
-//    }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -133,11 +137,12 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
+            Log.e(TAG, "onAttach Attached fragment ");
             activityHost = (HostActivity) activity;
-            activityHost.setBackHostListener(this);
+            activityHost.setOnControllerTopBackHostListener(this);
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(currentFragment);
+                fragListener.onFragmentAttached(HostActivity.FRAGMENT_DESK);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -201,8 +206,8 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
         }
     }
 
-    public static void setCurrentFragment(int currentFragment) {
-        DeskFragment.currentFragment = currentFragment;
+    public void setCurrentFragment(int currentFragment) {
+        this.currentFragment = currentFragment;
     }
 
     public static int getCurrentChildFragment() {

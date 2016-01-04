@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.fragment.myAuthor.AuthorOfficeFragment;
 import com.ism.model.AuthorOfficeTabDataSet;
 import com.ism.object.Global;
@@ -86,19 +87,19 @@ public class AuthorOfficeTabGridAdapter extends BaseAdapter {
 
                     switch (position) {
                         case 0:
-                            ((AuthorOfficeFragment) fragment).loadFragment(AuthorOfficeFragment.FRAGMENT_MY_DESK);
+                            ((AuthorOfficeFragment) fragment).loadFragment(HostActivity.FRAGMENT_AUTHOR_DESK);
                             break;
                         case 1:
-                            ((AuthorOfficeFragment) fragment).loadFragment(AuthorOfficeFragment.FRAGMENT_GOTRENDING);
+                            ((AuthorOfficeFragment) fragment).loadFragment(HostActivity.FRAGMENT_GOTRENDING);
                             break;
                         case 2:
-                            ((AuthorOfficeFragment) fragment).loadFragment(AuthorOfficeFragment.FRAGMENT_TRIAL);
+                            ((AuthorOfficeFragment) fragment).loadFragment(HostActivity.FRAGMENT_TRIAL);
                             break;
                         case 3:
-                            ((AuthorOfficeFragment) fragment).loadFragment(AuthorOfficeFragment.FRAGMENT_MYTHIRTY);
+                            ((AuthorOfficeFragment) fragment).loadFragment(HostActivity.FRAGMENT_MYTHIRTY);
                             break;
                         case 4:
-                            ((AuthorOfficeFragment) fragment).loadFragment(AuthorOfficeFragment.FRAGMENT_ASSESSMENT);
+                            ((AuthorOfficeFragment) fragment).loadFragment(HostActivity.FRAGMENT_AUTHOR_ASSESSMENT);
                             break;
 
 
@@ -121,6 +122,4 @@ public class AuthorOfficeTabGridAdapter extends BaseAdapter {
         LinearLayout llOfficeTab;
 
     }
-
-
 }

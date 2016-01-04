@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.myAuthor.MyAuthorAdapter;
+import com.ism.constant.AppConstant;
 import com.ism.fragment.MyAuthorFragment;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
@@ -87,12 +88,6 @@ public class MyAuthorsFragment extends Fragment {
                 }
             });
 
-//            rvMyAuthorList.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    myAuthorFragment.loadFragment(MyAuthorFragment.FRAGMENT_AUTHOR);
-//                }
-//            });
         } catch (Exception e) {
             Debug.i(TAG, "onCLicks Exceptions : " + e.getLocalizedMessage());
         }
@@ -101,13 +96,63 @@ public class MyAuthorsFragment extends Fragment {
     public void loadFragment(int fragment) {
         try {
             switch (fragment) {
-
-                case MyAuthorFragment.FRAGMENT_AUTHOR:
+                case HostActivity.FRAGMENT_AUTHOR_OFFICE:
                     currentFragment = fragment;
                     AuthorOfficeFragment authorOfficeFragment = AuthorOfficeFragment.newInstance();
-//                    activityHost.sh
-                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorOfficeFragment).commit();
+                    getFragmentManager().beginTransaction().addToBackStack(AppConstant.FRAGMENT_AUTHOR_OFFICE).replace(R.id.fl_my_authors, authorOfficeFragment).commit();
                     break;
+//                case HostActivity.FRAGMENT_AUTHOR_DESK:
+//                    currentFragment=fragment;
+//                    AuthorDeskFragment authorDeskFragment = AuthorDeskFragment.newInstance();
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorDeskFragment).commit();
+//                    //activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
+//                    break;
+//
+//                case HostActivity.FRAGMENT_GOTRENDING:
+//                    currentFragment=fragment;
+//                    // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GOTRENDING);
+//                    break;
+//
+//                case HostActivity.FRAGMENT_TRIAL:
+//                    currentFragment=fragment;
+//                    //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
+//                    break;
+//
+//                case HostActivity.FRAGMENT_MYTHIRTY:
+//                    currentFragment=fragment;
+//                    //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
+//                    break;
+//
+//                case HostActivity.FRAGMENT_AUTHOR_ASSESSMENT:
+//                    currentFragment=fragment;
+//                    // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT);
+//                    break;
+//                case HostActivity.FRAGMENT_AUTHOR_DESK:
+//                    currentFragment=fragment;
+//                    AuthorDeskFragment authorDeskFragment = AuthorDeskFragment.newInstance();
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorDeskFragment).commit();
+//                    //activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
+//                    break;
+//
+//                case HostActivity.FRAGMENT_GOTRENDING:
+//                    currentFragment=fragment;
+//                    // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GOTRENDING);
+//                    break;
+//
+//                case HostActivity.FRAGMENT_TRIAL:
+//                    currentFragment=fragment;
+//                    //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
+//                    break;
+//
+//                case HostActivity.FRAGMENT_MYTHIRTY:
+//                    currentFragment=fragment;
+//                    //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
+//                    break;
+//
+//                case HostActivity.FRAGMENT_AUTHOR_ASSESSMENT:
+//                    currentFragment=fragment;
+//                    // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT);
+//                    break;
 
             }
         } catch (Exception e) {
@@ -119,8 +164,10 @@ public class MyAuthorsFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
+            Log.e(TAG, "onAttach");
             // fragListener = (FragmentListener) activity;
             activityHost = (HostActivity) activity;
+            myAuthorFragment = MyAuthorFragment.newInstance();
 
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -136,18 +183,4 @@ public class MyAuthorsFragment extends Fragment {
         }
     }
 
-    //    public void loadFragment(int fragment) {
-//        try {
-//            switch (fragment) {
-//                case FRAGMENT_MY_AUTHORS:
-//                    getChildFragmentManager().beginTransaction().replace(R.id.fl_my_authors,M)
-//                break;
-//            }
-//        } catch (Exception e) {
-//            Debug.i(TAG, "loadFragment Exceptions : " + e.getLocalizedMessage());
-//        }
-//    }
-//    public void showView() {
-//        rrFindMore.setVisibility(View.VISIBLE);
-//    }
 }

@@ -1,6 +1,8 @@
 package com.ism.adapter.myAuthor;
 
+import android.app.Fragment;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.fragment.MyAuthorFragment;
+import com.ism.activity.HostActivity;
+import com.ism.constant.AppConstant;
 import com.ism.fragment.myAuthor.MyAuthorsFragment;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -24,12 +27,13 @@ public class MyAuthorAdapter extends RecyclerView.Adapter<MyAuthorAdapter.ViewHo
 
 
     private static final String TAG = MyAuthorAdapter.class.getSimpleName();
-    private MyAuthorsFragment mFragment;
+    private final Context mContext;
+    private Fragment mFragment;
     private ArrayList<Assignment> arrListBookAssignment = new ArrayList<Assignment>();
     private LayoutInflater inflater;
-
-    public MyAuthorAdapter(MyAuthorsFragment mFragment, Context mContext) {
+    public MyAuthorAdapter(Fragment mFragment, Context mContext) {
         this.mFragment = mFragment;
+        this.mContext=mContext;
         this.inflater = LayoutInflater.from(mContext);
     }
 
@@ -54,7 +58,10 @@ public class MyAuthorAdapter extends RecyclerView.Adapter<MyAuthorAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     //myAuthorFragment.loadFragment(MyAuthorFragment.FRAGMENT_AUTHOR);
-                    mFragment.loadFragment(MyAuthorFragment.FRAGMENT_AUTHOR);
+                    Bundle bundle=((HostActivity) mContext).getBundle();
+                    bundle.putString(AppConstant.AUTHOR_NAME, "Roger S. Pressman");
+                    ((HostActivity) mContext).setBundle(bundle);
+                    ((MyAuthorsFragment)mFragment).loadFragment(HostActivity.FRAGMENT_AUTHOR_OFFICE);
                 }
             });
         } catch (Exception e) {

@@ -13,14 +13,16 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.myAuthor.MyAuthorAdapter;
+import com.ism.constant.AppConstant;
 import com.ism.fragment.myAuthor.MyAuthorsFragment;
+import com.ism.fragment.myAuthor.authorDesk.AuthorDeskFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.utility.Debug;
 
 /**
  * Created by c162 on 01/1/16.
  */
-public class MyAuthorFragment extends Fragment implements HostActivity.HostListenerMyAuthor {
+public class MyAuthorFragment extends Fragment implements HostActivity.HostListenerMyAuthor{
 
     private static final String TAG = MyAuthorFragment.class.getSimpleName();
     public static final int FRAGMENT_MY_AUTHORS = 0;
@@ -66,6 +68,7 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
             fragListener = (FragmentListener) activity;
             activityHost = (HostActivity) activity;
             activityHost.setListenerHostMyAuthor(this);
+
             // activityHost.on
             if (fragListener != null) {
                 fragListener.onFragmentAttached(HostActivity.FRAGMENT_MY_AUTHOR);
@@ -95,19 +98,36 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
                     currentFragment = fragment;
                     myAuthorsFragment = MyAuthorsFragment.newInstance();
                     activityHost.hideControllerTopBackButton();
-                    getChildFragmentManager().beginTransaction().replace(R.id.fl_my_authors, myAuthorsFragment).commit();
+                    getChildFragmentManager().beginTransaction().addToBackStack(AppConstant.FRAGMENT_MY_AUTHORS).replace(R.id.fl_my_authors, myAuthorsFragment).commit();
                     break;
-//                case FRAGMENT_FIND_MORE_AUTHOR:
-//                    currentFragment=fragment;
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, MyAuthorsFragment.newInstance()).commit();
-//                    activityHost.showControllerTopBackButton();
-//                    break;
-//                case FRAGMENT_AUTHOR:
-//                    currentFragment = fragment;
-//                    AuthorOfficeFragment authorOfficeFragment = AuthorOfficeFragment.newInstance();
-//                    activityHost.hideControllerTopBackButton();
-//                    getChildFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorOfficeFragment).commit();
-//                    break;
+
+                case HostActivity.FRAGMENT_AUTHOR_DESK:
+                    currentFragment = fragment;
+                    AuthorDeskFragment authorDeskFragment = AuthorDeskFragment.newInstance();
+                    getChildFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorDeskFragment).commit();
+                    //activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
+                    break;
+
+                case HostActivity.FRAGMENT_GOTRENDING:
+                    currentFragment = fragment;
+                    // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GOTRENDING);
+                    break;
+
+                case HostActivity.FRAGMENT_TRIAL:
+                    currentFragment = fragment;
+                    //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
+                    break;
+
+                case HostActivity.FRAGMENT_MYTHIRTY:
+                    currentFragment = fragment;
+                    //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
+                    break;
+
+                case HostActivity.FRAGMENT_AUTHOR_ASSESSMENT:
+                    currentFragment = fragment;
+                    // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT);
+                    break;
+
 
             }
         } catch (Exception e) {
@@ -133,4 +153,10 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
                 break;
         }
     }
+
+//    @Override
+//    public void onTabItemClick(int position) {
+//        Log.e(TAG, "onTabItemClick : " + position);
+//        loadFragment(position);
+//    }
 }

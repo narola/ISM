@@ -146,9 +146,10 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
-                attribute.setRoleId(Global.roleID);
+                attribute.setRoleId(Global.authorRoleID);
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
+
             } else {
                 Utility.alertOffline(getActivity());
             }

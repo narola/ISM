@@ -30,9 +30,8 @@ public class AuthorDeskFragment extends Fragment {
     private View view;
     private FragmentListener fragListener;
     private TextView txtAboutMe, txtBooks, txtAssignments;
-    private int currentFragment = -1;
+    private int currentFragment ;
     private HostActivity activityHost;
-    private TextView txtAdd;
 
     public static AuthorDeskFragment newInstance() {
         AuthorDeskFragment myDeskFragment = new AuthorDeskFragment();
@@ -52,12 +51,10 @@ public class AuthorDeskFragment extends Fragment {
 
     private void initGlobal() {
         txtAboutMe = (TextView) view.findViewById(R.id.txt_about_me);
-        txtAdd = (TextView) view.findViewById(R.id.txt_add);
         txtBooks = (TextView) view.findViewById(R.id.txt_books);
         txtAssignments = (TextView) view.findViewById(R.id.txt_assignments);
 
         txtAboutMe.setTypeface(Global.myTypeFace.getRalewayRegular());
-        txtAdd.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtAssignments.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtAboutMe.setEnabled(false);
@@ -92,7 +89,6 @@ public class AuthorDeskFragment extends Fragment {
         txtAboutMe.setOnClickListener(onClick);
         txtBooks.setOnClickListener(onClick);
         txtAssignments.setOnClickListener(onClick);
-        txtAdd.setOnClickListener(onClick);
     }
 
     private void setBackClick(int currentFragment) {
@@ -123,36 +119,27 @@ public class AuthorDeskFragment extends Fragment {
     public void loadFragment(int frag) {
         switch (frag) {
             case FRAGMENT_ABOUT_ME:
-
                 currentFragment = frag;
-                txtAdd.setVisibility(View.GONE);
                 AboutAuthorFragment aboutMeFragment = AboutAuthorFragment.newInstance();
-                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, aboutMeFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, aboutMeFragment).commit();
                 break;
 
             case FRAGMENT_BOOKS:
-
                 currentFragment = frag;
-                txtAdd.setVisibility(View.GONE);
                 AuthorDeskBooksFragment myDeskBooksFragment = AuthorDeskBooksFragment.newInstance();
-                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, myDeskBooksFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, myDeskBooksFragment).commit();
                 break;
 
             case FRAGMENT_ASSIGNMENTS:
-
                 currentFragment = frag;
-                txtAdd.setVisibility(View.VISIBLE);
                 AuthorDeskAssignmentsFragment myDeskAssignmentsFragment = AuthorDeskAssignmentsFragment.newInstance(this);
-                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, myDeskAssignmentsFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, myDeskAssignmentsFragment).commit();
                 break;
 
             case FRAGMENT_BOOKASSIGNMENT:
-
-
                 currentFragment = frag;
-                txtAdd.setVisibility(View.GONE);
                 BookAssignmentsFragment bookAssignmentsFragment = BookAssignmentsFragment.newInstance(this);
-                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, bookAssignmentsFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, bookAssignmentsFragment).commit();
                 break;
 
         }
@@ -162,6 +149,7 @@ public class AuthorDeskFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
+            Log.e(TAG, "onAttach Attached fragment ");
             activityHost = (HostActivity) activity;
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
@@ -176,8 +164,9 @@ public class AuthorDeskFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         try {
+            Log.e(TAG, "onDetach Attached fragment ");
             if (fragListener != null) {
-                fragListener.onFragmentDetached(HostActivity.FRAGMENT_AUTHOR_DESK);
+                //fragListener.onFragmentDetached(HostActivity.FRAGMENT_AUTHOR_DESK);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
