@@ -141,6 +141,14 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             imgImage = (ImageView) itemView.findViewById(R.id.img_image);
             imgVideo = (ImageView) itemView.findViewById(R.id.img_video);
             imgPlay = (ImageView) itemView.findViewById(R.id.img_play);
+
+            txtUsernamePostCreator.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtPostContent.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtPostLikeCounter.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtPostCommentsCounter.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtViewAllComments.setTypeface(Global.myTypeFace.getRalewayRegular());
+            etWritePost.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtSubmitPost.setTypeface(Global.myTypeFace.getRalewayRegular());
         }
 
     }

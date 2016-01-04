@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.ism.teacher.views.CircleImageView
+        android:id="@+id/img_dp"
+        android:layout_width="@dimen/d60dp"
+        android:layout_height="@dimen/d60dp"
+        android:layout_margin="@dimen/d10dp"
+        android:src="@drawable/userdp" />
+
+    <TextView
+        android:id="@+id/txt_name_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/d5dp"
+        android:layout_marginTop="@dimen/d10dp"
+        android:layout_toRightOf="@id/img_dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textColor="@color/color_green"
+        android:textSize="@dimen/d17sp" />
+
+    <TextView
+        android:id="@+id/txt_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_name_message"
+        android:layout_toRightOf="@id/img_dp"
+        android:paddingBottom="@dimen/d10dp"
+        android:textColor="@color/text_gray" />
+
+    <Button
+        android:id="@+id/btn_respond"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/d35dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/d10dp"
+        android:background="@drawable/bg_btn_dark"
+        android:gravity="center"
+        android:paddingLeft="@dimen/d10dp"
+        android:paddingRight="@dimen/d10dp"
+        android:text="@string/str_respond_to_request"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/d15sp" />
+</RelativeLayout>

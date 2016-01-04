@@ -228,6 +228,48 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_LESSON_NOTES_WITH_DETAILS).execute(ResponseHandler.class, attribute);
                                 break;
 
+                            /**
+                             * User Profile
+                             */
+                            case WebConstants.GET_NOTIFICATION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_NOTIFICATION).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.UPDATE_READ_STATUS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_UPDATE_READ_STATUS).execute(ResponseHandler.class, attribute);
+                                break;
+
+                            case WebConstants.GET_MESSAGES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_MESSAGES).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_STUDYMATE_REQUEST:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_STUDYMATE_REQUEST).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.RESPOND_TO_REQUEST:
+                                responseObject = new WebserviceConnector(WebConstants.URL_RESPOND_TO_REQUEST).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_MY_FEEDS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_FEEDS).execute(ResponseHandler.class, attribute);
+                                break;
+
+                            case WebConstants.GENERAL_SETTING_PREFERENCES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GENERAL_SETTING_PREFERENCES).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_USER_PREFERENCES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_USER_PREFERENCES).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.MANAGE_GENERAL_SETTINGS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_GENERAL_SETTING).execute(ResponseHandler.class, attribute);
+                                break;
+                            /**
+                             * Settings
+                             */
+                            case WebConstants.BLOCK_USER:
+                                responseObject = new WebserviceConnector(WebConstants.URL_BLOCK_USER).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.BLOCKED_USER:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_BLOCKED_USER).execute(ResponseHandler.class, attribute);
+                                break;
+
                         }
                     }
                 }

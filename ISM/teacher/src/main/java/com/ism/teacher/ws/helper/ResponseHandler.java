@@ -1,9 +1,12 @@
 package com.ism.teacher.ws.helper;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.teacher.ws.model.AdminConfig;
+import com.ism.teacher.ws.model.Badges;
+import com.ism.teacher.ws.model.BlockedUsers;
 import com.ism.teacher.ws.model.Cities;
 import com.ism.teacher.ws.model.Classrooms;
 import com.ism.teacher.ws.model.CommentList;
@@ -20,16 +23,21 @@ import com.ism.teacher.ws.model.FileUploadResponse;
 import com.ism.teacher.ws.model.Group;
 import com.ism.teacher.ws.model.HashTags;
 import com.ism.teacher.ws.model.LessonNotes;
+import com.ism.teacher.ws.model.Message;
 import com.ism.teacher.ws.model.Notes;
+import com.ism.teacher.ws.model.Notification;
 import com.ism.teacher.ws.model.Question;
 import com.ism.teacher.ws.model.Questions;
+import com.ism.teacher.ws.model.SettingPreferences;
 import com.ism.teacher.ws.model.States;
+import com.ism.teacher.ws.model.StudymateRequest;
 import com.ism.teacher.ws.model.Studymates;
 import com.ism.teacher.ws.model.Subjects;
 import com.ism.teacher.ws.model.Token;
 import com.ism.teacher.ws.model.Topics;
 import com.ism.teacher.ws.model.User;
 import com.ism.teacher.ws.model.UserImages;
+import com.ism.teacher.ws.model.UserPreferences;
 
 import java.util.ArrayList;
 
@@ -39,7 +47,7 @@ import java.util.ArrayList;
 public class ResponseHandler {
 
     private String message;
-//    private ArrayList<Data> data;
+    //    private ArrayList<Data> data;
     private String status;
 
     private String mediaType;
@@ -50,6 +58,9 @@ public class ResponseHandler {
     public static final String DUPLICATE_ENTRY = "Duplicate entry";
     private String TAG = ResponseHandler.class.getSimpleName();
     private ArrayList<Feeds> feedImages;
+    private ArrayList<BlockedUsers> blockedUsers;
+    private ArrayList<SettingPreferences> preference;
+    private ArrayList<UserPreferences> userPreference;
 
     public String getMessage() {
         return this.message;
@@ -59,13 +70,33 @@ public class ResponseHandler {
         this.message = message;
     }
 
-//    public ArrayList<Data> getData() {
-//        return this.data;
-//    }
-//
-//    public void setData(ArrayList<Data> data) {
-//        this.data = data;
-//    }
+
+    @JsonProperty("blocked_users")
+    public ArrayList<BlockedUsers> getBlockedUsers() {
+        return this.blockedUsers;
+    }
+
+    public void setBlockedUsers(ArrayList<BlockedUsers> blockedUsers) {
+        this.blockedUsers = blockedUsers;
+    }
+
+    @JsonProperty("user_preference")
+    public ArrayList<UserPreferences> getUserPreference() {
+        return this.userPreference;
+    }
+
+    public void setUserPreference(ArrayList<UserPreferences> userPreference) {
+        this.userPreference = userPreference;
+    }
+
+    @JsonProperty("preference")
+    public ArrayList<SettingPreferences> getPreference() {
+        return preference;
+    }
+
+    public void setPreference(ArrayList<SettingPreferences> preference) {
+        this.preference = preference;
+    }
 
     public String getStatus() {
         return this.status;
@@ -104,6 +135,53 @@ public class ResponseHandler {
     private ArrayList<Token> token;
     private ArrayList<AdminConfig> adminConfig;
     private ArrayList<Group> group;
+
+
+    private ArrayList<Badges> badges;
+    private ArrayList<Notification> notification;
+    private ArrayList<StudymateRequest> studymateRequest;
+    private ArrayList<Message> messages;
+
+    /**
+     * User Profile
+     */
+
+    @JsonProperty("badges")
+    public ArrayList<Badges> getBadges() {
+        return this.badges;
+    }
+
+    public void setBadges(ArrayList<Badges> badges) {
+        this.badges = badges;
+    }
+
+    @JsonProperty("notification")
+    public ArrayList<Notification> getNotification() {
+        return this.notification;
+    }
+
+    public void setNotification(ArrayList<Notification> notification) {
+        this.notification = notification;
+    }
+
+    @JsonProperty("messages")
+    public ArrayList<Message> getMessages() {
+        return this.messages;
+    }
+
+    public void setMessages(ArrayList<Message> messages) {
+        this.messages = messages;
+    }
+
+    @JsonProperty("studymate_request")
+    public ArrayList<StudymateRequest> getStudymateRequest() {
+        return this.studymateRequest;
+    }
+
+    public void setStudymateRequest(ArrayList<StudymateRequest> studymateRequest) {
+        this.studymateRequest = studymateRequest;
+    }
+
 
     /**
      * For Notes
@@ -385,5 +463,7 @@ public class ResponseHandler {
     public void setAdminConfig(ArrayList<AdminConfig> adminConfig) {
         this.adminConfig = adminConfig;
     }
+
+
 }
 

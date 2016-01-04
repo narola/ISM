@@ -72,7 +72,7 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_assignment_home, container, false);
+        view = inflater.inflate(R.layout.fragment_all_assignment, container, false);
 
         initGlobal(view);
         return view;

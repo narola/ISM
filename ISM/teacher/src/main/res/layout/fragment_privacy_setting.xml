@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white">
+
+
+    <TextView
+        android:id="@+id/txt_alerts_personal_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bg_highscore_subject"
+        android:paddingBottom="@dimen/d10dp"
+        android:paddingLeft="@dimen/d20dp"
+        android:paddingRight="@dimen/d20dp"
+        android:paddingTop="@dimen/d10dp"
+        android:text="@string/strWhoShouldSeeMyPersonalDetails"
+        android:textColor="#323232"
+        android:textSize="@dimen/d22sp" />
+
+    <include
+        android:id="@+id/include_contact_info"
+        layout="@layout/layout_notification_comon_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_alerts_personal_details"
+        android:layout_marginTop="@dimen/d10dp" />
+
+    <include
+        android:id="@+id/include_birthdate_info"
+        layout="@layout/layout_notification_comon_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include_contact_info" />
+
+
+    <TextView
+        android:id="@+id/txt_alerts_academic_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include_birthdate_info"
+        android:background="@drawable/bg_highscore_subject"
+        android:paddingBottom="@dimen/d10dp"
+        android:paddingLeft="@dimen/d20dp"
+        android:paddingRight="@dimen/d20dp"
+        android:paddingTop="@dimen/d10dp"
+        android:text="@string/strWhoShouldSeeMyPersonalAcademicDetails"
+        android:textColor="#323232"
+        android:textSize="@dimen/d22sp" />
+
+    <TextView
+        android:id="@+id/txt_alerts_exam_score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_alerts_academic_details"
+        android:layout_margin="@dimen/d15dp"
+        android:layout_marginTop="@dimen/d10dp"
+        android:paddingBottom="@dimen/d3dp"
+        android:paddingLeft="@dimen/d30dp"
+        android:paddingRight="@dimen/d3dp"
+        android:paddingTop="@dimen/d3dp"
+        android:textColor="@color/color_blue"
+        android:textSize="@dimen/d18sp" />
+
+    <Spinner
+        android:id="@+id/sp_viewers"
+        android:layout_width="@dimen/d200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txt_alerts_exam_score"
+        android:layout_below="@+id/txt_alerts_exam_score"
+        android:layout_marginLeft="@dimen/d20dp"
+        android:layout_marginStart="@dimen/d30dp"
+        android:background="@drawable/bg_spinner_header" />
+
+    <View
+        android:layout_width="@dimen/d15dp"
+        android:layout_height="@dimen/d30dp"
+        android:layout_above="@+id/include_contact_info"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/indicator_light_grey" />
+
+    <View
+        android:layout_width="@dimen/d2dp"
+        android:layout_height="match_parent"
+        android:background="@color/border_gray" />
+
+
+</RelativeLayout>
