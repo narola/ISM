@@ -2391,3 +2391,6 @@ body{
 #login_bgs ul.nav li.active a{
 	color: #333;
 }
+.thumbnails .make-switch {
+	margin-top: 5px;
+}

@@ -20,13 +20,28 @@
    
 
     <ul class="nav nav-tabs">
-      <li class="active"><a data-toggle="tab" href="#author">Author</a></li>
-      <li><a data-toggle="tab" href="#student">Student</a></li>
-      <li><a data-toggle="tab" href="#teacher">Teacher</a></li>
+      <li <?php echo ($tab == 'author')  ? 'class="active"' : ''; ?> ><a data-toggle="tab" href="#author">Author</a></li>
+      <li <?php echo ($tab == 'student') ? 'class="active"' : ''; ?>><a data-toggle="tab" href="#student">Student</a></li>
+      <li <?php echo ($tab == 'teacher') ? 'class="active"' : ''; ?>><a data-toggle="tab" href="#teacher">Teacher</a></li>
     </ul>
 
   <div class="tab-content">
-    <div id="author" class="tab-pane fade in active">
+    <div id="author" class="tab-pane fade <?php echo ($tab == 'author')  ? 'in active' : ''; ?>">
+
+      <form method="post" id="author_filter">
+        <div class="filter">
+          <div class="col-sm-12 ">
+            <div class="form-group pull-right">
+                <select class="form-control" name="author_status" id="author_status">
+                    <option <?php if(isset($author_status)) echo ($author_status == '') ? 'selected' : ''; ?> value="">Both</option>
+                    <option <?php if(isset($author_status)) echo ($author_status == 'active') ? 'selected' : ''; ?> value="active">Active</option>
+                    <option <?php if(isset($author_status)) echo ($author_status == 'archive') ? 'selected' : ''; ?> value="archive">Inactive</option>
+                </select>
+            </div>
+          </div>
+        </div>
+      </form>
+
       <form id="author_frm" method="post" enctype="multipart/form-data">
       <div id="author_thumbnails" class="thumbnails">
         <ul class="clearfix">
@@ -35,8 +50,9 @@
             <div class="row">
               <a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a>
             </div>
-            <div class="row">
-              <input type="checkbox" name="author[]" value="<?php echo $image['id']; ?>" />
+             <div class="row make-switch">
+                <input class="status" type="checkbox" name="author[]" value="<?php echo $image['id']; ?>"
+                        <?php echo ($image['status']=='active') ? 'checked' : ''; ?> data-handle-width="50" data-size="mini" ><!--data-size="mini"-->
             </div>
           </li>
         <?php } ?>
@@ -45,7 +61,22 @@
       <button name="author_btn" type="submit" class="btn btn_red">Save</button>
     </form>
     </div>
-    <div id="student" class="tab-pane fade">
+    <div id="student" class="tab-pane fade <?php echo ($tab == 'student')  ? 'in active' : ''; ?>">
+
+      <form method="post" id="student_filter">
+        <div class="filter">
+          <div class="col-sm-12">
+            <div class="form-group pull-right">
+                <select class="form-control" name="student_status" id="student_status">
+                    <option <?php if(isset($student_status)) echo ($student_status == '') ? 'selected' : ''; ?> value="">Both</option>
+                    <option <?php if(isset($student_status)) echo ($student_status == 'active') ? 'selected' : ''; ?> value="active">Active</option>
+                    <option <?php if(isset($student_status)) echo ($student_status == 'archive') ? 'selected' : ''; ?> value="archive">Inactive</option>
+                </select>
+            </div>
+          </div>
+        </div>
+      </form>
+
       <form id="student_frm" method="post" enctype="multipart/form-data">
       <div id="student_thumbnails" class="thumbnails">
         <ul class="clearfix">
@@ -54,8 +85,9 @@
             <div class="row">
               <a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a>
             </div>
-            <div class="row">
-              <input type="checkbox" name="student[]" value="<?php echo $image['id']; ?>" />
+             <div class="row make-switch ">
+                <input class="status" type="checkbox" name="student[]" value="<?php echo $image['id']; ?>"
+                        <?php echo ($image['status']=='active') ? 'checked' : ''; ?> data-handle-width="50" data-size="mini" ><!--data-size="mini"-->
             </div>
           </li>
         <?php } ?>
@@ -64,7 +96,21 @@
       <button name="student_btn" type="submit" class="btn btn_red">Save</button>
     </form>
     </div>
-    <div id="teacher" class="tab-pane fade">
+    <div id="teacher" class="tab-pane fade <?php echo ($tab == 'teacher')  ? 'in active' : ''; ?>">
+
+      <form method="post" id="teacher_filter">
+        <div class="filter">
+          <div class="col-sm-12">
+            <div class="form-group">
+                <select class="form-control" name="teacher_status" id="teacher_status">
+                    <option <?php if(isset($teacher_status)) echo ($teacher_status == '') ? 'selected' : ''; ?> value="">Both</option>
+                    <option <?php if(isset($teacher_status)) echo ($teacher_status == 'active') ? 'selected' : ''; ?> value="active">Active</option>
+                    <option <?php if(isset($teacher_status)) echo ($teacher_status == 'archive') ? 'selected' : ''; ?> value="archive">Inactive</option>
+                </select>
+            </div>
+          </div>
+        </div>
+      </form>
       <form id="teacher_frm" method="post" enctype="multipart/form-data">
       <div id="teacher_thumbnails" class="thumbnails">
         <ul class="clearfix">
@@ -73,8 +119,9 @@
             <div class="row">
               <a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a>
             </div>
-            <div class="row">
-              <input type="checkbox" name="teacher[]" value="<?php echo $image['id']; ?>" />
+            <div class="row make-switch ">
+                <input class="status" type="checkbox" name="teacher[]" value="<?php echo $image['id']; ?>"
+                        <?php echo ($image['status']=='active') ? 'checked' : ''; ?> data-handle-width="50" data-size="mini" ><!--data-size="mini"-->
             </div>
           </li>
         <?php } ?>
@@ -91,7 +138,25 @@
 </div>
 <script type="text/javascript" src="assets/js/jquery.lightbox-0.5.min.js"></script>
   <script type="text/javascript">
+  jQuery(document).ready(function($) {
+    $("input.status").bootstrapSwitch();
+    $('.bootstrap-switch-handle-on').text('Active');
+    $('.bootstrap-switch-handle-off').text('Inactive');
+
+    $("#author_status").change(function(){
+      $("#author_filter").submit();
+    });
+    $("#student_status").change(function(){
+      $("#student_filter").submit();
+    });
+    $("#teacher_status").change(function(){
+      $("#teacher_filter").submit();
+    });    
+
+
+  });
   $(function() {
+   
     $('#author_thumbnails a').lightBox();
     $('#student_thumbnails a').lightBox();
     $('#teacher_thumbnails a').lightBox();
