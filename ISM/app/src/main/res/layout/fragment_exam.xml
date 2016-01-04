@@ -84,6 +84,7 @@
 			android:background="@drawable/bg_button_green"
 			android:drawableRight="@drawable/arrow"
 			android:drawablePadding="@dimen/dp8"
+			android:enabled="false"
 			android:layout_centerHorizontal="true"/>
 	</RelativeLayout>
 

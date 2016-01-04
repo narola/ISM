@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.fragment.tutorialGroup.ExamFragment;
-import com.ism.model.QuestionObjectiveTest;
+import com.ism.ws.model.FridayExamQuestion;
 
 import java.util.ArrayList;
 
@@ -22,12 +22,12 @@ public class QuestionPaletteAdapter extends BaseAdapter {
 	private static final String TAG = QuestionPaletteAdapter.class.getSimpleName();
 
 	private ExamFragment fragExam;
-	private ArrayList<QuestionObjectiveTest> arrListQuestions;
+	private ArrayList<FridayExamQuestion> arrListQuestions;
 	private Context context;
 	private LayoutInflater inflater;
 	private int intCurrentPosition;
 
-	public QuestionPaletteAdapter(Context context, ArrayList<QuestionObjectiveTest> arrListQuestions, ExamFragment examFragment) {
+	public QuestionPaletteAdapter(Context context, ArrayList<FridayExamQuestion> arrListQuestions, ExamFragment examFragment) {
 		this.context = context;
 		this.arrListQuestions = arrListQuestions;
 		this.fragExam = examFragment;

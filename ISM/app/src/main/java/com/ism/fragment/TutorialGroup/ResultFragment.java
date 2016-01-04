@@ -16,6 +16,7 @@ import com.ism.R;
 import com.ism.adapter.SubjectScoreAdapter;
 import com.ism.model.QuestionObjectiveTest;
 import com.ism.model.SubjectScoreTest;
+import com.ism.ws.model.FridayExamQuestion;
 
 import java.util.ArrayList;
 
@@ -45,9 +46,9 @@ public class ResultFragment extends Fragment {
 	private boolean isShowGraph;
 	private int intTimeSpent;
 
-	private ArrayList<QuestionObjectiveTest> arrListQuestions;
+	private ArrayList<FridayExamQuestion> arrListQuestions;
 
-	public static ResultFragment newInstance(ArrayList<QuestionObjectiveTest> questions, boolean showGraph, int timeSpent) {
+	public static ResultFragment newInstance(ArrayList<FridayExamQuestion> questions, boolean showGraph, int timeSpent) {
 		ResultFragment fragment = new ResultFragment();
 		fragment.setQuestion(questions);
 		Bundle args = new Bundle();
@@ -159,7 +160,7 @@ public class ResultFragment extends Fragment {
 		}
 	}
 
-	public void setQuestion(ArrayList<QuestionObjectiveTest> questions) {
+	public void setQuestion(ArrayList<FridayExamQuestion> questions) {
 		arrListQuestions = questions;
 	}
 

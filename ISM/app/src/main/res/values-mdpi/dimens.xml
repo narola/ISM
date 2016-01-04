@@ -11,7 +11,7 @@
 	<dimen name="dp450">450dp</dimen>
 	<dimen name="dp1">1dp</dimen>
 	<dimen name="dp59">59dp</dimen>
-	<dimen name="dp_n2">-2dp</dimen>
+	<dimen name="dp_n3">-3dp</dimen>
 	<dimen name="dp55">55dp</dimen>
 	<dimen name="dp110">110dp</dimen>
 	<dimen name="dp166">166dp</dimen>
@@ -100,4 +100,5 @@
 	<dimen name="dp330">330dp</dimen>
 	<dimen name="dp420">420dp</dimen>
 	<dimen name="dp236">236dp</dimen>
+	<dimen name="dp_n1">-1dp</dimen>
 </resources>
