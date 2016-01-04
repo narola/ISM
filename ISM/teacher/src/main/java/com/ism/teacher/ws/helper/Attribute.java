@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.ws.model.AnswerChoices;
 import com.ism.teacher.ws.model.Answers;
+import com.ism.teacher.ws.model.Preferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,14 +114,36 @@ public class Attribute {
 
     private ArrayList<String> unfavoriteResourceId;
     private ArrayList<String> favResourceId;
+
+    private String studymateId;
+    private String blockUser;
+    private ArrayList<Preferences> preferences;
+
     public Attribute() {
         setAccessKey(WebConstants.ACCESS_KEY);
         setSecretKey(WebConstants.SECRET_KEY);
     }
 
-
     public Attribute(String accessKey) {
         setAccessKey(accessKey);
+    }
+
+    public String getBlockUser() {
+        return blockUser;
+    }
+
+    @JsonProperty("block_user")
+    public void setBlockUser(String blockUser) {
+        this.blockUser = blockUser;
+    }
+
+    public ArrayList<Preferences> getPreferences() {
+        return preferences;
+    }
+
+    @JsonProperty("preferences")
+    public void setPreferences(ArrayList<Preferences> preferences) {
+        this.preferences = preferences;
     }
 
 
@@ -141,6 +164,16 @@ public class Attribute {
     public void setRecordIds(ArrayList<String> recordIds) {
         this.recordIds = recordIds;
     }
+
+    public String getStudymateId() {
+        return studymateId;
+    }
+
+    @JsonProperty("studymate_id")
+    public void setStudymateId(String studymateId) {
+        this.studymateId = studymateId;
+    }
+
 
     public String getSecretKey() {
         return secretKey;

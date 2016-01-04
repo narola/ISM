@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    tools:mContext="com.ism.fragment.userProfile.NotificationFragment">
+
+    <TextView
+        android:id="@+id/txt_alerts_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bg_highscore_subject"
+        android:paddingBottom="@dimen/d10dp"
+        android:paddingLeft="@dimen/d20dp"
+        android:paddingRight="@dimen/d20dp"
+        android:paddingTop="@dimen/d10dp"
+        android:text="@string/strNotificationForTags"
+        android:textColor="#323232"
+        android:textSize="@dimen/d22sp" />
+
+    <include
+        android:id="@+id/include_tags"
+        layout="@layout/layout_notification_comon_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_alerts_tags"
+        android:layout_marginTop="@dimen/d10dp" />
+
+    <TextView
+        android:id="@+id/txt_alerts_author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include_tags"
+        android:background="@drawable/bg_highscore_subject"
+        android:paddingBottom="@dimen/d10dp"
+        android:paddingLeft="@dimen/d20dp"
+        android:paddingRight="@dimen/d20dp"
+        android:paddingTop="@dimen/d10dp"
+        android:text="@string/strNotificationforAuthor"
+        android:textColor="#323232"
+        android:textSize="@dimen/d22sp" />
+
+    <include
+        android:id="@+id/include_author"
+        layout="@layout/layout_notification_comon_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_alerts_author"
+        android:layout_marginTop="@dimen/d10dp" />
+
+    <TextView
+        android:id="@+id/txt_alerts_notice_board"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include_author"
+        android:background="@drawable/bg_highscore_subject"
+        android:paddingBottom="@dimen/d10dp"
+        android:paddingLeft="@dimen/d20dp"
+        android:paddingRight="@dimen/d20dp"
+        android:paddingTop="@dimen/d10dp"
+        android:text="@string/strNotificationForNoticeBoard"
+        android:textColor="#323232"
+        android:textSize="@dimen/d22sp" />
+
+    <include
+        android:id="@+id/include_notice_board"
+        layout="@layout/layout_notification_comon_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_alerts_notice_board"
+        android:layout_marginTop="@dimen/d10dp" />
+
+    <TextView
+        android:id="@+id/txt_alerts_comment_like"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include_notice_board"
+        android:background="@drawable/bg_highscore_subject"
+        android:paddingBottom="@dimen/d10dp"
+        android:paddingLeft="@dimen/d20dp"
+        android:paddingRight="@dimen/d20dp"
+        android:paddingTop="@dimen/d10dp"
+        android:text="@string/strNotificationforCommentAndLike"
+        android:textColor="#323232"
+        android:textSize="@dimen/d22sp" />
+
+    <include
+        android:id="@+id/include_comment"
+        layout="@layout/layout_notification_comon_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_alerts_comment_like"
+        android:layout_marginTop="@dimen/d10dp" />
+
+    <include
+        android:id="@+id/include_like"
+        layout="@layout/layout_notification_comon_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include_comment" />
+
+    <View
+        android:layout_width="@dimen/d16dp"
+        android:layout_height="@dimen/d30dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/d210dp"
+        android:background="@drawable/indicator_light_grey" />
+
+    <View
+        android:layout_width="@dimen/d2dp"
+        android:layout_height="match_parent"
+        android:background="@color/border_gray" />
+</RelativeLayout>

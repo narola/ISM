@@ -13,8 +13,8 @@ public class WebConstants {
     public static final String NO_USERNAME = "nousername";
 
     //Host urls
-  //  public static final String URL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
-     public static final String URL_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";      // KINJAL
+    //  public static final String URL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
+    public static final String URL_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";      // KINJAL
 
 
     public static final String URL_UPLOADPROFILEIMAGES = URL_HOST + "UploadProfileImages";
@@ -89,7 +89,17 @@ public class WebConstants {
     //User Profile
     public static final int GET_NOTIFICATION = 40;
     public static final int UPDATE_READ_STATUS = 41;
+    public static final int GET_MESSAGES = 42;
+    public static final int RESPOND_TO_REQUEST = 43;
+    public static final int GET_STUDYMATE_REQUEST = 44;
+    public static final int GET_USER_PREFERENCES = 45;
+    public static final int MANAGE_GENERAL_SETTINGS = 46;
+    public static final int GENERAL_SETTING_PREFERENCES = 47;
 
+    public static final int BLOCK_USER = 48;
+    public static final int UNBLOCK_USER = 49;
+    public static final int BLOCKED_USER = 50;
+    public static final int GET_MY_FEEDS = 51;
 
     public static final String Image_url = "http://192.168.1.147/WS_ISM/Images/questions_images/";
 
@@ -167,5 +177,15 @@ public class WebConstants {
      */
     public static final String URL_GET_NOTIFICATION = URL_HOST + "GetNotification";
     public static final String URL_UPDATE_READ_STATUS = URL_HOST + "UpdateReadStatus"; // studymate_request, messages, notification
+    public static final String URL_GET_MESSAGES = URL_HOST + "GetMessages";
+    public static final String URL_RESPOND_TO_REQUEST = URL_HOST + "AcceptRequestFromStudymate";
+    public static final String URL_GET_STUDYMATE_REQUEST = URL_HOST + "GetStudymateRequest";
+    public static final String URL_GENERAL_SETTING_PREFERENCES = URL_HOST + "GetAllPreferences";
+    public static final String URL_MANAGE_GENERAL_SETTING = URL_HOST + "ManageGeneralSettings";
+    public static final String URL_GET_USER_PREFERENCES = URL_HOST + "GetUserPreferences";
+    public static final String URL_BLOCK_USER = URL_HOST + "BlockUser";
+    public static final String URL_GET_BLOCKED_USER = URL_HOST + "GetBlockedUser";
+    public static final String URL_GET_MY_FEEDS = URL_HOST + "GetMyFeeds";
+
 
 }
