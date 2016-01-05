@@ -352,7 +352,7 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
      * postFeed
      */
 
-    public function postFeed ($postData)
+    public function postFeed1 ($postData)
     {
         $data=array();
         $response=array();
@@ -447,6 +447,190 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
         return $response;
     }
 
+
+    public function postFeed ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $feed_by=$_POST['feed_by'];
+        $feed_text=$_POST['feed_text'];
+        $posted_on=$_POST['posted_on'];
+        $secret_key=$_POST['secret_key'];
+        $access_key=$_POST['access_key'];
+        $video_thumbnail=$_POST['thumbnil_link'];
+        $created_date = date("Ymd-His");
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            if (!is_dir(FEEDS_MEDIA)) {
+                mkdir(FEEDS_MEDIA, 0777, true);
+            }
+
+            $feed_media_dir = "user_" . $feed_by . "/";
+            $dir = FEEDS_MEDIA . $feed_media_dir;
+            if (!is_dir($dir)) {
+                mkdir($dir, 0777);
+            }
+
+            $feed_thumb_link = null;
+            if ($video_thumbnail != null) {
+                $feed_thumb = "Thumb-" . date("Ymd-his") . ".png";
+                $feed_thumb_link = $feed_media_dir . $feed_thumb;
+
+
+            }
+
+            $insertFields = "`feed_by`, `feed_text`, `posted_on`,`video_thumbnail`";
+            $insertValues = $feed_by . ",'" . $feed_text . "','" . $posted_on . "','" . $video_thumbnail . "'";
+
+            $queryPostFeed = "INSERT INTO " . TABLE_FEEDS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+            $result = mysqli_query($GLOBALS['con'], $queryPostFeed) or $message = mysqli_error($GLOBALS['con']);
+
+
+            if ($result) {
+                $feed_id = mysqli_insert_id($GLOBALS['con']);
+                $post['feed_id'] = $feed_id;
+
+
+                //===================For Video===================
+                if ($_FILES["video_link"]["error"] > 0) {
+                    $message = $_FILES["video_link"]["error"];
+
+                }
+                else {
+
+                    $mediaName = "_test_VIDEO_" . $created_date . ".mp4";
+
+                    $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
+                    if (move_uploaded_file($_FILES['video_link']['tmp_name'], $uploadFile)) {
+                        //store image data.
+                        $link = $feed_media_dir . $mediaName;
+                        $procedure_insert_set = "CALL UPDATE_VIDEO_LINK ('" . $link . "','" . $feed_id . "' )";
+                        $result_procedure = mysqli_query($GLOBALS['con'], $procedure_insert_set) or $message = mysqli_error($GLOBALS['con']);
+
+                        $post['video_link'] = $link;
+                        $status = SUCCESS;
+                        $message = "Successfully uploaded!.";
+                    } else {
+                        $status = FAILED;
+                        $message = FAILED_TO_UPLOAD_MEDIA;
+                    }
+
+                }
+
+                //====================For Audio====================
+
+                if ($_FILES["audio_link"]["error"] > 0) {
+                    $message = $_FILES["audio_link"]["error"];
+                    $status = 2;
+                } else {
+                    $mediaName = "_test_AUDIO_" . $created_date . ".mp3";
+
+
+                    $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
+                    if (move_uploaded_file($_FILES['audio_link']['tmp_name'], $uploadFile)) {
+                        //store image data.
+
+                        $link = $feed_media_dir . $mediaName;
+                        $procedure_insert_set = "CALL UPDATE_AUDIO_LINK ('" . $link . "','" . $feed_id . "' )";
+                        $result_procedure = mysqli_query($GLOBALS['con'], $procedure_insert_set) or $message = mysqli_error($GLOBALS['con']);
+
+                        $post['audio_link'] = $link;
+                        $status = SUCCESS;
+                        $message = "Successfully uploaded!.";
+                    }
+                    else
+                    {
+                        $status = FAILED;
+                        $message = FAILED_TO_UPLOAD_MEDIA;
+                    }
+                }
+
+                //====================For multiple images====================
+                for ($i = 0; $i < count($_FILES["feed_images"]["name"]); $i++) {
+                    if ($_FILES["feed_images"]["name"][$i] != '') { // don't insert if file name empty
+
+                        $file_ext=explode('.',$_FILES['feed_images']['name'][$i])	;
+                        $file_ext=end($file_ext);
+                        $file_ext=strtolower(end(explode('.',$_FILES['feed_images']['name'][$i])));
+
+                        $mediaName = "_test_".$i."_IMAGE_" . $created_date . ".";
+                        $fileName =  $mediaName .$file_ext ;
+
+
+
+                        $user_media_dir = "user_" . $feed_by . "/";
+
+                        $target_path1 =  FEEDS_MEDIA . $user_media_dir;
+
+                        if(is_dir($target_path1)==false){
+                            $target_path1 =  FEEDS_MEDIA . $user_media_dir;
+                            mkdir($target_path1, 0777);		// Create directory if it does not exist
+                            $target_path =  FEEDS_MEDIA . $user_media_dir . $fileName;
+                        }
+                        else
+                        {
+                            if (file_exists($target_path1)) {
+                                 // echo "dir=".$user_media_dir;
+
+                                $user_media_dir = "user_" . $feed_by."/" ;
+                                $target_path =  FEEDS_MEDIA . $user_media_dir . $fileName;
+                                (@fopen($target_path,"r")==true);
+
+                            }
+
+                        }
+
+
+                        if (move_uploaded_file($_FILES["feed_images"]["tmp_name"][$i], $target_path)) {    // The file is in the images/gallery folder.
+
+                            // Insert record into database by executing the following query:
+                            $queryProfileImage = "INSERT INTO " . TABLE_FEED_IMAGE . "(`feed_id`, `image_link`) VALUES (" . $feed_id . ",'" . $fileName . "')";
+                            $result=mysqli_query($GLOBALS['con'], $queryProfileImage) or $message =mysqli_error($GLOBALS['con']);
+
+                            if($result)
+                            {
+                                mysqli_free_result($result);
+                                $images[]=$fileName;
+                            }
+                            else{
+                                $status = FAILED;
+                                $message = FAILED_TO_UPLOAD_MEDIA;
+                            }
+
+
+                            $post['feed_images']=$images;
+                            $status = SUCCESS;
+                            $message = "successfully uploaded";
+
+                        } else {
+                            $message= "There was an error uploading the file " . $_FILES['media_images']['name'][$i] . ", please try again!";
+                        }
+
+                    }
+                }
+                $data[] = $post;
+                $message="successfully uploaded";
+                $status = SUCCESS;
+            } else {
+                $status = FAILED;
+            }
+        }
+
+        else{
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['status']=$status;
+        $response['message']=$message;
+        $response['feed']=$data;
+        return $response;
+    }
+
     public function uploadMedia($postData)
     {
 
@@ -486,7 +670,6 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
             if (!is_dir(FEEDS_MEDIA . $feed_media_dir)) {
                 mkdir(FEEDS_MEDIA . $feed_media_dir, 0777);
             }
-
 
 
 

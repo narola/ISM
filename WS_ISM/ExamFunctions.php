@@ -276,7 +276,7 @@ class ExamFunctions
 //                    "exam_id":63,
 //                    "student_id":370
 //                }
-                    $query = "SELECT * FROM " . TABLE_EXAM_SCHEDULE . " exam_schedule INNER JOIN " . TABLE_USERS . " users on exam_schedule.exam_assessor=users.id WHERE exam_id=" . $exam_id." AND exam_schedule.is_delete=0 AND users.is_delete=0";
+                    $query = "SELECT * FROM " . TABLE_EXAM_PROFILE . " exam_schedule INNER JOIN " . TABLE_USERS . " users on exam_schedule.exam_assessor=users.id WHERE exam_id=" . $exam_id." AND exam_schedule.is_delete=0 AND users.is_delete=0";
                     $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
                     //echo $query;
                     $row = mysqli_fetch_assoc($result);
@@ -286,7 +286,7 @@ class ExamFunctions
                     $post['evaluator_profile_pic'] = $row['profile_pic'];
 
                     $evaluation = array();
-                    $queryEvaluation = "SELECT * FROM " . TABLE_EXAM_EVALUATION . " WHERE exam_id=" . $exam_id ." AND is_delete=0";
+                    $queryEvaluation = "SELECT * FROM " . TABLE_EXAM_PROFILE . " WHERE exam_id=" . $exam_id ." AND is_delete=0";
                     $resultEvaluation = mysqli_query($GLOBALS['con'], $queryEvaluation) or $message = mysqli_error($GLOBALS['con']);
 
                     if (mysqli_num_rows($resultEvaluation)) {
@@ -454,7 +454,7 @@ class ExamFunctions
         return $response;
     }
 
-    /*
+     /*
      * create exam
      */
     public function createExam ($postData)
@@ -553,33 +553,47 @@ class ExamFunctions
                 $insertFields = "`created_by`,`exam_name`, `book_id`,`classroom_id`, `subject_id`, `topic_id`, `exam_type`, `exam_category`, `exam_mode`, `pass_percentage`, `duration`, `instructions`, `negative_marking`,`negative_mark_value`,`use_question_score`,`correct_answer_score`, `random_question`, `declare_results`,`attempt_count`";
                 $insertValues = "".$user_id . ",'" . $exam_name . "'," . $book_id . "," . $classroom_id . "," . $subject_id . "," . $topic_id . ",'" . $exam_type . "','" . $exam_category . "','" . $exam_mode . "'," . $passing_percent . "," . $exam_duration . ",'" . $exam_instruction . "','" . $negative_marking . "'," . $negative_mark_value . ",'".$use_question_score."',".$correct_answer_score.",'" . $random_question . "','" . $declare_results . "'," . $attempt_count;
 
-
                 $query = "INSERT INTO " . TABLE_EXAMS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
                 //echo $query; exit;
                 $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
                 if ($result) {
-                    $post['exam_id'] = mysqli_insert_id($GLOBALS['con']);
-                    if ($exam_start_date != null and $exam_start_time != null) {
+                    $examId=mysqli_insert_id($GLOBALS['con']);
+                    $post['exam_id'] = $examId;
+
+
                         $insertExamScheduleFields = "`exam_id`, `schedule_by`, `exam_assessor`, `start_date`, `start_time`, `school_classroom_id`";
-                        $insertExamScheduleValues = "" . $post['exam_id'] . "," . $user_id . "," . $exam_assessor . ",'" . $exam_start_date . "','" . $exam_start_time . "'," . $classroom_id;
-                        $queryInsertExamSchedule = "INSERT INTO ". TABLE_EXAM_SCHEDULE."(" . $insertExamScheduleFields . ") VALUES (" . $insertExamScheduleValues . ")";
+                        $insertExamScheduleValues = "" . $examId . "," . $user_id . "," . $exam_assessor . ",'" . $exam_start_date . "','" . $exam_start_time . "'," . $classroom_id;
+                        $queryInsertExamSchedule = "INSERT INTO ". TABLE_EXAM_PROFILE."(" . $insertExamScheduleFields . ") VALUES (" . $insertExamScheduleValues . ")";
                         $resultExamSchedule = mysqli_query($GLOBALS['con'], $queryInsertExamSchedule) or $message = mysqli_error($GLOBALS['con']);
                          // echo $queryInsertExamSchedule; exit;
                         if ($resultExamSchedule) {
 
+                            if($exam_start_date!=null && $exam_start_date!=null)
+                            {
+                                $queryToGetStudentId="SELECT * FROM ".TABLE_STUDENT_PROFILE." WHERE school_classroom_id=".$classroom_id." AND is_delete=0";
+                                $resultToGetStudentId=mysqli_query($GLOBALS['con'], $queryToGetStudentId) or $message = mysqli_error($GLOBALS['con']);
+
+                                /*if(mysqli_num_rows($resultToGetStudentId)>0)
+                                {
+                                    while($row=mysqli_fetch_assoc($resultToGetStudentId))
+                                    {
+                                        $insertStudentScoreFields = "`exam_id`, `user_id`";
+                                        $insertStudentScoreValues = "" . $examId . "," . $row['user_id'];
+                                        $queryInsertExamSchedule = "INSERT INTO ". TABLE_STUDENT_EXAM_SCORE."(" . $insertStudentScoreFields . ") VALUES (" . $insertStudentScoreValues . ")";
+                                        $resultExamScore = mysqli_query($GLOBALS['con'], $queryInsertExamSchedule) or $message = mysqli_error($GLOBALS['con']);
+                                        // echo $resultExamScore; exit;
+                                    }
+                                }*/
+                            }
                             $status = SUCCESS;
                               $message="Exam created and scheduled";
                         } else {
                             $status = SUCCESS;
                              $message="Exam is created but not scheduled";
                         }
-                    }
-                    else{
-                        $post['exam_id'] = mysqli_insert_id($GLOBALS['con']);
-                        $status = SUCCESS;
-                        $message="Exam created";
-                    }
+
+
 
                 } else {
                     $post['exam_id'] = "";
@@ -603,12 +617,12 @@ class ExamFunctions
 
                         if ($exam_start_date != null and $exam_start_time != null) {
 
-                                $queryToChkIfExist="SELECT * FROM ".TABLE_EXAM_SCHEDULE." WHERE exam_id=".$exam_id." AND is_delete=0";
+                                $queryToChkIfExist="SELECT * FROM ".TABLE_EXAM_PROFILE." WHERE exam_id=".$exam_id." AND is_delete=0";
                                 $resultToChkIfExist = mysqli_query($GLOBALS['con'], $queryToChkIfExist) or $message = mysqli_error($GLOBALS['con']);
                                 if(mysqli_num_rows($resultToChkIfExist)>0) {
 
                                 $updateExamScheduleFields = " `schedule_by`=".$user_id.", `exam_assessor`=".$exam_assessor.", `start_date`='".$exam_start_date."', `start_time`='".$exam_start_time."', `school_classroom_id`=".$classroom_id;
-                                $queryUpdateExamSchedule = "UPDATE ". TABLE_EXAM_SCHEDULE." SET ".$updateExamScheduleFields." WHERE exam_id= ".$exam_id;
+                                $queryUpdateExamSchedule = "UPDATE ". TABLE_EXAM_PROFILE." SET ".$updateExamScheduleFields." WHERE exam_id= ".$exam_id;
                                 $resultExamSchedule = mysqli_query($GLOBALS['con'], $queryUpdateExamSchedule) or $message = mysqli_error($GLOBALS['con']);
                                 //  echo $queryInsertExamSchedule;
                                 if ($resultExamSchedule) {
@@ -1106,7 +1120,7 @@ class ExamFunctions
 //       }
 
 
-        $queryEvaluation = "SELECT total_student_attempted FROM " . TABLE_EXAM_EVALUATION . " WHERE exam_id=" . $post['exam_id'] ." AND is_delete=0";
+        $queryEvaluation = "SELECT total_student_attempted FROM " . TABLE_EXAM_PROFILE . " WHERE exam_id=" . $post['exam_id'] ." AND is_delete=0";
         $resultEvaluation = mysqli_query($GLOBALS['con'], $queryEvaluation) or $message = mysqli_error($GLOBALS['con']);
         $rowTotalStudentAttempted=mysqli_fetch_row($resultEvaluation);
 
@@ -1137,7 +1151,7 @@ class ExamFunctions
             $post['correct_answer_score']=$rowExam['correct_answer_score'];
         $post['declare_results']=$rowExam['declare_results'];
 
-        $query="SELECT * FROM ".TABLE_EXAM_SCHEDULE." WHERE `exam_id`=".$rowExam['id'] ." AND is_delete=0 ";
+        $query="SELECT * FROM ".TABLE_EXAM_PROFILE." WHERE `exam_id`=".$rowExam['id'] ." AND is_delete=0 ";
         $result=mysqli_query($GLOBALS['con'],$query) or  $message=mysqli_error($GLOBALS['con']);
         // echo $query;
         if(mysqli_num_rows($result)>0) {
@@ -1155,7 +1169,7 @@ class ExamFunctions
 
 
             //total questions
-        $query="SELECT `evaluation_status`, `total_questions`, `average_score`, `total_student_attempted`, `total_assessed` FROM `exam_evaluation` WHERE `exam_id`=".$rowExam['id'] ." AND is_delete=0 ";
+        $query="SELECT `evaluation_status`, `total_questions`, `average_score`, `total_student_attempted`, `total_assessed` FROM ".TABLE_EXAM_PROFILE." WHERE `exam_id`=".$rowExam['id'] ." AND is_delete=0 ";
         $result=mysqli_query($GLOBALS['con'],$query) or  $message=mysqli_error($GLOBALS['con']);
        // echo $query;
         if(mysqli_num_rows($result))
@@ -1647,10 +1661,14 @@ class ExamFunctions
         $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
         if($isSecure==yes) {
-            $query ="SELECT exams.*,examEvaluation.evaluation_status as 'Status',examEvaluation.total_questions as 'total_questions',examEvaluation.average_score as 'score',examEvaluation.total_student_attempted as 'total_submission' FROM ".TABLE_EXAMS. " exams
-	 	LEFT JOIN ".TABLE_EXAM_SCHEDULE." exam_schedule on exams.id=exam_schedule.exam_id
-	 	LEFT JOIN ". TABLE_EXAM_EVALUATION." examEvaluation on exams.id = examEvaluation.exam_id
-	 	WHERE exam_schedule.exam_assessor =".$user_id ." AND exam_schedule.is_delete=0  ORDER BY exams.created_date DESC"; //exams.modified_date
+//            $query ="SELECT exams.*,examEvaluation.evaluation_status as 'Status',examEvaluation.total_questions as 'total_questions',examEvaluation.average_score as 'score',examEvaluation.total_student_attempted as 'total_submission' FROM ".TABLE_EXAMS. " exams
+//	 	LEFT JOIN ".TABLE_EXAM_SCHEDULE." exam_schedule on exams.id=exam_schedule.exam_id
+//	 	LEFT JOIN ". TABLE_EXAM_EVALUATION." examEvaluation on exams.id = examEvaluation.exam_id
+//	 	WHERE exam_schedule.exam_assessor =".$user_id ." AND exam_schedule.is_delete=0  ORDER BY exams.created_date DESC"; //exams.modified_date
+
+            $query ="SELECT exams.*,exam_profile.evaluation_status as 'Status',exam_profile.total_questions as 'total_questions',exam_profile.average_score as 'score',exam_profile.total_student_attempted as 'total_submission' FROM ".TABLE_EXAMS. " exams
+	 	LEFT JOIN ".TABLE_EXAM_PROFILE." exam_profile on exams.id=exam_profile.exam_id WHERE exam_profile.exam_assessor =".$user_id ." AND exam_profile.is_delete=0  ORDER BY exams.created_date DESC"; //exams.modified_date
+
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
             if (mysqli_num_rows($result)) {
@@ -2227,7 +2245,7 @@ class ExamFunctions
                     $post['score_obtained'] = $rowExam['marks_obtained'];
                     $post['percentage'] = $rowExam['percentage'];
                     //total questions
-                    $query="SELECT `evaluation_status`, `total_questions`, `average_score`, `total_student_attempted`, `total_assessed` FROM `exam_evaluation` WHERE `exam_id`=".$rowExam['id'] ." AND is_delete=0 ";
+                    $query="SELECT `evaluation_status`, `total_questions`, `average_score`, `total_student_attempted`, `total_assessed` FROM ".TABLE_EXAM_PROFILE." WHERE `exam_id`=".$rowExam['id'] ." AND is_delete=0 ";
                     $result=mysqli_query($GLOBALS['con'],$query) or  $message=mysqli_error($GLOBALS['con']);
                     // echo $query;
                     if(mysqli_num_rows($result))
@@ -2288,7 +2306,7 @@ class ExamFunctions
 
                                     if ($rowExam['exam_mode'] == "subjective") {
 //
-                                        $query = "SELECT * FROM " . TABLE_EXAM_SCHEDULE . " exam_schedule INNER JOIN " . TABLE_USERS . " users on exam_schedule.exam_assessor=users.id WHERE exam_id=" . $rowExam['id'] . " AND exam_schedule.is_delete=0 AND users.is_delete=0";
+                                        $query = "SELECT * FROM " . TABLE_EXAM_PROFILE . " exam_schedule INNER JOIN " . TABLE_USERS . " users on exam_schedule.exam_assessor=users.id WHERE exam_id=" . $rowExam['id'] . " AND exam_schedule.is_delete=0 AND users.is_delete=0";
                                         $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
                                         $row = mysqli_fetch_assoc($result);
@@ -2298,7 +2316,7 @@ class ExamFunctions
                                         $post['evaluator_profile_pic'] = $row['profile_pic'];
 
                                         $evaluation = array();
-                                        $queryEvaluation = "SELECT * FROM " . TABLE_EXAM_EVALUATION . " WHERE exam_id=" . $rowExam['id'] . " AND is_delete=0";
+                                        $queryEvaluation = "SELECT * FROM " . TABLE_EXAM_PROFILE . " WHERE exam_id=" . $rowExam['id'] . " AND is_delete=0";
                                         $resultEvaluation = mysqli_query($GLOBALS['con'], $queryEvaluation) or $message = mysqli_error($GLOBALS['con']);
 
                                         if (mysqli_num_rows($resultEvaluation)) {
@@ -2440,8 +2458,303 @@ class ExamFunctions
         return $response;
     }
 
-
     public function submitQuestionForFriday($postData)
+    {
+        $message ='';
+        $status='';
+        $post=array();
+        $data=array();
+        $response=array();
+
+        $group_id = validateObject($postData, 'group_id', "");
+        $group_id = addslashes($group_id);
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $tutorial_topic_id = validateObject ($postData , 'tutorial_topic_id', "");
+        $tutorial_topic_id = addslashes($tutorial_topic_id);
+
+        $question_text = validateObject ($postData , 'question_text', "");
+        $question_text = addslashes($question_text);
+
+        $question_id = validateObject ($postData , 'question_id', "");
+        $question_id = addslashes($question_id);
+
+        $answer_choices = validateObject ($postData , 'answer_choices', "");
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            //Get Classroom_id from Student Profile table
+            $queryToGetClassId = "SELECT classroom_id FROM " . TABLE_STUDENT_PROFILE . " WHERE user_id=" . $user_id . " AND is_delete=0";
+            $resultToGetClassId = mysqli_query($GLOBALS['con'], $queryToGetClassId) or $message = mysqli_error($GLOBALS['con']);
+            $classroom_id = mysqli_fetch_row($resultToGetClassId);
+
+
+            //Get Correct Question score while insrting into question and exam table
+            $selectConfigValue = "SELECT config_value FROM " . TABLE_ADMIN_CONFIG . " WHERE config_key='fridayInternalExamScore' AND is_delete=0";
+            $resultConfigValue = mysqli_query($GLOBALS['con'], $selectConfigValue) or $message = mysqli_error($GLOBALS['con']);
+            $configValue = mysqli_fetch_row($resultConfigValue);
+            $correct_answer_score = $configValue[0];
+
+
+            $queryChkInTutorialTopicExam = "SELECT * FROM " . TABLE_TUTORIAL_TOPIC_EXAM . " WHERE tutorial_group_id=" . $group_id . " AND tutorial_topic_id=" . $tutorial_topic_id . " AND is_delete=0";//AND allocated_teacher_id=".$user_id."
+            $resultChkInTutorialTopicExam = mysqli_query($GLOBALS['con'], $queryChkInTutorialTopicExam) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultChkInTutorialTopicExam) > 0) {
+                while ($topic_exam = mysqli_fetch_assoc($resultChkInTutorialTopicExam)) {
+                    $getExamId = $topic_exam['exam_id'];
+                    $question_count = $topic_exam['exam_question_count'];
+
+                    if ($topic_exam['exam_question_count'] == 5) {
+                        $updateData = ",is_ready=1";
+                        $updateFields = " exam_question_count=" . $question_count . "+ 1" . $updateData;
+                    } else {
+                        $updateFields = " exam_question_count=" . $question_count . "+ 1";
+                    }
+
+                    // echo "update".$updateFields; exit;
+                    $updateQuery = "UPDATE " . TABLE_TUTORIAL_TOPIC_EXAM . " SET " . $updateFields . " WHERE tutorial_topic_id=" . $tutorial_topic_id . " AND tutorial_group_id=" . $group_id . " AND exam_id=" . $getExamId;
+                    $updateResult = mysqli_query($GLOBALS['con'], $updateQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                    if ($updateResult) {
+                        $status = SUCCESS;
+                        $message = "Succesfully updated";
+                    } else {
+                        $status = FAILED;
+                        $message = "failed to update";
+                    }
+                }
+                //$data = array();
+            } //If Exam Id is not TutorialTopicExam Table, then Insert exam in Exam Table
+            else {
+
+                //====================================Insert Exam================================
+                $exam_type = "topic";
+                $exam_mode = "objective";
+                $exam_category = "Tutorial";
+                $use_question_score = "no";
+                $exam_name = "";
+
+
+                $insertFields = "`created_by`,`exam_name`,`classroom_id`, `topic_id`, `exam_type`, `exam_category`, `exam_mode`,`use_question_score`,`correct_answer_score`";
+                $insertValues = "" . $user_id . ",'" . $exam_name . "'," . $classroom_id[0] . "," . $tutorial_topic_id . ",'" . $exam_type . "','" . $exam_category . "','" . $exam_mode . "','" . $use_question_score . "'," . $correct_answer_score . "";
+
+
+                $queryInsertExam = "INSERT INTO " . TABLE_EXAMS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                //echo $queryInsertExam; exit;
+                $resultInsertExam = mysqli_query($GLOBALS['con'], $queryInsertExam) or $message = mysqli_error($GLOBALS['con']);
+
+                $getExamId = mysqli_insert_id($GLOBALS['con']);
+
+
+                if ($resultInsertExam) {
+                    $post['exam_id'] = $getExamId;
+                    $message = "Exam created";
+                    $status = SUCCESS;
+
+                    //====================================Insert Tutorial Topic Exam ================================
+
+
+                    $insertTopicExamFields = "`tutorial_topic_id`,`tutorial_group_id`,`exam_id`, `exam_question_count`";//, `exam_type`";
+                    $insertTopicExamValues = "" . $tutorial_topic_id . ",'" . $group_id . "'," . $getExamId . ",1  ";//,'" . $topic_exam_type . "'";
+
+
+                    $queryInsertTopicExam = "INSERT INTO " . TABLE_TUTORIAL_TOPIC_EXAM . "(" . $insertTopicExamFields . ") VALUES (" . $insertTopicExamValues . ")";
+                    //echo $queryInsertTopicExam; exit;
+                    $resultInsertTopicExam = mysqli_query($GLOBALS['con'], $queryInsertTopicExam) or $message = mysqli_error($GLOBALS['con']);
+
+                    if ($resultInsertTopicExam) {
+                        $status = SUCCESS;
+                        $message = "exam and question added successfully";
+                    } else {
+                        $status = FAILED;
+                        $message = "Failed to insert record";
+                    }
+
+
+                } else {
+                    $message = "failed to create exam";
+                    $status = FAILED;
+                }
+
+            }
+
+
+            //For both conditions
+
+            //====================================Insert Question================================
+
+            $question_format = "MCQ";
+
+            $queryGetTopicAndSubject = "SELECT * FROM " . TABLE_TUTORIAL_TOPIC . " WHERE id=" . $tutorial_topic_id . " AND is_delete=0";
+            $resultGetTopicAndSubject = mysqli_query($GLOBALS['con'], $queryGetTopicAndSubject) or $message = mysqli_error($GLOBALS['con']);
+            $getData = mysqli_fetch_row($resultGetTopicAndSubject);
+            $subject_id = $getData['6'];
+            $topic_id = $getData['7'];
+
+
+            //$checkFromQuestion="SELECT * FROM ".TABLE_QUESTIONS." WHERE question_creator_id=".$user_id." AND id=".$question_id." AND is_delete=0";
+            if ($question_id == 0) {
+
+
+                $insertFields = "`question_text`,`question_score`, `question_format`, `question_creator_id`, `topic_id`, `subject_id`, `classroom_id`";
+                $insertValues = "'" . $question_text . "'," . $correct_answer_score . ",'" . $question_format . "'," . $user_id . "," . $topic_id . "," . $subject_id . "," . $classroom_id[0];
+
+                $queryInsertQuestion = "INSERT INTO " . TABLE_QUESTIONS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                // echo $queryInsertQuestion;
+                $resultInsertQuestion = mysqli_query($GLOBALS['con'], $queryInsertQuestion) or $message = mysqli_error($GLOBALS['con']);
+
+                $questionID = mysqli_insert_id($GLOBALS['con']);
+
+
+                if ($resultInsertQuestion) {
+
+                    $post['question_id'] = $questionID;
+                    $message = "Question created";
+                    $status = SUCCESS;
+
+                    if ($question_format == MCQ) {
+                        if (is_array($answer_choices)) {
+
+                            foreach ($answer_choices as $row) {
+
+                                $insertChoiceFields = "`question_id`,`choice_text`,`is_right`";
+                                $insertChoiceValues = "" . $questionID . ",'" . $row->choice_text . "'," . (int)$row->is_right;
+
+                                $insertQuestionQuery = "INSERT INTO " . TABLE_ANSWER_CHOICES . "(" . $insertChoiceFields . ") VALUES( " . $insertChoiceValues . ")";
+                                $resultQuestionQuery = mysqli_query($GLOBALS['con'], $insertQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
+
+
+                                if ($resultQuestionQuery) {
+
+                                    $answer_ids[] = mysqli_insert_id($GLOBALS['con']);
+
+                                } else {
+                                    $status = FAILED;
+                                    $message = "failed to insert answer choice";
+                                }
+                            }
+                            //$answers[]=$answer_ids;
+                            $post['answer_ids'] = $answer_ids;
+                        }
+                    }
+
+                    if ($resultQuestionQuery) {
+
+                        $insertExamQuestionFields = "`exam_id`,`question_id`";
+                        $insertExamQuestionValues = "" . $getExamId . "," . $questionID;
+
+                        $insertExamQuestionQuery = "INSERT INTO " . TABLE_EXAM_QUESTION . "(" . $insertExamQuestionFields . ") VALUES( " . $insertExamQuestionValues . ")";
+                        $resultExamQuestionQuery = mysqli_query($GLOBALS['con'], $insertExamQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                        $status = SUCCESS;
+                        $message = "Exam's question added";
+                    } else {
+                        $status = FAILED;
+                        $message = "failed to add exam's question";
+                    }
+                } else {
+                    $message = "failed to create question";
+                    $status = FAILED;
+
+                }
+            }
+            //Update question
+            else
+            {
+                $queryToChkRecordExist = "SELECT * FROM " . TABLE_QUESTIONS . " WHERE id=" . $question_id . " AND is_delete=0";
+                $resultToChkRecordExist = mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
+
+                if (mysqli_num_rows($resultToChkRecordExist) > 0) {
+                    $updateFields = "`question_text` ='" . $question_text . "',`question_score`='" . $correct_answer_score . "', `question_format`='MCQ', `question_creator_id`=" . $user_id . ", `topic_id`=" . $topic_id . ", `subject_id`=" . $subject_id . ", `classroom_id`=" . $classroom_id[0];
+
+                    $queryUpdateQuestion = "UPDATE " . TABLE_QUESTIONS . " SET " . $updateFields . " WHERE id=" . $question_id;
+                    $resultUpdateQuestion = mysqli_query($GLOBALS['con'], $queryUpdateQuestion) or $message = mysqli_error($GLOBALS['con']);
+
+                    if ($resultUpdateQuestion) {
+                        $status = SUCCESS;
+                        $message = SUCCESSFULLY_UPDATED;
+                        $post['question_id'] = $question_id;
+
+
+                        foreach($answer_choices as $row)
+                        {
+                            if ($question_id != 0) {
+
+                                $queryToChkRecordExist = "SELECT * FROM " . TABLE_ANSWER_CHOICES . " WHERE question_id=" . $question_id . " AND id= " . $row->id . " AND is_delete=0";
+                                $resultToChkRecordExist = mysqli_query($GLOBALS['con'], $queryToChkRecordExist) or $message = mysqli_error($GLOBALS['con']);
+
+                                if (mysqli_num_rows($resultToChkRecordExist) > 0) {
+                                    $updateFields = "`choice_text` ='" . $row->choice_text . "', `is_right`=" . (int)$row->is_right;
+
+                                    $updateQuestionQuery = "UPDATE " . TABLE_ANSWER_CHOICES . " SET " . $updateFields . " WHERE question_id=" . $question_id . " AND id= " . $row->id;
+                                    $resultQuestionQuery = mysqli_query($GLOBALS['con'], $updateQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                                    if ($resultQuestionQuery) {
+                                        $answer_ids=array();
+                                        $status = SUCCESS;
+                                        $message = SUCCESSFULLY_UPDATED;
+                                    } else {
+                                        $status = FAILED;
+                                        $message = "Failed to update answer choices";
+                                    }
+                                } else {
+
+                                    $insertChoiceFields = "`question_id`,`choice_text`,`is_right`";
+                                    $insertChoiceValues = "" . $question_id . ",'" . $row->choice_text . "'," . (int)$row->is_right;
+
+                                    $insertQuestionQuery = "INSERT INTO " . TABLE_ANSWER_CHOICES . "(" . $insertChoiceFields . ") VALUES( " . $insertChoiceValues . ")";
+                                    $resultQuestionQuery = mysqli_query($GLOBALS['con'], $insertQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
+
+
+                                    if ($resultQuestionQuery) {
+                                        $answer_ids[] = mysqli_insert_id($GLOBALS['con']);
+                                        $status = SUCCESS;
+                                        $message = SUCCESSFULLY_ADDED;
+                                    } else {
+                                        $status = FAILED;
+                                        $message = "Failed to add new answer choices";
+                                    }
+                                }
+
+                            }
+                        }
+                        $post['answer_ids'] = $answer_ids;
+
+
+                    } else {
+                        $status = FAILED;
+                        $message = "";
+                        $post['question_id'] = "";
+                    }
+                }
+            }
+            $data[] = $post;
+        }
+        else
+        {
+            $status=FAILED;
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['question_for_friday']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+
+    }
+
+    public function submitQuestionForFriday1($postData)
     {
         $message ='';
         $status='';
@@ -2474,7 +2787,7 @@ class ExamFunctions
 
         if($isSecure==yes) {
 
-             $queryChkInTutorialTopicExam="SELECT * FROM ".TABLE_TUTORIAL_TOPIC_EXAM." WHERE tutorial_group_id=".$group_id." AND tutorial_topic_id=".$tutorial_topic_id." AND is_delete=0";
+            $queryChkInTutorialTopicExam="SELECT * FROM ".TABLE_TUTORIAL_TOPIC_EXAM." WHERE tutorial_group_id=".$group_id." AND tutorial_topic_id=".$tutorial_topic_id." AND is_delete=0";//AND allocated_teacher_id=".$user_id."
             $resultChkInTutorialTopicExam = mysqli_query($GLOBALS['con'], $queryChkInTutorialTopicExam) or $message = mysqli_error($GLOBALS['con']);
 
             if(mysqli_num_rows($resultChkInTutorialTopicExam)>0)
@@ -3102,22 +3415,22 @@ class ExamFunctions
                                     if ($rowExam['negative_marking'] == 'yes') {
                                         if ($row->is_right == 0) {
 
-                                            $updation = "marks_obtained = (marks_obtained - " . $negavite_mark_value . ")";
+                                            echo $updation = "marks_obtained = (marks_obtained - " . $negavite_mark_value . ")";
                                         }
                                         else
                                         {
-                                            $updation = "marks_obtained = $row->correct_answer_score ";
+                                            echo $updation = "marks_obtained = $row->correct_answer_score ";
                                         }
                                     }
                                 }
                             }
 
                             $insertChoiceFields = "`user_id`,`exam_id`,`question_id`,`choice_id`,`answer_status`,`is_right`,`marks_obtained`,`response_duration`";
-                            $insertChoiceValues = "" . $user_id . $exam_id . "," . $row->question_id . "," . $row->choice_id . ",'" . $row->answer_status . "'," . $row->is_right . "," . $updation . "," . $row->response_duration;
+                            $insertChoiceValues = "" . $user_id .",". $exam_id . "," . $row->question_id . "," . $row->choice_id . ",'" . $row->answer_status . "'," . $row->is_right . "," . $row->correct_answer_score . "," . $row->response_duration;
 
 
                             $insertQuestionQuery = "INSERT INTO " . TABLE_STUDENT_OBJECTIVE_RESPONSE . "(" . $insertChoiceFields . ") VALUES( " . $insertChoiceValues . ")";
-                            // echo $insertQuestionQuery; exit;
+                             //echo $insertQuestionQuery; exit;
                             $resultQuestionQuery = mysqli_query($GLOBALS['con'], $insertQuestionQuery) or $message = mysqli_error($GLOBALS['con']);
 
 
@@ -3166,7 +3479,7 @@ class ExamFunctions
                 $countArray[]=$totalInCorrectAnswers;
 
             }
-
+                //print_r($countArray);
                 if($countArray[0]) {
                     $First_Count = $countArray[0];
                 }
@@ -3199,7 +3512,7 @@ class ExamFunctions
                     $Fifth_Count =0;
                 }
 
-            $queryToSumOfMarks="SELECT sum(marks_obtained) FROM ".TABLE_STUDENT_OBJECTIVE_RESPONSE." WHERE user_id=".$user_id ." AND exam_id=".$exam_id." AND is_delete=0";
+             $queryToSumOfMarks="SELECT sum(marks_obtained) FROM ".TABLE_STUDENT_OBJECTIVE_RESPONSE." WHERE user_id=".$user_id ." AND exam_id=".$exam_id." AND is_delete=0";
             $resultToSumOfMarks=mysqli_query($GLOBALS['con'], $queryToSumOfMarks) or $message = mysqli_error($GLOBALS['con']);
             if(mysqli_num_rows($resultToSumOfMarks)>0)
             {
@@ -3246,20 +3559,23 @@ class ExamFunctions
                 }
             }
             $queryToChkRecordExistInScore="SELECT * FROM ".TABLE_STUDENT_EXAM_SCORE." WHERE user_id=".$user_id ." AND exam_id=".$exam_id." AND is_delete=0";
+            //echo $queryToChkRecordExistInScore; exit;
             $resultToChkRecordExistInScore=mysqli_query($GLOBALS['con'], $queryToChkRecordExistInScore) or $message = mysqli_error($GLOBALS['con']);
             if(mysqli_num_rows($resultToChkRecordExistInScore)>0)
             {
                     $updateFields="exam_schedule_id=0, correct_answers=".$totalCorrectAnswers.", incorrect_answers=".$totalInCorrectAnswers.", 1s_count= ".$First_Count.",2s_count=".$Second_Count.", 3s_count=".$Third_Count.", 4s_count=".$Fourth_Count.", 5s_count=".$Fifth_Count.", marks_obtained=".$totalMarksObtained.", percentage=".$percentage.", grade_obtained='".$grade."', exam_status='finished'";
-                    $queryToUpdateScore="UPDATE ".TABLE_STUDENT_EXAM_SCORE." SET ".$updateFields." WHERE user_id=".$user_id ." AND exam_id=".$exam_id." AND is_delete=0";
-                    //echo $queryToUpdateScore;
+
+                $queryToUpdateScore="UPDATE ".TABLE_STUDENT_EXAM_SCORE." SET ".$updateFields." WHERE user_id=".$user_id ." AND exam_id=".$exam_id." AND is_delete=0";
+                //echo $queryToUpdateScore; exit;
                 $resultToUpdateScore=mysqli_query($GLOBALS['con'], $queryToUpdateScore) or $message = mysqli_error($GLOBALS['con']);
             }
             else
             {
 
-                $insertScoreFields="`exam_schedule_id`,``correct_answers`,`incorrect_answers`,`1s_count`,`2s_count`,`3s_count`,`4s_count`,`5s_count`,`marks_obtained`,`percentage`,`grade_obtained`,`exam_status`";
-                $insertScoreValues="0,".$totalCorrectAnswers.",".$totalInCorrectAnswers.",".$totalInCorrectAnswers.",".$First_Count.",".$Second_Count.",".$Third_Count.",".$Fourth_Count.",".$Fifth_Count.",".$totalMarksObtained.",".$percentage.",'".$grade."','finished'";
-                $insertStudentScoreQuery="INSERT INTO ".TABLE_STUDENT_EXAM_SCORE." VALUES(".$insertScoreFields.") ".$insertScoreValues;
+                $insertScoreFields="`user_id`,`exam_schedule_id`,`exam_id`,`correct_answers`,`incorrect_answers`,`1s_count`,`2s_count`,`3s_count`,`4s_count`,`5s_count`,`marks_obtained`,`percentage`,`grade_obtained`,`exam_status`";
+                $insertScoreValues="".$user_id." , 0 , ".$exam_id." ,".$totalCorrectAnswers.",".$totalInCorrectAnswers.",".$First_Count.",".$Second_Count.",".$Third_Count.",".$Fourth_Count.",".$Fifth_Count.",".$totalMarksObtained.",".$percentage.",'".$grade."','finished'";
+                $insertStudentScoreQuery="INSERT INTO ".TABLE_STUDENT_EXAM_SCORE." (" .$insertScoreFields." ) VALUES(".$insertScoreValues.") ";
+               // echo $insertStudentScoreQuery; exit;
                 $insertStudentScoreResult=mysqli_query($GLOBALS['con'], $insertStudentScoreQuery) or $message = mysqli_error($GLOBALS['con']);
             }
 

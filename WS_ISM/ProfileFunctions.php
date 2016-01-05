@@ -3633,34 +3633,50 @@ class ProfileFunctions
 
             if ($role_id == 3) {
                 $queryToGetSchoolClassroomId = "SELECT id FROM " . TABLE_SCHOOL_CLASSROOM . " WHERE class_incharge=" . $user_id . " AND is_delete=0";
+            }
+            elseif($role_id==2)
+            {
+                  $queryToGetSchoolClassroomId = "SELECT school_classroom_id as 'id' FROM " . TABLE_STUDENT_PROFILE . " WHERE user_id=" . $user_id . " AND is_delete=0";
+            }
+
                 $resultToGetSchoolClassroomId = mysqli_query($GLOBALS['con'], $queryToGetSchoolClassroomId) or $message = mysqli_error($GLOBALS['con']);
 
-                if (mysqli_num_rows($resultToGetSchoolClassroomId)) {
+                if (mysqli_num_rows($resultToGetSchoolClassroomId)>0) {
                     while ($rowId = mysqli_fetch_assoc($resultToGetSchoolClassroomId)) {
                         $queryToExamId = "SELECT * FROM " . TABLE_EXAM_PROFILE . " WHERE school_classroom_id=" . $rowId['id'] . " AND NOT academic_exam_subject_id =0 AND is_delete=0";
                         $resultToExamId = mysqli_query($GLOBALS['con'], $queryToExamId) or $message = mysqli_error($GLOBALS['con']);
 
-                        if (mysqli_num_rows($resultToExamId)) {
+                        if (mysqli_num_rows($resultToExamId)>0) {
                             while ($rowExamProfile = mysqli_fetch_assoc($resultToExamId)) {
-                                $queryToGetAcademicExam = "SELECT * FROM " . TABLE_ACADEMIC_EXAM_SUBJECT . " WHERE academic_exam_subject_id=" . $rowId['academic_exam_subject_id'] . " AND is_delete=0";
+
+                                $queryToGetAcademicExam = "SELECT * FROM " . TABLE_ACADEMIC_EXAM_SUBJECT . " WHERE id=" . $rowExamProfile['academic_exam_subject_id'] . " AND is_delete=0";
                                 $resultToGetAcademicExam = mysqli_query($GLOBALS['con'], $queryToGetAcademicExam) or $message = mysqli_error($GLOBALS['con']);
 
                                 if (mysqli_num_rows($resultToGetAcademicExam)) {
                                     while ($rowExamDetails = mysqli_fetch_assoc($resultToGetAcademicExam)) {
-                                        $queryToGetAcademicExamDetails = "SELECT * FROM " . TABLE_ACADEMIC_EXAM . " WHERE id=" . $rowExamDetails['academic_exam_id'] . " AND is_delete=0";
-                                        $resultToGetAcademicExamDetails = mysqli_query($GLOBALS['con'], $queryToGetAcademicExamDetails) or $message = mysqli_error($GLOBALS['con']);
 
+                                         $queryToGetAcademicExamDetails = "SELECT * FROM " . TABLE_ACADEMIC_EXAM . " WHERE id=" . $rowExamDetails['academic_exam_id'] . " AND is_delete=0";
+
+                                        $resultToGetAcademicExamDetails = mysqli_query($GLOBALS['con'], $queryToGetAcademicExamDetails) or $message = mysqli_error($GLOBALS['con']);
+                                        $exams = array();
                                         if (mysqli_num_rows($resultToGetAcademicExamDetails)) {
 
                                             while ($rowAcademicExam = mysqli_fetch_assoc($resultToGetAcademicExamDetails)) {
-                                                $exams = array();
+
                                                 $exams['exam_name'] = $rowAcademicExam['exam_name'];
+
+                                                 //  $queryToGetAverageResult="SELECT ";
+
                                                 $exams['exam_score'] = $rowAcademicExam['exam_score'];
                                                 $exams['internal_marks'] = $rowAcademicExam['internal_exam_score'];
 
 
-                                                $queryToGetAllData = "SELECT student_exam_score.*,users.full_name,users.profile_pic FROM " . TABLE_STUDENT_EXAM_SCORE . " student_exam_score INNER JOIN " . TABLE_USERS . " users ON student_exam_score.user_id=users.id JOIN " . TABLE_STUDENT_RESULT . " student_result ON student_exam_score.user_id=student_result.user_id WHERE student_exam_score.exam_id=" . $rowExamProfile['exam_id'] . "";
+                                               // $queryToGetAllData = "SELECT student_result.* FROM " . TABLE_STUDENT_RESULT . " student_result INNER JOIN " . TABLE_USERS . " users  ON student_result.user_id=users.id WHERE student_result.academic_exam_id=" . $rowAcademicExam['id'];//$rowExamProfile['exam_id'] . "";
+
+                                                  $queryToGetAllData = "SELECT student_exam_score.user_id,users.full_name,users.profile_pic,student_result.percentage as 'per',student_result.* FROM " . TABLE_STUDENT_EXAM_SCORE . " student_exam_score INNER JOIN " . TABLE_USERS . " users ON student_exam_score.user_id=users.id  JOIN " . TABLE_STUDENT_RESULT . " student_result ON student_exam_score.user_id=student_result.user_id WHERE student_exam_score.exam_id=" . $rowExamProfile['exam_id'] ;
                                                 $resultToGetAllData = mysqli_query($GLOBALS['con'], $queryToGetAllData) or $message = mysqli_error($GLOBALS['con']);
+
+                                                $students=array();
 
                                                 if (mysqli_num_rows($resultToGetAllData)) {
                                                     while ($val = mysqli_fetch_assoc($resultToGetAllData)) {
@@ -3668,53 +3684,83 @@ class ProfileFunctions
                                                         $student['student_id'] = $val['user_id'];
                                                         $student['student_name'] = $val['full_name'];
                                                         $student['student_pic'] = $val['profile_pic'];
-                                                        $student['student_score'] = $val['marks_obtained'];
-                                                        $student['percentage'] = $val['percentage'];
-                                                        $student['class_rank'] = $val['class_rank'];
+                                                        $student['student_score'] = $val['total_score_obtained'];
+                                                        $student['percentage'] = $val['per'];
+                                                        $student['rank'] = $val['class_rank'];
                                                         $student['grade'] = $val['grade'];
-                                                        $student['head_mistress_comment'] = $val['head_mistress_comment'];
-                                                        $student['class_mistress_remark'] = $val['class_mistress_remark'];
+                                                        $student['head_mistress_comment'] = $val['head_mistress_remark'];
+                                                        $student['class_mistress_comment'] = $val['class_mistress_remark'];
 
-                                                        $queryToGetSubjectWiseData = "SELECT * FROM " . TABLE_ACADEMIC_EXAM_SUBJECT . " WHERE subject_id=";
-                                                        $resultToGetSubjectWiseData = mysqli_query($GLOBALS['con'], $queryToGetSubjectWiseData) or $message = mysqli_error($GLOBALS['con']);
 
+                                                        //$queryToGetSubjects="SELECT academic_subject.* FROM ".TABLE_ACADEMIC_EXAM_SUBJECT." academic_subject JOIN ".TABLE_STUDENT_RESULT." student_result ON academic_subject.academic_exam_id=student_result.academic_exam_id ";//WHERE student_result.user_id=";
+                                                         $queryToGetSubjects="SELECT student_exam_score.*,exams.subject_id,subjects.subject_name FROM ".TABLE_STUDENT_EXAM_SCORE." student_exam_score JOIN ".TABLE_EXAMS." exams ON student_exam_score.exam_id=exams.id LEFT JOIN ".TABLE_SUBJECTS." subjects ON exams.subject_id=subjects.id WHERE student_exam_score.user_id=".$student['student_id'];// ." and student_exam_score.exam_id=" . $rowExamProfile['exam_id'] ;
+                                                        $resultToGetSubjects= mysqli_query($GLOBALS['con'], $queryToGetSubjects) or $message = mysqli_error($GLOBALS['con']);
+                                                        $subjects=array();
+                                                        if(mysqli_num_rows($resultToGetSubjects)>0)
+                                                        {
+                                                            while($sub=mysqli_fetch_assoc($resultToGetSubjects))
+                                                            {
+                                                                $subject['subject_id']=$sub['subject_id'];
+                                                                $subject['subject_name']=$sub['subject_name'];
+                                                                $subject['marks_obtained']=$sub['marks_obtained'];
+                                                                $subject['percentage']=$sub['percentage'];
+                                                                $subject['subject_grade']=$sub['grade_obtained'];
+                                                                $subject['remarks']=$sub['remarks'];
+                                                                $subject['subject_rank']=$sub['subject_rank'];
+                                                                $subject['internal_score']=$sub['internal_score'];
+
+                                                                $subjects[]=$subject;
+                                                            }
+                                                            $student['subject_wise_score']=$subjects;
+                                                        }
+                                                        else
+                                                        {
+                                                            $status=SUCCESS;
+                                                            $message = "subjects not found";
+                                                            $subjects=array();
+                                                        }
+
+                                                        $students[]=$student;
                                                     }
-                                                    $exams['students_score'] = $student;
+                                                    $exams['students_score'] = $students;
+                                                }
+                                                else
+                                                {
+                                                    $status=SUCCESS;
+                                                    $message = "students not found";
+                                                    $students=array();
                                                 }
                                             }
                                             $post[] = $exams;
+
+                                        }
+                                        else
+                                        {
+                                            $status=SUCCESS;
+                                            $message = "academic exams not found";
                                         }
                                     }
                                 }
-                            }
-                        }
-                    }
-                }
-            } elseif ($role_id == 2) {
-                $queryToGetSchoolClassroomId = "SELECT school_classroom_id FROM " . TABLE_STUDENT_PROFILE . " WHERE user_id=" . $user_id . " AND is_delete=0";
-                $resultToGetSchoolClassroomId = mysqli_query($GLOBALS['con'], $queryToGetSchoolClassroomId) or $message = mysqli_error($GLOBALS['con']);
-
-                if (mysqli_num_rows($resultToGetSchoolClassroomId)) {
-                    while ($rowId = mysqli_fetch_assoc($resultToGetSchoolClassroomId)) {
-
-                        $queryFromExamProfile = "SELECT * FROM " . TABLE_EXAM_PROFILE . " WHERE school_classroom_id=" . $rowId['school_classroom_id'] . " AND NOT academic_exam_subject_id =0 AND is_delete=0";
-                        $resultFromExamProfile = mysqli_query($GLOBALS['con'], $queryFromExamProfile) or $message = mysqli_error($GLOBALS['con']);
-
-                        if (mysqli_num_rows($resultFromExamProfile)) {
-
-                            while ($rowExamProfileData = mysqli_fetch_assoc($resultFromExamProfile)) {
-                                $queryToGetAcademicExam = "SELECT * FROM " . TABLE_ACADEMIC_EXAM_SUBJECT . " WHERE academic_exam_subject_id=" . $rowId['academic_exam_subject_id'] . " AND is_delete=0";
-                                $resultToGetAcademicExam = mysqli_query($GLOBALS['con'], $queryToGetAcademicExam) or $message = mysqli_error($GLOBALS['con']);
-
-                                if (mysqli_num_rows($resultToGetAcademicExam)) {
-                                    while ($rowExamDetails = mysqli_fetch_assoc($resultToGetAcademicExam)) {
-
-                                    }
+                                else
+                                {
+                                    $status=SUCCESS;
+                                    $message = "academic subjects not found";
                                 }
                             }
                         }
+                        else
+                        {
+                            $status=SUCCESS;
+                            $message = "exams not found";
+                        }
                     }
+                    $data[]=$post;
+                    $status=SUCCESS;
+                    $message = "report generated";
                 }
+            else{
+                $status=SUCCESS;
+                $message = DEFAULT_NO_RECORDS;
 
             }
         }
