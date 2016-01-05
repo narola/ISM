@@ -144,6 +144,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
     private int currentMainFragment = -1;
     private int currentRightFragment;
+	private int relaunchRightFragmentId = -1;
     private int currentMainFragmentBg;
     private ArrayList<NotificationSetting> arrayListNotificationSettings = new ArrayList<>();
     private ArrayList<SMSAlert> arrayListSMSAlert = new ArrayList<>();
@@ -501,12 +502,26 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                         QuestionPaletteFragment questionPaletteFragment = QuestionPaletteFragment.newInstance(true);
                         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
 		                        TutorialFragment.newInstance(fragmentArguments, questionPaletteFragment)).commit();
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+
+	                    switch (currentRightFragment) {
+		                    case FRAGMENT_NOTES:
+		                    case FRAGMENT_PROFILE_CONTROLLER:
+		                    case FRAGMENT_CHAT:
+			                    relaunchRightFragmentId = currentRightFragment;
+			                    break;
+		                    default:
+			                    relaunchRightFragmentId = FRAGMENT_CHAT;
+			                    break;
+	                    }
+	                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.fl_fragment_container_right, questionPaletteFragment).commit();
+
+                        /*FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                         fragmentTransaction.addToBackStack(QuestionPaletteFragment.class.getSimpleName());
                         fragmentTransaction.replace(R.id.fl_fragment_container_right, questionPaletteFragment).commit();
                         imgNotes.setActivated(false);
                         imgStudyMates.setActivated(false);
-                        imgChat.setActivated(false);
+                        imgChat.setActivated(false);*/
                     } else if (fragmentArguments != null) {
 	                    if (listenerHostTutorial != null) {
 		                    listenerHostTutorial.setNewFragmentArguments(fragmentArguments);
@@ -706,7 +721,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                 case FRAGMENT_TUTORIAL:
                     imgTutorial.setActivated(false);
                     loadControllerTopMenu(null);
-                    getFragmentManager().popBackStack(QuestionPaletteFragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                    getFragmentManager().popBackStack(QuestionPaletteFragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+	                loadFragment(relaunchRightFragmentId > 0 ? relaunchRightFragmentId : FRAGMENT_CHAT, null);
                     txtTitle.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_CLASSROOM:

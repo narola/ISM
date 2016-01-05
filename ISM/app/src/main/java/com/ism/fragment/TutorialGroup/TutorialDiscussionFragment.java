@@ -278,8 +278,8 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	private void callApiGetGroupHistory() {
 		try {
 			Attribute attribute = new Attribute();
-//			attribute.setGroupId(Global.strTutorialGroupId);
-			attribute.setGroupId("134");
+			attribute.setGroupId(Global.strTutorialGroupId);
+//			attribute.setGroupId("134");
 			attribute.setWeekNo("1");
 			attribute.setDayNo("");
 
@@ -432,7 +432,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 						break;
 					}
 				}
-//				PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity(), arrListDiscussionData.get(1).getTutorialTopicId());
+				PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity(), arrListDiscussionData.get(0).getTutorialTopicId());
 
 //				Save data
 				/*for (int i = 0; i < arrListDiscussionData.size(); i++) {

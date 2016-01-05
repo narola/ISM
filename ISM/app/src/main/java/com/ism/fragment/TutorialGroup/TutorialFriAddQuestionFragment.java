@@ -162,7 +162,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		intPaddingLable = getResources().getDimensionPixelOffset(R.dimen.padding_createquestion_lable);
 		inputValidator = new InputValidator(getActivity());
 
-		/*if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
+		if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
 			if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), "").equals(Utility.getDate())) {
 				if (!PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity())) {
 					rlHeader.setVisibility(View.GONE);
@@ -173,19 +173,19 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 					} else {
 						Utility.alertOffline(getActivity());
 					}
-				} else {*/
+				} else {
 					getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam)).commit();
-/*				}
+				}
 			}
 		} else {
 			txtCreateQuestion.setEnabled(false);
-		}*/
+		}
 
-		etQuestion.setText("In the beginning by which name Java language was known?");
-		etOption1.setText("Java");
-		etOption2.setText("J Language");
-		etOption3.setText("Oak");
-		etOption4.setText("C Language");
+		etQuestion.setText("Tutorial group topic friday exam question 1");
+		etOption1.setText("Tutorial group topic friday exam option 1");
+		etOption2.setText("Tutorial group topic friday exam option 2");
+		etOption3.setText("Tutorial group topic friday exam option 3");
+		etOption4.setText("Tutorial group topic friday exam option 4");
 
 		onClickLable = new View.OnClickListener() {
 			@Override
@@ -467,7 +467,9 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					Log.e(TAG, "question added successfully.");
-					QuestionForFriday questionForFriday = responseHandler.getQuestionForFriday().get(0);
+					if (responseHandler.getQuestionForFriday() != null && responseHandler.getQuestionForFriday().size() > 0) {
+						QuestionForFriday questionForFriday = responseHandler.getQuestionForFriday().get(0);
+					}
 
 					PreferenceData.setStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), Utility.getDate());
 					callApiCheckFridayExamStatus();

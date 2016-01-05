@@ -70,7 +70,7 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 	private boolean isOptionsLoading = false;
 
 	public interface ExamListener {
-		public void startTest(ArrayList<FridayExamQuestion> questions, ExamFragment examFragment);
+		public void startTest(ArrayList<FridayExamQuestion> questions, String examId, ExamFragment examFragment);
 		public void onQuestionSet(int position);
 	}
 
@@ -248,7 +248,7 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 		txtHeader.setText(fridayExam.getExamName() + " - " + fridayExam.getId());
 		txtInstruct.setText(R.string.choose_answer);
 		if (listenerExam != null) {
-			listenerExam.startTest(arrListQuestions, this);
+			listenerExam.startTest(arrListQuestions, fridayExam.getId(), this);
 		}
 		setQuestion(intCurrentQuestionIndex);
 	}
