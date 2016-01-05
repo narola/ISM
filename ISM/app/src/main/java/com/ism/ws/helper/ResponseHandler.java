@@ -14,6 +14,7 @@ import com.ism.ws.model.City;
 import com.ism.ws.model.Comment;
 import com.ism.ws.model.Country;
 import com.ism.ws.model.Feeds;
+import com.ism.ws.model.FridayExam;
 import com.ism.ws.model.FridayExamStatus;
 import com.ism.ws.model.GroupDiscussionData;
 import com.ism.ws.model.Message;
@@ -83,6 +84,7 @@ public class ResponseHandler {
     private ArrayList<AllBooks> allBooks;
     private ArrayList<AuthorBookAssignment> authorBookAssignment;
     private ArrayList<Assignment> assignment;
+    private ArrayList<FridayExam> fridayExam;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -426,12 +428,22 @@ public class ResponseHandler {
         this.authorBookAssignment = authorBookAssignment;
     }
 
-    @JsonProperty("assignment")
-    public ArrayList<Assignment> getAssignment() {
-        return this.assignment;
-    }
-
     public void setAssignment(ArrayList<Assignment> assignment) {
         this.assignment = assignment;
     }
+
+	@JsonProperty("assignment")
+	public ArrayList<Assignment> getAssignment() {
+		return this.assignment;
+	}
+
+	@JsonProperty("exam_questions")
+    public ArrayList<FridayExam> getFridayExam() {
+        return this.fridayExam;
+    }
+
+    public void setFridayExam(ArrayList<FridayExam> fridayExam) {
+        this.fridayExam = fridayExam;
+    }
+
 }

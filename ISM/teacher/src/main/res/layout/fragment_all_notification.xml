@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_gray_light"
+    tools:mContext="com.ism.fragment.AllNotificationFragment">
+
+    <TextView
+        android:id="@+id/txt_header_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d60dp"
+        android:background="@drawable/bg_header_white"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/d20dp"
+        android:text="@string/str_notifications"
+        android:textColor="@color/bg_app_dark"
+        android:textSize="@dimen/d20sp" />
+
+    <ListView
+        android:id="@+id/lv_all_notification"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/txt_header_white"
+        android:layout_margin="@dimen/d15dp"
+        android:background="@drawable/bg_white_border_gray"
+        android:divider="@drawable/divider_gray_with_padding"
+        android:dividerHeight="@dimen/d2dp"
+        android:paddingLeft="@dimen/d20dp"
+        android:paddingRight="@dimen/d20dp"
+        android:paddingTop="@dimen/d5dp"></ListView>
+
+    <ViewStub
+        android:id="@+id/vs_notification_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/d20dp"
+        android:inflatedId="@+id/rl_post"
+        android:layout="@layout/list_item_post"
+        android:visibility="gone" />
+</RelativeLayout>

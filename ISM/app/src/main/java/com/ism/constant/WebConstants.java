@@ -48,6 +48,7 @@ public class WebConstants {
     public static final int GET_ALL_NOTES = 38;
     public static final int CHECK_FRIDAY_EXAM_STATUS = 39;
 	public static final int GET_ALL_BOOKS = 40;
+	public static final int GET_FRIDAY_EXAM_QUESTIONS = 41;
 
     //general settings
 
@@ -86,12 +87,12 @@ public class WebConstants {
 //	private static final String URL_HOST_147 = HOST_147 + "WS_ISM/ISMServices.php?Service=";                // KINJAL
 //	private static final String URL_IMAGE_PATH = "http://192.168.1.147/WS_ISM/Images"
 
-	public static final String HOST = "http://192.168.1.202/";                                              // SERVER
+//	public static final String HOST = "http://192.168.1.202/";                                              // SERVER
 //	public static final String HOST = "http://clientapp.narolainfotech.com/";                               // SERVER
-//    public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
+    public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
 
-    private static final String DIR_PATH = "pg/ISM/WS_ISM/";        //  SERVER
-//    private static final String DIR_PATH = "WS_ISM/";             //  KINJAL
+//    private static final String DIR_PATH = "pg/ISM/WS_ISM/";        //  SERVER
+    private static final String DIR_PATH = "WS_ISM/";             //  KINJAL
 
     private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
 	//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_images/";
@@ -143,6 +144,7 @@ public class WebConstants {
 	public static final String URL_SEND_REQUEST_STUDYMATE = HOST_WS + "SendRequestToStudymate";
 	public static final String URL_SUBMIT_QUESTION_FOR_FRIDAY = HOST_WS + "SubmitQuestionForFriday";
 	public static final String URL_CHECK_FRIDAY_EXAM_STATUS = HOST_WS + "CheckFridayExamStatus";
+	public static final String URL_GET_FRIDAY_EXAM_QUESTIONS = HOST_WS + "GetFridayExamQuestion";
 
 	/*
 	* edit profile

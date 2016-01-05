@@ -142,12 +142,13 @@
 				android:layout_marginLeft="@dimen/dp30"
 				android:background="@drawable/bg_edit_gray"/>
 
-			<!--<View
+			<View
 				android:id="@+id/view_indicator"
 				android:layout_width="@dimen/width_indicator_add_question_form"
 				android:layout_height="@dimen/height_indicator_add_question_form"
-				android:layout_marginTop="@dimen/dp_n2"
-				android:background="@drawable/shape_triangle_general_setting"/>-->
+				android:layout_marginLeft="@dimen/margin_left_tutorial_triangle"
+				android:layout_marginTop="@dimen/dp_n3"
+				android:background="@drawable/shape_triangle_right"/>
 		</RelativeLayout>
 
 		<RelativeLayout
@@ -283,11 +284,12 @@
 					android:button="@drawable/bg_checkbox_gray"/>
 			</LinearLayout>
 
-			<!--<View
+			<View
 				android:layout_width="@dimen/width_indicator_add_question_form"
 				android:layout_height="@dimen/height_indicator_add_question_form"
-				android:background="@drawable/shape_triangle_general_setting"
-				android:layout_marginTop="@dimen/dp55"/>-->
+				android:background="@drawable/shape_triangle_right"
+				android:layout_marginLeft="@dimen/margin_left_tutorial_triangle"
+				android:layout_marginTop="@dimen/dp54"/>
 		</RelativeLayout>
 
 		<RelativeLayout
@@ -386,11 +388,12 @@
 				</LinearLayout>
 			</ScrollView>
 
-			<!--<View
+			<View
 				android:layout_width="@dimen/width_indicator_add_question_form"
 				android:layout_height="@dimen/height_indicator_add_question_form"
-				android:background="@drawable/shape_triangle_general_setting"
-				android:layout_marginTop="@dimen/dp110"/>-->
+				android:background="@drawable/shape_triangle_right"
+				android:layout_marginLeft="@dimen/margin_left_tutorial_triangle"
+				android:layout_marginTop="@dimen/dp110"/>
 		</RelativeLayout>
 
 		<RelativeLayout
@@ -440,11 +443,12 @@
 				android:background="@drawable/bg_button_green_light"
 				android:layout_centerHorizontal="true"/>
 
-			<!--<View
+			<View
 				android:layout_width="@dimen/width_indicator_add_question_form"
 				android:layout_height="@dimen/height_indicator_add_question_form"
-				android:background="@drawable/shape_triangle_general_setting"
-				android:layout_marginTop="@dimen/dp166"/>-->
+				android:background="@drawable/shape_triangle_right"
+				android:layout_marginLeft="@dimen/margin_left_tutorial_triangle"
+				android:layout_marginTop="@dimen/dp166"/>
 		</RelativeLayout>
 	</RelativeLayout>
 

@@ -23,6 +23,7 @@ import com.ism.adapter.QuestionPaletteAdapter;
 import com.ism.adapter.TutorialGroupAdapter;
 import com.ism.model.QuestionObjectiveTest;
 import com.ism.views.TimerView;
+import com.ism.ws.model.FridayExamQuestion;
 import com.ism.ws.model.TutorialGroupMember;
 import com.ism.ws.model.TutorialGroupProfile;
 
@@ -55,9 +56,9 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	private TimerView timerViewExam;
 
 	private CountDownTimer timerExam;
-	private ExamFragment fragExam;
+//	private ExamFragment fragExam;
 	private QuestionPaletteAdapter adpQuestionPalette;
-	private ArrayList<QuestionObjectiveTest> arrListQuestions;
+	private ArrayList<FridayExamQuestion> arrListQuestions;
 	private TutorialGroupAdapter adpTutorialGroup;
 	private ArrayList<TutorialGroupMember> arrListGroupMembers;
 	private StudentHelper studentHelper;
@@ -163,7 +164,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	}
 
 	@Override
-	public void startTest(ArrayList<QuestionObjectiveTest> questions, ExamFragment examFragment) {
+	public void startTest(ArrayList<FridayExamQuestion> questions, ExamFragment examFragment) {
 		try {
 			/*longExamDurationMilli = examFragment.getExamDurationMinutes() * 60 * 1000;
 			timerViewExam.setTotalTimeMin(examFragment.getExamDurationMinutes());
@@ -181,7 +182,8 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 				}
 			};
 			timerExam.start();*/
-			fragExam = examFragment;
+
+//			fragExam = examFragment;
 			lvTutorialGroup.setVisibility(View.GONE);
 			rlQuestionPalette.setVisibility(View.VISIBLE);
 			arrListQuestions = questions;
@@ -218,8 +220,8 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 
 			lvTutorialGroup.setVisibility(View.VISIBLE);
 			rlQuestionPalette.setVisibility(View.GONE);
-			fragExam.getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.tutorialGroup.ResultFragment.newInstance(arrListQuestions,
-					fragExam.isShowGraph(), timeSpent)).commit();
+			getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.tutorialGroup.ResultFragment.newInstance(arrListQuestions,
+					false, timeSpent)).commit();
 //			getFragmentManager().beginTransaction().remove(this).commit();
 		} catch (Exception e) {
 			Log.e(TAG, "end Exception : " + e.toString());

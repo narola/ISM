@@ -629,4 +629,5 @@
 	<string name="strtrial">Trial</string>
 	<string name="strmy30">My30th</string>
 	<string name="strTrial">Trial</string>
+	<string name="msg_tutorial_exam_ready">Today\'s tutorial group exam is ready!</string>
 </resources>

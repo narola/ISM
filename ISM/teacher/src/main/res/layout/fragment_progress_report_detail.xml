@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <!-- ll Top row -->
@@ -142,7 +142,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/d2dp"
             android:layout_below="@+id/ll_date_range"
-            android:background="#DADADA" />
+            android:background="@color/color_report_separator" />
 
         <!-- Middle student info-->
         <RelativeLayout
@@ -226,7 +226,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/d1dp"
             android:layout_below="@+id/rl_student_details"
-            android:background="#DADADA" />
+            android:background="@color/color_report_separator" />
 
         <TableLayout
             android:id="@+id/table_layout"
@@ -241,7 +241,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/d1dp"
             android:layout_below="@+id/table_layout"
-            android:background="#DADADA" />
+            android:background="@color/color_report_separator" />
 
         <!--layout for head mistress remarks-->
 
@@ -264,7 +264,7 @@
                 android:layout_width="@dimen/d1dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/d5dp"
-                android:background="#DADADA" />
+                android:background="@color/color_report_separator" />
 
             <EditText
                 android:id="@+id/et_head_mistress_remarks"
@@ -283,7 +283,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/d1dp"
             android:layout_below="@+id/ll_head_mistress_remarks"
-            android:background="#DADADA" />
+            android:background="@color/color_report_separator" />
 
         <LinearLayout
             android:id="@+id/ll_class_mistress_remarks"
@@ -304,7 +304,7 @@
                 android:layout_width="@dimen/d1dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/d3dp"
-                android:background="#DADADA" />
+                android:background="@color/color_report_separator" />
 
             <EditText
                 android:id="@+id/et_class_mistress_remarks"
@@ -321,6 +321,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/d1dp"
             android:layout_below="@+id/ll_class_mistress_remarks"
-            android:background="#DADADA" />
+            android:background="@color/color_report_separator" />
     </RelativeLayout>
 </ScrollView>

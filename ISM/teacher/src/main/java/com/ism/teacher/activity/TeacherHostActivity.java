@@ -34,12 +34,17 @@ import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
 import com.ism.teacher.fragments.UpcomingEventsFragment;
-import com.ism.teacher.fragments.UserProfileFragment;
 import com.ism.teacher.fragments.assesment.StudentAttemptedFragment;
 import com.ism.teacher.fragments.office.TeacherOfficeFragment;
 import com.ism.teacher.fragments.tutorial.PastTutorialsFragment;
 import com.ism.teacher.fragments.tutorial.TutorialGroupFragment;
 import com.ism.teacher.fragments.tutorial.scheduleexam.ScheduleTutorialExamContainerFragment;
+import com.ism.teacher.fragments.userprofile.AllMessageFragment;
+import com.ism.teacher.fragments.userprofile.AllNotificationFragment;
+import com.ism.teacher.fragments.userprofile.AllStudymateRequestFragment;
+import com.ism.teacher.fragments.userprofile.MyFeedsFragment;
+import com.ism.teacher.fragments.userprofile.TeacherProfileFragment;
+import com.ism.teacher.fragments.userprofile.generalsetting.GeneralSettingsFragment;
 import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.object.MyTypeFace;
@@ -72,7 +77,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     private View.OnClickListener onClickMenuItem;
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
 
-
     /**
      * Custom Views
      */
@@ -92,16 +96,21 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     public static final int FRAGMENT_UPCOMING_EVENTS = 1;
     public static final int FRAGMENT_TEACHER_CHAT = 2;
-    public static final int FRAGMENT_USER_PROFILE = 3;
+    public static final int FRAGMENT_PROFILE_CONTROLLER = 3;
     public static final int FRAGMENT_TEACHER_HOME = 4;
     public static final int FRAGMENT_TEACHER_TUTORIAL_GROUP = 5;
     public static final int FRAGMENT_TEACHER_OFFICE = 6;
     public static final int FRAGMENT_STUDENT_ATTEMPTED = 7;
     public static final int FRAGMENT_PAST_TUTORIALS = 8;
     public static final int FRAGMENT_SCHEDULE_EXAM = 9;
+    public static final int FRAGMENT_ALL_MESSAGE = 10;
+    public static final int FRAGMENT_ALL_NOTIFICATION = 11;
+    public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 12;
+    public static final int FRAGMENT_GENERAL_SETTING = 13;
+    public static final int FRAGMENT_MY_FEEDS = 14;
 
     /**
-     * ====================================================================================
+     * ============================Constant Block end========================================================
      */
 
     public static int currentMainFragment;
@@ -113,7 +122,11 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
      */
     private HostListener listenerHost;
     private AddTopicsListener addTopicsListener;
-
+    private HostListenerProfileController listenerHostProfileController;
+    private HostListenerAllNotification listenerHostAllNotification;
+    private HostListenerAllMessage listenerHostAllMessage;
+    private ProfileControllerPresenceListener listenerProfileControllerPresence;
+    private ResizeView resizeListView;
 
     /**
      * FragmentTransaction
@@ -121,6 +134,10 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     FragmentTransaction mFragmentTransaction;
     FragmentManager mFragmentManager;
 
+
+    /**
+     * Interfaces
+     */
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -130,16 +147,52 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         public void addTopic(int position);
     }
 
+    public interface HostListenerProfileController {
+        public void onBadgesFetched();
+
+        public void onSubFragmentAttached(int fragmentId);
+
+        public void onSubFragmentDetached(int fragmentId);
+        //  public void onControllerMenuItemClicked(int position);
+    }
+
+    public interface HostListenerAllNotification {
+        public void onControllerTopBackClick();
+    }
+
+    public interface HostListenerAllMessage {
+        public void onControllerTopBackClick();
+    }
+
+    public interface ProfileControllerPresenceListener {
+        public void onProfileControllerAttached();
+
+        public void onProfileControllerDetached();
+
+    }
+
+    public interface ResizeView {
+        public void onUnBlockUser();
+    }
+
+    public int getCurrentRightFragment() {
+        return currentRightFragment;
+    }
+
+    /**
+     * ==================================Interface end==================================================
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_host);
 
         initGlobal();
-
     }
 
     private void initGlobal() {
+
         Global.myTypeFace = new MyTypeFace(getApplicationContext());
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
@@ -263,7 +316,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         img_teacher_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragmentInRightContainer(FRAGMENT_USER_PROFILE);
+                loadFragmentInRightContainer(FRAGMENT_PROFILE_CONTROLLER);
             }
         });
 
@@ -338,6 +391,31 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ScheduleTutorialExamContainerFragment.newInstance()).commit();
                     break;
 
+                case FRAGMENT_ALL_NOTIFICATION:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AllNotificationFragment.newInstance()).commit();
+                    break;
+                case FRAGMENT_ALL_MESSAGE:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AllMessageFragment.newInstance()).commit();
+                    break;
+
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AllStudymateRequestFragment.newInstance()).commit();
+                    break;
+
+                case FRAGMENT_GENERAL_SETTING:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            GeneralSettingsFragment.newInstance()).commit();
+                    break;
+
+                case FRAGMENT_MY_FEEDS:
+
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            MyFeedsFragment.newInstance()).commit();
+                    break;
+
             }
         } catch (Exception e) {
             Log.e(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
@@ -355,8 +433,8 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_TEACHER_CHAT:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, TeacherChatFragment.newInstance()).commit();
                     break;
-                case FRAGMENT_USER_PROFILE:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, UserProfileFragment.newInstance()).commit();
+                case FRAGMENT_PROFILE_CONTROLLER:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, TeacherProfileFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_STUDENT_ATTEMPTED:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedFragment.newInstance(null)).commit();
@@ -382,7 +460,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     imgUpcomings.setActivated(true);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     break;
-                case FRAGMENT_USER_PROFILE:
+                case FRAGMENT_PROFILE_CONTROLLER:
                     currentRightFragment = fragment;
                     img_teacher_profile.setActivated(true);
                     llControllerLeft.setVisibility(View.VISIBLE);
@@ -464,6 +542,29 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     showControllerTopBackButton();
                     hideRightContainerFragment();
                     break;
+
+                case FRAGMENT_ALL_NOTIFICATION:
+
+                    currentMainFragment = fragment;
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+
+                case FRAGMENT_ALL_MESSAGE:
+                    currentMainFragment = fragment;
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    currentMainFragment = fragment;
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+
+                case FRAGMENT_GENERAL_SETTING:
+                case FRAGMENT_MY_FEEDS:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
+                    rlControllerTopMenu.setVisibility(View.GONE);
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
@@ -477,7 +578,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_UPCOMING_EVENTS:
                     imgUpcomings.setActivated(false);
                     break;
-                case FRAGMENT_USER_PROFILE:
+                case FRAGMENT_PROFILE_CONTROLLER:
                     img_teacher_profile.setActivated(false);
                     break;
                 case FRAGMENT_TEACHER_CHAT:
@@ -496,6 +597,26 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_TEACHER_OFFICE:
                     imgOffice.setActivated(false);
                     break;
+
+                case FRAGMENT_ALL_NOTIFICATION:
+                    hideControllerTopBackButton();
+                    loadControllerTopMenu(null);
+                    break;
+
+                case FRAGMENT_ALL_MESSAGE:
+                    loadControllerTopMenu(null);
+                    break;
+
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    loadControllerTopMenu(null);
+                    break;
+
+                case FRAGMENT_MY_FEEDS:
+                case FRAGMENT_GENERAL_SETTING:
+                    //setTopBarValues(fragment, getResources().getColor(R.color.color_blue), false, false, false, null, false);
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+                    break;
+
 
             }
         } catch (Exception e) {
@@ -653,6 +774,9 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     }
 
+    public void setListenerProfileControllerPresence(ProfileControllerPresenceListener listenerProfileControllerPresence) {
+        this.listenerProfileControllerPresence = listenerProfileControllerPresence;
+    }
 
     private void hideControllerTopBackButton() {
         startSlideAnimation(imgBack, 0, -1000, 0, 0);
@@ -900,65 +1024,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     private void removeBundleArguments() {
         getBundle().clear();
 
-//        getBundle().remove(CreateExamFragment.ARG_IS_CREATE_EXAM);
-//
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ID);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_NAME);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CLASSROOM_NAME);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_TOPIC_ID);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_BOOK_ID);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CATEGORY);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_TYPE);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_MODE);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_DURATION);
-//        getBundle().remove(AssignmentsAdapter.ARG_ASSIGNMENT_NO);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_PASS_PERCENTAGE);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_CREATED_DATE);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ATTEMPT_COUNT);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_INSTRUCTIONS);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_ASSESSOR);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_START_DATE);
-//        getBundle().remove(AssignmentsAdapter.ARG_EXAM_START_TIME);
-//        getBundle().remove(AssignmentsAdapter.ARG_FRAGMENT_TYPE);
-//        getBundle().remove(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
-//
-//        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_ID);
-//        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_POSITION);
-//        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_PROFILE_PIC);
-//        getBundle().remove(AssignmentSubmitterAdapter.ARG_STUDENT_NAME);
-//
-//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
-//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY);
-//        getBundle().remove(MyStudentsAdapter.ARG_ARR_LIST_STUDENTS);
-//
-//
-//        // Tutorial args
-//
-//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_ID);
-//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_NAME);
-//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_RANK);
-//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_CLASS);
-//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_TOPIC_ID);
-//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_TOPIC_NAME);
-//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_EXAM_ID);
-//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_EXAM_NAME);
-//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_EXAM_TYPE);
-//        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_GROUP_SCORE);
-////        getBundle().remove(TutorialGroupFragment.ARG_TUTORIAL_SUBJECT_NAME);
-//
-//
-//        //Notes Args
-//        getBundle().remove(NotesAddEditFragment.ARG_IS_CREATE_NOTE);
-
     }
 
     private void showExitAlertDialog(String title, String message) {
@@ -985,4 +1050,29 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         exitAppAlertDialog = builder.create();
         exitAppAlertDialog.show();
     }
+
+
+    /**
+     * Setting listeners
+     *
+     * @param listenerHostProfileController
+     */
+
+    public void setListenerHostProfileController(HostListenerProfileController listenerHostProfileController) {
+        this.listenerHostProfileController = listenerHostProfileController;
+    }
+
+    public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
+        this.listenerHostAllNotification = listenerHostAllNotification;
+    }
+
+    public void setListenerHostAllMessage(HostListenerAllMessage listenerHostAllMessage) {
+        this.listenerHostAllMessage = listenerHostAllMessage;
+    }
+
+    public void setListenerResizeView(ResizeView resizeListView) {
+        this.resizeListView = resizeListView;
+    }
+
+
 }

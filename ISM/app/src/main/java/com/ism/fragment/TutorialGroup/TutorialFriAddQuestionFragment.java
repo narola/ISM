@@ -2,8 +2,13 @@ package com.ism.fragment.tutorialGroup;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +26,7 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.utility.Alarm;
@@ -156,12 +162,24 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		intPaddingLable = getResources().getDimensionPixelOffset(R.dimen.padding_createquestion_lable);
 		inputValidator = new InputValidator(getActivity());
 
-		if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), "").equals(Utility.getDate())) {
-			rlHeader.setVisibility(View.GONE);
-			rlTutorialmateQuestion.setVisibility(View.GONE);
-			rlWaiting.setVisibility(View.VISIBLE);
-			callApiCheckFridayExamStatus();
-		}
+		/*if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
+			if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), "").equals(Utility.getDate())) {
+				if (!PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity())) {
+					rlHeader.setVisibility(View.GONE);
+					rlTutorialmateQuestion.setVisibility(View.GONE);
+					rlWaiting.setVisibility(View.VISIBLE);
+					if (Utility.isConnected(getActivity())) {
+						callApiCheckFridayExamStatus();
+					} else {
+						Utility.alertOffline(getActivity());
+					}
+				} else {*/
+					getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam)).commit();
+/*				}
+			}
+		} else {
+			txtCreateQuestion.setEnabled(false);
+		}*/
 
 		etQuestion.setText("In the beginning by which name Java language was known?");
 		etOption1.setText("Java");
@@ -223,6 +241,24 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 				}
 			}
 		});
+
+		/*rlWaiting.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+				NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity())
+						.setSmallIcon(R.drawable.ic_chat)
+						.setContentTitle(getString(R.string.app_name))
+						.setContentText("Today's tutorial group exam is ready!")
+						.setAutoCancel(true);
+
+				Intent intentFridayExam = new Intent(getActivity(), HostActivity.class);
+				intentFridayExam.setAction(AppConstant.ACTION_FRIDAY_EXAM);
+				PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intentFridayExam, PendingIntent.FLAG_UPDATE_CURRENT);
+				notificationBuilder.setContentIntent(pendingIntent);
+				notificationManager.notify(AppConstant.ID_NOTIFICATION_FRIDAY_EXAM, notificationBuilder.build());
+			}
+		});*/
 
 	}
 
@@ -395,8 +431,10 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					if (responseHandler.getFridayExamStatus() == null && responseHandler.getFridayExamStatus().size() > 0
 							&& responseHandler.getFridayExamStatus().get(0).getIsReady().equals("yes")) {
-						getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam, 0, false)).commit();
+						PreferenceData.setBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity(), true);
+						getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam)).commit();
 					} else {
+						PreferenceData.setBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity(), false);
 						rlHeader.setVisibility(View.GONE);
 						rlTutorialmateQuestion.setVisibility(View.GONE);
 						rlWaiting.setVisibility(View.VISIBLE);
@@ -405,11 +443,11 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 						 * Set alarm to check Exam status every 5mins.
 						 */
 						Calendar calendar = Calendar.getInstance();
-						calendar.add(Calendar.SECOND, 10);
+						calendar.add(Calendar.MINUTE, 5);
+//						calendar.add(Calendar.SECOND, 10);
 
-//						Alarm.setAlarm(getActivity(), Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS, Alarm.MINUTE * 5, Alarm.MINUTE * 5);
-						Alarm.setAlarm(getActivity(), Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS, calendar.getTimeInMillis(), Alarm.SECOND * 10);
-						Log.e(TAG, "alarm set");
+						Alarm.setAlarm(getActivity(), Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS, calendar.getTimeInMillis(), Alarm.MINUTE * 5);
+//						Alarm.setAlarm(getActivity(), Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS, calendar.getTimeInMillis(), Alarm.SECOND * 10);
 					}
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseCheckFridayExamStatus failed : " + responseHandler.getMessage());

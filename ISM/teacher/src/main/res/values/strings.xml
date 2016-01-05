@@ -4,12 +4,76 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <!--<string name="dummy_string">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software selfLike Aldus PageMaker including versions of Lorem Ipsum.-->
+    <!--<string name="dummy_string">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.-->
 
-<!--\n\n\n It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look selfLike readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the selfLike).-->
+    <!--\n\n\n It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).-->
 
-<!--\n\nContrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.-->
+    <!--\n\nContrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.-->
     <!--</string>-->
+
+    <!-- User Profile-->
+    <string name="str_viewprofile">View Profile</string>
+    <string name="str_myfeeds">My Feeds</string>
+    <string name="str_followers">Followers</string>
+    <string name="str_myactivity">My activity</string>
+    <string name="str_general_setting">General Settings</string>
+    <string name="str_study_mates">Studymates</string>
+    <string name="str_every_one">Every One</string>
+    <string name="str_my_students">My Students</string>
+    <string name="str_notifications">Notifications</string>
+    <string name="strNoRecordFound">No record found</string>
+    <string name="str_reply">Reply</string>
+    <string name="str_messages">Messages</string>
+    <string name="msg_studymate_request">Please add me to your Studymates group</string>
+    <string name="studymate_requests">Studymate Requests</string>
+    <string name="studymate_request">Studymate Request</string>
+    <string name="respond_to_request">Respond to Request</string>
+    <string name="accept_request">Accept Studymate Request?</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="failed_to_execute_request">Failed to execute your request!</string>
+    <string name="you_are_now_studymates">You are now Studymates.</string>
+    <string name="strPrivacySetting">Privacy Setting</string>
+    <string name="strNotification">Notification</string>
+    <string name="strSmsAlerts">SMS Alerts</string>
+
+    <string name="strSMSAlertsForAssignments">SMS Alerts For Assignment</string>
+    <string name="strSMSAlertsForEvaluations">SMS Alerts For Evaluations</string>
+    <string name="strSMSAlertsForConference">SMS Alerts For Conference</string>
+    <string name="strNotificationForTags">Notification For Tags</string>
+    <string name="strNotificationForNoticeBoard">Notification For Notice Board</string>
+    <string name="strWhoShouldSeeMyPersonalAcademicDetails">Who should see my personal academic details?</string>
+    <string name="strWhoShouldSeeMyPersonalDetails">Who should see my personal details?</string>
+    <string name="strBlockStudymatesRequest">Block Studymates Request</string>
+    <string name="strEmailID">Email ID</string>
+    <string name="strBlockUser">Block User</string>
+    <string name="strManageBlockUsers">Manage Blocked Users</string>
+
+    <string name="strContactIsmAdmin">Contact ISM Admin</string>
+    <string name="strContactAdminEmailAddress"><![CDATA[If you have any complain for any of the user,then you can contact us & send email at <b><font color=#41B1E3>ism_security@gmail.com</b>]]></string>
+    <string name="strBlockStudyMate">If you wish to block any studymate then add</string>
+    <string name="strReceivedNotificationTag">Receive notification when you are tagged in any post</string>
+    <string name="strLikeNotification">Send me notification for like</string>
+    <string name="strCommentNotification">Send me notification for comment</string>
+    <string name="strNoticeNotification">Send me notification when any notice is published</string>
+    <string name="strAuthorNotification">Send me notification when any author has posted anything on timeline</string>
+    <string name="strNotificationforAuthor">Notification for Author</string>
+    <string name="strNotificationforCommentAndLike">Notification For Comment And Like</string>
+
+    <!--privacy setting-->
+    <string name="strAllowsViewersToViewMyContactInfo">Allow viewers to view my contact info</string>
+    <string name="strAllowsViewersToViewMyBirthdate">Allow viewers to view my birthdate</string>
+    <string name="strAllowsViewersToViewMyExamScores">Allow viewers to view my exams 7 scores</string>
+    <string name="strSmsAlertsForAssignment">Send me sms alert when there is new assignment assigned</string>
+    <string name="strSmsAlertForExamEvaluations">Send me sms alert when my exam evaluation is ready</string>
+    <string name="strSmsAlertForConf">Send me sms alert when any cnference is scheduled</string>
+    <!--string array-->
+    <string-array name="viewers_array">
+        <item>Select</item>
+        <item>Every One</item>
+        <item>Studymates</item>
+    </string-array>
+
 
     <!-- Progress Report Details-->
     <string name="str_date_range">Date Range:</string>
@@ -18,7 +82,8 @@
     <string name="str_to">To</string>
     <string name="str_head_mistress_remarks">Head Mistress Remarks:</string>
     <string name="str_class_mistress_remarks">Class Mistress Remarks:</string>
-
+    <string name="str_respond_to_request">Respond to Request</string>
+    <string name="respond_to_your">Respond to Your</string>
 
     <!-- Tutorial Group-->
     <string name="str_tutorial">Tutorial</string>
@@ -394,7 +459,7 @@
     <string name="mystudents">MY STUDENTS</string>
 
     <!-- Dummy strings-->
-    <string name="question">For testing this question text..how this question will look selfLike if its a very long question..will it wrap to next line? or it will behave in some unexpected way..</string>
+    <string name="question">For testing this question text..how this question will look like if its a very long question..will it wrap to next line? or it will behave in some unexpected way..</string>
     <string name="stryouranswer">Answer:</string>
     <string name="strexcellent">5 Excellent</string>
     <string name="strgood">4 Good</string>
