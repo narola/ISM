@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
+import com.ism.author.constant.WebConstants;
+import com.ism.author.object.Global;
 import com.ism.author.ws.model.CommentList;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -48,9 +50,16 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.txtCommenterUsername.setText(arrListComment.get(position).getFullName());
         holder.txtCommenterComment.setText(arrListComment.get(position).getComment());
-        holder.txtCommentDuration.setText(arrListComment.get(position).getCommentBy());
+        holder.txtCommentDuration.setText("5 min");
 
-        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgCommenterDp, ISMAuthor.options);
+
+        if (arrListComment.get(position).getProfilePic() != null && arrListComment.get(position).getProfilePic() != "") {
+            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrListComment.get(position).getComment(),
+                    holder.imgCommenterDp, ISMAuthor.options);
+        } else {
+            holder.imgCommenterDp.setImageResource(R.drawable.userdp);
+        }
+
     }
 
 
@@ -85,8 +94,11 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
             txtCommenterUsername = (TextView) itemView.findViewById(R.id.txt_commenter_username);
             txtCommenterComment = (TextView) itemView.findViewById(R.id.txt_commenter_comment);
             txtCommentDuration = (TextView) itemView.findViewById(R.id.txt_comment_duration);
-            txtCommentDuration = (TextView) itemView.findViewById(R.id.txt_comment_duration);
             imgCommenterDp = (ImageView) itemView.findViewById(R.id.img_commenter_dp);
+
+            txtCommenterUsername.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtCommenterComment.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtCommentDuration.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         }
     }

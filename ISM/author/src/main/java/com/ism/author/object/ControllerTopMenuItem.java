@@ -3,7 +3,7 @@ package com.ism.author.object;
 import android.content.Context;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
+import com.ism.author.utility.Debug;
 
 import java.util.ArrayList;
 

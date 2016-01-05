@@ -27,11 +27,10 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.HtmlImageGetter;
-import com.ism.author.Utility.InputValidator;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.HtmlImageGetter;
+import com.ism.author.utility.InputValidator;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
@@ -443,7 +442,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         etAddMcqAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
         final ImageView imgAddMcqRow = (ImageView) v.findViewById(R.id.img_add_mcq_row);
         final ImageView imgRemoveMcqRow = (ImageView) v.findViewById(R.id.img_remove_mcq_row);
-        etAddMcqAnswer.setText(Utils.formatHtml(text));
+        etAddMcqAnswer.setText(Utility.formatHtml(text));
         imgAnsRadio.setActivated(isActivated);
 
         if (position < 1) {
@@ -1123,14 +1122,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     Debug.e(TAG, "The Question Id Is::" + responseHandlerCreateQuestion.getQuestion().get(0).getQuestionId());
                     if (getBaseFragment().getIsSetQuestionData() && !getBaseFragment().getIsCopy()) {
 
-                        Utils.showToast(getString(R.string.question_edit_success), getActivity());
+                        Utility.showToast(getString(R.string.question_edit_success), getActivity());
 
                         getBaseFragment().setQuestionDataAfterEditQuestion(getBaseFragment().getQuestionData(),
                                 makeQuestionData(responseHandlerCreateQuestion.getQuestion().get(0).getQuestionId(), ""),
                                 chkAddquestionPreview.isChecked());
                     } else {
 
-                        Utils.showToast(getString(R.string.question_add_success), getActivity());
+                        Utility.showToast(getString(R.string.question_add_success), getActivity());
 
                         getBaseFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandlerCreateQuestion.getQuestion().get(0).getQuestionId(), ""),
                                 chkAddquestionPreview.isChecked());
@@ -1146,7 +1145,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                                 Utility.getRealPathFromURI(selectedUri, getActivity()));
                     }
                 } else if (responseHandlerCreateQuestion.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandlerCreateQuestion.getMessage(), getActivity());
+                    Utility.showToast(responseHandlerCreateQuestion.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseCreateQuestions api Exception : " + error.toString());
@@ -1166,7 +1165,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     Debug.e(TAG, "The Image url is::" + responseHandler.getFileUploadResponse().getImageLink() + " question id is: " +
                             responseHandler.getFileUploadResponse().getQuestion_id());
 
-                    Utils.showToast(getString(R.string.msg_success_imgupload_question), getActivity());
+                    Utility.showToast(getString(R.string.msg_success_imgupload_question), getActivity());
 
                     getBaseFragment().setQuestionDataAfterEditQuestion(getBaseFragment().getQuestionData(),
                             makeQuestionData(responseHandler.getFileUploadResponse().getQuestion_id(), responseHandler.getFileUploadResponse().getImageLink()),
@@ -1180,7 +1179,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 //                    }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseUploadMediaForQuestion api Exception : " + error.toString());
@@ -1262,7 +1261,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     setHashTagsList();
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAllHashTags api Exception : " + error.toString());

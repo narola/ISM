@@ -250,7 +250,7 @@
 	<string name="strSmsAlertForConf">Send me sms alert when any cnference is scheduled</string>
 	<string name="strBlockStudyMate">If you wish to block any studymate then add</string>
 	<string name="strContactIsmAdmin">Contact ISM Admin</string>
-	<string name="strLikeNotification">Send me notification for like</string>
+	<string name="strLikeNotification">Send me notification for selfLike</string>
 	<string name="strCommentNotification">Send me notification for comment</string>
 	<string name="strNoticeNotification">Send me notification when any notice is published</string>
 	<string name="strAuthorNotification">Send me notification when any author has posted anything on timeline</string>

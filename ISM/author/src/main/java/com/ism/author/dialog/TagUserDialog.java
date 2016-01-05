@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Utility;
 import com.ism.author.adapter.SearchStudyMatesAdapter;
 import com.ism.author.ws.model.Studymates;
 
@@ -115,7 +115,7 @@ public class TagUserDialog extends Dialog implements View.OnClickListener {
                 tagUserListener.tagUsers(tagUserArray);
                 dismiss();
             } else {
-                Utils.showToast(mContext.getString(R.string.strselectuser), mContext);
+                Utility.showToast(mContext.getString(R.string.strselectuser), mContext);
             }
 
 

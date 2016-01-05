@@ -16,9 +16,8 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
@@ -233,7 +232,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
                 if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
                     loadStudentEvaluationData();
                 } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObjGetAllExamQuestions.getMessage(), getActivity());
+                    Utility.showToast(responseObjGetAllExamQuestions.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAllExamQuestions api Exception : " + error.toString());
@@ -262,7 +261,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
 
                 } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObjGetExamEvaluation.getMessage(), getActivity());
+                    Utility.showToast(responseObjGetExamEvaluation.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetExamEvaluation api Exception : " + error.toString());

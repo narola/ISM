@@ -179,6 +179,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     public interface HostListenerAllMessage {
         public void onControllerTopBackClick();
     }
+
     public interface HostListenerMyAuthor {
         public void onControllerTopBackClick();
     }
@@ -252,19 +253,19 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
     }
 
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		Log.e(TAG, "onNewIntent");
-		setIntent(intent);
-		if (getIntent().getAction() != null && getIntent().getAction().equals(AppConstant.ACTION_FRIDAY_EXAM)) {
-			Bundle bundle = new Bundle();
-			bundle.putString(AppConstant.ACTION, AppConstant.ACTION_FRIDAY_EXAM);
-			loadFragment(FRAGMENT_TUTORIAL, bundle);
-		}
-	}
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.e(TAG, "onNewIntent");
+        setIntent(intent);
+        if (getIntent().getAction() != null && getIntent().getAction().equals(AppConstant.ACTION_FRIDAY_EXAM)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(AppConstant.ACTION, AppConstant.ACTION_FRIDAY_EXAM);
+            loadFragment(FRAGMENT_TUTORIAL, bundle);
+        }
+    }
 
-	private void initGlobal() {
+    private void initGlobal() {
         Global.myTypeFace = new MyTypeFace(HostActivity.this);
         llControllerLeft = (LinearLayout) findViewById(R.id.ll_controller_left);
         flFragmentContainerMain = (FrameLayout) findViewById(R.id.fl_fragment_container_main);
@@ -318,14 +319,14 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
             Utility.alertOffline(HostActivity.this);
         }
 
-	    if (getIntent().getAction() != null && getIntent().getAction().equals(AppConstant.ACTION_FRIDAY_EXAM)) {
-		    Bundle bundle = new Bundle();
-		    bundle.putString(AppConstant.ACTION, AppConstant.ACTION_FRIDAY_EXAM);
-		    loadFragment(FRAGMENT_TUTORIAL, bundle);
-	    } else {
-		    loadFragment(FRAGMENT_HOME, null);
-		    loadFragment(FRAGMENT_CHAT, null);
-	    }
+        if (getIntent().getAction() != null && getIntent().getAction().equals(AppConstant.ACTION_FRIDAY_EXAM)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(AppConstant.ACTION, AppConstant.ACTION_FRIDAY_EXAM);
+            loadFragment(FRAGMENT_TUTORIAL, bundle);
+        } else {
+            loadFragment(FRAGMENT_HOME, null);
+            loadFragment(FRAGMENT_CHAT, null);
+        }
 
         controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(HostActivity.this);
         controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(HostActivity.this);
@@ -608,7 +609,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     break;
             }
         } catch (Exception e) {
-	        Log.e(TAG, "loadFragment Exception : " + e.toString());
+            Log.e(TAG, "loadFragment Exception : " + e.toString());
         }
     }
 
@@ -1159,11 +1160,11 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         this.listenerEditAboutMe = listenerHostEditAboutMe;
     }
 
-	public void setListenerHostTutorial(HostListenerTutorial listenerHostTutorial) {
-		this.listenerHostTutorial = listenerHostTutorial;
-	}
+    public void setListenerHostTutorial(HostListenerTutorial listenerHostTutorial) {
+        this.listenerHostTutorial = listenerHostTutorial;
+    }
 
-	public void setListenerHostScroll(ScrollListener scrollListner) {
+    public void setListenerHostScroll(ScrollListener scrollListner) {
         this.scrollListener = scrollListner;
     }
 

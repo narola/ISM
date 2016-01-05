@@ -20,9 +20,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.PreferenceData;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.PreferenceData;
+import com.ism.author.utility.Utility;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.constant.AppConstant;
@@ -147,6 +147,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private ArrayList<SMSAlert> arrayListSMSAlert;
     private Preferences preference;
 
+    private AuthorHelper authorHelper;
+
 
     public interface HostListenerProfileController {
         public void onBadgesFetched();
@@ -236,10 +238,11 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
         Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
+
 //        Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
 //        Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
 //        Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
-        Global.authorHelper = new AuthorHelper(getActivity());
+        authorHelper = new AuthorHelper(getActivity());
 
 //        Global.strUserId = "52";
 //        Global.strFullName = "Chirag Mistry";
@@ -1319,7 +1322,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 preference.setDisplayValue(arrayListSMSAlert.get(j).getDisplayValue());
                 preference.setPreferenceKey(arrayListSMSAlert.get(j).getPreferenceKey());
                 preference.setIsSync(0);
-                Global.authorHelper.saveAllPreferences(preference);
+                authorHelper.saveAllPreferences(preference);
                 // PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
                 //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
             }
@@ -1331,7 +1334,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 preference.setDisplayValue(arrayListNotificationSettings.get(j).getDisplayValue());
                 preference.setPreferenceKey(arrayListNotificationSettings.get(j).getPreferenceKey());
                 preference.setIsSync(0);
-                Global.authorHelper.saveAllPreferences(preference);
+                authorHelper.saveAllPreferences(preference);
                 //  PreferenceData.setStringPrefs(arrayListNotificationSettings.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotificationSettings.get(j).getId());
                 // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
             }
@@ -1344,7 +1347,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 preference.setDisplayValue(arrayListPrivacySetting.get(j).getDisplayValue());
                 preference.setPreferenceKey(arrayListPrivacySetting.get(j).getPreferenceKey());
                 preference.setIsSync(0);
-                Global.authorHelper.saveAllPreferences(preference);
+                authorHelper.saveAllPreferences(preference);
                 // PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
                 // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
             }
@@ -1420,48 +1423,12 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
         getBundle().clear();
 
-
-//        if (getBundle().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_ID)) {
-//            Utils.showToast("VALUE IS THERE", getActivity());
-//        } else {
-//            Utils.showToast("VALUE IS NOT THERE", getActivity());
-//        }
-
-//        getBundle().remove(CreateExamFragment.ARG_IS_CREATE_EXAM);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_ID);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_NAME);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_ID);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_BOOK_ID);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_BOOK_NAME);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_CATEGORY);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_MODE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_DURATION);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_ATTEMPT_COUNT);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_INSTRUCTIONS);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_ASSESSOR);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_START_DATE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_START_TIME);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_CREATED_DATE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_NO);
-//        getBundle().remove(ExamsAdapter.ARG_FRAGMENT_TYPE);
-//        getBundle().remove(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
-//        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_ID);
-//        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
-//        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC);
-//        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_NAME);
-//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
-//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE);
-//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY);
-//        getBundle().remove(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
+    }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        authorHelper.realm.close();
     }
 }

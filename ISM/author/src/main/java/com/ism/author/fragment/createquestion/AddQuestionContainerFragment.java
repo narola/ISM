@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
+import com.ism.author.utility.Debug;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.interfaces.FragmentListener;

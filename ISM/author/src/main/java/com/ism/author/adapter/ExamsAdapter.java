@@ -11,8 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.Exams;
@@ -84,7 +84,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             holder.tvExamName.setText(arrListExams.get(position).getExamName());
             holder.tvExamClassName.setText(arrListExams.get(position).getClassroomName());
             holder.tvExamDate.setText(mContext.getString(R.string.strassignmentdatecolon));
-            holder.tvExamDate.append(" : " + Utils.getDateInApiFormat(arrListExams.get(position).getExamCreatedDate()));
+            holder.tvExamDate.append(" : " + Utility.getDateInApiFormat(arrListExams.get(position).getExamCreatedDate()));
 
 
             if (arrListExams.get(position).getTotalAssessed() == null || arrListExams.get(position).getTotalAssessed().equals("")) {

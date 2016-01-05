@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2011, 2012 Sentaca Communications Ltd.
  */
-package com.ism.author.Utility;
+package com.ism.author.utility;
 
 import android.content.res.AssetManager;
 import android.graphics.Typeface;

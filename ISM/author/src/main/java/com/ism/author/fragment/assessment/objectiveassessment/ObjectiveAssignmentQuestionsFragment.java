@@ -13,9 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
@@ -248,7 +247,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                     }
 
                 } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObjGetAllExamQuestions.getMessage(), getActivity());
+                    Utility.showToast(responseObjGetAllExamQuestions.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAllExamQuestions api Exception : " + error.toString());
@@ -276,7 +275,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetExamEvaluation api Exception : " + error.toString());
@@ -299,7 +298,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
             }
             tvObjectiveAssignmentTitle.setText(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
 
-            tvObjectiveAssignmentDate.setText(Utils.getDateInApiFormat(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CREATED_DATE)));
+            tvObjectiveAssignmentDate.setText(Utility.getDateInApiFormat(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CREATED_DATE)));
 
         }
     }

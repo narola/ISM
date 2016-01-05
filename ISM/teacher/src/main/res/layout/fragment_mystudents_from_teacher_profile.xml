@@ -1,32 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="2">
-        <Spinner
-            android:id="@+id/sp_classroom"
-            android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shadow_grey_small_size"
-            android:layout_weight="0.5"/>
-        <Spinner
-            android:id="@+id/sp_sort_by"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shadow_grey_small_size"
-            android:layout_weight="0.5"/>
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/sp_classroom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@drawable/shadow_grey_small_size" />
+
+            <Spinner
+                android:id="@+id/sp_sort_by"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@drawable/shadow_grey_small_size" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_mystudents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
     </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_mystudents"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </android.support.v7.widget.RecyclerView>
-</LinearLayout>
+    <View
+        android:id="@+id/view_highlighter_triangle"
+        android:layout_width="@dimen/d35dp"
+        android:layout_height="@dimen/d35dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dMinus15dp"
+        android:layout_marginTop="@dimen/d315dp"
+        android:background="@drawable/indicator_dark_grey"
+        android:visibility="visible"/>
+</RelativeLayout>

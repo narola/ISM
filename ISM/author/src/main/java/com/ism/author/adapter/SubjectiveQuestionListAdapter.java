@@ -15,9 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.HtmlImageGetter;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.HtmlImageGetter;
+import com.ism.author.utility.Utility;
 import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveQuestionsFragment;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.Evaluation;
@@ -99,7 +99,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
                 int evaluationIndex = checkIsQuestionEvaluated(arrListQuestions.get(position).getQuestionId());
                 if (evaluationIndex != -1) {
                     if (evaluationList.get(position).getStudentResponse() != null) {
-                        holder.tvSubjectiveQuestionAns.setText(Utils.formatHtml(evaluationList.get(evaluationIndex).getStudentResponse()));
+                        holder.tvSubjectiveQuestionAns.setText(Utility.formatHtml(evaluationList.get(evaluationIndex).getStudentResponse()));
                     }
 
 
