@@ -2,6 +2,7 @@ package com.ism.adapter.deskAdapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.utility.Debug;
 import com.ism.ws.model.BookData;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class FavBooksAdapter extends RecyclerView.Adapter<FavBooksAdapter.ViewHo
 //                holder.imgLibraryBook.setActivated(false);
 //
 //            }
-//            Debug.i(TAG, "view called : " + position + "Total position : " + total++);
+//            Log.e(TAG, "view called : " + position + "Total position : " + total++);
 //            holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
 //            holder.imgInfo.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -65,7 +65,7 @@ public class FavBooksAdapter extends RecyclerView.Adapter<FavBooksAdapter.ViewHo
 //            holder.imgAddToUnFav.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
-//                    Debug.i(TAG, "onClickAddToUnFav : " + position);
+//                    Log.e(TAG, "onClickAddToUnFav : " + position);
 //                    booksListner.onRemoveFromFav(position);
 //                    // callApiAddResourceToFav();
 //                }
@@ -73,7 +73,7 @@ public class FavBooksAdapter extends RecyclerView.Adapter<FavBooksAdapter.ViewHo
 //            holder.imgLibraryBook.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
-//                    Debug.i(TAG, "onClickAddToLibrary : " + position);
+//                    Log.e(TAG, "onClickAddToLibrary : " + position);
 //                    if (arrayList.get(position).getIsInLibrary().equals("1")) {
 //                        arrayList.get(position).setIsInLibrary("0");
 //                        booksListner.onRemoveFromLibrary(arrayList.get(position).getBookId());
@@ -87,7 +87,7 @@ public class FavBooksAdapter extends RecyclerView.Adapter<FavBooksAdapter.ViewHo
 //            });
 
         } catch (Exception e) {
-            Debug.i(TAG,"onBindViewHolder Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
 
     }

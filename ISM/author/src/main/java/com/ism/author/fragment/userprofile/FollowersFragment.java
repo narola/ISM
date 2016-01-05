@@ -68,10 +68,8 @@ public class FollowersFragment extends Fragment implements WebserviceWrapper.Web
         rvFollowersList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_books_added));
 
+        setEmptyView(false);
 
         callApiGetMyFollowers();
 
@@ -122,9 +120,11 @@ public class FollowersFragment extends Fragment implements WebserviceWrapper.Web
                         arrListMyFollowers.addAll(responseHandler.getFollowers());
                         followersAdapter.addAll(arrListMyFollowers);
                         followersAdapter.notifyDataSetChanged();
-                        tvNoDataMsg.setVisibility(View.GONE);
+
+                        setEmptyView(false);
                     } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+
+                        setEmptyView(true);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -164,4 +164,14 @@ public class FollowersFragment extends Fragment implements WebserviceWrapper.Web
         }
         fragListener = null;
     }
+
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setText(getString(R.string.no_books_added));
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvFollowersList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+    }
+
 }

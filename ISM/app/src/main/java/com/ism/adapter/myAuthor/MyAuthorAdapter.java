@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.AppConstant;
+import com.ism.fragment.MyAuthorFragment;
 import com.ism.fragment.myAuthor.MyAuthorsFragment;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -28,6 +29,7 @@ public class MyAuthorAdapter extends RecyclerView.Adapter<MyAuthorAdapter.ViewHo
 
     private static final String TAG = MyAuthorAdapter.class.getSimpleName();
     private final Context mContext;
+    private final MyAuthorFragment myAuthorFragment;
     private Fragment mFragment;
     private ArrayList<Assignment> arrListBookAssignment = new ArrayList<Assignment>();
     private LayoutInflater inflater;
@@ -35,6 +37,7 @@ public class MyAuthorAdapter extends RecyclerView.Adapter<MyAuthorAdapter.ViewHo
         this.mFragment = mFragment;
         this.mContext=mContext;
         this.inflater = LayoutInflater.from(mContext);
+        myAuthorFragment= MyAuthorFragment.newInstance();
     }
 
 
@@ -61,7 +64,8 @@ public class MyAuthorAdapter extends RecyclerView.Adapter<MyAuthorAdapter.ViewHo
                     Bundle bundle=((HostActivity) mContext).getBundle();
                     bundle.putString(AppConstant.AUTHOR_NAME, "Roger S. Pressman");
                     ((HostActivity) mContext).setBundle(bundle);
-                    ((MyAuthorsFragment)mFragment).loadFragment(HostActivity.FRAGMENT_AUTHOR_OFFICE);
+//                    ((HostActivity)mContext).loadFragment(HostActivity.FRAGMENT_AUTHOR_OFFICE,bundle);
+                    ((MyAuthorsFragment)mFragment).loadFragment(MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE);
                 }
             });
         } catch (Exception e) {

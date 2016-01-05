@@ -630,4 +630,6 @@
 	<string name="strmy30">My30th</string>
 	<string name="strTrial">Trial</string>
 	<string name="strAuthorsDesk">Author\'s Desk</string>
+	<string name="strYourHaveNotJoinedAnyAuthorClickFindMoreAuthorAndAddAuthor"><![CDATA[You have not joined any author click <font color=#3EB1DE>\"find more author\" </font>and add author]]></string>
+	<string name="strIAcceptTheTermAndCondition"><![CDATA[I Accept the term & Condition]]></string>
 </resources>

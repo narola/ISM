@@ -25,7 +25,7 @@ import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.AuthorBook;
+import com.ism.author.ws.model.BookData;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     private RichTextEditor richtexteditor;
     private ArrayList<String> arrayListBooks;
     private Spinner spBooks;
-    private ArrayList<AuthorBook> arrListAuthorBooks;
+    private ArrayList<BookData> arrListAuthorBooks;
     private String strValidationMsg;
     private EditText etAssignmentName;
     private com.ism.author.Utility.InputValidator inputValidator;
@@ -93,7 +93,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
         arrayListBooks = new ArrayList<>();
         arrayListBooks.add(getString(R.string.strSelectBook));
-        Adapters.setUpSpinner(getActivity(), spBooks, arrayListBooks, Adapters.ADAPTER_NORMAL, Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spBooks, arrayListBooks, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
         txtCancel.setOnClickListener(this);
         txtSave.setOnClickListener(this);
@@ -228,14 +228,14 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Debug.i(TAG, "onResponseGetAuthorBooks  : success");
-                    arrListAuthorBooks = new ArrayList<AuthorBook>();
+                    arrListAuthorBooks = new ArrayList<BookData>();
                     arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
                     List<String> authorBooks = new ArrayList<String>();
                     authorBooks.add(getString(R.string.strSelectBook));
-                    for (AuthorBook authorBook : arrListAuthorBooks) {
+                    for (BookData authorBook : arrListAuthorBooks) {
                         authorBooks.add(authorBook.getBookName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spBooks, authorBooks, Adapters.ADAPTER_NORMAL, Global.myTypeFace.getRalewayRegular());
+                    Adapters.setUpSpinner(getActivity(), spBooks, authorBooks, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.i(TAG, "onResponseGetAuthorBooks  : failed");
                     Utils.showToast(responseHandler.getMessage(), getActivity());

@@ -71,9 +71,8 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
         rvMythirtyList.setAdapter(trialAdapter);
 
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_exams));
+        setEmptyView(false);
+
 
         callApiGetAllExams();
     }
@@ -129,9 +128,11 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
                     if (responseHandler.getExams().size() > 0) {
                         arrListExams.addAll(responseHandler.getExams());
                         trialAdapter.addAll(arrListExams);
-                        tvNoDataMsg.setVisibility(View.GONE);
+
+                        setEmptyView(false);
                     } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+
+                        setEmptyView(true);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -207,5 +208,14 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private Bundle getBundleArguments() {
         return ((AuthorHostActivity) getActivity()).getBundle();
+    }
+
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setText(getString(R.string.no_exams));
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvMythirtyList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
 }

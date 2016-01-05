@@ -199,7 +199,7 @@ public class NotificationFragment extends Fragment implements WebserviceWrapper.
     private void setDefaultValues() {
 
         key_value=getKeyPereference(PreferenceData.NOTI_NOTIFICATION_NOTICEBOARD);
-       // Debug.i(TAG,"Value: "+key+"::"+key_value);
+       // Log.e(TAG,"Value: "+key+"::"+key_value);
         if (key_value.equals(getActivity().getResources().getString(R.string.strNo))) {
             radioGroupNoticeBoard.check(R.id.radiobutton_no);
 

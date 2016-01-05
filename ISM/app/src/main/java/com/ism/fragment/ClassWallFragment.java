@@ -99,7 +99,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 //            recyclerPostFeeds.setOnScrollChangeListener(new View.OnScrollChangeListener() {
 //                @Override
 //                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-//                    Debug.i(TAG, "Scroll : " + scrollX);
+//                    Log.e(TAG, "Scroll : " + scrollX);
 //                }
 //            });
 //        }
@@ -141,7 +141,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                 ArrayList<String> likedId=new ArrayList<>();
                 ArrayList<String> unlikedId=new ArrayList<>();
                 RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes(false);
-                Debug.i(TAG,"realmResSyncFeedLikes size : "+studentHelper.getFeedLikes(false).size());
+                Log.e(TAG,"realmResSyncFeedLikes size : "+studentHelper.getFeedLikes(false).size());
 //                RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes(Utility.getDateFormateMySql("2015-12-16 9:41:42"), Utility.getDateMySql());
                 if (realmResSyncFeedLikes.size() > 0) {
                     for (int i = 0; i < realmResSyncFeedLikes.size(); i++) {
@@ -157,9 +157,9 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                     attribute.setUserId(Global.strUserId);
                     new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                             .execute(WebConstants.LIKE_FEED);
-                    Debug.i(TAG, "callApiLikeFeed : record found to sync ");
+                    Log.e(TAG, "callApiLikeFeed : record found to sync ");
                 } else {
-                    Debug.i(TAG, "callApiLikeFeed : zero record found to sync ");
+                    Log.e(TAG, "callApiLikeFeed : zero record found to sync ");
                 }
             } else {
                 Utility.alertOffline(getActivity());
@@ -252,7 +252,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                     if (responseHandler.getFeeds().size() != 0) {
                         ParseAllData(responseHandler.getFeeds());
                         adpPostFeeds = new PostFeedsAdapter(getActivity(), studentHelper.getFeeds(-1));
-                        Debug.i(TAG, "arrayList size : " + studentHelper.getFeeds(-1).size());
+                        Log.e(TAG, "arrayList size : " + studentHelper.getFeeds(-1).size());
                         recyclerPostFeeds.setAdapter(adpPostFeeds);
 
                         //setUpData(studentHelper.getFeeds(-1));
@@ -370,10 +370,10 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 //                arrayList.add(feeds);
 //            }
             adpPostFeeds = new PostFeedsAdapter(getActivity(), realmResultFeeds);
-            Debug.i(TAG, "arrayList size : " + realmResultFeeds.size());
+            Log.e(TAG, "arrayList size : " + realmResultFeeds.size());
             recyclerPostFeeds.setAdapter(adpPostFeeds);
         } catch (Exception e) {
-            Debug.i(TAG, "setUpData Exception :" + e.getLocalizedMessage());
+            Log.e(TAG, "setUpData Exception :" + e.getLocalizedMessage());
         }
     }
 }

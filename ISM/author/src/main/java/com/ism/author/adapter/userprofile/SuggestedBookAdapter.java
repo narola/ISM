@@ -70,7 +70,7 @@ public class SuggestedBookAdapter extends RecyclerView.Adapter<SuggestedBookAdap
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    BookDetailsDialog bookDetailsDialog = new BookDetailsDialog(context, arrayList, position, Global.imageLoader);
+                    BookDetailsDialog bookDetailsDialog = new BookDetailsDialog(context, arrayList.get(position));
                     bookDetailsDialog.show();
                 }
             });

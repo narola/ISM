@@ -135,7 +135,7 @@ public class StudentHelper {
                 }
             }
         });
-        Log.i(TAG, "getFeeds feedsRealmResults.size: " + feedsRealmResults.size());
+        Log.e(TAG, "getFeeds feedsRealmResults.size: " + feedsRealmResults.size());
         return feedsRealmResults;
     }
 
@@ -164,8 +164,8 @@ public class StudentHelper {
     public RealmResults<FeedComment> getFeedComments(int feedId) {
         realm.beginTransaction();
         RealmResults<FeedComment> feedsRealmResults = realm.where(FeedComment.class).equalTo("feed.feedId", feedId).findAll();
-        Log.i(TAG, "all comments : " + feedsRealmResults);
-        Log.i(TAG, "getFeedComments feedsRealmResults.size: " + feedsRealmResults.size());
+        Log.e(TAG, "all comments : " + feedsRealmResults);
+        Log.e(TAG, "getFeedComments feedsRealmResults.size: " + feedsRealmResults.size());
 
         realm.commitTransaction();
         return feedsRealmResults;
@@ -194,7 +194,7 @@ public class StudentHelper {
         toUpdateFeeds.setLike(feeds.getLike().equals("0") ? "1" : "0");
         toUpdateFeeds.setTotalLike(feeds.getLike().equals("0") ? feeds.getTotalLike() - 1 : feeds.getTotalLike() + 1);
         toUpdateFeeds.setIsSync(feeds.isSync() == 0 ? 1 : 0);
-        Log.i(TAG, "updateFeedLikes : " + toUpdateFeeds.getLike() + "--" + toUpdateFeeds.getFeedId() + "--" + toUpdateFeeds.isSync());
+        Log.e(TAG, "updateFeedLikes : " + toUpdateFeeds.getLike() + "--" + toUpdateFeeds.getFeedId() + "--" + toUpdateFeeds.isSync());
         realm.commitTransaction();
     }
 
@@ -237,7 +237,7 @@ public class StudentHelper {
             feeds.getComments().add(feedComment);
             realm.commitTransaction();
         } catch (Exception e) {
-            Log.i(TAG, "saveComments Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "saveComments Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -254,7 +254,7 @@ public class StudentHelper {
             feeds.getFeedImages().add(feedImage);
             realm.commitTransaction();
         } catch (Exception e) {
-            Log.i(TAG, "saveFeedImages Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "saveFeedImages Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -356,10 +356,10 @@ public class StudentHelper {
                     notesRealmResults = realm.where(Notes.class).equalTo("user.userId", userId).findAll();
                 }
             });
-            Log.i(TAG, "getNotes notesRealmResults.size: " + notesRealmResults.size());
-            Log.i(TAG, "getNotes notesRealmResults : " + notesRealmResults);
+            Log.e(TAG, "getNotes notesRealmResults.size: " + notesRealmResults.size());
+            Log.e(TAG, "getNotes notesRealmResults : " + notesRealmResults);
         } catch (Exception e) {
-            Log.i(TAG, "getNotes Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "getNotes Exception : " + e.getLocalizedMessage());
         }
         return notesRealmResults;
     }
@@ -376,7 +376,7 @@ public class StudentHelper {
             realm.commitTransaction();
 //            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
         } catch (Exception e) {
-            Log.i(TAG, " saveAuthorProfile Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, " saveAuthorProfile Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -384,7 +384,7 @@ public class StudentHelper {
         try {
             return realm.where(AuthorProfile.class).equalTo("authorId", userId).findFirst();
         } catch (Exception e) {
-            Log.i(TAG, "getUser Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "getUser Exceptions : " + e.getLocalizedMessage());
         }
         return null;
     }

@@ -243,7 +243,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiGetAboutMe Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiGetAboutMe Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -269,7 +269,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "callApiEditAboutMe Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiEditAboutMe Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -385,7 +385,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             etDob.setText(dateFormat(data.getBirthdate()));
             etCno.setText(data.getContactNumber());
           //  Global.strProfilePic=WebConstants.HOST_IMAGE_USER + data.getProfilePic();
-            Debug.i(TAG, "WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic() :" + WebConstants.HOST_IMAGE_USER + data.getProfilePic());
+            Log.e(TAG, "WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic() :" + WebConstants.HOST_IMAGE_USER + data.getProfilePic());
             Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + data.getProfilePic(), imgProfilePic, ISMStudent.options);
             if(data.getTotalAssignment()==null)
             txtTotalAssignment.setText("0");
@@ -434,27 +434,27 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 txtClickAddAboutMe.setText(data.getAboutMeText());
                 txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
                 imgEditAboutMe.setVisibility(View.VISIBLE);
-                Debug.i(TAG, "Details are available!");
+                Log.e(TAG, "Details are available!");
             } else {
                 txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
                 txtClickAddAboutMe.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
                 imgEditAboutMe.setVisibility(View.GONE);
-                Debug.i(TAG, "Details are not available!");
+                Log.e(TAG, "Details are not available!");
             }
             if (strAmbition!=null && strAmbition .length()!=0) {
                 txtClickAddAmbitions.setText(data.getAmbitionInLife());
                 imgEditAmbition.setVisibility(View.VISIBLE);
                 txtClickAddAmbitions.setCompoundDrawables(null, null, null, null);
-                Debug.i(TAG, "Details are available!");
+                Log.e(TAG, "Details are available!");
             } else {
-                Debug.i(TAG, "Details are not available!");
+                Log.e(TAG, "Details are not available!");
                 txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
                 txtClickAddAmbitions.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
                 imgEditAmbition.setVisibility(View.GONE);
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "SetupData :" + e.getLocalizedMessage());
+            Log.e(TAG, "SetupData :" + e.getLocalizedMessage());
         }
     }
 
@@ -469,7 +469,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             SimpleDateFormat format = new SimpleDateFormat("dd");
             String date = format.format(convertedDate);
 
-            Debug.i(TAG, "Date :" + date);
+            Log.e(TAG, "Date :" + date);
 
             if (date.endsWith("1") && !date.endsWith("11"))
                 format = new SimpleDateFormat("dd'st' MMMM yyyy");
@@ -479,13 +479,13 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 format = new SimpleDateFormat("dd'rd' MMMM yyyy");
             else
                 format = new SimpleDateFormat("dd'th' MMMM yyyy");
-            Debug.i(TAG, "Date Formated:" + format.format(convertedDate));
+            Log.e(TAG, "Date Formated:" + format.format(convertedDate));
             return format.format(convertedDate);
         } catch (ParseException e) {
-            Debug.i(TAG, "DateFormat ParseException : " + e.getLocalizedMessage());
+            Log.e(TAG, "DateFormat ParseException : " + e.getLocalizedMessage());
             return null;
         } catch (Exception e) {
-            Debug.i(TAG, "DateFormat Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "DateFormat Exceptions : " + e.getLocalizedMessage());
             return null;
         }
     }
@@ -572,9 +572,9 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtClickAddAmbitions.setText(strAmbition);
             imgEditAmbition.setVisibility(View.VISIBLE);
             txtClickAddAmbitions.setCompoundDrawables(null, null, null, null);
-            Debug.i(TAG, "Details are available!");
+            Log.e(TAG, "Details are available!");
         } else {
-            Debug.i(TAG, "Details are not available!");
+            Log.e(TAG, "Details are not available!");
             txtClickAddAmbitions.setText(getActivity().getResources().getString(R.string.strClickTOAddAmbitionInLife));
             txtClickAddAmbitions.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
             imgEditAmbition.setVisibility(View.GONE);
@@ -586,12 +586,12 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtClickAddAboutMe.setText(strDetailAboutMe);
             txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
             imgEditAboutMe.setVisibility(View.VISIBLE);
-            Debug.i(TAG, "Details are available!");
+            Log.e(TAG, "Details are available!");
         } else {
             txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
             txtClickAddAboutMe.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
             imgEditAboutMe.setVisibility(View.GONE);
-            Debug.i(TAG, "Details are not available!");
+            Log.e(TAG, "Details are not available!");
         }
     }
 }

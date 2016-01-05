@@ -109,8 +109,8 @@ public class PostFileAdapter extends BaseAdapter {
                 File file = new File(arrayList.get(position).getStrFilePath().getPath());
                 if (file != null) {
                     mMediaMetadataRetriever.setDataSource(context, arrayList.get(position).getStrFilePath());
-                    Debug.i(TAG, "Frame size : " + mMediaMetadataRetriever.getFrameAtTime());
-                    Debug.i(TAG, "Frame size : " + arrayList.get(position).getStrFilePath().getPath());
+                    Log.e(TAG, "Frame size : " + mMediaMetadataRetriever.getFrameAtTime());
+                    Log.e(TAG, "Frame size : " + arrayList.get(position).getStrFilePath().getPath());
                     bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
                     // MICRO_KIND: 96 x 96 thumbnail
                     imageView.setImageBitmap(bitmap);
@@ -140,7 +140,7 @@ public class PostFileAdapter extends BaseAdapter {
                 }
             });
         } catch (Exception e) {
-            Debug.i(TAG, "getView Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "getView Exceptions : " + e.getLocalizedMessage());
         }
         return convertView;
     }

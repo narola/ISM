@@ -12,6 +12,7 @@ import android.widget.GridView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.myAuthor.AuthorOfficeTabGridAdapter;
+import com.ism.fragment.MyAuthorFragment;
 import com.ism.fragment.myAuthor.authorDesk.AuthorDeskFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.AuthorOfficeTabDataSet;
@@ -34,6 +35,7 @@ public class AuthorOfficeFragment extends Fragment {
     AuthorOfficeTabDataSet officeTabDataSet = new AuthorOfficeTabDataSet();
     private HostActivity activityHost;
     private int currentFragment;
+    private MyAuthorFragment myAuthorFragment;
 
 
     public static AuthorOfficeFragment newInstance() {
@@ -55,7 +57,7 @@ public class AuthorOfficeFragment extends Fragment {
     }
 
     private void initGlobal() {
-
+        myAuthorFragment = MyAuthorFragment.newInstance();
 
         officeTabDataSet.setOfficeTabTitleList(new String[]{getActivity().getString(R.string.strAuthorsDesk), getString(R.string.strgotrending), getString(R.string.strTrial),
                 getString(R.string.strmy30th), getString(R.string.strassessment)});
@@ -82,7 +84,7 @@ public class AuthorOfficeFragment extends Fragment {
             fragListener = (FragmentListener) activity;
             activityHost = (HostActivity) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(HostActivity.FRAGMENT_AUTHOR_OFFICE);
+                fragListener.onFragmentAttached(MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -93,9 +95,9 @@ public class AuthorOfficeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         try {
-            Debug.i(TAG, "detach");
+            Log.e(TAG, "onDetach");
             if (fragListener != null) {
-                fragListener.onFragmentDetached(HostActivity.FRAGMENT_AUTHOR_OFFICE);
+                fragListener.onFragmentDetached(MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
@@ -105,63 +107,38 @@ public class AuthorOfficeFragment extends Fragment {
 
     public void loadFragment(int fragment) {
 
-        CURRENT_OFFICE_FRAGMENT = fragment;
         switch (fragment) {
 
-//            case HostActivity.FRAGMENT_AUTHOR_DESK:
-//                currentFragment=fragment;
-//                AuthorDeskFragment authorDeskFragment = AuthorDeskFragment.newInstance();
-//                getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorDeskFragment).commit();
-//                //activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
-//                break;
-//
-//            case HostActivity.FRAGMENT_GOTRENDING:
-//                currentFragment=fragment;
-//                // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GOTRENDING);
-//                break;
-//
-//            case HostActivity.FRAGMENT_TRIAL:
-//                currentFragment=fragment;
-//                //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
-//                break;
-//
-//            case HostActivity.FRAGMENT_MYTHIRTY:
-//                currentFragment=fragment;
-//                //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
-//                break;
-//
-//            case HostActivity.FRAGMENT_AUTHOR_ASSESSMENT:
-//                currentFragment=fragment;
-//                // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT);
-//                break;
-
-            case HostActivity.FRAGMENT_AUTHOR_DESK:
+            case MyAuthorFragment.FRAGMENT_AUTHOR_DESK:
                 currentFragment = fragment;
                 AuthorDeskFragment authorDeskFragment = AuthorDeskFragment.newInstance();
                 getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorDeskFragment).commit();
                 //activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
                 break;
 
-            case HostActivity.FRAGMENT_GOTRENDING:
+            case MyAuthorFragment.FRAGMENT_GOTRENDING:
                 currentFragment = fragment;
                 // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GOTRENDING);
                 break;
 
-            case HostActivity.FRAGMENT_TRIAL:
+            case MyAuthorFragment.FRAGMENT_TRIAL:
                 currentFragment = fragment;
                 //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
                 break;
 
-            case HostActivity.FRAGMENT_MYTHIRTY:
+            case MyAuthorFragment.FRAGMENT_MYTHIRTY:
                 currentFragment = fragment;
                 //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
                 break;
 
-            case HostActivity.FRAGMENT_AUTHOR_ASSESSMENT:
+            case MyAuthorFragment.FRAGMENT_AUTHOR_ASSESSMENT:
                 currentFragment = fragment;
                 // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT);
                 break;
         }
     }
 
+    public void onTopControllerBackClick(int position) {
+        loadFragment(currentFragment);
+    }
 }

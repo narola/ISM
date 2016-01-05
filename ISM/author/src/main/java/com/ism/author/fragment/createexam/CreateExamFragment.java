@@ -32,7 +32,7 @@ import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.AuthorBook;
+import com.ism.author.ws.model.BookData;
 import com.ism.author.ws.model.Classrooms;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
@@ -69,7 +69,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private Spinner spExamClassroom, spExamBookname, spExamPassingpercent, spExamExamCategory, spExamExammode,
             spExamExamduration, spExamAssessor, spExamQuestionScore;
     private ArrayList<Classrooms> arrListClassRooms;
-    private ArrayList<AuthorBook> arrListAuthorBooks;
+    private ArrayList<BookData> arrListAuthorBooks;
     private List<String> arrListDefalt, arrListPassingPercent, arrListExamDuration, arrListExamMode,
             arrListExamCategory, arrListExamAssessor, arrListQuestionScore, arrListNegativeMarking;
     private EditText etExamName, etExamStartdate, etExamStartTime, etExamAttemptcount, etExamAddnegativemark;
@@ -237,30 +237,30 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
 
         getPassingPercentSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), spExamPassingpercent, arrListPassingPercent, Adapters.ADAPTER_NORMAL, Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spExamPassingpercent, arrListPassingPercent, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
         getExamDurationSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), spExamExamduration, arrListExamDuration, Adapters.ADAPTER_NORMAL, Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spExamExamduration, arrListExamDuration, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
         getQuestionScoreSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), spExamQuestionScore, arrListQuestionScore, Adapters.ADAPTER_NORMAL, Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spExamQuestionScore, arrListQuestionScore, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
         spExamQuestionScore.setSelection(1);
 
         arrListExamMode = new ArrayList<String>();
         arrListExamMode = Arrays.asList(getResources().getStringArray(R.array.exammode));
-        Adapters.setUpSpinner(getActivity(), spExamExammode, arrListExamMode, Adapters.ADAPTER_NORMAL, Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spExamExammode, arrListExamMode, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
 
         arrListExamCategory = new ArrayList<String>();
         arrListExamCategory = Arrays.asList(getResources().getStringArray(R.array.examname));
-        Adapters.setUpSpinner(getActivity(), spExamExamCategory, arrListExamCategory, Adapters.ADAPTER_NORMAL, Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spExamExamCategory, arrListExamCategory, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
 
         arrListExamAssessor = new ArrayList<String>();
         arrListExamAssessor.add(getString(R.string.strexamassessor));
         arrListExamAssessor.add(getString(R.string.strnoassessor));
         arrListExamAssessor.add(Global.strFullName);
-        Adapters.setUpSpinner(getActivity(), spExamAssessor, arrListExamAssessor, Adapters.ADAPTER_NORMAL, Global.myTypeFace.getRalewayRegular());
+        Adapters.setUpSpinner(getActivity(), spExamAssessor, arrListExamAssessor, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
 
         llExamStartdate.setOnTouchListener(new View.OnTouchListener() {
@@ -699,7 +699,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                         classrooms.add(classroom.getClassName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL, Global.myTypeFace.getRalewayRegular());
+                    Adapters.setUpSpinner(getActivity(), spExamClassroom, classrooms, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 //                    if (!getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
                     spExamClassroom.setSelection(classrooms.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME)));
 //                    }
@@ -724,14 +724,14 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListAuthorBooks = new ArrayList<AuthorBook>();
+                    arrListAuthorBooks = new ArrayList<BookData>();
                     arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
                     List<String> authorBooks = new ArrayList<String>();
                     authorBooks.add(Utility.getString(R.string.strbookname, getActivity()));
-                    for (AuthorBook authorBook : arrListAuthorBooks) {
+                    for (BookData authorBook : arrListAuthorBooks) {
                         authorBooks.add(authorBook.getBookName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spExamBookname, authorBooks, Adapters.ADAPTER_NORMAL, Global.myTypeFace.getRalewayRegular());
+                    Adapters.setUpSpinner(getActivity(), spExamBookname, authorBooks, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
 
 //                    if (!getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {

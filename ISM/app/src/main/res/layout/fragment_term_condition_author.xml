@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F8F8"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_author_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp20"
+        android:text="Roger S. Pressman"
+        android:textColor="@color/cpb_blue_dark"
+        android:textSize="@dimen/sp23" />
+
+    <TextView
+        android:id="@+id/txt_conditions"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp300"
+        android:layout_marginBottom="@dimen/dp10"
+        android:layout_marginLeft="@dimen/dp30"
+        android:layout_marginRight="@dimen/dp30"
+        android:background="@drawable/bg_white_border_gray"
+        android:padding="@dimen/dp10"
+        android:text="adfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfsadfsfsdfdsfsfsfsdfdsfdsfsfsffsfsdffsfsfsfsfsfsfsfsfsfs"
+        android:textSize="@dimen/sp15" />
+
+    <CheckBox
+        android:id="@+id/chk_accept_term_condition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp10"
+        android:layout_marginLeft="@dimen/dp20"
+        android:layout_marginRight="@dimen/dp20"
+        android:padding="@dimen/dp10"
+        android:text="@string/strIAcceptTheTermAndCondition"
+        android:textSize="@dimen/sp19" />
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="@dimen/button_height_normal"-->
+    <!--android:textSize="@dimen/sp20"-->
+    <!--android:gravity="center"-->
+    <!--android:paddingLeft="@dimen/dp20"-->
+    <!--android:paddingRight="@dimen/dp20"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:textColor="@color/color_white"-->
+    <!--android:background="@drawable/bg_btn_blue"-->
+    <!--android:text="@string/strsubmit"/>-->
+    <com.ism.commonsource.view.ActionProcessButton
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/btn_login_height"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_btn_blue"
+        android:gravity="center"
+        android:onClick="onClickSubmit"
+        android:paddingLeft="@dimen/dp20"
+        android:textAllCaps="true"
+        android:paddingRight="@dimen/dp20"
+        android:text="@string/strsubmit"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/sp15"
+        app:pb_colorComplete="@color/color_blue"
+        app:pb_colorNormal="@color/color_blue"
+        app:pb_colorPressed="@color/cpb_blue_dark"
+        app:pb_colorProgress="@color/purple_progress"
+        app:pb_cornerRadius="@dimen/app_button_corner_radius"
+        app:pb_textComplete="@string/strlogin"
+        app:pb_textProgress="@string/processing" />
+</LinearLayout>

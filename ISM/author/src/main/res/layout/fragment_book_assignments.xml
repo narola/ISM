@@ -29,10 +29,11 @@
             android:hint="@string/hint_search"
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:padding="@dimen/d10dp"
+            android:padding="@dimen/d8dp"
             android:singleLine="true"
             android:textColor="@color/color_blue"
             android:textColorHint="@color/border_gray"
+            android:textSize="@dimen/d18sp"
             android:visibility="gone" />
     </LinearLayout>
 

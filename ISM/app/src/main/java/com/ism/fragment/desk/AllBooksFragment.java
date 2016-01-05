@@ -128,7 +128,7 @@ public class AllBooksFragment extends Fragment implements WebserviceWrapper.Webs
             activityHost.onChildFragmentAttached(false);
             activityHost.onSetPositionSpinner(2);
         } catch (ClassCastException e) {
-            Debug.i(TAG, "onAttach Exception : " + e.toString());
+            Log.e(TAG, "onAttach Exception : " + e.toString());
         }
     }
 

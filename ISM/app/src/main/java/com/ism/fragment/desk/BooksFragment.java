@@ -126,7 +126,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
             Log.e(TAG, "onAttach Attached fragment ");
             activityHost = (HostActivity) activity;
         } catch (ClassCastException e) {
-            Debug.i(TAG, "onAttach Exception : " + e.toString());
+            Log.e(TAG, "onAttach Exception : " + e.toString());
         }
     }
 

@@ -145,7 +145,8 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
             if (Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId(Global.strUserId);
+                attribute.setUserId("53");
+//                attribute.setUserId(Global.strUserId);
                 attribute.setRoleId(Global.authorRoleID);
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
@@ -154,7 +155,7 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiGetAboutMe Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiGetAboutMe Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -201,7 +202,7 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
             setUpDBData(studenHelper.getAuthorprofile(Integer.parseInt(Global.strUserId)));
 
         } catch (Exception e) {
-            Debug.i(TAG, "saveAuthorProfile Exceptions: " + e.getLocalizedMessage());
+            Log.e(TAG, "saveAuthorProfile Exceptions: " + e.getLocalizedMessage());
         }
     }
 
@@ -267,7 +268,7 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
 //            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + data.getProfilePic(), imgProfilePic, ISMAuthor.options);
             Global.imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMStudent.options);
         } catch (Exception e) {
-            Debug.i(TAG, "SetupData :" + e.getLocalizedMessage());
+            Log.e(TAG, "SetupData :" + e.getLocalizedMessage());
         }
     }
 
@@ -360,7 +361,7 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
 //            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + data.getProfilePic(), imgProfilePic, ISMAuthor.options);
             Global.imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMStudent.options);
         } catch (Exception e) {
-            Debug.i(TAG, "SetupData :" + e.getLocalizedMessage());
+            Log.e(TAG, "SetupData :" + e.getLocalizedMessage());
         }
     }
 

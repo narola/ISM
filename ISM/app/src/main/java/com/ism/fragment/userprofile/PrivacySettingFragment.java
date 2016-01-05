@@ -124,7 +124,7 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
 
         String key_value;
         key_value = getKeyPereference(PreferenceData.PS_VIWERS_VIEW_EXAMSCORE);
-        // Debug.i(TAG,"Value: "+key+"::"+key_value);
+        // Log.e(TAG,"Value: "+key+"::"+key_value);
         if (key_value.equals(getActivity().getResources().getString(R.string.strStudymates))) {
             spViewers.setSelection(2);
 

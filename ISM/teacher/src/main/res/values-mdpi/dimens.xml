@@ -51,6 +51,7 @@
     <dimen name="d8dp">6dp</dimen>
     <dimen name="d10dp">7.5dp</dimen>
     <dimen name="d15dp">11.25dp</dimen>
+    <dimen name="d17dp">12.75dp</dimen>
     <dimen name="d18dp">13.50dp</dimen>
     <dimen name="d20dp">15dp</dimen>
     <dimen name="d22dp">16.50dp</dimen>
@@ -100,5 +101,6 @@
 
     <dimen name="d1px">1px</dimen>
     <dimen name="dminus8dp">-6dp</dimen>
+    <dimen name="d185dp">138.75dp</dimen>
 
 </resources>

@@ -73,7 +73,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
     @Override
     public void onAddToLibrary(String id) {
-        Debug.i(TAG, "onAddToLibrary" + id);
+        Log.e(TAG, "onAddToLibrary" + id);
         try {
             arrayListAddBooksToLibrary.add(id);
         } catch (Exception e) {
@@ -83,7 +83,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
     @Override
     public void onRemoveFromLibrary(String id) {
-        Debug.i(TAG, "onRemoveFromLibrary" + id);
+        Log.e(TAG, "onRemoveFromLibrary" + id);
         try {
             arrayListRemoveBooksFromLibrary.add(id);
         } catch (Exception e) {
@@ -93,14 +93,14 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
 //    @Override
 //    public void onSearchFav(ArrayList<BookData> arrayList) {
-//        Debug.i(TAG, "listener called ");
+//        Log.e(TAG, "listener called ");
 //        setUpFavList(arrayList);
 //    }
 
 //    @Override
 //    public void onSearchSuggested(ArrayList<BookData> arrayList) {
 //
-//        Debug.i(TAG, "listener called ");
+//        Log.e(TAG, "listener called ");
 //        setUpSuggestedList(arrayList);
 //    }
 
@@ -151,10 +151,10 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 //            @Override
 //            public boolean onKey(View v, int keyCode, KeyEvent event) {
 //                if (keyCode == KeyEvent.KEYCODE_BACK) {
-//                    Debug.i(TAG, "back");
+//                    Log.e(TAG, "back");
 //                    return true;
 //                }
-//                Debug.i(TAG, "keyevents");
+//                Log.e(TAG, "keyevents");
 //                return false;
 //            }
 //        });
@@ -285,7 +285,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 )
 
         {
-            Debug.i(TAG, "onClicks : " + e.getLocalizedMessage());
+            Log.e(TAG, "onClicks : " + e.getLocalizedMessage());
         }
 
     }
@@ -322,7 +322,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 Utility.showSoftKeyboard(etSuggestedSearch, getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "onClickImgSuggetedSearch : " + e.getLocalizedMessage());
+            Log.e(TAG, "onClickImgSuggetedSearch : " + e.getLocalizedMessage());
         }
     }
 
@@ -342,7 +342,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "onClickImgFavSearch : " + e.getLocalizedMessage());
+            Log.e(TAG, "onClickImgFavSearch : " + e.getLocalizedMessage());
         }
     }
 
@@ -356,7 +356,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 }
             }
         } catch (Exception e) {
-            Debug.i(TAG, "onSearch: " + e.getLocalizedMessage());
+            Log.e(TAG, "onSearch: " + e.getLocalizedMessage());
         }
         return bookDatas;
     }
@@ -372,7 +372,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiGetBooksForUser Exception : " + e.toString());
+            Log.e(TAG, "callApiGetBooksForUser Exception : " + e.toString());
         }
     }
 
@@ -402,7 +402,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
             if (object != null) {
                 responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseManageLibrary success");
+                    Log.e(TAG, "onResponseManageLibrary success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseManageLibrary Failed");
                 }
@@ -425,7 +425,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                     arrayListSuggestedBooks = responseHandler.getBooks().get(0).getSuggested();
                     setUpSuggestedList(arrayListSuggestedBooks);
                     setUpFavList(arrayListFavBooks);
-                    Debug.i(TAG, "onResponseUserBooks success");
+                    Log.e(TAG, "onResponseUserBooks success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseUserBooks Failed");
                 }
@@ -517,7 +517,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
     @Override
     public void onAddToFav(int addToFavItem) {
-        Debug.i(TAG, "OnAddToFav" + addToFavItem);
+        Log.e(TAG, "OnAddToFav" + addToFavItem);
         try {
             arrayListFav.add(arrayListSuggestedBooks.get(addToFavItem).getBookId());
             arrayListFavBooks.add(arrayListSuggestedBooks.get(addToFavItem));
@@ -533,7 +533,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
     @Override
     public void onRemoveFromFav(int position) {
-        Debug.i(TAG, "onRemoveFromFav" + position);
+        Log.e(TAG, "onRemoveFromFav" + position);
         try {
             arrayListUnFav.add(arrayListFavBooks.get(position).getBookId());
             arrayListSuggestedBooks.add(arrayListFavBooks.get(position));
@@ -577,13 +577,13 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                     attribute.setUnfavoriteResourceId(arrayListUnFav);// get All the resource ids from favourite list to add resource id in user unfavourites
                 }
                 attribute.setResourceName(AppConstant.RESOURCE_BOOKS);
-                Debug.i(TAG, "Attributes object :" + attribute);
+                Log.e(TAG, "Attributes object :" + attribute);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
             } else {
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -595,13 +595,13 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 attribute.setUserId(Global.strUserId);
                 attribute.setAddBookId(arrayListAddBooksToLibrary);
                 attribute.setRemoveBookId(arrayListRemoveBooksFromLibrary);
-                Debug.i(TAG, "Attributes object :" + attribute);
+                Log.e(TAG, "Attributes object :" + attribute);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_BOOK_LIBRARY);
             } else {
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiManageLibrary Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiManageLibrary Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -609,15 +609,15 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         try {
             activityHost.hideProgress();
             if (object != null) {
-                Debug.i(TAG, "Response object :" + object);
+                Log.e(TAG, "Response object :" + object);
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite success");
+                    Log.e(TAG, "onResponseAddResourceToFavorite success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
+                    Log.e(TAG, "onResponseAddResourceToFavorite Failed");
                 }
             } else if (error != null) {
-                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
+                Log.e(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());

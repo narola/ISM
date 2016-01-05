@@ -2,6 +2,7 @@ package com.ism.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -13,9 +14,7 @@ import com.ism.R;
 import com.ism.fragment.DeskFragment;
 import com.ism.fragment.desk.JotterFragment;
 import com.ism.object.Global;
-import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
-
 /**
  * Created by c162 on 24/12/15.
  */
@@ -70,7 +69,7 @@ public class AddNewNoteDialog extends Dialog implements View.OnClickListener {
             }
         }}
         catch (Exception e){
-            Debug.i(TAG,"onClick Exception : "+e.getLocalizedMessage());
+            Log.e(TAG, "onClick Exception : " + e.getLocalizedMessage());
         }
     }
 

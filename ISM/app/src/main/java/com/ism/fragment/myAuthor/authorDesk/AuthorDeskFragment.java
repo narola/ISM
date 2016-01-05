@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.fragment.MyAuthorFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 
@@ -30,7 +31,7 @@ public class AuthorDeskFragment extends Fragment {
     private View view;
     private FragmentListener fragListener;
     private TextView txtAboutMe, txtBooks, txtAssignments;
-    private int currentFragment ;
+    private int currentFragment;
     private HostActivity activityHost;
 
     public static AuthorDeskFragment newInstance() {
@@ -76,25 +77,15 @@ public class AuthorDeskFragment extends Fragment {
                         loadFragment(FRAGMENT_ASSIGNMENTS);
                     }
                     break;
-//                    case R.id.txt_add: {
-//                        setBackClick(FRAGMENT_ASSIGNMENTS);
-//                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADD_ASSIGNMENT);
-//                    }
-//                    break;
                 }
                 selected(v);
             }
         };
-      //  handleBackClick(AppConstant.FRAGMENT_ASSIGNMENTS);
+//       handleBackClick(AppConstant.FRAGMENT_ASSIGNMENTS);
+        loadFragment(FRAGMENT_ABOUT_ME);
         txtAboutMe.setOnClickListener(onClick);
         txtBooks.setOnClickListener(onClick);
         txtAssignments.setOnClickListener(onClick);
-    }
-
-    private void setBackClick(int currentFragment) {
-//        if (!activityHost.bundle.containsKey(AppConstant.FRAGMENT_ASSIGNMENTS)) {
-//            activityHost.bundle.putInt(AppConstant.FRAGMENT_ASSIGNMENTS, currentFragment);
-//        }
     }
 
     /*This is to handle backstack for particular fragment */
@@ -121,27 +112,26 @@ public class AuthorDeskFragment extends Fragment {
             case FRAGMENT_ABOUT_ME:
                 currentFragment = frag;
                 AboutAuthorFragment aboutMeFragment = AboutAuthorFragment.newInstance();
-                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, aboutMeFragment).commit();
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, aboutMeFragment).commit();
                 break;
 
             case FRAGMENT_BOOKS:
                 currentFragment = frag;
                 AuthorDeskBooksFragment myDeskBooksFragment = AuthorDeskBooksFragment.newInstance();
-                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, myDeskBooksFragment).commit();
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, myDeskBooksFragment).commit();
                 break;
 
             case FRAGMENT_ASSIGNMENTS:
                 currentFragment = frag;
                 AuthorDeskAssignmentsFragment myDeskAssignmentsFragment = AuthorDeskAssignmentsFragment.newInstance(this);
-                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, myDeskAssignmentsFragment).commit();
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, myDeskAssignmentsFragment).commit();
                 break;
 
             case FRAGMENT_BOOKASSIGNMENT:
                 currentFragment = frag;
                 BookAssignmentsFragment bookAssignmentsFragment = BookAssignmentsFragment.newInstance(this);
-                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, bookAssignmentsFragment).commit();
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, bookAssignmentsFragment).commit();
                 break;
-
         }
     }
 
@@ -153,7 +143,7 @@ public class AuthorDeskFragment extends Fragment {
             activityHost = (HostActivity) activity;
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(HostActivity.FRAGMENT_AUTHOR_DESK);
+                fragListener.onFragmentAttached(MyAuthorFragment.FRAGMENT_AUTHOR_DESK);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -164,30 +154,13 @@ public class AuthorDeskFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         try {
-            Log.e(TAG, "onDetach Attached fragment ");
+            Log.e(TAG, "onDetach fragment ");
             if (fragListener != null) {
-                //fragListener.onFragmentDetached(HostActivity.FRAGMENT_AUTHOR_DESK);
+                fragListener.onFragmentDetached(MyAuthorFragment.FRAGMENT_AUTHOR_DESK);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
     }
-
-
-//    public void onBackClick() {
-//
-//        ((HostActivity) getActivity()).getBundle().remove(MyDeskAssignmentsAdapter.ARG_BOOK_ID);
-//
-//        if (currentFragment == FRAGMENT_BOOKASSIGNMENT) {
-//
-//            loadFragment(FRAGMENT_ASSIGNMENTS);
-//
-//        } else {
-//            ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYDESK);
-//        }
-//
-//
-//    }
-
 }

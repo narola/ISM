@@ -14,10 +14,9 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.myAuthor.MyAuthorAdapter;
 import com.ism.constant.AppConstant;
+import com.ism.fragment.myAuthor.FindMoreAuthorsFragment;
 import com.ism.fragment.myAuthor.MyAuthorsFragment;
-import com.ism.fragment.myAuthor.authorDesk.AuthorDeskFragment;
 import com.ism.interfaces.FragmentListener;
-import com.ism.utility.Debug;
 
 /**
  * Created by c162 on 01/1/16.
@@ -25,11 +24,19 @@ import com.ism.utility.Debug;
 public class MyAuthorFragment extends Fragment implements HostActivity.HostListenerMyAuthor{
 
     private static final String TAG = MyAuthorFragment.class.getSimpleName();
-    public static final int FRAGMENT_MY_AUTHORS = 0;
-    public static final int FRAGMENT_FIND_MORE_AUTHOR = 1;
-    public static final int FRAGMENT_AUTHOR = 2;
 
     private View view;
+
+    //My Author
+    public static final int FRAGMENT_AUTHOR_OFFICE = 31;
+    public static final int FRAGMENT_AUTHOR_DESK = 32;
+    public static final int FRAGMENT_GOTRENDING = 33;
+    public static final int FRAGMENT_TRIAL = 34;
+    public static final int FRAGMENT_MYTHIRTY = 35;
+    public static final int FRAGMENT_AUTHOR_ASSESSMENT = 36;
+    public static final int FRAGMENT_MY_AUTHORS = 37;
+    public static final int FRAGMENT_FIND_MORE_AUTHORS = 38;
+    public static final int FRAGMENT_TERM_AND_CONDITION = 39;
 
     private FragmentListener fragListener;
     private RecyclerView rvMyAuthorList;
@@ -58,7 +65,7 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
     }
 
     private void initGlobal() {
-        loadFragment(FRAGMENT_MY_AUTHORS);
+        loadFragment(MyAuthorFragment.FRAGMENT_MY_AUTHORS);
     }
 
     @Override
@@ -68,7 +75,6 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
             fragListener = (FragmentListener) activity;
             activityHost = (HostActivity) activity;
             activityHost.setListenerHostMyAuthor(this);
-
             // activityHost.on
             if (fragListener != null) {
                 fragListener.onFragmentAttached(HostActivity.FRAGMENT_MY_AUTHOR);
@@ -94,44 +100,21 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
     public void loadFragment(int fragment) {
         try {
             switch (fragment) {
-                case FRAGMENT_MY_AUTHORS:
+                case MyAuthorFragment.FRAGMENT_MY_AUTHORS:
                     currentFragment = fragment;
                     myAuthorsFragment = MyAuthorsFragment.newInstance();
-                    activityHost.hideControllerTopBackButton();
-                    getChildFragmentManager().beginTransaction().addToBackStack(AppConstant.FRAGMENT_MY_AUTHORS).replace(R.id.fl_my_authors, myAuthorsFragment).commit();
+                    getChildFragmentManager().beginTransaction().replace(R.id.fl_my_authors, myAuthorsFragment, AppConstant.FRAGMENT_MY_AUTHORS).commit();
                     break;
-
-                case HostActivity.FRAGMENT_AUTHOR_DESK:
+                case MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS:
                     currentFragment = fragment;
-                    AuthorDeskFragment authorDeskFragment = AuthorDeskFragment.newInstance();
-                    getChildFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorDeskFragment).commit();
-                    //activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
+                    FindMoreAuthorsFragment findMoreAuthorsFragment = FindMoreAuthorsFragment.newInstance();
+                    Log.e(TAG,"getFragmentmanager " +getFragmentManager());
+                    Log.e(TAG,"R.id.fl_my_authors " +R.id.fl_my_authors);
+                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, findMoreAuthorsFragment).commit();
                     break;
-
-                case HostActivity.FRAGMENT_GOTRENDING:
-                    currentFragment = fragment;
-                    // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GOTRENDING);
-                    break;
-
-                case HostActivity.FRAGMENT_TRIAL:
-                    currentFragment = fragment;
-                    //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
-                    break;
-
-                case HostActivity.FRAGMENT_MYTHIRTY:
-                    currentFragment = fragment;
-                    //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
-                    break;
-
-                case HostActivity.FRAGMENT_AUTHOR_ASSESSMENT:
-                    currentFragment = fragment;
-                    // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT);
-                    break;
-
-
             }
         } catch (Exception e) {
-            Debug.i(TAG, "loadFragment Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "loadFragment Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -142,21 +125,12 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
     public static int getCurrentChildFragment() {
         return currentFragment;
     }
-
-    @Override
-    public void onControllerTopBackClick() {
-        switch (currentFragment) {
-            case FRAGMENT_MY_AUTHORS:
-                loadFragment(FRAGMENT_MY_AUTHORS);
-//                activityHost.hideControllerTopBackButton();
-//                myAuthorsFragment.showView();
-                break;
-        }
+    public void onTopControllerBackClick(int position) {
+        loadFragment(currentFragment);
     }
 
-//    @Override
-//    public void onTabItemClick(int position) {
-//        Log.e(TAG, "onTabItemClick : " + position);
-//        loadFragment(position);
-//    }
+    @Override
+    public void onControllerTopBackClick(int position) {
+        loadFragment(position);
+    }
 }

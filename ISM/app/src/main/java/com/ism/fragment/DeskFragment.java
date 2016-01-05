@@ -101,7 +101,7 @@ public class DeskFragment extends Fragment implements HostActivity.HostListener,
 
             }
         } catch (Exception e) {
-            Debug.i(TAG, "onBackMenuItemClick Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "onBackMenuItemClick Exceptions : " + e.getLocalizedMessage());
         }
     }
 
