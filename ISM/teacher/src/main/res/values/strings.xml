@@ -52,7 +52,7 @@
     <string name="strManageBlockUsers">Manage Blocked Users</string>
 
     <string name="strContactIsmAdmin">Contact ISM Admin</string>
-    <string name="strContactAdminEmailAddress"><![CDATA[If you have any complain for any of the user,then you can contact us & send email at <b><font color=#41B1E3>ism_security@gmail.com</b>]]></string>
+    <string name="strContactAdminEmailAddress"><![CDATA[If you have any complain for any of the user. Then you can contact us & send email at <b>ism_security@gmail.com</b>]]></string>
     <string name="strBlockStudyMate">If you wish to block any studymate then add</string>
     <string name="strReceivedNotificationTag">Receive notification when you are tagged in any post</string>
     <string name="strLikeNotification">Send me notification for like</string>

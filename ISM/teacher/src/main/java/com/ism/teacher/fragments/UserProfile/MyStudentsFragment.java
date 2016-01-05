@@ -78,7 +78,7 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootview = inflater.inflate(R.layout.fragment_mystudents_from_teacher_profile, container, false);
+        View rootview = inflater.inflate(R.layout.fragment_mystudents_teacher_profile, container, false);
 
         initGlobal(rootview);
         return rootview;

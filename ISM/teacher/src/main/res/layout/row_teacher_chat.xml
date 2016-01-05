@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/ll_mystudent_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="@dimen/d10dp">
+
+        <com.ism.teacher.views.CircleImageView
+            android:id="@+id/img_student_pic"
+            android:layout_width="@dimen/d50dp"
+            android:layout_height="@dimen/d50dp"
+            android:background="@drawable/userdp" />
+
+        <TextView
+            android:id="@+id/tv_student_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/d15dp"
+            android:layout_toRightOf="@+id/img_student_pic"
+            android:singleLine="true"
+            android:text="@string/strtest"
+            android:textColor="@color/color_gray"
+            android:textSize="@dimen/d20sp" />
+
+        <ImageView
+            android:id="@+id/img_online"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/d5dp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/img_separator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d1dp"
+        android:background="@color/color_shade_news_feed" />
+
+</LinearLayout>
