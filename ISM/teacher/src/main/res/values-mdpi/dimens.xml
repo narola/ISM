@@ -64,6 +64,7 @@
     <dimen name="d45dp">33.75dp</dimen>
     <dimen name="d50dp">37.50dp</dimen>
     <dimen name="d60dp">45dp</dimen>
+    <dimen name="d65dp">48.75dp</dimen>
     <dimen name="d70dp">52.5dp</dimen>
     <dimen name="d90dp">67.50dp</dimen>
     <dimen name="d100dp">75dp</dimen>
@@ -103,6 +104,14 @@
     <dimen name="d350dp">262.50dp</dimen>
     <dimen name="d480dp">360dp</dimen>
     <dimen name="d235dp">176.25dp</dimen>
+    <dimen name="d230dp">172.50dp</dimen>
+    <dimen name="d245dp">183.75dp</dimen>
+
+    <!-- top margins for triangle shape -->
+    <dimen name="d190dp">142.50dp</dimen>
+    <dimen name="d290dp">217.50dp</dimen>
+    <dimen name="d315dp">236.25dp</dimen>
+    <dimen name="d375dp">281.25dp</dimen>
 
     <dimen name="text_size_emptylist_message_small">@dimen/d18sp</dimen>
     <dimen name="text_size_emptylist_message_medium">@dimen/d22sp</dimen>
@@ -112,6 +121,8 @@
     <dimen name="d1px">1px</dimen>
     <dimen name="dminus8dp">-6dp</dimen>
     <dimen name="dMinus10dp">-7.5dp</dimen>
+    <dimen name="dMinus15dp">-11.25dp</dimen>
+    <dimen name="dMinus20dp">-15dp</dimen>
     <dimen name="d185dp">138.75dp</dimen>
     <dimen name="padding_header_white">@dimen/d20dp</dimen>
     <dimen name="padding_child_fragment_content">@dimen/d15dp</dimen>

@@ -30,6 +30,7 @@ import com.ism.teacher.ws.model.Question;
 import com.ism.teacher.ws.model.Questions;
 import com.ism.teacher.ws.model.SettingPreferences;
 import com.ism.teacher.ws.model.States;
+import com.ism.teacher.ws.model.Students;
 import com.ism.teacher.ws.model.StudymateRequest;
 import com.ism.teacher.ws.model.Studymates;
 import com.ism.teacher.ws.model.Subjects;
@@ -46,8 +47,8 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseHandler {
 
+    private String TAG = ResponseHandler.class.getSimpleName();
     private String message;
-    //    private ArrayList<Data> data;
     private String status;
 
     private String mediaType;
@@ -56,11 +57,52 @@ public class ResponseHandler {
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
     public static final String DUPLICATE_ENTRY = "Duplicate entry";
-    private String TAG = ResponseHandler.class.getSimpleName();
+
     private ArrayList<Feeds> feedImages;
     private ArrayList<BlockedUsers> blockedUsers;
     private ArrayList<SettingPreferences> preference;
     private ArrayList<UserPreferences> userPreference;
+    private ArrayList<Students> students;
+    private ArrayList<Feeds> feeds;
+    private ArrayList<CommentList> comments;
+    private ArrayList<Studymates> studymates;
+    private ArrayList<Exams> exams;
+    private ArrayList<Subjects> subjects;
+    private ArrayList<Classrooms> classrooms;
+    private ArrayList<ExamQuestions> examQuestions;
+    private ArrayList<ExamSubmission> examSubmission;
+    private ArrayList<ExamEvaluation> examEvaluation;
+    private ArrayList<Topics> topics;
+    private ArrayList<CreateExam> createExam;
+    private ArrayList<Countries> countries;
+    private ArrayList<States> states;
+    private ArrayList<Cities> cities;
+    private ArrayList<Feed> feed;
+    private ArrayList<Courses> courses;
+    private ArrayList<Questions> questions;
+    private ArrayList<User> user;
+    private ArrayList<Questions> questionBanks;
+    private ArrayList<HashTags> tags;
+    private ArrayList<Question> question;
+    private UserImages userImages;
+    private ArrayList<Token> token;
+    private ArrayList<AdminConfig> adminConfig;
+    private ArrayList<Group> group;
+    private ArrayList<Badges> badges;
+    private ArrayList<Notification> notification;
+    private ArrayList<StudymateRequest> studymateRequest;
+    private ArrayList<Message> messages;
+
+
+    @JsonProperty("students")
+    public ArrayList<Students> getStudents() {
+        return students;
+    }
+
+    public ResponseHandler setStudents(ArrayList<Students> students) {
+        this.students = students;
+        return this;
+    }
 
     public String getMessage() {
         return this.message;
@@ -105,43 +147,6 @@ public class ResponseHandler {
     public void setStatus(String status) {
         this.status = status;
     }
-
-
-    /*this is the new code for the response handler*/
-
-    private ArrayList<Feeds> feeds;
-    private ArrayList<CommentList> comments;
-    private ArrayList<Studymates> studymates;
-    private ArrayList<Exams> exams;
-    private ArrayList<Subjects> subjects;
-    private ArrayList<Classrooms> classrooms;
-    private ArrayList<ExamQuestions> examQuestions;
-    private ArrayList<ExamSubmission> examSubmission;
-    private ArrayList<ExamEvaluation> examEvaluation;
-    private ArrayList<Topics> topics;
-    private ArrayList<CreateExam> createExam;
-    private ArrayList<Countries> countries;
-    private ArrayList<States> states;
-    private ArrayList<Cities> cities;
-    private ArrayList<Feed> feed;
-    private ArrayList<Courses> courses;
-    private ArrayList<Questions> questions;
-    private ArrayList<User> user;
-
-    private ArrayList<Questions> questionBanks;
-    private ArrayList<HashTags> tags;
-    private ArrayList<Question> question;
-    private UserImages userImages;
-    private ArrayList<Token> token;
-    private ArrayList<AdminConfig> adminConfig;
-    private ArrayList<Group> group;
-
-
-    private ArrayList<Badges> badges;
-    private ArrayList<Notification> notification;
-    private ArrayList<StudymateRequest> studymateRequest;
-    private ArrayList<Message> messages;
-
     /**
      * User Profile
      */
@@ -463,7 +468,6 @@ public class ResponseHandler {
     public void setAdminConfig(ArrayList<AdminConfig> adminConfig) {
         this.adminConfig = adminConfig;
     }
-
 
 }
 

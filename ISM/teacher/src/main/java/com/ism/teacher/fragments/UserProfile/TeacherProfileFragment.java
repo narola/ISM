@@ -174,12 +174,10 @@ public class TeacherProfileFragment extends Fragment implements TeacherHostActiv
                         activityHost.loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_MY_FEEDS);
                         break;
                     case R.id.tv_mystudents:
+                        activityHost.loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_MY_STUDENTS);
                         break;
                     case R.id.tv_myactivity:
-                        /**
-                         * Remove Comment
-                         */
-//                        activityHost.loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_MY_ACTIVITY);
+                        activityHost.loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_MY_ACTIVITY);
                         break;
                     case R.id.rl_view_profile:
                         break;
@@ -473,7 +471,6 @@ public class TeacherProfileFragment extends Fragment implements TeacherHostActiv
 
     @Override
     public void onResponse(int apiCode, Object object, Exception error) {
-
         try {
             switch (apiCode) {
                 case WebConstants.GET_NOTIFICATION:
@@ -669,19 +666,15 @@ public class TeacherProfileFragment extends Fragment implements TeacherHostActiv
                 tvMyfeeds.setEnabled(!attached);
                 break;
 
-            /**
-             * Remove Comments
-             */
-//
-//            case TeacherHostActivity.FRAGMENT_MY_STUDENTS:
-//                tvMyactivity.setTextColor(textColor);
-//                tvMyactivity.setEnabled(!attached);
-//                break;
-//
-//            case TeacherHostActivity.FRAGMENT_MY_ACTIVITY:
-//                tvMyactivity.setTextColor(textColor);
-//                tvMyactivity.setEnabled(!attached);
-//                break;
+            case TeacherHostActivity.FRAGMENT_MY_STUDENTS:
+                tvMystudents.setTextColor(textColor);
+                tvMystudents.setEnabled(!attached);
+                break;
+
+            case TeacherHostActivity.FRAGMENT_MY_ACTIVITY:
+                tvMyactivity.setTextColor(textColor);
+                tvMyactivity.setEnabled(!attached);
+                break;
 
 
         }

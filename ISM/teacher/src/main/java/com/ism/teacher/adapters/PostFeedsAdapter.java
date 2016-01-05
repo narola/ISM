@@ -398,8 +398,10 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         txtCommenterUsername.setText(commentList.getFullName());
         txtCommenterComment.setText(commentList.getComment());
-        txtCommentDuration.setText(commentList.getCommentBy());
 
+        if (commentList.getCreatedDate() != null && !commentList.getCreatedDate().equals("")) {
+            txtCommentDuration.setText(com.ism.commonsource.utility.Utility.getTimeDuration(commentList.getCreatedDate()));
+        }
         Global.imageLoader.displayImage(WebConstants.USER_IMAGES + commentList.getProfileLink(),
                 img_dp_commenter, ISMTeacher.options);
 

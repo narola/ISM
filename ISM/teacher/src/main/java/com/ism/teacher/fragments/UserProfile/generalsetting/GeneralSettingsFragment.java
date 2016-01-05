@@ -29,8 +29,8 @@ import java.util.ArrayList;
 
 
 /**
- * Created by c161 on 06/11/15.
- * updated by  c162
+ * This fragment is used to display the general settings.
+ * It contains privacy settings,block user,sms alerts and notification.
  */
 public class GeneralSettingsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, TeacherHostActivity.ProfileControllerPresenceListener {
 
