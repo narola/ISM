@@ -14,10 +14,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.InputValidator;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.InputValidator;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
@@ -120,7 +119,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    strSubmissionDate = Utils.showDatePickerDob(getActivity(), etActivitySubmissionDate);
+                    strSubmissionDate = Utility.showDatePickerDob(getActivity(), etActivitySubmissionDate);
 
                 }
                 return true;
@@ -340,7 +339,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                     Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetClassrooms api Exception : " + error.toString());
@@ -368,7 +367,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                     }
                     Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
@@ -395,7 +394,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                     Adapters.setUpSpinner(getActivity(), spActivityTopic, topics, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetTopics api Exception : " + error.toString());
@@ -412,9 +411,9 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     backToTrialScreen();
-                    Utils.showToast(getActivity().getString(R.string.msg_success_createassignment), getActivity());
+                    Utility.showToast(getActivity().getString(R.string.msg_success_createassignment), getActivity());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseCreateAssignment api Exception : " + error.toString());

@@ -1,4 +1,4 @@
-package com.ism.author.Utility;
+package com.ism.author.utility;
 
 /**
  * Created by c166 on 21/10/15.

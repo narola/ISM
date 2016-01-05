@@ -12,9 +12,6 @@ public class WebConstants {
     public static final String FEED_MEDIA_KINJAL = "http://192.168.1.147/WS_ISM/Images/feeds/";
 
     public static final String FEED_MEDIA = "http://192.168.1.202/pg/ISM/WS_ISM/Images/feeds/";
-
-    public static final String USER_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
-
     public static final String HOST_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/";                                        // for books
 
     public static final String USER_IMAGES_TEST = "http://192.168.1.147/WS_ISM/Images/users_images/";
@@ -304,6 +301,7 @@ public class WebConstants {
 
     /*Image Url Constants*/
 
+    public static final String USER_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
     public static final String QUESTION_IMAGES = "http://192.168.1.147/WS_ISM/Images/questions_images/";
     public static final String BOOKS_IMAGES = "http://192.168.1.147/WS_ISM/";
 

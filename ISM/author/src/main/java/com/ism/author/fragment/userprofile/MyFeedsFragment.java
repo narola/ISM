@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.PostFeedsAdapter;
 import com.ism.author.constant.WebConstants;
@@ -24,6 +24,8 @@ import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+
+import realmhelper.AuthorHelper;
 
 /**
  * Created by c162 on 26/10/15.
@@ -40,6 +42,7 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
     private RecyclerView recyclerPostFeeds;
     private LinearLayout llNewPost;
     private TextView tvNoDataMsg;
+    private AuthorHelper authorHelper;
 
     public static MyFeedsFragment newInstance() {
         MyFeedsFragment fragBooks = new MyFeedsFragment();
@@ -60,9 +63,11 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
     }
 
     private void initGlobal() {
+
+        authorHelper = new AuthorHelper(getActivity());
         recyclerPostFeeds = (RecyclerView) view.findViewById(R.id.recycler_post);
         llNewPost = (LinearLayout) view.findViewById(R.id.rl_new_post);
-        adpPostFeeds = new PostFeedsAdapter(getActivity());
+        adpPostFeeds = new PostFeedsAdapter(getActivity(), authorHelper);
         recyclerPostFeeds.setAdapter(adpPostFeeds);
         recyclerPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
@@ -148,7 +153,7 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
 
 
                     if (responseHandler.getFeeds().size() > 0) {
-                        adpPostFeeds.addAll(responseHandler.getFeeds());
+//                        adpPostFeeds.addAll(responseHandler.getFeeds());
                         setEmptyView(false);
                     } else {
                         setEmptyView(true);

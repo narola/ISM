@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.userprofile.MessageAdapter;
 import com.ism.author.constant.WebConstants;

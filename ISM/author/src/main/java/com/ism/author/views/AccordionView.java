@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.FontUtils;
+import com.ism.author.utility.FontUtils;
 
 import java.util.HashMap;
 import java.util.Map;

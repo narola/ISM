@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
+import com.ism.author.utility.Debug;
 import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.QuestionPalette;

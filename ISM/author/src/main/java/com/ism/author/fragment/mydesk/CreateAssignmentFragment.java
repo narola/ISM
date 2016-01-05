@@ -12,10 +12,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.InputValidator;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.InputValidator;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.AppConstant;
@@ -50,7 +49,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     private ArrayList<BookData> arrListAuthorBooks;
     private String strValidationMsg;
     private EditText etAssignmentName;
-    private com.ism.author.Utility.InputValidator inputValidator;
+    private com.ism.author.utility.InputValidator inputValidator;
     MyDeskFragment myDeskFragment;
 
     public static CreateAssignmentFragment newInstance() {
@@ -238,7 +237,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                     Adapters.setUpSpinner(getActivity(), spBooks, authorBooks, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.i(TAG, "onResponseGetAuthorBooks  : failed");
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAuthorBooks api Exception : " + error.toString());

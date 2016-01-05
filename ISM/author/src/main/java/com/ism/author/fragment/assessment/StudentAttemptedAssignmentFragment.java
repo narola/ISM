@@ -10,9 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.StudentAttemptedAssignmentAdapter;
@@ -127,7 +126,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
 
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAllExamSubmission api Exception : " + error.toString());

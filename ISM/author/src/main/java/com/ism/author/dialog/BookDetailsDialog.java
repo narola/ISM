@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Utility;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.BookData;
