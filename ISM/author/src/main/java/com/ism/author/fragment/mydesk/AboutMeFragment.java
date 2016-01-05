@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.Global;
@@ -46,6 +46,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private TextView txtBooks;
     private TextView txtTotalQueAnswered, txtQuestionAnswered;
     private TextView txtAboutAuthorDetails, txtAboutAuhtor;
+    private AuthorHelper authorHelper;
 
     public static AboutMeFragment newInstance() {
         AboutMeFragment fragment = new AboutMeFragment();
@@ -67,12 +68,13 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
 
     private void initGlobal() {
+        authorHelper = new AuthorHelper(getActivity());
         myDeskFragment = MyDeskFragment.newInstance();
 
         txtUserName = (TextView) view.findViewById(R.id.txt_user_name);
         txtTotalBooks = (TextView) view.findViewById(R.id.txt_total_books);
         imgProfilePic = (ImageView) view.findViewById(R.id.img_profile_pic);
-        Global.authorHelper = new AuthorHelper(getActivity());
+        authorHelper = new AuthorHelper(getActivity());
         txtSocial = (TextView) view.findViewById(R.id.txt_social);
         txtAboutAuthorDetails = (TextView) view.findViewById(R.id.txt_About_author_details);
         txtAboutAuhtor = (TextView) view.findViewById(R.id.txt_About_author);
@@ -178,7 +180,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private void saveAuthorProfile(User user) {
         try {
             AuthorProfile authorProfile = new AuthorProfile();
-            authorProfile.setUser(Global.authorHelper.getUser(Integer.parseInt(Global.strUserId)));
+            authorProfile.setUser(authorHelper.getUser(Integer.parseInt(Global.strUserId)));
             authorProfile.setAuthorId(Integer.parseInt(user.getUserId()));
             authorProfile.setAboutAuthor(user.getAboutAuthor());
             //authorProfile.setContactNumber(user.getContactNumber()); // this field is never used in author module
@@ -193,8 +195,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             authorProfile.setTotalFollpwing(Integer.parseInt(user.getTotalFollowing() == null ? "0" : user.getTotalFollowing()));
             authorProfile.setTotalExamCreated(Integer.parseInt(user.getTotalExams() == null ? "0" : user.getTotalExams()));
             authorProfile.setTotalBooks(Integer.parseInt(user.getTotalBooks() == null ? "0" : user.getTotalBooks()));
-            Global.authorHelper.saveAuthorProfile(authorProfile);
-            setUpDBData(Global.authorHelper.getAuthorprofile(Integer.parseInt(Global.strUserId)));
+            authorHelper.saveAuthorProfile(authorProfile);
+            setUpDBData(authorHelper.getAuthorprofile(Integer.parseInt(Global.strUserId)));
 
         } catch (Exception e) {
             Debug.i(TAG, "saveAuthorProfile Exceptions: " + e.getLocalizedMessage());
@@ -284,7 +286,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     public static String getDateFormate(Date date) {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-           // Date date = formatter.parse(birthdate);
+            // Date date = formatter.parse(birthdate);
             System.out.println(date);
             System.out.println(formatter.format(date));
             Log.i(TAG, "getDateFormate : " + date);
@@ -361,7 +363,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     }
 
 
-
     @Override
     public void onResponse(int apiCode, Object object, Exception error) {
         try {
@@ -374,5 +375,11 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        authorHelper.realm.close();
     }
 }

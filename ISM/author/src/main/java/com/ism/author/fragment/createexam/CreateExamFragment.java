@@ -19,10 +19,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.InputValidator;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.InputValidator;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
@@ -267,7 +266,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    examStartDate = Utils.showDatePickerDob(getActivity(), etExamStartdate);
+                    examStartDate = Utility.showDatePickerDob(getActivity(), etExamStartdate);
                     etExamStartdate.setError(null);
                 }
                 return true;
@@ -467,7 +466,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
                 attribute.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
                 attribute.setAttemptCount(String.valueOf(Integer.valueOf(etExamAttemptcount.getText().toString())));
-                attribute.setExamStartDate(Utils.getDateInApiFormat(etExamStartdate.getText().toString()));
+                attribute.setExamStartDate(Utility.getDateInApiFormat(etExamStartdate.getText().toString()));
                 attribute.setExamStartTime(etExamStartTime.getText().toString());
                 attribute.setDeclareResults(getRadioGropuSelection(radioDeclareresult));
                 attribute.setNegativeMarking(getRadioGropuSelection(radioNegativemarking));
@@ -706,7 +705,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetClassrooms api Exception : " + error.toString());
@@ -738,7 +737,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     spExamBookname.setSelection(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
 //                    }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
@@ -758,13 +757,13 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
                     if (getBaseFragment().getBundleArguments().containsKey(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
                         if (!getBaseFragment().getBundleArguments().getBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
-                            Utils.showToast(Utility.getString(R.string.msg_success_editexam, getActivity()), getActivity());
+                            Utility.showToast(Utility.getString(R.string.msg_success_editexam, getActivity()), getActivity());
                         } else {
                             tvExamSave.setVisibility(View.GONE);
-                            Utils.showToast(Utility.getString(R.string.msg_success_createexam, getActivity()), getActivity());
+                            Utility.showToast(Utility.getString(R.string.msg_success_createexam, getActivity()), getActivity());
                         }
                     } else {
-                        Utils.showToast(Utility.getString(R.string.msg_success_createexam, getActivity()), getActivity());
+                        Utility.showToast(Utility.getString(R.string.msg_success_createexam, getActivity()), getActivity());
                     }
 
                     svCreateExam.fullScroll(ScrollView.FOCUS_UP);
@@ -774,7 +773,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     getBaseFragment().getBundleArguments().putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
                     setBundleArguments();
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseCreateExam api Exception : " + error.toString());

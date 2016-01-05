@@ -18,11 +18,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.InputValidator;
-import com.ism.author.Utility.PreferenceData;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.InputValidator;
+import com.ism.author.utility.PreferenceData;
+import com.ism.author.utility.Utility;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
@@ -679,11 +678,11 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    Utils.showToast(getString(R.string.msg_success_imgupload_profilepic), getActivity());
+                    Utility.showToast(getString(R.string.msg_success_imgupload_profilepic), getActivity());
                     PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, getActivity(), responseHandler.getUserImages().getProfileImages().get(0));
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseUploadMediaForQuestion api Exception : " + error.toString());

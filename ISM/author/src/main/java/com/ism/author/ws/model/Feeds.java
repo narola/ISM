@@ -10,34 +10,34 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Feeds {
 
-    private String like;
+    private String selfLike;
     private String likeForDataSync;
     private String fullName;
     private String modifiedDate;
     private ArrayList<FeedImages> feedImages;
     private String audioLink;
     private String postedOn;
-    private String feedBy;
-    private String totalLike;
+    private int feedBy;
+    private int totalLike;
     private ArrayList<CommentList> commentList;
     private String userId;
     private String createdDate;
-    private String feedId;
+    private int feedId;
     private String profilePic;
     private String videoThumbnail;
     private String videoLink;
     private String feedText;
-    private String totalComment;
+    private int totalComment;
     private String mediaType;
     private String link;
 
     @JsonProperty("self_like")
-    public String getLike() {
-        return this.like;
+    public String getSelfLike() {
+        return this.selfLike;
     }
 
-    public void setLike(String like) {
-        this.like = like;
+    public void setSelfLike(String selfLike) {
+        this.selfLike = selfLike;
     }
 
     @JsonProperty("full_name")
@@ -86,20 +86,20 @@ public class Feeds {
     }
 
     @JsonProperty("feed_by")
-    public String getFeedBy() {
+    public int getFeedBy() {
         return this.feedBy;
     }
 
-    public void setFeedBy(String feedBy) {
+    public void setFeedBy(int feedBy) {
         this.feedBy = feedBy;
     }
 
     @JsonProperty("total_like")
-    public String getTotalLike() {
+    public int getTotalLike() {
         return this.totalLike;
     }
 
-    public void setTotalLike(String totalLike) {
+    public void setTotalLike(int totalLike) {
         this.totalLike = totalLike;
     }
 
@@ -131,11 +131,11 @@ public class Feeds {
     }
 
     @JsonProperty("feed_id")
-    public String getFeedId() {
+    public int getFeedId() {
         return this.feedId;
     }
 
-    public void setFeedId(String feedId) {
+    public void setFeedId(int feedId) {
         this.feedId = feedId;
     }
 
@@ -176,11 +176,11 @@ public class Feeds {
     }
 
     @JsonProperty("total_comment")
-    public String getTotalComment() {
+    public int getTotalComment() {
         return this.totalComment;
     }
 
-    public void setTotalComment(String totalComment) {
+    public void setTotalComment(int totalComment) {
         this.totalComment = totalComment;
     }
 

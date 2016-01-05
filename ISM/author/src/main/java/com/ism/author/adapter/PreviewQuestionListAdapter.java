@@ -14,9 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.HtmlImageGetter;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.HtmlImageGetter;
+import com.ism.author.utility.Utility;
 import com.ism.author.fragment.createquestion.AddQuestionContainerFragment;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.Answers;
@@ -190,7 +190,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         v = layoutInflater.inflate(R.layout.row_mcq_question_answer, null, false);
         TextView tvMcqQuestionAns = (TextView) v.findViewById(R.id.tv_mcq_question_ans);
         tvMcqQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvMcqQuestionAns.setText(Utils.formatHtml(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
+        tvMcqQuestionAns.setText(Utility.formatHtml(Utility.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
 
         return v;
     }

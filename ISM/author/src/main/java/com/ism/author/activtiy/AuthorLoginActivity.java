@@ -19,11 +19,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.InputValidator;
-import com.ism.author.Utility.PreferenceData;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.InputValidator;
+import com.ism.author.utility.PreferenceData;
+import com.ism.author.utility.Utility;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.broadcastReceiver.NetworkStatusReceiver;
 import com.ism.author.constant.WebConstants;
@@ -696,9 +695,9 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                     if (dialogCredentials != null) {
                         dialogCredentials.dismiss();
                     }
-                    Utils.showToast(getActivity().getString(R.string.msg_success_sent_credential), getActivity());
+                    Utility.showToast(getActivity().getString(R.string.msg_success_sent_credential), getActivity());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseCredentials api Exception : " + error.toString());
@@ -721,10 +720,10 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    Utils.showToast(getActivity().getString(R.string.password_sent), getActivity());
+                    Utility.showToast(getActivity().getString(R.string.password_sent), getActivity());
                     dialogForgotPassword.dismiss();
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(getActivity().getString(R.string.email_not_found), getActivity());
+                    Utility.showToast(getActivity().getString(R.string.email_not_found), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseForgotPassword api Exception : " + error.toString());
@@ -765,7 +764,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                     }
 
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Utils.showToast(getString(R.string.msg_wrong_username_password), getActivity());
+                    Utility.showToast(getString(R.string.msg_wrong_username_password), getActivity());
                 }
             } else if (error != null) {
                 Log.e(TAG, "onResponseLogin api Exception : " + error.toString());

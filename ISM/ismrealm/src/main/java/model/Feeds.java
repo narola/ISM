@@ -10,7 +10,10 @@ import io.realm.annotations.PrimaryKey;
  * Created by c85 on 19/11/15.
  * {@link RealmObject} class to handle feeds of user.
  * Relationship with {@link User}
+ * Relationship with{@link FeedComment}
+ * Relationship with{@link FeedImage}
  */
+
 public class Feeds extends RealmObject {
 
     @PrimaryKey
@@ -26,21 +29,12 @@ public class Feeds extends RealmObject {
     private Date createdDate;
     private Date modifiedDate;
     private int isSync;
-    private String like;
-    ////private String profilePic;
+    private String selfLike;
 
 
     private RealmList<FeedComment> comments = new RealmList<FeedComment>();
     private RealmList<FeedImage> feedImages = new RealmList<FeedImage>();
 
-
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
 
     public int getFeedId() {
         return feedId;
@@ -130,29 +124,13 @@ public class Feeds extends RealmObject {
         this.modifiedDate = modifiedDate;
     }
 
-//    public String getFullName() {
-//        return fullName;
-//    }
-//
-//    public void setFullName(String fullName) {
-//        this.fullName = fullName;
-//    }
-
-    public String getLike() {
-        return like;
+    public String getSelfLike() {
+        return selfLike;
     }
 
-    public void setLike(String like) {
-        this.like = like;
+    public void setSelfLike(String selfLike) {
+        this.selfLike = selfLike;
     }
-
-//    public String getProfilePic() {
-//        return profilePic;
-//    }
-//
-//    public void setProfilePic(String profilePic) {
-//        this.profilePic = profilePic;
-//    }
 
     public RealmList<FeedComment> getComments() {
         return comments;
@@ -177,4 +155,5 @@ public class Feeds extends RealmObject {
     public void setIsSync(int isSync) {
         this.isSync = isSync;
     }
+
 }

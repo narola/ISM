@@ -13,6 +13,7 @@ import io.realm.RealmResults;
 import model.AdminConfig;
 import model.AuthorProfile;
 import model.FeedLike;
+import model.Feeds;
 import model.Preferences;
 import model.User;
 
@@ -100,6 +101,26 @@ public class AuthorHelper {
         } catch (Exception e) {
             Log.e(TAG, "clearTableData Exception : " + e.toString());
         }
+    }
+
+    public RealmResults<Feeds> getAllPostFeeds() {
+
+        RealmQuery<Feeds> query = realm.where(Feeds.class);
+        return query.findAll();
+
+    }
+
+
+    public void addFeeds(Feeds feeds) {
+        try {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(feeds);
+            realm.commitTransaction();
+
+        } catch (Exception e) {
+            Log.e(TAG, "addFeedsData Exception : " + e.toString());
+        }
+
     }
 
 
@@ -252,7 +273,9 @@ public class AuthorHelper {
 
     public User getUser(int userId) {
         try {
+
             return realm.where(User.class).equalTo("userId", userId).findFirst();
+
         } catch (Exception e) {
             Log.i(TAG, "getUser Exceptions : " + e.getLocalizedMessage());
         }
@@ -281,6 +304,9 @@ public class AuthorHelper {
 
     public void destroy() {
 
+        if (realm != null) {
+            realm.close();
+        }
     }
 
 

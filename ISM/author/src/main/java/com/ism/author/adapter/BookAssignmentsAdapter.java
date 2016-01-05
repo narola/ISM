@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.Assignment;
 
@@ -100,9 +100,13 @@ public class BookAssignmentsAdapter extends RecyclerView.Adapter<BookAssignments
 
             Debug.e(TAG, "The string is:::" + charText);
             for (Assignment wp : copyListOfAssignments) {
-                if (Utility.containsString(wp.getAssignmentName(), charText.toString(), false)) {
-                    arrListBookAssignment.add(wp);
+
+                if (charText != "") {
+                    if (Utility.containsString(wp.getAssignmentName(), charText.toString(), false)) {
+                        arrListBookAssignment.add(wp);
+                    }
                 }
+
             }
             if (arrListBookAssignment.size() == 0) {
             }

@@ -13,7 +13,7 @@ import io.realm.annotations.PrimaryKey;
 public class FeedComment extends RealmObject {
 
     @PrimaryKey
-    private  int feedCommentId;
+    private int feedCommentId;
     private User commentBy;
     private String comment;
     private Feeds feed;

@@ -14,9 +14,8 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.gotrending.PastQuestionsAdapter;
 import com.ism.author.adapter.gotrending.QuestionCommentAdapter;
@@ -176,7 +175,7 @@ public class TrendingQuestionDetailFragment extends Fragment implements Webservi
         Global.imageLoader.displayImage(WebConstants.USER_IMAGES + questionComments.getPostedByPic(),
                 imgUserDp, ISMAuthor.options);
         txtCreatorName.setText(questionComments.getPostedByUsername());
-        txtDate.setText(Utils.getDateInApiFormat(questionComments.getPostedOn()));
+        txtDate.setText(Utility.getDateInApiFormat(questionComments.getPostedOn()));
 
         txtDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", questionComments.getPostedOn()));
         txtQuestion.setText(Html.fromHtml(questionComments.getQuestionText()));

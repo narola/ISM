@@ -10,9 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.MyDeskAssignmentsAdapter;
 import com.ism.author.constant.WebConstants;
@@ -127,7 +126,7 @@ public class MyDeskAssignmentsFragment extends Fragment implements WebserviceWra
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
 
                 }
             } else if (error != null) {

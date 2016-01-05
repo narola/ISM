@@ -16,9 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
@@ -110,7 +109,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    strExamStartDate = Utils.showDatePickerDob(getActivity(), etExamStartdate);
+                    strExamStartDate = Utility.showDatePickerDob(getActivity(), etExamStartdate);
                 }
                 return true;
             }
@@ -120,7 +119,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    strExamEndDate = Utils.showDatePickerDob(getActivity(), etExamEnddate);
+                    strExamEndDate = Utility.showDatePickerDob(getActivity(), etExamEnddate);
                 }
                 return true;
             }
@@ -353,7 +352,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
 
                 }
             } else if (error != null) {
@@ -382,7 +381,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                     }
                     Adapters.setUpSpinner(getActivity(), spExamClass, classrooms, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetClassrooms api Exception : " + error.toString());
@@ -410,7 +409,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                     Adapters.setUpSpinner(getActivity(), spExamAuthorBooks, authorBooks, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
                     spExamAuthorBooks.setSelection(1);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAuthorBooks api Exception : " + error.toString());
