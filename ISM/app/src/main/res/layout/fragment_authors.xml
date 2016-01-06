@@ -38,11 +38,14 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dp5" />
 
-        <include
-            layout="@layout/empty_view"
+        <TextView
+            android:id="@+id/txt_empty_view"
             android:layout_width="wrap_content"
+            android:layout_margin="@dimen/dp53"
+            android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:textSize="@dimen/sp26"
+            android:visibility="gone" />
     </RelativeLayout>
 
 

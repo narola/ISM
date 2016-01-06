@@ -13,7 +13,8 @@ import io.realm.annotations.PrimaryKey;
 public class School extends RealmObject {
 
     @PrimaryKey
-    private  int schoolId;
+    private  int localSchoolId;
+    private  int serverSchoolId;
     private String schoolName;
     private String schoolNickName;
     private String pricipalName;
@@ -32,12 +33,20 @@ public class School extends RealmObject {
     private Date createdDate;
     private Date modifiedDate;
 
-    public int getSchoolId() {
-        return schoolId;
+    public int getLocalSchoolId() {
+        return localSchoolId;
     }
 
-    public void setSchoolId(int schoolId) {
-        this.schoolId = schoolId;
+    public void setLocalSchoolId(int localSchoolId) {
+        this.localSchoolId = localSchoolId;
+    }
+
+    public int getServerSchoolId() {
+        return serverSchoolId;
+    }
+
+    public void setServerSchoolId(int serverSchoolId) {
+        this.serverSchoolId = serverSchoolId;
     }
 
     public String getSchoolName() {

@@ -167,7 +167,7 @@ public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.Web
     private void setDefaultValues() {
         String key_value;
         key_value = getKeyPereference(PreferenceData.SA_ALERT_EVALUATION_READY);
-        // Debug.i(TAG,"Value: "+key+"::"+key_value);
+        // Log.e(TAG,"Value: "+key+"::"+key_value);
         if (key_value.equals(getActivity().getResources().getString(R.string.strNo))) {
             radioGroupEval.check(R.id.radiobutton_no);
 

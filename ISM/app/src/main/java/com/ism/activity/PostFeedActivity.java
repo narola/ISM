@@ -153,7 +153,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 //                inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
 //            }
         } catch (Exception e) {
-            Debug.i(TAG, "hideKeyboard Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "hideKeyboard Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -164,7 +164,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 //            inputMethodManager.showSoftInput(etSayIt,InputMethodManager.SHOW_FORCED);
             Utility.showSoftKeyboard(etSayIt, this);
         } catch (Exception e) {
-            Debug.i(TAG, "showKeyboard Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "showKeyboard Exceptions : " + e.getLocalizedMessage());
         }
         //inputMethod.showSoftInput(etSayIt, InputMethodManager.SHOW_IMPLICIT);
     }
@@ -526,7 +526,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 //            }
 
         } catch (Exception e) {
-            Debug.i(TAG, "onResponse Exception : " + error);
+            Log.e(TAG, "onResponse Exception : " + error);
         }
     }
 
@@ -541,7 +541,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 //                Utility.showToast(this, "Please try again!");
 //            }
 //        } else if (error != null) {
-//            Debug.i(TAG, "onResponsePostFeedMeida error : " + error);
+//            Log.e(TAG, "onResponsePostFeedMeida error : " + error);
 //        }
 //    }
 
@@ -557,7 +557,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
                 Utility.showToast(this, "Please try again!");
             }
         } else if (error != null) {
-            Debug.i(TAG, "onResponsePostFeed error : " + error);
+            Log.e(TAG, "onResponsePostFeed error : " + error);
         }
     }
 
@@ -612,7 +612,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 //            new WebserviceWrapper(this, attribute, this).new WebserviceCaller()
 //                    .execute(WebConstants.UPLOAD_FEED_MEDIA);
         } catch (Exception e) {
-            Debug.i(TAG, "callApiForUploadMediaFile Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiForUploadMediaFile Exception : " + e.getLocalizedMessage());
 
 
         }
@@ -644,7 +644,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
             mMediaMetadataRetriever.setDataSource(this, uri);
             Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-            Debug.i(TAG, "Bitmat of video frame : " + bitmap);
+            Log.e(TAG, "Bitmat of video frame : " + bitmap);
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, this));

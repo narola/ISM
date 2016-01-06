@@ -242,7 +242,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
 
 
         } catch (Exception e) {
-            Debug.i(TAG, "onClicks Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "onClicks Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -293,7 +293,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiGetPastimeForUser Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiGetPastimeForUser Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -320,15 +320,15 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
         try {
             activityHost.hideProgress();
             if (object != null) {
-                Debug.i(TAG, "Response object :" + object);
+                Log.e(TAG, "Response object :" + object);
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite success");
+                    Log.e(TAG, "onResponseAddResourceToFavorite success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
+                    Log.e(TAG, "onResponseAddResourceToFavorite Failed");
                 }
             } else if (error != null) {
-                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
+                Log.e(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
@@ -345,7 +345,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
                     arrayListSuggested = responseHandler.getPastime().get(0).getSuggestedPastime();
                     setUpFavList(arrayListFav);
                     setUpSuggestedList(arrayListSuggested);
-                    Debug.i(TAG, "onResponseUserPastTime success");
+                    Log.e(TAG, "onResponseUserPastTime success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseUserPastTime Failed");
                 }
@@ -402,11 +402,11 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
             for (int i = 0; i < arrayList.size(); i++) {
                 if (arrayList.get(i).getPastimeName().toString().toLowerCase().contains(s.toString().toLowerCase())) {
                     list.add(arrayList.get(i));
-                    Debug.i(TAG, "i :" + i + " String : " + s);
+                    Log.e(TAG, "i :" + i + " String : " + s);
                 }
             }
         } catch (Exception e) {
-            Debug.i(TAG, "onSearch: " + e.getLocalizedMessage());
+            Log.e(TAG, "onSearch: " + e.getLocalizedMessage());
         }
         return list;
     }
@@ -428,19 +428,19 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
                     attribute.setUnfavoriteResourceId(arrayListUnFavItems);// get All the resource ids from favourite list to add resource id in user unfavourites
                 }
                 attribute.setResourceName(AppConstant.RESOURCE_PASTTIMES);
-                Debug.i(TAG, "Attributes object :" + attribute);
+                Log.e(TAG, "Attributes object :" + attribute);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
             } else {
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
         }
     }
 
     @Override
     public void onAddToFav(int position) {
-        Debug.i(TAG, "OnAddToFav" + position);
+        Log.e(TAG, "OnAddToFav" + position);
         try {
             arrayListFavItems.add(arrayListSuggested.get(position).getPastimeId());
             arrayListFav.add(arrayListSuggested.get(position));
@@ -456,7 +456,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
 
     @Override
     public void onRemoveFromFav(int position) {
-        Debug.i(TAG, "onRemoveFromFav" + position);
+        Log.e(TAG, "onRemoveFromFav" + position);
         try {
             arrayListUnFavItems.add(arrayListFav.get(position).getPastimeId());
             arrayListSuggested.add(arrayListFav.get(position));

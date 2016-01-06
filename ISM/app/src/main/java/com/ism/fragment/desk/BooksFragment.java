@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,10 +123,10 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
+            Log.e(TAG, "onAttach Attached fragment ");
             activityHost = (HostActivity) activity;
-
         } catch (ClassCastException e) {
-            Debug.i(TAG, "onAttach Exception : " + e.toString());
+            Log.e(TAG, "onAttach Exception : " + e.toString());
         }
     }
 

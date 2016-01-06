@@ -3,10 +3,14 @@ package com.ism.author.activtiy;
 
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,13 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.author.R;
-import com.ism.author.utility.Debug;
-import com.ism.author.utility.PreferenceData;
-import com.ism.author.utility.Utility;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
 import com.ism.author.adapter.ExamsAdapter;
+import com.ism.author.broadcastReceiver.AlarmReceiver;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.BooksFragment;
@@ -33,6 +36,7 @@ import com.ism.author.fragment.OfficeFragment;
 import com.ism.author.fragment.TrialFragment;
 import com.ism.author.fragment.assessment.AssignmentsSubmittorFragment;
 import com.ism.author.fragment.assessment.ExamsFragment;
+import com.ism.author.fragment.assessment.StudentAttemptedAssignmentFragment;
 import com.ism.author.fragment.assessment.objectiveassessment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.fragment.createexam.CreateExamAssignmentContainerFragment;
@@ -52,12 +56,14 @@ import com.ism.author.fragment.userprofile.FollowersFragment;
 import com.ism.author.fragment.userprofile.HighScoreFragment;
 import com.ism.author.fragment.userprofile.MyActivityFragment;
 import com.ism.author.fragment.userprofile.MyFeedsFragment;
-import com.ism.author.fragment.assessment.StudentAttemptedAssignmentFragment;
 import com.ism.author.fragment.userprofile.generalsetting.GeneralSettingsFragment;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.ControllerTopMenuItem;
 import com.ism.author.object.Global;
 import com.ism.author.object.MyTypeFace;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.PreferenceData;
+import com.ism.author.utility.Utility;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -224,8 +230,23 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author_host);
 
+        registerAlarmBroadCastReceiver();
         inigGlobal();
 
+    }
+
+    private int NO_OF_SECONDS = 30;
+    private int ALARM_TIME_INTERVAL = 1000 * NO_OF_SECONDS;
+
+    private void registerAlarmBroadCastReceiver() {
+
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+        boolean alarmRunning = (PendingIntent.getBroadcast(this, AppConstant.PENDING_INTENT_ID, alarmIntent, PendingIntent.FLAG_NO_CREATE) != null);
+        if (alarmRunning == false) {
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, AppConstant.PENDING_INTENT_ID, alarmIntent, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), ALARM_TIME_INTERVAL, pendingIntent);
+        }
     }
 
     private void inigGlobal() {
@@ -1420,9 +1441,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     }
 
     private void removeBundleArguments() {
-
         getBundle().clear();
-
     }
 
 
@@ -1430,5 +1449,21 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     protected void onDestroy() {
         super.onDestroy();
         authorHelper.realm.close();
+        canclePendingIntent();
+    }
+
+    private void canclePendingIntent() {
+
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                AppConstant.PENDING_INTENT_ID, alarmIntent, PendingIntent.FLAG_NO_CREATE);
+        if (pendingIntent != null) {
+            pendingIntent.cancel();
+            manager.cancel(pendingIntent);
+
+            Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
+        } else {
+        }
     }
 }

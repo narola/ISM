@@ -2,6 +2,7 @@ package com.ism.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.PastimesDetailsDialog;
 import com.ism.object.Global;
-import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.model.PastimeData;
 
@@ -69,12 +69,12 @@ public class FavouritePastTimeAdapter extends RecyclerView.Adapter<FavouritePast
                 @Override
                 public void onClick(View v) {
                     manageResourcesListner.onRemoveFromFav(position);
-                    Debug.i(TAG, "onClickAddToFav : " + position);
+                    Log.e(TAG, "onClickAddToFav : " + position);
 
                 }
             });
         } catch (Exception e) {
-            Debug.i(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -95,7 +95,7 @@ public class FavouritePastTimeAdapter extends RecyclerView.Adapter<FavouritePast
             imgRemoveFav = (ImageView) itemView.findViewById(R.id.img_add_fav);
             imgRemoveFav.setVisibility(View.VISIBLE);
             imgInfo.setVisibility(View.VISIBLE);
-            imgRemoveFav.setBackgroundResource(R.drawable.img_like_red);
+            imgRemoveFav.setBackgroundResource(R.drawable.ic_like_red_active);
         }
     }
 }

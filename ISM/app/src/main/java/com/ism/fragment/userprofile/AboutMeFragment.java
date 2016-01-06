@@ -38,6 +38,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import model.Classrooms;
+import model.Courses;
+import model.School;
+import model.StudentProfile;
+import realmhelper.StudentHelper;
+
 /**
  * Created by c162 on 09/11/15.
  */
@@ -71,6 +77,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     public static String strDetailAboutMe = "";
     public static String strAmbition = "";
     private ImageView imgEditAmbition, imgEditAboutMe;
+    private StudentHelper studentHelper;
 
     public static AboutMeFragment newInstance() {
         AboutMeFragment fragment = new AboutMeFragment();
@@ -92,6 +99,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
 
     private void initGlobal() {
+        studentHelper=new StudentHelper(getActivity());
         editProfileFragment = com.ism.fragment.userProfile.EditProfileFragment.newInstance();
 
         txtUserName = (TextView) view.findViewById(R.id.txt_user_name);
@@ -181,7 +189,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
         setEditableFalse(etDob);
         setEditableFalse(etCno);
-        callApiGetAboutMe();
+
         etDob.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -192,6 +200,167 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             }
         });
 
+        model.StudentProfile studentProfile=getUserDetails();
+        if(studentProfile!=null){
+            setUpRealmData(studentProfile);
+            callApiGetAboutMe();
+        }else{
+            callApiGetAboutMe();
+        }
+
+    }
+    public static Date getDateFormate(String birthdate) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = formatter.parse(birthdate);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+            Log.i(TAG, "getDateFormate : " + date);
+            return date;
+        } catch (ParseException e) {
+            Log.i(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public static String getDateFormate(Date date) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            // Date date = formatter.parse(birthdate);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+            Log.i(TAG, "getDateFormate : " + date);
+            return formatter.format(date);
+        } catch (Exception e) {
+            Log.i(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+
+    private void saveUserProfile(User user) {
+        try {
+            model.StudentProfile studentProfile = new StudentProfile();
+            model.User userData = studentHelper.getUser(Integer.parseInt(user.getUserId()));
+            if (userData != null) {
+                studentProfile.setUser(userData);
+            } else {
+                userData = new model.User();
+                userData.setUserId(Integer.parseInt(user.getUserId()));
+//                newuser.setUsername(user.getUsername());
+                userData.setFullName(user.getUsername());
+                userData.setProfilePicture(user.getProfilePic());
+                studentHelper.saveUser(userData);
+                studentProfile.setUser(userData);
+            }
+
+            School  school=new School();
+            school.setSchoolName(user.getSchoolName());
+            studentHelper.saveSchool(school);
+            studentProfile.setSchool(school);
+
+            Classrooms classrooms=new Classrooms();
+            classrooms.setClassName(user.getClassName());
+            studentHelper.saveClassRoom(classrooms);
+            studentProfile.setClassroom(classrooms);
+
+            Courses courses=new Courses();
+            courses.setCourseName(user.getCourseName());
+            courses.setServerCourseId(Integer.parseInt(user.getCourseId() == null ? "0" : user.getCourseId()));
+            studentHelper.saveCourse(courses);
+            studentProfile.setCourse(courses);
+
+            studentProfile.setServerStudentId(Integer.parseInt(user.getUserId()));
+            studentProfile.setAmbitionInLife(user.getAmbitionInLife());
+            studentProfile.setContactNumber(user.getContactNumber());
+           // studentProfile.setClassroom(user.getC());
+
+//            remaining to store classroom,course and school
+
+
+            //authorProfile.setContactNumber(user.getContactNumber()); // this field is never used in author module
+            studentProfile.setBirthDate(getDateFormate(user.getBirthdate()));
+            studentProfile.setAcademicYear(user.getAcademicYear());
+            studentProfile.setAboutMe(user.getAboutMeText());
+            studentProfile.setTotalAssignment(Integer.parseInt(user.getTotalAssignment() == null ? "0" : user.getTotalAssignment()));
+            studentProfile.setTotalBadges(Integer.parseInt(user.getTotalBadgesEarned() == null ? "0" : user.getTotalBadgesEarned()));
+            studentProfile.setTotalPost(Integer.parseInt(user.getTotalPost() == null ? "0" : user.getTotalPost()));
+            studentProfile.setTotalAuthorFollowed(Integer.parseInt(user.getTotalAuthorsFollowed() == null ? "0" : user.getTotalAuthorsFollowed()));
+            studentProfile.setTotalExam(Integer.parseInt(user.getTotalExams() == null ? "0" : user.getTotalExams()));
+            studentProfile.setTotalFavoriteQuestion(Integer.parseInt(user.getTotalFavoriteQuestions() == null ? "0" : user.getTotalFavoriteQuestions()));
+            studentProfile.setTotalQuestionAsked(Integer.parseInt(user.getTotalQuestionAsked() == null ? "0" : user.getTotalQuestionAsked()));
+            studentProfile.setTotalScore(Integer.parseInt(user.getIsmScore() == null ? "0" : user.getIsmScore()));
+            studentProfile.setTotalStudyMate(Integer.parseInt(user.getTotalStudymates() == null ? "0" : user.getTotalStudymates()));
+            studentProfile.setRank(Integer.parseInt(user.getIsmRank() == null ? "0" : user.getIsmRank()));
+            studentHelper.saveStudentProfile(studentProfile);
+            setUpRealmData(getUserDetails());
+
+        } catch (Exception e) {
+            Log.e(TAG, "saveAuthorProfile Exceptions: " + e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        studentHelper.realm.close();
+    }
+
+    private void setUpRealmData(model.StudentProfile data) {
+            try {
+                txtUserName.setText(data.getUser().getFullName());
+                txtSchool.setText(data.getSchool().getSchoolName());
+                txtClass.setText(data.getCourse().getCourseName());
+//                txtClass.setText(data.getClassroom().getClassName());
+                etDob.setText(com.ism.commonsource.utility.Utility.DateFormat(getDateFormate(data.getBirthDate())));
+                etCno.setText(data.getContactNumber());
+                //  Global.strProfilePic=WebConstants.HOST_IMAGE_USER + data.getProfilePic();
+                Log.e(TAG, "WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic() :" + WebConstants.HOST_IMAGE_USER + data.getUser().getProfilePicture());
+                Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + data.getUser().getProfilePicture(), imgProfilePic, ISMStudent.options);
+                    txtTotalAssignment.setText(String.valueOf(data.getTotalAssignment()));
+                    txtTotalAuthorFollowed.setText(String.valueOf(data.getTotalAuthorFollowed()));
+                    txtTotalBadgesEarned.setText(String.valueOf(data.getTotalBadges()));
+                    txtTotalExam.setText(String.valueOf(data.getTotalExam()));
+                    txtTotalFavQuestions.setText(String.valueOf(data.getTotalFavoriteQuestion()));
+                    txtTotalIsmRank.setText(String.valueOf(data.getRank()));
+                    txtTotalIsmScore.setText(String.valueOf(data.getTotalScore()));
+                    txtTotalPost.setText(String.valueOf(data.getTotalPost()));
+                    txtTotalQueAsked.setText(String.valueOf(data.getTotalQuestionAsked()));
+                    txtTotalStudymates.setText(String.valueOf(data.getTotalStudyMate()));
+//            imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMStudent.options);
+                strDetailAboutMe = data.getAboutMe();
+                strAmbition = data.getAmbitionInLife();
+                if (strDetailAboutMe!=null && strDetailAboutMe.length() != 0 ) {
+                    txtClickAddAboutMe.setText(data.getAboutMe());
+                    txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
+                    imgEditAboutMe.setVisibility(View.VISIBLE);
+                    Log.e(TAG, "Details are available!");
+                } else {
+                    txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
+                    txtClickAddAboutMe.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
+                    imgEditAboutMe.setVisibility(View.GONE);
+                    Log.e(TAG, "Details are not available!");
+                }
+                if (strAmbition!=null && strAmbition .length()!=0) {
+                    txtClickAddAmbitions.setText(data.getAmbitionInLife());
+                    imgEditAmbition.setVisibility(View.VISIBLE);
+                    txtClickAddAmbitions.setCompoundDrawables(null, null, null, null);
+                    Log.e(TAG, "Details are available!");
+                } else {
+                    Log.e(TAG, "Details are not available!");
+                    txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
+                    txtClickAddAmbitions.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
+                    imgEditAmbition.setVisibility(View.GONE);
+                }
+
+        }
+        catch (Exception e){
+            Log.e(TAG,"setUpRealmData Exceptions : "+e.getLocalizedMessage());
+        }
+    }
+
+    private model.StudentProfile getUserDetails() {
+        return studentHelper.getStudentProfile(Integer.parseInt(Global.strUserId));
     }
 
     private void showDatePickerDob() {
@@ -243,7 +412,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiGetAboutMe Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiGetAboutMe Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -269,7 +438,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "callApiEditAboutMe Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiEditAboutMe Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -364,7 +533,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 ResponseHandler responseObj = (ResponseHandler) object;
                 if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
                     Log.e(TAG, "onResponseGetAboutMe success");
-                    setUpData(responseObj.getUser().get(0));
+                    saveUserProfile(responseObj.getUser().get(0));
+                   // setUpData(responseObj.getUser().get(0));
 
                 } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetAboutMe Failed");
@@ -385,7 +555,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             etDob.setText(dateFormat(data.getBirthdate()));
             etCno.setText(data.getContactNumber());
           //  Global.strProfilePic=WebConstants.HOST_IMAGE_USER + data.getProfilePic();
-            Debug.i(TAG, "WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic() :" + WebConstants.HOST_IMAGE_USER + data.getProfilePic());
+            Log.e(TAG, "WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic() :" + WebConstants.HOST_IMAGE_USER + data.getProfilePic());
             Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + data.getProfilePic(), imgProfilePic, ISMStudent.options);
             if(data.getTotalAssignment()==null)
             txtTotalAssignment.setText("0");
@@ -434,27 +604,27 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 txtClickAddAboutMe.setText(data.getAboutMeText());
                 txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
                 imgEditAboutMe.setVisibility(View.VISIBLE);
-                Debug.i(TAG, "Details are available!");
+                Log.e(TAG, "Details are available!");
             } else {
                 txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
                 txtClickAddAboutMe.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
                 imgEditAboutMe.setVisibility(View.GONE);
-                Debug.i(TAG, "Details are not available!");
+                Log.e(TAG, "Details are not available!");
             }
             if (strAmbition!=null && strAmbition .length()!=0) {
                 txtClickAddAmbitions.setText(data.getAmbitionInLife());
                 imgEditAmbition.setVisibility(View.VISIBLE);
                 txtClickAddAmbitions.setCompoundDrawables(null, null, null, null);
-                Debug.i(TAG, "Details are available!");
+                Log.e(TAG, "Details are available!");
             } else {
-                Debug.i(TAG, "Details are not available!");
+                Log.e(TAG, "Details are not available!");
                 txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
                 txtClickAddAmbitions.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
                 imgEditAmbition.setVisibility(View.GONE);
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "SetupData :" + e.getLocalizedMessage());
+            Log.e(TAG, "SetupData :" + e.getLocalizedMessage());
         }
     }
 
@@ -469,7 +639,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             SimpleDateFormat format = new SimpleDateFormat("dd");
             String date = format.format(convertedDate);
 
-            Debug.i(TAG, "Date :" + date);
+            Log.e(TAG, "Date :" + date);
 
             if (date.endsWith("1") && !date.endsWith("11"))
                 format = new SimpleDateFormat("dd'st' MMMM yyyy");
@@ -479,13 +649,13 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 format = new SimpleDateFormat("dd'rd' MMMM yyyy");
             else
                 format = new SimpleDateFormat("dd'th' MMMM yyyy");
-            Debug.i(TAG, "Date Formated:" + format.format(convertedDate));
+            Log.e(TAG, "Date Formated:" + format.format(convertedDate));
             return format.format(convertedDate);
         } catch (ParseException e) {
-            Debug.i(TAG, "DateFormat ParseException : " + e.getLocalizedMessage());
+            Log.e(TAG, "DateFormat ParseException : " + e.getLocalizedMessage());
             return null;
         } catch (Exception e) {
-            Debug.i(TAG, "DateFormat Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "DateFormat Exceptions : " + e.getLocalizedMessage());
             return null;
         }
     }
@@ -572,9 +742,9 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtClickAddAmbitions.setText(strAmbition);
             imgEditAmbition.setVisibility(View.VISIBLE);
             txtClickAddAmbitions.setCompoundDrawables(null, null, null, null);
-            Debug.i(TAG, "Details are available!");
+            Log.e(TAG, "Details are available!");
         } else {
-            Debug.i(TAG, "Details are not available!");
+            Log.e(TAG, "Details are not available!");
             txtClickAddAmbitions.setText(getActivity().getResources().getString(R.string.strClickTOAddAmbitionInLife));
             txtClickAddAmbitions.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
             imgEditAmbition.setVisibility(View.GONE);
@@ -586,12 +756,12 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtClickAddAboutMe.setText(strDetailAboutMe);
             txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
             imgEditAboutMe.setVisibility(View.VISIBLE);
-            Debug.i(TAG, "Details are available!");
+            Log.e(TAG, "Details are available!");
         } else {
             txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
             txtClickAddAboutMe.setCompoundDrawablesWithIntrinsicBounds(getActivity().getResources().getDrawable(R.drawable.plus), null, getActivity().getResources().getDrawable(R.drawable.aroow_gray), null);
             imgEditAboutMe.setVisibility(View.GONE);
-            Debug.i(TAG, "Details are not available!");
+            Log.e(TAG, "Details are not available!");
         }
     }
 }

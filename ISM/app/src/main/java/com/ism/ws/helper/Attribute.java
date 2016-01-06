@@ -110,6 +110,8 @@ public class Attribute {
     private String postedOn;
 	private String authorId;
 	private String bookId;
+	private String followerId;
+	private String followTo;
 
 	public Attribute() {
 		setAccessKey(WebConstants.ACCESS_KEY);
@@ -823,5 +825,23 @@ public class Attribute {
 	@JsonProperty("book_id")
 	public void setBookId(String bookId) {
 		this.bookId = bookId;
+	}
+
+	@JsonProperty("follower_id")
+	public void setFollowerId(String followerId) {
+		this.followerId = followerId;
+	}
+
+	public String getFollowerId() {
+		return followerId;
+	}
+
+	@JsonProperty("follow_to")
+	public void setFollowTo(String followTo) {
+		this.followTo = followTo;
+	}
+
+	public String getFollowTo() {
+		return followTo;
 	}
 }

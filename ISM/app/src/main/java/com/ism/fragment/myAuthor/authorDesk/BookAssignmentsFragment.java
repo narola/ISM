@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.ism.activity.HostActivity;
 import com.ism.adapter.myAuthor.AuthorAssignmentsAdapter;
 import com.ism.adapter.myAuthor.BookAssignmentsAdapter;
 import com.ism.constant.WebConstants;
+import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -48,6 +50,7 @@ public class BookAssignmentsFragment extends Fragment implements WebserviceWrapp
     private ImageView imgSearchAssignments;
     private EditText etSearchAssignments;
     private HostActivity activityHost;
+    private FragmentListener fragmentListener;
 
 
     public static BookAssignmentsFragment newInstance(Fragment fragment) {
@@ -149,14 +152,14 @@ public class BookAssignmentsFragment extends Fragment implements WebserviceWrapp
 
         if (Utility.isConnected(getActivity())) {
             try {
-                ((HostActivity) getActivity()).showProgress();
+                activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setBookId(((HostActivity) getActivity()).getBundle().getString(AuthorAssignmentsAdapter.ARG_BOOK_ID));
+                attribute.setBookId(activityHost.getBundle().getString(AuthorAssignmentsAdapter.ARG_BOOK_ID));
 
-                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETASSIGNMENTBYBOOK);
+                new WebserviceWrapper(getActivity(), attribute,this).new WebserviceCaller()
+                        .execute(WebConstants.GET_ASSIGNMENT_BY_BOOK);
             } catch (Exception e) {
-               Utility.alertOffline(getActivity());
+                Utility.alertOffline(getActivity());
             }
         } else {
             Utility.alertOffline(getActivity());
@@ -167,7 +170,7 @@ public class BookAssignmentsFragment extends Fragment implements WebserviceWrapp
     private void onResponseGetAssignmentByBook(Object object, Exception error) {
 
         try {
-            ((HostActivity) getActivity()).hideProgress();
+            activityHost.hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
@@ -184,7 +187,7 @@ public class BookAssignmentsFragment extends Fragment implements WebserviceWrapp
                     }
 
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Utility.showToast( getActivity(),responseHandler.getMessage());
+                    Utility.showToast(getActivity(), responseHandler.getMessage());
 
                 }
             } else if (error != null) {
@@ -194,12 +197,16 @@ public class BookAssignmentsFragment extends Fragment implements WebserviceWrapp
             Debug.e(TAG, "onResponseGetAssignmentByBook Exception : " + e.toString());
         }
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            activityHost=(HostActivity)activity;
-
+            activityHost = (HostActivity) activity;
+            fragmentListener = (FragmentListener) activity;
+            if (fragmentListener != null) {
+                fragmentListener.onFragmentAttached(AuthorDeskFragment.FRAGMENT_BOOKASSIGNMENT);
+            }
 
         } catch (Exception e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -207,10 +214,23 @@ public class BookAssignmentsFragment extends Fragment implements WebserviceWrapp
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        try {
+            Log.e(TAG, "onDetach fragment ");
+            if (fragmentListener != null) {
+                fragmentListener.onFragmentDetached(AuthorDeskFragment.FRAGMENT_BOOKASSIGNMENT);
+            }
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onDetach Exception : " + e.toString());
+        }
+        fragmentListener = null;
+    }
+    @Override
     public void onResponse(Object object, Exception error, int apiCode) {
         try {
             switch (apiCode) {
-                case WebConstants.GETASSIGNMENTBYBOOK:
+                case WebConstants.GET_ASSIGNMENT_BY_BOOK:
                     onResponseGetAssignmentByBook(object, error);
                     break;
             }

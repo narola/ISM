@@ -17,21 +17,23 @@
             android:id="@+id/img_search_assignments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:scaleType="centerInside"
             android:src="@drawable/img_search_gray" />
 
         <EditText
             android:id="@+id/et_search_assignments"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/controller_search_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/dp15"
             android:hint="@string/hint_search"
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:padding="@dimen/dp8"
+            android:padding="@dimen/dp5"
             android:singleLine="true"
-            android:textColor="@color/color_blue"
+            android:textSize="@dimen/sp14"
+            android:textColor="@color/green"
             android:textColorHint="@color/border_gray"
             android:visibility="gone" />
     </LinearLayout>
@@ -41,18 +43,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp8">
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_book_assignments_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
         <include
             layout="@layout/empty_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
     </RelativeLayout>
-
-
 </LinearLayout>

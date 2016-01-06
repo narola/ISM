@@ -222,7 +222,7 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
                 attribute.getArrListParam().add(numberOfImagesParam);
 
 
-//                attribute.setAuthorId(Global.strUserId);
+//                attribute.setLocalAuthorId(Global.strUserId);
 //                attribute.setQuestionid(trendingId);
 //                attribute.setAnswerText(etAnswer.getText().toString().trim());
 

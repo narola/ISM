@@ -482,7 +482,7 @@ public class Utility {
         try {
             return curFormater.parse(date);
         } catch (ParseException e) {
-            Debug.i(TAG, "getDateFormateMySql ParseException : " + e.getLocalizedMessage());
+            Log.e(TAG, "getDateFormateMySql ParseException : " + e.getLocalizedMessage());
         }
         return null;
     }
@@ -495,7 +495,7 @@ public class Utility {
         try {
             return curFormater.parse(date);
         } catch (ParseException e) {
-            Debug.i(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
+            Log.e(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
         }
         return null;
     }

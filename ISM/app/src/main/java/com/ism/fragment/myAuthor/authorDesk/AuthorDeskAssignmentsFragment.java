@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,9 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.myAuthor.AuthorAssignmentsAdapter;
+import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
+import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -38,6 +41,7 @@ public class AuthorDeskAssignmentsFragment extends Fragment implements Webservic
     private ArrayList<AuthorBookAssignment> arrListAuthorBooksAssignment = new ArrayList<AuthorBookAssignment>();
     private TextView tvNoDataMsg;
     private HostActivity activityHost;
+    private FragmentListener fragmentListener;
 
 
     public static AuthorDeskAssignmentsFragment newInstance(Fragment fragment) {
@@ -65,8 +69,6 @@ public class AuthorDeskAssignmentsFragment extends Fragment implements Webservic
         rvAssignmentsList.setHasFixedSize(true);
         rvAssignmentsList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rvAssignmentsList.setAdapter(assignmentAdapter);
-
-
         callApiGetAuthorBookAssignment();
 
 
@@ -79,7 +81,7 @@ public class AuthorDeskAssignmentsFragment extends Fragment implements Webservic
             try {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setAuthorId(Global.strUserId);
+                attribute.setAuthorId(activityHost.getBundle().getString(AppConstant.AUTHOR_ID));
 
                 new WebserviceWrapper(getActivity(), attribute,this).new WebserviceCaller()
                         .execute(WebConstants.GET_AUTHOR_BOOK_ASSIGNMENT);
@@ -95,7 +97,7 @@ public class AuthorDeskAssignmentsFragment extends Fragment implements Webservic
     private void onResponseGetAuthorBookAssignment(Object object, Exception error) {
 
         try {
-            ((HostActivity) getActivity()).hideProgress();
+            activityHost.hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
@@ -142,10 +144,27 @@ public class AuthorDeskAssignmentsFragment extends Fragment implements Webservic
         super.onAttach(activity);
         try {
             activityHost = (HostActivity) activity;
-
+            fragmentListener=(FragmentListener)activity;
+            if(fragmentListener!=null){
+                fragmentListener.onFragmentAttached(AuthorDeskFragment.FRAGMENT_ASSIGNMENTS);
+            }
 
         } catch (Exception e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        try {
+            Log.e(TAG, "onDetach fragment ");
+            if (fragmentListener != null) {
+                fragmentListener.onFragmentDetached(AuthorDeskFragment.FRAGMENT_ASSIGNMENTS);
+            }
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onDetach Exception : " + e.toString());
+        }
+        fragmentListener = null;
     }
 }

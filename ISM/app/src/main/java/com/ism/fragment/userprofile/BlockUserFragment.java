@@ -124,7 +124,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
                 blockedUserAdapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
-            Debug.i(TAG, "setUpList Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "setUpList Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -163,7 +163,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
 //                Toast.makeText(getActivity(), "No app found on your phone which can perform this action", Toast.LENGTH_SHORT).show();
 //            }
         } catch (Exception e) {
-            Debug.i(TAG, "openGmail Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "openGmail Exception : " + e.getLocalizedMessage());
         }
 
     }
@@ -248,7 +248,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "callApiForBlockUser Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiForBlockUser Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -264,7 +264,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "callApiForBlockUser Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiForBlockUser Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -288,7 +288,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrayListBlockedUser = responseHandler.getBlockedUsers();
                     setUpList();
-                    Debug.i(TAG, "onResponseBlockedUser success");
+                    Log.e(TAG, "onResponseBlockedUser success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseBlockedUser Failed");
                 }
@@ -311,7 +311,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
                     callApiForBlockedUser();
                     arrayListBlockedUser = new ArrayList<>();
                     // add block user in list
-                    Debug.i(TAG, "onResponseBlockUser success");
+                    Log.e(TAG, "onResponseBlockUser success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseBlockUser Failed");
                 }

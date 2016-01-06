@@ -48,7 +48,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
         holder.txtCommentDuration.setText(Utility.getTimeDuration(listOfComments.get(position).getCreatedDate()));
         Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + listOfComments.get(position).getCommentBy().getProfilePicture(), holder.imgProfilePic, ISMStudent.options);}
         catch (Exception e){
-            Debug.i(TAG,"onBindViewHolder Exception : "+e.getLocalizedMessage());
+            Log.e(TAG,"onBindViewHolder Exception : "+e.getLocalizedMessage());
         }
     }
 

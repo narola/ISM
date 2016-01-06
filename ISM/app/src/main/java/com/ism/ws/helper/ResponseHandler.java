@@ -7,8 +7,10 @@ import com.ism.ws.model.AdminConfig;
 import com.ism.ws.model.AllBooks;
 import com.ism.ws.model.Assignment;
 import com.ism.ws.model.AuthorBookAssignment;
+import com.ism.ws.model.AuthorData;
 import com.ism.ws.model.Badges;
 import com.ism.ws.model.BlockedUsers;
+import com.ism.ws.model.BookData;
 import com.ism.ws.model.Books;
 import com.ism.ws.model.City;
 import com.ism.ws.model.Comment;
@@ -85,6 +87,8 @@ public class ResponseHandler {
     private ArrayList<AuthorBookAssignment> authorBookAssignment;
     private ArrayList<Assignment> assignment;
     private ArrayList<FridayExam> fridayExam;
+    private ArrayList<BookData> authorBook;
+    private ArrayList<AuthorData> author;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -365,16 +369,16 @@ public class ResponseHandler {
         this.token = token;
     }
 
-	@JsonProperty("group_history")
-	public ArrayList<GroupDiscussionData> getGroupDiscussionData() {
-		return this.groupDiscussionData;
-	}
+    @JsonProperty("group_history")
+    public ArrayList<GroupDiscussionData> getGroupDiscussionData() {
+        return this.groupDiscussionData;
+    }
 
-	public void setGroupDiscussionData(ArrayList<GroupDiscussionData> groupDiscussionData) {
-		this.groupDiscussionData = groupDiscussionData;
-	}
+    public void setGroupDiscussionData(ArrayList<GroupDiscussionData> groupDiscussionData) {
+        this.groupDiscussionData = groupDiscussionData;
+    }
 
-	@JsonProperty("tutorial_group_profile")
+    @JsonProperty("tutorial_group_profile")
     public ArrayList<TutorialGroupProfile> getTutorialGroupProfile() {
         return this.tutorialGroupProfile;
     }
@@ -401,7 +405,7 @@ public class ResponseHandler {
         this.fridayExamStatus = fridayExamStatus;
     }
 
-	@JsonProperty("question_for_friday")
+    @JsonProperty("question_for_friday")
     public ArrayList<QuestionForFriday> getQuestionForFriday() {
         return this.questionForFriday;
     }
@@ -409,6 +413,7 @@ public class ResponseHandler {
     public void setQuestionForFriday(ArrayList<QuestionForFriday> questionForFriday) {
         this.questionForFriday = questionForFriday;
     }
+
     @JsonProperty("all_books")
     public ArrayList<AllBooks> getAllBooks() {
         return allBooks;
@@ -432,12 +437,12 @@ public class ResponseHandler {
         this.assignment = assignment;
     }
 
-	@JsonProperty("assignment")
-	public ArrayList<Assignment> getAssignment() {
-		return this.assignment;
-	}
+    @JsonProperty("assignment")
+    public ArrayList<Assignment> getAssignment() {
+        return this.assignment;
+    }
 
-	@JsonProperty("exam_questions")
+    @JsonProperty("exam_questions")
     public ArrayList<FridayExam> getFridayExam() {
         return this.fridayExam;
     }
@@ -446,4 +451,21 @@ public class ResponseHandler {
         this.fridayExam = fridayExam;
     }
 
+    @JsonProperty("author_book")
+    public ArrayList<BookData> getAuthorBooks() {
+        return this.authorBook;
+    }
+
+    public void setAuthorBooks(ArrayList<BookData> authorBook) {
+        this.authorBook = authorBook;
+    }
+
+    @JsonProperty("author")
+    public ArrayList<AuthorData> getAuthor() {
+        return this.author;
+    }
+
+    public void setAuthor(ArrayList<AuthorData> author) {
+        this.author = author;
+    }
 }
