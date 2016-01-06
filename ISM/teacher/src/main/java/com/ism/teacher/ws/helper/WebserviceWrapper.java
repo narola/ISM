@@ -228,9 +228,8 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_LESSON_NOTES_WITH_DETAILS).execute(ResponseHandler.class, attribute);
                                 break;
 
-                            /**
-                             * User Profile
-                             */
+                             //User Profile
+
                             case WebConstants.GET_NOTIFICATION:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_NOTIFICATION).execute(ResponseHandler.class, attribute);
                                 break;
@@ -260,14 +259,19 @@ public class WebserviceWrapper {
                             case WebConstants.MANAGE_GENERAL_SETTINGS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_GENERAL_SETTING).execute(ResponseHandler.class, attribute);
                                 break;
-                            /**
-                             * Settings
-                             */
+
+                            //settings
                             case WebConstants.BLOCK_USER:
                                 responseObject = new WebserviceConnector(WebConstants.URL_BLOCK_USER).execute(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.BLOCKED_USER:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_BLOCKED_USER).execute(ResponseHandler.class, attribute);
+                                break;
+
+                            //Progress report
+
+                            case WebConstants.GET_REPORT_DATA:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_REPORT_DATA).execute(ResponseHandler.class, attribute);
                                 break;
 
                         }

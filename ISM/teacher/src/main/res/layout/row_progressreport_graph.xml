@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="@dimen/d3dp"
+    card_view:cardElevation="0.01dp"
+    card_view:cardUseCompatPadding="true">
+
+    <!-- parent linear layout-->
+    <LinearLayout
+        android:id="@+id/ll_parent_graph"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_news_feed"
+        android:orientation="vertical">
+
+        <!-- linear layout for student pic -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.ism.teacher.views.CircleImageView
+                android:id="@+id/img_student_pic"
+                android:layout_width="@dimen/d50dp"
+                android:layout_height="@dimen/d50dp"
+                android:layout_margin="@dimen/d15dp"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/d10dp"
+                android:src="@drawable/userdp" />
+
+            <!-- ll for name and score -->
+            <LinearLayout
+                android:id="@+id/ll_name_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d5dp"
+                android:layout_marginRight="@dimen/d5dp"
+                android:layout_marginTop="@dimen/d10dp"
+                android:layout_toRightOf="@+id/img_student_pic"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_student_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/d3dp"
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_txt_balck_tutorial"
+                    android:textSize="@dimen/d16sp" />
+
+                <TextView
+                    android:id="@+id/tv_student_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/d3dp"
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_txt_tutorial"
+                    android:textSize="@dimen/d18sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_rank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/ll_name_score"
+                android:layout_marginLeft="@dimen/d5dp"
+                android:layout_toEndOf="@+id/ll_name_score"
+                android:padding="@dimen/d3dp"
+                android:text="@string/strtest"
+                android:textColor="@color/color_green_report"
+                android:textSize="@dimen/d18sp" />
+
+            <ImageView
+                android:id="@+id/img_report_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/d25dp"
+                android:background="@drawable/ic_detail" />
+
+        </RelativeLayout>
+
+        <!-- separator-->
+        <ImageView
+            android:id="@+id/img_separator_blank"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d1dp"
+            android:layout_marginLeft="@dimen/d10dp"
+            android:layout_marginRight="@dimen/d10dp"
+            android:background="@color/color_report_separator" />
+
+        <!-- Graph View-->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bar_chart_report"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+        </com.github.mikephil.charting.charts.BarChart>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
