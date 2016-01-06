@@ -70,7 +70,7 @@ public class PreferenceData {
 
     public static final String LAST_MODIFIED_DATE = "lastModifieddate";
     public static final String TUTORIAL_TOPIC_ID = "tutorialTopicId";
-    public static final String FRIDAY_EXAM_QUESTION_DATE = "fridayExamQuestionDate";
+    public static final String FRIDAY_EXAM_QUESTION_SET_DATE = "fridayExamQuestionDate";
     public static final String IS_FRIDAY_EXAM_READY = "isFridayExamReady";
 
 

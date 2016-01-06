@@ -39,7 +39,7 @@
 			android:paddingLeft="@dimen/dp30"
 			android:paddingRight="@dimen/dp30"
 			android:text="@string/view_all"
-			android:textColor="@color/color_white"
+			android:textColor="@color/white"
 			android:textSize="@dimen/sp14"
 			android:visibility="gone"/>
 	</RelativeLayout>

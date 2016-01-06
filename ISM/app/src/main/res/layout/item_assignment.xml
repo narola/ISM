@@ -24,7 +24,7 @@
         android:singleLine="true"
         android:text="Subject Name"
         android:textAllCaps="true"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/sp13"
         android:textStyle="bold" />
 
@@ -38,7 +38,7 @@
         android:background="@drawable/btn_dark_grey"
         android:singleLine="false"
         android:text="Exam Type"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/dp11" />
 
     <com.ism.views.CircleImageView

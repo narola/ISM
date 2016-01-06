@@ -19,7 +19,7 @@
         android:gravity="center"
         android:padding="@dimen/dp8"
         android:text="Pastimes Details"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/sp19" />
 
 
@@ -74,6 +74,6 @@
         android:paddingRight="@dimen/dp19"
         android:paddingTop="@dimen/dp8"
         android:text="@string/strclose"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/sp15" />
 </RelativeLayout>

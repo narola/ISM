@@ -87,6 +87,17 @@ public class StudentHelper {
         }
     }
 
+    public int getFridayExamAnswerScore() {
+        RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
+                .equalTo("configKey", "fridayInternalExamScore")
+                .findAll();
+        if (adminConfigs != null && adminConfigs.size() > 0) {
+            return Integer.parseInt(adminConfigs.get(0).getConfigValue());
+        } else {
+            return 0;
+        }
+    }
+
     public AdminConfig getActiveHoursStartTime() {
         RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
                 .equalTo("configKey", "activeHoursStartTime")

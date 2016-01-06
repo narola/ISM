@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp45"
         android:layout_alignParentTop="true"
-        android:background="@color/color_white"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <TextView

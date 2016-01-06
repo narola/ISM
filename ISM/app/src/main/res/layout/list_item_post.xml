@@ -133,7 +133,7 @@
 		android:paddingLeft="@dimen/dp8"
 		android:paddingRight="@dimen/dp8"
 		android:text="@string/comment"
-		android:textColor="@color/color_white"
+		android:textColor="@color/white"
 		android:textSize="@dimen/sp15"
 		android:textStyle="bold" />
 </RelativeLayout>

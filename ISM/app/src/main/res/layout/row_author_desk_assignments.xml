@@ -31,7 +31,7 @@
                     android:paddingLeft="@dimen/dp8"
                     android:paddingTop="@dimen/dp8"
                     android:textAllCaps="true"
-                    android:textColor="@color/color_white"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/sp12"
                     android:textStyle="bold" />
 

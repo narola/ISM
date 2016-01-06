@@ -1,5 +1,6 @@
 package com.ism.fragment.tutorialGroup;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Html;
@@ -13,12 +14,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.adapter.SubjectScoreAdapter;
 import com.ism.constant.WebConstants;
-import com.ism.model.QuestionObjectiveTest;
 import com.ism.model.SubjectScoreTest;
 import com.ism.object.Global;
-import com.ism.utility.PreferenceData;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
@@ -26,6 +26,8 @@ import com.ism.ws.model.FridayExamQuestion;
 import com.ism.ws.model.Question;
 
 import java.util.ArrayList;
+
+import realmhelper.StudentHelper;
 
 /**
  * Created by c161 on 15/10/2015.
@@ -37,16 +39,13 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 	private View view;
 
 	private RelativeLayout rlResultGraph;
-	private TextView txtScore;
-	private TextView txtCorrectAnswers;
-	private TextView txtIncorrectAnswers;
-	private TextView txtUnattemptedAnswers;
-	private TextView txtTotalTimeSpent;
-	private Button btnViewAnswers;
-	private Button btnYes;
-	private Button btnNo;
-	private Button btnViewEvaluationGraph;
+	private TextView txtScore, txtCorrectAnswers, txtIncorrectAnswers, txtUnattemptedAnswers, txtTotalTimeSpent;
+	private Button btnViewAnswers, btnYes, btnNo, btnViewEvaluationGraph;
 	private ListView lvGraph;
+
+	private StudentHelper studentHelper;
+	private HostActivity activityHost;
+	private ArrayList<FridayExamQuestion> arrListQuestions;
 
 	private static final String ARG_SHOW_GRAPH = "showGraph";
 	private static final String ARG_TIME_SPENT = "timeSpent";
@@ -54,8 +53,6 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 	private boolean isShowGraph;
 	private int intTimeSpent;
 	private String strExamId;
-
-	private ArrayList<FridayExamQuestion> arrListQuestions;
 
 	public static ResultFragment newInstance(ArrayList<FridayExamQuestion> questions, String examId, boolean showGraph, int timeSpent) {
 		ResultFragment fragment = new ResultFragment();
@@ -104,16 +101,16 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 		btnViewEvaluationGraph = (Button) view.findViewById(R.id.btn_view_evaluation_graph);
 		lvGraph = (ListView) view.findViewById(R.id.lv_result_graph);
 
-		txtScore.setText(Html.fromHtml("<font color='#323941'>" + getString(R.string.your_score_is) + "</font><font color='#1BC4A2'>" + 75 + "%</font>"));
+		studentHelper = new StudentHelper(getActivity());
 
 		callApiSubmitStudentObjectiveResponse();
-//		calculateScore();
+		calculateScore();
 		txtTotalTimeSpent.setText(intTimeSpent + " min");
 
 		btnViewAnswers.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.tutorialGroup.ExamEvaluationFragment.newInstance()).commit();
+				getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamEvaluationFragment.newInstance(arrListQuestions)).commit();
 			}
 		});
 
@@ -148,10 +145,12 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 
 	private void callApiSubmitStudentObjectiveResponse() {
 		try {
+			activityHost.showProgress();
 			Attribute attribute = new Attribute();
 			attribute.setExamId(Integer.parseInt(strExamId));
 			attribute.setUserId(Global.strUserId);
 
+			int correctAnsScore = studentHelper.getFridayExamAnswerScore();
 			ArrayList<Question> questions = new ArrayList<>();
 			for (int i = 0; i < arrListQuestions.size(); i++) {
 				Question question = new Question();
@@ -159,14 +158,14 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 
 				for (int j = 0; j < arrListQuestions.get(i).getFridayExamAnswers().size(); j++) {
 					if (arrListQuestions.get(i).getFridayExamAnswers().get(j).isSelected()) {
-						question.setChoiceId(Integer.parseInt(arrListQuestions.get(i).getFridayExamAnswers().get(i).getId()));
+						question.setChoiceId(Integer.parseInt(arrListQuestions.get(i).getFridayExamAnswers().get(j).getId()));
 						break;
 					}
 				}
 
 				question.setAnswerStatus(arrListQuestions.get(i).isAnswered() ? "A"
 						: arrListQuestions.get(i).isReviewLater() ? "R" : arrListQuestions.get(i).isSkipped() ? "S" : "N");
-				question.setCorrectAnswerScore(1);
+				question.setCorrectAnswerScore(correctAnsScore);
 				question.setIsRight(arrListQuestions.get(i).isCorrect() ? 1 : 0);
 				question.setResponseDuration(0);
 
@@ -181,7 +180,7 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 		}
 	}
 
-	/*private void calculateScore() {
+	private void calculateScore() {
 		try {
 			int correct = 0;
 			int incorrect = 0;
@@ -202,10 +201,12 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 			txtCorrectAnswers.setText(correct + "");
 			txtIncorrectAnswers.setText(incorrect + "");
 			txtUnattemptedAnswers.setText(unattempted + "");
+			txtScore.setText(Html.fromHtml("<font color='#323941'>" + getString(R.string.your_score_is)
+					+ "</font><font color='#1BC4A2'>" + (correct * 100) / arrListQuestions.size() + "%</font>"));
 		} catch (Exception e) {
 			Log.e(TAG, "calculateScore Exception : " + e.toString());
 		}
-	}*/
+	}
 
 	public void setQuestion(ArrayList<FridayExamQuestion> questions) {
 		arrListQuestions = questions;
@@ -226,10 +227,11 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 
 	private void onResponseSubmitStudentObjectiveResponse(Object object, Exception error) {
 		try {
+			activityHost.hideProgress();
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-
+					Log.e(TAG, "onResponseSubmitStudentObjectiveResponse SUCCESS");
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseSubmitStudentObjectiveResponse Failed message : " + responseHandler.getMessage());
 				}
@@ -239,5 +241,11 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseSubmitStudentObjectiveResponse Excepiton : " + e.toString());
 		}
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		activityHost = (HostActivity) activity;
 	}
 }
