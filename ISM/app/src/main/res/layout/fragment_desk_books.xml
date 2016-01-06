@@ -92,7 +92,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp180"
+                android:layout_height="@dimen/dp191"
                 android:background="@color/color_white"
                 android:orientation="horizontal">
 
@@ -209,7 +209,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp180"
+                android:layout_height="@dimen/dp191"
                 android:background="@color/color_white"
                 android:orientation="horizontal">
 

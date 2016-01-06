@@ -204,7 +204,7 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
 //
             setUpData();
         } catch (Exception e) {
-            Debug.i(TAG, "editNote Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "editNote Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -238,11 +238,11 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
                 strNote = note;
                 copyDataToRealm(strNote, "", "");
                 jotterNotesAdapter.notifyDataSetChanged();
-                Debug.i(TAG, "New Note : " + strNote);
+                Log.e(TAG, "New Note : " + strNote);
                 // }
             }
         } catch (Exception e) {
-            Debug.i(TAG, "onDismiss Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "onDismiss Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -279,7 +279,7 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
 //                                imgPlay.setVisibility(View.VISIBLE);
 
                         } catch (Exception e) {
-                            Debug.i(TAG, "onVideoSelect Exception: " + e.getLocalizedMessage());
+                            Log.e(TAG, "onVideoSelect Exception: " + e.getLocalizedMessage());
                             e.printStackTrace();
                         }
 
@@ -430,7 +430,7 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
             listView.setAdapter(jotterNotesAdapter);
             setUpNoteDetails(arraylistNotes.get(lastPosition));
         } catch (Exception e) {
-            Debug.i(TAG, "setUpData Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "setUpData Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -440,7 +440,7 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
             lastPosition = position;
             setUpNoteDetails(arraylistNotes.get(position));
         } catch (Exception e) {
-            Debug.i(TAG, "onNoteListener Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "onNoteListener Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -468,7 +468,7 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
                 Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + notes.getUser().getProfilePicture(), imgUser, ISMStudent.options);
             }
         } catch (Exception e) {
-            Debug.i(TAG, "setNoteDetails Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "setNoteDetails Exceptions : " + e.getLocalizedMessage());
         }
     }
 

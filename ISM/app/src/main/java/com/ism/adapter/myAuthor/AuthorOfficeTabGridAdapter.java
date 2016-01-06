@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.fragment.MyAuthorFragment;
 import com.ism.fragment.myAuthor.AuthorOfficeFragment;
 import com.ism.model.AuthorOfficeTabDataSet;
 import com.ism.object.Global;
@@ -19,6 +20,7 @@ import com.ism.object.Global;
  */
 public class AuthorOfficeTabGridAdapter extends BaseAdapter {
 
+    private final MyAuthorFragment myAuthorFragment;
     private Context mContext;
     LayoutInflater inflater;
     AuthorOfficeTabDataSet officeTabDataSet;
@@ -32,6 +34,7 @@ public class AuthorOfficeTabGridAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.officeTabDataSet = officeTabDataSet;
         this.fragment = fragment;
+        myAuthorFragment= MyAuthorFragment.newInstance();
 
     }
 
@@ -83,24 +86,22 @@ public class AuthorOfficeTabGridAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
 
-
                     switch (position) {
                         case 0:
-                            ((AuthorOfficeFragment) fragment).loadFragment(AuthorOfficeFragment.FRAGMENT_MY_DESK);
+                            ((AuthorOfficeFragment) fragment).loadFragment(MyAuthorFragment.FRAGMENT_AUTHOR_DESK);
                             break;
                         case 1:
-                            ((AuthorOfficeFragment) fragment).loadFragment(AuthorOfficeFragment.FRAGMENT_GOTRENDING);
+                            ((AuthorOfficeFragment) fragment).loadFragment(MyAuthorFragment.FRAGMENT_GOTRENDING);
                             break;
                         case 2:
-                            ((AuthorOfficeFragment) fragment).loadFragment(AuthorOfficeFragment.FRAGMENT_TRIAL);
+                            ((AuthorOfficeFragment) fragment).loadFragment(MyAuthorFragment.FRAGMENT_TRIAL);
                             break;
                         case 3:
-                            ((AuthorOfficeFragment) fragment).loadFragment(AuthorOfficeFragment.FRAGMENT_MYTHIRTY);
+                            ((AuthorOfficeFragment) fragment).loadFragment(MyAuthorFragment.FRAGMENT_MYTHIRTY);
                             break;
                         case 4:
-                            ((AuthorOfficeFragment) fragment).loadFragment(AuthorOfficeFragment.FRAGMENT_ASSESSMENT);
+                            ((AuthorOfficeFragment) fragment).loadFragment(MyAuthorFragment.FRAGMENT_AUTHOR_ASSESSMENT);
                             break;
-
 
                     }
                 }
@@ -121,6 +122,4 @@ public class AuthorOfficeTabGridAdapter extends BaseAdapter {
         LinearLayout llOfficeTab;
 
     }
-
-
 }

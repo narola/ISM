@@ -13,9 +13,12 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.myAuthor.MyAuthorAdapter;
+import com.ism.constant.AppConstant;
+import com.ism.fragment.myAuthor.AuthorOfficeFragment;
+import com.ism.fragment.myAuthor.FindMoreAuthorsFragment;
 import com.ism.fragment.myAuthor.MyAuthorsFragment;
+import com.ism.fragment.myAuthor.authorDesk.AuthorDeskFragment;
 import com.ism.interfaces.FragmentListener;
-import com.ism.utility.Debug;
 
 /**
  * Created by c162 on 01/1/16.
@@ -23,11 +26,19 @@ import com.ism.utility.Debug;
 public class MyAuthorFragment extends Fragment implements HostActivity.HostListenerMyAuthor {
 
     private static final String TAG = MyAuthorFragment.class.getSimpleName();
-    public static final int FRAGMENT_MY_AUTHORS = 0;
-    public static final int FRAGMENT_FIND_MORE_AUTHOR = 1;
-    public static final int FRAGMENT_AUTHOR = 2;
 
     private View view;
+
+    //My Author
+    public static final int FRAGMENT_AUTHOR_OFFICE = 31;
+    public static final int FRAGMENT_AUTHOR_DESK = 32;
+    public static final int FRAGMENT_GOTRENDING = 33;
+    public static final int FRAGMENT_TRIAL = 34;
+    public static final int FRAGMENT_MYTHIRTY = 35;
+    public static final int FRAGMENT_AUTHOR_ASSESSMENT = 36;
+    public static final int FRAGMENT_MY_AUTHORS = 37;
+    public static final int FRAGMENT_FIND_MORE_AUTHORS = 38;
+    public static final int FRAGMENT_TERM_AND_CONDITION = 39;
 
     private FragmentListener fragListener;
     private RecyclerView rvMyAuthorList;
@@ -36,7 +47,6 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
     private static int currentFragment = -1;
     private HostActivity activityHost;
     private MyAuthorsFragment myAuthorsFragment;
-
     public static MyAuthorFragment newInstance() {
         MyAuthorFragment fragReportCard = new MyAuthorFragment();
         return fragReportCard;
@@ -56,7 +66,7 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
     }
 
     private void initGlobal() {
-        loadFragment(FRAGMENT_MY_AUTHORS);
+        loadFragment(MyAuthorFragment.FRAGMENT_MY_AUTHORS);
     }
 
     @Override
@@ -91,27 +101,30 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
     public void loadFragment(int fragment) {
         try {
             switch (fragment) {
-                case FRAGMENT_MY_AUTHORS:
+                case MyAuthorFragment.FRAGMENT_MY_AUTHORS:
                     currentFragment = fragment;
                     myAuthorsFragment = MyAuthorsFragment.newInstance();
-                    activityHost.hideControllerTopBackButton();
-                    getChildFragmentManager().beginTransaction().replace(R.id.fl_my_authors, myAuthorsFragment).commit();
+                    getChildFragmentManager().beginTransaction().replace(R.id.fl_my_authors, myAuthorsFragment, AppConstant.FRAGMENT_MY_AUTHORS).commit();
                     break;
-//                case FRAGMENT_FIND_MORE_AUTHOR:
-//                    currentFragment=fragment;
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, MyAuthorsFragment.newInstance()).commit();
-//                    activityHost.showControllerTopBackButton();
-//                    break;
-//                case FRAGMENT_AUTHOR:
-//                    currentFragment = fragment;
-//                    AuthorOfficeFragment authorOfficeFragment = AuthorOfficeFragment.newInstance();
-//                    activityHost.hideControllerTopBackButton();
-//                    getChildFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorOfficeFragment).commit();
-//                    break;
+                case MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS:
+                    currentFragment = fragment;
+                    FindMoreAuthorsFragment findMoreAuthorsFragment = FindMoreAuthorsFragment.newInstance();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, findMoreAuthorsFragment).commit();
+                    break;
+                case MyAuthorFragment.FRAGMENT_AUTHOR_DESK:
+                    currentFragment = fragment;
+                    AuthorDeskFragment deskFragment = AuthorDeskFragment.newInstance();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, deskFragment).commit();
+                    break;
+                case MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE:
+                    currentFragment = fragment;
+                    AuthorOfficeFragment authorOfficeFragment = AuthorOfficeFragment.newInstance();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorOfficeFragment).commit();
+                    break;
 
             }
         } catch (Exception e) {
-            Debug.i(TAG, "loadFragment Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "loadFragment Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -123,14 +136,28 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
         return currentFragment;
     }
 
+    public void onTopControllerBackClick(int position) {
+        loadFragment(currentFragment);
+    }
+
     @Override
-    public void onControllerTopBackClick() {
-        switch (currentFragment) {
-            case FRAGMENT_MY_AUTHORS:
-                loadFragment(FRAGMENT_MY_AUTHORS);
-//                activityHost.hideControllerTopBackButton();
-//                myAuthorsFragment.showView();
-                break;
+    public void onControllerTopBackClick(int position) {
+
+        if (position == FRAGMENT_FIND_MORE_AUTHORS || position == FRAGMENT_AUTHOR_OFFICE) {
+            activityHost.hideControllerTopBackButton();
+            loadFragment(FRAGMENT_MY_AUTHORS);
+        } else if (position == FRAGMENT_TERM_AND_CONDITION) {
+            activityHost.hideControllerTopBackButton();
+            loadFragment(FRAGMENT_FIND_MORE_AUTHORS);
+        } else if (position == FRAGMENT_AUTHOR_DESK) {
+            activityHost.hideControllerTopBackButton();
+            loadFragment(FRAGMENT_AUTHOR_OFFICE);
         }
+    }
+
+    @Override
+    public void onLoadFragment(int position) {
+
+        loadFragment(position);
     }
 }

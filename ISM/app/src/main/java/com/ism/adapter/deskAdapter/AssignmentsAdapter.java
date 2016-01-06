@@ -2,6 +2,7 @@ package com.ism.adapter.deskAdapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 //            }
 
         } catch (Exception e) {
-            Debug.i(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
 
     }

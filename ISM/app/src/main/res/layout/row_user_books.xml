@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/img_pic"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp113"
+                android:layout_height="@dimen/dp127"
                 android:layout_alignParentTop="true"
                 android:scaleType="centerCrop"
                 android:src="@color/black" />
@@ -62,7 +62,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
                     android:layout_margin="@dimen/dp4"
-                    android:src="@drawable/img_unlike_red"
+                    android:src="@drawable/ic_unlike_red"
                     android:visibility="visible" />
             </RelativeLayout>
 

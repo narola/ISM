@@ -13,12 +13,16 @@ import io.realm.annotations.PrimaryKey;
 public class StudentProfile extends RealmObject {
 
     @PrimaryKey
-    private  int studentId;
+    private  int localStudentId;
+    private  int serverStudentId;
     private String academicYear;
     private String joiningYear;
-    private String ambitionInLife   ;
+    private String ambitionInLife;
+    private String aboutMe;
+    private String contactNumber;
     private User user;
     private School school;
+    private Date birthDate;
     private Classrooms classroom;
     private Classrooms joiningClass;
     private User linkedAccount;
@@ -38,12 +42,20 @@ public class StudentProfile extends RealmObject {
     private Date createdDate;
     private Date modifiedDate;
 
-    public int getStudentId() {
-        return studentId;
+    public int getLocalStudentId() {
+        return localStudentId;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+    public void setLocalStudentId(int localStudentId) {
+        this.localStudentId = localStudentId;
+    }
+
+    public int getServerStudentId() {
+        return serverStudentId;
+    }
+
+    public void setServerStudentId(int serverStudentId) {
+        this.serverStudentId = serverStudentId;
     }
 
     public String getAcademicYear() {
@@ -68,6 +80,22 @@ public class StudentProfile extends RealmObject {
 
     public void setAmbitionInLife(String ambitionInLife) {
         this.ambitionInLife = ambitionInLife;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
 
     public User getUser() {
@@ -228,5 +256,13 @@ public class StudentProfile extends RealmObject {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 }

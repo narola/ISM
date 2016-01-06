@@ -2,6 +2,7 @@ package com.ism.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.BookDetailsDialog;
 import com.ism.object.Global;
-import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.model.BookData;
 
@@ -56,7 +56,7 @@ public class FavoriteBooksAdapter extends RecyclerView.Adapter<FavoriteBooksAdap
                 holder.imgLibraryBook.setActivated(false);
 
             }
-            Debug.i(TAG, "view called : " + position + "Total position : " + total++);
+            Log.e(TAG, "view called : " + position + "Total position : " + total++);
             holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,7 +69,7 @@ public class FavoriteBooksAdapter extends RecyclerView.Adapter<FavoriteBooksAdap
             holder.imgAddToUnFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Debug.i(TAG, "onClickAddToUnFav : " + position);
+                    Log.e(TAG, "onClickAddToUnFav : " + position);
                     booksListner.onRemoveFromFav(position);
                     // callApiAddResourceToFav();
                 }
@@ -77,7 +77,7 @@ public class FavoriteBooksAdapter extends RecyclerView.Adapter<FavoriteBooksAdap
             holder.imgLibraryBook.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Debug.i(TAG, "onClickAddToLibrary : " + position);
+                    Log.e(TAG, "onClickAddToLibrary : " + position);
                     if (arrayList.get(position).getIsInLibrary().equals("1")) {
                         arrayList.get(position).setIsInLibrary("0");
                         booksListner.onRemoveFromLibrary(arrayList.get(position).getBookId());
@@ -91,7 +91,7 @@ public class FavoriteBooksAdapter extends RecyclerView.Adapter<FavoriteBooksAdap
             });
 
         } catch (Exception e) {
-            Debug.i(TAG,"onBindViewHolder Exception : " + e.getLocalizedMessage());
+            Log.e(TAG,"onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
 
     }
@@ -127,7 +127,7 @@ public class FavoriteBooksAdapter extends RecyclerView.Adapter<FavoriteBooksAdap
             imgInfo.setVisibility(View.VISIBLE);
             imgAddToUnFav.setVisibility((View.VISIBLE));
             imgLibraryBook.setVisibility((View.VISIBLE));
-            imgAddToUnFav.setBackgroundResource(R.drawable.img_like_red);
+            imgAddToUnFav.setBackgroundResource(R.drawable.ic_like_red_active);
         }
     }
 }

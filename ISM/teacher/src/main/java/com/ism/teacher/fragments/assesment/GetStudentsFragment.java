@@ -1,4 +1,4 @@
-package com.ism.teacher.fragments;
+package com.ism.teacher.fragments.assesment;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -20,7 +20,6 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.assesment.SubjectiveQuestionsContainerFragment;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -42,7 +41,6 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     EditText etSearchMystudents;
     private ImageView imgSearchMystudents;
 
-
     //new
     private Fragment mFragment;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
@@ -56,7 +54,6 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     public GetStudentsFragment() {
         // Required empty public constructor
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootview = inflater.inflate(R.layout.fragment_mystudents, container, false);

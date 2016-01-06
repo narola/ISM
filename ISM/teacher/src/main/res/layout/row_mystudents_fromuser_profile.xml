@@ -69,7 +69,7 @@
                             android:id="@+id/tv_student_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Adam Ross"
+                            android:text="@string/strtest"
                             android:textColor="@color/white"
                             android:textSize="@dimen/d18sp" />
 
@@ -78,7 +78,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/d5dp"
-                            android:text="11 science"
+                            android:text="@string/strtest"
                             android:textColor="@color/white"
                             android:textSize="@dimen/d16sp" />
 
@@ -100,25 +100,34 @@
                 android:id="@+id/tv_student_school"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/d5dp"
-                android:text="Student From School"
+                android:layout_marginLeft="@dimen/d10dp"
+                android:text="@string/strtest"
                 android:textColor="@color/color_green_exam_name"
-                android:textSize="@dimen/d14sp" />
+                android:textSize="@dimen/d16sp" />
 
             <TextView
                 android:id="@+id/tv_living_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:layout_marginLeft="@dimen/d5dp"
-                android:text="Living in India"
+                android:layout_marginLeft="@dimen/d10dp"
+                android:text="@string/strtest"
                 android:textColor="@color/color_living_in"
-                android:textSize="@dimen/d14sp" />
+                android:textSize="@dimen/d16sp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/d1dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/d5dp"
+                android:layout_marginRight="@dimen/d5dp"
+                android:background="@color/color_shade_news_feed" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/d40dp"
+                android:layout_height="@dimen/d65dp"
+                android:layout_marginTop="@dimen/d5dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -134,9 +143,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="20"
+                        android:text="@string/strtest"
                         android:textColor="@color/color_violet"
-                        android:textSize="@dimen/d16sp" />
+                        android:textSize="@dimen/d18sp" />
 
                     <TextView
                         android:id="@+id/tv_ism_rank_label"
@@ -153,6 +162,7 @@
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_marginBottom="@dimen/d5dp"
                     android:background="@color/color_shade_news_feed" />
 
                 <!-- Score part-->
@@ -167,7 +177,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="100"
+                        android:text="@string/strtest"
                         android:textColor="@color/color_txt_tutorial"
                         android:textSize="@dimen/d18sp" />
 

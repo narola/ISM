@@ -72,6 +72,13 @@ public class AppConstant {
     public static final String FRAGMENT_BOOKS = "books";
     public static final String FRAGMENT_TIMETABLE = "timetable";
 
+    public static final String FRAGMENT_MY_AUTHORS = "myAuthoes";
+    public static final String FRAGMENT_AUTHOR_OFFICE = "athorOffice";
+    public static final String AUTHOR_NAME = "authorName";
+    public static final String FRAGMENT_MY_AUTHOR = "myAuthor";
+    public static final String FRAGMENT_AUTHOR_DESK = "authorDesk";
+    public static final String AUTHOR_ID = "authorId";
+
 //    public static final int FRAGMENT_ALL_FAVORITES = 0;
 //    public static final int FRAGMENT_ALL_NOTES = 1;
 //    public static final int FRAGMENT_ALL_BOOKS =2 ;

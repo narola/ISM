@@ -142,7 +142,7 @@ public class EditAboutMeDetailsActivity extends Activity implements View.OnClick
                 Utility.alertOffline(getApplicationContext());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiEditAboutMe Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiEditAboutMe Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -201,7 +201,7 @@ public class EditAboutMeDetailsActivity extends Activity implements View.OnClick
 
             }
         } catch (Exception e) {
-            Debug.i(TAG, "OnResponse Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "OnResponse Exceptions : " + e.getLocalizedMessage());
         }
 
     }

@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.ws.helper.WebserviceWrapper;
-
 /**
  * Created by c162 on 28/12/15.
  */
@@ -119,7 +119,7 @@ public class AllAssignmentsFragment extends Fragment implements WebserviceWrappe
             activityHost = (HostActivity) activity;
 
         } catch (ClassCastException e) {
-            Debug.i(TAG, "onAttach Exception : " + e.toString());
+            Log.e(TAG, "onAttach Exception : " + e.toString());
         }
     }
 

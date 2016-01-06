@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 
-import model.Assignments;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

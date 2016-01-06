@@ -172,7 +172,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                 request.setStudentId(getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID));
 
 //                request.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
-//                request.setStudentId(WebConstants.STUDENT_ID_202_OBJECCTIVE);
+//                request.setLocalStudentId(WebConstants.STUDENT_ID_202_OBJECCTIVE);
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_EVALUATIONS);
             } catch (Exception e) {
