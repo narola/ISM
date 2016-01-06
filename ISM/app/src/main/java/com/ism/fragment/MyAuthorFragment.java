@@ -14,14 +14,16 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.myAuthor.MyAuthorAdapter;
 import com.ism.constant.AppConstant;
+import com.ism.fragment.myAuthor.AuthorOfficeFragment;
 import com.ism.fragment.myAuthor.FindMoreAuthorsFragment;
 import com.ism.fragment.myAuthor.MyAuthorsFragment;
+import com.ism.fragment.myAuthor.authorDesk.AuthorDeskFragment;
 import com.ism.interfaces.FragmentListener;
 
 /**
  * Created by c162 on 01/1/16.
  */
-public class MyAuthorFragment extends Fragment implements HostActivity.HostListenerMyAuthor{
+public class MyAuthorFragment extends Fragment implements HostActivity.HostListenerMyAuthor {
 
     private static final String TAG = MyAuthorFragment.class.getSimpleName();
 
@@ -45,7 +47,6 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
     private static int currentFragment = -1;
     private HostActivity activityHost;
     private MyAuthorsFragment myAuthorsFragment;
-
     public static MyAuthorFragment newInstance() {
         MyAuthorFragment fragReportCard = new MyAuthorFragment();
         return fragReportCard;
@@ -108,10 +109,19 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
                 case MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS:
                     currentFragment = fragment;
                     FindMoreAuthorsFragment findMoreAuthorsFragment = FindMoreAuthorsFragment.newInstance();
-                    Log.e(TAG,"getFragmentmanager " +getFragmentManager());
-                    Log.e(TAG,"R.id.fl_my_authors " +R.id.fl_my_authors);
                     getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, findMoreAuthorsFragment).commit();
                     break;
+                case MyAuthorFragment.FRAGMENT_AUTHOR_DESK:
+                    currentFragment = fragment;
+                    AuthorDeskFragment deskFragment = AuthorDeskFragment.newInstance();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, deskFragment).commit();
+                    break;
+                case MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE:
+                    currentFragment = fragment;
+                    AuthorOfficeFragment authorOfficeFragment = AuthorOfficeFragment.newInstance();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorOfficeFragment).commit();
+                    break;
+
             }
         } catch (Exception e) {
             Log.e(TAG, "loadFragment Exceptions : " + e.getLocalizedMessage());
@@ -125,12 +135,29 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
     public static int getCurrentChildFragment() {
         return currentFragment;
     }
+
     public void onTopControllerBackClick(int position) {
         loadFragment(currentFragment);
     }
 
     @Override
     public void onControllerTopBackClick(int position) {
+
+        if (position == FRAGMENT_FIND_MORE_AUTHORS || position == FRAGMENT_AUTHOR_OFFICE) {
+            activityHost.hideControllerTopBackButton();
+            loadFragment(FRAGMENT_MY_AUTHORS);
+        } else if (position == FRAGMENT_TERM_AND_CONDITION) {
+            activityHost.hideControllerTopBackButton();
+            loadFragment(FRAGMENT_FIND_MORE_AUTHORS);
+        } else if (position == FRAGMENT_AUTHOR_DESK) {
+            activityHost.hideControllerTopBackButton();
+            loadFragment(FRAGMENT_AUTHOR_OFFICE);
+        }
+    }
+
+    @Override
+    public void onLoadFragment(int position) {
+
         loadFragment(position);
     }
 }

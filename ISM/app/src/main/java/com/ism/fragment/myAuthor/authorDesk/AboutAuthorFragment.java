@@ -13,7 +13,9 @@ import android.widget.TextView;
 import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
+import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -48,7 +50,8 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
     private TextView txtTotalQueAnswered, txtQuestionAnswered;
     private TextView txtAboutAuthorDetails, txtAboutAuhtor;
     private HostActivity activityHost;
-    private StudentHelper studenHelper;
+    private StudentHelper studentHelper;
+    private FragmentListener fragmentListener;
 
     public static AboutAuthorFragment newInstance() {
         AboutAuthorFragment fragment = new AboutAuthorFragment();
@@ -75,7 +78,7 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
         txtUserName = (TextView) view.findViewById(R.id.txt_user_name);
         txtTotalBooks = (TextView) view.findViewById(R.id.txt_total_books);
         imgProfilePic = (ImageView) view.findViewById(R.id.img_profile_pic);
-        studenHelper = new StudentHelper(getActivity());
+        studentHelper = new StudentHelper(getActivity());
         txtSocial = (TextView) view.findViewById(R.id.txt_social);
         txtAboutAuthorDetails = (TextView) view.findViewById(R.id.txt_About_author_details);
         txtAboutAuhtor = (TextView) view.findViewById(R.id.txt_About_author);
@@ -136,7 +139,15 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
         txtTotalBadgesEarned.setTypeface(Global.myTypeFace.getRalewayBold());
         txtQuestionAnswered.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtTotalFavQuestions.setTypeface(Global.myTypeFace.getRalewayBold());
-        callApiGetAboutMe();
+
+        AuthorProfile authorProfile=getAuthorDetails();
+        if(authorProfile!=null){
+            setUpDBData(authorProfile);
+            callApiGetAboutMe();
+        }else{
+            callApiGetAboutMe();
+        }
+
 
     }
 
@@ -145,7 +156,7 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
             if (Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId("53");
+                attribute.setUserId(activityHost.getBundle().getString(AppConstant.AUTHOR_ID));
 //                attribute.setUserId(Global.strUserId);
                 attribute.setRoleId(Global.authorRoleID);
 
@@ -183,8 +194,19 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
     private void saveAuthorProfile(User user) {
         try {
             AuthorProfile authorProfile = new AuthorProfile();
-            authorProfile.setUser(studenHelper.getUser(Integer.parseInt(Global.strUserId)));
-            authorProfile.setAuthorId(Integer.parseInt(user.getUserId()));
+            model.User userData = studentHelper.getUser(Integer.parseInt(user.getUserId()));
+            if (userData != null) {
+                authorProfile.setUser(userData);
+            } else {
+                userData = new model.User();
+                userData.setUserId(Integer.parseInt(user.getUserId()));
+//                newuser.setUsername(user.getUsername());
+                userData.setFullName(user.getUsername());
+                userData.setProfilePicture(user.getProfilePic());
+                studentHelper.saveUser(userData);
+                authorProfile.setUser(userData);
+            }
+            authorProfile.setServerAuthorId(Integer.parseInt(user.getUserId()));
             authorProfile.setAboutAuthor(user.getAboutAuthor());
             //authorProfile.setContactNumber(user.getContactNumber()); // this field is never used in author module
             authorProfile.setBirthDate(getDateFormate(user.getBirthdate()));
@@ -198,78 +220,16 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
             authorProfile.setTotalFollpwing(Integer.parseInt(user.getTotalFollowing() == null ? "0" : user.getTotalFollowing()));
             authorProfile.setTotalExamCreated(Integer.parseInt(user.getTotalExams() == null ? "0" : user.getTotalExams()));
             authorProfile.setTotalBooks(Integer.parseInt(user.getTotalBooks() == null ? "0" : user.getTotalBooks()));
-            studenHelper.saveAuthorProfile(authorProfile);
-            setUpDBData(studenHelper.getAuthorprofile(Integer.parseInt(Global.strUserId)));
+            studentHelper.saveAuthorProfile(authorProfile);
+            setUpDBData(getAuthorDetails());
 
         } catch (Exception e) {
             Log.e(TAG, "saveAuthorProfile Exceptions: " + e.getLocalizedMessage());
         }
     }
 
-
-    private void setUpData(User data) {
-        try {
-            txtUserName.setText(data.getUsername());
-            txtEducationName.setText(data.getEducation());
-            txtBirthdate.setText(com.ism.commonsource.utility.Utility.DateFormat(data.getBirthdate()));
-
-            if (data.getTotalAssignment() == null)
-                txtTotalAssignment.setText("0");
-            else
-                txtTotalAssignment.setText(data.getTotalAssignment());
-
-            if (data.getAboutAuthor() == null)
-                txtAboutAuthorDetails.setText("No inforamation available!");
-            else
-                txtAboutAuthorDetails.setText(data.getAboutAuthor());
-
-            if (data.getTotalBadgesEarned() == null)
-                txtTotalBadgesEarned.setText("0");
-            else
-                txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
-
-            if (data.getTotalExams() == null)
-                txtTotalExam.setText("0");
-            else
-                txtTotalExam.setText(data.getTotalExams());
-
-
-            if (data.getTotalPost() == null)
-                txtTotalPost.setText("0");
-            else
-                txtTotalPost.setText(data.getTotalPost());
-
-            if (data.getTotalQuestionsAnswered() == null)
-                txtTotalQueAnswered.setText("0");
-            else
-                txtTotalQueAnswered.setText(data.getTotalQuestionsAnswered());
-
-            if (data.getTotalBooks() == null)
-                txtTotalBooks.setText("0");
-            else
-                txtTotalBooks.setText(data.getTotalBooks());
-
-            if (data.getTotalFollowers() == null)
-                txtTotalFollowers.setText("0");
-            else
-                txtTotalFollowers.setText(data.getTotalFollowers());
-
-            if (data.getTotalFavoriteQuestions() == null)
-                txtTotalFavQuestions.setText("0");
-            else
-                txtTotalFavQuestions.setText(data.getTotalFavoriteQuestions());
-
-            if (data.getTotalFollowing() == null)
-                txtTotalFollowing.setText("0");
-            else
-                txtTotalFollowing.setText(data.getTotalFollowing());
-
-            txtAboutAuhtor.setText("ABOUT " + data.getUsername().toUpperCase());
-//            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + data.getProfilePic(), imgProfilePic, ISMAuthor.options);
-            Global.imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMStudent.options);
-        } catch (Exception e) {
-            Log.e(TAG, "SetupData :" + e.getLocalizedMessage());
-        }
+    private AuthorProfile getAuthorDetails() {
+        return studentHelper.getAuthorprofile(Integer.parseInt(activityHost.getBundle().getString(AppConstant.AUTHOR_ID)));
     }
 
     public static Date getDateFormate(String birthdate) {
@@ -359,7 +319,7 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
 
             txtAboutAuhtor.setText("ABOUT " + data.getUser().getFullName().toUpperCase());
 //            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + data.getProfilePic(), imgProfilePic, ISMAuthor.options);
-            Global.imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMStudent.options);
+            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER+data.getUser().getProfilePicture(), imgProfilePic, ISMStudent.options);
         } catch (Exception e) {
             Log.e(TAG, "SetupData :" + e.getLocalizedMessage());
         }
@@ -370,10 +330,26 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
         super.onAttach(activity);
         try {
             activityHost = (HostActivity) activity;
-
+            fragmentListener = (FragmentListener) activity;
+            if (fragmentListener != null) {
+                fragmentListener.onFragmentAttached(AuthorDeskFragment.FRAGMENT_ABOUT_ME);
+            }
 
         } catch (Exception e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        try {
+            if (fragmentListener != null) {
+                fragmentListener.onFragmentDetached(AuthorDeskFragment.FRAGMENT_ABOUT_ME);
+            }
+
+        } catch (Exception e) {
+            Debug.e(TAG, "onDetach Exception : " + e.toString());
         }
     }
 

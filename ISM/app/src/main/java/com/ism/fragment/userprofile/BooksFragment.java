@@ -166,7 +166,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void onClicks() {
         try {
-//            listViewFavBooks.setOnTouchListener(new View.OnTouchListener() {
+//            listViewAuthorBooks.setOnTouchListener(new View.OnTouchListener() {
 //                @Override
 //                public boolean onTouch(View v, MotionEvent event) {
 //                    imgNextFav.setEnabled(layoutManagerFav.findLastCompletelyVisibleItemPosition() != arrayListFavBooks.size() - 1);

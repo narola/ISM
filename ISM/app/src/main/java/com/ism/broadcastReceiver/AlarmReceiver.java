@@ -7,15 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
-import com.ism.fragment.tutorialGroup.ExamFragment;
-import com.ism.object.Global;
 import com.ism.utility.Alarm;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
@@ -39,12 +36,10 @@ public class AlarmReceiver extends BroadcastReceiver implements WebserviceWrappe
 
 		this.context = context;
 
-		Log.e(TAG, "onReceive : " + intent.getAction());
-
 		if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-			Log.e(TAG, "boot completed");
+
 			if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, context, "").equals(Utility.getDate())
-					&& PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, context)) {
+					&& !PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, context)) {
 //			if (!PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, context)) {
 
 				/**
@@ -54,7 +49,6 @@ public class AlarmReceiver extends BroadcastReceiver implements WebserviceWrappe
 				calendar.add(Calendar.MINUTE, 5);
 //				calendar.add(Calendar.SECOND, 10);
 
-				Log.e(TAG, "alarm set");
 				Alarm.setAlarm(context, Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS, calendar.getTimeInMillis(), Alarm.MINUTE * 5);
 //				Alarm.setAlarm(context, Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS, calendar.getTimeInMillis(), Alarm.SECOND * 10);
 			}
@@ -105,7 +99,7 @@ public class AlarmReceiver extends BroadcastReceiver implements WebserviceWrappe
 						NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
 								.setSmallIcon(R.drawable.ic_chat)
 								.setContentTitle(context.getString(R.string.app_name))
-								.setContentText("Today's tutorial group exam is ready!")
+								.setContentText(context.getString(R.string.msg_tutorial_exam_ready))
 								.setAutoCancel(true);
 
 						Intent intentFridayExam = new Intent(context, HostActivity.class);

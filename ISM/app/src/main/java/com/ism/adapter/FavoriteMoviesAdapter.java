@@ -50,7 +50,7 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
             holder.txtYear.setTypeface(Global.myTypeFace.getRalewayRegular());
             holder.txtMovieName.setGravity(Gravity.LEFT);
             holder.txtYear.setGravity(Gravity.LEFT);
-            holder.imgRemoveFav.setBackgroundResource(R.drawable.img_like_red);
+            holder.imgRemoveFav.setBackgroundResource(R.drawable.ic_like_red_active);
             Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getMovieImage(), holder.imgMovie, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtMovieName.setText(arrayList.get(position).getMovieName());
             holder.txtYear.setText(arrayList.get(position).getMovieGenre());

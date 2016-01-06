@@ -66,7 +66,7 @@
                 android:layout_marginRight="@dimen/dp12"
                 android:background="@drawable/bg_circle_white"
                 android:gravity="center"
-                android:padding="@dimen/dp12"
+                android:padding="@dimen/dp8"
                 android:singleLine="false"
                 android:textColor="@color/cpb_blue_dark"
                 android:textSize="@dimen/sp14" />

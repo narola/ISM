@@ -18,14 +18,14 @@ import com.ism.object.Global;
 /**
  * Created by c162 on 1/1/2016.
  */
-public class AuthorDeskFragment extends Fragment {
+public class AuthorDeskFragment extends Fragment implements HostActivity.HostListenerAuthorDesk {
 
     private static final String TAG = AuthorDeskFragment.class.getSimpleName();
 
-    public static final int FRAGMENT_ABOUT_ME = 0;
-    public static final int FRAGMENT_BOOKS = 1;
-    public static final int FRAGMENT_ASSIGNMENTS = 2;
-    public static final int FRAGMENT_BOOKASSIGNMENT = 3;
+    public static final int FRAGMENT_ABOUT_ME = 51;
+    public static final int FRAGMENT_BOOKS = 52;
+    public static final int FRAGMENT_ASSIGNMENTS = 53;
+    public static final int FRAGMENT_BOOKASSIGNMENT = 54;
 
 
     private View view;
@@ -142,6 +142,7 @@ public class AuthorDeskFragment extends Fragment {
             Log.e(TAG, "onAttach Attached fragment ");
             activityHost = (HostActivity) activity;
             fragListener = (FragmentListener) activity;
+            activityHost.setListenerHostAuthorDesk(this);
             if (fragListener != null) {
                 fragListener.onFragmentAttached(MyAuthorFragment.FRAGMENT_AUTHOR_DESK);
             }
@@ -162,5 +163,12 @@ public class AuthorDeskFragment extends Fragment {
             Log.e(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
+    }
+
+    @Override
+    public void onTopControllerBackClick(int position) {
+        if(position==FRAGMENT_BOOKASSIGNMENT){
+            loadFragment(FRAGMENT_ASSIGNMENTS);
+        }
     }
 }

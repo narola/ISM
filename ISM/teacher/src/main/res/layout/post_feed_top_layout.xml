@@ -59,7 +59,7 @@
                     android:id="@+id/img_attach_file_in_post"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/link_post" />
+                    android:src="@drawable/link" />
 
                 <ImageView
                     android:id="@+id/img_attach_image_in_post"

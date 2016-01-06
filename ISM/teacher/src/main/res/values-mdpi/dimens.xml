@@ -43,6 +43,7 @@
     <dimen name="d130sp">97.50sp</dimen>
 
 
+    <dimen name="d0dp">0dp</dimen>
     <dimen name="d1dp">0.75dp</dimen>
     <dimen name="d2dp">1.5dp</dimen>
     <dimen name="d3dp">2.25dp</dimen>
@@ -57,6 +58,8 @@
     <dimen name="d22dp">16.50dp</dimen>
     <dimen name="d25dp">18.75dp</dimen>
     <dimen name="d30dp">22.5dp</dimen>
+    <dimen name="d35dp">26.25dp</dimen>
+
     <dimen name="d40dp">30dp</dimen>
     <dimen name="d45dp">33.75dp</dimen>
     <dimen name="d50dp">37.50dp</dimen>
@@ -72,7 +75,8 @@
     <dimen name="d170dp">127.50dp</dimen>
     <dimen name="d200dp">150dp</dimen>
     <dimen name="d500dp">375dp</dimen>
-
+    <dimen name="d210dp">157.50dp</dimen>
+    <dimen name="d223dp">167.25dp</dimen>
 
     <dimen name="rich_text_editor_height">337.50dp</dimen>
     <dimen name="dp_post_creater_image_width_height">120dp</dimen>
@@ -98,9 +102,17 @@
     <dimen name="d400dp">300dp</dimen>
     <dimen name="d350dp">262.50dp</dimen>
     <dimen name="d480dp">360dp</dimen>
+    <dimen name="d235dp">176.25dp</dimen>
 
+    <dimen name="text_size_emptylist_message_small">@dimen/d18sp</dimen>
+    <dimen name="text_size_emptylist_message_medium">@dimen/d22sp</dimen>
+    <dimen name="text_size_emptylist_message_large">@dimen/d25sp</dimen>
+
+    <dimen name="d359dp">269.25dp</dimen>
     <dimen name="d1px">1px</dimen>
     <dimen name="dminus8dp">-6dp</dimen>
+    <dimen name="dMinus10dp">-7.5dp</dimen>
     <dimen name="d185dp">138.75dp</dimen>
-
+    <dimen name="padding_header_white">@dimen/d20dp</dimen>
+    <dimen name="padding_child_fragment_content">@dimen/d15dp</dimen>
 </resources>

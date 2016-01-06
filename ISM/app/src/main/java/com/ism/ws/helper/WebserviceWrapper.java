@@ -236,8 +236,23 @@ public class WebserviceWrapper {
                             case WebConstants.GET_ALL_BOOKS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BOOKS).execute(ResponseHandler.class, attribute);
                                 break;
+                            case WebConstants.GET_FRIDAY_EXAM_QUESTIONS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_FRIDAY_EXAM_QUESTIONS).execute(ResponseHandler.class, attribute);
+                                break;
                             case WebConstants.GET_AUTHOR_BOOK_ASSIGNMENT:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_AUTHOR_BOOK_ASSIGNMENT).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_BOOKS_BY_AUTHOR:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_BY_AUTHOR).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_ASSIGNMENT_BY_BOOK:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_ASSIGNMENT_BY_BOOK).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_FOLLOW_USER:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_FOLLOW_USER).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_RECOMMENDED_AUTHORS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_RECOMMENDED_AUTHORS).execute(ResponseHandler.class, attribute);
                                 break;
                         }
                     }

@@ -9,24 +9,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.myAuthor.FindMoreAuthorAdapter;
+import com.ism.constant.WebConstants;
 import com.ism.fragment.MyAuthorFragment;
 import com.ism.fragment.myAuthor.authorDesk.AcceptTermAndConditionsFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
+import com.ism.utility.Debug;
+import com.ism.utility.Utility;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.AuthorData;
+
+import java.util.ArrayList;
 
 /**
  * Created by c162 on 04/1/16.
  */
-public class FindMoreAuthorsFragment extends Fragment  {
+public class FindMoreAuthorsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = FindMoreAuthorsFragment.class.getSimpleName();
-    private static final int FRAGMENT_MY_AUTHORS = 0;
 
     private View view;
 
@@ -34,9 +41,9 @@ public class FindMoreAuthorsFragment extends Fragment  {
     private TextView txtEmptyView;
     private FindMoreAuthorAdapter findMoreAuthorAdapter;
     private HostActivity activityHost;
-    private RelativeLayout rrFindMore;
     private int currentFragment;
     private FragmentListener fragListener;
+    private ArrayList<AuthorData> arrListRecommendedAuthors=new ArrayList<>();
 
     public static FindMoreAuthorsFragment newInstance() {
         FindMoreAuthorsFragment fragReportCard = new FindMoreAuthorsFragment();
@@ -68,8 +75,25 @@ public class FindMoreAuthorsFragment extends Fragment  {
         rvMyAuthorList.setAdapter(findMoreAuthorAdapter);
 
         //Utility.showView(txtEmptyView);
-
+        callApiGetRecommendedAuthors();
         onClicks();
+    }
+
+    private void callApiGetRecommendedAuthors() {
+
+        if (Utility.isConnected(getActivity())) {
+            try {
+                activityHost.showProgress();
+
+                new WebserviceWrapper(getActivity(), new Attribute(), this).new WebserviceCaller()
+                        .execute(WebConstants.GET_RECOMMENDED_AUTHORS);
+            } catch (Exception e) {
+                Utility.alertOffline(getActivity());
+            }
+        } else {
+            Utility.alertOffline(getActivity());
+        }
+
     }
 
     private void onClicks() {
@@ -80,6 +104,7 @@ public class FindMoreAuthorsFragment extends Fragment  {
             Log.e(TAG, "onCLicks Exceptions : " + e.getLocalizedMessage());
         }
     }
+
     public void loadFragment(int fragment) {
         try {
             switch (fragment) {
@@ -121,4 +146,46 @@ public class FindMoreAuthorsFragment extends Fragment  {
         }
     }
 
+    @Override
+    public void onResponse(Object object, Exception error, int apiCode) {
+        try {
+            switch (apiCode) {
+                case WebConstants.GET_RECOMMENDED_AUTHORS:
+                    onResponseRecommendedAuthors(object, error);
+                    break;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onResponse Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseRecommendedAuthors(Object object, Exception error) {
+        try {
+            activityHost.hideProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+
+                    if (responseHandler.getAuthor().size() > 0) {
+
+                        arrListRecommendedAuthors.addAll(responseHandler.getAuthor());
+                        findMoreAuthorAdapter.addAll(arrListRecommendedAuthors);
+                        findMoreAuthorAdapter.notifyDataSetChanged();
+
+                        txtEmptyView.setVisibility(View.GONE);
+                    } else {
+                        txtEmptyView.setVisibility(View.VISIBLE);
+                    }
+
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Utility.showToast(getActivity(), responseHandler.getMessage());
+
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseRecommendedAuthors api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseRecommendedAuthors Exception : " + e.toString());
+        }
+    }
 }

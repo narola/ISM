@@ -34,12 +34,17 @@ import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
 import com.ism.teacher.fragments.UpcomingEventsFragment;
-import com.ism.teacher.fragments.userprofile.TeacherProfileFragment;
 import com.ism.teacher.fragments.assesment.StudentAttemptedFragment;
 import com.ism.teacher.fragments.office.TeacherOfficeFragment;
 import com.ism.teacher.fragments.tutorial.PastTutorialsFragment;
 import com.ism.teacher.fragments.tutorial.TutorialGroupFragment;
 import com.ism.teacher.fragments.tutorial.scheduleexam.ScheduleTutorialExamContainerFragment;
+import com.ism.teacher.fragments.userprofile.AllMessageFragment;
+import com.ism.teacher.fragments.userprofile.AllNotificationFragment;
+import com.ism.teacher.fragments.userprofile.AllStudymateRequestFragment;
+import com.ism.teacher.fragments.userprofile.MyFeedsFragment;
+import com.ism.teacher.fragments.userprofile.TeacherProfileFragment;
+import com.ism.teacher.fragments.userprofile.generalsetting.GeneralSettingsFragment;
 import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.object.MyTypeFace;
@@ -72,7 +77,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     private View.OnClickListener onClickMenuItem;
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
 
-
     /**
      * Custom Views
      */
@@ -92,13 +96,18 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     public static final int FRAGMENT_UPCOMING_EVENTS = 1;
     public static final int FRAGMENT_TEACHER_CHAT = 2;
-    public static final int FRAGMENT_USER_PROFILE = 3;
+    public static final int FRAGMENT_PROFILE_CONTROLLER = 3;
     public static final int FRAGMENT_TEACHER_HOME = 4;
     public static final int FRAGMENT_TEACHER_TUTORIAL_GROUP = 5;
     public static final int FRAGMENT_TEACHER_OFFICE = 6;
     public static final int FRAGMENT_STUDENT_ATTEMPTED = 7;
     public static final int FRAGMENT_PAST_TUTORIALS = 8;
     public static final int FRAGMENT_SCHEDULE_EXAM = 9;
+    public static final int FRAGMENT_ALL_MESSAGE = 10;
+    public static final int FRAGMENT_ALL_NOTIFICATION = 11;
+    public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 12;
+    public static final int FRAGMENT_GENERAL_SETTING = 13;
+    public static final int FRAGMENT_MY_FEEDS = 14;
 
     /**
      * ============================Constant Block end========================================================
@@ -116,7 +125,8 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     private HostListenerProfileController listenerHostProfileController;
     private HostListenerAllNotification listenerHostAllNotification;
     private HostListenerAllMessage listenerHostAllMessage;
-
+    private ProfileControllerPresenceListener listenerProfileControllerPresence;
+    private ResizeView resizeListView;
 
     /**
      * FragmentTransaction
@@ -152,6 +162,21 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     public interface HostListenerAllMessage {
         public void onControllerTopBackClick();
+    }
+
+    public interface ProfileControllerPresenceListener {
+        public void onProfileControllerAttached();
+
+        public void onProfileControllerDetached();
+
+    }
+
+    public interface ResizeView {
+        public void onUnBlockUser();
+    }
+
+    public int getCurrentRightFragment() {
+        return currentRightFragment;
     }
 
     /**
@@ -291,7 +316,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         img_teacher_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragmentInRightContainer(FRAGMENT_USER_PROFILE);
+                loadFragmentInRightContainer(FRAGMENT_PROFILE_CONTROLLER);
             }
         });
 
@@ -366,6 +391,31 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ScheduleTutorialExamContainerFragment.newInstance()).commit();
                     break;
 
+                case FRAGMENT_ALL_NOTIFICATION:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AllNotificationFragment.newInstance()).commit();
+                    break;
+                case FRAGMENT_ALL_MESSAGE:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AllMessageFragment.newInstance()).commit();
+                    break;
+
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AllStudymateRequestFragment.newInstance()).commit();
+                    break;
+
+                case FRAGMENT_GENERAL_SETTING:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            GeneralSettingsFragment.newInstance()).commit();
+                    break;
+
+                case FRAGMENT_MY_FEEDS:
+
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            MyFeedsFragment.newInstance()).commit();
+                    break;
+
             }
         } catch (Exception e) {
             Log.e(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
@@ -383,7 +433,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_TEACHER_CHAT:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, TeacherChatFragment.newInstance()).commit();
                     break;
-                case FRAGMENT_USER_PROFILE:
+                case FRAGMENT_PROFILE_CONTROLLER:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, TeacherProfileFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_STUDENT_ATTEMPTED:
@@ -410,7 +460,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     imgUpcomings.setActivated(true);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     break;
-                case FRAGMENT_USER_PROFILE:
+                case FRAGMENT_PROFILE_CONTROLLER:
                     currentRightFragment = fragment;
                     img_teacher_profile.setActivated(true);
                     llControllerLeft.setVisibility(View.VISIBLE);
@@ -492,6 +542,29 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     showControllerTopBackButton();
                     hideRightContainerFragment();
                     break;
+
+                case FRAGMENT_ALL_NOTIFICATION:
+
+                    currentMainFragment = fragment;
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+
+                case FRAGMENT_ALL_MESSAGE:
+                    currentMainFragment = fragment;
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    currentMainFragment = fragment;
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+
+                case FRAGMENT_GENERAL_SETTING:
+                case FRAGMENT_MY_FEEDS:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
+                    rlControllerTopMenu.setVisibility(View.GONE);
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
@@ -505,7 +578,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_UPCOMING_EVENTS:
                     imgUpcomings.setActivated(false);
                     break;
-                case FRAGMENT_USER_PROFILE:
+                case FRAGMENT_PROFILE_CONTROLLER:
                     img_teacher_profile.setActivated(false);
                     break;
                 case FRAGMENT_TEACHER_CHAT:
@@ -524,6 +597,26 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_TEACHER_OFFICE:
                     imgOffice.setActivated(false);
                     break;
+
+                case FRAGMENT_ALL_NOTIFICATION:
+                    hideControllerTopBackButton();
+                    loadControllerTopMenu(null);
+                    break;
+
+                case FRAGMENT_ALL_MESSAGE:
+                    loadControllerTopMenu(null);
+                    break;
+
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    loadControllerTopMenu(null);
+                    break;
+
+                case FRAGMENT_MY_FEEDS:
+                case FRAGMENT_GENERAL_SETTING:
+                    //setTopBarValues(fragment, getResources().getColor(R.color.color_blue), false, false, false, null, false);
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+                    break;
+
 
             }
         } catch (Exception e) {
@@ -681,6 +774,9 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     }
 
+    public void setListenerProfileControllerPresence(ProfileControllerPresenceListener listenerProfileControllerPresence) {
+        this.listenerProfileControllerPresence = listenerProfileControllerPresence;
+    }
 
     private void hideControllerTopBackButton() {
         startSlideAnimation(imgBack, 0, -1000, 0, 0);
@@ -764,7 +860,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
      * Handle the back click in TeacherOfficeFragment
      *
      * @param currentMainFragment Based on the currentMainFragment i.e active fragment inside Teacher Office Fragment
-     *                            <p/>
+     *                            <p>
      *                            OR current main when we call tutorials related fragment.
      */
 
@@ -958,17 +1054,25 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     /**
      * Setting listeners
+     *
      * @param listenerHostProfileController
      */
 
     public void setListenerHostProfileController(HostListenerProfileController listenerHostProfileController) {
         this.listenerHostProfileController = listenerHostProfileController;
     }
+
     public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
         this.listenerHostAllNotification = listenerHostAllNotification;
     }
+
     public void setListenerHostAllMessage(HostListenerAllMessage listenerHostAllMessage) {
         this.listenerHostAllMessage = listenerHostAllMessage;
     }
+
+    public void setListenerResizeView(ResizeView resizeListView) {
+        this.resizeListView = resizeListView;
+    }
+
 
 }

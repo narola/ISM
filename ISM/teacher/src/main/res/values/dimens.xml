@@ -43,6 +43,7 @@
     <dimen name="d130sp">130sp</dimen>
 
 
+    <dimen name="d0dp">0dp</dimen>
     <dimen name="d1dp">1dp</dimen>
     <dimen name="d2dp">2dp</dimen>
     <dimen name="d3dp">3dp</dimen>
@@ -55,8 +56,9 @@
 
     <dimen name="d20dp">20dp</dimen>
     <dimen name="d22dp">22dp</dimen>
-    <dimen name="d30dp">30dp</dimen>
     <dimen name="d25dp">25dp</dimen>
+    <dimen name="d30dp">30dp</dimen>
+    <dimen name="d35dp">35dp</dimen>
 
     <dimen name="d40dp">40dp</dimen>
     <dimen name="d45dp">45dp</dimen>
@@ -97,10 +99,22 @@
     <dimen name="d400dp">400dp</dimen>
     <dimen name="d350dp">350dp</dimen>
     <dimen name="d480dp">480dp</dimen>
+    <dimen name="d235dp">235dp</dimen>
+    <dimen name="d359dp">359dp</dimen>
+    <dimen name="d210dp">210dp</dimen>
+    <dimen name="d223dp">223dp</dimen>
 
+
+    <dimen name="text_size_emptylist_message_small">18sp</dimen>
+    <dimen name="text_size_emptylist_message_medium">22sp</dimen>
+    <dimen name="text_size_emptylist_message_large">25sp</dimen>
 
     <dimen name="d1px">1px</dimen>
 
     <dimen name="dminus8dp">-8dp</dimen>
+    <dimen name="dMinus10dp">-10dp</dimen>
+
     <dimen name="d185dp">185dp</dimen>
+    <dimen name="padding_header_white">20dp</dimen>
+    <dimen name="padding_child_fragment_content">15dp</dimen>
 </resources>

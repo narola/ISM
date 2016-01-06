@@ -60,7 +60,7 @@
             android:paddingLeft="@dimen/dp8"
             android:paddingRight="@dimen/dp8"
             android:text="University of Connecticut"
-            android:textSize="@dimen/sp16" />
+            android:textSize="@dimen/sp14" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -543,8 +543,7 @@
                         android:background="@color/color_white"
                         android:gravity="center_vertical"
                         android:padding="@dimen/dp4"
-                        android:text=""
-                        android:textSize="@dimen/sp15" />
+                        android:textSize="@dimen/sp16" />
                 </LinearLayout>
             </ScrollView>
 

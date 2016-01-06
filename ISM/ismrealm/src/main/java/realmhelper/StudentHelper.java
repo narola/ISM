@@ -9,10 +9,14 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import model.AdminConfig;
 import model.AuthorProfile;
+import model.Classrooms;
+import model.Courses;
 import model.FeedComment;
 import model.FeedImage;
 import model.Feeds;
 import model.Notes;
+import model.School;
+import model.StudentProfile;
 import model.Subjects;
 import model.TutorialGroupDiscussion;
 import model.TutorialTopic;
@@ -371,6 +375,12 @@ public class StudentHelper {
      */
     public void saveAuthorProfile(AuthorProfile authorProfile) {
         try {
+            Number id = realm.where(AuthorProfile.class).max("localAuthorId");
+            long newId = 1;
+            if (id != null) {
+                newId = (long) id + 1;
+            }
+            authorProfile.setLocalAuthorId((int) newId);
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(authorProfile);
             realm.commitTransaction();
@@ -382,10 +392,105 @@ public class StudentHelper {
 
     public AuthorProfile getAuthorprofile(int userId) {
         try {
-            return realm.where(AuthorProfile.class).equalTo("authorId", userId).findFirst();
+            return realm.where(AuthorProfile.class).equalTo("serverAuthorId", userId).findFirst();
         } catch (Exception e) {
-            Log.e(TAG, "getUser Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "getAuthorprofile Exceptions : " + e.getLocalizedMessage());
         }
         return null;
+    }
+
+    /**
+     * save student profile information
+     *
+     * @param  studentProfile
+     */
+    public void saveStudentProfile(StudentProfile studentProfile) {
+        try {
+            Number id = realm.where(StudentProfile.class).max("localStudentId");
+            long newId = 1;
+            if (id != null) {
+                newId = (long) id + 1;
+            }
+            studentProfile.setLocalStudentId((int) newId);
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(studentProfile);
+            realm.commitTransaction();
+//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
+        } catch (Exception e) {
+            Log.e(TAG, " saveStudentProfile Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+    public StudentProfile getStudentProfile(int id) {
+        try {
+            return realm.where(StudentProfile.class).equalTo("serverStudentId", id).findFirst();
+        } catch (Exception e) {
+            Log.e(TAG, "getStudentProfile Exceptions : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    /**
+     *  save school
+     * @param school
+     */
+    public void saveSchool(School school) {
+        try {
+            Number schoolId = realm.where(School.class).max("localSchoolId");
+            long newId = 1;
+            if (schoolId != null) {
+                newId = (long) schoolId + 1;
+            }
+            school.setLocalSchoolId((int) newId);
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(school);
+            realm.commitTransaction();
+//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
+        } catch (Exception e) {
+            Log.e(TAG, " saveSchool Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * save classroom
+     * @param classroom
+     */
+    public void saveClassRoom(Classrooms classroom) {
+        try {
+            Number classRoomId = realm.where(Classrooms.class).max("localClassRoomId");
+            long newId = 1;
+            if (classRoomId != null) {
+                newId = (long) classRoomId + 1;
+            }
+            classroom.setLocalClassRoomId((int) newId);
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(classroom);
+            realm.commitTransaction();
+//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
+        } catch (Exception e) {
+            Log.e(TAG, " saveClassRoom Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     *
+     * @param courses
+     */
+    public void saveCourse(Courses courses) {
+        try {
+
+            Number courseId = realm.where(Courses.class).max("localCourseId");
+            long newId = 1;
+            if (courseId != null) {
+                newId = (long) courseId + 1;
+            }
+            courses.setLocalCourseId((int) newId);
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(courses);
+            realm.commitTransaction();
+//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
+        } catch (Exception e) {
+            Log.e(TAG, " saveCourse Exceptions : " + e.getLocalizedMessage());
+        }
     }
 }

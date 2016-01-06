@@ -174,7 +174,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
                 Attribute attribute = new Attribute();
                 //  attribute.setExamId(getBaseFragment().getBundleArguments().getString(AssignmentSubmitterAdapter.ARG_STUDENT_ID));
                 attribute.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
-//                request.setStudentId("1");
+//                request.setLocalStudentId("1");
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_EVALUATIONS);
             } catch (Exception e) {

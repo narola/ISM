@@ -95,7 +95,7 @@ public class FavouritePastTimeAdapter extends RecyclerView.Adapter<FavouritePast
             imgRemoveFav = (ImageView) itemView.findViewById(R.id.img_add_fav);
             imgRemoveFav.setVisibility(View.VISIBLE);
             imgInfo.setVisibility(View.VISIBLE);
-            imgRemoveFav.setBackgroundResource(R.drawable.img_like_red);
+            imgRemoveFav.setBackgroundResource(R.drawable.ic_like_red_active);
         }
     }
 }

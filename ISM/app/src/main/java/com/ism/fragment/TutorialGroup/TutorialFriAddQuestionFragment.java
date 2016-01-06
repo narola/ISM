@@ -162,16 +162,24 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		intPaddingLable = getResources().getDimensionPixelOffset(R.dimen.padding_createquestion_lable);
 		inputValidator = new InputValidator(getActivity());
 
-//		if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), "").equals(Utility.getDate())) {
-			rlHeader.setVisibility(View.GONE);
-			rlTutorialmateQuestion.setVisibility(View.GONE);
-			rlWaiting.setVisibility(View.VISIBLE);
-			if (Utility.isConnected(getActivity())) {
-				callApiCheckFridayExamStatus();
-			} else {
-				Utility.alertOffline(getActivity());
+		/*if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
+			if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), "").equals(Utility.getDate())) {
+				if (!PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity())) {
+					rlHeader.setVisibility(View.GONE);
+					rlTutorialmateQuestion.setVisibility(View.GONE);
+					rlWaiting.setVisibility(View.VISIBLE);
+					if (Utility.isConnected(getActivity())) {
+						callApiCheckFridayExamStatus();
+					} else {
+						Utility.alertOffline(getActivity());
+					}
+				} else {*/
+					getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam)).commit();
+/*				}
 			}
-//		}
+		} else {
+			txtCreateQuestion.setEnabled(false);
+		}*/
 
 		etQuestion.setText("In the beginning by which name Java language was known?");
 		etOption1.setText("Java");
@@ -233,6 +241,24 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 				}
 			}
 		});
+
+		/*rlWaiting.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+				NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity())
+						.setSmallIcon(R.drawable.ic_chat)
+						.setContentTitle(getString(R.string.app_name))
+						.setContentText("Today's tutorial group exam is ready!")
+						.setAutoCancel(true);
+
+				Intent intentFridayExam = new Intent(getActivity(), HostActivity.class);
+				intentFridayExam.setAction(AppConstant.ACTION_FRIDAY_EXAM);
+				PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intentFridayExam, PendingIntent.FLAG_UPDATE_CURRENT);
+				notificationBuilder.setContentIntent(pendingIntent);
+				notificationManager.notify(AppConstant.ID_NOTIFICATION_FRIDAY_EXAM, notificationBuilder.build());
+			}
+		});*/
 
 	}
 
@@ -406,7 +432,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 					if (responseHandler.getFridayExamStatus() == null && responseHandler.getFridayExamStatus().size() > 0
 							&& responseHandler.getFridayExamStatus().get(0).getIsReady().equals("yes")) {
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity(), true);
-						getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam, 0, false)).commit();
+						getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam)).commit();
 					} else {
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity(), false);
 						rlHeader.setVisibility(View.GONE);
@@ -422,7 +448,6 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 
 						Alarm.setAlarm(getActivity(), Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS, calendar.getTimeInMillis(), Alarm.MINUTE * 5);
 //						Alarm.setAlarm(getActivity(), Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS, calendar.getTimeInMillis(), Alarm.SECOND * 10);
-						Log.e(TAG, "alarm set");
 					}
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseCheckFridayExamStatus failed : " + responseHandler.getMessage());

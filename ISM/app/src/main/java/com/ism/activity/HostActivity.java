@@ -38,8 +38,7 @@ import com.ism.fragment.ClassroomFragment;
 import com.ism.fragment.DeskFragment;
 import com.ism.fragment.MyAuthorFragment;
 import com.ism.fragment.desk.JotterScientificSymbolFragment;
-import com.ism.fragment.myAuthor.AuthorOfficeFragment;
-import com.ism.fragment.myAuthor.MyAuthorsFragment;
+import com.ism.fragment.myAuthor.authorDesk.AuthorDeskFragment;
 import com.ism.fragment.tutorialGroup.QuestionPaletteFragment;
 import com.ism.fragment.tutorialGroup.TutorialFragment;
 import com.ism.fragment.userProfile.AllMessageFragment;
@@ -103,7 +102,6 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private HostListenerFavourites listenerFavourites;
     private HostListenerProfileController listenerHostProfileController;
     private ProfileControllerPresenceListener listenerProfileControllerPresence;
-    private HostListenerMyAllAuthors listenerMyAllAuthors;
     private HostListenerStudymates listenerHostStudymates;
     private AddToLibraryListner addToLibraryListner;
     private BooksListner booksListner;
@@ -111,9 +109,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     public InsertSymbolListener insertSymbolListener;
     private HostListenerMyAuthor listenerHostMyAuthor;
     private HostListenerQuestionPalette listenerQuestionPalette;
+    private HostListenerAuthorDesk listenerAuthorDesk;
     private HostListenerFindMoreAuthors listenerHostFindMoreAuthors;
-    private TextView arrTxtMenu[];
 
+    private TextView arrTxtMenu[];
     private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
     private ArrayList<ControllerTopMenuItem> controllerTopMenuAssessment;
     private ArrayList<ControllerTopMenuItem> controllerTopMenuDesk;
@@ -139,9 +138,9 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     public static final int FRAGMENT_ALL_MESSAGE = 16;
     public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 17;
     public static final int FRAGMENT_EDIT_PROFILE = 18;
+
+
     public static final int FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL = 19;
-
-
     private int currentMainFragment = -1;
     private int currentRightFragment;
     private int currentMainFragmentBg;
@@ -155,9 +154,13 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private boolean isUpdateActionBar = true;
     private int intSubItemSelection;
     private ArrayList<ControllerTopMenuItem> controllerTopMenuAutorDesk;
+    private MyAuthorFragment myAuthorFragment;
+    private int currentMainChildFragment = -1;
+    private int currentChildAuthorDesk = -1;
 
     public interface ScrollListener {
         public void isLastPosition();
+
         public void isFirstPosition();
     }
 
@@ -189,6 +192,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
     public interface HostListenerMyAuthor {
         public void onControllerTopBackClick(int position);
+
+        public void onLoadFragment(int position);
     }
 
     public interface HostListenerFavourites {
@@ -251,6 +256,12 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         public void onBackMenuItemClick();
     }
 
+    public interface HostListenerAuthorDesk {
+        public void onTopControllerBackClick(int position);
+    }
+    public void setListenerHostAuthorDesk(HostListenerAuthorDesk listenerAuthorDesk) {
+        this.listenerAuthorDesk = listenerAuthorDesk;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -548,7 +559,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     break;
                 case FRAGMENT_MY_AUTHOR:
                     if (currentMainFragment != fragment) {
-                        MyAuthorFragment myAuthorFragment = MyAuthorFragment.newInstance();
+                        myAuthorFragment = MyAuthorFragment.newInstance();
                         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, myAuthorFragment).commit();
                     }
                     break;
@@ -608,14 +619,15 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, EditProfileFragment.newInstance()).commit();
                     break;
                 case MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE:
-                    AuthorOfficeFragment authorOfficeFragment = AuthorOfficeFragment.newInstance();
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, authorOfficeFragment).commit();
+                    listenerHostMyAuthor.onLoadFragment(MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE);
                     break;
-//                case HostActivity.FRAGMENT_AUTHOR_DESK:
-//                    AuthorDeskFragment authorDeskFragment = AuthorDeskFragment.newInstance();
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, authorDeskFragment, AppConstant.FRAGMENT_AUTHOR_DESK).commit();
-//                    //activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
-//                    break;
+                case MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS:
+                    listenerHostMyAuthor.onLoadFragment(MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS);
+                    break;
+                case MyAuthorFragment.FRAGMENT_AUTHOR_DESK:
+                    listenerHostMyAuthor.onLoadFragment(MyAuthorFragment.FRAGMENT_AUTHOR_DESK);
+                    //activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "loadFragment Exception : " + e.toString());
@@ -717,7 +729,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     Log.i(TAG, "FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL attached");
                     break;
                 case MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE:
-                    currentMainFragment = fragment;
+                    currentMainChildFragment = fragment;
                     if (imgMenuBack.getVisibility() == View.GONE) {
                         showControllerTopBackButton();
                     }
@@ -727,25 +739,30 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 //                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorOfficeFragment,AppConstant.FRAGMENT_AUTHOR_OFFICE).commit();
                     break;
                 case MyAuthorFragment.FRAGMENT_AUTHOR_DESK:
-                    currentMainFragment = fragment;
+                    currentMainChildFragment = fragment;
 //                    loadControllerTopMenu(controllerTopMenuAutorDesk);
                     loadTopMenuItem("Author's Desk", true);
                     Log.i(TAG, "FRAGMENT_AUTHOR_DESK attached");
                     break;
                 case MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS:
-                    currentMainFragment = fragment;
+                    currentMainChildFragment = fragment;
                     loadTopMenuItem("My Authors", true);
 //                    loadControllerTopMenu(controllerTopMenuMyAuthor);
                     break;
                 case MyAuthorFragment.FRAGMENT_MY_AUTHORS:
-                    currentMainFragment = fragment;
+                    currentMainChildFragment = fragment;
                     loadControllerTopMenu(controllerTopMenuMyAuthor);
                     break;
                 case MyAuthorFragment.FRAGMENT_TERM_AND_CONDITION:
-                    currentMainFragment = fragment;
+                    currentMainChildFragment = fragment;
                     loadTopMenuItem("My Authors", true);
                     break;
-
+                //case AuthorDeskFragment.FRAGMENT_ABOUT_ME:
+               // case AuthorDeskFragment.FRAGMENT_ASSIGNMENTS:
+                case AuthorDeskFragment.FRAGMENT_BOOKASSIGNMENT:
+              //  case AuthorDeskFragment.FRAGMENT_BOOKS:
+                    currentChildAuthorDesk = fragment;
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
@@ -799,6 +816,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     loadControllerTopMenu(null);
                     break;
                 case FRAGMENT_MY_AUTHOR:
+                    // currentMainChildFragment=-1;
                     imgReportCard.setActivated(false);
                     loadControllerTopMenu(null);
                     break;
@@ -844,6 +862,12 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 //                case FRAGMENT_MY_AUTHORS:
 //                    loadTopMenuItem("My Authors's");
 //                    break;
+//                case AuthorDeskFragment.FRAGMENT_ABOUT_ME:
+//                case AuthorDeskFragment.FRAGMENT_ASSIGNMENTS:
+                case AuthorDeskFragment.FRAGMENT_BOOKASSIGNMENT:
+//                case AuthorDeskFragment.FRAGMENT_BOOKS:
+                    currentChildAuthorDesk = -1;
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentDetached Exception : " + e.toString());
@@ -917,12 +941,22 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                 /**
                  * Controller top back button click
                  */
-                if (currentMainFragment == MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS || currentMainFragment == MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE ) {
-                    hideControllerTopBackButton();
-                    listenerHostMyAuthor.onControllerTopBackClick(MyAuthorFragment.FRAGMENT_MY_AUTHORS);
-                } else if (currentMainFragment == MyAuthorFragment.FRAGMENT_TERM_AND_CONDITION) {
-                    hideControllerTopBackButton();
-                    listenerHostMyAuthor.onControllerTopBackClick(MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS);
+
+//                if (currentMainChildFragment == MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS || currentMainChildFragment == MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE) {
+//                    hideControllerTopBackButton();
+//                    listenerHostMyAuthor.onControllerTopBackClick(MyAuthorFragment.FRAGMENT_MY_AUTHORS);
+//                } else if (currentMainChildFragment == MyAuthorFragment.FRAGMENT_TERM_AND_CONDITION) {
+//                    hideControllerTopBackButton();
+//                    listenerHostMyAuthor.onControllerTopBackClick(MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS);
+//                } else if (currentMainChildFragment == MyAuthorFragment.FRAGMENT_AUTHOR_DESK) {
+//                    hideControllerTopBackButton();
+//                    listenerHostMyAuthor.onControllerTopBackClick(MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE);
+//                }
+                if(currentChildAuthorDesk!=-1){
+                    listenerAuthorDesk.onTopControllerBackClick(currentChildAuthorDesk);
+                }
+                else if (currentMainChildFragment != -1) {
+                    listenerHostMyAuthor.onControllerTopBackClick(currentMainChildFragment);
                 } else {
                     if (isUpdateActionBar) {
                         hideControllerTopControls();
@@ -947,11 +981,11 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 //                        if(DeskFragment.FRAGMENT_ALL_BOOKS)
                             hostListenerDesk.onBackMenuItemClick();
                             break;
-                        case MyAuthorFragment.FRAGMENT_MY_AUTHORS:
-                        case MyAuthorFragment.FRAGMENT_AUTHOR_DESK:
-                        case MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE:
-                            onControllerTopBack();
-                            break;
+//                        case MyAuthorFragment.FRAGMENT_MY_AUTHORS:
+//                        case MyAuthorFragment.FRAGMENT_AUTHOR_DESK:
+//                        case MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE:
+//                            onControllerTopBack();
+//                            break;
                     }
                 }
             } else if (view == txtAction) {
@@ -970,7 +1004,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                 }*/
             } else {
                 boolean isActive = false;
-                if (currentMainFragment != MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS && currentMainFragment != MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE && currentMainFragment != MyAuthorFragment.FRAGMENT_MY_AUTHORS) {
+                if (currentMainChildFragment == -1) {
+//                if (currentMainChildFragment != MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS && currentMainChildFragment != MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE && currentMainChildFragment != MyAuthorFragment.FRAGMENT_MY_AUTHORS) {
                     for (int i = 0; i < currentControllerTopMenu.size(); i++) {
                         if (view == arrTxtMenu[i] && currentControllerTopMenu.get(i).isActive()) {
                             isActive = true;
@@ -1026,18 +1061,6 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
             }
         } catch (Exception e) {
             Log.e(TAG, "onMenuItemClick Exception : " + e.toString());
-        }
-    }
-
-    private void onControllerTopBack() {
-        switch (currentMainFragment) {
-            case MyAuthorFragment.FRAGMENT_AUTHOR_DESK:
-                MyAuthorsFragment.newInstance().onTopControllerBackClick(MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE);
-                //loadFragment(FRAGMENT_AUTHOR_OFFICE, null);
-                break;
-            case MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE:
-                MyAuthorFragment.newInstance().onTopControllerBackClick(MyAuthorFragment.FRAGMENT_MY_AUTHORS);
-                break;
         }
     }
 
@@ -1270,9 +1293,6 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         this.listenerHostProfileController = listenerHostProfileController;
     }
 
-    public void setListenerMyAllAuthors(HostListenerMyAllAuthors listenerMyAllAuthors) {
-        this.listenerMyAllAuthors = listenerMyAllAuthors;
-    }
 
     public void setListenerProfileControllerPresence(ProfileControllerPresenceListener listenerProfileControllerPresence) {
         this.listenerProfileControllerPresence = listenerProfileControllerPresence;
@@ -1362,8 +1382,4 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         else spSubmenu.setEnabled(false);
     }
 
-
-    public interface HostListenerMyAllAuthors {
-        public void onTopControllerBackClick(int position);
-    }
 }

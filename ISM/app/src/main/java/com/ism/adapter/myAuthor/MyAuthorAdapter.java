@@ -14,7 +14,6 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.AppConstant;
 import com.ism.fragment.MyAuthorFragment;
-import com.ism.fragment.myAuthor.MyAuthorsFragment;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.model.Assignment;
@@ -65,7 +64,7 @@ public class MyAuthorAdapter extends RecyclerView.Adapter<MyAuthorAdapter.ViewHo
                     bundle.putString(AppConstant.AUTHOR_NAME, "Roger S. Pressman");
                     ((HostActivity) mContext).setBundle(bundle);
 //                    ((HostActivity)mContext).loadFragment(HostActivity.FRAGMENT_AUTHOR_OFFICE,bundle);
-                    ((MyAuthorsFragment)mFragment).loadFragment(MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE);
+                    ((HostActivity)mContext).loadFragment(MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE,null);
                 }
             });
         } catch (Exception e) {

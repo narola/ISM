@@ -24,7 +24,9 @@ import com.ism.utility.Utility;
 /**
  * Created by c162 on 01/1/16.
  */
-public class MyAuthorsFragment extends Fragment implements HostActivity.HostListenerMyAllAuthors {
+public class MyAuthorsFragment extends Fragment{
+
+//} implements HostActivity.HostListenerMyAllAuthors {
 
     private static final String TAG = MyAuthorsFragment.class.getSimpleName();
     private static final int FRAGMENT_MY_AUTHORS = 0;
@@ -90,7 +92,7 @@ public class MyAuthorsFragment extends Fragment implements HostActivity.HostList
             txtFindMoreAuthors.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    loadFragment(MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS);
+                    activityHost.loadFragment(MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS,null);
                 }
             });
 
@@ -99,26 +101,26 @@ public class MyAuthorsFragment extends Fragment implements HostActivity.HostList
         }
     }
 
-    public void loadFragment(int fragment) {
-        try {
-            switch (fragment) {
-                case MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE:
-                    currentFragment = fragment;
-                    AuthorOfficeFragment authorOfficeFragment = AuthorOfficeFragment.newInstance();
-                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorOfficeFragment).commit();
-                    break;
-                case MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS:
-                    currentFragment = fragment;
-                    FindMoreAuthorsFragment findMoreAuthorsFragment = FindMoreAuthorsFragment.newInstance();
-                    Log.e(TAG,"getFragmentmanager " +getFragmentManager());
-                    Log.e(TAG,"R.id.fl_my_authors " +R.id.fl_my_authors);
-                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, findMoreAuthorsFragment).commit();
-                    break;
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "loadFragment Exceptions : " + e.getLocalizedMessage());
-        }
-    }
+//    public void loadFragment(int fragment) {
+//        try {
+//            switch (fragment) {
+//                case MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE:
+//                    currentFragment = fragment;
+//                    AuthorOfficeFragment authorOfficeFragment = AuthorOfficeFragment.newInstance();
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorOfficeFragment).commit();
+//                    break;
+//                case MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS:
+//                    currentFragment = fragment;
+//                    FindMoreAuthorsFragment findMoreAuthorsFragment = FindMoreAuthorsFragment.newInstance();
+//                    Log.e(TAG,"getFragmentmanager " +getFragmentManager());
+//                    Log.e(TAG,"R.id.fl_my_authors " +R.id.fl_my_authors);
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, findMoreAuthorsFragment).commit();
+//                    break;
+//            }
+//        } catch (Exception e) {
+//            Log.e(TAG, "loadFragment Exceptions : " + e.getLocalizedMessage());
+//        }
+//    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -127,7 +129,7 @@ public class MyAuthorsFragment extends Fragment implements HostActivity.HostList
             activityHost = (HostActivity) activity;
             Log.e(TAG, "onAttach");
             fragListener = (FragmentListener) activity;
-            activityHost.setListenerMyAllAuthors(this);
+           // activityHost.setListenerMyAllAuthors(this);
             if (fragListener != null) {
                 fragListener.onFragmentAttached(MyAuthorFragment.FRAGMENT_MY_AUTHORS);
             }
@@ -148,9 +150,9 @@ public class MyAuthorsFragment extends Fragment implements HostActivity.HostList
         }
     }
 
-    @Override
-    public void onTopControllerBackClick(int fragment) {
-        loadFragment(fragment);
-    }
+//    @Override
+//    public void onTopControllerBackClick(int fragment) {
+//        loadFragment(fragment);
+//    }
 
 }

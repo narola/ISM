@@ -20,7 +20,6 @@ import com.ism.activity.PostFeedActivity;
 import com.ism.adapter.PostFeedsAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
-import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
@@ -300,6 +299,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                         feedComment.setFeedCommentId(Integer.parseInt(arrayListComment.get(j).getId()));
                         feedComment.setComment(arrayListComment.get(j).getComment());
                         feedComment.setFeed(feeds);
+
                         User user = new User();
                         user.setUserId(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
                         user.setFullName(arrayListComment.get(j).getFullName());

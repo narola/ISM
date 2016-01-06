@@ -240,12 +240,18 @@ public class AuthorHelper {
      */
     public void saveAuthorProfile(AuthorProfile authorProfile) {
         try {
+            Number id = realm.where(AuthorProfile.class).max("localAuthorId");
+            long newId = 1;
+            if (id != null) {
+                newId = (long) id + 1;
+            }
+            authorProfile.setLocalAuthorId((int) newId);
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(authorProfile);
             realm.commitTransaction();
 //            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
         } catch (Exception e) {
-            Log.i(TAG, " saveAuthorProfile Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, " saveAuthorProfile Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -272,7 +278,7 @@ public class AuthorHelper {
 
     public AuthorProfile getAuthorprofile(int userId) {
         try {
-            return realm.where(AuthorProfile.class).equalTo("authorId", userId).findFirst();
+            return realm.where(AuthorProfile.class).equalTo("serverAuthorId", userId).findFirst();
         } catch (Exception e) {
             Log.i(TAG, "getUser Exceptions : " + e.getLocalizedMessage());
         }

@@ -100,7 +100,7 @@ public class FavoriteRoleModelsAdapter extends RecyclerView.Adapter<FavoriteRole
             txtBookName = (TextView) itemView.findViewById(R.id.txt_name);
             txtOrganization = (TextView) itemView.findViewById(R.id.txt_author);
             imgRemoveFromFav.setVisibility(View.VISIBLE);
-            imgRemoveFromFav.setBackgroundResource(R.drawable.img_like_red);
+            imgRemoveFromFav.setBackgroundResource(R.drawable.ic_like_red_active);
             imgInfo.setVisibility(View.VISIBLE);
         }
     }

@@ -127,7 +127,7 @@ public class AuthorBooksAdapter extends RecyclerView.Adapter<AuthorBooksAdapter.
             imgInfo.setVisibility(View.VISIBLE);
             imgAddToUnFav.setVisibility((View.VISIBLE));
             imgLibraryBook.setVisibility((View.VISIBLE));
-            imgAddToUnFav.setBackgroundResource(R.drawable.img_like_red);
+            imgAddToUnFav.setBackgroundResource(R.drawable.ic_like_red_active);
         }
     }
 }
