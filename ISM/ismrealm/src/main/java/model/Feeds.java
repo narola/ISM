@@ -31,7 +31,6 @@ public class Feeds extends RealmObject {
     private int isSync;
     private String selfLike;
 
-
     private RealmList<FeedComment> comments = new RealmList<FeedComment>();
     private RealmList<FeedImage> feedImages = new RealmList<FeedImage>();
 
@@ -155,5 +154,6 @@ public class Feeds extends RealmObject {
     public void setIsSync(int isSync) {
         this.isSync = isSync;
     }
+
 
 }

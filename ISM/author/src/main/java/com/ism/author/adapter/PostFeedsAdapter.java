@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.activtiy.PostFeedActivity;
-import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.dialog.TagUserDialog;
 import com.ism.author.dialog.ViewAllCommentsDialog;
@@ -35,20 +34,21 @@ import model.User;
 import realmhelper.AuthorHelper;
 
 /**
- * these adapter class is for getting all the postfeeds.
+ * Adapter to display postfeed.
  */
 public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.ViewHolder> implements WebserviceWrapper.WebserviceResponse,
         TagUserDialog.TagUserListener {
 
+
     private static final String TAG = PostFeedsAdapter.class.getSimpleName();
-
-
     private Context mContext;
     private RealmResults<Feeds> arrListFeeds = null;
-    private int addCommentFeedPosition = -1;
-    private int tagFeedPosition = -1;
+
     private LayoutInflater inflater;
     private AuthorHelper authorHelper;
+    private int addCommentFeedPosition = -1;
+    private int tagFeedPosition = -1;
+    private String comment = "";
 
 
     public PostFeedsAdapter(Context context, AuthorHelper authorHelper) {
@@ -120,12 +120,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         holder.txtAddComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String comment = holder.etWriteComment.getText().toString().trim();
+
+                comment = holder.etWriteComment.getText().toString().trim();
                 if (comment != null && comment.length() > 0) {
-                    callApiAddComment(position, comment);
+                    callApiAddComment(position);
+                    holder.etWriteComment.setText("");
                 }
-
-
             }
         });
 
@@ -134,10 +134,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             @Override
             public void onClick(View v) {
 
-
                 if (Utility.isConnected(getActivity())) {
+
                     tagFeedPosition = position;
                     callApiGetStudyMates();
+
                 } else {
                     Utility.toastOffline(getActivity());
                 }
@@ -151,23 +152,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             public void onClick(View v) {
 
                 holder.imgPostLike.setSelected(!holder.imgPostLike.isSelected());
-                if (holder.imgPostLike.isSelected()) {
-
-                    arrListFeeds.get(position).setSelfLike(String.valueOf(AppConstant.LIKE));
-                    arrListFeeds.get(position).setTotalLike(arrListFeeds.get(position).getTotalLike() + 1);
-
-                } else {
-
-                    arrListFeeds.get(position).setSelfLike(String.valueOf(AppConstant.DISLIKE));
-                    arrListFeeds.get(position).setTotalLike(arrListFeeds.get(position).getTotalLike() - 1);
-
-                }
-                notifyDataSetChanged();
+                authorHelper.updateFeedSelfLikeStatus(arrListFeeds.get(position).getFeedId(), holder.imgPostLike.isSelected() ? "1" : "0");
+                addAll();
                 insertUpdateLikeFeedData(position, holder.imgPostLike.isSelected() ? 1 : 0);
-
-
             }
         });
+
+
         holder.imgVideo.setVisibility(View.GONE);
         holder.imgPlay.setVisibility(View.GONE);
         holder.imgAudio.setVisibility(View.GONE);
@@ -219,9 +210,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     }
 
-    public void addAll(RealmResults<Feeds> feeds) {
+    public void addAll() {
+
         try {
-            arrListFeeds = feeds;
+            addCommentFeedPosition = -1;
+            tagFeedPosition = -1;
+            comment = "";
+            arrListFeeds = authorHelper.getAllPostFeeds();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -294,16 +289,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         txtCommenterUsername.setText(feedComment.getCommentBy().getFullName());
         txtCommenterComment.setText(feedComment.getComment());
-        txtCommentDuration.setText("5 min");
+        txtCommentDuration.setText(com.ism.commonsource.utility.Utility.getTimeDuration(feedComment.getCreatedDate()));
 
 
-        if (feedComment.getCommentBy().getProfilePicture() != null && feedComment.getCommentBy().getProfilePicture() != "") {
-            
-            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + feedComment.getCommentBy().getProfilePicture(),
-                    imgCommenterDp, Utility.getDisplayImageOption(R.drawable.userdp, R.drawable.userdp));
-        } else {
-            imgCommenterDp.setImageResource(R.drawable.userdp);
-        }
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + feedComment.getCommentBy().getProfilePicture(),
+                imgCommenterDp, Utility.getDisplayImageOption(R.drawable.userdp, R.drawable.userdp));
+
 
         return v;
     }
@@ -329,32 +320,25 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         return view;
     }
 
-    private void callApiAddComment(int position, String comment) {
+    private void callApiAddComment(int position) {
 
-//        if (Utility.isConnected(getActivity())) {
-//            try {
-//                addCommentFeedPosition = position;
-//                Attribute attribute = new Attribute();
-//                attribute.setFeedId(arrListFeeds.get(position).getFeedId());
-//                attribute.setCommentBy(Global.strUserId);
-//                attribute.setComment(comment);
-//
-//
-//                if (arrListFeeds.get(position).getComments().size() < 2) {
-//                    CommentList commentToAdd = new CommentList();
-//                    commentToAdd.setComment(comment);
-//                    arrListFeeds.get(position).getComments().add(commentToAdd);
-//                }
-//
-//
-//                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-//                        .execute(WebConstants.ADDCOMMENT);
-//            } catch (Exception e) {
-//                Log.e(TAG, "callApiAddComment Exception : " + e.toString());
-//            }
-//        } else {
-//            Utility.toastOffline(getActivity());
-//        }
+        if (Utility.isConnected(getActivity())) {
+            try {
+                addCommentFeedPosition = position;
+
+                Attribute attribute = new Attribute();
+                attribute.setFeedId(arrListFeeds.get(position).getFeedId());
+                attribute.setCommentBy(Global.strUserId);
+                attribute.setComment(comment);
+
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+                        .execute(WebConstants.ADDCOMMENT);
+            } catch (Exception e) {
+                Log.e(TAG, "callApiAddComment Exception : " + e.toString());
+            }
+        } else {
+            Utility.toastOffline(getActivity());
+        }
     }
 
 
@@ -362,9 +346,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         if (Utility.isConnected(getActivity())) {
             try {
-
                 Attribute attribute = new Attribute();
-
                 attribute.setFeedId(arrListFeeds.get(position).getFeedId());
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GETALLCOMMENTS);
@@ -414,7 +396,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         }
     }
 
-
     private Context getActivity() {
         return mContext;
 
@@ -450,44 +431,44 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 
     private void onResponseAddComment(Object object) {
-//        try {
-//            ResponseHandler responseHandler = (ResponseHandler) object;
-//            if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-//
-//                Utility.showToast(getActivity().getString(R.string.msg_success_comment_add), getActivity());
-//                arrListFeeds.get(addCommentFeedPosition).
-//                        setTotalComment(arrListFeeds.get(addCommentFeedPosition).getTotalComment() + 1);
-//
-//                if (arrListFeeds.get(addCommentFeedPosition).getCommentList().size() <= 2) {
-//                    CommentList addedComment = arrListFeeds.get(addCommentFeedPosition).getCommentList().
-//                            get(arrListFeeds.get(addCommentFeedPosition).getCommentList().size() - 1);
-//
-//                    addedComment.setId(arrListFeeds.get(addCommentFeedPosition).getFeedId());
-//                    addedComment.setCommentBy(Integer.valueOf(Global.strUserId));
-//                    addedComment.setFullName(Global.strFullName);
-//                    addedComment.setProfilePic(Global.strProfilePic);
-//                }
-//
-//                notifyDataSetChanged();
-//
-//                Utility.showToast(getActivity().getString(R.string.msg_success_comment_add), getActivity());
-//            } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-//
-//                arrListFeeds.get(addCommentFeedPosition).getCommentList().remove(arrListFeeds.get(addCommentFeedPosition).getCommentList().size() - 1);
-//                Utility.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
-//            }
-//        } catch (Exception e) {
-//            Debug.e(TAG, "onResponseAddComment Exception : " + e.toString());
-//        }
+        try {
+            ResponseHandler responseHandler = (ResponseHandler) object;
+            if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+
+                Utility.showToast(getActivity().getString(R.string.msg_success_comment_add), getActivity());
+
+                model.FeedComment feedComment = new model.FeedComment();
+                feedComment.setFeedCommentId(responseHandler.getComment().get(0).getCommentId());
+                feedComment.setComment(comment);
+                feedComment.setCreatedDate(null);
+
+                model.User commentBy = new model.User();
+                commentBy.setUserId(Integer.valueOf(Global.strUserId));
+                commentBy.setProfilePicture(Global.strProfilePic);
+                commentBy.setFullName(Global.strFullName);
+
+                feedComment.setCommentBy(commentBy);
+                feedComment.setFeed(arrListFeeds.get(addCommentFeedPosition));
+
+                authorHelper.addComment(arrListFeeds.get(addCommentFeedPosition).getFeedId(), feedComment);
+
+                addAll();
+            } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                Utility.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseAddComment Exception : " + e.toString());
+        }
     }
 
     private void onResponseGetAllComments(Object object) {
         try {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                Debug.e(TAG, "onResponseGetAllComments success  : " + responseHandler.getComments().size());
+
                 ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseHandler.getComments());
                 viewAllCommentsDialog.show();
+
             } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                 Utility.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
             }
@@ -518,6 +499,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         try {
             ResponseHandler responseObj = (ResponseHandler) object;
             tagFeedPosition = -1;
+
             if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                 Utility.showToast(getActivity().getString(R.string.msg_tag_done), getActivity());
             } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
@@ -530,6 +512,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 
     private void insertUpdateLikeFeedData(int position, int isLike) {
+
         FeedLike feedLike = new FeedLike();
 
         User user = new User();
@@ -538,13 +521,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         user.setProfilePicture(Global.strProfilePic);
 
         feedLike.setLikeBy(user);
-        feedLike.setFeed(null);
+        feedLike.setFeed(arrListFeeds.get(position));
         feedLike.setCreatedDate(null);
         feedLike.setModifiedDate(null);
         feedLike.setIsLiked(isLike);
         feedLike.setIsSync(0);
-        feedLike.setFeedId(arrListFeeds.get(position).getFeedId());
-        feedLike.setUserId(Global.strUserId);
 
         authorHelper.insertUpdateLikeFeedData(feedLike);
     }

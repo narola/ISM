@@ -12,14 +12,16 @@ import io.realm.annotations.PrimaryKey;
 public class Books extends RealmObject {
 
     @PrimaryKey
-    private  int bookId;
+    private int bookId;
     private String bookName;
     private String bookDescription;
     private String ebookLink;
     private String imageLink;
+    private String frontCoverImage;
+    private String backCoverImage;
     private String publicationDate;
     private String price;
-    private String publisher;
+    private String publisherName;
     private String isbnNo;
     private Date createdDate;
     private Date modifiedDate;
@@ -80,12 +82,12 @@ public class Books extends RealmObject {
         this.price = price;
     }
 
-    public String getPublisher() {
-        return publisher;
+    public String getPublisherName() {
+        return publisherName;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
     }
 
     public String getIsbnNo() {
@@ -110,5 +112,21 @@ public class Books extends RealmObject {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public String getBackCoverImage() {
+        return backCoverImage;
+    }
+
+    public void setBackCoverImage(String backCoverImage) {
+        this.backCoverImage = backCoverImage;
+    }
+
+    public String getFrontCoverImage() {
+        return frontCoverImage;
+    }
+
+    public void setFrontCoverImage(String frontCoverImage) {
+        this.frontCoverImage = frontCoverImage;
     }
 }
