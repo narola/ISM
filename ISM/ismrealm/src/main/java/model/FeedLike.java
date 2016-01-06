@@ -26,7 +26,7 @@ public class FeedLike extends RealmObject {
     /**
      * new added by c166
      */
-    private String feedId;
+    private int feedId;
     private String userId;
 
     public int getFeedLikeId() {
@@ -76,6 +76,7 @@ public class FeedLike extends RealmObject {
     public void setIsLiked(int isLiked) {
         this.isLiked = isLiked;
     }
+
     public int isSync() {
         return isSync;
     }
@@ -92,11 +93,11 @@ public class FeedLike extends RealmObject {
         this.userId = userId;
     }
 
-    public String getFeedId() {
+    public int getFeedId() {
         return feedId;
     }
 
-    public void setFeedId(String feedId) {
+    public void setFeedId(int feedId) {
         this.feedId = feedId;
     }
 

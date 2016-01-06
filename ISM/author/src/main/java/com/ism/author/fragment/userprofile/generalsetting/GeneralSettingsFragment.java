@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.PreferenceData;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.PreferenceData;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
@@ -300,6 +300,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
 
     //used for store the preferences value of general setting in arraylist
     public void setPreferenceList(String key, String value, Context context) {
+
         Preferences requestObject = new Preferences();
         requestObject.setUserId(Global.strUserId);
         requestObject.setKeyId(key);

@@ -195,10 +195,10 @@ public class StudentHelper {
     public void updateFeedLikes(Feeds feeds) {
         Feeds toUpdateFeeds = realm.where(Feeds.class).equalTo("feedId", feeds.getFeedId()).findFirst();
         realm.beginTransaction();
-        toUpdateFeeds.setLike(feeds.getLike().equals("0") ? "1" : "0");
-        toUpdateFeeds.setTotalLike(feeds.getLike().equals("0") ? feeds.getTotalLike() - 1 : feeds.getTotalLike() + 1);
+        toUpdateFeeds.setSelfLike(feeds.getSelfLike().equals("0") ? "1" : "0");
+        toUpdateFeeds.setTotalLike(feeds.getSelfLike().equals("0") ? feeds.getTotalLike() - 1 : feeds.getTotalLike() + 1);
         toUpdateFeeds.setIsSync(feeds.isSync() == 0 ? 1 : 0);
-        Log.e(TAG, "updateFeedLikes : " + toUpdateFeeds.getLike() + "--" + toUpdateFeeds.getFeedId() + "--" + toUpdateFeeds.isSync());
+        Log.i(TAG, "updateFeedLikes : " + toUpdateFeeds.getSelfLike() + "--" + toUpdateFeeds.getFeedId() + "--" + toUpdateFeeds.isSync());
         realm.commitTransaction();
     }
 

@@ -67,9 +67,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_block_user, container, false);
-
         initGlobal();
-
         return view;
     }
 
@@ -92,7 +90,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener,
         //txtNotification.setTextColor(getResources().getColor(R.color.color_blue));
         txtNotification.setText(R.string.strBlockStudyMate);
 
-        txtContactDetails.setText(Html.fromHtml(getString(R.string.strContactAdminEmailAddress)));
+        txtContactDetails.setText(Html.fromHtml(getActivity().getResources().getString(R.string.strContactAdminEmailAddress)));
         listView = (ListView) view.findViewById(R.id.listview);
 
         //set typeface

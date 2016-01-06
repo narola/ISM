@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_white">
+    android:background="@color/color_white"
+    tools:context="com.ism.teacher.fragments.userprofile.generalsetting.BlockUserFragment">
 
     <TextView
         android:id="@+id/txt_block_studymates"
@@ -149,6 +151,7 @@
         android:paddingTop="@dimen/d3dp"
         android:text="@string/strContactAdminEmailAddress"
         android:textColor="#000032"
+        android:textColorLink="@color/color_blue"
         android:textSize="@dimen/d20sp" />
 
     <View

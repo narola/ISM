@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.Global;
@@ -20,7 +18,7 @@ import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.User;
-
+import com.ism.author.utility.Debug;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -68,12 +66,13 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
 
     private void initGlobal() {
-        myDeskFragment = MyDeskFragment.newInstance();
         authorHelper = new AuthorHelper(getActivity());
+        myDeskFragment = MyDeskFragment.newInstance();
+
         txtUserName = (TextView) view.findViewById(R.id.txt_user_name);
         txtTotalBooks = (TextView) view.findViewById(R.id.txt_total_books);
         imgProfilePic = (ImageView) view.findViewById(R.id.img_profile_pic);
-        Global.authorHelper = new AuthorHelper(getActivity());
+        authorHelper = new AuthorHelper(getActivity());
         txtSocial = (TextView) view.findViewById(R.id.txt_social);
         txtAboutAuthorDetails = (TextView) view.findViewById(R.id.txt_About_author_details);
         txtAboutAuhtor = (TextView) view.findViewById(R.id.txt_About_author);
@@ -147,12 +146,13 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.e(TAG,"OnDestroy");
         authorHelper.realm.close();
     }
 
     private void callApiGetAboutMe() {
         try {
-            if (Utility.isConnected(getActivity())) {
+            if (com.ism.author.utility.Utility.isConnected(getActivity())) {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
@@ -160,10 +160,10 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
             } else {
-                Utility.alertOffline(getActivity());
+                com.ism.author.utility.Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiGetAboutMe Exception : " + e.getLocalizedMessage());
+            com.ism.author.utility.Debug.i(TAG, "callApiGetAboutMe Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -221,7 +221,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             setUpDBData(getAuthorData());
 
         } catch (Exception e) {
-            Debug.i(TAG, "saveAuthorProfile Exceptions: " + e.getLocalizedMessage());
+            com.ism.author.utility.Debug.i(TAG, "saveAuthorProfile Exceptions: " + e.getLocalizedMessage());
         }
     }
 
@@ -318,10 +318,9 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 //            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + data.getProfilePic(), imgProfilePic, ISMAuthor.options);
             Global.imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMAuthor.options);
         } catch (Exception e) {
-            Debug.i(TAG, "SetupData :" + e.getLocalizedMessage());
+            com.ism.author.utility.Debug.i(TAG, "SetupData :" + e.getLocalizedMessage());
         }
     }
-
 
     @Override
     public void onResponse(int apiCode, Object object, Exception error) {
@@ -335,5 +334,12 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.e(TAG, "onDetach");
+        authorHelper.realm.close();
     }
 }

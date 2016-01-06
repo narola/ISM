@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CommentList {
 
     private String createdDate;
-    private String id;
-    private String commentBy;
+    private int id;
+    private int commentBy;
     private String comment;
     private String fullName;
     private String profilePic;
@@ -27,20 +27,20 @@ public class CommentList {
     }
 
     @JsonProperty("id")
-    public String getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
     @JsonProperty("comment_by")
-    public String getCommentBy() {
+    public int getCommentBy() {
         return this.commentBy;
     }
 
-    public void setCommentBy(String commentBy) {
+    public void setCommentBy(int commentBy) {
         this.commentBy = commentBy;
     }
 

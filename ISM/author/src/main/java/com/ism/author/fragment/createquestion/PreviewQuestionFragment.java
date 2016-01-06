@@ -12,9 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.PreviewQuestionListAdapter;
@@ -237,9 +236,9 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
             if (object != null) {
                 ResponseHandler responseObj = (ResponseHandler) object;
                 if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    Utils.showToast(getActivity().getString(R.string.str_success_setexamquestions), getActivity());
+                    Utility.showToast(getActivity().getString(R.string.str_success_setexamquestions), getActivity());
                 } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                    Utility.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseSetQuestionForExam api Exception : " + error.toString());

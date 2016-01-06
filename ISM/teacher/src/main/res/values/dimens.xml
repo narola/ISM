@@ -21,7 +21,6 @@
     <dimen name="dialog_progress_margin">@dimen/d15dp</dimen>
     <dimen name="app_button_corner_radius">@dimen/d5dp</dimen>
 
-
     <dimen name="d5sp">5sp</dimen>
     <dimen name="d10sp">10sp</dimen>
     <dimen name="d14sp">14sp</dimen>
@@ -29,11 +28,9 @@
     <dimen name="d16sp">16sp</dimen>
     <dimen name="d17sp">17sp</dimen>
     <dimen name="d18sp">18sp</dimen>
-
     <dimen name="d20sp">20sp</dimen>
     <dimen name="d30sp">30sp</dimen>
     <dimen name="d25sp">25sp</dimen>
-
     <dimen name="d40sp">40sp</dimen>
     <dimen name="d50sp">50sp</dimen>
     <dimen name="d60sp">60sp</dimen>
@@ -41,7 +38,6 @@
     <dimen name="d90sp">90sp</dimen>
     <dimen name="d120sp">120sp</dimen>
     <dimen name="d130sp">130sp</dimen>
-
 
     <dimen name="d0dp">0dp</dimen>
     <dimen name="d1dp">1dp</dimen>
@@ -64,6 +60,7 @@
     <dimen name="d45dp">45dp</dimen>
     <dimen name="d50dp">50dp</dimen>
     <dimen name="d60dp">60dp</dimen>
+    <dimen name="d65dp">65dp</dimen>
     <dimen name="d70dp">70dp</dimen>
     <dimen name="d90dp">90dp</dimen>
     <dimen name="d100dp">100dp</dimen>
@@ -103,6 +100,13 @@
     <dimen name="d359dp">359dp</dimen>
     <dimen name="d210dp">210dp</dimen>
     <dimen name="d223dp">223dp</dimen>
+    <dimen name="d230dp">230dp</dimen>
+    <dimen name="d190dp">190dp</dimen>
+    <dimen name="d245dp">245dp</dimen>
+    <dimen name="d290dp">290dp</dimen>
+    <dimen name="d315dp">315dp</dimen>
+    <dimen name="d375dp">375dp</dimen>
+    <dimen name="d34">34dp</dimen>
 
 
     <dimen name="text_size_emptylist_message_small">18sp</dimen>
@@ -113,6 +117,8 @@
 
     <dimen name="dminus8dp">-8dp</dimen>
     <dimen name="dMinus10dp">-10dp</dimen>
+    <dimen name="dMinus15dp">-15dp</dimen>
+    <dimen name="dMinus20dp">-20dp</dimen>
 
     <dimen name="d185dp">185dp</dimen>
     <dimen name="padding_header_white">20dp</dimen>

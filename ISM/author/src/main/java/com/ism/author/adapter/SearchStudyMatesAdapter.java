@@ -11,8 +11,7 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Utility;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.Studymates;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -128,7 +127,7 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
                 }
             }
             if (arrListStudyMates.size() == 0) {
-                Utils.showToast(mContext.getString(R.string.strnoresult), mContext);
+                Utility.showToast(mContext.getString(R.string.strnoresult), mContext);
             }
         }
         notifyDataSetChanged();

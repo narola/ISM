@@ -144,9 +144,9 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 //                RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes(Utility.getDateFormateMySql("2015-12-16 9:41:42"), Utility.getDateMySql());
                 if (realmResSyncFeedLikes.size() > 0) {
                     for (int i = 0; i < realmResSyncFeedLikes.size(); i++) {
-                        if (realmResSyncFeedLikes.get(i).getLike().equals("1")) {
+                        if (realmResSyncFeedLikes.get(i).getSelfLike().equals("1")) {
                             likedId.add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
-                        } else if (realmResSyncFeedLikes.get(i).getLike().equals("0")) {
+                        } else if (realmResSyncFeedLikes.get(i).getSelfLike().equals("0")) {
                             attribute.getUnlikedId().add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
                             unlikedId.add(String.valueOf(realmResSyncFeedLikes.get(i).getFeedId()));
                         }
@@ -289,7 +289,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                 feeds.setCreatedDate(Utility.getDateFormateMySql(arrayList.get(i).getCreatedDate()));
                 if (!arrayList.get(i).getModifiedDate().equals("0000-00-00 00:00:00"))
                     feeds.setModifiedDate(Utility.getDateFormateMySql(arrayList.get(i).getModifiedDate()));
-                feeds.setLike(arrayList.get(i).getLike());
+                feeds.setSelfLike(arrayList.get(i).getLike());
                 feeds.setIsSync(0);
                 feeds.setPostedOn(Utility.getDateFormate(arrayList.get(i).getLike()));
                 ArrayList<Comment> arrayListComment = arrayList.get(i).getComments();
@@ -346,7 +346,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 //            for (int i = 0; i < realmResultFeeds.size(); i++) {
 //                saveFeeds feeds = new saveFeeds();
 //                feeds.setFeedId(String.valueOf(realmResultFeeds.get(i).getFeedId()));
-//                feeds.setLike(realmResultFeeds.get(i).getLike());
+//                feeds.setSelfLike(realmResultFeeds.get(i).getSelfLike());
 //                feeds.setTotalComment(String.valueOf(realmResultFeeds.get(i).getTotalComment()));
 //                feeds.setTotalLike(String.valueOf(realmResultFeeds.get(i).getTotalLike()));
 //                feeds.setFullName((realmResultFeeds.get(i).getFeedBy() == null ? realmResultFeeds.get(i).getFeedBy() + "" : realmResultFeeds.get(i).getFeedBy().getFullName()));

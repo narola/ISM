@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="This is Myactivity Fragment" />
+
+    <View
+        android:id="@+id/view_highlighter_triangle"
+        android:layout_width="@dimen/d35dp"
+        android:layout_height="@dimen/d35dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dMinus15dp"
+        android:layout_marginTop="@dimen/d375dp"
+        android:background="@drawable/indicator_dark_grey"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -1,7 +1,6 @@
 package model;
 
 
-
 import java.util.Date;
 
 import io.realm.RealmObject;
@@ -26,13 +25,6 @@ public class User extends RealmObject {
     private Date modifiedDate;
     private MembershipPackage membershipPackage;
 
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
 
     public int getUserId() {
         return userId;

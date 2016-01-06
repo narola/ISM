@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
+import com.ism.author.utility.Debug;
 import com.ism.author.activtiy.PostFeedActivity;
 import com.ism.author.model.PostFileModel;
 import com.squareup.picasso.Picasso;

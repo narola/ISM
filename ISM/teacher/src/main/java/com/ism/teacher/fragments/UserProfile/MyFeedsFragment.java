@@ -29,11 +29,11 @@ import com.ism.teacher.ws.helper.WebserviceWrapper;
 /**
  * Created by c162 on 26/10/15.
  */
-public class MyFeedsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class MyFeedsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, TeacherHostActivity.ProfileControllerPresenceListener {
 
 
     private static final String TAG = MyFeedsFragment.class.getSimpleName();
-    private View view;
+    private View view, viewHighlighterTriangle;
 
     private FragmentListener fragListener;
     private TeacherHostActivity activityHost;
@@ -61,6 +61,7 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
     }
 
     private void initGlobal() {
+        viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
         recyclerPostFeeds = (RecyclerView) view.findViewById(R.id.recycler_post);
         llNewPost = (LinearLayout) view.findViewById(R.id.rl_new_post);
         adpPostFeeds = new PostFeedsAdapter(getActivity());
@@ -96,6 +97,8 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
 
         setEmptyView(false);
+        viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == TeacherHostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
+
     }
 
     @Override
@@ -104,6 +107,7 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
         try {
             activityHost = (TeacherHostActivity) activity;
             fragListener = (FragmentListener) activity;
+            activityHost.setListenerProfileControllerPresence(this);
             if (fragListener != null) {
                 fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_MY_FEEDS);
             }
@@ -129,7 +133,8 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
         try {
             activityHost.showProgress();
             Attribute attribute = new Attribute();
-            attribute.setUserId(Global.strUserId);
+//            attribute.setUserId(Global.strUserId);
+            attribute.setUserId(WebConstants.USER_ID_370);
 
             new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GET_MY_FEEDS);
@@ -160,6 +165,8 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponseGetMyFeeds Exception : " + e.toString());
+            Utility.showToast("Error in Response", getActivity());
+
         }
     }
 
@@ -182,5 +189,15 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
         tvNoDataMsg.setText(getString(R.string.no_user_post));
         tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         recyclerPostFeeds.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void onProfileControllerAttached() {
+        viewHighlighterTriangle.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onProfileControllerDetached() {
+        viewHighlighterTriangle.setVisibility(View.GONE);
     }
 }

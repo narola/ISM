@@ -31,7 +31,7 @@
             android:layout_marginRight="@dimen/d10dp"
             android:background="@drawable/btn_freeze"
             android:gravity="center"
-            android:padding="@dimen/d5dp"
+            android:padding="@dimen/d8dp"
             android:text="@string/strquestionbank"
             android:textColor="@color/color_blue"
             android:textSize="@dimen/d18sp" />

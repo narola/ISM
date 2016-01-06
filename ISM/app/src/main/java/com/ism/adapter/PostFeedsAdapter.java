@@ -112,7 +112,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 //                holder.etComment.setText("");
 //                addCommentFeedPosition = -1;
 //            }
-            feedLiked = Integer.parseInt(arrListFeeds.get(position).getLike());
+            feedLiked = Integer.parseInt(arrListFeeds.get(position).getSelfLike());
             holder.llComments.removeAllViews();
 
             if (arrListFeeds.get(position).getComments() != null) {
@@ -125,23 +125,23 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                     holder.llComments.addView(getCommentView(arrListFeeds.get(position).getComments().get(i)));
                 }
             }
-            holder.imgLike.setActivated(arrListFeeds.get(position).getLike().equals("1"));
+            holder.imgLike.setActivated(arrListFeeds.get(position).getSelfLike().equals("1"));
 
             holder.imgLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Utility.showToast(context, "Feed position : " + position);
                     Log.i(TAG, "Feed position :  : " + position);
-                    if (arrListFeeds.get(position).getLike().equals("1")) {
+                    if (arrListFeeds.get(position).getSelfLike().equals("1")) {
                         holder.imgLike.setActivated(false);
                         totalLikes = arrListFeeds.get(position).getTotalLike() - 1;
-                        //arrListFeeds.get(position).setLike("0");
+                        //arrListFeeds.get(position).setSelfLike("0");
                         // arrListFeeds.get(position).setTotalLike(arrListFeeds.get(position).getTotalLike() - 1);
                     } else {
                         //holder.txtLikes.setText(String.valueOf(arrListFeeds.get(position).getTotalLike()+1));
                         holder.imgLike.setActivated(true);
                         totalLikes = arrListFeeds.get(position).getTotalLike() + 1;
-                        //arrListFeeds.get(position).setLike("1");
+                        //arrListFeeds.get(position).setSelfLike("1");
                         //arrListFeeds.get(position).setTotalLike(arrListFeeds.get(position).getTotalLike() + 1);
                     }
                     updateFeedLike(arrListFeeds.get(position).getFeedId());

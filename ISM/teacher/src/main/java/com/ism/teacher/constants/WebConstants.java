@@ -14,13 +14,18 @@ public class WebConstants {
 
     //Host urls
     //  public static final String URL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
-    public static final String URL_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";      // KINJAL
+    public static final String URL_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";      // PG
+
+
+    public static final String Image_url = "http://192.168.1.147/WS_ISM/Images/questions_images/";
+//    public static final String Image_url = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
 
 
     public static final String URL_UPLOADPROFILEIMAGES = URL_HOST + "UploadProfileImages";
 
     public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Feeds/";
-    public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
+//    public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
+    public static final String USER_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
 
 
     //static parameters
@@ -29,6 +34,7 @@ public class WebConstants {
     public static final String EXAM_ID_9_OBJECTIVE = "9";
     public static final String STUDENT_ID_202_OBJECCTIVE = "202";
     public static final String USER_ID_370 = "370";
+    public static final String USER_ID_319 = "319";
     public static final String TEST_GETSTUDYMATES = "167";
 
 
@@ -101,7 +107,6 @@ public class WebConstants {
     public static final int BLOCKED_USER = 50;
     public static final int GET_MY_FEEDS = 51;
 
-    public static final String Image_url = "http://192.168.1.147/WS_ISM/Images/questions_images/";
 
 
     public static final String URL_GET_ADMIN_CONFIG = URL_HOST + "GetAdminConfig";
