@@ -140,7 +140,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
 //        rrExams = (RelativeLayout) includeExams.findViewById(R.id.rr_fav);
 //        rrExams.setBackgroundColor(getResources().getColor(R.color.color_pink_dark));
 
-        llExams=(LinearLayout)view.findViewById(R.id.ll_exam);
+        llExams = (LinearLayout) view.findViewById(R.id.ll_exam);
         txtExams = (TextView) view.findViewById(R.id.txt_fav_exam);
         txtExams.setTypeface(Global.myTypeFace.getRalewayMedium());
 //        txtExams.setText(R.string.exams);
@@ -230,7 +230,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
                 loadFragment(DeskFragment.FRAGMENT_ALL_EXAMS);
             }
         } catch (Exception e) {
-            Debug.i(TAG, "onClickItem Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "onClickItem Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -264,7 +264,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
             listViewEvents.setAdapter(favEventsAdapter);
 //            listViewLinks.setAdapter(linksAdapter);
         } catch (Exception e) {
-            Debug.i(TAG, "setUpEvents Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "setUpEvents Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -274,7 +274,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
             linksAdapter = new FavLinksAdapter(getActivity());
             listViewLinks.setAdapter(linksAdapter);
         } catch (Exception e) {
-            Debug.i(TAG, "setUpLinks Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "setUpLinks Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -283,7 +283,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
             favExamsAdapter = new FavExamsAdapter(getActivity());
             listViewExams.setAdapter(favExamsAdapter);
         } catch (Exception e) {
-            Debug.i(TAG, "setUpExams Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "setUpExams Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -292,7 +292,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
             favAssignmentsAdapter = new FavAssignmentsAdapter(getActivity());
             listViewAssignments.setAdapter(favAssignmentsAdapter);
         } catch (Exception e) {
-            Debug.i(TAG, "setUpAssignments Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "setUpAssignments Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -301,7 +301,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
             favBooksAdapter = new FavBooksAdapter(getActivity(), null, null);
             listViewBooks.setAdapter(favBooksAdapter);
         } catch (Exception e) {
-            Debug.i(TAG, "setUpBooks Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "setUpBooks Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -310,7 +310,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
             favNotesAdapter = new FavNotesAdapter(getActivity());
             listViewNotes.setAdapter(favNotesAdapter);
         } catch (Exception e) {
-            Debug.i(TAG, "setUpNotes Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "setUpNotes Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -322,7 +322,8 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
             activityHost.setListenerFavourites(this);
             activityHost.onChildFragmentAttached(true);
             activityHost.onSetPositionSpinner(0);
-            deskFragment = DeskFragment.newInstance(currentFragment);
+            deskFragment = DeskFragment.newInstance();
+            Log.e(TAG, "onAttach Attached fragment ");
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
         }
@@ -338,7 +339,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
         switch (position) {
             case 0:
                 //deskFragment.loadFragment( DeskFragment.FRAGMENT_FAVOURITES);
-                scrollView.requestChildFocus(includeNotes,includeNotes);
+                scrollView.requestChildFocus(includeNotes, includeNotes);
                 break;
             case 1:
                 //loadFragment(DeskFragment.FRAGMENT_ALL_NOTES);
@@ -346,7 +347,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
                 break;
             case 2:
                 //loadFragment(DeskFragment.FRAGMENT_ALL_BOOKS);
-                scrollView.requestChildFocus(includeBooks,includeBooks);
+                scrollView.requestChildFocus(includeBooks, includeBooks);
                 break;
             case 3:
                 //loadFragment(DeskFragment.FRAGMENT_ALL_ASSIGNMENTS);
@@ -354,15 +355,15 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
                 break;
             case 4:
                 //loadFragment(DeskFragment.FRAGMENT_ALL_EXAMS);
-                scrollView.requestChildFocus(llExams,llExams);
+                scrollView.requestChildFocus(llExams, llExams);
                 break;
             case 5:
                 //loadFragment(DeskFragment.FRAGMENT_ALL_LINKS);
-                scrollView.requestChildFocus(includeLinks,includeLinks);
+                scrollView.requestChildFocus(includeLinks, includeLinks);
                 break;
             case 6:
                 //loadFragment(DeskFragment.FRAGMENT_ALL_EVENTS);
-                scrollView.requestChildFocus(includeEvents,includeEvents);
+                scrollView.requestChildFocus(includeEvents, includeEvents);
                 break;
         }
 

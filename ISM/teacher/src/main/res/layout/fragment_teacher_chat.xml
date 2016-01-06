@@ -9,37 +9,20 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/d50dp"
         android:background="@color/color_blue">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="MY STUDENTS"
-            android:gravity="center_vertical"
             android:layout_marginLeft="@dimen/d10dp"
-            android:textColor="@color/white"
-            />
+            android:gravity="center_vertical"
+            android:text="@string/mystudents"
+            android:textColor="@color/white" />
     </LinearLayout>
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_mystudents_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.ism.teacher.views.CircleImageView
-            android:layout_width="@dimen/d100dp"
-            android:layout_height="@dimen/d100dp"
-            android:src="@drawable/userdp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ADAM ROSS"
-                android:textAllCaps="true"
-                android:textSize="@dimen/d20sp"/>
-        </LinearLayout>
-    </LinearLayout>
+        android:background="@color/color_white"/>
 
 </LinearLayout>

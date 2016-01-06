@@ -85,12 +85,12 @@ public class EditProfileFragment extends Fragment {
                     }
                     break;
                     case R.id.txt_role_models: {
-                        Debug.i(TAG, "loadFragment(FRAGMENT_ROLE_MODELS): " + FRAGMENT_ROLE_MODELS);
+                        Log.e(TAG, "loadFragment(FRAGMENT_ROLE_MODELS): " + FRAGMENT_ROLE_MODELS);
                         loadFragment(FRAGMENT_ROLE_MODELS);
                     }
                     break;
                     case R.id.txt_pasttime: {
-                        Debug.i(TAG, "loadFragment(FRAGMENT_PASTTIME):" + FRAGMENT_PASTTIME);
+                        Log.e(TAG, "loadFragment(FRAGMENT_PASTTIME):" + FRAGMENT_PASTTIME);
                         loadFragment(FRAGMENT_PASTTIME);
                     }
                     break;
@@ -138,14 +138,14 @@ public class EditProfileFragment extends Fragment {
             }
             break;
             case FRAGMENT_ROLE_MODELS: {
-                Debug.i(TAG, "call for RoleModelFragment ");
+                Log.e(TAG, "call for RoleModelFragment ");
                 currentFragment = frag;
                 RoleModelFragment fragment = RoleModelFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_PASTTIME: {
-                Debug.i(TAG, "call for PastTimeFragment ");
+                Log.e(TAG, "call for PastTimeFragment ");
                 currentFragment = frag;
                 PastTimeFragment fragment = PastTimeFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();

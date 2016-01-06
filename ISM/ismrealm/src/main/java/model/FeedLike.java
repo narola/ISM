@@ -23,12 +23,6 @@ public class FeedLike extends RealmObject {
     private int isSync;
 
 
-    /**
-     * new added by c166
-     */
-    private int feedId;
-    private String userId;
-
     public int getFeedLikeId() {
         return feedLikeId;
     }
@@ -83,22 +77,6 @@ public class FeedLike extends RealmObject {
 
     public void setIsSync(int isSync) {
         this.isSync = isSync;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public int getFeedId() {
-        return feedId;
-    }
-
-    public void setFeedId(int feedId) {
-        this.feedId = feedId;
     }
 
 }

@@ -2,6 +2,7 @@ package com.ism.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.RoleModelsDetailsDialog;
 import com.ism.object.Global;
-import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.model.RolemodelData;
 
@@ -61,12 +61,12 @@ public class FavoriteRoleModelsAdapter extends RecyclerView.Adapter<FavoriteRole
                 @Override
                 public void onClick(View v) {
                     manageResourcesListner.onRemoveFromFav(position);
-                    Debug.i(TAG, "onClickAddToFav : " + position);
+                    Log.e(TAG, "onClickAddToFav : " + position);
 
                 }
             });
         } catch (Exception e) {
-            Debug.i(TAG,"onBindViewHolder Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
 
     }
@@ -100,7 +100,7 @@ public class FavoriteRoleModelsAdapter extends RecyclerView.Adapter<FavoriteRole
             txtBookName = (TextView) itemView.findViewById(R.id.txt_name);
             txtOrganization = (TextView) itemView.findViewById(R.id.txt_author);
             imgRemoveFromFav.setVisibility(View.VISIBLE);
-            imgRemoveFromFav.setBackgroundResource(R.drawable.img_like_red);
+            imgRemoveFromFav.setBackgroundResource(R.drawable.ic_like_red_active);
             imgInfo.setVisibility(View.VISIBLE);
         }
     }

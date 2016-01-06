@@ -3,13 +3,17 @@ package com.ism.fragment.myAuthor;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.adapter.myAuthor.AuthorOfficeTabGridAdapter;
+import com.ism.fragment.MyAuthorFragment;
+import com.ism.fragment.myAuthor.authorDesk.AuthorDeskFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.AuthorOfficeTabDataSet;
 import com.ism.utility.Debug;
@@ -24,16 +28,14 @@ public class AuthorOfficeFragment extends Fragment {
     private View view;
     private FragmentListener fragListener;
 
-    public static final int FRAGMENT_MY_DESK = 0;
-    public static final int FRAGMENT_GOTRENDING = 1;
-    public static final int FRAGMENT_TRIAL = 2;
-    public static final int FRAGMENT_MYTHIRTY = 3;
-    public static final int FRAGMENT_ASSESSMENT = 4;
     public static int CURRENT_OFFICE_FRAGMENT = 0;
 
     GridView gvOfficetab;
     AuthorOfficeTabGridAdapter officeTabGridAdapter;
     AuthorOfficeTabDataSet officeTabDataSet = new AuthorOfficeTabDataSet();
+    private HostActivity activityHost;
+    private int currentFragment;
+    private MyAuthorFragment myAuthorFragment;
 
 
     public static AuthorOfficeFragment newInstance() {
@@ -55,9 +57,9 @@ public class AuthorOfficeFragment extends Fragment {
     }
 
     private void initGlobal() {
+        myAuthorFragment = MyAuthorFragment.newInstance();
 
-
-        officeTabDataSet.setOfficeTabTitleList(new String[]{getString(R.string.strmydesk), getString(R.string.strgotrending), getString(R.string.strTrial),
+        officeTabDataSet.setOfficeTabTitleList(new String[]{getActivity().getString(R.string.strAuthorsDesk), getString(R.string.strgotrending), getString(R.string.strTrial),
                 getString(R.string.strmy30th), getString(R.string.strassessment)});
         officeTabDataSet.setOfficeTabInfoList(new String[]{getString(R.string.strmydeskinfo), getString(R.string.strgotrendinginfo),
                 getString(R.string.strtrialinfo), getString(R.string.strmy30thinfo), getString(R.string.strassessmentinfo)});
@@ -78,9 +80,11 @@ public class AuthorOfficeFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
+            Log.e(TAG, "onAttach Attached fragment ");
             fragListener = (FragmentListener) activity;
+            activityHost = (HostActivity) activity;
             if (fragListener != null) {
-//                fragListener.onFragmentAttached(.FRAGMENT_OFFICE);
+                fragListener.onFragmentAttached(MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -91,9 +95,9 @@ public class AuthorOfficeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         try {
+            Log.e(TAG, "onDetach");
             if (fragListener != null) {
-//                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_OFFICE);
-                Debug.i(TAG, "detach");
+                fragListener.onFragmentDetached(MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
@@ -103,31 +107,38 @@ public class AuthorOfficeFragment extends Fragment {
 
     public void loadFragment(int fragment) {
 
-        CURRENT_OFFICE_FRAGMENT = fragment;
         switch (fragment) {
 
-            case FRAGMENT_MY_DESK:
-              //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
+            case MyAuthorFragment.FRAGMENT_AUTHOR_DESK:
+                currentFragment = fragment;
+                AuthorDeskFragment authorDeskFragment = AuthorDeskFragment.newInstance();
+                getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorDeskFragment).commit();
+                //activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
                 break;
 
-            case FRAGMENT_GOTRENDING:
-               // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GOTRENDING);
+            case MyAuthorFragment.FRAGMENT_GOTRENDING:
+                currentFragment = fragment;
+                // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GOTRENDING);
                 break;
 
-            case FRAGMENT_TRIAL:
-              //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
+            case MyAuthorFragment.FRAGMENT_TRIAL:
+                currentFragment = fragment;
+                //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
                 break;
 
-            case FRAGMENT_MYTHIRTY:
-              //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
+            case MyAuthorFragment.FRAGMENT_MYTHIRTY:
+                currentFragment = fragment;
+                //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
                 break;
 
-            case FRAGMENT_ASSESSMENT:
-               // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT);
+            case MyAuthorFragment.FRAGMENT_AUTHOR_ASSESSMENT:
+                currentFragment = fragment;
+                // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT);
                 break;
-
-
         }
     }
 
+    public void onTopControllerBackClick(int position) {
+        loadFragment(currentFragment);
+    }
 }

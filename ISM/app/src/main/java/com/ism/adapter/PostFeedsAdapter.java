@@ -355,7 +355,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             }
             setUpData(studentHelper.getFeedComments(arrListFeeds.get(viewAllFeedId).getFeedId()));
         } catch (Exception e) {
-            Debug.i(TAG, "ParseAllStudymatesData Ec=xceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "ParseAllStudymatesData Ec=xceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -399,7 +399,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             arrListFeeds = studentHelper.getFeeds(-1);
             notifyDataSetChanged();
         } catch (Exception e) {
-            Debug.i(TAG, "addCommentToDb Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "addCommentToDb Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -411,7 +411,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             arrListFeeds = studentHelper.getFeeds(-1);
             notifyDataSetChanged();
         } catch (Exception e) {
-            Debug.i(TAG, "updateFeedLike Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "updateFeedLike Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -432,7 +432,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                     feedComment.setCreatedDate(Utility.getDateFormateMySql(comments.get(i).getCreatedDate()));
                     feedComment.setComment(comments.get(i).getComment());
                     studentHelper.saveComments(feedComment);
-                    Debug.i(TAG, "PaseAllComments : " + feedComment);
+                    Log.e(TAG, "PaseAllComments : " + feedComment);
                 }
             }
             setUpData(studentHelper.getFeedComments(arrListFeeds.get(viewAllFeedId).getFeedId()));
@@ -447,7 +447,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(context, realmResult);
             viewAllCommentsDialog.show();
         } catch (Exception e) {
-            Debug.i(TAG, "setUpData Exception :" + e.getLocalizedMessage());
+            Log.e(TAG, "setUpData Exception :" + e.getLocalizedMessage());
         }
     }
 }

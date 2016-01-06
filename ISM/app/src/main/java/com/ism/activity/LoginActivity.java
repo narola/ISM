@@ -26,7 +26,6 @@ import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.NetworkStateListener;
 import com.ism.object.MyTypeFace;
-import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
@@ -808,7 +807,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
             studentHelper.saveUser(userData);
 
         } catch (Exception e) {
-            Debug.i(TAG, "ParseAllData Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "ParseAllData Exception : " + e.getLocalizedMessage());
         }
     }
 

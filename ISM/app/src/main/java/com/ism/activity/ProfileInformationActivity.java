@@ -490,7 +490,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 //            RequestObject requestObject = new RequestObject();
 //            requestObject.setUserId(id);
 //            requestObject.setFile(sourceFile);
-//            Debug.i(TAG, "FileName : " + requestObject.getFile());
+//            Log.e(TAG, "FileName : " + requestObject.getFile());
 //            new WebserviceWrapper(ProfileInformationActivity.this, requestObject, this).new WebserviceCaller()
 //                    .execute(WebConstants.UPLOAD_PROFILE_PIC);
 //

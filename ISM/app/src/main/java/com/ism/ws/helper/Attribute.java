@@ -111,8 +111,13 @@ public class Attribute {
     private String postedOn;
 	private String authorId;
 	private String bookId;
+<<<<<<< HEAD
 	private int examId;
 	private ArrayList<Question> question;
+=======
+	private String followerId;
+	private String followTo;
+>>>>>>> 99da935ad0b1f5fcad2e18bc63fad04af58c34e1
 
 	public Attribute() {
 		setAccessKey(WebConstants.ACCESS_KEY);
@@ -828,6 +833,7 @@ public class Attribute {
 		this.bookId = bookId;
 	}
 
+<<<<<<< HEAD
 	@JsonProperty("exam_id")
 	public int getExamId() {
 		return this.examId;
@@ -846,4 +852,23 @@ public class Attribute {
 		this.question = question;
 	}
 
+=======
+	@JsonProperty("follower_id")
+	public void setFollowerId(String followerId) {
+		this.followerId = followerId;
+	}
+
+	public String getFollowerId() {
+		return followerId;
+	}
+
+	@JsonProperty("follow_to")
+	public void setFollowTo(String followTo) {
+		this.followTo = followTo;
+	}
+
+	public String getFollowTo() {
+		return followTo;
+	}
+>>>>>>> 99da935ad0b1f5fcad2e18bc63fad04af58c34e1
 }

@@ -3,6 +3,7 @@ package com.ism.adapter.myAuthor;
 import android.app.Fragment;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,25 +66,25 @@ public class AuthorAssignmentsAdapter extends RecyclerView.Adapter<AuthorAssignm
             holder.tvBookName.setText(arrListAuthorBooksAssignments.get(position).getBookName());
 
 
-//            if (arrListAuthorBooksAssignments.get(position).getAssignments().size() > 0) {
-//
-//                holder.tvAssignmentOne.setText(arrListAuthorBooksAssignments.get(position).getAssignments().get(0).getAssignmentName());
-//                if (arrListAuthorBooksAssignments.get(position).getAssignments().size() > 1) {
-//                    holder.tvAssignmentTwo.setText(arrListAuthorBooksAssignments.get(position).getAssignments().get(1).getAssignmentName());
-//                } else {
-//                    holder.tvAssignmentTwo.setVisibility(View.INVISIBLE);
-//                }
-//                if (arrListAuthorBooksAssignments.get(position).getAssignments().size() > 2) {
-//                    holder.tvAssignmentThree.setText(arrListAuthorBooksAssignments.get(position).getAssignments().get(2).getAssignmentName());
-//                } else {
-//                    holder.tvAssignmentThree.setVisibility(View.INVISIBLE);
-//                }
-//            } else {
-//                holder.tvAssignmentOne.setVisibility(View.INVISIBLE);
-//                holder.tvAssignmentTwo.setVisibility(View.INVISIBLE);
-//                holder.tvAssignmentThree.setVisibility(View.INVISIBLE);
-//
-//            }
+            if (arrListAuthorBooksAssignments.get(position).getAssignments().size() > 0) {
+
+                holder.tvAssignmentOne.setText(arrListAuthorBooksAssignments.get(position).getAssignments().get(0).getAssignmentName());
+                if (arrListAuthorBooksAssignments.get(position).getAssignments().size() > 1) {
+                    holder.tvAssignmentTwo.setText(arrListAuthorBooksAssignments.get(position).getAssignments().get(1).getAssignmentName());
+                } else {
+                    holder.tvAssignmentTwo.setVisibility(View.INVISIBLE);
+                }
+                if (arrListAuthorBooksAssignments.get(position).getAssignments().size() > 2) {
+                    holder.tvAssignmentThree.setText(arrListAuthorBooksAssignments.get(position).getAssignments().get(2).getAssignmentName());
+                } else {
+                    holder.tvAssignmentThree.setVisibility(View.INVISIBLE);
+                }
+            } else {
+                holder.tvAssignmentOne.setVisibility(View.INVISIBLE);
+                holder.tvAssignmentTwo.setVisibility(View.INVISIBLE);
+                holder.tvAssignmentThree.setVisibility(View.INVISIBLE);
+
+            }
 
             holder.llAssignmentContainer.setTag(arrListAuthorBooksAssignments.get(position).getBookId());
 
@@ -98,10 +99,9 @@ public class AuthorAssignmentsAdapter extends RecyclerView.Adapter<AuthorAssignm
                 }
             });
 
-
-            holder.tvViewAllAssignments.setText(arrListAuthorBooksAssignments.get(position).getTotalAssignments() + "\n");
+            holder.tvViewAllAssignments.setText(Html.fromHtml("<b>" + arrListAuthorBooksAssignments.get(position).getTotalAssignments() + "</b>")+"\n");
             holder.tvViewAllAssignments.append(Utility.getSpannableString(mContext.getResources().getString(R.string.strviewall),
-                    mContext.getResources().getColor(R.color.text_gray)));
+                    mContext.getResources().getColor(R.color.color_gray1)));
 
         } catch (Exception e) {
             Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());

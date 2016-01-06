@@ -92,8 +92,13 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+<<<<<<< HEAD
                 android:layout_height="@dimen/dp180"
                 android:background="@color/white"
+=======
+                android:layout_height="@dimen/dp191"
+                android:background="@color/color_white"
+>>>>>>> 99da935ad0b1f5fcad2e18bc63fad04af58c34e1
                 android:orientation="horizontal">
 
                 <ImageView
@@ -209,8 +214,13 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+<<<<<<< HEAD
                 android:layout_height="@dimen/dp180"
                 android:background="@color/white"
+=======
+                android:layout_height="@dimen/dp191"
+                android:background="@color/color_white"
+>>>>>>> 99da935ad0b1f5fcad2e18bc63fad04af58c34e1
                 android:orientation="horizontal">
 
                 <ImageView

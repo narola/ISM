@@ -23,7 +23,7 @@
         android:layout_alignBottom="@+id/img_link"
         android:layout_alignEnd="@+id/img_link"
         android:layout_margin="@dimen/dp4"
-        android:src="@drawable/like_fill" />
+        android:src="@drawable/ic_like_green_active" />
 
     <TextView
         android:layout_width="@dimen/dp53"

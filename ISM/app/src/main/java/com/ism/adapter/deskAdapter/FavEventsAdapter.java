@@ -2,14 +2,13 @@ package com.ism.adapter.deskAdapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ism.R;
-import com.ism.utility.Debug;
-
 /**
  * Created by c162 on 25/12/15.
  */
@@ -35,7 +34,7 @@ public class FavEventsAdapter extends RecyclerView.Adapter<FavEventsAdapter.View
         try {
 
         } catch (Exception e) {
-            Debug.i(TAG, "onBinderViewHolder Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "onBinderViewHolder Exceptions : " + e.getLocalizedMessage());
         }
     }
 

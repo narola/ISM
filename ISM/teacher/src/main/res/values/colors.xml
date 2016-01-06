@@ -134,6 +134,7 @@
     <!-- user profile-->
     <color name="color_bg_teacher_profile">#323941</color>
     <color name="color_friend_request_yellow">#FFBA00</color>
+    <color name="green_online">#27A611</color>
 
     <!-- notification-->
     <color name="color_gray_light">#F5F5F5</color>

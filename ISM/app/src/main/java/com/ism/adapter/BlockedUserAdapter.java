@@ -83,7 +83,7 @@ public class BlockedUserAdapter extends BaseAdapter implements WebserviceWrapper
                 }
             });
         } catch (Exception e) {
-            Debug.i(TAG, "getView Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "getView Exception : " + e.getLocalizedMessage());
         }
         return convertView;
     }
@@ -107,7 +107,7 @@ public class BlockedUserAdapter extends BaseAdapter implements WebserviceWrapper
                     arrayList.remove(blockUserPosition);
                     notifyDataSetChanged();
                     resizeView.onUnBlockUser();
-                    Debug.i(TAG, "onResponseUnBlockUser success");
+                    Log.e(TAG, "onResponseUnBlockUser success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseUnBlockUser Failed");
                 }
@@ -136,7 +136,7 @@ public class BlockedUserAdapter extends BaseAdapter implements WebserviceWrapper
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "callApiForBlockUser Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiForBlockUser Exception : " + e.getLocalizedMessage());
         }
     }
 }

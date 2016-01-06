@@ -2,6 +2,7 @@ package com.ism.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.BookDetailsDialog;
 import com.ism.object.Global;
-import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.model.BookData;
 
@@ -48,7 +48,7 @@ public class SuggestedBookAdapter extends RecyclerView.Adapter<SuggestedBookAdap
 
             holder.txtBookAuthor.setTypeface(Global.myTypeFace.getRalewayRegular());
             holder.txtBookName.setTypeface(Global.myTypeFace.getRalewayRegular());
-            Debug.i(TAG, "Image path : " + WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getFrontCoverImage());
+            Log.e(TAG, "Image path : " + WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getFrontCoverImage());
 //			imageLoader.displayImage(AppConstant.HOST_IMAGE_USER_OLD + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
             Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER_OLD + arrayList.get(position).getFrontCoverImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
@@ -63,7 +63,7 @@ public class SuggestedBookAdapter extends RecyclerView.Adapter<SuggestedBookAdap
             holder.imgAddToFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Debug.i(TAG, "onClickAddToFav : " + position);
+                    Log.e(TAG, "onClickAddToFav : " + position);
                     booksListner.onAddToFav(position);
                 }
             });
@@ -77,7 +77,7 @@ public class SuggestedBookAdapter extends RecyclerView.Adapter<SuggestedBookAdap
             holder.imgLibraryBook.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Debug.i(TAG, "onClickAddToLibrary : " + position);
+                    Log.e(TAG, "onClickAddToLibrary : " + position);
 
                     if (arrayList.get(position).getIsInLibrary().equals("1")) {
                         arrayList.get(position).setIsInLibrary("0");
@@ -92,7 +92,7 @@ public class SuggestedBookAdapter extends RecyclerView.Adapter<SuggestedBookAdap
             });
 
         } catch (Exception e) {
-            Debug.i(TAG,"onBindViewHolder Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
     }
 

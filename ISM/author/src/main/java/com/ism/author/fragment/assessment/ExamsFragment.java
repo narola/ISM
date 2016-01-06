@@ -16,8 +16,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.utility.Debug;
-import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
@@ -25,6 +23,8 @@ import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -36,6 +36,10 @@ import com.ism.author.ws.model.Questions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import io.realm.RealmResults;
+import model.AuthorBook;
+import realmhelper.AuthorHelper;
 
 /**
  * Created by c166 on 09/11/15.
@@ -51,13 +55,15 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private FragmentListener fragListener;
     private Spinner spExamAuthorBooks, spExamClass, spExamEvaluationStatus;
     private ImageView imgToggleList;
-    private ArrayList<BookData> arrListAuthorBooks;
-    private ArrayList<Classrooms> arrListClassRooms;
+
     private List<String> arrListAssessment;
 
     private TextView txtSubmissionDate, tvNoDataMsg;
     private EditText etExamStartdate, etExamEnddate;
     private String strExamStartDate = "", strExamEndDate = "";
+    private AuthorHelper authorHelper;
+    private RealmResults<AuthorBook> arrListAuthorBooks = null;
+    private RealmResults<model.Classrooms> arrListClassRooms = null;
 
 
     public static ExamsFragment newInstance() {
@@ -77,6 +83,8 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     private void initGlobal() {
+
+        authorHelper = new AuthorHelper(getActivity());
 
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         rvExamsList = (RecyclerView) view.findViewById(R.id.rv_exams_list);
@@ -125,11 +133,6 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             }
         });
 
-        setEmptyView(false);
-        callApiGetAuthorBooks();
-        callApiGetClassrooms();
-        callApiGetAllExams();
-
 
         /**
          * ItemselectedListener to handle filter based on particular spinner
@@ -149,6 +152,12 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         spExamAuthorBooks.setOnItemSelectedListener(spinnerListenerforFilters);
         spExamClass.setOnItemSelectedListener(spinnerListenerforFilters);
         spExamEvaluationStatus.setOnItemSelectedListener(spinnerListenerforFilters);
+
+
+        setEmptyView(false);
+        callApiGetAuthorBooks();
+        callApiGetClassrooms();
+        callApiGetAllExams();
     }
 
 
@@ -163,7 +172,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                      * Position-2 because two static elements are added in the spinner in beginning
                      * so to fetch the first element from arraylist at index zero we are doing position-2
                      */
-                    filterAuthorBookWiseAssignments(arrListAuthorBooks.get(position - 2).getBookId());
+                    filterAuthorBookWiseAssignments(String.valueOf(arrListAuthorBooks.get(position - 2).getBook().getBookId()));
                 } else {
                     clearFilters();
                 }
@@ -173,7 +182,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                 spExamAuthorBooks.setSelection(0);
                 spExamEvaluationStatus.setSelection(0);
                 if (position > 1) {
-                    filterClassroomWiseAssignments(arrListClassRooms.get(position - 2).getId());
+                    filterClassroomWiseAssignments(String.valueOf(arrListClassRooms.get(position - 2).getClassRoomId()));
 
                 } else {
                     clearFilters();
@@ -274,18 +283,15 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     private void callApiGetClassrooms() {
-
         if (Utility.isConnected(getActivity())) {
             try {
-
                 new WebserviceWrapper(getActivity(), new Attribute(), (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLCLASSROOMS);
-
             } catch (Exception e) {
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            setUpClassrooms();
         }
 
     }
@@ -294,7 +300,6 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
         if (Utility.isConnected(getActivity())) {
             try {
-
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -303,7 +308,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            setUpAuthorBooksData();
         }
 
     }
@@ -340,6 +345,10 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     if (responseHandler.getExams().size() > 0) {
+
+                        addExams(responseHandler.getExams());
+
+
                         arrListExams.addAll(responseHandler.getExams());
                         examsAdapter.addAll(arrListExams);
                         examsAdapter.notifyDataSetChanged();
@@ -370,16 +379,9 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListClassRooms = new ArrayList<Classrooms>();
-                    arrListClassRooms.addAll(responseHandler.getClassrooms());
-                    List<String> classrooms = new ArrayList<String>();
-                    classrooms.add(getString(R.string.strclass));
-                    classrooms.add(getString(R.string.strall));
-                    for (Classrooms classroom : arrListClassRooms) {
-                        classrooms.add(classroom.getClassName());
+                    addClassRooms(responseHandler.getClassrooms());
+                    setUpClassrooms();
 
-                    }
-                    Adapters.setUpSpinner(getActivity(), spExamClass, classrooms, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
@@ -397,17 +399,9 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListAuthorBooks = new ArrayList<BookData>();
-                    arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
-                    List<String> authorBooks = new ArrayList<String>();
-                    authorBooks.add(getString(R.string.strbookname));
-                    authorBooks.add(getString(R.string.strall));
-                    for (BookData authorBook : arrListAuthorBooks) {
-                        authorBooks.add(authorBook.getBookName());
+                    addAuthorBooks(responseHandler.getAuthorBook());
+                    setUpAuthorBooksData();
 
-                    }
-                    Adapters.setUpSpinner(getActivity(), spExamAuthorBooks, authorBooks, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
-                    spExamAuthorBooks.setSelection(1);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
@@ -420,8 +414,64 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
 
-    public ArrayList<Questions> copylistOfQuestionBank = new ArrayList<Questions>();
+    private void addAuthorBooks(ArrayList<BookData> arrListAuthorBooks) {
+        if (arrListAuthorBooks.size() > 0) {
+            for (BookData authorBook : arrListAuthorBooks) {
+                authorHelper.addAuthorBooks(Global.getRealmDataModel.getRealmAuthorBook(authorBook, arrListAuthorBooks.indexOf(authorBook)));
+            }
+        }
+    }
 
+    private void addClassRooms(ArrayList<Classrooms> arrListClassrooms) {
+
+        if (arrListClassrooms.size() > 0) {
+            for (Classrooms classroom : arrListClassrooms) {
+                authorHelper.addClassrooms(Global.getRealmDataModel.getRealmClassroom(classroom));
+            }
+        }
+
+    }
+
+
+    private void addExams(ArrayList<Exams> arrListExams) {
+
+        if (arrListExams.size() > 0) {
+            for (Exams exam : arrListExams) {
+                authorHelper.addExams(Global.getRealmDataModel.getRealmExam(exam, authorHelper));
+            }
+        }
+
+    }
+
+    private void setUpAuthorBooksData() {
+
+        arrListAuthorBooks = authorHelper.getAuthorBooks();
+        List<String> authorBooks = new ArrayList<String>();
+        authorBooks.add(getString(R.string.strbookname));
+        authorBooks.add(getString(R.string.strall));
+        for (model.AuthorBook authorBook : arrListAuthorBooks) {
+            authorBooks.add(authorBook.getBook().getBookName());
+
+        }
+        Adapters.setUpSpinner(getActivity(), spExamAuthorBooks, authorBooks, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
+        spExamAuthorBooks.setSelection(1);
+    }
+
+    private void setUpClassrooms() {
+
+        arrListClassRooms = authorHelper.getClassrooms();
+        List<String> classrooms = new ArrayList<String>();
+        classrooms.add(getString(R.string.strclass));
+        classrooms.add(getString(R.string.strall));
+        for (model.Classrooms classroom : arrListClassRooms) {
+            classrooms.add(classroom.getClassName());
+
+        }
+        Adapters.setUpSpinner(getActivity(), spExamClass, classrooms, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
+    }
+
+
+    public ArrayList<Questions> copylistOfQuestionBank = new ArrayList<Questions>();
 
     @Override
     public void onAttach(Activity activity) {
@@ -444,6 +494,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             if (fragListener != null) {
                 fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ASSESSMENT);
                 Debug.i(TAG, "detach");
+                authorHelper.realm.close();
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());

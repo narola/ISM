@@ -53,7 +53,11 @@ public class WebserviceConnector {
                 if (request != null) {
                     // writer.writeValueAsString( request );
                     jsonObject = writer.writeValueAsString(request);
+<<<<<<< HEAD
                     Log.e(TAG, "Request object : " + jsonObject);
+=======
+                    Log.e("Request object", jsonObject + "");
+>>>>>>> 99da935ad0b1f5fcad2e18bc63fad04af58c34e1
                 }
 
             }
@@ -136,7 +140,7 @@ public class WebserviceConnector {
 
             /*This is to add file content*/
             for (int i = 0; i < mediaUploadAttribute.getArrListFile().size(); i++) {
-                Debug.i(TAG, "File path : " + mediaUploadAttribute.getArrListFile().get(i).getFileName());
+                Log.e(TAG, "File path : " + mediaUploadAttribute.getArrListFile().get(i).getFileName());
                 multipart.addFilePart(mediaUploadAttribute.getArrListFile().get(i).getParamName(),
                         new File(mediaUploadAttribute.getArrListFile().get(i).getFileName()));
             }
@@ -150,7 +154,7 @@ public class WebserviceConnector {
 
             ret = getMapper().readValue(responseString, responseType);
         } catch (IOException ex) {
-            Debug.i(TAG, "uploadMedia  IOException : " + ex.getLocalizedMessage());
+            Log.e(TAG, "uploadMedia  IOException : " + ex.getLocalizedMessage());
         }
         return ret;
 

@@ -145,7 +145,6 @@ public class WebserviceConnector {
             }
 
 
-
             List<String> response = multipart.finish();
             Debug.e(TAG, "SERVER REPLIED:");
             for (String line : response) {

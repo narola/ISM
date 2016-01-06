@@ -68,6 +68,11 @@
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".broadcastReceiver.AlarmReceiver">
+
+        </receiver>
+
+
     </application>
 
 </manifest>

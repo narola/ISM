@@ -17,27 +17,37 @@ public class Exam extends RealmObject {
 
 
     @PrimaryKey
-    private  int examId;
+    private int examId;
     private String examName;
     private String instructions;
     private Classrooms classroom;
     private User createdBy;
     private Subjects subject;
-    private Books    book;
-    private int examType;
-    private int examCategory;
-    private int examMode;
-    private int passPercentage;
-    private int duration;
-    private int attemptCount;
-    private int negativeMarkValue;
-    private int correctAnswerScore;
+    private AuthorBook authorBook;
+    private String examType;
+    private String examCategory;
+    private String examMode;
+    private String passPercentage;
+    private String duration;
+    private String attemptCount;
+    private String negativeMarkValue;
+    private String correctAnswerScore;
     private boolean negativeMarking;
     private boolean useQuestionScore;
     private boolean randomQuestion;
     private boolean declareResults;
     private Date createdDate;
     private Date modifiedDate;
+    private String totalStudent;
+    private String totalStudentAttempted;
+    private String examAssessor;
+    private Date examStartDate;
+    private String examStartTime;
+    private String totalQuestion;
+    private String evaluationStatus;
+    private String averageScore;
+    private String totalAssessed;
+    private String totalUnassessed;
 
     public int getExamId() {
         return examId;
@@ -87,75 +97,75 @@ public class Exam extends RealmObject {
         this.subject = subject;
     }
 
-    public Books getBook() {
-        return book;
+    public AuthorBook getAuthorBook() {
+        return authorBook;
     }
 
-    public void setBook(Books book) {
-        this.book = book;
+    public void setAuthorBook(AuthorBook authorBook) {
+        this.authorBook = authorBook;
     }
 
-    public int getExamType() {
+    public String getExamType() {
         return examType;
     }
 
-    public void setExamType(int examType) {
+    public void setExamType(String examType) {
         this.examType = examType;
     }
 
-    public int getExamCategory() {
+    public String getExamCategory() {
         return examCategory;
     }
 
-    public void setExamCategory(int examCategory) {
+    public void setExamCategory(String examCategory) {
         this.examCategory = examCategory;
     }
 
-    public int getExamMode() {
+    public String getExamMode() {
         return examMode;
     }
 
-    public void setExamMode(int examMode) {
+    public void setExamMode(String examMode) {
         this.examMode = examMode;
     }
 
-    public int getPassPercentage() {
+    public String getPassPercentage() {
         return passPercentage;
     }
 
-    public void setPassPercentage(int passPercentage) {
+    public void setPassPercentage(String passPercentage) {
         this.passPercentage = passPercentage;
     }
 
-    public int getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
-    public int getAttemptCount() {
+    public String getAttemptCount() {
         return attemptCount;
     }
 
-    public void setAttemptCount(int attemptCount) {
+    public void setAttemptCount(String attemptCount) {
         this.attemptCount = attemptCount;
     }
 
-    public int getNegativeMarkValue() {
+    public String getNegativeMarkValue() {
         return negativeMarkValue;
     }
 
-    public void setNegativeMarkValue(int negativeMarkValue) {
+    public void setNegativeMarkValue(String negativeMarkValue) {
         this.negativeMarkValue = negativeMarkValue;
     }
 
-    public int getCorrectAnswerScore() {
+    public String getCorrectAnswerScore() {
         return correctAnswerScore;
     }
 
-    public void setCorrectAnswerScore(int correctAnswerScore) {
+    public void setCorrectAnswerScore(String correctAnswerScore) {
         this.correctAnswerScore = correctAnswerScore;
     }
 
@@ -205,5 +215,86 @@ public class Exam extends RealmObject {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public String getTotalStudent() {
+        return totalStudent;
+    }
+
+    public void setTotalStudent(String totalStudent) {
+        this.totalStudent = totalStudent;
+    }
+
+    public String getTotalStudentAttempted() {
+        return totalStudentAttempted;
+    }
+
+    public void setTotalStudentAttempted(String totalStudentAttempted) {
+        this.totalStudentAttempted = totalStudentAttempted;
+    }
+
+    public String getExamAssessor() {
+        return examAssessor;
+    }
+
+    public void setExamAssessor(String examAssessor) {
+        this.examAssessor = examAssessor;
+    }
+
+    public Date getExamStartDate() {
+        return examStartDate;
+    }
+
+    public void setExamStartDate(Date examStartDate) {
+        this.examStartDate = examStartDate;
+    }
+
+    public String getExamStartTime() {
+        return examStartTime;
+    }
+
+    public void setExamStartTime(String examStartTime) {
+        this.examStartTime = examStartTime;
+    }
+
+    public String getTotalQuestion() {
+        return totalQuestion;
+    }
+
+    public void setTotalQuestion(String totalQuestion) {
+        this.totalQuestion = totalQuestion;
+
+    }
+
+    public String getEvaluationStatus() {
+        return evaluationStatus;
+    }
+
+    public void setEvaluationStatus(String evaluationStatus) {
+        this.evaluationStatus = evaluationStatus;
+    }
+
+    public String getAverageScore() {
+        return averageScore;
+    }
+
+    public void setAverageScore(String averageScore) {
+        this.averageScore = averageScore;
+    }
+
+    public String getTotalAssessed() {
+        return totalAssessed;
+    }
+
+    public void setTotalAssessed(String totalAssessed) {
+        this.totalAssessed = totalAssessed;
+    }
+
+    public String getTotalUnassessed() {
+        return totalUnassessed;
+    }
+
+    public void setTotalUnassessed(String totalUnassessed) {
+        this.totalUnassessed = totalUnassessed;
     }
 }

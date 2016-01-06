@@ -180,7 +180,7 @@
 	<string name="strpost">Post</string>
 	<string name="strcreatepost">Create Post</string>
 	<string name="hello_blank_fragment">Hello blank fragment</string>
-	<string name="strviewall">7</string>
+	<string name="strviewall">View all</string>
 	<string name="last_name">Last Name</string>
 	<string name="first_name">First Name</string>
 	<string name="android">Android</string>
@@ -629,6 +629,9 @@
 	<string name="strtrial">Trial</string>
 	<string name="strmy30">My30th</string>
 	<string name="strTrial">Trial</string>
+	<string name="strAuthorsDesk">Author\'s Desk</string>
+	<string name="strYourHaveNotJoinedAnyAuthorClickFindMoreAuthorAndAddAuthor"><![CDATA[You have not joined any author click <font color=#3EB1DE>\"find more author\" </font>and add author]]></string>
+	<string name="strIAcceptTheTermAndCondition"><![CDATA[I Accept the term & Condition]]></string>
 	<string name="msg_tutorial_exam_ready">Today\'s tutorial group exam is ready!</string>
 	<string name="tip">Tip :</string>
 	<string name="question">"Question : "</string>

@@ -20,5 +20,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/like_fill" />
+        android:src="@drawable/ic_like_green_active" />
 </RelativeLayout>

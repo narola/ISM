@@ -23,6 +23,7 @@ import com.ism.author.ws.model.ExamQuestions;
 import com.ism.author.ws.model.ExamSubmission;
 import com.ism.author.ws.model.Exams;
 import com.ism.author.ws.model.Feed;
+import com.ism.author.ws.model.FeedComment;
 import com.ism.author.ws.model.Feeds;
 import com.ism.author.ws.model.FileUploadResponse;
 import com.ism.author.ws.model.Followers;
@@ -123,6 +124,7 @@ public class ResponseHandler {
     private ArrayList<Assignment> assignment;
     private ArrayList<Followers> followers;
     private ArrayList<AllBooks> allBooks;
+    private ArrayList<FeedComment> feedComment;
     private UserImages userImages;
     FileUploadResponse fileUploadResponse;
     private UploadQuestion uploadQuestion;
@@ -521,6 +523,15 @@ public class ResponseHandler {
     public ResponseHandler setQuestionComments(ArrayList<QuestionComments> questionComments) {
         this.questionComments = questionComments;
         return this;
+    }
+
+    @JsonProperty("comment")
+    public ArrayList<FeedComment> getComment() {
+        return this.feedComment;
+    }
+
+    public void setComment(ArrayList<FeedComment> feedComment) {
+        this.feedComment = feedComment;
     }
 
 

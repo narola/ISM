@@ -287,7 +287,7 @@ public class WebConstants {
 
     public static final String FAILED = "failed";
 
-    public static final String TEST_GETSTUDYMATES = "167";
+    public static final String TEST_GETSTUDYMATES = "499";
 
     /**
      * Parameter values

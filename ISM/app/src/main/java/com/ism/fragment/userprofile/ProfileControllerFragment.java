@@ -118,7 +118,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         arrImgNotificationIcon = new ImageView[]{imgNotification, imgMessage, imgFriendRequest};
 
         txtUserName.setText(Global.strFullName);
-        Debug.i(TAG,"User Image: "+ Global.strProfilePic);
+        Log.e(TAG,"User Image: "+ Global.strProfilePic);
         Global.imageLoader.displayImage(Global.strProfilePic, imgDp, ISMStudent.options);
         showBadges();
 

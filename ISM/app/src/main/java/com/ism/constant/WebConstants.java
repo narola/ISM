@@ -77,9 +77,13 @@ public class WebConstants {
 	/**
 	 * my author
 	 */
-
+//	public static final String HOST = "http://clientapp.narolainfotech.com/";                               // SERVER
 	public static final int GET_AUTHOR_BOOK_ASSIGNMENT = 101;
-	public static final int GETASSIGNMENTBYBOOK = 102;
+	public static final int GET_ASSIGNMENT_BY_BOOK = 102;
+	public static final int GET_BOOKS_BY_AUTHOR =103 ;
+	public static final int GET_FOLLOW_USER = 104;
+	public static final int GET_RECOMMENDED_AUTHORS = 105;
+
 	/**
 	 *  URLs
 	 */
@@ -89,16 +93,23 @@ public class WebConstants {
 //	private static final String URL_IMAGE_PATH = "http://192.168.1.147/WS_ISM/Images"
 
 	public static final String HOST = "http://192.168.1.202/";                                              // SERVER
+<<<<<<< HEAD
 //	public static final String HOST = "http://clientapp.narolainfotech.com/";                               // SERVER
 //    public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
 
     private static final String DIR_PATH = "pg/ISM/WS_ISM/";        //  SERVER
 //    private static final String DIR_PATH = "WS_ISM/";             //  KINJAL
+=======
 
-    private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
+//    public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
+	private static final String DIR_PATH = "pg/ISM/WS_ISM/";        //  SERVER
+
+//    private static final String DIR_PATH = "WS_ISM/";             //  KINJAL
+	private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
+>>>>>>> 99da935ad0b1f5fcad2e18bc63fad04af58c34e1
+
 	//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_images/";
 	public static final String HOST_IMAGE_USER = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
-
 	public static final String HOST_IMAGE_FEED = HOST + DIR_PATH + "images/feeds/";
 	public static final String HOST_IMAGE_USER_OLD = "http://192.168.1.202/pg/ISM/WS_ISM/";
 	public static final String URL_ACCEPT_TUTORIAL_GROUP = HOST_WS + "AcceptTutorialGroup";
@@ -145,9 +156,13 @@ public class WebConstants {
 	public static final String URL_SEND_REQUEST_STUDYMATE = HOST_WS + "SendRequestToStudymate";
 	public static final String URL_SUBMIT_QUESTION_FOR_FRIDAY = HOST_WS + "SubmitQuestionForFriday";
 	public static final String URL_CHECK_FRIDAY_EXAM_STATUS = HOST_WS + "CheckFridayExamStatus";
+<<<<<<< HEAD
 	public static final String URL_GET_FRIDAY_EXAM_QUESTIONS = HOST_WS + "GetFridayExamQuestion";
 	public static final String URL_SUBMIT_STUDENT_OBJECTIVE_RESPONSE = HOST_WS + "SubmitStudentObjectiveResponse";
+=======
+>>>>>>> 99da935ad0b1f5fcad2e18bc63fad04af58c34e1
 
+	public static final String URL_GET_FRIDAY_EXAM_QUESTIONS = HOST_WS + "GetFridayExamQuestion";
 	/*
 	* edit profile
 	* */
@@ -162,14 +177,17 @@ public class WebConstants {
 	public static final String URL_EDIT_PROFILE_PIC = " ";
 	public static final String URL_GET_BLOCKED_USER =  HOST_WS + "GetBlockedUser";
 	public static final String URL_GET_ALL_BOOKS = HOST_WS + "GetAllBooks";
-	public static final String URL_UNBLOCK_USER =  HOST_WS + "UnBlockUser";
 
+	public static final String URL_UNBLOCK_USER =  HOST_WS + "UnBlockUser";
 	/**
 	 * my author
 	 */
 
 	public static final String URL_GET_AUTHOR_BOOK_ASSIGNMENT = HOST_WS + "GetAuthorBookAssignment";
+	public static final String URL_GET_BOOKS_BY_AUTHOR = HOST_WS + "GetBooksByAuthors";
 	public static final String URL_GET_ASSIGNMENT_BY_BOOK = HOST_WS + "GetAssignmentByBook";
+	public static final String URL_GET_FOLLOW_USER = HOST_WS + "FollowUser";
+	public static final String URL_GET_RECOMMENDED_AUTHORS = HOST_WS + "GetRecommendedAuthors";
 	/**
 	 * Parameter value Constants
 	 */
