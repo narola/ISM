@@ -1,6 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
 <merger version="3"><dataSet config="main"><source path="/Volumes/Data/ISM_github/ISM/ISM/richeditor/src/main/res"/><source path="/Volumes/Data/ISM_github/ISM/ISM/richeditor/build/generated/res/rs/release"/><source path="/Volumes/Data/ISM_github/ISM/ISM/richeditor/build/generated/res/resValues/release"/></dataSet><dataSet config="release"><source path="/Volumes/Data/ISM_github/ISM/ISM/richeditor/src/release/res"/></dataSet><mergedItems/></merger>
-=======
-<merger version="3"><dataSet config="main"><source path="/Volumes/DATA/ISM_github/ISM/ISM/richeditor/src/main/res"/><source path="/Volumes/DATA/ISM_github/ISM/ISM/richeditor/build/generated/res/rs/release"/><source path="/Volumes/DATA/ISM_github/ISM/ISM/richeditor/build/generated/res/resValues/release"/></dataSet><dataSet config="release"><source path="/Volumes/DATA/ISM_github/ISM/ISM/richeditor/src/release/res"/></dataSet><mergedItems/></merger>
->>>>>>> 99da935ad0b1f5fcad2e18bc63fad04af58c34e1

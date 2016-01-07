@@ -53,11 +53,7 @@ public class WebserviceConnector {
                 if (request != null) {
                     // writer.writeValueAsString( request );
                     jsonObject = writer.writeValueAsString(request);
-<<<<<<< HEAD
                     Log.e(TAG, "Request object : " + jsonObject);
-=======
-                    Log.e("Request object", jsonObject + "");
->>>>>>> 99da935ad0b1f5fcad2e18bc63fad04af58c34e1
                 }
 
             }

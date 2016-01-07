@@ -8,6 +8,7 @@ import com.ism.teacher.ws.model.AdminConfig;
 import com.ism.teacher.ws.model.Badges;
 import com.ism.teacher.ws.model.BlockedUsers;
 import com.ism.teacher.ws.model.Cities;
+import com.ism.teacher.ws.model.ClassPerformance;
 import com.ism.teacher.ws.model.Classrooms;
 import com.ism.teacher.ws.model.CommentList;
 import com.ism.teacher.ws.model.Countries;
@@ -92,6 +93,22 @@ public class ResponseHandler {
     private ArrayList<Notification> notification;
     private ArrayList<StudymateRequest> studymateRequest;
     private ArrayList<Message> messages;
+
+
+
+    //Progress Report
+
+    private ArrayList<ClassPerformance> classPerformance;
+
+    @JsonProperty("class_performance")
+    public ArrayList<ClassPerformance> getClassPerformance() {
+        return classPerformance;
+    }
+
+    public ResponseHandler setClassPerformance(ArrayList<ClassPerformance> classPerformance) {
+        this.classPerformance = classPerformance;
+        return this;
+    }
 
 
     @JsonProperty("students")

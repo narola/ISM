@@ -25,6 +25,7 @@ import com.ism.teacher.fragments.createexam.CreateExamAssignmentContainerFragmen
 import com.ism.teacher.fragments.notes.AllNotesFragment;
 import com.ism.teacher.fragments.notes.NotesAddEditFragment;
 import com.ism.teacher.fragments.notes.NotesContainer;
+import com.ism.teacher.fragments.progressreport.TeacherProgressReportHomeFragment;
 import com.ism.teacher.fragments.results.AllResultsFragment;
 import com.ism.teacher.interfaces.FragmentListener;
 
@@ -176,7 +177,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
 
                     getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
                             TeacherProgressReportHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_PROGRESS_REPORT).commit();
-                    ((TeacherHostActivity) getActivity()).showRightContainerFragment();
+                    ((TeacherHostActivity) getActivity()).hideRightContainerFragment();
                     break;
 
 

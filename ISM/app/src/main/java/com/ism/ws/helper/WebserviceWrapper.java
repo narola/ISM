@@ -239,10 +239,9 @@ public class WebserviceWrapper {
                             case WebConstants.GET_FRIDAY_EXAM_QUESTIONS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_FRIDAY_EXAM_QUESTIONS).execute(ResponseHandler.class, attribute);
                                 break;
-<<<<<<< HEAD
                             case WebConstants.SUBMIT_STUDENT_OBJECTIVE_RESPONSE:
                                 responseObject = new WebserviceConnector(WebConstants.URL_SUBMIT_STUDENT_OBJECTIVE_RESPONSE).execute(ResponseHandler.class, attribute);
-=======
+                                break;
                             case WebConstants.GET_AUTHOR_BOOK_ASSIGNMENT:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_AUTHOR_BOOK_ASSIGNMENT).execute(ResponseHandler.class, attribute);
                                 break;
@@ -257,7 +256,6 @@ public class WebserviceWrapper {
                                 break;
                             case WebConstants.GET_RECOMMENDED_AUTHORS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_RECOMMENDED_AUTHORS).execute(ResponseHandler.class, attribute);
->>>>>>> 99da935ad0b1f5fcad2e18bc63fad04af58c34e1
                                 break;
                         }
                     }
