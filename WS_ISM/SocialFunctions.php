@@ -133,9 +133,10 @@ class SocialFunctions
 
         if($isSecure==yes) {
 
-            $getFields = "f.id, f.comment,f.created_date, f.comment_by,u.full_name,p.profile_link as 'profile_pic'";
+            $getFields = "f.id, f.comment,f.created_date, f.comment_by,u.full_name,u.profile_pic";//,p.profile_link as 'profile_pic'";
             $query = "SELECT ".$getFields."  FROM feed_comment f INNER JOIN users u ON f.comment_by=u.id
-LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id ." AND f.is_delete=0 AND u.is_delete=0";
+  WHERE f.feed_id=".$feed_id ." AND f.is_delete=0 AND u.is_delete=0";
+            //LEFT JOIN user_profile_picture p ON p.user_id=u.id
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
             //echo $query;
             if (mysqli_num_rows($result) >0) {
@@ -1111,11 +1112,11 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
 
         if(sizeof($feeds_array)>0)
         {
-             $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic'
+             $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,f.created_date,u.full_name,u.profile_pic
             FROM feed_comment f
             INNER JOIN users u ON f.comment_by=u.id
-            LEFT JOIN user_profile_picture p ON p.user_id=u.id
             WHERE f.feed_id=".$feeds['id']." AND f.is_delete=0 AND u.is_delete=0 ORDER BY f.id DESC Limit 2";
+            //  LEFT JOIN user_profile_picture p ON p.user_id=u.id
             $resultGetAlComments = mysqli_query($GLOBALS['con'],$queryGetAllComments) or $errorMsg = mysqli_error($GLOBALS['con']);
             $allcomment=array();
             //echo "\n".$queryGetAllComments;
@@ -1209,8 +1210,9 @@ LEFT JOIN user_profile_picture p ON p.user_id=u.id  WHERE f.feed_id=".$feed_id .
                     }
 
                     //Get Comments
-                    $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
-            ON f.comment_by=u.id LEFT JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 ORDER BY f.id DESC LIMIT 2";
+                    $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,u.profile_pic FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
+            ON f.comment_by=u.id  WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 ORDER BY f.id DESC LIMIT 2";
+                    //LEFT JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id
                     //echo $queryGetAllComments;
                     $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg = mysqli_error($GLOBALS['con']);
                     $allcomment = array();

@@ -3754,7 +3754,7 @@ class ProfileFunctions
                             $message = "exams not found";
                         }
                     }
-                    $data[]=$post;
+                    $data=$post;
                     $status=SUCCESS;
                     $message = "report generated";
                 }
