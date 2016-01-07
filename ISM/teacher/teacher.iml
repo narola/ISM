@@ -100,6 +100,7 @@
     <orderEntry type="library" exported="" name="universal-image-loader-1.9.4" level="project" />
     <orderEntry type="module" module-name="commonsource" exported="" />
     <orderEntry type="module" module-name="richtexteditor" exported="" />
+    <orderEntry type="module" module-name="MPChartLib" exported="" />
     <orderEntry type="module" module-name="ismrealm" exported="" />
   </component>
 </module>

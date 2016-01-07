@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:layout_marginLeft="@dimen/dp7"
-            android:textColor="@color/color_white"
+            android:textColor="@color/white"
             android:textSize="@dimen/sp11"
             android:textAllCaps="true"
             android:paddingTop="@dimen/dp7"

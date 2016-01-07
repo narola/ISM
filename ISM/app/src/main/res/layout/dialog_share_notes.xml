@@ -15,7 +15,7 @@
         android:gravity="left"
         android:padding="@dimen/dp8"
         android:text="Introduction of waves"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/dp19"
         android:textStyle="bold" />
 

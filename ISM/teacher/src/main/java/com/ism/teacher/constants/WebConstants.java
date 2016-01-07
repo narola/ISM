@@ -24,7 +24,7 @@ public class WebConstants {
     public static final String URL_UPLOADPROFILEIMAGES = URL_HOST + "UploadProfileImages";
 
     public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Feeds/";
-//    public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
+    //    public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
     public static final String USER_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
 
 
@@ -35,6 +35,7 @@ public class WebConstants {
     public static final String STUDENT_ID_202_OBJECCTIVE = "202";
     public static final String USER_ID_370 = "370";
     public static final String USER_ID_319 = "319";
+    public static final String USER_ID_580 = "580";
     public static final String TEST_GETSTUDYMATES = "167";
 
 
@@ -107,6 +108,10 @@ public class WebConstants {
     public static final int BLOCKED_USER = 50;
     public static final int GET_MY_FEEDS = 51;
 
+
+    //Progress Report
+
+    public static final int GET_REPORT_DATA = 52;
 
 
     public static final String URL_GET_ADMIN_CONFIG = URL_HOST + "GetAdminConfig";
@@ -192,5 +197,11 @@ public class WebConstants {
     public static final String URL_GET_BLOCKED_USER = URL_HOST + "GetBlockedUser";
     public static final String URL_GET_MY_FEEDS = URL_HOST + "GetMyFeeds";
 
+
+    /**
+     * Progress Report
+     */
+
+    public static final String URL_GET_REPORT_DATA = URL_HOST + "GetReportData";
 
 }

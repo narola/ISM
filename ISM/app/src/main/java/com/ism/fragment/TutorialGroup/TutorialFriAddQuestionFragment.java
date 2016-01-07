@@ -2,14 +2,10 @@ package com.ism.fragment.tutorialGroup;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +22,6 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.utility.Alarm;
@@ -51,8 +46,8 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 
 	private View view;
 	private RelativeLayout rlWaiting, rlHeader, rlTutorialmateQuestion, rlCreateQuestion, rlSetOptions, rlPreviewQuestion, rlUpload;
-	private LinearLayout llOptions;
-	private TextView txtHelp, txtCreateQuestion, txtSetOptions, txtPreviewQuestion, txtUpload, txtQuestion;
+	private LinearLayout llOptions, llTip;
+	private TextView txtHelp, txtCreateQuestion, txtSetOptions, txtPreviewQuestion, txtUpload, txtQuestion, txtTipValue;
 	private EditText etQuestion, etOption1, etOption2, etOption3, etOption4;
 	private CheckBox cbOption1, cbOption2, cbOption3, cbOption4;
 	private RadioButton rbOption1, rbOption2, rbOption3, rbOption4;
@@ -107,6 +102,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		txtPreviewQuestion = (TextView) view.findViewById(R.id.txt_preview_question);
 		txtUpload = (TextView) view.findViewById(R.id.txt_upload);
 		txtQuestion = (TextView) view.findViewById(R.id.txt_question);
+		txtTipValue = (TextView) view.findViewById(R.id.txt_tip_value);
 		btnUploadAndFreeze = (Button) view.findViewById(R.id.btn_upload);
 		etQuestion = (EditText) view.findViewById(R.id.et_question);
 		etOption1 = (EditText) view.findViewById(R.id.et_option1);
@@ -122,6 +118,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		cbOption3 = (CheckBox) view.findViewById(R.id.check_option3);
 		cbOption4 = (CheckBox) view.findViewById(R.id.check_option4);
 		llOptions = (LinearLayout) view.findViewById(R.id.ll_options);
+		llTip = (LinearLayout) view.findViewById(R.id.ll_tip);
 		rlCreateQuestion = (RelativeLayout) view.findViewById(R.id.rl_create_question);
 		rlSetOptions = (RelativeLayout) view.findViewById(R.id.rl_set_options);
 		rlPreviewQuestion = (RelativeLayout) view.findViewById(R.id.rl_preview_question);
@@ -154,7 +151,10 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		rbOption4.setTypeface(Global.myTypeFace.getRalewayRegular());
 		((TextView) view.findViewById(R.id.txt_message)).setTypeface(Global.myTypeFace.getRalewaySemiBold());
 		((TextView) view.findViewById(R.id.txt_message2)).setTypeface(Global.myTypeFace.getRalewaySemiBold());
+		((TextView) view.findViewById(R.id.txt_tip)).setTypeface(Global.myTypeFace.getRalewaySemiBold());
+		txtTipValue.setTypeface(Global.myTypeFace.getRalewayRegular());
 
+		txtTipValue.setMovementMethod(new ScrollingMovementMethod());
 
 		txtLables = new TextView[] {txtCreateQuestion, txtSetOptions, txtPreviewQuestion, txtUpload};
 		viewLayouts = new RelativeLayout[] {rlCreateQuestion, rlSetOptions, rlPreviewQuestion, rlUpload};
@@ -162,8 +162,12 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		intPaddingLable = getResources().getDimensionPixelOffset(R.dimen.padding_createquestion_lable);
 		inputValidator = new InputValidator(getActivity());
 
-		/*if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
-			if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), "").equals(Utility.getDate())) {
+		/*if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
+
+			*//**
+			 * Check if question set for today
+			 *//*
+			if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_SET_DATE, getActivity(), "").equals(Utility.getDate())) {
 				if (!PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity())) {
 					rlHeader.setVisibility(View.GONE);
 					rlTutorialmateQuestion.setVisibility(View.GONE);
@@ -181,11 +185,11 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 			txtCreateQuestion.setEnabled(false);
 		}*/
 
-		etQuestion.setText("In the beginning by which name Java language was known?");
-		etOption1.setText("Java");
-		etOption2.setText("J Language");
-		etOption3.setText("Oak");
-		etOption4.setText("C Language");
+		etQuestion.setText("Tutorial group topic friday exam question 1");
+		etOption1.setText("Tutorial group topic friday exam option 1");
+		etOption2.setText("Tutorial group topic friday exam option 2");
+		etOption3.setText("Tutorial group topic friday exam option 3");
+		etOption4.setText("Tutorial group topic friday exam option 4");
 
 		onClickLable = new View.OnClickListener() {
 			@Override
@@ -357,6 +361,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 			rlTutorialmateQuestion.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
 			rlTutorialmateQuestion.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
 			llOptions.getLayoutParams().width = 250;
+			llOptions.getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
 
 			llOptions.bringToFront();
 			viewLayouts[0].startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_right));
@@ -432,6 +437,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 					if (responseHandler.getFridayExamStatus() == null && responseHandler.getFridayExamStatus().size() > 0
 							&& responseHandler.getFridayExamStatus().get(0).getIsReady().equals("yes")) {
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity(), true);
+						Alarm.cancelAlarm(getActivity(), Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS);
 						getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam)).commit();
 					} else {
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity(), false);
@@ -467,9 +473,11 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					Log.e(TAG, "question added successfully.");
-					QuestionForFriday questionForFriday = responseHandler.getQuestionForFriday().get(0);
+					if (responseHandler.getQuestionForFriday() != null && responseHandler.getQuestionForFriday().size() > 0) {
+						QuestionForFriday questionForFriday = responseHandler.getQuestionForFriday().get(0);
+					}
 
-					PreferenceData.setStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, getActivity(), Utility.getDate());
+					PreferenceData.setStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_SET_DATE, getActivity(), Utility.getDate());
 					callApiCheckFridayExamStatus();
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "SubmitQuestionForFriday failed : " + responseHandler.getMessage());

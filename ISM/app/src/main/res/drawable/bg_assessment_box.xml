@@ -9,7 +9,7 @@
         android:right="@dimen/dp2"
         android:top="@dimen/dp2" />
 
-    <solid android:color="@color/color_white" />
+    <solid android:color="@color/white" />
 
 
 </shape>

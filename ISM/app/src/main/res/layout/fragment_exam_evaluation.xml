@@ -41,7 +41,6 @@
 				android:layout_height="wrap_content"
 				android:layout_centerVertical="true"
 				android:paddingLeft="@dimen/dp15"
-				android:text="Quesiton : 1"
 				android:textColor="@color/green"
 				android:textSize="@dimen/sp14"/>
 
@@ -84,7 +83,6 @@
 					android:paddingBottom="@dimen/dp8"
 					android:paddingLeft="@dimen/dp4"
 					android:paddingRight="@dimen/dp4"
-					android:text="When parallel elements meet, which reaction occurs?"
 					android:textColor="@color/bg_app_dark"
 					android:textSize="@dimen/sp19"/>
 
@@ -129,7 +127,6 @@
 					android:layout_height="match_parent"
 					android:layout_below="@id/txt_solution"
 					android:layout_marginLeft="@dimen/dp4"
-					android:text="(X + 5)2"
 					android:textColor="@color/bg_app_dark"
 					android:textSize="@dimen/sp14"/>
 			</RelativeLayout>
@@ -158,7 +155,7 @@
 				android:layout_gravity="center"
 				android:src="@drawable/img_default_dp"
 				app:civ_border_width="@dimen/dp3"
-				app:civ_border_color="@color/color_white"/>
+				app:civ_border_color="@color/white"/>
 
 			<TextView
 				android:id="@+id/txt_tutorialmate_name1"
@@ -166,7 +163,6 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="@dimen/dp4"
 				android:textSize="@dimen/sp15"
-				android:text="Adam Ross"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 
@@ -176,7 +172,6 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="@dimen/dp4"
 				android:textSize="@dimen/sp14"
-				android:text="Answer : A"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 		</LinearLayout>
@@ -201,7 +196,7 @@
 				android:layout_gravity="center"
 				android:src="@drawable/img_default_dp"
 				app:civ_border_width="@dimen/dp3"
-				app:civ_border_color="@color/color_white"/>
+				app:civ_border_color="@color/white"/>
 
 			<TextView
 				android:id="@+id/txt_tutorialmate_name2"
@@ -209,7 +204,6 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="@dimen/dp4"
 				android:textSize="@dimen/sp15"
-				android:text="Adam Ross"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 
@@ -219,7 +213,6 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="@dimen/dp4"
 				android:textSize="@dimen/sp14"
-				android:text="Answer : A"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 		</LinearLayout>
@@ -244,7 +237,7 @@
 				android:layout_gravity="center"
 				android:src="@drawable/img_default_dp"
 				app:civ_border_width="@dimen/dp3"
-				app:civ_border_color="@color/color_white"/>
+				app:civ_border_color="@color/white"/>
 
 			<TextView
 				android:id="@+id/txt_tutorialmate_name3"
@@ -252,7 +245,6 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="@dimen/dp4"
 				android:textSize="@dimen/sp15"
-				android:text="Adam Ross"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 
@@ -262,7 +254,6 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="@dimen/dp4"
 				android:textSize="@dimen/sp14"
-				android:text="Answer : A"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 		</LinearLayout>
@@ -287,7 +278,7 @@
 				android:layout_gravity="center"
 				android:src="@drawable/img_default_dp"
 				app:civ_border_width="@dimen/dp3"
-				app:civ_border_color="@color/color_white"/>
+				app:civ_border_color="@color/white"/>
 
 			<TextView
 				android:id="@+id/txt_tutorialmate_name4"
@@ -295,7 +286,6 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="@dimen/dp4"
 				android:textSize="@dimen/sp15"
-				android:text="Adam Ross"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 
@@ -305,7 +295,6 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="@dimen/dp4"
 				android:textSize="@dimen/sp14"
-				android:text="Answer : A"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 		</LinearLayout>
@@ -330,7 +319,7 @@
 				android:layout_gravity="center"
 				android:src="@drawable/img_default_dp"
 				app:civ_border_width="@dimen/dp3"
-				app:civ_border_color="@color/color_white"/>
+				app:civ_border_color="@color/white"/>
 
 			<TextView
 				android:id="@+id/txt_tutorialmate_name5"
@@ -338,7 +327,6 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="@dimen/dp4"
 				android:textSize="@dimen/sp15"
-				android:text="Adam Ross"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 
@@ -348,7 +336,6 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="@dimen/dp4"
 				android:textSize="@dimen/sp14"
-				android:text="Answer : A"
 				android:gravity="center"
 				android:textColor="@color/bg_app_dark"/>
 		</LinearLayout>

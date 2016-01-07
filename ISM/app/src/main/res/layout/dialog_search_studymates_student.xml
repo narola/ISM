@@ -62,7 +62,7 @@
 			android:paddingTop="@dimen/dp8"
 			android:text="TAG"
 			android:textAllCaps="true"
-			android:textColor="@color/color_white"
+			android:textColor="@color/white"
 			android:textSize="@dimen/dp30"
 			android:textStyle="bold"/>
 
@@ -78,7 +78,7 @@
 			android:paddingTop="@dimen/dp8"
 			android:text="@string/strclose"
 			android:textAllCaps="true"
-			android:textColor="@color/color_white"
+			android:textColor="@color/white"
 			android:textSize="@dimen/dp30"
 			android:textStyle="bold"/>
 	</LinearLayout>

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_white"
+    android:background="@color/white"
     android:orientation="vertical"
     android:id="@+id/scrollView"
     tools:mContext="com.ism.fragment.desk.FavoriteFragment">
@@ -33,7 +33,7 @@
             android:id="@+id/ll_exam"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_white"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <!--<RelativeLayout-->
@@ -52,7 +52,7 @@
                 android:background="@color/color_pink_dark"
                 android:padding="@dimen/dp8"
                 android:text="Exams"
-                android:textColor="@color/color_white"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sp15" />
 
             <!--<TextView-->
@@ -73,7 +73,7 @@
                 android:layout_marginLeft="@dimen/dp4"
                 android:layout_marginRight="@dimen/dp4"
                 android:layout_weight="8"
-                android:background="@color/color_white" />
+                android:background="@color/white" />
 
             <TextView
                 android:id="@+id/txt_view_all_exam"

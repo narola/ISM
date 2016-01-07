@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_white"
+    android:background="@color/white"
     tools:mContext="com.ism.fragment.userProfile.BlockUserFragment">
 
     <TextView
@@ -142,7 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/listview"
         android:layout_marginLeft="@dimen/dp8"
-        android:background="@color/color_white"
+        android:background="@color/white"
         android:gravity="left"
         android:padding="@dimen/dp8"
         android:text="@string/no_blocked_users_available"

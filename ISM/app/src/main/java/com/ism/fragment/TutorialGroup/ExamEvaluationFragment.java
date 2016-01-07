@@ -11,6 +11,9 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.object.Global;
 import com.ism.views.CircleImageView;
+import com.ism.ws.model.FridayExamQuestion;
+
+import java.util.ArrayList;
 
 /**
  * Created by c161 on 21/12/15.
@@ -26,8 +29,13 @@ public class ExamEvaluationFragment extends Fragment {
 	private CircleImageView imgTutorialmateDp1, imgTutorialmateDp2, imgTutorialmateDp3, imgTutorialmateDp4, imgTutorialmateDp5;
 	private ImageView imgPrevious, imgNext;
 
-	public static ExamEvaluationFragment newInstance() {
+	private ArrayList<FridayExamQuestion> arrListQuestions;
+
+	private int currentQuestion = 0;
+
+	public static ExamEvaluationFragment newInstance(ArrayList<FridayExamQuestion> questions) {
 		ExamEvaluationFragment fragment = new ExamEvaluationFragment();
+		fragment.setQuestion(questions);
 		return fragment;
 	}
 
@@ -84,6 +92,91 @@ public class ExamEvaluationFragment extends Fragment {
 		txtTutorialmateName5.setTypeface(Global.myTypeFace.getRalewayRegular());
 		txtAnsweredOption5.setTypeface(Global.myTypeFace.getRalewayRegular());
 
+		Global.imageLoader.displayImage(Global.strProfilePic, imgTutorialmateDp1);
+		txtTutorialmateName1.setText(Global.strFullName);
+
+		showQuestion(currentQuestion);
+		imgPrevious.setVisibility(View.INVISIBLE);
+
+		final int lastQuestionPosition = arrListQuestions.size() - 1;
+		imgPrevious.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showQuestion(--currentQuestion);
+				if (currentQuestion == lastQuestionPosition - 1) {
+					imgNext.setVisibility(View.VISIBLE);
+				}
+				if (currentQuestion == 0) {
+					imgPrevious.setVisibility(View.INVISIBLE);
+				}
+			}
+		});
+
+		imgNext.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showQuestion(++currentQuestion);
+				if (currentQuestion == lastQuestionPosition) {
+					imgNext.setVisibility(View.INVISIBLE);
+				}
+				if (currentQuestion == 1) {
+					imgPrevious.setVisibility(View.VISIBLE);
+				}
+			}
+		});
+
+	}
+
+	private void showQuestion(int questionPosition) {
+
+		txtHeaderQuestion.setText(getString(R.string.question) + (questionPosition + 1));
+		txtQuestion.setText(arrListQuestions.get(questionPosition).getQuestionText());
+
+		String choiceText = "";
+		for (int i = 0; i < arrListQuestions.get(questionPosition).getFridayExamAnswers().size(); i++) {
+			if (arrListQuestions.get(questionPosition).getFridayExamAnswers().get(i).isSelected()) {
+				txtYourAnswer.setText(getString(R.string.your_answer) + " " + arrListQuestions.get(questionPosition).getFridayExamAnswers().get(i).getChoiceText());
+				switch (i) {
+					case 0:
+						choiceText = "A";
+						break;
+					case 1:
+						choiceText = "B";
+						break;
+					case 2:
+						choiceText = "C";
+						break;
+					case 3:
+						choiceText = "D";
+						break;
+				}
+			}
+			if (arrListQuestions.get(questionPosition).getFridayExamAnswers().get(i).isAnswer()) {
+				txtCorrectAnswer.setText(getString(R.string.correct_answer) + " " + arrListQuestions.get(questionPosition).getFridayExamAnswers().get(i).getChoiceText());
+			}
+		}
+
+//		txtSolutionContent;
+		txtAnsweredOption1.setText(choiceText);
+//		txtTutorialmateName2;
+//		txtAnsweredOption2;
+//		txtTutorialmateName3;
+//		txtAnsweredOption3;
+//		txtTutorialmateName4;
+//		txtAnsweredOption4;
+//		txtTutorialmateName5;
+//		txtAnsweredOption5;
+//		imgTutorialmateDp1;
+//		imgTutorialmateDp2;
+//		imgTutorialmateDp3;
+//		imgTutorialmateDp4;
+//		imgTutorialmateDp5;
+//		imgPrevious;
+//		imgNext;
+	}
+
+	public void setQuestion(ArrayList<FridayExamQuestion> questions) {
+		arrListQuestions = questions;
 	}
 
 }

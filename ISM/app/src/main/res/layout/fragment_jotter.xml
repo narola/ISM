@@ -19,7 +19,7 @@
             android:id="@+id/recyclerview_notes"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_white"
+            android:background="@color/white"
             android:layout_height="wrap_content" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:text="Add"
             android:layout_gravity="center"
             android:textAllCaps="true"
-            android:textColor="@color/color_white"
+            android:textColor="@color/white"
             android:textSize="@dimen/dp15" />
 
     </LinearLayout>
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_weight="1"
-            android:background="@color/color_white"
+            android:background="@color/white"
             android:gravity="center"
             android:orientation="horizontal">
 
