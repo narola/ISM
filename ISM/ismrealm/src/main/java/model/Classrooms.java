@@ -13,8 +13,9 @@ import io.realm.annotations.PrimaryKey;
 public class Classrooms extends RealmObject {
 
     @PrimaryKey
-    private  int localClassRoomId;
-    private  int serverClassRoomId;
+    private int localClassRoomId;
+    private int serverClassRoomId;
+    private int classRoomId;
     private String className;
     private String nickName;
     private boolean isCompleted;
@@ -94,5 +95,13 @@ public class Classrooms extends RealmObject {
 
     public void setCourse(Courses course) {
         this.course = course;
+    }
+
+    public int getClassRoomId() {
+        return classRoomId;
+    }
+
+    public void setClassRoomId(int classRoomId) {
+        this.classRoomId = classRoomId;
     }
 }
