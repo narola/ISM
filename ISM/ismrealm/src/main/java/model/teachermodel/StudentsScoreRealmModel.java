@@ -2,12 +2,16 @@ package model.teachermodel;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by c75 on 08/01/16.
  */
-public class StudentsScoreRealmModel extends RealmObject{
 
+public class StudentsScoreRealmModel extends RealmObject {
+
+    @PrimaryKey
+    private String studentId;
     private String headMistressComment;
     private String classMistressComment;
     private String studentPic;
@@ -15,9 +19,8 @@ public class StudentsScoreRealmModel extends RealmObject{
     private String rank;
     private String studentScore;
     private String studentName;
-    private String studentId;
     private String percentage;
-    private RealmList<SubjectWiseScoreRealmModel> subjectWiseScore;
+    private RealmList<SubjectWiseScoreRealmModel> subjectWiseScore = new RealmList<>();
 
     public String getHeadMistressComment() {
         return headMistressComment;
@@ -107,7 +110,6 @@ public class StudentsScoreRealmModel extends RealmObject{
     public void setSubjectWiseScore(RealmList<SubjectWiseScoreRealmModel> subjectWiseScore) {
         this.subjectWiseScore = subjectWiseScore;
     }
-
 
 
 }

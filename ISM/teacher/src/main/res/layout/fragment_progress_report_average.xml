@@ -149,7 +149,7 @@
             android:orientation="horizontal">
 
             <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/bar_chart_score_vs_student"
+                android:id="@+id/chart_avgscore_vs_student"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
@@ -162,7 +162,7 @@
                 android:background="@color/color_shade_news_feed" />
 
             <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/bar_chart_score_vs_subject"
+                android:id="@+id/chart_avgscore_vs_subject"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">

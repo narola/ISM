@@ -2,6 +2,7 @@ package model.teachermodel;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by c75 on 08/01/16.
@@ -9,6 +10,7 @@ import io.realm.RealmObject;
 public class ClassPerformanceRealmModel extends RealmObject {
 
     private String examScore;
+    @PrimaryKey
     private String examName;
     private String internalMarks;
 
