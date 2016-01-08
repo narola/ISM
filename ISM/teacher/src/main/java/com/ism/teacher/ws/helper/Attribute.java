@@ -42,7 +42,7 @@ public class Attribute {
     private String gender;
     private String deviceType;
     private String roleId;
-    private String feedId;
+    private int feedId;
     private String commentBy;
     private String comment;
     private String assignmentText;
@@ -209,12 +209,12 @@ public class Attribute {
         this.favResourceId = favResourceId;
     }
 
-    public String getFeedId() {
+    public int getFeedId() {
         return this.feedId;
     }
 
     @JsonProperty("feed_id")
-    public void setFeedId(String feedId) {
+    public void setFeedId(int feedId) {
         this.feedId = feedId;
     }
 

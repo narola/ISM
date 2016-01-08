@@ -58,6 +58,8 @@ public class Utility {
     public static final SimpleDateFormat DATE_FORMAT_DDMMMYY = new SimpleDateFormat("dd MMM yy", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_MMMDDYY_HHMMA = new SimpleDateFormat("MMM dd, yy  HH : mm aa", Locale.getDefault()); // Nov 25, 2015  7:10pm
     public static final SimpleDateFormat DATE_FORMAT_MMMDDYYYY = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+    public static final SimpleDateFormat DATE_FORMAT_REALM = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.getDefault());//   Mon Dec 21 14:21:27 EST 2015
+
 
     private static StringBuilder mFormatBuilder = new StringBuilder();
     private static Formatter mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
@@ -424,6 +426,21 @@ public class Utility {
 
     }
 
+
+    public static String getDateFromRealm(String dateText) {
+        String newDate = "";
+        try {
+            Date date = DATE_FORMAT_REALM.parse(dateText);
+            newDate = DATE_FORMAT_API.format(date);
+
+        } catch (Exception e) {
+            Log.e("Exception", "Date exception");
+        }
+        return newDate;
+
+    }
+
+
     private static DatePickerDialog datePickerDob;
     private static Calendar calDob;
     private static String strDob;
@@ -468,15 +485,20 @@ public class Utility {
 
     public static Date getRealmDateFormat(String date) {
 
-        Date realmDateFormat = null;
-        try {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-            realmDateFormat = format.parse(date);
-        } catch (Exception e) {
-            Log.e("Realm", "Date exception");
+        if (date != null && !date.equals("")) {
+
+            Date realmDateFormat = null;
+            try {
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                realmDateFormat = format.parse(date);
+            } catch (Exception e) {
+                Log.e("Realm", "Date exception");
+            }
+            Log.e(TAG, "The realmDate format is::" + realmDateFormat);
+            return realmDateFormat;
+        } else {
+            return null;
         }
-        Log.e(TAG, "The realmDate format is::" + realmDateFormat);
-        return realmDateFormat;
     }
 
 

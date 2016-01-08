@@ -37,7 +37,7 @@ public class Whiteboard extends LinearLayout {
     private int mPenThickness = 5;
     private int mEraserThickness = mPenThickness * 2;
     private String[] mPointerSizeList;
-	private int mPenColor = Color.BLACK;
+    private int mPenColor = Color.BLACK;
 
     public interface WhiteboardListener {
         public void onSendImageClick(Bitmap bitmap);
@@ -102,14 +102,14 @@ public class Whiteboard extends LinearLayout {
                 new AmbilWarnaDialog(mContext, mPenColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
                     @Override
                     public void onCancel(AmbilWarnaDialog ambilWarnaDialog) {
-	                    mImageColorPicker.setImageResource(R.drawable.ic_color_picker);
+                        mImageColorPicker.setImageResource(R.drawable.ic_color_picker);
                     }
 
                     @Override
                     public void onOk(AmbilWarnaDialog ambilWarnaDialog, int color) {
                         mPenColor = color;
-	                    mWhiteboardView.setPaintColor(color);
-	                    mImageColorPicker.setImageResource(R.drawable.ic_color_picker);
+                        mWhiteboardView.setPaintColor(color);
+                        mImageColorPicker.setImageResource(R.drawable.ic_color_picker);
                     }
                 }).show();
             }

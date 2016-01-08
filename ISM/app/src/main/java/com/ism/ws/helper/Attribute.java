@@ -17,6 +17,7 @@ import java.util.List;
  */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Attribute {
 
@@ -97,8 +98,8 @@ public class Attribute {
     private ArrayList<String> favResourceId;
     private ArrayList<String> removeBookId;
     private ArrayList<String> addBookId;
-    private ArrayList<String> likedId=new ArrayList<>();
-	private ArrayList<String> unlikedId=new ArrayList<>();
+    private ArrayList<String> likedId;//=new ArrayList<>();
+	private ArrayList<String> unlikedId;//=new ArrayList<>();
 	private ArrayList<AnswerChoice> answerChoices;
 
     private String studymateId;
@@ -115,6 +116,10 @@ public class Attribute {
 	private ArrayList<Question> question;
 	private String followerId;
 	private String followTo;
+
+	/* these are the upload media params */
+	private ArrayList<MediaUploadAttribute> arrListFile ;//= new ArrayList<MediaUploadAttribute>();
+	private ArrayList<MediaUploadAttribute> arrListParam ;//= new ArrayList<MediaUploadAttribute>();
 
 	public Attribute() {
 		setAccessKey(WebConstants.ACCESS_KEY);
@@ -699,11 +704,6 @@ public class Attribute {
         this.videoThumbnail = videoThumbnail;
     }
 
-    /* these are the upload media params */
-    private ArrayList<MediaUploadAttribute> arrListFile = new ArrayList<MediaUploadAttribute>();
-    private ArrayList<MediaUploadAttribute> arrListParam = new ArrayList<MediaUploadAttribute>();
-    private String mediaType;
-
     public ArrayList<MediaUploadAttribute> getArrListFile() {
         return arrListFile;
     }
@@ -713,21 +713,12 @@ public class Attribute {
         return this;
     }
 
-    public ArrayList<MediaUploadAttribute> getArrListParam() {
-        return arrListParam;
-    }
+	public ArrayList<MediaUploadAttribute> getArrListParam() {
+		return arrListParam;
+	}
 
     public Attribute setArrListParam(ArrayList<MediaUploadAttribute> arrListParam) {
         this.arrListParam = arrListParam;
-        return this;
-    }
-
-    public String getMediaType() {
-        return mediaType;
-    }
-
-    public Attribute setMediaType(String mediaType) {
-        this.mediaType = mediaType;
         return this;
     }
 

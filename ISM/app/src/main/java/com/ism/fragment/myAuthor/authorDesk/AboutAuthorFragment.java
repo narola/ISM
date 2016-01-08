@@ -140,11 +140,11 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
         txtQuestionAnswered.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtTotalFavQuestions.setTypeface(Global.myTypeFace.getRalewayBold());
 
-        AuthorProfile authorProfile=getAuthorDetails();
-        if(authorProfile!=null){
+        AuthorProfile authorProfile = getAuthorDetails();
+        if (authorProfile != null) {
             setUpDBData(authorProfile);
             callApiGetAboutMe();
-        }else{
+        } else {
             callApiGetAboutMe();
         }
 
@@ -191,42 +191,72 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
         }
     }
 
-    private void saveAuthorProfile(User user) {
+    private void saveAuthorProfile(final User user) {
         try {
-            AuthorProfile authorProfile = new AuthorProfile();
-            model.User userData = studentHelper.getUser(Integer.parseInt(user.getUserId()));
-            if (userData != null) {
-                authorProfile.setUser(userData);
-            } else {
-                userData = new model.User();
-                userData.setUserId(Integer.parseInt(user.getUserId()));
-//                newuser.setUsername(user.getUsername());
-                userData.setFullName(user.getUsername());
-                userData.setProfilePicture(user.getProfilePic());
-                studentHelper.saveUser(userData);
-                authorProfile.setUser(userData);
-            }
-            authorProfile.setServerAuthorId(Integer.parseInt(user.getUserId()));
-            authorProfile.setAboutAuthor(user.getAboutAuthor());
-            //authorProfile.setContactNumber(user.getContactNumber()); // this field is never used in author module
-            authorProfile.setBirthDate(getDateFormate(user.getBirthdate()));
-            authorProfile.setEducation(user.getEducation());
-            authorProfile.setTotalAssignment(Integer.parseInt(user.getTotalAssignment() == null ? "0" : user.getTotalAssignment()));
-            authorProfile.setTotalBadges(Integer.parseInt(user.getTotalBadgesEarned() == null ? "0" : user.getTotalBadgesEarned()));
-            authorProfile.setTotalPost(Integer.parseInt(user.getTotalPost() == null ? "0" : user.getTotalPost()));
-            authorProfile.setTotalQuestionAnswered(Integer.parseInt(user.getTotalQuestionsAnswered() == null ? "0" : user.getTotalQuestionsAnswered()));
-            authorProfile.setTotalFavouritesQuestions(Integer.parseInt(user.getTotalFavoriteQuestions() == null ? "0" : user.getTotalFavoriteQuestions()));
-            authorProfile.setTotalFollowers(Integer.parseInt(user.getTotalFollowers() == null ? "0" : user.getTotalFollowers()));
-            authorProfile.setTotalFollpwing(Integer.parseInt(user.getTotalFollowing() == null ? "0" : user.getTotalFollowing()));
-            authorProfile.setTotalExamCreated(Integer.parseInt(user.getTotalExams() == null ? "0" : user.getTotalExams()));
-            authorProfile.setTotalBooks(Integer.parseInt(user.getTotalBooks() == null ? "0" : user.getTotalBooks()));
-            studentHelper.saveAuthorProfile(authorProfile);
-            setUpDBData(getAuthorDetails());
 
-        } catch (Exception e) {
-            Log.e(TAG, "saveAuthorProfile Exceptions: " + e.getLocalizedMessage());
+                AuthorProfile authorProfileData = new AuthorProfile();
+                model.User userData = studentHelper.getUser(Integer.parseInt(user.getUserId()));
+                if (userData != null) {
+                    authorProfileData.setUser(userData);
+                } else {
+                    userData = new model.User();
+                    userData.setUserId(Integer.parseInt(user.getUserId()));
+//                newuser.setUsername(user.getUsername());
+                    userData.setFullName(user.getUsername());
+                    userData.setProfilePicture(user.getProfilePic());
+                    studentHelper.saveUser(userData);
+                    authorProfileData.setUser(userData);
+                }
+                authorProfileData.setServerAuthorId(Integer.parseInt(user.getUserId()));
+                authorProfileData.setAboutAuthor(user.getAboutAuthor());
+                //authorProfileData.setContactNumber(user.getContactNumber()); // this field is never used in author module
+                authorProfileData.setBirthDate(getDateFormate(user.getBirthdate()));
+                authorProfileData.setEducation(user.getEducation());
+                authorProfileData.setTotalAssignment(Integer.parseInt(user.getTotalAssignment() == null ? "0" : user.getTotalAssignment()));
+                authorProfileData.setTotalBadges(Integer.parseInt(user.getTotalBadgesEarned() == null ? "0" : user.getTotalBadgesEarned()));
+                authorProfileData.setTotalPost(Integer.parseInt(user.getTotalPost() == null ? "0" : user.getTotalPost()));
+                authorProfileData.setTotalQuestionAnswered(Integer.parseInt(user.getTotalQuestionsAnswered() == null ? "0" : user.getTotalQuestionsAnswered()));
+                authorProfileData.setTotalFavouritesQuestions(Integer.parseInt(user.getTotalFavoriteQuestions() == null ? "0" : user.getTotalFavoriteQuestions()));
+                authorProfileData.setTotalFollowers(Integer.parseInt(user.getTotalFollowers() == null ? "0" : user.getTotalFollowers()));
+                authorProfileData.setTotalFollpwing(Integer.parseInt(user.getTotalFollowing() == null ? "0" : user.getTotalFollowing()));
+                authorProfileData.setTotalExamCreated(Integer.parseInt(user.getTotalExams() == null ? "0" : user.getTotalExams()));
+                authorProfileData.setTotalBooks(Integer.parseInt(user.getTotalBooks() == null ? "0" : user.getTotalBooks()));
+                studentHelper.saveAuthorProfile(authorProfileData);
+                setUpDBData(getAuthorDetails());
+
+                //studentHelper.realm.beginTransaction();
+//                model.User userData = studentHelper.getUser(Integer.parseInt(user.getUserId()));
+//                if (userData != null) {
+//                    authorProfile.setUser(userData);
+//                } else {
+//                    userData = new model.User();
+//                    userData.setUserId(Integer.parseInt(user.getUserId()));
+////                newuser.setUsername(user.getUsername());
+//                    userData.setFullName(user.getUsername());
+//                    userData.setProfilePicture(user.getProfilePic());
+//                    studentHelper.saveUser(userData);
+//                    authorProfile.setUser(userData);
+//                }
+//                authorProfile.setServerAuthorId(Integer.parseInt(user.getUserId()));
+//                authorProfile.setAboutAuthor(user.getAboutAuthor());
+//                //authorProfile.setContactNumber(user.getContactNumber()); // this field is never used in author module
+//                authorProfile.setBirthDate(getDateFormate(user.getBirthdate()));
+//                authorProfile.setEducation(user.getEducation());
+//                authorProfile.setTotalAssignment(Integer.parseInt(user.getTotalAssignment() == null ? "0" : user.getTotalAssignment()));
+//                authorProfile.setTotalBadges(Integer.parseInt(user.getTotalBadgesEarned() == null ? "0" : user.getTotalBadgesEarned()));
+//                authorProfile.setTotalPost(Integer.parseInt(user.getTotalPost() == null ? "0" : user.getTotalPost()));
+//                authorProfile.setTotalQuestionAnswered(Integer.parseInt(user.getTotalQuestionsAnswered() == null ? "0" : user.getTotalQuestionsAnswered()));
+//                authorProfile.setTotalFavouritesQuestions(Integer.parseInt(user.getTotalFavoriteQuestions() == null ? "0" : user.getTotalFavoriteQuestions()));
+//                authorProfile.setTotalFollowers(Integer.parseInt(user.getTotalFollowers() == null ? "0" : user.getTotalFollowers()));
+//                authorProfile.setTotalFollpwing(Integer.parseInt(user.getTotalFollowing() == null ? "0" : user.getTotalFollowing()));
+//                authorProfile.setTotalExamCreated(Integer.parseInt(user.getTotalExams() == null ? "0" : user.getTotalExams()));
+//                authorProfile.setTotalBooks(Integer.parseInt(user.getTotalBooks() == null ? "0" : user.getTotalBooks()));
+                //studentHelper.saveAuthorProfile(authorProfile);
+             //   studentHelper.realm.commitTransaction();
+            }catch(Exception e){
+                Log.e(TAG, "saveAuthorProfile Exceptions: " + e.getLocalizedMessage());
+            }
         }
-    }
 
     private AuthorProfile getAuthorDetails() {
         return studentHelper.getAuthorprofile(Integer.parseInt(activityHost.getBundle().getString(AppConstant.AUTHOR_ID)));
@@ -319,7 +349,7 @@ public class AboutAuthorFragment extends Fragment implements WebserviceWrapper.W
 
             txtAboutAuhtor.setText("ABOUT " + data.getUser().getFullName().toUpperCase());
 //            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + data.getProfilePic(), imgProfilePic, ISMAuthor.options);
-            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER+data.getUser().getProfilePicture(), imgProfilePic, ISMStudent.options);
+            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + data.getUser().getProfilePicture(), imgProfilePic, ISMStudent.options);
         } catch (Exception e) {
             Log.e(TAG, "SetupData :" + e.getLocalizedMessage());
         }

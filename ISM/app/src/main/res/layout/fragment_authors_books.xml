@@ -80,6 +80,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp225"
+        android:layout_marginTop="@dimen/dp10"
         android:background="@color/white"
         android:orientation="horizontal">
 

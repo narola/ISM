@@ -200,7 +200,6 @@ public class GetRealmDataModel {
         exam.setTotalAssessed(exams.getTotalAssessed());
         exam.setTotalUnassessed(exams.getTotalUnAssessed());
 
-
         return exam;
     }
 

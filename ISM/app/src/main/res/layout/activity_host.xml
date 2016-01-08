@@ -250,7 +250,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_controller_left_button_report_card"
             android:scaleType="centerInside"
-            android:src="@drawable/img_report_card" />
+            android:src="@drawable/img_my_author" />
 
         <ImageView
             android:id="@+id/img_logout"

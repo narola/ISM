@@ -101,27 +101,6 @@ public class MyAuthorsFragment extends Fragment{
         }
     }
 
-//    public void loadFragment(int fragment) {
-//        try {
-//            switch (fragment) {
-//                case MyAuthorFragment.FRAGMENT_AUTHOR_OFFICE:
-//                    currentFragment = fragment;
-//                    AuthorOfficeFragment authorOfficeFragment = AuthorOfficeFragment.newInstance();
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorOfficeFragment).commit();
-//                    break;
-//                case MyAuthorFragment.FRAGMENT_FIND_MORE_AUTHORS:
-//                    currentFragment = fragment;
-//                    FindMoreAuthorsFragment findMoreAuthorsFragment = FindMoreAuthorsFragment.newInstance();
-//                    Log.e(TAG,"getFragmentmanager " +getFragmentManager());
-//                    Log.e(TAG,"R.id.fl_my_authors " +R.id.fl_my_authors);
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, findMoreAuthorsFragment).commit();
-//                    break;
-//            }
-//        } catch (Exception e) {
-//            Log.e(TAG, "loadFragment Exceptions : " + e.getLocalizedMessage());
-//        }
-//    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

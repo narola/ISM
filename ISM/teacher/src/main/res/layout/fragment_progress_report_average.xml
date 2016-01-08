@@ -1,339 +1,361 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/ll_date_range"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/d70dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <!-- Containerof right side controls of date range-->
         <LinearLayout
+            android:id="@+id/ll_date_range"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/d15dp"
-            android:layout_marginTop="@dimen/d5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_date_range"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="@string/str_date_range"
-                android:textSize="@dimen/d16sp" />
-            <!-- Ll report from-->
-            <LinearLayout
-                android:id="@+id/ll_report_from"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/d45dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/et_startdate"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector"
-                    android:editable="false"
-                    android:gravity="center_vertical"
-                    android:hint="@string/str_from"
-                    android:textColor="@color/color_black"
-                    android:textColorHint="@color/color_text_hint"
-                    android:textSize="@dimen/d20sp" />
-
-                <ImageView
-                    android:layout_width="@dimen/d40dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/dminus8dp"
-                    android:background="@drawable/btn_calendar" />
-            </LinearLayout>
-
-            <!-- Ll report two-->
-            <LinearLayout
-                android:id="@+id/ll_report_to"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/d45dp"
-                android:layout_marginStart="@dimen/d10dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/et_enddate"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector"
-                    android:editable="false"
-                    android:gravity="center_vertical"
-                    android:hint="@string/str_to"
-                    android:textColor="@color/color_black"
-                    android:textColorHint="@color/color_text_hint"
-                    android:textSize="@dimen/d20sp" />
-
-                <ImageView
-                    android:layout_width="@dimen/d40dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/dminus8dp"
-                    android:background="@drawable/btn_calendar" />
-            </LinearLayout>
-
-            <!-- Spinner exam type-->
-            <LinearLayout
-                android:id="@+id/ll_spinner"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/d45dp"
-                android:layout_marginStart="@dimen/d10dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/sp_exam_type"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/spinner_selector"
-                    android:entries="@array/list"
-                    android:padding="@dimen/d10dp"
-                    android:spinnerMode="dropdown" />
-
-            </LinearLayout>
-
-            <!-- Ll  toggle report view-->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.75"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/img_graph_report"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_graph_enabled" />
-
-                <ImageView
-                    android:id="@+id/img_list_report"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_detail_enabled" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/d2dp"
-            android:layout_marginTop="@dimen/d5dp"
-            android:background="#DADADA" />
-    </LinearLayout>
-
-    <!-- bar chart area-->
-
-    <LinearLayout
-        android:id="@+id/ll_graph_area"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@+id/ll_date_range"
-        android:orientation="horizontal">
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/bar_chart_score_vs_student"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-        </com.github.mikephil.charting.charts.BarChart>
-
-        <View
-            android:layout_width="@dimen/d1dp"
-            android:layout_height="match_parent"
-            android:background="@color/color_shade_news_feed" />
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/bar_chart_score_vs_subject"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-        </com.github.mikephil.charting.charts.BarChart>
-    </LinearLayout>
-
-    <View
-        android:id="@+id/view_separator"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/d1dp"
-        android:layout_below="@+id/ll_graph_area"
-        android:background="#DADADA" />
-
-
-    <!-- linear layout for bottom area-->
-    <LinearLayout
-        android:id="@+id/rl_average_calculation_area"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/view_separator"
-        android:orientation="horizontal">
-
-        <!-- main average calc ll-->
-        <LinearLayout
-            android:id="@+id/ll_average_calculation"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="@dimen/d70dp"
             android:orientation="vertical">
 
+            <!-- Container of right side controls of date range-->
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_marginTop="@dimen/d5dp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_class_average_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/d5dp"
-                    android:text="@string/str_class_average"
-                    android:textColor="@color/color_grades_text"
-                    android:textSize="@dimen/d20sp" />
+                    android:id="@+id/tv_date_range"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/str_date_range"
+                    android:textSize="@dimen/d16sp" />
+                <!-- Ll report from-->
+                <LinearLayout
+                    android:id="@+id/ll_report_from"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/d45dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_class_average"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/d5dp"
-                    android:text="@string/strtest"
-                    android:textColor="@color/color_grades_text"
-                    android:textSize="@dimen/d20sp" />
+                    <EditText
+                        android:id="@+id/et_startdate"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector"
+                        android:editable="false"
+                        android:gravity="center_vertical"
+                        android:hint="@string/str_from"
+                        android:textColor="@color/color_black"
+                        android:textColorHint="@color/color_text_hint"
+                        android:textSize="@dimen/d20sp" />
+
+                    <ImageView
+                        android:id="@+id/img_calendar_from"
+                        android:layout_width="@dimen/d40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dminus8dp"
+                        android:background="@drawable/btn_calendar" />
+                </LinearLayout>
+
+                <!-- Ll report two-->
+                <LinearLayout
+                    android:id="@+id/ll_report_to"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/d45dp"
+                    android:layout_marginStart="@dimen/d10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_enddate"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector"
+                        android:editable="false"
+                        android:gravity="center_vertical"
+                        android:hint="@string/str_to"
+                        android:textColor="@color/color_black"
+                        android:textColorHint="@color/color_text_hint"
+                        android:textSize="@dimen/d20sp" />
+
+                    <ImageView
+                        android:id="@+id/img_calendar_to"
+                        android:layout_width="@dimen/d40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dminus8dp"
+                        android:background="@drawable/btn_calendar" />
+                </LinearLayout>
+
+                <!-- Spinner exam type-->
+                <LinearLayout
+                    android:id="@+id/ll_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/d45dp"
+                    android:layout_marginStart="@dimen/d10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/sp_exam_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/spinner_selector"
+                        android:entries="@array/list"
+                        android:spinnerMode="dropdown" />
+
+                </LinearLayout>
+
+                <!-- Ll  toggle report view-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/img_graph_report"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_graph_enabled" />
+
+                    <ImageView
+                        android:id="@+id/img_list_report"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_detail_enabled" />
+                </LinearLayout>
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/d1dp"
-                android:layout_marginBottom="@dimen/d10dp"
-                android:layout_marginTop="@dimen/d10dp"
+                android:layout_height="@dimen/d2dp"
+                android:layout_marginTop="@dimen/d5dp"
+                android:background="#DADADA" />
+        </LinearLayout>
+
+        <!-- bar chart area-->
+
+        <LinearLayout
+            android:id="@+id/ll_graph_area"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@+id/ll_date_range"
+            android:orientation="horizontal">
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/chart_avgscore_vs_student"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </com.github.mikephil.charting.charts.BarChart>
+
+            <View
+                android:layout_width="@dimen/d1dp"
+                android:layout_height="match_parent"
                 android:background="@color/color_shade_news_feed" />
 
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/chart_avgscore_vs_subject"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </com.github.mikephil.charting.charts.BarChart>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_separator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d1dp"
+            android:layout_below="@+id/ll_graph_area"
+            android:background="#DADADA" />
+
+
+        <!-- linear layout for bottom area-->
+        <LinearLayout
+            android:id="@+id/ll_average_calculation_area"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/view_separator"
+            android:orientation="horizontal">
+
+            <!-- main average calc ll-->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:id="@+id/ll_average_calculation"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/d10dp">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/ll_class_average"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_class_average_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
                         android:padding="@dimen/d5dp"
-                        android:text="65%"
+                        android:text="@string/str_class_average"
                         android:textColor="@color/color_grades_text"
-                        android:textSize="@dimen/d20sp" />
+                        android:textSize="@dimen/d22sp" />
 
                     <TextView
+                        android:id="@+id/tv_class_average"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
                         android:padding="@dimen/d5dp"
-                        android:text="@string/str_prev_average"
-                        android:textColor="@color/color_grades_text"
+                        android:text="@string/strtest"
+                        android:textColor="@color/color_text_average_red"
                         android:textSize="@dimen/d20sp" />
 
                 </LinearLayout>
 
                 <View
-                    android:layout_width="@dimen/d1dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/d1dp"
+                    android:layout_marginBottom="@dimen/d10dp"
+                    android:layout_marginTop="@dimen/d10dp"
                     android:background="@color/color_shade_news_feed" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/ll_percent_change"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/d5dp"
-                        android:text="5%"
-                        android:textColor="@color/color_grades_text"
-                        android:textSize="@dimen/d20sp" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/tv_prev_percent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/d5dp"
+                            android:text="test%"
+                            android:textColor="@color/color_blue"
+                            android:textSize="@dimen/d20sp" />
+
+                        <TextView
+                            android:id="@+id/tv_prev_percent_label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/d5dp"
+                            android:text="@string/str_prev_average"
+                            android:textColor="@color/color_grades_text"
+                            android:textSize="@dimen/d20sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="@dimen/d1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/color_shade_news_feed" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/d5dp"
-                        android:text="@string/str_with_prev_average"
-                        android:textColor="@color/color_grades_text"
-                        android:textSize="@dimen/d20sp" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_percent_change"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/d5dp"
+                            android:text="test%"
+                            android:textColor="@color/color_green_report"
+                            android:textSize="@dimen/d20sp" />
+
+                        <TextView
+                            android:id="@+id/tv_with_prev_percent_label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/d5dp"
+                            android:text="@string/str_with_prev_average"
+                            android:textColor="@color/color_grades_text"
+                            android:textSize="@dimen/d20sp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
+
             </LinearLayout>
 
+            <View
+                android:layout_width="@dimen/d1dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/d10dp"
+                android:layout_marginRight="@dimen/d10dp"
+                android:background="@color/color_shade_news_feed" />
+
+            <LinearLayout
+                android:id="@+id/ll_legend"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/shape_square_attention"
+                    android:drawablePadding="@dimen/d10dp"
+                    android:padding="@dimen/d5dp"
+                    android:text="@string/str_need_attention"
+                    android:textSize="@dimen/d20sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/shape_square_good"
+                    android:drawablePadding="@dimen/d10dp"
+                    android:padding="@dimen/d5dp"
+                    android:text="@string/str_good"
+                    android:textSize="@dimen/d20sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/shape_square_average"
+                    android:drawablePadding="@dimen/d10dp"
+                    android:padding="@dimen/d5dp"
+                    android:text="@string/str_average"
+                    android:textSize="@dimen/d20sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/shape_square_excellent"
+                    android:drawablePadding="@dimen/d10dp"
+                    android:padding="@dimen/d5dp"
+                    android:text="@string/str_excellent"
+                    android:textSize="@dimen/d20sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <View
-            android:layout_width="@dimen/d1dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/d10dp"
-            android:layout_marginRight="@dimen/d10dp"
-            android:background="@color/color_shade_news_feed" />
-
-        <LinearLayout
-            android:id="@+id/ll_legend"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="left|center_vertical"
-                android:text="@string/str_need_attention"
-                android:textSize="@dimen/d20sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="left|center_vertical"
-                android:text="@string/str_good"
-                android:textSize="@dimen/d20sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="left|center_vertical"
-                android:text="@string/str_average"
-                android:textSize="@dimen/d20sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="left|center_vertical"
-                android:text="@string/str_excellent"
-                android:textSize="@dimen/d20sp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
