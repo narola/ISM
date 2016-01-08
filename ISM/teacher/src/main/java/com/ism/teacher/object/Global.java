@@ -1,6 +1,7 @@
 package com.ism.teacher.object;
 
 
+import com.ism.teacher.model.GetRealmDataModel;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -17,4 +18,5 @@ public class Global {
 
 
     public static MyTypeFace myTypeFace;
+    public static GetRealmDataModel getRealmDataModel = new GetRealmDataModel();
 }

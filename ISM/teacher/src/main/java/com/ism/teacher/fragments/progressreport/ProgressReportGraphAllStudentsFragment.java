@@ -3,6 +3,8 @@ package com.ism.teacher.fragments.progressreport;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,8 @@ import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
+import com.ism.teacher.adapters.progressreport.MyGradesAdapter;
+import com.ism.teacher.adapters.progressreport.ProgressReportGraphAdapter;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -30,9 +34,13 @@ public class ProgressReportGraphAllStudentsFragment extends Fragment implements 
 
     private static final String TAG = ProgressReportGraphAllStudentsFragment.class.getSimpleName();
 
-    //Views
+    //    //Views
     private Spinner spExamType;
+    private RecyclerView rvStudentsReport;
 
+    //Adapter
+    private ProgressReportGraphAdapter progressReportGraphAdapter;
+    private MyGradesAdapter myGradesAdapter;
     //ArrayList
     private List<String> arrListDefault = new ArrayList<>();
 
@@ -47,7 +55,7 @@ public class ProgressReportGraphAllStudentsFragment extends Fragment implements 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_progress_report_average, container, false);
+        View view = inflater.inflate(R.layout.fragment_report_graph_allstudents, container, false);
         initGlobal(view);
         return view;
     }
@@ -57,7 +65,13 @@ public class ProgressReportGraphAllStudentsFragment extends Fragment implements 
         arrListDefault.add(Utility.getString(R.string.select, getActivity()));
         Adapters.setUpSpinner(getActivity(), spExamType, arrListDefault, Adapters.ADAPTER_NORMAL);
 
-        callApiGetReportData();
+        rvStudentsReport = (RecyclerView) rootview.findViewById(R.id.rv_students_report);
+        rvStudentsReport.setHasFixedSize(true);
+        rvStudentsReport.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        progressReportGraphAdapter = new ProgressReportGraphAdapter(getActivity());
+        rvStudentsReport.setAdapter(progressReportGraphAdapter);
+
+//        callApiGetReportData();
     }
 
     private void callApiGetReportData() {

@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--/**********************Progress Report Colors***********************************************************/-->
+
     <!-- Progress Report-->
     <color name="color_green_report">#26AE62</color>
     <color name="color_grades_text">#6C747F</color>
     <color name="color_percent_red">#BB56A6</color>
     <color name="color_score_obtained_bg">#F5F5F5</color>
+    <color name="color_text_average_red">#FE4C40</color>
+
+
+    <!-- Progress Report graph as well as legend colors-->
+    <color name="color_shape_attention">#6ED2E2</color>
+    <color name="color_shape_good">#F0E190</color>
+    <color name="color_shape_average">#B25D7C</color>
+    <color name="color_shape_excellent">#F38B4C</color>
+
+
+    <!--/*********************************************************************************/-->
 
     <!-- Teacher Login-->
     <color name="color_pink">#FE84C1</color>
