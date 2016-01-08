@@ -223,12 +223,18 @@ public class StudentHelper {
         realm.commitTransaction();
     }
 
-    public RealmResults<Feeds> getFeedLikes(boolean statusUpdation) {
-//    public RealmResults<Feeds> getFeedLikes(Date lastSynch, Date modified) {
+    /**
+     *
+     * @param statusUpdation
+     * @return
+     */
+    public RealmResults<Feeds> managedFeedLikeStatus(boolean statusUpdation) {
+//    public RealmResults<Feeds> managedFeedLikeStatus(Date lastSynch, Date modified) {
         realm.beginTransaction();
         RealmResults<Feeds> feedsRealmResults = realm.where(Feeds.class).equalTo("isSync", 1).findAll();
-        Log.i(TAG, "getFeedLikes feedsRealmResults.size: " + feedsRealmResults.size());
+        Log.i(TAG, "managedFeedLikeStatus feedsRealmResults.size: " + feedsRealmResults.size());
         if (statusUpdation) {
+            //after sync
             for (int i = 0; i < feedsRealmResults.size(); i++)
                 feedsRealmResults.get(i).setIsSync(0);
         }
@@ -239,6 +245,21 @@ public class StudentHelper {
             return feedsRealmResults;
         }
     }
+
+//    public RealmResults<Feeds> getUpdatedFeedLikeStatus() {
+//        realm.beginTransaction();
+//        RealmResults<Feeds> feedsRealmResults = realm.where(Feeds.class).equalTo("isSync", 1).findAll();
+//
+//        Log.e(TAG, "managedFeedLikeStatus feedsRealmResults.size: " + feedsRealmResults.size());
+//
+//        realm.commitTransaction();
+//        if (feedsRealmResults.size() == 0) {
+//            return null;
+//        } else {
+//            return feedsRealmResults;
+//        }
+//    }
+
 
     /**
      * store feed related comments
