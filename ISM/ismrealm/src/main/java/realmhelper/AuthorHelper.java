@@ -359,8 +359,10 @@ public class AuthorHelper {
      * @return
      */
     public Classrooms getExamClassroom(int classroomId) {
+
         RealmQuery<Classrooms> query = realm.where(Classrooms.class).equalTo("classRoomId", classroomId);
         return query.findFirst();
+
     }
 
     /**
@@ -370,8 +372,10 @@ public class AuthorHelper {
      * @return
      */
     public AuthorBook getExamAuthorBook(int bookId) {
+
         RealmQuery<AuthorBook> query = realm.where(AuthorBook.class).equalTo("book.bookId", bookId);
         return query.findFirst();
+
     }
 
 
@@ -390,6 +394,70 @@ public class AuthorHelper {
             Log.e(TAG, "addClassrooms Exception : " + e.toString());
         }
     }
+
+    /**
+     * @return all the exams.
+     */
+    public RealmResults<Exam> getAllExams() {
+        RealmQuery<Exam> query = realm.where(Exam.class);
+        return query.findAll();
+    }
+
+
+    /**
+     * filter exams by book.
+     *
+     * @param bookId
+     * @return
+     */
+    public RealmResults<Exam> getExamsByBooks(int bookId) {
+
+        RealmQuery<Exam> query = realm.where(Exam.class).equalTo("authorBook.book.bookId", bookId);
+        return query.findAll();
+
+    }
+
+
+    /**
+     * filter exams by classroom.
+     *
+     * @param classRoomId
+     * @return
+     */
+    public RealmResults<Exam> getExamsByClassRooms(int classRoomId) {
+
+        RealmQuery<Exam> query = realm.where(Exam.class).equalTo("classroom.classRoomId", classRoomId);
+        return query.findAll();
+
+    }
+
+    /**
+     * filter exams by evaluation status.
+     *
+     * @param evaluationStatus
+     * @return
+     */
+    public RealmResults<Exam> getExamsByEvaluationStatus(String evaluationStatus) {
+
+        RealmQuery<Exam> query = realm.where(Exam.class).equalTo("evaluationStatus", evaluationStatus);
+        return query.findAll();
+
+    }
+
+
+    /**
+     * filter exams by date.
+     *
+     * @param startDate
+     * @return
+     */
+    public RealmResults<Exam> getExamsByDates(String startDate) {
+
+        RealmQuery<Exam> query = realm.where(Exam.class).equalTo("examStartDate", startDate);
+        return query.findAll();
+
+    }
+
 
     /**
      * arti's code starts from here...

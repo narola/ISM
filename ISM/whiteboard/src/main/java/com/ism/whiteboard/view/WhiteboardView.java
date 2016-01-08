@@ -18,13 +18,13 @@ public class WhiteboardView extends View implements View.OnTouchListener {
 
     private static final String TAG = WhiteboardView.class.getSimpleName();
 
-    private Paint   mPaint;
-    private Bitmap  mBitmap;
-    private Canvas  mCanvas;
-    private Paint   mPaintBitmap;
-    private float   mX, mY;
+    private Paint mPaint;
+    private Bitmap mBitmap;
+    private Canvas mCanvas;
+    private Paint mPaintBitmap;
+    private float mX, mY;
     private Paint mEraserPaint;
-    private Bitmap  mPointerBitmap;
+    private Bitmap mPointerBitmap;
 
     private static final float TOUCH_TOLERANCE = 1;
     private Path mPath;
@@ -159,11 +159,8 @@ public class WhiteboardView extends View implements View.OnTouchListener {
     }
 
 
-
     /**
-     *
-     *  WhiteboardView methods
-     *
+     * WhiteboardView methods
      */
 
     public Bitmap getBitmap() {

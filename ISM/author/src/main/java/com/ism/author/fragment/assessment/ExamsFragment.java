@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -39,6 +38,7 @@ import java.util.List;
 
 import io.realm.RealmResults;
 import model.AuthorBook;
+import model.Exam;
 import realmhelper.AuthorHelper;
 
 /**
@@ -50,12 +50,8 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private View view;
     private RecyclerView rvExamsList;
     private ExamsAdapter examsAdapter;
-    private ArrayList<Exams> arrListExams = new ArrayList<Exams>();
-    private ArrayList<Exams> copyListExams = new ArrayList<>();
     private FragmentListener fragListener;
     private Spinner spExamAuthorBooks, spExamClass, spExamEvaluationStatus;
-    private ImageView imgToggleList;
-
     private List<String> arrListAssessment;
 
     private TextView txtSubmissionDate, tvNoDataMsg;
@@ -64,6 +60,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private AuthorHelper authorHelper;
     private RealmResults<AuthorBook> arrListAuthorBooks = null;
     private RealmResults<model.Classrooms> arrListClassRooms = null;
+    private RealmResults<Exam> arrListExams = null;
 
 
     public static ExamsFragment newInstance() {
@@ -88,7 +85,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         rvExamsList = (RecyclerView) view.findViewById(R.id.rv_exams_list);
-        examsAdapter = new ExamsAdapter(getActivity());
+        examsAdapter = new ExamsAdapter(getActivity(), authorHelper);
 
         rvExamsList.setHasFixedSize(true);
         rvExamsList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -141,7 +138,8 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         AdapterView.OnItemSelectedListener spinnerListenerforFilters = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                filterAssignmentResults(adapterView, position);
+
+                filterExams(adapterView, position);
             }
 
             @Override
@@ -155,18 +153,21 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
 
         setEmptyView(false);
+
         callApiGetAuthorBooks();
         callApiGetClassrooms();
         callApiGetAllExams();
     }
 
 
-    private void filterAssignmentResults(View view, int position) {
+    private void filterExams(View view, int position) {
+
         if (view == spExamAuthorBooks) {
 
             if (arrListAuthorBooks != null && position > 0) {
                 spExamClass.setSelection(0);
                 spExamEvaluationStatus.setSelection(0);
+
                 if (position > 1) {
                     /**
                      * Position-2 because two static elements are added in the spinner in beginning
@@ -201,24 +202,90 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
     }
 
+
     private void filterAuthorBookWiseAssignments(String bookId) {
-        copyListExams.clear();
+
+        arrListExams = authorHelper.getExamsByBooks(Integer.valueOf(bookId));
         if (arrListExams.size() > 0) {
-            showMsgNoFilterData(false);
-            for (Exams wp : arrListExams) {
-                if (wp.getBookId().equalsIgnoreCase(bookId)) {
-                    copyListExams.add(wp);
-                }
-            }
-            examsAdapter.addAll(copyListExams);
-            if (!(copyListExams.size() > 0)) {
-                showMsgNoFilterData(true);
-            }
+            examsAdapter.addAll(arrListExams);
+        } else {
+            showMsgNoFilterData(true);
         }
+
+
+//        copyListExams.clear();
+//        if (arrListExams.size() > 0) {
+//            showMsgNoFilterData(false);
+//            for (Exams wp : arrListExams) {
+//                if (wp.getBookId().equalsIgnoreCase(bookId)) {
+//                    copyListExams.add(wp);
+//                }
+//            }
+//            examsAdapter.addAll(copyListExams);
+//            if (!(copyListExams.size() > 0)) {
+//                showMsgNoFilterData(true);
+//            }
+//        }
     }
+
+    private void filterClassroomWiseAssignments(String classroom_id) {
+
+        arrListExams = authorHelper.getExamsByClassRooms(Integer.valueOf(classroom_id));
+        if (arrListExams.size() > 0) {
+            examsAdapter.addAll(arrListExams);
+        } else {
+            showMsgNoFilterData(true);
+        }
+
+
+//        copyListExams.clear();
+//        if (arrListExams.size() > 0) {
+//            showMsgNoFilterData(false);
+//            for (Exams wp : arrListExams) {
+//                if (wp.getClassroomId().equalsIgnoreCase(classroom_id)) {
+//                    copyListExams.add(wp);
+//                }
+//            }
+//
+//            examsAdapter.addAll(copyListExams);
+//            if (!(copyListExams.size() > 0)) {
+//                showMsgNoFilterData(true);
+//            }
+//        }
+    }
+
+    private void filterAssessedNotAssessedAssignments(String evaluation_status) {
+
+        arrListExams = authorHelper.getExamsByEvaluationStatus(evaluation_status);
+
+        if (arrListExams.size() > 0) {
+            examsAdapter.addAll(arrListExams);
+        } else {
+            showMsgNoFilterData(true);
+
+        }
+
+
+//        copyListExams.clear();
+//        if (arrListExams.size() > 0) {
+//            showMsgNoFilterData(false);
+//            for (Exams wp : arrListExams) {
+//                if (!wp.getEvaluationStatus().equals("") && wp.getEvaluationStatus().equalsIgnoreCase(evaluation_status)) {
+//                    copyListExams.add(wp);
+//                }
+//            }
+//            examsAdapter.addAll(copyListExams);
+//            if (!(copyListExams.size() > 0)) {
+//                showMsgNoFilterData(true);
+//            }
+//
+//        }
+    }
+
 
     private void clearFilters() {
         showMsgNoFilterData(false);
+        arrListExams = authorHelper.getAllExams();
         examsAdapter.addAll(arrListExams);
     }
 
@@ -230,39 +297,6 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         rvExamsList.setVisibility(showMsg ? View.GONE : View.VISIBLE);
     }
 
-    private void filterClassroomWiseAssignments(String classroom_id) {
-        copyListExams.clear();
-        if (arrListExams.size() > 0) {
-            showMsgNoFilterData(false);
-            for (Exams wp : arrListExams) {
-                if (wp.getClassroomId().equalsIgnoreCase(classroom_id)) {
-                    copyListExams.add(wp);
-                }
-            }
-
-            examsAdapter.addAll(copyListExams);
-            if (!(copyListExams.size() > 0)) {
-                showMsgNoFilterData(true);
-            }
-        }
-    }
-
-    private void filterAssessedNotAssessedAssignments(String evaluation_status) {
-        copyListExams.clear();
-        if (arrListExams.size() > 0) {
-            showMsgNoFilterData(false);
-            for (Exams wp : arrListExams) {
-                if (!wp.getEvaluationStatus().equals("") && wp.getEvaluationStatus().equalsIgnoreCase(evaluation_status)) {
-                    copyListExams.add(wp);
-                }
-            }
-            examsAdapter.addAll(copyListExams);
-            if (!(copyListExams.size() > 0)) {
-                showMsgNoFilterData(true);
-            }
-
-        }
-    }
 
     private void callApiGetAllExams() {
         if (Utility.isConnected(getActivity())) {
@@ -278,13 +312,14 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            setUpData();
         }
     }
 
     private void callApiGetClassrooms() {
         if (Utility.isConnected(getActivity())) {
             try {
+                ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), new Attribute(), (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLCLASSROOMS);
             } catch (Exception e) {
@@ -300,6 +335,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
         if (Utility.isConnected(getActivity())) {
             try {
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -344,21 +380,11 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    if (responseHandler.getExams().size() > 0) {
-
-                        addExams(responseHandler.getExams());
-
-
-                        arrListExams.addAll(responseHandler.getExams());
-                        examsAdapter.addAll(arrListExams);
-                        examsAdapter.notifyDataSetChanged();
-                        setEmptyView(false);
-
-                    } else {
-
-                        setEmptyView(true);
-
-                    }
+//                    if (responseHandler.getExams().size() > 0) {
+//                        addExams(responseHandler.getExams());
+//
+//                    }
+//                    setUpData();
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), getActivity());
@@ -374,7 +400,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void onResponseGetClassrooms(Object object, Exception error) {
         try {
-
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -395,6 +421,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void onResponseGetAuthorBooks(Object object, Exception error) {
         try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -440,11 +467,21 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                 authorHelper.addExams(Global.getRealmDataModel.getRealmExam(exam, authorHelper));
             }
         }
+    }
+
+    private void setUpData() {
+
+        if (authorHelper.getAllExams().size() > 0) {
+            setEmptyView(false);
+            examsAdapter.addAll(authorHelper.getAllExams());
+        } else {
+            setEmptyView(true);
+        }
+
 
     }
 
     private void setUpAuthorBooksData() {
-
         arrListAuthorBooks = authorHelper.getAuthorBooks();
         List<String> authorBooks = new ArrayList<String>();
         authorBooks.add(getString(R.string.strbookname));
@@ -458,7 +495,6 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     private void setUpClassrooms() {
-
         arrListClassRooms = authorHelper.getClassrooms();
         List<String> classrooms = new ArrayList<String>();
         classrooms.add(getString(R.string.strclass));
@@ -468,6 +504,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
         }
         Adapters.setUpSpinner(getActivity(), spExamClass, classrooms, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
+//        spExamClass.setSelection(1);
     }
 
 

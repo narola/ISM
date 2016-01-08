@@ -14,7 +14,7 @@ import io.realm.annotations.PrimaryKey;
  */
 public class StudentSubjectiveEvaluation extends RealmObject {
     @PrimaryKey
-    private  int studentSubjectiveEvaluationId;
+    private int studentSubjectiveEvaluationId;
     private String studentResponse;
     private String evaluationNote;
     private User user;
