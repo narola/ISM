@@ -21,7 +21,6 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.QuestionPaletteAdapter;
 import com.ism.adapter.TutorialGroupAdapter;
-import com.ism.model.QuestionObjectiveTest;
 import com.ism.views.TimerView;
 import com.ism.ws.model.FridayExamQuestion;
 import com.ism.ws.model.TutorialGroupMember;
@@ -64,6 +63,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	private StudentHelper studentHelper;
 	private HostActivity activityHost;
 
+	private String strExamId;
 	private int intTimeLeft;
 	private long longExamDurationMilli;
 	private boolean setActiveHours;
@@ -164,7 +164,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	}
 
 	@Override
-	public void startTest(ArrayList<FridayExamQuestion> questions, ExamFragment examFragment) {
+	public void startTest(ArrayList<FridayExamQuestion> questions, String examId, ExamFragment examFragment) {
 		try {
 			/*longExamDurationMilli = examFragment.getExamDurationMinutes() * 60 * 1000;
 			timerViewExam.setTotalTimeMin(examFragment.getExamDurationMinutes());
@@ -184,6 +184,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 			timerExam.start();*/
 
 //			fragExam = examFragment;
+			strExamId = examId;
 			lvTutorialGroup.setVisibility(View.GONE);
 			rlQuestionPalette.setVisibility(View.VISIBLE);
 			arrListQuestions = questions;
@@ -220,8 +221,8 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 
 			lvTutorialGroup.setVisibility(View.VISIBLE);
 			rlQuestionPalette.setVisibility(View.GONE);
-			getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.tutorialGroup.ResultFragment.newInstance(arrListQuestions,
-					false, timeSpent)).commit();
+			getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ResultFragment.newInstance(arrListQuestions,
+					strExamId, false, timeSpent)).commit();
 //			getFragmentManager().beginTransaction().remove(this).commit();
 		} catch (Exception e) {
 			Log.e(TAG, "end Exception : " + e.toString());

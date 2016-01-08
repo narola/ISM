@@ -67,7 +67,7 @@
 			android:paddingRight="@dimen/dp30"
 			android:text="@string/strpost"
 			android:textAllCaps="true"
-			android:textColor="@color/color_white"
+			android:textColor="@color/white"
 			android:textSize="@dimen/dp15"
 			android:textStyle="bold"/>
 	</RelativeLayout>

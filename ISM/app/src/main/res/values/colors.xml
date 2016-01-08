@@ -3,7 +3,7 @@
     <color name="colorPrimary">#1BC4A2</color>
     <color name="colorPrimaryDark">#14987d</color>
     <color name="colorAccent">#1BC4A2</color>
-    <color name="color_white">#ffffff</color>
+    <color name="white">#ffffff</color>
     <color name="color_black">#000000</color>
     <color name="bg_controller_top_light">#2A343E</color>
     <color name="bg_controller_top_medium">#262E39</color>
@@ -16,7 +16,7 @@
     <color name="bg_classroom">#FFC732</color>
     <color name="bg_assessment">#4392CA</color>
     <color name="bg_desk">#2BDC1E</color>
-    <color name="bg_report_card">#EF87C4</color>
+    <color name="bg_my_author">#EF87C4</color>
     <color name="bg_controller_left_light">#303940</color>
     <color name="bg_controller_left_medium">#29323A</color>
     <color name="bg_controller_left_dark">#212B33</color>
@@ -93,4 +93,13 @@
     <color name="assignment_separator">#DEDCDD</color>
 
     <!-- ################################# -->
+    <bool name="default_circle_indicator_centered">true</bool>
+    <color name="default_circle_indicator_fill_color">#FFFFFFFF</color>
+    <color name="default_circle_indicator_page_color">#00000000</color>
+    <integer name="default_circle_indicator_orientation">0</integer>
+    <dimen name="default_circle_indicator_radius">3dp</dimen>
+    <bool name="default_circle_indicator_snap">false</bool>
+    <color name="default_circle_indicator_stroke_color">#FFDDDDDD</color>
+    <dimen name="default_circle_indicator_stroke_width">1dp</dimen>
+
 </resources>

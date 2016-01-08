@@ -39,7 +39,7 @@ public class AuthorDeskAssignmentsFragment extends Fragment implements Webservic
     private AuthorAssignmentsAdapter assignmentAdapter;
     private Fragment mFragment;
     private ArrayList<AuthorBookAssignment> arrListAuthorBooksAssignment = new ArrayList<AuthorBookAssignment>();
-    private TextView tvNoDataMsg;
+    private TextView txtEmptyView;
     private HostActivity activityHost;
     private FragmentListener fragmentListener;
 
@@ -61,17 +61,18 @@ public class AuthorDeskAssignmentsFragment extends Fragment implements Webservic
 
     private void initGlobal() {
 
-        tvNoDataMsg = (TextView) view.findViewById(R.id.txt_empty_view);
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtEmptyView = (TextView) view.findViewById(R.id.txt_empty_view);
+        txtEmptyView.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtEmptyView.setText(R.string.no_assignment_available);
+//        txtEmptyView.setTextSize(20);
 
         rvAssignmentsList = (RecyclerView) view.findViewById(R.id.rv_assignments_list);
         assignmentAdapter = new AuthorAssignmentsAdapter(mFragment, getActivity());
         rvAssignmentsList.setHasFixedSize(true);
         rvAssignmentsList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rvAssignmentsList.setAdapter(assignmentAdapter);
+
         callApiGetAuthorBookAssignment();
-
-
     }
 
 
@@ -91,7 +92,6 @@ public class AuthorDeskAssignmentsFragment extends Fragment implements Webservic
         } else {
             Utility.alertOffline(getActivity());
         }
-
     }
 
     private void onResponseGetAuthorBookAssignment(Object object, Exception error) {
@@ -103,19 +103,17 @@ public class AuthorDeskAssignmentsFragment extends Fragment implements Webservic
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 
                     if (responseHandler.getAuthorBookAssignment().size() > 0) {
-
                         arrListAuthorBooksAssignment.addAll(responseHandler.getAuthorBookAssignment());
                         assignmentAdapter.addAll(arrListAuthorBooksAssignment);
                         assignmentAdapter.notifyDataSetChanged();
-
-                        tvNoDataMsg.setVisibility(View.GONE);
+                        Utility.hideView(txtEmptyView);
+                        Utility.showView(rvAssignmentsList);
                     } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+                        Utility.showView(txtEmptyView);
+                        Utility.hideView(rvAssignmentsList);
                     }
-
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Utility.showToast(getActivity(),responseHandler.getMessage());
-
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAuthorBookAssignment api Exception : " + error.toString());

@@ -80,7 +80,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp225"
-        android:background="@color/color_white"
+        android:layout_marginTop="@dimen/dp10"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <ImageView
@@ -99,7 +100,7 @@
             android:layout_marginRight="@dimen/dp4"
             android:layout_toLeftOf="@+id/img_next_fav"
             android:layout_toRightOf="@+id/img_prev_fav"
-            android:background="@color/color_white" />
+            android:background="@color/white" />
 
         <TextView
             android:id="@+id/txt_fav_empty"
@@ -107,7 +108,7 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/img_next_fav"
             android:layout_toRightOf="@+id/img_prev_fav"
-            android:background="@color/color_white"
+            android:background="@color/white"
             android:gravity="center"
             android:textSize="@dimen/text_size_emptylist_message_medium"
             android:visibility="gone" />

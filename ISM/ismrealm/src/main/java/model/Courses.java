@@ -12,8 +12,7 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Courses extends RealmObject {
     @PrimaryKey
-    private  int localCourseId;
-    private  int serverCourseId;
+    private  int courseId;
     private String courseName;
     private String courseNickName;
     private String courseDetail;
@@ -26,20 +25,12 @@ public class Courses extends RealmObject {
     private boolean isDelete;
     private  CourseCategory courseCategory;
 
-    public int getLocalCourseId() {
-        return localCourseId;
+    public int getCourseId() {
+        return courseId;
     }
 
-    public void setLocalCourseId(int localCourseId) {
-        this.localCourseId = localCourseId;
-    }
-
-    public int getServerCourseId() {
-        return serverCourseId;
-    }
-
-    public void setServerCourseId(int serverCourseId) {
-        this.serverCourseId = serverCourseId;
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
     public String getCourseName() {

@@ -50,7 +50,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:background="@color/green"
-			android:textColor="@color/color_white"
+			android:textColor="@color/white"
 			android:paddingTop="@dimen/dp8"
 			android:paddingBottom="@dimen/dp8"
 			android:paddingLeft="@dimen/dp15"
@@ -63,6 +63,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/txt_title"
+			android:background="@color/white"
 			android:orientation="vertical">
 
 			<TextView
@@ -115,7 +116,7 @@
 			android:background="@drawable/bg_white_border_gray_left"
 			android:visibility="gone"
 			android:paddingRight="@dimen/dp30"
-			android:paddingBottom="@dimen/dp30">
+			android:paddingBottom="@dimen/dp20">
 
 			<TextView
 				android:id="@+id/txt_create_question_title"
@@ -133,6 +134,7 @@
 				android:layout_height="match_parent"
 				android:textSize="@dimen/sp15"
 				android:layout_below="@id/txt_create_question_title"
+				android:layout_above="@+id/ll_tip"
 				android:textColor="@color/bg_app_dark"
 				android:hint="@string/hint_type_question"
 				android:inputType="textMultiLine"
@@ -141,6 +143,40 @@
 				android:layout_marginTop="@dimen/dp15"
 				android:layout_marginLeft="@dimen/dp30"
 				android:background="@drawable/bg_edit_gray"/>
+
+			<LinearLayout
+				android:id="@+id/ll_tip"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:layout_alignParentBottom="true"
+				android:layout_marginTop="@dimen/dp15"
+				android:layout_marginLeft="@dimen/dp30"
+				android:background="@color/gray_light">
+
+				<TextView
+					android:id="@+id/txt_tip"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/tip"
+					android:textAllCaps="true"
+					android:textColor="@color/bg_app_dark"
+					android:textSize="@dimen/sp15"
+					android:paddingTop="@dimen/dp5"
+					android:paddingLeft="@dimen/dp10"/>
+
+				<TextView
+					android:id="@+id/txt_tip_value"
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/dp55"
+					android:paddingTop="@dimen/dp5"
+					android:paddingLeft="@dimen/dp10"
+					android:paddingRight="@dimen/dp10"
+					android:paddingBottom="@dimen/dp5"
+					android:textSize="@dimen/sp12"
+					android:textColor="@color/bg_app_dark"
+					android:scrollbars="vertical"/>
+			</LinearLayout>
 
 			<View
 				android:id="@+id/view_indicator"
@@ -172,117 +208,127 @@
 				android:layout_marginLeft="@dimen/margin_left_text_add_question_form_title"
 				android:text="@string/create_question"/>
 
-			<LinearLayout
-				android:id="@+id/ll_option1"
+			<ScrollView
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center_vertical"
-				android:layout_below="@id/txt_set_options_title"
-				android:layout_marginTop="@dimen/margin_top_text_add_question_form_title"
-				android:layout_marginLeft="@dimen/margin_left_text_add_question_form_title"
-				android:orientation="horizontal">
+				android:layout_height="match_parent"
+				android:layout_below="@id/txt_set_options_title">
 
-				<EditText
-					android:id="@+id/et_option1"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:background="@drawable/bg_edit_gray"
-					android:inputType="text"
-					android:layout_marginRight="@dimen/margin_right_option"
-					android:hint="@string/option1"
-					android:padding="@dimen/padding_edit_option"/>
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
 
-				<CheckBox
-					android:id="@+id/check_option1"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:button="@drawable/bg_checkbox_gray"/>
-			</LinearLayout>
+					<LinearLayout
+						android:id="@+id/ll_option1"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical"
+						android:layout_marginTop="@dimen/margin_top_text_add_question_form_title"
+						android:layout_marginLeft="@dimen/margin_left_text_add_question_form_title"
+						android:orientation="horizontal">
 
-			<LinearLayout
-				android:id="@+id/ll_option2"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center_vertical"
-				android:layout_below="@id/ll_option1"
-				android:layout_marginTop="@dimen/margin_top_text_add_question_form_title"
-				android:layout_marginLeft="@dimen/margin_left_text_add_question_form_title"
-				android:orientation="horizontal">
+						<EditText
+							android:id="@+id/et_option1"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:background="@drawable/bg_edit_gray"
+							android:inputType="text"
+							android:layout_marginRight="@dimen/margin_right_option"
+							android:hint="@string/option1"
+							android:padding="@dimen/padding_edit_option"/>
 
-				<EditText
-					android:id="@+id/et_option2"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:background="@drawable/bg_edit_gray"
-					android:inputType="text"
-					android:layout_marginRight="@dimen/margin_right_option"
-					android:hint="@string/option2"
-					android:padding="@dimen/padding_edit_option"/>
+						<CheckBox
+							android:id="@+id/check_option1"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:button="@drawable/bg_checkbox_gray"/>
+					</LinearLayout>
 
-				<CheckBox
-					android:id="@+id/check_option2"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:button="@drawable/bg_checkbox_gray"/>
-			</LinearLayout>
+					<LinearLayout
+						android:id="@+id/ll_option2"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical"
+						android:layout_below="@id/ll_option1"
+						android:layout_marginTop="@dimen/margin_top_text_add_question_form_title"
+						android:layout_marginLeft="@dimen/margin_left_text_add_question_form_title"
+						android:orientation="horizontal">
 
-			<LinearLayout
-				android:id="@+id/ll_option3"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center_vertical"
-				android:layout_below="@id/ll_option2"
-				android:layout_marginTop="@dimen/margin_top_text_add_question_form_title"
-				android:layout_marginLeft="@dimen/margin_left_text_add_question_form_title"
-				android:orientation="horizontal">
+						<EditText
+							android:id="@+id/et_option2"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:background="@drawable/bg_edit_gray"
+							android:inputType="text"
+							android:layout_marginRight="@dimen/margin_right_option"
+							android:hint="@string/option2"
+							android:padding="@dimen/padding_edit_option"/>
 
-				<EditText
-					android:id="@+id/et_option3"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:background="@drawable/bg_edit_gray"
-					android:inputType="text"
-					android:layout_marginRight="@dimen/margin_right_option"
-					android:hint="@string/option3"
-					android:padding="@dimen/padding_edit_option"/>
+						<CheckBox
+							android:id="@+id/check_option2"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:button="@drawable/bg_checkbox_gray"/>
+					</LinearLayout>
 
-				<CheckBox
-					android:id="@+id/check_option3"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:button="@drawable/bg_checkbox_gray"/>
-			</LinearLayout>
+					<LinearLayout
+						android:id="@+id/ll_option3"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical"
+						android:layout_below="@id/ll_option2"
+						android:layout_marginTop="@dimen/margin_top_text_add_question_form_title"
+						android:layout_marginLeft="@dimen/margin_left_text_add_question_form_title"
+						android:orientation="horizontal">
 
-			<LinearLayout
-				android:id="@+id/ll_option4"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center_vertical"
-				android:layout_below="@id/ll_option3"
-				android:layout_marginTop="@dimen/margin_top_text_add_question_form_title"
-				android:layout_marginLeft="@dimen/margin_left_text_add_question_form_title"
-				android:orientation="horizontal">
+						<EditText
+							android:id="@+id/et_option3"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:background="@drawable/bg_edit_gray"
+							android:inputType="text"
+							android:layout_marginRight="@dimen/margin_right_option"
+							android:hint="@string/option3"
+							android:padding="@dimen/padding_edit_option"/>
 
-				<EditText
-					android:id="@+id/et_option4"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:background="@drawable/bg_edit_gray"
-					android:inputType="text"
-					android:layout_marginRight="@dimen/margin_right_option"
-					android:hint="@string/option4"
-					android:padding="@dimen/padding_edit_option"/>
+						<CheckBox
+							android:id="@+id/check_option3"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:button="@drawable/bg_checkbox_gray"/>
+					</LinearLayout>
 
-				<CheckBox
-					android:id="@+id/check_option4"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:button="@drawable/bg_checkbox_gray"/>
-			</LinearLayout>
+					<LinearLayout
+						android:id="@+id/ll_option4"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical"
+						android:layout_below="@id/ll_option3"
+						android:layout_marginTop="@dimen/margin_top_text_add_question_form_title"
+						android:layout_marginLeft="@dimen/margin_left_text_add_question_form_title"
+						android:orientation="horizontal">
+
+						<EditText
+							android:id="@+id/et_option4"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:background="@drawable/bg_edit_gray"
+							android:inputType="text"
+							android:layout_marginRight="@dimen/margin_right_option"
+							android:hint="@string/option4"
+							android:padding="@dimen/padding_edit_option"/>
+
+						<CheckBox
+							android:id="@+id/check_option4"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:button="@drawable/bg_checkbox_gray"/>
+					</LinearLayout>
+				</RelativeLayout>
+			</ScrollView>
 
 			<View
 				android:layout_width="@dimen/width_indicator_add_question_form"
@@ -433,7 +479,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="@dimen/dp38"
 				android:text="@string/upload_and_freeze"
-				android:textColor="@color/color_white"
+				android:textColor="@color/white"
 				android:layout_marginTop="@dimen/dp38"
 				android:layout_below="@id/txt_upload_msg"
 				android:paddingLeft="@dimen/dp15"

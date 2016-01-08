@@ -633,4 +633,9 @@
 	<string name="strYourHaveNotJoinedAnyAuthorClickFindMoreAuthorAndAddAuthor"><![CDATA[You have not joined any author click <font color=#3EB1DE>\"find more author\" </font>and add author]]></string>
 	<string name="strIAcceptTheTermAndCondition"><![CDATA[I Accept the term & Condition]]></string>
 	<string name="msg_tutorial_exam_ready">Today\'s tutorial group exam is ready!</string>
+	<string name="strMyAuthor_sDesk">Author\'s Desk</string>
+	<string name="strQuestionTrendingForThisWeek">Questions trending for this week</string>
+	<string name="strSendQuestionTo">Send Question To</string>
+	<string name="tip">Tip :</string>
+	<string name="question">"Question : "</string>
 </resources>

@@ -15,7 +15,7 @@
         android:padding="@dimen/dp8"
         android:text="@string/strScientificSymbol"
         android:textAllCaps="true"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/sp15" />
 
     <GridView
@@ -37,7 +37,7 @@
         android:padding="@dimen/dp8"
         android:text="@string/strInsert"
         android:textAllCaps="true"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/sp15" />
 
     <LinearLayout

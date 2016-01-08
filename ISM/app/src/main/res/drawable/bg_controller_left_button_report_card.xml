@@ -16,7 +16,7 @@
     <item>
         <shape>
             <padding android:left="@dimen/bg_controller_border_left" />
-            <solid android:color="@color/bg_report_card" />
+            <solid android:color="@color/bg_my_author" />
         </shape>
     </item>
     <item>

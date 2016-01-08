@@ -91,7 +91,7 @@
 				android:paddingLeft="@dimen/dp68"
 				android:paddingRight="@dimen/dp68"
 				android:text="@string/generate"
-				android:textColor="@color/color_white"
+				android:textColor="@color/white"
 				android:textSize="@dimen/dp15"
 				app:pb_colorComplete="@color/blue"
 				app:pb_colorNormal="@color/blue"

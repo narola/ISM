@@ -7,6 +7,14 @@
 	<dimen name="sp14">14sp</dimen>
 	<dimen name="sp17">17sp</dimen>
 	<dimen name="sp12">12sp</dimen>
+	<dimen name="sp21">21sp</dimen>
+	<dimen name="sp30">30sp</dimen>
+	<dimen name="sp11">11sp</dimen>
+	<dimen name="sp9">9sp</dimen>
+	<dimen name="sp20">20sp</dimen>
+	<dimen name="sp8">8sp</dimen>
+	<dimen name="sp16">16sp</dimen>
+	<dimen name="sp10">10sp</dimen>
 
 	<dimen name="dp450">450dp</dimen>
 	<dimen name="dp1">1dp</dimen>
@@ -18,15 +26,9 @@
 	<dimen name="dp225">225dp</dimen>
 	<dimen name="dp2">2dp</dimen>
 	<dimen name="dp75">75dp</dimen>
-	<dimen name="sp21">21sp</dimen>
 	<dimen name="dp165">165dp</dimen>
 	<dimen name="dp3">3dp</dimen>
-	<dimen name="sp30">30sp</dimen>
-	<dimen name="sp11">11sp</dimen>
-	<dimen name="sp9">9sp</dimen>
 	<dimen name="dp_n120">-120dp</dimen>
-	<dimen name="sp20">20sp</dimen>
-	<dimen name="sp8">8sp</dimen>
 	<dimen name="dp20">20dp</dimen>
 	<dimen name="dp10">10dp</dimen>
 	<dimen name="dp5">5dp</dimen>
@@ -55,14 +57,12 @@
 	<dimen name="dp130">130dp</dimen>
 	<dimen name="dp13">13dp</dimen>
 	<dimen name="dp306">306dp</dimen>
-	<dimen name="sp16">16sp</dimen>
 	<dimen name="dp109">109dp</dimen>
 	<dimen name="dp200">200dp</dimen>
 	<dimen name="dp21">21dp</dimen>
 	<dimen name="dp300">300dp</dimen>
 	<dimen name="dp169">169dp</dimen>
 	<dimen name="dp338">338dp</dimen>
-	<dimen name="sp10">10sp</dimen>
 	<dimen name="dp263">263dp</dimen>
 	<dimen name="dp120">120dp</dimen>
 	<dimen name="dp9">9dp</dimen>
@@ -84,6 +84,7 @@
 	<dimen name="dp30">30dp</dimen>
 	<dimen name="dp38">38dp</dimen>
 	<dimen name="dp45">45dp</dimen>
+	<dimen name="dp50">50dp</dimen>
 	<dimen name="dp53">53dp</dimen>
 	<dimen name="dp68">68dp</dimen>
 	<dimen name="dp90">90dp</dimen>

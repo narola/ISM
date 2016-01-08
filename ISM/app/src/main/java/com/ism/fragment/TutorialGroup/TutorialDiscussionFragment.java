@@ -275,164 +275,164 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		recyclerChat.setAdapter(adpDiscussion);*/
     }
 
-    private void callApiGetGroupHistory() {
-        try {
-            Attribute attribute = new Attribute();
-//			attribute.setGroupId(Global.strTutorialGroupId);
-            attribute.setGroupId("134");
-            attribute.setWeekNo("1");
-            attribute.setDayNo("");
+	private void callApiGetGroupHistory() {
+		try {
+			Attribute attribute = new Attribute();
+			attribute.setGroupId(Global.strTutorialGroupId);
+//			attribute.setGroupId("134");
+			attribute.setWeekNo("1");
+			attribute.setDayNo("");
 
-            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_GROUP_HISTORY);
-        } catch (Exception e) {
-            Log.e(TAG, "callApiGetGroupHistory Exception : " + e.toString());
-        }
-    }
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_GROUP_HISTORY);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiGetGroupHistory Exception : " + e.toString());
+		}
+	}
 
-    private void showUtility(int selectedUtilityId) {
+	private void showUtility(int selectedUtilityId) {
 
-        for (int utilityId = 0; utilityId < imgUtilities.length; utilityId++) {
+		for (int utilityId = 0; utilityId < imgUtilities.length; utilityId++) {
 
-            if (utilityId != selectedUtilityId) {
-                imgUtilities[utilityId].setEnabled(true);
+			if (utilityId != selectedUtilityId) {
+				imgUtilities[utilityId].setEnabled(true);
 
-                switch (utilityId) {
-                    case UTILITY_CALC:
-                        utilitySciCalc.setVisibility(View.GONE);
-                        break;
-                    case UTILITY_WHITEBOARD:
-                        if (utilityWhiteboard != null) {
-                            utilityWhiteboard.setVisibility(View.GONE);
-                        }
-                        break;
-                }
-            } else {
-                imgUtilities[utilityId].setEnabled(false);
+				switch (utilityId) {
+					case UTILITY_CALC:
+						utilitySciCalc.setVisibility(View.GONE);
+						break;
+					case UTILITY_WHITEBOARD:
+						if (utilityWhiteboard != null) {
+							utilityWhiteboard.setVisibility(View.GONE);
+						}
+						break;
+				}
+			} else {
+				imgUtilities[utilityId].setEnabled(false);
 
-                switch (utilityId) {
-                    case UTILITY_CALC:
-                        utilitySciCalc.setVisibility(View.VISIBLE);
-                        break;
-                    case UTILITY_WHITEBOARD:
-                        if (utilityWhiteboard != null) {
-                            utilityWhiteboard.setVisibility(View.VISIBLE);
-                        } else {
-                            utilityWhiteboard = (Whiteboard) vsWhiteboard.inflate();
-                            utilityWhiteboard.setWhiteboardListener(whiteboardListener);
-                        }
-                        break;
-                }
-            }
-        }
+				switch (utilityId) {
+					case UTILITY_CALC:
+						utilitySciCalc.setVisibility(View.VISIBLE);
+						break;
+					case UTILITY_WHITEBOARD:
+						if (utilityWhiteboard != null) {
+							utilityWhiteboard.setVisibility(View.VISIBLE);
+						} else {
+							utilityWhiteboard = (Whiteboard) vsWhiteboard.inflate();
+							utilityWhiteboard.setWhiteboardListener(whiteboardListener);
+						}
+						break;
+				}
+			}
+		}
 
-        if (selectedUtilityId == UTILITY_SEARCH || selectedUtilityId == UTILITY_DICTIONARY) {
-            if (utilityAssistantWebView != null) {
-                utilityAssistantWebView.setVisibility(View.VISIBLE);
-                if (currentWebUtility != selectedUtilityId) {
-                    loadUtilityUrl(selectedUtilityId);
-                }
-            } else {
-                utilityAssistantWebView = (AssistantWebView) vsAssistantWebView.inflate();
-                loadUtilityUrl(selectedUtilityId);
-            }
-            currentWebUtility = selectedUtilityId;
-        } else {
-            if (utilityAssistantWebView != null) {
-                utilityAssistantWebView.setVisibility(View.GONE);
-            }
-        }
-    }
+		if (selectedUtilityId == UTILITY_SEARCH || selectedUtilityId == UTILITY_DICTIONARY) {
+			if (utilityAssistantWebView != null) {
+				utilityAssistantWebView.setVisibility(View.VISIBLE);
+				if (currentWebUtility != selectedUtilityId) {
+					loadUtilityUrl(selectedUtilityId);
+				}
+			} else {
+				utilityAssistantWebView = (AssistantWebView) vsAssistantWebView.inflate();
+				loadUtilityUrl(selectedUtilityId);
+			}
+			currentWebUtility = selectedUtilityId;
+		} else {
+			if (utilityAssistantWebView != null) {
+				utilityAssistantWebView.setVisibility(View.GONE);
+			}
+		}
+	}
 
-    private void loadUtilityUrl(int selectedUtilityId) {
-        if (selectedUtilityId == UTILITY_SEARCH) {
-            utilityAssistantWebView.loadUrl("http://google.com");
-        } else {
-            utilityAssistantWebView.loadUrl("http://dictionary.com");
-        }
-    }
+	private void loadUtilityUrl(int selectedUtilityId) {
+		if (selectedUtilityId == UTILITY_SEARCH) {
+			utilityAssistantWebView.loadUrl("http://google.com");
+		} else {
+			utilityAssistantWebView.loadUrl("http://dictionary.com");
+		}
+	}
 
-    public void setTutorialDiscussionListener(TutorialDiscussionFragmentListener listenerTutorialDiscussion) {
-        this.listenerTutorialDiscussion = listenerTutorialDiscussion;
-    }
+	public void setTutorialDiscussionListener(TutorialDiscussionFragmentListener listenerTutorialDiscussion) {
+		this.listenerTutorialDiscussion = listenerTutorialDiscussion;
+	}
 
-    public void setDay(int day) {
-        intWeekDay = day;
-        if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != day) {  // if day is not today
-            switch (intWeekDay) {
-                case Calendar.MONDAY:
-                    showDiscussionFor(WebConstants.MONDAY);
-                    break;
-                case Calendar.TUESDAY:
-                    showDiscussionFor(WebConstants.TUESDAY);
-                    break;
-                case Calendar.WEDNESDAY:
-                    showDiscussionFor(WebConstants.WEDNESDAY);
-                    break;
-                case Calendar.THURSDAY:
-                    showDiscussionFor(WebConstants.THURSDAY);
-                    break;
-            }
-        } else {
-            recyclerChat.scrollToPosition(0);
-            strCurrentWeekDay = arrListDiscussionData.get(0).getDayName();
-            showTopicDetails(0);
-        }
-    }
+	public void setDay(int day) {
+		intWeekDay = day;
+		if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != day) {  // if day is not today
+			switch (intWeekDay) {
+				case Calendar.MONDAY:
+					showDiscussionFor(WebConstants.MONDAY);
+					break;
+				case Calendar.TUESDAY:
+					showDiscussionFor(WebConstants.TUESDAY);
+					break;
+				case Calendar.WEDNESDAY:
+					showDiscussionFor(WebConstants.WEDNESDAY);
+					break;
+				case Calendar.THURSDAY:
+					showDiscussionFor(WebConstants.THURSDAY);
+					break;
+			}
+		} else {
+			recyclerChat.scrollToPosition(0);
+			strCurrentWeekDay = arrListDiscussionData.get(0).getDayName();
+			showTopicDetails(0);
+		}
+	}
 
-    private void showDiscussionFor(String weekDay) {
-        for (int i = 0; i < arrListDiscussion.size(); i++) {
-            if (arrListDiscussion.get(i).getWeekDay().equals(weekDay)
-                    && (i == arrListDiscussion.size() - 1 || !arrListDiscussion.get(i + 1).getWeekDay().equals(weekDay))) {
-                if (i != arrListDiscussion.size() - 1) {
-                    ((LinearLayoutManager) recyclerChat.getLayoutManager()).scrollToPositionWithOffset(i + 1, recyclerChat.getHeight());
-                } else {
-                    recyclerChat.scrollToPosition(i);
-                }
-                break;
-            }
-        }
+	private void showDiscussionFor(String weekDay) {
+		for (int i = 0; i < arrListDiscussion.size(); i++) {
+			if (arrListDiscussion.get(i).getWeekDay().equals(weekDay)
+					&& (i == arrListDiscussion.size() - 1 || !arrListDiscussion.get(i + 1).getWeekDay().equals(weekDay))) {
+				if (i != arrListDiscussion.size() - 1) {
+					((LinearLayoutManager) recyclerChat.getLayoutManager()).scrollToPositionWithOffset(i + 1, recyclerChat.getHeight());
+				} else {
+					recyclerChat.scrollToPosition(i);
+				}
+				break;
+			}
+		}
 
-        /**
-         * Show topic details when no discussion done.
-         */
-        if (arrListDiscussion == null || arrListDiscussion.size() == 0) {
-            for (int i = 0; i < arrListDiscussionData.size(); i++) {
-                if (arrListDiscussionData.get(i).getDayName().equals(weekDay)) {
-                    strCurrentWeekDay = weekDay;
-                    showTopicDetails(i);
-                    break;
-                }
-            }
-        }
-    }
+		/**
+		 * Show topic details when no discussion done.
+		 */
+		if (arrListDiscussion == null || arrListDiscussion.size() == 0) {
+			for (int i = 0; i < arrListDiscussionData.size(); i++) {
+				if (arrListDiscussionData.get(i).getDayName().equals(weekDay)) {
+					strCurrentWeekDay = weekDay;
+					showTopicDetails(i);
+					break;
+				}
+			}
+		}
+	}
 
-    @Override
-    public void onResponse(Object object, Exception error, int apiCode) {
-        try {
-            switch (apiCode) {
-                case WebConstants.GET_GROUP_HISTORY:
-                    onResponseGetGroupHistory(object, error);
-                    break;
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "onResponse Exception : " + e.toString());
-        }
-    }
+	@Override
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.GET_GROUP_HISTORY:
+					onResponseGetGroupHistory(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
 
-    private void onResponseGetGroupHistory(Object object, Exception error) {
-        try {
-            if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
-                arrListDiscussionData = responseHandler.getGroupDiscussionData();
+	private void onResponseGetGroupHistory(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				arrListDiscussionData = responseHandler.getGroupDiscussionData();
 
-                String today = Utility.getDate();
-                for (int i = 0; i < arrListDiscussionData.size(); i++) {
-                    if (today.equals(Utility.DATE_FORMAT_API.format(Utility.DATE_FORMAT_MY_SQL.parse(arrListDiscussionData.get(i).getAssignedTime())))) {
-                        PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity(), arrListDiscussionData.get(i).getTutorialTopicId());
-                        break;
-                    }
-                }
-//				PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity(), arrListDiscussionData.get(1).getTutorialTopicId());
+				String today = Utility.getDate();
+				for (int i = 0; i < arrListDiscussionData.size(); i++) {
+					if (today.equals(Utility.DATE_FORMAT_API.format(Utility.DATE_FORMAT_MY_SQL.parse(arrListDiscussionData.get(i).getAssignedTime())))) {
+						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity(), arrListDiscussionData.get(i).getTutorialTopicId());
+						break;
+					}
+				}
+				PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity(), arrListDiscussionData.get(0).getTutorialTopicId());
 
 //				Save data
 				/*for (int i = 0; i < arrListDiscussionData.size(); i++) {

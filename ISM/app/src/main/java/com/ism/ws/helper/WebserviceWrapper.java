@@ -239,6 +239,9 @@ public class WebserviceWrapper {
                             case WebConstants.GET_FRIDAY_EXAM_QUESTIONS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_FRIDAY_EXAM_QUESTIONS).execute(ResponseHandler.class, attribute);
                                 break;
+                            case WebConstants.SUBMIT_STUDENT_OBJECTIVE_RESPONSE:
+                                responseObject = new WebserviceConnector(WebConstants.URL_SUBMIT_STUDENT_OBJECTIVE_RESPONSE).execute(ResponseHandler.class, attribute);
+                                break;
                             case WebConstants.GET_AUTHOR_BOOK_ASSIGNMENT:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_AUTHOR_BOOK_ASSIGNMENT).execute(ResponseHandler.class, attribute);
                                 break;

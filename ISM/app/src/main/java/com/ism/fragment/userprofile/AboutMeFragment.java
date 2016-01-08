@@ -266,7 +266,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
             Courses courses=new Courses();
             courses.setCourseName(user.getCourseName());
-            courses.setServerCourseId(Integer.parseInt(user.getCourseId() == null ? "0" : user.getCourseId()));
+            courses.setCourseId(Integer.parseInt(user.getCourseId() == null ? "0" : user.getCourseId()));
             studentHelper.saveCourse(courses);
             studentProfile.setCourse(courses);
 

@@ -12,5 +12,6 @@
 	<string name="no_pastimes_available">No pastimes available!</string>
 	<string name="no_blocked_users_available">No blocked users available!</string>
 	<string name="no_messages_found">No messages found!</string>
-	<string name="strNoMoreAuthorsAvailable">No more author\'s availalbe!</string>
+	<string name="no_more_authors_available">No more author\'s availalbe!</string>
+	<string name="no_assignment_available">No assignments available!</string>
 </resources>

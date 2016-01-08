@@ -35,7 +35,6 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.richeditor.Formula;
 import com.ism.richeditor.GridAdaptor;
-import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
 import com.ism.ws.helper.WebserviceWrapper;
@@ -119,7 +118,7 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
         rteNotes.getRichEditor().setEditorFontSize(20);
         rteNotes.getRichEditor().setOnTextChangeListener(this);
         rteNotes.setRichTextListener(this);
-        rteNotes.setHtml(richtext);
+//        rteNotes.setHtml(richtext);
 
         testHorizontalScrollView = (HorizontalScrollView) view.findViewById(R.id.horizontal_rich_editor_top_options);
         testHorizontalScrollView.setVisibility(View.GONE);
@@ -164,7 +163,6 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
                     } else {
                         etSubject.setEnabled(true);
                         imgEdit.setActivated(true);
-                        rteNotes.setVisibility(View.VISIBLE);
                         testHorizontalScrollView.setVisibility(View.VISIBLE);
                     }
                 } else {
