@@ -8,6 +8,7 @@ import com.realm.ismrealm.RealmAdaptor;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.AdminConfig;
+import model.teachermodel.ClassPerformanceRealmModel;
 
 /**
  * Created by c166 on 16/12/15.
@@ -59,6 +60,17 @@ public class TeacherHelper {
     }
 
     /**
+     *  This method is used to store the classPerformance response into table.
      *
+     * @param realmClassPerformance is returned from GetRealmDataModel.getRealmClassPerformance
      */
+    public void addClassPerformance(ClassPerformanceRealmModel realmClassPerformance) {
+        try {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(realmClassPerformance);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.e(TAG, "addFeedsData Exception : " + e.toString());
+        }
+    }
 }

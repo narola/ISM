@@ -35,6 +35,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.activity.TeacherHostActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,6 +45,8 @@ import java.util.Locale;
  * Created by c161 on 12/10/15.
  */
 public class Utility {
+
+    private static final String TAG = Utility.class.getSimpleName();
 
     public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_DISPLAY = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -419,4 +422,21 @@ public class Utility {
             dialogOffline = alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_offline));
         }
     }
+
+
+
+    public static Date getRealmDateFormat(String date) {
+
+        Date realmDateFormat = null;
+        try {
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            realmDateFormat = format.parse(date);
+        } catch (Exception e) {
+            Log.e("Realm", "Date exception");
+        }
+        Log.e(TAG, "The realmDate format is::" + realmDateFormat);
+        return realmDateFormat;
+    }
+
+
 }

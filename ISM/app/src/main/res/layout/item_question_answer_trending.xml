@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rr_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.ism.views.CircleImageView
+        android:id="@+id/img_user_pic"
+        android:layout_width="@dimen/circlularImage_user_question_tending"
+        android:layout_height="@dimen/circlularImage_user_question_tending"
+        android:layout_marginLeft="@dimen/dp20"
+        android:layout_marginRight="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp5"
+        android:src="@drawable/img_default_dp" />
+
+    <TextView
+        android:id="@+id/txt_user_name"
+        android:layout_width="@dimen/circlularImage_user_question_tending"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_user_pic"
+        android:layout_marginLeft="@dimen/dp20"
+        android:layout_marginRight="@dimen/dp20"
+        android:gravity="center"
+        android:padding="@dimen/dp5"
+        android:text="Adam"
+        android:textColor="@color/green"
+        android:textSize="@dimen/sp15" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5"
+        android:layout_marginLeft="@dimen/dp20"
+        android:layout_marginRight="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp5"
+        android:layout_toRightOf="@id/img_user_pic"
+        android:ellipsize="end"
+        android:lines="5"
+        android:padding="@dimen/dp5"
+        android:text="Questions"
+        android:textSize="@dimen/sp15" />
+
+    <TextView
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp2"
+        android:layout_below="@id/txt_user_name"
+        android:layout_margin="@dimen/dp10"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10"
+        android:background="@color/divider" />
+
+    <TextView
+        android:id="@+id/txt_author_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line"
+        android:layout_marginLeft="@dimen/dp10"
+        android:padding="@dimen/dp5"
+        android:text="Author ansswer"
+        android:textColor="@color/cpb_blue_dark"
+        android:textSize="@dimen/sp17" />
+
+    <ImageView
+        android:id="@+id/img_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/line"
+        android:layout_marginRight="@dimen/dp10"
+        android:src="@drawable/img_like" />
+
+    <TextView
+        android:id="@+id/txt_total_likes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/line"
+        android:layout_marginRight="@dimen/dp5"
+        android:layout_marginTop="@dimen/dp5"
+        android:layout_toStartOf="@+id/img_like"
+        android:gravity="center"
+        android:text="10"
+        android:textColor="@color/green"
+        android:textSize="@dimen/sp17" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_author_answer"
+        android:layout_below="@id/txt_author_name"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10"
+        android:background="@drawable/bg_white_border_gray" />
+</RelativeLayout>

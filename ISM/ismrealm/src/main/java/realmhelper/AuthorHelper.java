@@ -486,12 +486,12 @@ public class AuthorHelper {
      */
     public void saveAuthorProfile(AuthorProfile authorProfile) {
         try {
-            Number id = realm.where(AuthorProfile.class).max("localAuthorId");
-            long newId = 1;
-            if (id != null) {
-                newId = (long) id + 1;
-            }
-            authorProfile.setLocalAuthorId((int) newId);
+//            Number id = realm.where(AuthorProfile.class).max("localAuthorId");
+//            long newId = 1;
+//            if (id != null) {
+//                newId = (long) id + 1;
+//            }
+//            authorProfile.setLocalAuthorId((int) newId);
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(authorProfile);
             realm.commitTransaction();

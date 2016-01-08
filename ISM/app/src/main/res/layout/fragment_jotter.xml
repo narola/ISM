@@ -135,7 +135,6 @@
                 android:layout_below="@id/txt_by"
                 android:visibility="visible"
                 android:background="@color/gray_light"
-                android:gravity="top|left"
                 android:padding="@dimen/dp8"
                 />
         </RelativeLayout>

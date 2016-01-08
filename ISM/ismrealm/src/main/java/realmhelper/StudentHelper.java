@@ -41,6 +41,7 @@ public class StudentHelper {
      * use to save user data in ISM database.
      */
     public void saveUser(User user) {
+        Log.e(TAG,"saveUser : "+user.getUserId());
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(user);
         realm.commitTransaction();
@@ -137,16 +138,17 @@ public class StudentHelper {
      * else return the single record of @param feedId
      *
      * @param feedId
+     * @param userId
      * @return
      */
-    public RealmResults<Feeds> getFeeds(final int feedId) {
+    public RealmResults<Feeds> getFeeds(final int feedId, final int userId) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 if (feedId != -1) {
-                    feedsRealmResults = realm.where(Feeds.class).equalTo("feedId", feedId).findAll();
+                    feedsRealmResults = realm.where(Feeds.class).equalTo("feedId", feedId).equalTo("user.userId", userId).findAll();
                 } else {
-                    feedsRealmResults = realm.where(Feeds.class).findAll();
+                    feedsRealmResults = realm.where(Feeds.class).equalTo("user.userId", userId).findAll();
                 }
             }
         });
@@ -221,12 +223,18 @@ public class StudentHelper {
         realm.commitTransaction();
     }
 
-    public RealmResults<Feeds> getFeedLikes(boolean statusUpdation) {
-//    public RealmResults<Feeds> getFeedLikes(Date lastSynch, Date modified) {
+    /**
+     *
+     * @param statusUpdation
+     * @return
+     */
+    public RealmResults<Feeds> managedFeedLikeStatus(boolean statusUpdation) {
+//    public RealmResults<Feeds> managedFeedLikeStatus(Date lastSynch, Date modified) {
         realm.beginTransaction();
         RealmResults<Feeds> feedsRealmResults = realm.where(Feeds.class).equalTo("isSync", 1).findAll();
-        Log.i(TAG, "getFeedLikes feedsRealmResults.size: " + feedsRealmResults.size());
+        Log.i(TAG, "managedFeedLikeStatus feedsRealmResults.size: " + feedsRealmResults.size());
         if (statusUpdation) {
+            //after sync
             for (int i = 0; i < feedsRealmResults.size(); i++)
                 feedsRealmResults.get(i).setIsSync(0);
         }
@@ -238,6 +246,21 @@ public class StudentHelper {
         }
     }
 
+//    public RealmResults<Feeds> getUpdatedFeedLikeStatus() {
+//        realm.beginTransaction();
+//        RealmResults<Feeds> feedsRealmResults = realm.where(Feeds.class).equalTo("isSync", 1).findAll();
+//
+//        Log.e(TAG, "managedFeedLikeStatus feedsRealmResults.size: " + feedsRealmResults.size());
+//
+//        realm.commitTransaction();
+//        if (feedsRealmResults.size() == 0) {
+//            return null;
+//        } else {
+//            return feedsRealmResults;
+//        }
+//    }
+
+
     /**
      * store feed related comments
      *
@@ -248,7 +271,7 @@ public class StudentHelper {
         try {
             Feeds feeds = feedComment.getFeed();
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(feedComment);
+           realm.copyToRealmOrUpdate(feedComment);
             feeds.getComments().add(feedComment);
             realm.commitTransaction();
         } catch (Exception e) {
@@ -272,18 +295,6 @@ public class StudentHelper {
             Log.e(TAG, "saveFeedImages Exceptions : " + e.getLocalizedMessage());
         }
     }
-
-//    public void saveAllComments(FeedComment feedComment, int feedId) {
-//        try {
-//            Feeds toUpdateFeeds = realm.where(Feeds.class).equalTo("feedId", feedId).findFirst();
-//            realm.beginTransaction();
-//            realm.copyToRealmOrUpdate(feedComment);
-//            toUpdateFeeds.getComments().add(feedComment);
-//            realm.commitTransaction();
-//        } catch (Exception e) {
-//            Log.i(TAG, "saveAllComments Exceptions : " + e.getLocalizedMessage());
-//        }
-//    }
 
     public void saveTutorialGroupDiscussion(TutorialGroupDiscussion tutorialGroupDiscussion) {
         try {
@@ -319,13 +330,7 @@ public class StudentHelper {
 
     public void saveSubjects(Subjects subjects) {
         try {
-            Number subjectId = realm.where(Subjects.class).max("subjectId");
-            long newId = 1;
-            if (subjectId != null) {
-                newId = (long) subjectId + 1;
-            }
             realm.beginTransaction();
-            subjects.setSubjectId((int) newId);
             realm.copyToRealmOrUpdate(subjects);
             realm.commitTransaction();
         } catch (Exception e) {
@@ -386,12 +391,12 @@ public class StudentHelper {
      */
     public void saveAuthorProfile(AuthorProfile authorProfile) {
         try {
-            Number id = realm.where(AuthorProfile.class).max("localAuthorId");
-            long newId = 1;
-            if (id != null) {
-                newId = (long) id + 1;
-            }
-            authorProfile.setLocalAuthorId((int) newId);
+//            Number id = realm.where(AuthorProfile.class).max("localAuthorId");
+//            long newId = 1;
+//            if (id != null) {
+//                newId = (long) id + 1;
+//            }
+//            authorProfile.setLocalAuthorId((int) newId);
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(authorProfile);
             realm.commitTransaction();
@@ -447,12 +452,7 @@ public class StudentHelper {
      */
     public void saveSchool(School school) {
         try {
-            Number schoolId = realm.where(School.class).max("localSchoolId");
-            long newId = 1;
-            if (schoolId != null) {
-                newId = (long) schoolId + 1;
-            }
-            school.setLocalSchoolId((int) newId);
+
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(school);
             realm.commitTransaction();
@@ -468,12 +468,6 @@ public class StudentHelper {
      */
     public void saveClassRoom(Classrooms classroom) {
         try {
-            Number classRoomId = realm.where(Classrooms.class).max("localClassRoomId");
-            long newId = 1;
-            if (classRoomId != null) {
-                newId = (long) classRoomId + 1;
-            }
-            classroom.setLocalClassRoomId((int) newId);
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(classroom);
             realm.commitTransaction();
@@ -489,13 +483,6 @@ public class StudentHelper {
      */
     public void saveCourse(Courses courses) {
         try {
-
-            Number courseId = realm.where(Courses.class).max("localCourseId");
-            long newId = 1;
-            if (courseId != null) {
-                newId = (long) courseId + 1;
-            }
-            courses.setLocalCourseId((int) newId);
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(courses);
             realm.commitTransaction();

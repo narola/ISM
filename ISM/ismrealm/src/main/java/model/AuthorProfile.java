@@ -13,7 +13,6 @@ import io.realm.annotations.PrimaryKey;
 public class AuthorProfile extends RealmObject {
 
     @PrimaryKey
-    private  int localAuthorId;
     private  int serverAuthorId;
     private String education;
     private String aboutAuthor;
@@ -63,14 +62,6 @@ public class AuthorProfile extends RealmObject {
 
     public void setTotalBooks(int totalBooks) {
         this.totalBooks = totalBooks;
-    }
-
-    public int getLocalAuthorId() {
-        return localAuthorId;
-    }
-
-    public void setLocalAuthorId(int localAuthorId) {
-        this.localAuthorId = localAuthorId;
     }
 
     public String getEducation() {
