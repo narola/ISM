@@ -218,7 +218,7 @@ public class Utility {
         try {
             return new DisplayImageOptions.Builder()
                     .cacheInMemory(true)
-                    .showImageOnLoading(R.drawable.ic_classmates_active)
+                    .showImageOnLoading(placeholder)
                     .showImageForEmptyUri(placeholder)
                     .showImageOnFail(failed)
                     .cacheOnDisk(true)
@@ -468,10 +468,10 @@ public class Utility {
 
     public static Date getRealmDateFormat(String date) {
 
-        Date realmDateFormat = new Date();
+        Date realmDateFormat = null;
         try {
-            DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            realmDateFormat = targetFormat.parse(date);
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            realmDateFormat = format.parse(date);
         } catch (Exception e) {
             Log.e("Realm", "Date exception");
         }

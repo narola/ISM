@@ -8,13 +8,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_white"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="@dimen/dp187"
             android:layout_height="@dimen/dp458"
-            android:background="@color/color_white"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -104,7 +104,7 @@
                 android:id="@+id/et_contactNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_white"
+                android:background="@color/white"
                 android:drawableLeft="@drawable/call"
                 android:drawablePadding="@dimen/dp8"
                 android:inputType="phone"
@@ -115,7 +115,7 @@
                 android:id="@+id/et_dob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_white"
+                android:background="@color/white"
                 android:drawableLeft="@drawable/birthday"
                 android:drawablePadding="@dimen/dp8"
                 android:padding="@dimen/dp8"
@@ -627,7 +627,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/txt_your_ambition"
                         android:layout_margin="@dimen/dp8"
-                        android:background="@color/color_white"
+                        android:background="@color/white"
                         android:drawableLeft="@drawable/plus"
                         android:drawableRight="@drawable/aroow_gray"
                         android:gravity="center_vertical"
@@ -687,7 +687,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/txt_your_ambition"
                         android:layout_margin="@dimen/dp8"
-                        android:background="@color/color_white"
+                        android:background="@color/white"
                         android:drawableLeft="@drawable/plus"
                         android:drawableRight="@drawable/aroow_gray"
                         android:gravity="center_vertical"

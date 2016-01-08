@@ -755,27 +755,30 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						PreferenceData.setStringPrefs(PreferenceData.USER_NAME, this, etUserName.getText().toString().trim());
 
 						saveUserDataToRealm(responseHandler.getUser());
+						
+						if (responseHandler.getUser().get(0).getTutorialGroupId() == null) {
+							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);
+							launchWelcomeActivity();
+						} else {
+							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, true);
 
-//						if (responseHandler.getUser().get(0).getTutorialGroupId() == null) {
-//							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);
-//							launchWelcomeActivity();
-//						} else {
-//							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, true);
-//
-//							if (responseHandler.getUser().get(0).getTutorialGroupJoiningStatus().equals("1")) {
-						PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
-//
-//								if (responseHandler.getUser().get(0).getTutorialGroupComplete().equals("1")) {
+							if (responseHandler.getUser().get(0).getTutorialGroupJoiningStatus().equals("1")) {
+								PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
+
+								if (responseHandler.getUser().get(0).getTutorialGroupComplete().equals("1")) {
 									PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this, true);
 									launchHostActivity();
-//								} else {
-//									launchAcceptTutorialGroupActivity();
-//								}
-//							} else {
-//								PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, false);
-//								launchAcceptTutorialGroupActivity();
-//							}
-//						}
+								} else {
+									launchAcceptTutorialGroupActivity();
+								}
+							} else {
+								PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, false);
+								launchAcceptTutorialGroupActivity();
+							}
+						}
+						/*PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
+						PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this, true);
+						launchHostActivity();*/
 
 					}
 

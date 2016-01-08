@@ -112,6 +112,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_MY_FEEDS = 14;
     public static final int FRAGMENT_MY_STUDENTS = 15;
     public static final int FRAGMENT_MY_ACTIVITY = 16;
+//    public static final int FRAGMENT_GRADES_FRAGMENT = 17;
     /**
      * ============================Constant Block end========================================================
      */
@@ -451,6 +452,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_STUDENT_ATTEMPTED:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedFragment.newInstance(null)).commit();
                     break;
+
             }
 
         } catch (Exception e) {

@@ -38,7 +38,7 @@ public class AlarmReceiver extends BroadcastReceiver implements WebserviceWrappe
 
 		if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
 
-			if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_DATE, context, "").equals(Utility.getDate())
+			if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_SET_DATE, context, "").equals(Utility.getDate())
 					&& !PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, context)) {
 //			if (!PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, context)) {
 
@@ -109,7 +109,6 @@ public class AlarmReceiver extends BroadcastReceiver implements WebserviceWrappe
 						notificationManager.notify(AppConstant.ID_NOTIFICATION_FRIDAY_EXAM, notificationBuilder.build());
 					} else {
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, context, false);
-						Toast.makeText(context, "exam not ready", Toast.LENGTH_SHORT).show();
 					}
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseCheckFridayExamStatus failed : " + responseHandler.getMessage());

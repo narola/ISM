@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.constant.WebConstants;
 import com.ism.ws.model.AnswerChoice;
 import com.ism.ws.model.Preferences;
+import com.ism.ws.model.Question;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -111,6 +112,8 @@ public class Attribute {
     private String postedOn;
 	private String authorId;
 	private String bookId;
+	private int examId;
+	private ArrayList<Question> question;
 	private String followerId;
 	private String followTo;
 
@@ -818,6 +821,24 @@ public class Attribute {
 		this.bookId = bookId;
 	}
 
+	@JsonProperty("exam_id")
+	public int getExamId() {
+		return this.examId;
+	}
+
+	public void setExamId(int examId) {
+		this.examId = examId;
+	}
+
+	@JsonProperty("question")
+	public ArrayList<Question> getQuestion() {
+		return this.question;
+	}
+
+	public void setQuestion(ArrayList<Question> question) {
+		this.question = question;
+	}
+
 	@JsonProperty("follower_id")
 	public void setFollowerId(String followerId) {
 		this.followerId = followerId;
@@ -835,4 +856,5 @@ public class Attribute {
 	public String getFollowTo() {
 		return followTo;
 	}
+
 }

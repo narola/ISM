@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Progress Report-->
+    <color name="color_green_report">#26AE62</color>
+    <color name="color_grades_text">#6C747F</color>
+    <color name="color_percent_red">#BB56A6</color>
+    <color name="color_score_obtained_bg">#F5F5F5</color>
+
     <!-- Teacher Login-->
     <color name="color_pink">#FE84C1</color>
     <color name="color_blue">#41B1E3</color>
@@ -139,5 +145,9 @@
     <!-- notification-->
     <color name="color_gray_light">#F5F5F5</color>
     <color name="divider_light">#EEEEEE</color>
+
+
+    <color name="color_online">#26A50E</color>
+    <color name="color_offline">#313840</color>
 
 </resources>

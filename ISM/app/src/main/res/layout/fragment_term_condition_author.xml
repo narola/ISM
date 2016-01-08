@@ -65,7 +65,7 @@
         android:paddingRight="@dimen/dp20"
         android:text="@string/strsubmit"
         android:textAllCaps="true"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/sp15"
         app:pb_colorComplete="@color/color_blue"
         app:pb_colorNormal="@color/color_blue"

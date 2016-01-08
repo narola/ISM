@@ -447,7 +447,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         Cursor cursor = getContentResolver().
                 query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                         column, sel, new String[]{id}, null);
-        if(cursor==null){
+        if (cursor == null) {
             cursor = getContentResolver().
                     query(MediaStore.Audio.Media.INTERNAL_CONTENT_URI,
                             column, sel, new String[]{id}, null);

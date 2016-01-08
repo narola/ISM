@@ -18,7 +18,6 @@ public class FridayExamAnswer {
     private String questionId;
     private String audioLink;
     private String videoLink;
-    private boolean isAnswer;
     private boolean isSelected;
 
     @JsonProperty("image_link")
@@ -85,11 +84,7 @@ public class FridayExamAnswer {
     }
 
 	public boolean isAnswer() {
-		return isAnswer;
-	}
-
-	public void setIsAnswer(boolean isAnswer) {
-		this.isAnswer = isAnswer;
+		return isRight.equals("1");
 	}
 
 	public boolean isSelected() {

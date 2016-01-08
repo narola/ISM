@@ -50,11 +50,11 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.txtCommenterUsername.setText(arrListComment.get(position).getFullName());
         holder.txtCommenterComment.setText(arrListComment.get(position).getComment());
-        holder.txtCommentDuration.setText("5 min");
+        holder.txtCommentDuration.setText(com.ism.commonsource.utility.Utility.getTimeDuration(arrListComment.get(position).getCreatedDate()));
 
 
         if (arrListComment.get(position).getProfilePic() != null && arrListComment.get(position).getProfilePic() != "") {
-            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrListComment.get(position).getComment(),
+            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrListComment.get(position).getProfilePic(),
                     holder.imgCommenterDp, ISMAuthor.options);
         } else {
             holder.imgCommenterDp.setImageResource(R.drawable.userdp);

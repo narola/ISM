@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.utility.Utility;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.Studymates;
@@ -72,9 +73,12 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
         });
 
 
-        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgStudymateDp, ISMAuthor.options);
-
-
+        if (arrListStudyMates.get(position).getProfilePic() != null && arrListStudyMates.get(position).getProfilePic() != "") {
+            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrListStudyMates.get(position).getProfilePic(),
+                    holder.imgStudymateDp, ISMAuthor.options);
+        } else {
+            holder.imgStudymateDp.setImageResource(R.drawable.userdp);
+        }
     }
 
     public void addAll(ArrayList<Studymates> studyMates) {
@@ -127,7 +131,6 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
                 }
             }
             if (arrListStudyMates.size() == 0) {
-                Utility.showToast(mContext.getString(R.string.strnoresult), mContext);
             }
         }
         notifyDataSetChanged();

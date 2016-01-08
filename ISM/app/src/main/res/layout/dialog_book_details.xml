@@ -22,7 +22,7 @@
         android:gravity="center"
         android:padding="@dimen/dp8"
         android:text="Book Details"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/sp19" />
 
     <ScrollView
@@ -229,6 +229,6 @@
         android:paddingRight="25dp"
         android:paddingTop="@dimen/dp8"
         android:text="@string/strclose"
-        android:textColor="@color/color_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/sp15" />
 </RelativeLayout>

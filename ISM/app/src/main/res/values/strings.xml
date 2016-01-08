@@ -611,7 +611,6 @@
 	<string name="strfollowers">Followers</string>
 	<string name="strFindMoreAuthors">Find more Authors</string>
 	<string name="strMyAuthors">My Authors</string>
-	<string name="strMyAuthor_s">My Author\'s</string>
 	<string name="strmydesk">My Desk</string>
 	<string name="strgotrending">Go Trending</string>
 	<string name="strmy30th">My 30th</string>
@@ -637,4 +636,6 @@
 	<string name="strMyAuthor_sDesk">Author\'s Desk</string>
 	<string name="strQuestionTrendingForThisWeek">Questions trending for this week</string>
 	<string name="strSendQuestionTo">Send Question To</string>
+	<string name="tip">Tip :</string>
+	<string name="question">"Question : "</string>
 </resources>

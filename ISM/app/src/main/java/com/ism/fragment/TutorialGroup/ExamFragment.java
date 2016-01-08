@@ -36,25 +36,12 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 	private static final String TAG = ExamFragment.class.getSimpleName();
 
 	private View view;
-	private RelativeLayout rlInstruction;
-	private RelativeLayout rlQuestion;
-	private TextView txtHeader;
-	private TextView txtInstruct;
-	private TextView txtSubject;
-	private TextView txtQuestion;
+	private RelativeLayout rlInstruction, rlQuestion;
+	private TextView txtHeader, txtInstruct, txtSubject, txtQuestion;
 	private RadioGroup rgOptions;
-	private RadioButton rbOption1;
-	private RadioButton rbOption2;
-	private RadioButton rbOption3;
-	private RadioButton rbOption4;
-	private RadioButton rbOption5;
-	private RadioButton rbOption6;
+	private RadioButton rbOption1, rbOption2, rbOption3, rbOption4, rbOption5, rbOption6;
 	private WebView wvInstructions;
-	private Button btnStartTest;
-	private Button btnReviewLater;
-	private Button btnClearResponse;
-	private Button btnSkip;
-	private Button btnSaveNNext;
+	private Button btnStartTest, btnReviewLater, btnClearResponse, btnSkip, btnSaveNNext;
 
 	private RadioButton rbOptions[];
 
@@ -70,7 +57,7 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 	private boolean isOptionsLoading = false;
 
 	public interface ExamListener {
-		public void startTest(ArrayList<FridayExamQuestion> questions, ExamFragment examFragment);
+		public void startTest(ArrayList<FridayExamQuestion> questions, String examId, ExamFragment examFragment);
 		public void onQuestionSet(int position);
 	}
 
@@ -248,7 +235,7 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 		txtHeader.setText(fridayExam.getExamName() + " - " + fridayExam.getId());
 		txtInstruct.setText(R.string.choose_answer);
 		if (listenerExam != null) {
-			listenerExam.startTest(arrListQuestions, this);
+			listenerExam.startTest(arrListQuestions, fridayExam.getId(), this);
 		}
 		setQuestion(intCurrentQuestionIndex);
 	}

@@ -73,4 +73,5 @@ public class AppConstant {
      */
 
     public static final String DATE_YYYYMMDD = "yyyy-mm-dd";
+    public static final int PENDING_INTENT_ID = 0;
 }
