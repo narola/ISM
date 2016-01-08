@@ -19,6 +19,7 @@ public class Feeds extends RealmObject {
     @PrimaryKey
     private int feedId;
     private User feedBy;
+    private User user;
     private String feedText;
     private String videoLink;
     private String videoThumbnail;
@@ -35,6 +36,13 @@ public class Feeds extends RealmObject {
     private RealmList<FeedComment> comments = new RealmList<FeedComment>();
     private RealmList<FeedImage> feedImages = new RealmList<FeedImage>();
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public int getFeedId() {
         return feedId;

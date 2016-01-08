@@ -48,7 +48,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     private PostFeedsAdapter adpPostFeeds;
     private HostActivity activityHost;
     private StudentHelper studentHelper;
-    private Handler mHandler=new Handler();
+    private Handler mHandler = new Handler();
 
     public static ClassWallFragment newInstance() {
         ClassWallFragment fragment = new ClassWallFragment();
@@ -92,7 +92,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
             callApiGetAllFeeds();
         } else {
             Utility.alertOffline(getActivity());
-            setUpData(studentHelper.getFeeds(-1));
+            setUpData(studentHelper.getFeeds(-1, Integer.parseInt(Global.strUserId)));
         }
 //        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
 //            recyclerPostFeeds.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -102,7 +102,6 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 //                }
 //            });
 //        }
-
 
 
         rlNewPost.setOnClickListener(new View.OnClickListener() {
@@ -137,10 +136,10 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
             if (Utility.isConnected(getActivity())) {
                 //activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                ArrayList<String> likedId=new ArrayList<>();
-                ArrayList<String> unlikedId=new ArrayList<>();
+                ArrayList<String> likedId = new ArrayList<>();
+                ArrayList<String> unlikedId = new ArrayList<>();
                 RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes(false);
-                Log.e(TAG,"realmResSyncFeedLikes size : "+studentHelper.getFeedLikes(false).size());
+                Log.e(TAG, "realmResSyncFeedLikes size : " + studentHelper.getFeedLikes(false).size());
 //                RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.getFeedLikes(Utility.getDateFormateMySql("2015-12-16 9:41:42"), Utility.getDateMySql());
                 if (realmResSyncFeedLikes.size() > 0) {
                     for (int i = 0; i < realmResSyncFeedLikes.size(); i++) {
@@ -199,7 +198,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                         .execute(WebConstants.GET_ALL_FEEDS);
             } else {
                 Utility.alertOffline(getActivity());
-                setUpData(studentHelper.getFeeds(-1));
+                setUpData(studentHelper.getFeeds(-1, Integer.parseInt(Global.strUserId)));
             }
 
         } catch (Exception e) {
@@ -250,8 +249,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     if (responseHandler.getFeeds().size() != 0) {
                         ParseAllData(responseHandler.getFeeds());
-                        adpPostFeeds = new PostFeedsAdapter(getActivity(), studentHelper.getFeeds(-1));
-                        Log.e(TAG, "arrayList size : " + studentHelper.getFeeds(-1).size());
+                        adpPostFeeds = new PostFeedsAdapter(getActivity(), studentHelper.getFeeds(-1,Integer.parseInt(Global.strUserId)));
                         recyclerPostFeeds.setAdapter(adpPostFeeds);
 
                         //setUpData(studentHelper.getFeeds(-1));
@@ -268,17 +266,24 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     }
 
     private void ParseAllData(ArrayList<Feeds> arrayList) {
-        int i = 0;
         try {
-            for (i = 0; i < arrayList.size(); i++) {
+            for (int i = 0; i < arrayList.size(); i++) {
+                Log.e(TAG,"I item : " +i);
                 model.Feeds feeds = new model.Feeds();
                 feeds.setFeedId(Integer.parseInt(arrayList.get(i).getFeedId()));
-                User feedBy = new User();
-                feedBy.setUserId(Integer.parseInt(arrayList.get(i).getUserId()));
-                feedBy.setFullName(arrayList.get(i).getFullName());
-                feedBy.setProfilePicture(arrayList.get(i).getProfilePic());
-                studentHelper.saveUser(feedBy);
-                feeds.setFeedBy(feedBy);
+                feeds.setUser(studentHelper.getUser(Integer.parseInt(arrayList.get(i).getUserId())));
+                User feedBy = studentHelper.getUser(Integer.parseInt(arrayList.get(i).getFeedBy()));
+                if (feedBy == null) {
+                    feedBy = new User();
+                    feedBy.setUserId(Integer.parseInt(arrayList.get(i).getFeedBy()));
+                    feedBy.setFullName(arrayList.get(i).getFullName());
+                    feedBy.setProfilePicture(arrayList.get(i).getProfilePic());
+                    studentHelper.saveUser(feedBy);
+                    feeds.setFeedBy(feedBy);
+                }
+                else{
+                    feeds.setFeedBy(feedBy);
+                }
                 feeds.setFeedText(arrayList.get(i).getFeedText());
                 //feeds.setProfilePic(arrayList.get(i).getProfilePic());
                 feeds.setAudioLink(arrayList.get(i).getAudioLink());
@@ -292,6 +297,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                 feeds.setSelfLike(arrayList.get(i).getLike());
                 feeds.setIsSync(0);
                 feeds.setPostedOn(Utility.getDateFormate(arrayList.get(i).getLike()));
+                studentHelper.saveFeeds(feeds);
                 ArrayList<Comment> arrayListComment = arrayList.get(i).getComments();
                 if (arrayListComment.size() > 0) {
                     for (int j = 0; j < arrayListComment.size(); j++) {
@@ -299,16 +305,22 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                         feedComment.setFeedCommentId(Integer.parseInt(arrayListComment.get(j).getId()));
                         feedComment.setComment(arrayListComment.get(j).getComment());
                         feedComment.setFeed(feeds);
-
-                        User user = new User();
-                        user.setUserId(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
-                        user.setFullName(arrayListComment.get(j).getFullName());
-                        user.setProfilePicture(arrayListComment.get(j).getProfilePic());
-                        studentHelper.saveUser(user);
-                        feedComment.setCommentBy(user);
+                        User commentBy = studentHelper.getUser(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
+                        if (commentBy == null) {
+                            commentBy = new User();
+                            commentBy.setUserId(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
+                            commentBy.setFullName(arrayListComment.get(j).getFullName());
+                            commentBy.setProfilePicture(arrayListComment.get(j).getProfilePic());
+                            studentHelper.saveUser(commentBy);
+                            feedComment.setCommentBy(commentBy);
+                        }
+                        else{
+                            feedComment.setCommentBy(commentBy);
+                        }
+                        feedComment.setFeed(feeds);
                         feedComment.setCreatedDate(Utility.getDateFormateMySql(arrayListComment.get(j).getCreatedDate()));
-                        studentHelper.saveComments(feedComment);
-                        // feeds.getComments().add(feedComment);
+                        //studentHelper.saveComments(feedComment);
+                        feeds.getComments().add(feedComment);
                     }
                 }
                 ArrayList<FeedImages> arrayListImages = arrayList.get(i).getFeedImages();
@@ -318,19 +330,13 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                         feedImage.setFeedImageId(Integer.parseInt(arrayListImages.get(j).getId()));
                         feedImage.setImageLink(arrayListImages.get(j).getImageLink());
                         feedImage.setFeed(feeds);
-                        studentHelper.saveFeedImages(feedImage);
-                        //feeds.getFeedImages().add(feedImage);
+                        //studentHelper.saveFeedImages(feedImage);
+                        feeds.getFeedImages().add(feedImage);
                     }
                 }
-                studentHelper.saveFeeds(feeds);
-//                FeedLike feedLike = new FeedLike();
-//                feedLike.setFeed(feeds);
-//                feedLike.setLikeBy(studentHelper.getUser(Global.strUserId));
-//                feedLike.setAssignedTime(Utility.getDateFormateMySql(arrayList.get(i).getAssignedTime()));
-                //  studentHelper.saveFeedLikes(feedLike);
             }
         } catch (Exception e) {
-            Log.e(TAG, i + "ParseAllData Exception : " + e.toString());
+            Log.e(TAG, "ParseAllData Exception : " + e.toString());
         }
     }
 

@@ -120,4 +120,5 @@
     <dimen name="author_tab_width">@dimen/dp236</dimen>
     <dimen name="margin_left_tutorial_triangle">@dimen/dp_n1</dimen>
     <dimen name="controller_search_width">@dimen/dp200</dimen>
+    <dimen name="trending_tab_height">@dimen/dp45</dimen>
 </resources>

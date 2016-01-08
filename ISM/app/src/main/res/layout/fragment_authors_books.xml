@@ -80,6 +80,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp225"
+        android:layout_marginTop="@dimen/dp10"
         android:background="@color/color_white"
         android:orientation="horizontal">
 
@@ -96,6 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/dp4"
+            android:visibility="visible"
             android:layout_marginRight="@dimen/dp4"
             android:layout_toLeftOf="@+id/img_next_fav"
             android:layout_toRightOf="@+id/img_prev_fav"

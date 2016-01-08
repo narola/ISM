@@ -507,7 +507,7 @@
                         android:text=""
                         android:textAllCaps="true"
                         android:textColor="@color/btn_save"
-                        android:textSize="@dimen/sp15" />
+                        android:textSize="@dimen/sp17" />
 
                     <TextView
                         android:id="@+id/txt_About_author_details"
@@ -520,7 +520,7 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/dp8"
                         android:textAlignment="gravity"
-                        android:textSize="@dimen/sp12" />
+                        android:textSize="@dimen/sp16" />
 
                     <TextView
                         android:id="@+id/txt_book_by_author"

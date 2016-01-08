@@ -69,7 +69,7 @@ public class FindMoreAuthorsFragment extends Fragment implements WebserviceWrapp
 
         txtEmptyView = (TextView) view.findViewById(R.id.txt_empty_view);
         txtEmptyView.setTypeface(Global.myTypeFace.getRalewayRegular());
-        txtEmptyView.setText(activityHost.getString(R.string.strNoMoreAuthorsAvailable));
+        txtEmptyView.setText(activityHost.getString(R.string.no_more_authors_available));
 
         findMoreAuthorAdapter = new FindMoreAuthorAdapter(this, getActivity());
         rvMyAuthorList.setAdapter(findMoreAuthorAdapter);
@@ -171,10 +171,11 @@ public class FindMoreAuthorsFragment extends Fragment implements WebserviceWrapp
                         arrListRecommendedAuthors.addAll(responseHandler.getAuthor());
                         findMoreAuthorAdapter.addAll(arrListRecommendedAuthors);
                         findMoreAuthorAdapter.notifyDataSetChanged();
-
-                        txtEmptyView.setVisibility(View.GONE);
+                        Utility.hideView(txtEmptyView);
+                        Utility.showView(rvMyAuthorList);
                     } else {
-                        txtEmptyView.setVisibility(View.VISIBLE);
+                        Utility.showView(txtEmptyView);
+                        Utility.hideView(rvMyAuthorList);
                     }
 
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {

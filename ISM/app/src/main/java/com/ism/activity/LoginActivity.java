@@ -754,6 +754,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupName());
 						PreferenceData.setStringPrefs(PreferenceData.USER_NAME, this, etUserName.getText().toString().trim());
 
+						saveUserDataToRealm(responseHandler.getUser());
+
 //						if (responseHandler.getUser().get(0).getTutorialGroupId() == null) {
 //							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);
 //							launchWelcomeActivity();
@@ -788,7 +790,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		}
 	}
 
-    private void ParseAllData(ArrayList<User> user) {
+    private void saveUserDataToRealm(ArrayList<User> user) {
         try {
             model.User userData = new model.User();
             userData.setUserId(Integer.parseInt(user.get(0).getUserId()));
@@ -804,7 +806,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
             studentHelper.saveUser(userData);
 
         } catch (Exception e) {
-            Log.e(TAG, "ParseAllData Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "saveUserDataToRealm Exception : " + e.getLocalizedMessage());
         }
     }
 

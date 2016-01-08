@@ -13,7 +13,6 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.myAuthor.AuthorOfficeTabGridAdapter;
 import com.ism.fragment.MyAuthorFragment;
-import com.ism.fragment.myAuthor.authorDesk.AuthorDeskFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.AuthorOfficeTabDataSet;
 import com.ism.utility.Debug;
@@ -103,42 +102,5 @@ public class AuthorOfficeFragment extends Fragment {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
-    }
-
-    public void loadFragment(int fragment) {
-
-        switch (fragment) {
-
-            case MyAuthorFragment.FRAGMENT_AUTHOR_DESK:
-                currentFragment = fragment;
-                AuthorDeskFragment authorDeskFragment = AuthorDeskFragment.newInstance();
-                getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, authorDeskFragment).commit();
-                //activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
-                break;
-
-            case MyAuthorFragment.FRAGMENT_GOTRENDING:
-                currentFragment = fragment;
-                // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GOTRENDING);
-                break;
-
-            case MyAuthorFragment.FRAGMENT_TRIAL:
-                currentFragment = fragment;
-                //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
-                break;
-
-            case MyAuthorFragment.FRAGMENT_MYTHIRTY:
-                currentFragment = fragment;
-                //  ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
-                break;
-
-            case MyAuthorFragment.FRAGMENT_AUTHOR_ASSESSMENT:
-                currentFragment = fragment;
-                // ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT);
-                break;
-        }
-    }
-
-    public void onTopControllerBackClick(int position) {
-        loadFragment(currentFragment);
     }
 }
