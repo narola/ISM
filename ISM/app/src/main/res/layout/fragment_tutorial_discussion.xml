@@ -178,9 +178,22 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
-			android:layoutDirection="rtl"
 			android:padding="@dimen/dp4"
 			android:layout_alignParentBottom="true">
+
+			<EditText
+				android:id="@+id/et_message"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:inputType="textMultiLine"
+				android:gravity="start"
+				android:hint="@string/say_it"
+				android:layout_margin="@dimen/dp4"
+				android:background="@android:color/transparent"
+				android:textSize="@dimen/sp14"
+				android:textColor="@color/bg_app_dark"
+				android:maxLines="3"/>
 
 			<Button
 				android:id="@+id/btn_send"
@@ -193,19 +206,6 @@
 				android:text="@string/send"
 				android:layout_gravity="bottom"
 				android:textColor="@color/white"/>
-
-			<EditText
-				android:id="@+id/et_message"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:inputType="textMultiLine"
-				android:gravity="start"
-				android:hint="@string/say_it"
-				android:layout_margin="@dimen/dp4"
-				android:background="@android:color/transparent"
-				android:textSize="@dimen/sp14"
-				android:textColor="@color/bg_app_dark"
-				android:maxLines="3"/>
 		</LinearLayout>
 	</RelativeLayout>
 

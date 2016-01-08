@@ -2,6 +2,7 @@ package com.ism.fragment.tutorialGroup;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,19 @@ import android.widget.TextView;
 
 import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.constant.WebConstants;
 import com.ism.object.Global;
+import com.ism.utility.PreferenceData;
 import com.ism.views.CircleImageView;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 /**
  * Created by c161 on 15/12/15.
  */
-public class TutorialSunFragment extends Fragment {
+public class TutorialSunFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 	private static final String TAG = TutorialSunFragment.class.getSimpleName();
 
@@ -82,6 +88,15 @@ public class TutorialSunFragment extends Fragment {
 		txtSchoolMember4.setTypeface(Global.myTypeFace.getRalewayRegular());
 		txtSchoolMember5.setTypeface(Global.myTypeFace.getRalewayRegular());
 
+		callApiAllocateTeacherToGroup();
+
+		txtTeacherName.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, SundayExamFragment.newInstance()).commit();
+			}
+		});
+
 		txtTeacherName.setText("Daniel finch");
 		txtTeacherSchool.setText("St. Xaviers School");
 		txtTeacherExperience.setText("Teaching since 9 yrs");
@@ -105,4 +120,46 @@ public class TutorialSunFragment extends Fragment {
 
 	}
 
+	private void callApiAllocateTeacherToGroup() {
+		try {
+			Attribute attribute = new Attribute();
+			attribute.setGroupId(Global.strTutorialGroupId);
+			attribute.setTutorialTopicId(PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity()));
+
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+					.execute(WebConstants.ALLOCATE_TEACHER_TO_GROUP);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiAllocateTeacherToGroup Excepiton : " + e.toString());
+		}
+	}
+
+	@Override
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.ALLOCATE_TEACHER_TO_GROUP:
+					onResponseAllocateTeacherToGroup(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Excepiton : " + e.toString());
+		}
+	}
+
+	private void onResponseAllocateTeacherToGroup(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "onResponseAllocateTeacherToGroup Failed message : " + responseHandler.getMessage());
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseAllocateTeacherToGroup Excepiton : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseAllocateTeacherToGroup Excepiton : " + e.toString());
+		}
+	}
 }

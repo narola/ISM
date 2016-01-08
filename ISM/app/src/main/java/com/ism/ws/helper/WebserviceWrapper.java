@@ -257,6 +257,9 @@ public class WebserviceWrapper {
                             case WebConstants.GET_RECOMMENDED_AUTHORS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_RECOMMENDED_AUTHORS).execute(ResponseHandler.class, attribute);
                                 break;
+                            case WebConstants.ALLOCATE_TEACHER_TO_GROUP:
+                                responseObject = new WebserviceConnector(WebConstants.URL_ALLOCATE_TEACHER_TO_GROUP).execute(ResponseHandler.class, attribute);
+                                break;
                         }
                     }
                 }

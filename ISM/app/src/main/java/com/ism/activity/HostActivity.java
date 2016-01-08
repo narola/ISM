@@ -1,6 +1,5 @@
 package com.ism.activity;
 
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -84,7 +83,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     private RelativeLayout rlControllerTopMenu;
     private LinearLayout llSearch;
     private ImageView imgHome, imgTutorial, imgClassroom, imgAssessment, imgDesk, imgReportCard, imgLogOut,
-            imgSearch, imgNotes, imgStudyMates, imgChat, imgMenuBack;
+            imgSearch, imgNotes, imgProfileController, imgChat, imgMenuBack;
     private TextView txtTitle, txtOne, txtTwo, txtThree, txtFour, txtFive, txtAction;
     private EditText etSearch;
     private Spinner spSubmenu;
@@ -138,9 +137,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     public static final int FRAGMENT_ALL_MESSAGE = 16;
     public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 17;
     public static final int FRAGMENT_EDIT_PROFILE = 18;
-
-
     public static final int FRAGMENT_JOTTER_SCIENTIFIC_SYMBOL = 19;
+    public static final int FRAGMENT_SUNDAY_EXAM = 20;
+
+
     private int currentMainFragment = -1;
     private int currentRightFragment;
 	private int relaunchRightFragmentId = -1;
@@ -300,7 +300,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         imgLogOut = (ImageView) findViewById(R.id.img_logout);
         imgSearch = (ImageView) findViewById(R.id.img_search);
         imgNotes = (ImageView) findViewById(R.id.img_notes);
-        imgStudyMates = (ImageView) findViewById(R.id.img_author_profile);
+        imgProfileController = (ImageView) findViewById(R.id.img_profile_controller);
         imgChat = (ImageView) findViewById(R.id.img_chat);
         imgMenuBack = (ImageView) findViewById(R.id.img_back);
         txtTitle = (TextView) findViewById(R.id.txt_title);
@@ -441,11 +441,11 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
             }
         });
 
-        imgStudyMates.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(FRAGMENT_PROFILE_CONTROLLER, null);
-            }
+        imgProfileController.setOnClickListener(new View.OnClickListener() {
+	        @Override
+	        public void onClick(View v) {
+		        loadFragment(FRAGMENT_PROFILE_CONTROLLER, null);
+	        }
         });
 
         imgChat.setOnClickListener(new View.OnClickListener() {
@@ -541,7 +541,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                         fragmentTransaction.addToBackStack(QuestionPaletteFragment.class.getSimpleName());
                         fragmentTransaction.replace(R.id.fl_fragment_container_right, questionPaletteFragment).commit();
                         imgNotes.setActivated(false);
-                        imgStudyMates.setActivated(false);
+                        imgProfileController.setActivated(false);
                         imgChat.setActivated(false);*/
                     } else if (fragmentArguments != null) {
 	                    if (listenerHostTutorial != null) {
@@ -704,7 +704,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     break;
                 case FRAGMENT_PROFILE_CONTROLLER:
                     currentRightFragment = fragment;
-                    imgStudyMates.setActivated(true);
+                    imgProfileController.setActivated(true);
                     if (listenerProfileControllerPresence != null) {
                         listenerProfileControllerPresence.onProfileControllerAttached();
                     }
@@ -778,6 +778,11 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
               //  case AuthorDeskFragment.FRAGMENT_BOOKS:
                     currentChildAuthorDesk = fragment;
                     break;
+                case FRAGMENT_SUNDAY_EXAM:
+                    llControllerLeft.setVisibility(View.GONE);
+	                flFragmentContainerRight.setVisibility(View.GONE);
+                    break;
+
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
@@ -840,7 +845,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     imgNotes.setActivated(false);
                     break;
                 case FRAGMENT_PROFILE_CONTROLLER:
-                    imgStudyMates.setActivated(false);
+                    imgProfileController.setActivated(false);
                     if (listenerProfileControllerPresence != null) {
                         listenerProfileControllerPresence.onProfileControllerDetached();
                     }
@@ -884,6 +889,11 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 //                case AuthorDeskFragment.FRAGMENT_BOOKS:
                     currentChildAuthorDesk = -1;
                     break;
+	            case FRAGMENT_SUNDAY_EXAM:
+		            llControllerLeft.setVisibility(View.VISIBLE);
+		            flFragmentContainerRight.setVisibility(View.VISIBLE);
+		            break;
+
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentDetached Exception : " + e.toString());
@@ -905,7 +915,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     imgNotes.setActivated(true);
                     break;
                 case FRAGMENT_PROFILE_CONTROLLER:
-                    imgStudyMates.setActivated(true);
+                    imgProfileController.setActivated(true);
                     break;
                 case FRAGMENT_CHAT:
                     imgChat.setActivated(true);
@@ -1396,6 +1406,16 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         spSubmenu.setSelection(intSubItemSelection);
         if (position == 0) spSubmenu.setEnabled(true);
         else spSubmenu.setEnabled(false);
+    }
+
+    public void updateLayoutForExam(boolean examStart) {
+	    llControllerLeft.setVisibility(examStart ? View.GONE : View.VISIBLE);
+	    imgHome.setEnabled(!examStart);
+	    imgSearch.setEnabled(!examStart);
+        etSearch.setEnabled(!examStart);
+	    imgNotes.setEnabled(!examStart);
+	    imgProfileController.setEnabled(!examStart);
+	    imgChat.setEnabled(!examStart);
     }
 
 }
