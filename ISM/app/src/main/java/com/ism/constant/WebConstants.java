@@ -75,12 +75,12 @@ public class WebConstants {
 //	private static final String URL_HOST_147 = HOST_147 + "WS_ISM/ISMServices.php?Service=";                // KINJAL
 //	private static final String URL_IMAGE_PATH = "http://192.168.1.147/WS_ISM/Images"
 
-	public static final String HOST = "http://192.168.1.202/";                                              // SERVER
+//	public static final String HOST = "http://192.168.1.202/";                                              // SERVER
 //	public static final String HOST = "http://clientapp.narolainfotech.com/";                               // SERVER
-//    public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
+    public static final String HOST = "http://192.168.1.147/";                                              // KINJAL
 
-    	private static final String DIR_PATH = "pg/ISM/WS_ISM/";    //  SERVER
-//    private static final String DIR_PATH = "WS_ISM/";           //  KINJAL
+//    	private static final String DIR_PATH = "pg/ISM/WS_ISM/";    //  SERVER
+    private static final String DIR_PATH = "WS_ISM/";           //  KINJAL
     private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
 	//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_images/";
 	public static final String HOST_IMAGE_USER = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";

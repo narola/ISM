@@ -59,6 +59,7 @@ public class Utility {
     public static final SimpleDateFormat DATE_FORMAT_DDMMMYY = new SimpleDateFormat("dd MMM yy", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_MMMDDYY_HHMMA = new SimpleDateFormat("MMM dd, yy  HH : mm aa", Locale.getDefault()); // Nov 25, 2015  7:10pm
     public static final SimpleDateFormat DATE_FORMAT_MMMDDYYYY = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+    public static final SimpleDateFormat DATE_FORMAT_YYYYMMDDHHMMSS = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss +0000", Locale.getDefault());
 	private static StringBuilder mFormatBuilder = new StringBuilder();
 	private static Formatter mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
     private static InputMethodManager inputMethod;
@@ -179,10 +180,10 @@ public class Utility {
             builder.setMessage(message);
         }
         AlertDialog dialog = builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-	        @Override
-	        public void onClick(DialogInterface dialog, int which) {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
-	        }
+            }
         }).create();
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();
@@ -213,10 +214,10 @@ public class Utility {
                 confirmationListener.onConfirmationResponse(requestId, true);
             }
         }).setNegativeButton(R.string.strcancel, new DialogInterface.OnClickListener() {
-	        @Override
-	        public void onClick(DialogInterface dialog, int which) {
-		        confirmationListener.onConfirmationResponse(requestId, false);
-	        }
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                confirmationListener.onConfirmationResponse(requestId, false);
+            }
         }).create();
         dialog.setCancelable(cancelable);
 //        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
@@ -300,6 +301,37 @@ public class Utility {
         }
     }
 
+    /**
+     * return current date with format DATE_FORMAT_YYYYMMDDHHMMSS
+     * @return
+     */
+    public static Date getDateTime(String strDate,SimpleDateFormat simpleDateFormat){
+
+            Date date = null;
+        try {
+            date = simpleDateFormat.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return  date;
+    }
+    /**
+     * return current date with format DATE_FORMAT_YYYYMMDDHHMMSS
+     * @return
+     */
+    public static String getDateTime(Date date,SimpleDateFormat simpleDateFormat){
+        String strDate;
+        if(date == null) {
+            Calendar calendar = Calendar.getInstance();
+
+            strDate = simpleDateFormat.format(calendar.getTime());
+        }
+        else{
+            strDate = simpleDateFormat.format(date);
+        }
+
+        return  strDate;
+    }
     /**
      * Arti
      * Launch any activity

@@ -274,11 +274,22 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
             for (i = 0; i < arrayList.size(); i++) {
                 model.Feeds feeds = new model.Feeds();
                 feeds.setFeedId(Integer.parseInt(arrayList.get(i).getFeedId()));
-                User feedBy = new User();
-                feedBy.setUserId(Integer.parseInt(arrayList.get(i).getUserId()));
-                feedBy.setFullName(arrayList.get(i).getFullName());
-                feedBy.setProfilePicture(arrayList.get(i).getProfilePic());
-                studentHelper.saveUser(feedBy);
+                //User feedBy = new User();
+                User feedBy = studentHelper.getUser(Integer.parseInt(arrayList.get(i).getUserId()));
+                if(feedBy == null) {
+                    feedBy =new User();
+                    feedBy.setUserId(Integer.parseInt(arrayList.get(i).getUserId()));
+                    feedBy.setFullName(arrayList.get(i).getFullName());
+                    feedBy.setProfilePicture(arrayList.get(i).getProfilePic());
+
+                    studentHelper.saveUser(feedBy);
+                }
+                else{
+                    studentHelper.getRealm().beginTransaction();
+                    feedBy.setProfilePicture(arrayList.get(i).getProfilePic());
+                    studentHelper.getRealm().commitTransaction();
+                    studentHelper.saveUser(feedBy);
+                }
                 feeds.setFeedBy(feedBy);
                 feeds.setFeedText(arrayList.get(i).getFeedText());
                 //feeds.setProfilePic(arrayList.get(i).getProfilePic());
@@ -300,11 +311,23 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                         feedComment.setFeedCommentId(Integer.parseInt(arrayListComment.get(j).getId()));
                         feedComment.setComment(arrayListComment.get(j).getComment());
                         feedComment.setFeed(feeds);
-                        User user = new User();
-                        user.setUserId(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
-                        user.setFullName(arrayListComment.get(j).getFullName());
-                        user.setProfilePicture(arrayListComment.get(j).getProfilePic());
-                        studentHelper.saveUser(user);
+                        //User user = new User();
+
+                        User user = studentHelper.getUser(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
+
+                        if(user == null) {
+                            user = new User();
+                            user.setUserId(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
+                            user.setFullName(arrayListComment.get(j).getFullName());
+                            user.setProfilePicture(arrayListComment.get(j).getProfilePic());
+                            studentHelper.saveUser(user);
+                        }
+                        else{
+                            studentHelper.getRealm().beginTransaction();
+                            user.setProfilePicture(arrayList.get(i).getProfilePic());
+                            studentHelper.getRealm().commitTransaction();
+                            studentHelper.saveUser(feedBy);
+                        }
                         feedComment.setCommentBy(user);
                         feedComment.setCreatedDate(Utility.getDateFormateMySql(arrayListComment.get(j).getCreatedDate()));
                         studentHelper.saveComments(feedComment);

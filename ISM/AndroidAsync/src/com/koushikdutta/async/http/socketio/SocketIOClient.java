@@ -26,6 +26,7 @@ public class SocketIOClient extends EventEmitter {
     public void emit(String name, JSONObject obj) {
         emit(name, new JSONArray().put(obj), null);
     }
+
     public void emit(final String message) {
         emit(message, (Acknowledge)null);
     }

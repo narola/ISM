@@ -1,6 +1,5 @@
 package com.ism.activity;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -65,6 +64,7 @@ import com.ism.ws.model.SMSAlert;
 import com.ism.ws.model.UserPreferences;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.socketdemo.c85.ismsocket.IOSocketHandler;
 
 import java.util.ArrayList;
 
@@ -380,6 +380,8 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         txtFive.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
 
+
+        new IOSocketHandler().ConnectSocket(Global.strUserId);
     }
 
     private void callApiGetGeneralSettingPreferences() {

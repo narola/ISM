@@ -19,8 +19,6 @@ import com.ism.model.SubjectScoreTest;
 
 import java.util.ArrayList;
 
-import model.ExamEvaluation;
-
 /**
  * Created by c161 on 15/10/2015.
  */

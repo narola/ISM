@@ -6,11 +6,17 @@ import android.util.Log;
 import com.realm.ismrealm.RealmAdaptor;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 import model.AdminConfig;
 import model.FeedComment;
 import model.FeedImage;
 import model.Feeds;
+import model.Subjects;
+import model.TutorialGroup;
+import model.TutorialGroupDiscussion;
+import model.TutorialGroupTopicAllocation;
+import model.TutorialTopic;
 import model.User;
 
 /**
@@ -24,7 +30,16 @@ public class StudentHelper {
     private RealmResults<Feeds> feedsRealmResults;
 
     public StudentHelper(Context context) {
+        if(realm == null)
         realm = RealmAdaptor.getInstance(context);
+    }
+
+    public Realm getRealm() {
+        return realm;
+    }
+
+    public void setRealm(Realm realm) {
+        this.realm = realm;
     }
 
     /**
@@ -34,6 +49,27 @@ public class StudentHelper {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(user);
         realm.commitTransaction();
+
+    }
+
+    /**
+     * use to save tutorialGroupTopicAllocation data in ISM database.
+     */
+    public void saveTutorialGroupTopicAllocation(TutorialGroupTopicAllocation tutorialGroupTopicAllocation) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(tutorialGroupTopicAllocation);
+        realm.commitTransaction();
+
+    }
+
+    /**
+     * use to save tutorialTopic data in ISM database.
+     */
+    public void saveTutorialTopic(TutorialTopic tutorialTopic ) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(tutorialTopic);
+        realm.commitTransaction();
+
     }
 
     /**
@@ -56,6 +92,8 @@ public class StudentHelper {
             Log.e(TAG, "saveAdminConfig Exception : " + e.toString());
         }
     }
+
+
 
 	/*User user = new User();
     user.setFirstName("krunal");
@@ -142,7 +180,13 @@ public class StudentHelper {
         realm.beginTransaction();
         RealmResults<User> feedsRealmResults = realm.where(User.class).equalTo("userId", user_id).findAll();
         realm.commitTransaction();
-        return feedsRealmResults.get(0);
+if(feedsRealmResults.size() == 0){
+    return  null;
+}
+        else{
+   return feedsRealmResults.get(0);
+        }
+
     }
 
 
@@ -243,6 +287,121 @@ public class StudentHelper {
         } catch (Exception e) {
             Log.i(TAG, "saveFeedImages Exceptions : " + e.getLocalizedMessage());
         }
+    }
+
+    /**
+     * get tutorial topic
+     * @param tutorialTopicId - id for tutorial topic.
+     * @return return {@link - TutorialTopic}
+     */
+    public TutorialTopic getTutorialTopic(int tutorialTopicId){
+        realm.beginTransaction();
+        RealmResults<TutorialTopic> tutorialTopics = realm.where(TutorialTopic.class).equalTo("tutorialTopicId", tutorialTopicId).findAll();
+        realm.commitTransaction();
+        if(tutorialTopics.size() == 0){
+            return  null;
+        }
+        else{
+            return tutorialTopics.get(0);
+        }
+    }
+
+    /**
+     * get subject
+     * @param tutorialGroupId - id for group.
+     * @return return {@link - TutorialGroupDiscussion}
+     */
+    public RealmResults<TutorialGroupDiscussion> getTutorialGroupDiscussionByGroup(int tutorialGroupId){
+        realm.beginTransaction();
+        RealmResults<TutorialGroupDiscussion> tutorialGroupDiscussions = realm.where(TutorialGroupDiscussion.class).findAll();
+        realm.commitTransaction();
+        if(tutorialGroupDiscussions.size() == 0){
+            return  null;
+        }
+        else{
+            return tutorialGroupDiscussions;
+        }
+    }
+
+
+
+
+
+    /**
+     * get subject
+     * @param tutorialTopicAllocation - id for subject.
+     * @return return {@link - TutorialGroupDiscussion}
+     */
+    public TutorialGroupTopicAllocation getTutorialTopicAllocation(int tutorialTopicAllocation){
+        realm.beginTransaction();
+        RealmResults<TutorialGroupTopicAllocation> tutorialGroupTopicAllocations = realm.where(TutorialGroupTopicAllocation.class).equalTo("tutorialGroupTopicId", tutorialTopicAllocation).findAll();
+        realm.commitTransaction();
+        if(tutorialGroupTopicAllocations.size() == 0){
+            return  null;
+        }
+        else{
+            return tutorialGroupTopicAllocations.get(0);
+        }
+    }
+
+    /**
+     * get subject
+     * @param groupDiscussionId - id for subject.
+     * @return return {@link - TutorialGroupDiscussion}
+     */
+    public TutorialGroupDiscussion getTutorialGroupDiscussion(int groupDiscussionId){
+        realm.beginTransaction();
+        RealmResults<TutorialGroupDiscussion> tutorialGroupDiscussions = realm.where(TutorialGroupDiscussion.class).equalTo("tutorialGroupDiscussionId", groupDiscussionId).findAll();
+        realm.commitTransaction();
+        if(tutorialGroupDiscussions.size() == 0){
+            return  null;
+        }
+        else{
+            return tutorialGroupDiscussions.get(0);
+        }
+    }
+
+    /**
+     * get subject
+     * @param subjectId - id for subject.
+     * @return return {@link - Subjects}
+     */
+    public Subjects getSubject(int subjectId){
+        realm.beginTransaction();
+        RealmResults<Subjects> subjects = realm.where(Subjects.class).equalTo("subjectId", subjectId).findAll();
+        realm.commitTransaction();
+        if(subjects.size() == 0){
+            return  null;
+        }
+        else{
+            return subjects.get(0);
+        }
+    }
+
+
+
+    /**
+     * save subject in local
+     * @param subject -  {@link - Subjects}
+     */
+    public void saveSubject(Subjects subject) {
+
+        // remaining : to update subject with local id;
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(subject);
+        realm.commitTransaction();
+    }
+
+    /**
+     * save subject in local
+     * @param tutorialGroupDiscussion -  {@link - TutorialGroupDiscussion}
+     */
+    public void saveTutorialGroupDiscussion(TutorialGroupDiscussion tutorialGroupDiscussion) {
+
+        // remaining : to update subject with local id;
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(tutorialGroupDiscussion);
+        realm.commitTransaction();
     }
 
 //    public void saveAllComments(FeedComment feedComment, int feedId) {

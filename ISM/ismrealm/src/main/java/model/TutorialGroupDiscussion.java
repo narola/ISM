@@ -3,6 +3,7 @@ package model;
 import java.util.Date;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -13,6 +14,7 @@ import io.realm.annotations.PrimaryKey;
 public class TutorialGroupDiscussion extends RealmObject {
 
     @PrimaryKey
+    private int localId;
     private  int tutorialGroupDiscussionId;
     private String message;
     private String messageType;
@@ -26,6 +28,11 @@ public class TutorialGroupDiscussion extends RealmObject {
     private boolean inActiveHours;
     private Date createdDate;
     private Date modifiedDate;
+
+    @Ignore
+    private int topicPosition;
+    @Ignore
+    private boolean showDetails;
 
     public int getTutorialGroupDiscussionId() {
         return tutorialGroupDiscussionId;
@@ -129,5 +136,29 @@ public class TutorialGroupDiscussion extends RealmObject {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public int getTopicPosition() {
+        return topicPosition;
+    }
+
+    public void setTopicPosition(int topicPosition) {
+        this.topicPosition = topicPosition;
+    }
+
+    public boolean isShowDetails() {
+        return showDetails;
+    }
+
+    public void setShowDetails(boolean showDetails) {
+        this.showDetails = showDetails;
+    }
+
+    public int getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
     }
 }

@@ -11,6 +11,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/AndroidAsync" />
+            <option value="$PROJECT_DIR$/android-websockets" />
+            <option value="$PROJECT_DIR$/android_websockets" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/assistantwebview" />
             <option value="$PROJECT_DIR$/author" />

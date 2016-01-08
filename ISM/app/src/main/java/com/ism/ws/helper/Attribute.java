@@ -104,6 +104,7 @@ public class Attribute {
     private String audioLink;
     private List<String> images;
     private String postedOn;
+	private String fromDate;
 
 	public Attribute() {
 		setAccessKey(WebConstants.ACCESS_KEY);
@@ -765,4 +766,12 @@ public class Attribute {
 		this.dayNo = dayNo;
 	}
 
+
+	public String getFromDate() {
+		return fromDate;
+	}
+	@JsonProperty("from_date")
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
 }

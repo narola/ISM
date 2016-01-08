@@ -224,7 +224,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private void inigGlobal() {
 //        IOSocketHandler.ConnectSocket();
 
-
         Global.myTypeFace = new MyTypeFace(getApplicationContext());
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));

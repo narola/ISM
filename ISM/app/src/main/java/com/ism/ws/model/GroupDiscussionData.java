@@ -19,6 +19,7 @@ public class GroupDiscussionData {
 	private String topicDescription;
 	private String assignedTime;
 	private String tutorialTopicId;
+	private String tutorialTopicAllocationId;
 	private String assignedBy;
 	private String isCurrentDay;
 	private String subjectName;
@@ -26,6 +27,9 @@ public class GroupDiscussionData {
 	private String totalActiveCommentsScore;
 	private String interfaceType;
 	private String dayName;
+	private String subjectId;
+	private String weekDay;
+	private String weekNumber;
 
 	@JsonProperty("tutorial_topic")
 	public String getTutorialTopic() {
@@ -144,4 +148,37 @@ public class GroupDiscussionData {
 		this.dayName = dayName;
 	}
 
+	@JsonProperty("subject_id")
+	public String getSubjectId() {
+		return subjectId;
+	}
+
+	public void setSubjectId(String subjectId) {
+		this.subjectId = subjectId;
+	}
+
+	@JsonProperty("tutorial_topic_allocation_id")
+	public String getTutorialTopicAllocationId() {
+		return tutorialTopicAllocationId;
+	}
+
+	public void setTutorialTopicAllocationId(String tutorialTopicAllocationId) {
+		this.tutorialTopicAllocationId = tutorialTopicAllocationId;
+	}
+	@JsonProperty("week_day")
+	public String getWeekDay() {
+		return weekDay;
+	}
+
+	public void setWeekDay(String weekDay) {
+		this.weekDay = weekDay;
+	}
+	@JsonProperty("week_number")
+	public String getWeekNumber() {
+		return weekNumber;
+	}
+
+	public void setWeekNumber(String weekNumber) {
+		this.weekNumber = weekNumber;
+	}
 }

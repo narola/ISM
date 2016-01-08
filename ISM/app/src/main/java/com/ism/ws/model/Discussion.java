@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Discussion {
 
+	private String tutorialGroupDiscussionId;
 	private String tutorialTopicId;
 	private String messageType;
 	private String mediaLink;
@@ -21,6 +22,8 @@ public class Discussion {
 	private String commentTimestamp;
 	private String weekDay;
 	private int topicPosition;
+    private boolean showDetails;
+
 
 	@JsonProperty("tutorial_topic_id")
 	public String getTutorialTopicId() {
@@ -94,6 +97,15 @@ public class Discussion {
 		this.commentTimestamp = commentTimestamp;
 	}
 
+	@JsonProperty("group_discussion_id")
+	public String getTutorialGroupDiscussionId() {
+		return tutorialGroupDiscussionId;
+	}
+
+	public void setTutorialGroupDiscussionId(String tutorialGroupDiscussionId) {
+		this.tutorialGroupDiscussionId = tutorialGroupDiscussionId;
+	}
+
 	public String getWeekDay() {
 		return weekDay;
 	}
@@ -109,4 +121,14 @@ public class Discussion {
 	public void setTopicPosition(int topicPosition) {
 		this.topicPosition = topicPosition;
 	}
+
+	public boolean isShowDetails() {
+		return showDetails;
+	}
+
+	public void setShowDetails(boolean showDetails) {
+		this.showDetails = showDetails;
+	}
+
+
 }

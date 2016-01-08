@@ -17,12 +17,12 @@ public class TutorialTopic extends RealmObject {
     private String topicName;
     private String topicDescription;
     private String evaluationKeyword;
-    private TutorialTopic parent;
+    private TutorialGroupTopicAllocation parent;
     private Classrooms classroom;
-    private User user;
+    private User createdBy;
     private Subjects subject;
     private Topics topic;
-    private int topicDay;
+    private String topicDay;
     private int allocationCount;
     private int status;
     private boolean isCompleted;
@@ -61,11 +61,11 @@ public class TutorialTopic extends RealmObject {
         this.evaluationKeyword = evaluationKeyword;
     }
 
-    public TutorialTopic getParent() {
+    public TutorialGroupTopicAllocation getParent() {
         return parent;
     }
 
-    public void setParent(TutorialTopic parent) {
+    public void setParent(TutorialGroupTopicAllocation parent) {
         this.parent = parent;
     }
 
@@ -77,12 +77,12 @@ public class TutorialTopic extends RealmObject {
         this.classroom = classroom;
     }
 
-    public User getUser() {
-        return user;
+    public User getCreatedBy() {
+        return createdBy;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Subjects getSubject() {
@@ -101,11 +101,11 @@ public class TutorialTopic extends RealmObject {
         this.topic = topic;
     }
 
-    public int getTopicDay() {
+    public String getTopicDay() {
         return topicDay;
     }
 
-    public void setTopicDay(int topicDay) {
+    public void setTopicDay(String topicDay) {
         this.topicDay = topicDay;
     }
 

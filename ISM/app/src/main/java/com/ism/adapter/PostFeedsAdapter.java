@@ -422,6 +422,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                     FeedComment feedComment = new FeedComment();
                     feedComment.setFeedCommentId(Integer.parseInt(comments.get(i).getId()));
                     User user = new User();
+
                     user.setFullName(comments.get(i).getFullName());
                     user.setProfilePicture(comments.get(i).getProfilePic());
                     user.setUserId(Integer.parseInt(comments.get(i).getCommentBy()));

@@ -1,1 +1,1 @@
-include ':app', ':colorpicker', ':richtexteditor', ':richeditor', ':commonsource', ':author', ':author', ':teacher', ':ismrealm', ':AndroidAsync', ':ismsocket', ':scientificcalc', ':whiteboard', ':assistantwebview', ':roundedimageview'
+include ':app', ':colorpicker', ':richtexteditor', ':richeditor', ':commonsource', ':author', ':author', ':teacher', ':ismrealm', ':AndroidAsync', ':ismsocket', ':scientificcalc', ':whiteboard', ':assistantwebview', ':roundedimageview', ':android_websockets', ':android-websockets'

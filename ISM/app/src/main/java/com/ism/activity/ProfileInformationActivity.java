@@ -854,6 +854,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 	                }
 
                      User user = new User();
+
                      user.setFullName(responseHandler.getUser().get(0).getFullName());
                      user.setProfilePicture(responseHandler.getUser().get(0).getProfilePic());
                      user.setUserId(Integer.parseInt(responseHandler.getUser().get(0).getUserId()));

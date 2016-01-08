@@ -6,12 +6,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.text.method.BaseMovementMethod;
-import android.text.method.MovementMethod;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +14,7 @@ import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.ism.R;
@@ -40,7 +33,19 @@ import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Discussion;
 import com.ism.ws.model.GroupDiscussionData;
 
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+
+import io.realm.RealmResults;
+import model.Subjects;
+import model.TutorialGroupDiscussion;
+import model.TutorialGroupTopicAllocation;
+import model.TutorialTopic;
+import model.User;
+import realmhelper.StudentHelper;
 
 /**
  * Created by c161 on 12/10/15.
@@ -68,8 +73,8 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	private TutorialDiscussionFragmentListener listenerTutorialDiscussion;
 	private Whiteboard.WhiteboardListener whiteboardListener;
 	private View.OnClickListener listenerOnUtilityClick;
-	private ArrayList<TestDiscussion> arrListTestDiscussion;
-	private ArrayList<GroupDiscussionData> arrListDiscussionData;
+	private ArrayList<TutorialGroupDiscussion> arrListTestDiscussion = new ArrayList<TutorialGroupDiscussion>();
+	//private ArrayList<TutorialGroupDiscussion> arrListDiscussionData = new ArrayList<TutorialGroupDiscussion>();;
 	private ArrayList<Discussion> arrListDiscussion;
 	private DiscussionAdapter adpDiscussion;
 	private LinearLayoutManager layoutManagerChat;
@@ -83,7 +88,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	private static int currentWebUtility = -1;
 	private int intWeekDay;
 	private String strCurrentWeekDay = "";
-
+    private String weekDay;
 	public static TutorialDiscussionFragment newInstance(int weekDay) {
 		TutorialDiscussionFragment fragment = new TutorialDiscussionFragment();
 		Bundle args = new Bundle();
@@ -102,10 +107,23 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			intWeekDay = getArguments().getInt(ARG_WEEK_DAY);
+//		if (getArguments() != null) {
+//
+//			intWeekDay = getArguments().getInt(ARG_WEEK_DAY);
+//		}
+
+
+		Calendar calendar = Calendar.getInstance();
+		intWeekDay = calendar.get(Calendar.DAY_OF_WEEK);
+		if(intWeekDay == 1){
+			intWeekDay =6;
+		}
+		else{
+			intWeekDay =intWeekDay-2;
 		}
 	}
+
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -146,7 +164,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		txtAdminNoticeTime.setTypeface(Global.myTypeFace.getRalewayThinItalic());
 		txtAdminNotice.setTypeface(Global.myTypeFace.getRalewayRegular());
 		((TextView) view.findViewById(R.id.txt_admin_name)).setTypeface(Global.myTypeFace.getRalewayRegular());
-
+		getGroupDiscussion();
 		callApiGetGroupHistory();
 
 		imgCalc.setEnabled(false);
@@ -195,14 +213,56 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 			@Override
 			public void onClick(View v) {
 				if (etMessage.getText() != null && etMessage.getText().toString().length() > 0) {
-					TestDiscussion testDiscussion = new TestDiscussion();
-					testDiscussion.setMessage(etMessage.getText().toString().trim());
-					testDiscussion.setTime("Aug 5, 2015  4:15pm");
-					testDiscussion.setUserName(Global.strFullName);
-					arrListTestDiscussion.add(0, testDiscussion);
+//					TestDiscussion testDiscussion = new TestDiscussion();
+//					testDiscussion.setMessage(etMessage.getText().toString().trim());
+//					testDiscussion.setTime("Aug 5, 2015  4:15pm");
+//					testDiscussion.setUserName(Global.strFullName);
+
+
+					/*** new one ***/
+				 	StudentHelper studentHelper = new StudentHelper(getActivity());
+					TutorialGroupDiscussion tutorialGroupDiscussion = new TutorialGroupDiscussion();
+					tutorialGroupDiscussion.setMessage(etMessage.getText().toString().trim());
+					tutorialGroupDiscussion.setCommentScore(2);
+					tutorialGroupDiscussion.setInActiveHours(true);
+					tutorialGroupDiscussion.setCreatedDate(new Date());
+
+
+					/*** new one ***/
+
+					Discussion discussion = new Discussion();
+					discussion.setComment(etMessage.getText().toString().trim());
+					discussion.setCommentTimestamp("Aug 5, 2015  4:15pm");
+					discussion.setFullName(Global.strFullName);
+                    discussion.setProfilePic(Global.strProfilePic);
+					discussion.setUserId(Global.strUserId);
+					discussion.setWeekDay("Thurs");
+
+
+
+					if(arrListDiscussion == null){
+						arrListDiscussion = new ArrayList<Discussion>();
+					}
+
+					if(arrListDiscussion.size() == 0){
+						discussion.setShowDetails(true);
+					}
+
+					else if(arrListDiscussion.size() > 0){
+						Discussion previousDiscussion = arrListDiscussion.get(0);
+						if(previousDiscussion.getUserId().equals(Global.strUserId)){
+							discussion.setShowDetails(false);
+						}
+						else{
+							discussion.setShowDetails(true);
+						}
+					}
+
+					arrListDiscussion.add(0, discussion);
 					adpDiscussion.notifyDataSetChanged();
 					layoutManagerChat.smoothScrollToPosition(recyclerChat, null, 0);
 					etMessage.setText("");
+
 				}
 			}
 		});
@@ -231,10 +291,10 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 				int lastPosition = layoutManagerChat.findLastCompletelyVisibleItemPosition();
 				if (lastPosition != 0
 						&& lastPosition != RecyclerView.NO_POSITION
-						&& !arrListDiscussion.get(layoutManagerChat.findLastCompletelyVisibleItemPosition()).getWeekDay()
+						&& !arrListTestDiscussion.get(layoutManagerChat.findLastCompletelyVisibleItemPosition()).getTopic().getTopicDay()
 						.equals(strCurrentWeekDay)) {
-					strCurrentWeekDay = arrListDiscussion.get(layoutManagerChat.findLastCompletelyVisibleItemPosition()).getWeekDay();
-					showTopicDetails(arrListDiscussion.get(layoutManagerChat.findLastCompletelyVisibleItemPosition()).getTopicPosition());
+					strCurrentWeekDay = arrListTestDiscussion.get(layoutManagerChat.findLastCompletelyVisibleItemPosition()).getTopic().getTopicDay();
+					showTopicDetails(arrListTestDiscussion.get(layoutManagerChat.findLastCompletelyVisibleItemPosition()).getTopicPosition());
 					Log.e(TAG, "day changed to : " + strCurrentWeekDay);
 				}
 			}
@@ -271,17 +331,103 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		recyclerChat.setAdapter(adpDiscussion);*/
 	}
 
+
+	private void getGroupDiscussion(){
+
+    StudentHelper studentHelper = new StudentHelper(getActivity());
+		RealmResults<TutorialGroupDiscussion> tutorialGroupDiscussions = studentHelper.getTutorialGroupDiscussionByGroup(135);
+
+		if(tutorialGroupDiscussions != null){
+		int j = 0;
+			int i =0;
+			int topicId =0;
+        for(TutorialGroupDiscussion tutorialGroupDiscussion : tutorialGroupDiscussions) {
+           j++;
+
+
+			if(j == tutorialGroupDiscussions.size()){
+				tutorialGroupDiscussion.setShowDetails(true);
+			}
+			else if(tutorialGroupDiscussions.get(j).getSender().getUserId() != tutorialGroupDiscussion.getSender().getUserId()){
+				tutorialGroupDiscussion.setShowDetails(true);
+			}
+
+
+			if(topicId == 0) {
+				tutorialGroupDiscussion.setTopicPosition(i);
+				i++;
+			}
+			else if(topicId != tutorialGroupDiscussion.getTopic().getTutorialTopicId()){
+				tutorialGroupDiscussion.setTopicPosition(i++);
+			}
+			arrListTestDiscussion.add(tutorialGroupDiscussion);
+			topicId = tutorialGroupDiscussion.getTopic().getTutorialTopicId();
+		}
+
+				if(adpDiscussion == null) {
+					adpDiscussion = new DiscussionAdapter(getActivity(), arrListTestDiscussion);
+					recyclerChat.setAdapter(adpDiscussion);
+				}
+		}
+
+	}
 	private void callApiGetGroupHistory() {
 		try {
+			//getLastDate();
 			Attribute attribute = new Attribute();
-			attribute.setGroupId("134");
+			attribute.setGroupId("135");
 			attribute.setWeekNo("1");
 			attribute.setDayNo("");
+            attribute.setFromDate(getLastDate());
 
 			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_GROUP_HISTORY);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetGroupHistory Exception : " + e.toString());
 		}
+	}
+
+	/**
+	 * get last updated date for tutorial discussion
+	 * @return return string date
+	 */
+	private String getLastDate(){
+		try {
+			String strDate = "";
+			StudentHelper studentHelper = new StudentHelper(getActivity());
+			User user = studentHelper.getUser(Integer.parseInt(Global.strUserId));
+           if(user.getCreatedDate() == null){
+
+			   Date date = null;
+			   strDate = Utility.getDateTime(date,Utility.DATE_FORMAT_YYYYMMDDHHMMSS);
+			   studentHelper.getRealm().beginTransaction();
+			   user.setCreatedDate(Utility.getDateTime(strDate,Utility.DATE_FORMAT_YYYYMMDDHHMMSS));
+			   studentHelper.getRealm().commitTransaction();
+			   studentHelper.saveUser(user);
+
+			   strDate = "";
+
+		   }
+			else {
+			   strDate = Utility.getDateTime(user.getCreatedDate(),Utility.DATE_FORMAT_YYYYMMDDHHMMSS);
+
+			   Date date = null;
+			   studentHelper.getRealm().beginTransaction();
+			   user.setCreatedDate(Utility.getDateTime(Utility.getDateTime(date,Utility.DATE_FORMAT_YYYYMMDDHHMMSS),Utility.DATE_FORMAT_YYYYMMDDHHMMSS));
+			   studentHelper.getRealm().commitTransaction();
+			   studentHelper.saveUser(user);
+
+		   }
+
+			return strDate;
+
+		}
+		catch (Exception e){
+			Log.e(TAG,"error "+e.getLocalizedMessage());
+		}
+
+		return "";
+
+
 	}
 
 	private void showUtility(int selectedUtilityId) {
@@ -355,6 +501,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		switch (intWeekDay) {
 			case TutorialFragment.MON:
 				showDiscussionFor(WebConstants.MONDAY);
+
 				break;
 			case TutorialFragment.TUE:
 				showDiscussionFor(WebConstants.TUESDAY);
@@ -365,10 +512,12 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 			case TutorialFragment.THU:
 				showDiscussionFor(WebConstants.THURSDAY);
 				break;
+
 		}
 	}
 
 	private void showDiscussionFor(String weekDay) {
+		this.weekDay = weekDay;
 		for (int i = 0; i < arrListDiscussion.size(); i++) {
 			if (arrListDiscussion.get(i).getWeekDay().equals(weekDay)
 					&& (i == arrListDiscussion.size() - 1 || !arrListDiscussion.get(i + 1).getWeekDay().equals(weekDay))) {
@@ -399,16 +548,36 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		try {
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
-				arrListDiscussionData = responseHandler.getGroupDiscussionData();
-				arrListDiscussion = new ArrayList<>();
-				for (int i = 0; i < arrListDiscussionData.size(); i++) {
-					for (Discussion discussion : arrListDiscussionData.get(i).getDiscussion()) {
-						discussion.setWeekDay(arrListDiscussionData.get(i).getDayName());
-						discussion.setTopicPosition(i);
-						arrListDiscussion.add(discussion);
-					}
-				}
-				adpDiscussion = new DiscussionAdapter(getActivity(), arrListDiscussion);
+
+                saveGroupDiscussion(responseHandler);
+
+//				arrListDiscussionData = responseHandler.getGroupDiscussionData();
+//				arrListDiscussion = new ArrayList<>();
+//
+//				// Discussion previousDiscussion=null;
+//				for (int i = 0; i < arrListDiscussionData.size(); i++) {
+//					int j = 0;
+//					//String userId ="0";
+//					for (Discussion discussion : arrListDiscussionData.get(i).getDiscussion()) {
+//
+//						j++;
+//						discussion.setWeekDay(arrListDiscussionData.get(i).getDayName());
+//						discussion.setTopicPosition(i);
+//
+//                        if(j == arrListDiscussionData.get(i).getDiscussion().size()){
+//							discussion.setShowDetails(true);
+//						}
+//						else if(!arrListDiscussionData.get(i).getDiscussion().get(j).getUserId().equalsIgnoreCase(discussion.getUserId())){
+//							discussion.setShowDetails(true);
+//						}
+//
+//						arrListDiscussion.add(discussion);
+//
+//					}
+//				}
+
+
+				adpDiscussion = new DiscussionAdapter(getActivity(), arrListTestDiscussion);
 				recyclerChat.setAdapter(adpDiscussion);
 				setDay(intWeekDay);
 			} else if (error != null) {
@@ -419,21 +588,189 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		}
 	}
 
+	/**
+	 * save or update<br/>
+	 * 1){@link TutorialTopic}<br/>
+	 * 2){@link TutorialGroupDiscussion}<br/>
+	 * 3){@link TutorialGroupTopicAllocation}<br/>
+	 * 4){@link User} - topic created by<br/>
+	 * 5){@link User} - sender in discussion<br/>
+	 * 6){@link Subjects} - subject for  {@link TutorialTopic}<br/>
+	 *
+	 * @param response - Group Discussion Tutorial response object
+	 */
+	private void saveGroupDiscussion(ResponseHandler response){
+
+		try {
+			if(response!=null) {
+
+				int i = 0;
+				for (GroupDiscussionData groupDiscussionData : response.getGroupDiscussionData()) {
+					StudentHelper studentHelper = new StudentHelper(getActivity());
+					TutorialTopic tutorialTopic = studentHelper.getTutorialTopic(Integer.parseInt(groupDiscussionData.getTutorialTopicId()));
+
+					if(tutorialTopic == null){
+						tutorialTopic = new TutorialTopic();
+						tutorialTopic.setTutorialTopicId(Integer.parseInt(groupDiscussionData.getTutorialTopicId()));
+						tutorialTopic.setTopicName(groupDiscussionData.getTutorialTopic());
+						tutorialTopic.setTopicDescription(groupDiscussionData.getTopicDescription());
+
+						tutorialTopic.setTopicDay(groupDiscussionData.getDayName());
+
+
+                        // add subject
+                        Subjects subject = studentHelper.getSubject(Integer.parseInt(groupDiscussionData.getSubjectId()));
+						if(subject == null){
+							subject = new Subjects();
+							subject.setSubjectId(Integer.parseInt(groupDiscussionData.getSubjectId()));
+							subject.setSubjectName(groupDiscussionData.getSubjectName());
+ 							studentHelper.saveSubject(subject);
+						}
+						tutorialTopic.setSubject(subject);
+
+						User createdBy = studentHelper.getUser(Integer.parseInt(groupDiscussionData.getAssignedBy()));
+						if(createdBy == null){
+							createdBy = new User();
+								createdBy.setUserId(Integer.parseInt(groupDiscussionData.getAssignedBy()));
+							studentHelper.saveUser(createdBy);
+						}
+
+						tutorialTopic.setCreatedBy(createdBy);
+
+						int j = 0;
+						for(Discussion discussion : groupDiscussionData.getDiscussion()){
+							j++;
+							TutorialGroupDiscussion tutorialGroupDiscussion = studentHelper.getTutorialGroupDiscussion(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
+
+							if(tutorialGroupDiscussion == null){
+
+								tutorialGroupDiscussion = new TutorialGroupDiscussion();
+								tutorialGroupDiscussion.setTutorialGroupDiscussionId(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
+								tutorialGroupDiscussion.setLocalId(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
+								tutorialGroupDiscussion.setMessage(discussion.getComment());
+								//add sender detail
+
+								tutorialGroupDiscussion.setCreatedDate(Utility.getDateTime(discussion.getCommentTimestamp(),Utility.DATE_FORMAT_MMMDDYY_HHMMA));
+								tutorialGroupDiscussion.setMessageType(discussion.getMessageType());
+								tutorialGroupDiscussion.setMediaLink(discussion.getMediaLink());
+								User user = studentHelper.getUser(Integer.parseInt(discussion.getUserId()));
+								if(user == null){
+									user = new User();
+									user.setFullName(discussion.getFullName());
+									user.setProfilePicture(discussion.getProfilePic());
+									user.setUserId(Integer.parseInt(discussion.getUserId()));
+									studentHelper.saveUser(user);
+								}
+
+								tutorialGroupDiscussion.setSender(user);
+								tutorialGroupDiscussion.setTopic(tutorialTopic);
+								studentHelper.saveTutorialGroupDiscussion(tutorialGroupDiscussion);
+							}
+
+
+							if(j == groupDiscussionData.getDiscussion().size()){
+								tutorialGroupDiscussion.setShowDetails(true);
+							}
+							else if(!groupDiscussionData.getDiscussion().get(j).getUserId().equalsIgnoreCase(discussion.getUserId())){
+								tutorialGroupDiscussion.setShowDetails(true);
+							}
+							tutorialGroupDiscussion.setTopicPosition(i);
+							arrListTestDiscussion.add(tutorialGroupDiscussion);
+
+						}
+
+
+
+
+
+					}
+					else{
+						int j = 0;
+						for(Discussion discussion : groupDiscussionData.getDiscussion()){
+							j++;
+							TutorialGroupDiscussion tutorialGroupDiscussion = studentHelper.getTutorialGroupDiscussion(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
+
+							if(tutorialGroupDiscussion == null){
+								tutorialGroupDiscussion = new TutorialGroupDiscussion();
+								tutorialGroupDiscussion.setTutorialGroupDiscussionId(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
+								tutorialGroupDiscussion.setLocalId(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
+								tutorialGroupDiscussion.setMessage(discussion.getComment());
+
+								tutorialGroupDiscussion.setCreatedDate(Utility.getDateTime(discussion.getCommentTimestamp(),Utility.DATE_FORMAT_MMMDDYY_HHMMA));
+								tutorialGroupDiscussion.setMessageType(discussion.getMessageType());
+								tutorialGroupDiscussion.setMediaLink(discussion.getMediaLink());
+								User user = studentHelper.getUser(Integer.parseInt(discussion.getUserId()));
+								if(user == null){
+									user = new User();
+									user.setFullName(discussion.getFullName());
+									user.setProfilePicture(discussion.getProfilePic());
+									user.setUserId(Integer.parseInt(discussion.getUserId()));
+									studentHelper.saveUser(user);
+								}
+
+								tutorialGroupDiscussion.setSender(user);
+								tutorialGroupDiscussion.setTopic(tutorialTopic);
+								studentHelper.saveTutorialGroupDiscussion(tutorialGroupDiscussion);
+							}
+
+							if(j == groupDiscussionData.getDiscussion().size()){
+								tutorialGroupDiscussion.setShowDetails(true);
+							}
+							else if(!groupDiscussionData.getDiscussion().get(j).getUserId().equalsIgnoreCase(discussion.getUserId())){
+								tutorialGroupDiscussion.setShowDetails(true);
+							}
+
+							tutorialGroupDiscussion.setTopicPosition(i);
+							arrListTestDiscussion.add(tutorialGroupDiscussion);
+
+
+						}
+					}
+
+					TutorialGroupTopicAllocation tutorialGroupTopicAllocation = studentHelper.getTutorialTopicAllocation(Integer.parseInt(groupDiscussionData.getTutorialTopicAllocationId()));
+					if(tutorialGroupTopicAllocation == null){
+						tutorialGroupTopicAllocation = new TutorialGroupTopicAllocation();
+						tutorialGroupTopicAllocation.setTutorialGroupTopicId(Integer.parseInt(groupDiscussionData.getTutorialTopicAllocationId()));
+						tutorialGroupTopicAllocation.setTutorialTopic(tutorialTopic);
+						tutorialGroupTopicAllocation.setWeekNumber(Integer.parseInt(groupDiscussionData.getWeekNumber()));
+						tutorialGroupTopicAllocation.setDateDay(groupDiscussionData.getWeekDay());
+						tutorialGroupTopicAllocation.setCreatedDate(Utility.getDateTime(groupDiscussionData.getAssignedTime(),Utility.DATE_FORMAT_MY_SQL));
+						studentHelper.saveTutorialGroupTopicAllocation(tutorialGroupTopicAllocation);
+					}
+
+                    tutorialTopic.setParent(tutorialGroupTopicAllocation);
+
+					studentHelper.saveTutorialTopic(tutorialTopic);
+
+					i++;
+				}
+				}
+		}
+		catch (Exception error){
+			Log.e(TAG,"error -> saveGroupDiscussion"+error.getLocalizedMessage());
+		}
+
+
+	}
+
+
 	private void showTopicDetails(int topicPosition) {
-		txtAdminNoticeTime.setText(com.ism.commonsource.utility.Utility.getTimeDuration(arrListDiscussionData.get(topicPosition).getAssignedTime()));
-		txtAdminNotice.setText(arrListDiscussionData.get(topicPosition).getTopicDescription());
-		txtTopicValue.setText(arrListDiscussionData.get(topicPosition).getTutorialTopic());
-		if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase(WebConstants.MONDAY)) {
-			listenerTutorialDiscussion.onDayChanged(TutorialFragment.MON);
-		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase(WebConstants.TUESDAY)) {
+			StudentHelper studentHelper = new StudentHelper(getActivity());
+		txtAdminNoticeTime.setText(com.ism.commonsource.utility.Utility.getTimeDuration(arrListTestDiscussion.get(topicPosition).getTopic().getParent().getCreatedDate()));
+//txtAdminNoticeTime.setText("test")
+				txtAdminNotice.setText(arrListTestDiscussion.get(topicPosition).getTopic().getTopicDescription());
+		txtTopicValue.setText(arrListTestDiscussion.get(topicPosition).getTopic().getTopicName());
+		if (arrListTestDiscussion.get(topicPosition).getTopic().getTopicDay().equalsIgnoreCase(WebConstants.MONDAY)) {
+			listenerTutorialDiscussion.onDayChanged(com.ism.fragment.tutorialGroup.TutorialFragment.MON);
+		} else if (arrListTestDiscussion.get(topicPosition).getTopic().getTopicDay().equalsIgnoreCase(WebConstants.TUESDAY)) {
 			listenerTutorialDiscussion.onDayChanged(TutorialFragment.TUE);
-		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase(WebConstants.WEDNESDAY)) {
+		} else if (arrListTestDiscussion.get(topicPosition).getTopic().getTopicDay().equalsIgnoreCase(WebConstants.WEDNESDAY)) {
 			listenerTutorialDiscussion.onDayChanged(TutorialFragment.WED);
-		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase(WebConstants.THURSDAY)) {
+		} else if (arrListTestDiscussion.get(topicPosition).getTopic().getTopicDay().equalsIgnoreCase(WebConstants.THURSDAY)) {
 			listenerTutorialDiscussion.onDayChanged(TutorialFragment.THU);
-		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase(WebConstants.FRIDAY)) {
+		} else if (arrListTestDiscussion.get(topicPosition).getTopic().getTopicDay().equalsIgnoreCase(WebConstants.FRIDAY)) {
 			listenerTutorialDiscussion.onDayChanged(TutorialFragment.FRI);
-		} else if (arrListDiscussionData.get(topicPosition).getDayName().equalsIgnoreCase(WebConstants.SATURDAY)) {
+		} else if (arrListTestDiscussion.get(topicPosition).getTopic().getTopicDay().equalsIgnoreCase(WebConstants.SATURDAY)) {
 			listenerTutorialDiscussion.onDayChanged(TutorialFragment.SAT);
 		}
 	}

@@ -2,6 +2,7 @@ package model;
 
 import java.util.Date;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -14,13 +15,12 @@ public class TutorialGroupTopicAllocation extends RealmObject {
 
     @PrimaryKey
     private  int tutorialGroupTopicId;
-    private String interfaceType;
     private String dateDay;
     private String status;
     private int weekNumber;
     private int groupScore;
     private TutorialGroup tutorialGroup;
-    private Topics topic;
+    private TutorialTopic tutorialTopic;
     private Date createdDate;
     private Date modifiedDate;
 
@@ -32,13 +32,6 @@ public class TutorialGroupTopicAllocation extends RealmObject {
         this.tutorialGroupTopicId = tutorialGroupTopicId;
     }
 
-    public String getInterfaceType() {
-        return interfaceType;
-    }
-
-    public void setInterfaceType(String interfaceType) {
-        this.interfaceType = interfaceType;
-    }
 
     public String getDateDay() {
         return dateDay;
@@ -80,12 +73,12 @@ public class TutorialGroupTopicAllocation extends RealmObject {
         this.tutorialGroup = tutorialGroup;
     }
 
-    public Topics getTopic() {
-        return topic;
+    public TutorialTopic getTutorialTopic() {
+        return tutorialTopic;
     }
 
-    public void setTopic(Topics topic) {
-        this.topic = topic;
+    public void setTutorialTopic(TutorialTopic tutorialTopic) {
+        this.tutorialTopic = tutorialTopic;
     }
 
     public Date getCreatedDate() {
