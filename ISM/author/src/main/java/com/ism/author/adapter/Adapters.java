@@ -9,6 +9,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
+import com.ism.author.utility.Debug;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public class Adapters {
 
 
     public static void setUpSpinner(final Context context, Spinner spinner, List<String> strArr, final Typeface typeface, int resIdLayout) {
+
+        Debug.e(TAG, "The size is::" + strArr.size());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, resIdLayout, strArr) {
 

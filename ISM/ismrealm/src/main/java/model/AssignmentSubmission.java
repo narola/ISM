@@ -14,12 +14,11 @@ import io.realm.annotations.PrimaryKey;
 public class AssignmentSubmission extends RealmObject {
 
     @PrimaryKey
-    private  int assignmentSubmissionId;
-   private User user;
+    private int assignmentSubmissionId;
+    private User user;
     private Assignments assignment;
     private int assignmentStatus;
-     private Date createdDate;
-
+    private Date createdDate;
     private Date modifiedDate;
 
     public int getAssignmentSubmissionId() {

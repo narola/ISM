@@ -230,7 +230,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author_host);
 
-        registerAlarmBroadCastReceiver();
+//        registerAlarmBroadCastReceiver();
         inigGlobal();
 
     }

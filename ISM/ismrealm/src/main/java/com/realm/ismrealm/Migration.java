@@ -10,7 +10,8 @@ import io.realm.internal.Table;
 public class Migration implements RealmMigration {
 
     int newVersion;
-    public Migration(int newVersion){
+
+    public Migration(int newVersion) {
         this.newVersion = newVersion;
     }
 

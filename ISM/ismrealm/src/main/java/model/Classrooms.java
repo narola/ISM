@@ -13,9 +13,9 @@ import io.realm.annotations.PrimaryKey;
 public class Classrooms extends RealmObject {
 
     @PrimaryKey
+    private int classRoomId;
     private int localClassRoomId;
     private int serverClassRoomId;
-    private int classRoomId;
     private String className;
     private String nickName;
     private boolean isCompleted;
