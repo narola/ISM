@@ -67,8 +67,8 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
 
     private void initGlobal() {
         Log.e(TAG,"Called the initGLobal Method");
-        loadFragment(FRAGMENT_GO_TRENDING);
-//        loadFragment(FRAGMENT_MY_AUTHORS);
+//        loadFragment(FRAGMENT_GO_TRENDING);
+        loadFragment(FRAGMENT_MY_AUTHORS);
     }
 
     @Override

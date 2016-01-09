@@ -13,12 +13,24 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.WebConstants;
+import com.ism.teacher.customizechart.MyYAxisValueFormatter;
 import com.ism.teacher.object.Global;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -28,13 +40,15 @@ import com.ism.teacher.ws.model.ClassPerformance;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmResults;
+import model.teachermodel.ClassPerformanceRealmModel;
 import realmhelper.TeacherHelper;
 
 
 /**
  * Created by c161 on --/10/15.
  */
-public class TeacherProgressReportHomeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
+public class TeacherProgressReportHomeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener, OnChartValueSelectedListener {
 
     private static final String TAG = TeacherProgressReportHomeFragment.class.getSimpleName();
 
@@ -48,7 +62,14 @@ public class TeacherProgressReportHomeFragment extends Fragment implements Webse
     //ArrayList
     private List<String> arrListDefault = new ArrayList<>();
 
+    //Realm
     private TeacherHelper teacherHelper;
+    private RealmResults<ClassPerformanceRealmModel> arrListClassPerformances = null;
+
+    //Chart
+    BarChart chartAvgscoreVsStudent, chartAvgscoreVsSubject;
+    float sum = 0;
+    float average = 0;
 
 
     public static TeacherProgressReportHomeFragment newInstance() {
@@ -108,6 +129,11 @@ public class TeacherProgressReportHomeFragment extends Fragment implements Webse
         llReportTo.setOnClickListener(this);
         imgGraphReport.setOnClickListener(this);
         imgListReport.setOnClickListener(this);
+
+
+        //charts
+        chartAvgscoreVsStudent = (BarChart) rootview.findViewById(R.id.chart_avgscore_vs_student);
+        chartAvgscoreVsSubject = (BarChart) rootview.findViewById(R.id.chart_avgscore_vs_subject);
 
         applyFonts();
         callApiGetReportData();
@@ -172,7 +198,10 @@ public class TeacherProgressReportHomeFragment extends Fragment implements Webse
 
                     if (responseHandler.getClassPerformance().size() > 0) {
 //                        addClassPerformanceToTable(responseHandler.getClassPerformance());
+
+                        //for storing only the first record from response
                         addClassPerformanceToTable(responseHandler.getClassPerformance().get(0));
+                        calculateAverageAndDrawGraph();
                     }
 
 //                    setUpData();
@@ -187,9 +216,22 @@ public class TeacherProgressReportHomeFragment extends Fragment implements Webse
         }
     }
 
+
+    /**
+     * using this method to store just first record from response
+     *
+     * @param classPerformance
+     */
+
     private void addClassPerformanceToTable(ClassPerformance classPerformance) {
         teacherHelper.addClassPerformance(Global.getRealmDataModel.getRealmClassPerformance(classPerformance));
     }
+
+    /**
+     * use below method when response from api gets corrected
+     *
+     * @param arrListClassPerformance
+     */
 
     private void addClassPerformanceToTable(ArrayList<ClassPerformance> arrListClassPerformance) {
 
@@ -197,6 +239,105 @@ public class TeacherProgressReportHomeFragment extends Fragment implements Webse
             teacherHelper.addClassPerformance(Global.getRealmDataModel.getRealmClassPerformance(classPerformance));
         }
     }
+
+    /**
+     * Calculating average percentage based on number of exam records in class performance
+     */
+
+
+    private void calculateAverageAndDrawGraph() {
+        try {
+
+            arrListClassPerformances = teacherHelper.getAllClassPerformances();
+
+            if (arrListClassPerformances.size() > 0) {
+                for (int i = 0; i < arrListClassPerformances.size(); i++) {
+                    sum += Double.valueOf(arrListClassPerformances.get(i).getStudentsScore().get(i).getPercentage());
+                }
+
+                average = sum / arrListClassPerformances.size();
+                Debug.e(TAG, "sum is:" + sum + " and avg is:" + average);
+                chartAvgscoreVsStudent.setDrawBarShadow(false);
+                chartAvgscoreVsStudent.setDrawValueAboveBar(true);
+
+                chartAvgscoreVsStudent.setDescription("Avg.Score V/S No of Student");
+                // if more than 60 entries are displayed in the chart, no values will be
+                // drawn
+                chartAvgscoreVsStudent.setMaxVisibleValueCount(100);
+                // scaling can now only be done on x- and y-axis separately
+                chartAvgscoreVsStudent.setPinchZoom(false);
+
+                chartAvgscoreVsStudent.setDrawGridBackground(false);
+                XAxis xAxis = chartAvgscoreVsStudent.getXAxis();
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setTypeface(Global.myTypeFace.getRalewayRegular());
+                xAxis.setDrawGridLines(false);
+                xAxis.setSpaceBetweenLabels(2);
+
+                YAxisValueFormatter custom = new MyYAxisValueFormatter();
+
+                YAxis leftAxis = chartAvgscoreVsStudent.getAxisLeft();
+                leftAxis.setTypeface(Global.myTypeFace.getRalewayRegular());
+                leftAxis.setDrawGridLines(false);
+                leftAxis.setLabelCount(8, false);
+                leftAxis.setValueFormatter(custom);
+                leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+                leftAxis.setSpaceTop(15f);
+
+                YAxis rightAxis = chartAvgscoreVsStudent.getAxisRight();
+                rightAxis.setDrawGridLines(false);
+                rightAxis.setTypeface(Global.myTypeFace.getRalewayRegular());
+                rightAxis.setLabelCount(0, true);
+                rightAxis.setValueFormatter(custom);
+                rightAxis.setSpaceTop(15f);
+
+
+                /**
+                 * count,range,id.
+                 */
+
+                setData(arrListClassPerformances.size());
+
+                chartAvgscoreVsStudent.animateY(1000);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void setData(int count) {
+
+        ArrayList<String> xVals = new ArrayList<String>();
+
+        int startValue = 10;
+
+        for (int i = 0; i < count; i++) {
+            xVals.add(String.valueOf(startValue));
+            startValue += 10;
+        }
+
+        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+
+        for (int i = 0; i < count; i++) {
+            yVals1.add(new BarEntry(average, i));
+        }
+
+        BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
+        set1.setBarSpacePercent(0.0f);
+
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1);
+
+        BarData data = new BarData(xVals,dataSets);
+        data.setValueTextSize(10f);
+        data.setValueTypeface(Global.myTypeFace.getRalewayRegular());
+
+        chartAvgscoreVsStudent.setData(data);
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -210,5 +351,15 @@ public class TeacherProgressReportHomeFragment extends Fragment implements Webse
             case R.id.img_list_report:
                 break;
         }
+    }
+
+    @Override
+    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+
+    }
+
+    @Override
+    public void onNothingSelected() {
+
     }
 }

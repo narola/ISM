@@ -158,21 +158,10 @@ public class ExamEvaluationFragment extends Fragment {
 
 //		txtSolutionContent;
 		txtAnsweredOption1.setText(choiceText);
-//		txtTutorialmateName2;
 //		txtAnsweredOption2;
-//		txtTutorialmateName3;
 //		txtAnsweredOption3;
-//		txtTutorialmateName4;
 //		txtAnsweredOption4;
-//		txtTutorialmateName5;
 //		txtAnsweredOption5;
-//		imgTutorialmateDp1;
-//		imgTutorialmateDp2;
-//		imgTutorialmateDp3;
-//		imgTutorialmateDp4;
-//		imgTutorialmateDp5;
-//		imgPrevious;
-//		imgNext;
 	}
 
 	public void setQuestion(ArrayList<FridayExamQuestion> questions) {

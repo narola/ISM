@@ -1,5 +1,6 @@
 package com.ism.fragment.tutorialGroup;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,11 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.adapter.QuestionPaletteAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.utility.PreferenceData;
-import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
@@ -47,9 +48,10 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 
 	private ExamListener listenerExam;
 	private QuestionPaletteAdapter adpQuestionPalette;
-//	private ArrayList<QuestionObjectiveTest> arrListQuestions;
 	private FridayExam fridayExam;
 	private ArrayList<FridayExamQuestion> arrListQuestions;
+	private HostActivity activityHost;
+	private TutorialFragment fragmentTutorial;
 
 	private int intAssessmentNo;
 	private String strSubject;
@@ -109,8 +111,6 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 		txtSubject.setText(strSubject);
 		wvInstructions.loadUrl("");
 		wvInstructions.getSettings().setJavaScriptEnabled(true);
-
-//		arrListQuestions = QuestionObjectiveTest.getQuestions();
 
 		btnStartTest.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -232,6 +232,8 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 
 	private void startTest() {
 //		txtHeader.setText(Utility.stringForTime(intExamDurationMinutes * 60 * 1000));
+		activityHost.updateLayoutForExam(true);
+		fragmentTutorial.updateLayoutForFridayExam(true);
 		txtHeader.setText(fridayExam.getExamName() + " - " + fridayExam.getId());
 		txtInstruct.setText(R.string.choose_answer);
 		if (listenerExam != null) {
@@ -304,6 +306,20 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseGetFridayExamQuestions Excepiton : " + e.toString());
 		}
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		activityHost = (HostActivity) activity;
+		fragmentTutorial = (TutorialFragment) getParentFragment();
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		activityHost.updateLayoutForExam(false);
+		fragmentTutorial.updateLayoutForFridayExam(false);
 	}
 
 }

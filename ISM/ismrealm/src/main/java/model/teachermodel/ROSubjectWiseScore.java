@@ -1,19 +1,21 @@
 package model.teachermodel;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by c75 on 08/01/16.
  */
 public class ROSubjectWiseScore extends RealmObject {
 
+    @PrimaryKey
+    private String subjectId;
     private String internalScore;
     private String subjectGrade;
     private String remarks;
     private String marksObtained;
     private String subjectRank;
     private String subjectName;
-    private String subjectId;
     private String percentage;
 
     public String getInternalScore() {

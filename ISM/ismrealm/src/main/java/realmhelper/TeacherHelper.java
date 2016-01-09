@@ -6,6 +6,7 @@ import android.util.Log;
 import com.realm.ismrealm.RealmAdaptor;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import model.ROAdminConfig;
 import model.teachermodel.ROClassPerformance;
@@ -56,7 +57,9 @@ public class TeacherHelper {
     }
 
     public void destroy() {
-
+        if (realm != null) {
+            realm.close();
+        }
     }
 
     /**
@@ -72,5 +75,15 @@ public class TeacherHelper {
         } catch (Exception e) {
             Log.e(TAG, "addFeedsData Exception : " + e.toString());
         }
+    }
+
+    /**
+     * return allclassPerformances
+     * @return
+     */
+
+    public RealmResults<ClassPerformanceRealmModel> getAllClassPerformances() {
+        RealmQuery<ClassPerformanceRealmModel> query = realm.where(ClassPerformanceRealmModel.class);
+        return query.findAll();
     }
 }

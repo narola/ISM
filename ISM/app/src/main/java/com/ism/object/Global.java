@@ -19,6 +19,7 @@ public class Global {
     public static ImageLoader imageLoader;
     public static String roleID = "2";
     public static String authorRoleID="4";
+    public static String checkSlotNo="yes";
 
     public Realm getRealmInstance() {
         return Realm.getDefaultInstance();

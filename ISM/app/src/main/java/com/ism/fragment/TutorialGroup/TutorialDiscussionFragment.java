@@ -429,6 +429,8 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 						break;
 					}
 				}
+
+//				testcode
 				PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity(), arrListDiscussionData.get(0).getTutorialTopicId());
 
 //				Save data

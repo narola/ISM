@@ -48,6 +48,6 @@
         android:paddingTop="@dimen/dp4"
         android:paddingBottom="@dimen/dp4"
         android:layout_below="@+id/img_link"
-        android:textColor="@color/color_red"
+        android:textColor="@color/red"
         android:id="@+id/textView" />
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.R;
@@ -26,19 +27,14 @@ import java.util.Calendar;
 /**
  * Created by c161 on --/10/15.
  */
-public class TutorialFragment extends Fragment implements TutorialDiscussionFragment.TutorialDiscussionFragmentListener, WebserviceWrapper.WebserviceResponse, HostActivity.HostListenerTutorial {
+public class TutorialFragment extends Fragment implements TutorialDiscussionFragment.TutorialDiscussionFragmentListener,
+		WebserviceWrapper.WebserviceResponse, HostActivity.HostListenerTutorial {
 
     private static final String TAG = TutorialFragment.class.getSimpleName();
 
     private View view;
-	private TextView txtWeekNumber;
-	private TextView txtMonday;
-	private TextView txtTuesday;
-	private TextView txtWednesday;
-	private TextView txtThursday;
-	private TextView txtFriday;
-	private TextView txtSaturday;
-	private TextView txtSunday;
+	private TextView txtWeekNumber, txtMonday, txtTuesday, txtWednesday, txtThursday, txtFriday, txtSaturday, txtSunday;
+	private LinearLayout llWeekDays;
 
 	private TextView txtWeekDays[];
 
@@ -62,6 +58,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 	public static final int FRAGMENT_SUN = 3;
 	private static int intCurrentFragment = -1;
 	private static int intCurrentDay = -1;
+	private boolean isExamTime;
 
     public static TutorialFragment newInstance(Bundle fragmentArguments, ExamFragment.ExamListener examListener) {
         TutorialFragment fragmentTutorial = new TutorialFragment();
@@ -91,6 +88,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 	    txtFriday = (TextView) view.findViewById(R.id.txt_friday);
 	    txtSaturday = (TextView) view.findViewById(R.id.txt_saturday);
 	    txtSunday = (TextView) view.findViewById(R.id.txt_sunday);
+		llWeekDays = (LinearLayout) view.findViewById(R.id.ll_week_days);
 
 	    callApiGetGroupProfile();
 
@@ -100,37 +98,39 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 	    listenerOnWeekDayClick = new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
-			    switch (v.getId()) {
-				    case R.id.txt_monday:
-					    intCurrentDay = Calendar.MONDAY;
-						loadFragment(FRAGMENT_DISCUSSION);
-					    break;
-				    case R.id.txt_tuesday:
-					    intCurrentDay = Calendar.TUESDAY;
-					    loadFragment(FRAGMENT_DISCUSSION);
-					    break;
-				    case R.id.txt_wednesday:
-					    intCurrentDay = Calendar.WEDNESDAY;
-					    loadFragment(FRAGMENT_DISCUSSION);
-					    break;
-				    case R.id.txt_thursday:
-					    intCurrentDay = Calendar.THURSDAY;
-					    loadFragment(FRAGMENT_DISCUSSION);
-					    break;
-				    case R.id.txt_friday:
-					    intCurrentDay = Calendar.FRIDAY;
-					    loadFragment(FRAGMENT_FRI);
-					    break;
-				    case R.id.txt_saturday:
-					    intCurrentDay = Calendar.SATURDAY;
-					    loadFragment(FRAGMENT_SAT);
-					    break;
-				    case R.id.txt_sunday:
-					    intCurrentDay = Calendar.SUNDAY;
-					    loadFragment(FRAGMENT_SUN);
-					    break;
+			    if (!isExamTime) {
+				    switch (v.getId()) {
+					    case R.id.txt_monday:
+						    intCurrentDay = Calendar.MONDAY;
+						    loadFragment(FRAGMENT_DISCUSSION);
+						    break;
+					    case R.id.txt_tuesday:
+						    intCurrentDay = Calendar.TUESDAY;
+						    loadFragment(FRAGMENT_DISCUSSION);
+						    break;
+					    case R.id.txt_wednesday:
+						    intCurrentDay = Calendar.WEDNESDAY;
+						    loadFragment(FRAGMENT_DISCUSSION);
+						    break;
+					    case R.id.txt_thursday:
+						    intCurrentDay = Calendar.THURSDAY;
+						    loadFragment(FRAGMENT_DISCUSSION);
+						    break;
+					    case R.id.txt_friday:
+						    intCurrentDay = Calendar.FRIDAY;
+						    loadFragment(FRAGMENT_FRI);
+						    break;
+					    case R.id.txt_saturday:
+						    intCurrentDay = Calendar.SATURDAY;
+						    loadFragment(FRAGMENT_SAT);
+						    break;
+					    case R.id.txt_sunday:
+						    intCurrentDay = Calendar.SUNDAY;
+						    loadFragment(FRAGMENT_SUN);
+						    break;
+				    }
+				    setWeekDaySelection(intCurrentDay);
 			    }
-			    setWeekDaySelection(intCurrentDay);
 		    }
 	    };
 
@@ -305,5 +305,14 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 		if (fragmentArguments != null && fragmentArguments.getString(AppConstant.ACTION).equals(AppConstant.ACTION_FRIDAY_EXAM)) {
 			txtFriday.performClick();
 		}
+	}
+
+	public void updateLayoutForFridayExam(boolean examStart) {
+		isExamTime = examStart;
+	}
+
+	public void updateLayoutForSundayExam(boolean examStart) {
+		txtWeekNumber.setVisibility(examStart ? View.GONE : View.VISIBLE);
+		llWeekDays.setVisibility(examStart ? View.GONE : View.VISIBLE);
 	}
 }

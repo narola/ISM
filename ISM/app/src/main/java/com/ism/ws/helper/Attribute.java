@@ -120,6 +120,8 @@ public class Attribute {
 	/* these are the upload media params */
 	private ArrayList<MediaUploadAttribute> arrListFile ;//= new ArrayList<MediaUploadAttribute>();
 	private ArrayList<MediaUploadAttribute> arrListParam ;//= new ArrayList<MediaUploadAttribute>();
+	private String checkSlot;
+	private String questionId;
 
 	public Attribute() {
 		setAccessKey(WebConstants.ACCESS_KEY);
@@ -857,4 +859,21 @@ public class Attribute {
 		return followTo;
 	}
 
+	public String getCheckSlot() {
+		return this.checkSlot;
+	}
+
+	@JsonProperty("check_slot")
+	public void setCheckSlot(String checkSlot) {
+		this.checkSlot = checkSlot;
+	}
+
+	public String getQuestionId() {
+		return questionId;
+	}
+
+	@JsonProperty("question_id")
+	public void setQuestionId(String questionId) {
+		this.questionId = questionId;
+	}
 }

@@ -104,7 +104,7 @@
         android:lines="2"
         android:padding="@dimen/dp8"
         android:text="Exam Name"
-        android:textColor="@color/color_red"
+        android:textColor="@color/red"
         android:textSize="@dimen/sp15" />
 
     <ImageView

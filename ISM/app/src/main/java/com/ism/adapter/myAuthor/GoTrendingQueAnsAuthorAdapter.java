@@ -2,7 +2,8 @@ package com.ism.adapter.myAuthor;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ism.ISMStudent;
 import com.ism.R;
-import com.ism.utility.Debug;
-import com.ism.ws.model.Assignment;
+import com.ism.activity.HostActivity;
+import com.ism.constant.AppConstant;
+import com.ism.constant.WebConstants;
+import com.ism.object.Global;
+import com.ism.ws.model.TrendingQuestionDetails;
 
 import java.util.ArrayList;
 
@@ -24,99 +29,64 @@ public class GoTrendingQueAnsAuthorAdapter extends PagerAdapter {
 
     private static final String TAG = GoTrendingQueAnsAuthorAdapter.class.getSimpleName();
     private final Context mContext;
-    private ArrayList<Assignment> arrListBookAssignment = new ArrayList<Assignment>();
+    private ArrayList<TrendingQuestionDetails> arrayList = new ArrayList<>();
     private LayoutInflater inflater;
-    int[] res = {
-            android.R.drawable.ic_dialog_alert,
-            android.R.drawable.ic_menu_camera,
-            android.R.drawable.ic_menu_compass,
-            android.R.drawable.ic_menu_directions,
-            android.R.drawable.ic_menu_gallery};
-    int[] backgroundcolor = {
-            0xFF101010,
-            0xFF202020,
-            0xFF303030,
-            0xFF404040,
-            0xFF505050};
 
     public GoTrendingQueAnsAuthorAdapter(Context mContext) {
         this.mContext = mContext;
         this.inflater = LayoutInflater.from(mContext);
     }
 
-
-//    @Override
-//    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//
-//        View contactView = inflater.inflate(R.layout.item_question_answer_trending, parent, false);
-//        ViewHolder viewHolder = new ViewHolder(contactView);
-//        return viewHolder;
-//    }
-//
-//
-//    @Override
-//    public void onBindViewHolder(ViewHolder holder, final int position) {
-//
-//        try {
-//
-//        } catch (Exception e) {
-//            Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());
-//        }
-//    }
-
-
-    public void addAll(ArrayList<Assignment> assignments) {
+    public void addAll(ArrayList<TrendingQuestionDetails> trendingQuestionDetailses) {
         try {
-            this.arrListBookAssignment.clear();
-            this.arrListBookAssignment.addAll(assignments);
+            this.arrayList.clear();
+            this.arrayList.addAll(trendingQuestionDetailses);
         } catch (Exception e) {
-            Debug.e(TAG, "addAllData Exception : " + e.toString());
+            Log.e(TAG, "addAllData Exception : " + e.toString());
         }
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return 5;
+        return arrayList.size();
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         //return super.instantiateItem(container, position);
-        View view = inflater.inflate(R.layout.item_question_answer_trending, container, false);
+        try {
+
+        }
+        catch (Exception e){
+            Log.e(TAG,"instantiateItem Exceptions : "+e.getLocalizedMessage());
+        }
+        View view = inflater.inflate(R.layout.list_item_question_answer_trending, container, false);
         RelativeLayout main=(RelativeLayout)view.findViewById(R.id.rr_main);
-//        ViewHolder viewHolder = new ViewHolder(contactView);
-       // return view;
-//        TextView textView = new TextView(mContext);
-//        textView.setTextColor(Color.WHITE);
-//        textView.setTextSize(30);
-//        textView.setTypeface(Typeface.DEFAULT_BOLD);
-//        textView.setText(String.valueOf(position));
-//
-//        ImageView imageView = new ImageView(mContext);
-//        imageView.setImageResource(res[position]);
-//        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-//        imageView.setLayoutParams(imageParams);
-//
-//        LinearLayout layout = new LinearLayout(mContext);
-//        layout.setOrientation(LinearLayout.VERTICAL);
-//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-//        layout.setBackgroundColor(backgroundcolor[position]);
-//        layout.setLayoutParams(layoutParams);
-//        layout.addView(textView);
-//        layout.addView(imageView);
-//
-//        final int page = position;
-//        layout.setOnClickListener(new View.OnClickListener(){
-//
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(mContext,
-//                        "Page " + page + " clicked",
-//                        Toast.LENGTH_LONG).show();
-//            }});
+        TextView txtUsername=(TextView)view.findViewById(R.id.txt_user_name);
+        txtUsername.setTypeface(Global.myTypeFace.getRalewayMedium());
+
+        TextView txtAuthorname=(TextView)view.findViewById(R.id.txt_author_name);
+        txtAuthorname.setTypeface(Global.myTypeFace.getRalewayBold());
+
+        TextView txtAnswer=(TextView)view.findViewById(R.id.txt_answer);
+        txtAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAnswer.setMovementMethod(new ScrollingMovementMethod());
+
+        TextView txtQuestion=(TextView)view.findViewById(R.id.txt_question);
+        txtQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+        ImageView imgUserPic=(ImageView)view.findViewById(R.id.img_user_pic);
+
+        Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER+arrayList.get(position).getPostedByPic(),imgUserPic, ISMStudent.options);
+
+        txtAuthorname.setText(((HostActivity) mContext).getBundle().getString(AppConstant.AUTHOR_NAME));
+
+        txtQuestion.setText(arrayList.get(position).getQuestionText());
+
+        txtAnswer.setText(arrayList.get(position).getAnswerText());
+
+        txtUsername.setText(arrayList.get(position).getPostedByUsername());
 
         container.addView(view);
         return view;
@@ -128,25 +98,6 @@ public class GoTrendingQueAnsAuthorAdapter extends PagerAdapter {
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tvAssignmentTitle, tvAssignmentContent;
-        private ImageView imgOption;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-//            tvAssignmentTitle = (TextView) itemView.findViewById(R.id.tv_assignment_title);
-//            tvAssignmentContent = (TextView) itemView.findViewById(R.id.tv_assignment_content);
-//
-//
-//            tvAssignmentTitle.setTypeface(Global.myTypeFace.getRalewayBold());
-//            tvAssignmentContent.setTypeface(Global.myTypeFace.getRalewayRegular());
-
-            imgOption = (ImageView) itemView.findViewById(R.id.img_menu);
-
-        }
-    }
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((RelativeLayout)object);

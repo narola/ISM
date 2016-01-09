@@ -87,7 +87,7 @@ public class RealmHandler {
                         ROFeedComment.setFeed(ROFeeds);
                         ROFeedComment.setCreatedDate(Utility.getDateFormateMySql(arrayListComment.get(j).getCreatedDate()));
                         studentHelper.saveComments(ROFeedComment);
-                        //ROFeeds.getComments().add(ROFeedComment);
+                        //feeds.getComments().add(feedComment);
                     }
                 }
                 ArrayList<FeedImages> arrayListImages = arrayList.get(i).getFeedImages();
