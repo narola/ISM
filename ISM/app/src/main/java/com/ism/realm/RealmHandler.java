@@ -10,6 +10,7 @@ import com.ism.ws.model.Feeds;
 
 import java.util.ArrayList;
 
+import io.realm.RealmResults;
 import model.FeedComment;
 import model.FeedImage;
 import model.User;
@@ -30,6 +31,7 @@ public class RealmHandler {
     public void removeRealm() {
         studentHelper.realm.close();
     }
+
     public void saveFeeds(ArrayList<Feeds> arrayList) {
         try {
             for (int i = 0; i < arrayList.size(); i++) {
@@ -102,7 +104,15 @@ public class RealmHandler {
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG, "ParseAllData Exception : " + e.toString());
+            Log.e(TAG, "saveFeeds Exception : " + e.toString());
         }
+    }
+
+    public RealmResults<model.Feeds> getFeeds(int feed_id, int userId) {
+        return studentHelper.getFeeds(feed_id,userId);
+    }
+
+    public RealmResults<model.Feeds> getUpdatedFeedLikes(boolean status) {
+        return studentHelper.managedFeedLikeStatus(status);
     }
 }
