@@ -43,6 +43,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import model.ROAdminConfig;
+import model.ROUser;
 import realmhelper.StudentHelper;
 
 /**
@@ -543,11 +545,11 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 					if (arrListAdminConfig != null && arrListAdminConfig.size() > 0) {
 						for (AdminConfig config : arrListAdminConfig) {
-							model.AdminConfig adminConfig = new model.AdminConfig();
-							adminConfig.setConfigKey(config.getConfigKey());
-							adminConfig.setConfigValue(config.getConfigValue());
-							adminConfig.setValueUnit(config.getValueUnit());
-							studentHelper.saveAdminConfig(adminConfig);
+							ROAdminConfig ROAdminConfig = new ROAdminConfig();
+							ROAdminConfig.setConfigKey(config.getConfigKey());
+							ROAdminConfig.setConfigValue(config.getConfigValue());
+							ROAdminConfig.setValueUnit(config.getValueUnit());
+							studentHelper.saveAdminConfig(ROAdminConfig);
 						}
 						PreferenceData.setStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, LoginActivity.this,
 								Utility.formatDate(Calendar.getInstance().getTime(), Utility.DATE_FORMAT_MY_SQL));
@@ -796,10 +798,10 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
     private void saveUserDataToRealm(ArrayList<User> user) {
         try {
-            model.User userData = new model.User();
-            userData.setUserId(Integer.parseInt(user.get(0).getUserId()));
-            userData.setFullName(user.get(0).getFullName());
-            userData.setProfilePicture(user.get(0).getProfilePic());
+            ROUser ROUserData = new ROUser();
+            ROUserData.setUserId(Integer.parseInt(user.get(0).getUserId()));
+            ROUserData.setFullName(user.get(0).getFullName());
+            ROUserData.setProfilePicture(user.get(0).getProfilePic());
 //			userData.setClassName(user.get(0).getClassName());
 //			userData.setFirstName(user.get(0).getCourseName());
 //			userData.setFirstName(user.get(0).getCourseName());
@@ -807,7 +809,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 //			userData.setFirstName(user.get(0).getCourseName());
 //			userData.setFirstName(user.get(0).getCourseName());
             StudentHelper studentHelper = new StudentHelper(this);
-            studentHelper.saveUser(userData);
+            studentHelper.saveUser(ROUserData);
 
         } catch (Exception e) {
             Log.e(TAG, "saveUserDataToRealm Exception : " + e.getLocalizedMessage());

@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.RealmResults;
-import model.FeedComment;
-import model.Feeds;
-import model.User;
+import model.ROFeedComment;
+import model.ROFeeds;
+import model.ROUser;
 import realmhelper.StudentHelper;
 
 /**
@@ -44,7 +44,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private static final String TAG = PostFeedsAdapter.class.getSimpleName();
 
     private Context context;
-    private List<Feeds> arrListFeeds;
+    private List<ROFeeds> arrListFeeds;
 
     private int addCommentFeedPosition = -1;
     private int tagFeedPosition = -1;
@@ -54,9 +54,9 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private int feedLiked;
     private int totalLikes = -1;
     private String strComment = "";
-    private FeedComment feedComment;
+    private ROFeedComment ROFeedComment;
 
-    public PostFeedsAdapter(Context context, RealmResults<model.Feeds> arrListFeeds) {
+    public PostFeedsAdapter(Context context, RealmResults<ROFeeds> arrListFeeds) {
         this.context = context;
         this.arrListFeeds = arrListFeeds;
         studentHelper = new StudentHelper(context);
@@ -198,7 +198,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         return arrListFeeds.size();
     }
 
-    private View getCommentView(FeedComment comment) {
+    private View getCommentView(ROFeedComment comment) {
         View view = null;
         try {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -344,12 +344,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 //                    user.setProfilePicture(comments.get(i).getProfilePic());
 //                    user.setUserId(Integer.parseInt(comments.get(i).getCommentBy()));
 //                    studentHelper.saveUser(user);
-//                    feedComment.setCommentBy(user);
+//                    ROFeedComment.setCommentBy(user);
 //                    model.saveFeeds feeds = new model.saveFeeds();
 //                    feeds.setFeedId(Integer.parseInt(arrListFeeds.get(viewAllFeedId).getFeedId()));
-//                    feedComment.setFeed(feeds);
-//                    feedComment.setComment(comments.get(i).getComment());
-//                    studentHelper.FeedCommments(feedComment);
+//                    ROFeedComment.setFeed(feeds);
+//                    ROFeedComment.setComment(comments.get(i).getComment());
+//                    studentHelper.FeedCommments(ROFeedComment);
                 }
             }
             setUpData(studentHelper.getFeedComments(arrListFeeds.get(viewAllFeedId).getFeedId()));
@@ -386,15 +386,15 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private void saveComment(int commentId) {
         try {
-            Feeds feeds = studentHelper.getFeeds(arrListFeeds.get(addCommentFeedPosition).getFeedId(), Integer.parseInt(Global.strUserId)).get(0);
-            FeedComment feedComment = new FeedComment();
-            feedComment.setCommentBy(studentHelper.getUser(Integer.parseInt(Global.strUserId)));
-            feedComment.setComment(attributeComments.getComment());
-            feedComment.setFeedCommentId(commentId);
-            feedComment.setCreatedDate(Utility.getDateMySql());
-            feedComment.setFeed(feeds);
-            studentHelper.saveComments(feedComment);
-            studentHelper.updateTotalComments(feeds);
+            ROFeeds ROFeeds = studentHelper.getFeeds(arrListFeeds.get(addCommentFeedPosition).getFeedId(), Integer.parseInt(Global.strUserId)).get(0);
+            ROFeedComment ROFeedComment = new ROFeedComment();
+            ROFeedComment.setCommentBy(studentHelper.getUser(Integer.parseInt(Global.strUserId)));
+            ROFeedComment.setComment(attributeComments.getComment());
+            ROFeedComment.setFeedCommentId(commentId);
+            ROFeedComment.setCreatedDate(Utility.getDateMySql());
+            ROFeedComment.setFeed(ROFeeds);
+            studentHelper.saveComments(ROFeedComment);
+            studentHelper.updateTotalComments(ROFeeds);
             arrListFeeds = studentHelper.getFeeds(-1, Integer.parseInt(Global.strUserId));
             notifyDataSetChanged();
         } catch (Exception e) {
@@ -405,8 +405,8 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private void updateFeedLike(int feedId) {
         try {
 
-            Feeds feeds = studentHelper.getFeeds(feedId, Integer.parseInt(Global.strUserId)).get(0);
-            studentHelper.updateFeedLikes(feeds);
+            ROFeeds ROFeeds = studentHelper.getFeeds(feedId, Integer.parseInt(Global.strUserId)).get(0);
+            studentHelper.updateFeedLikes(ROFeeds);
             arrListFeeds = studentHelper.getFeeds(-1, Integer.parseInt(Global.strUserId));
             notifyDataSetChanged();
         } catch (Exception e) {
@@ -418,20 +418,20 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         try {
             if (comments.size() > 0) {
                 for (int i = 0; i < comments.size(); i++) {
-                    Feeds feeds = studentHelper.getFeeds(arrListFeeds.get(viewAllFeedId).getFeedId(), Integer.parseInt(Global.strUserId)).get(0);
-                    FeedComment feedComment = new FeedComment();
-                    feedComment.setFeedCommentId(Integer.parseInt(comments.get(i).getId()));
-                    User user = new User();
-                    user.setFullName(comments.get(i).getFullName());
-                    user.setProfilePicture(comments.get(i).getProfilePic());
-                    user.setUserId(Integer.parseInt(comments.get(i).getCommentBy()));
-                    studentHelper.saveUser(user);
-                    feedComment.setCommentBy(user);
-                    feedComment.setFeed(feeds);
-                    feedComment.setCreatedDate(Utility.getDateFormateMySql(comments.get(i).getCreatedDate()));
-                    feedComment.setComment(comments.get(i).getComment());
-                    studentHelper.saveComments(feedComment);
-                    Log.e(TAG, "PaseAllComments : " + feedComment);
+                    ROFeeds ROFeeds = studentHelper.getFeeds(arrListFeeds.get(viewAllFeedId).getFeedId(), Integer.parseInt(Global.strUserId)).get(0);
+                    ROFeedComment ROFeedComment = new ROFeedComment();
+                    ROFeedComment.setFeedCommentId(Integer.parseInt(comments.get(i).getId()));
+                    ROUser ROUser = new ROUser();
+                    ROUser.setFullName(comments.get(i).getFullName());
+                    ROUser.setProfilePicture(comments.get(i).getProfilePic());
+                    ROUser.setUserId(Integer.parseInt(comments.get(i).getCommentBy()));
+                    studentHelper.saveUser(ROUser);
+                    ROFeedComment.setCommentBy(ROUser);
+                    ROFeedComment.setFeed(ROFeeds);
+                    ROFeedComment.setCreatedDate(Utility.getDateFormateMySql(comments.get(i).getCreatedDate()));
+                    ROFeedComment.setComment(comments.get(i).getComment());
+                    studentHelper.saveComments(ROFeedComment);
+                    Log.e(TAG, "PaseAllComments : " + ROFeedComment);
                 }
             }
             setUpData(studentHelper.getFeedComments(arrListFeeds.get(viewAllFeedId).getFeedId()));
@@ -441,7 +441,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         }
     }
 
-    public void setUpData(RealmResults<model.FeedComment> realmResult) {
+    public void setUpData(RealmResults<ROFeedComment> realmResult) {
         try {
             ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(context, realmResult);
             viewAllCommentsDialog.show();

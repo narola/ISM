@@ -63,8 +63,8 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
 //            holder.txtStudentSchool.setText(arrListExamSubmittor.get(position).getSchoolName());
             holder.txtStudentMarks.setText(arrListExamSubmittor.get(position).getEvaluationScore());
 
-            if (getBundleArguments().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_ID)) {
-                if (getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
+            if (getBundleArguments().containsKey(ExamSubmittorAdapter.ARG_STUDENT_ID)) {
+                if (getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
                     holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.fragment_background_color));
                     holder.txt_bottom_line.setBackgroundColor(mContext.getResources().getColor(R.color.color_blue));
                 } else {
@@ -139,12 +139,12 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
     }
 
     public void setBundleArgument(int position) {
-        getBundleArguments().putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
-        getBundleArguments().putString(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
+        getBundleArguments().putInt(ExamSubmittorAdapter.ARG_STUDENT_POSITION, position);
+        getBundleArguments().putString(ExamSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
                 arrListExamSubmittor.get(position).getStudentProfilePic());
-        getBundleArguments().putString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME,
+        getBundleArguments().putString(ExamSubmittorAdapter.ARG_STUDENT_NAME,
                 arrListExamSubmittor.get(position).getStudentName());
-        getBundleArguments().putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID,
+        getBundleArguments().putString(ExamSubmittorAdapter.ARG_STUDENT_ID,
                 arrListExamSubmittor.get(position).getStudentId());
         notifyDataSetChanged();
     }

@@ -296,12 +296,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         }
 
         // images
-//        if (arrListFeeds.get(position).getFeedImages().size() != 0) {
+//        if (arrListFeeds.get(position).getROFeedImages().size() != 0) {
 //
 //            holder.imgImage.setVisibility(View.VISIBLE);
 //
 //            ArrayList<FeedImages> feedImages = new ArrayList<FeedImages>();
-//            feedImages = arrListFeeds.get(position).getFeedImages();
+//            feedImages = arrListFeeds.get(position).getROFeedImages();
 //            for (int i = 0; i < feedImages.size(); i++) {
 //                Log.i(TAG, WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink() + "");
 //                Global.imageLoader.displayImage(WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink(), holder.imgImage, ISMTeacher.options);

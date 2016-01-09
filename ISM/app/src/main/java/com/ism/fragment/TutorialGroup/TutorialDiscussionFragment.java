@@ -1,4 +1,4 @@
-package com.ism.fragment.tutorialGroup;
+package com.ism.fragment.TutorialGroup;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
@@ -35,10 +35,7 @@ import com.ism.ws.model.GroupDiscussionData;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
-import model.Subjects;
-import model.TutorialTopic;
 import realmhelper.StudentHelper;
 
 /**
@@ -470,7 +467,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 					Subjects subjects = new Subjects();
 					subjects.setSubjectName(arrListDiscussionData.get(i).getSubjectName());
 					studentHelper.saveSubjects(subjects);
-					tutorialTopic.setSubject(subjects);
+					tutorialTopic.setRoSubjects(subjects);
 
 					studentHelper.saveTutorialGroupTopic(tutorialTopic);
 				}*/

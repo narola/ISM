@@ -57,7 +57,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 	private CheckBox[] cbOptions;
 	private RadioButton[] rbOptions;
 
-	private ExamFragment.ExamListener listenerExam;
+	private com.ism.fragment.tutorialGroup.ExamFragment.ExamListener listenerExam;
 	private View.OnClickListener onClickLable;
 	private InputValidator inputValidator;
 	private HostActivity activityHost;
@@ -68,13 +68,13 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 	private boolean isExpanded = false;
 	private int intPaddingLable;
 
-	public static TutorialFriAddQuestionFragment newInstance(ExamFragment.ExamListener listenerExam) {
+	public static TutorialFriAddQuestionFragment newInstance(com.ism.fragment.tutorialGroup.ExamFragment.ExamListener listenerExam) {
 		TutorialFriAddQuestionFragment fragment = new TutorialFriAddQuestionFragment();
 		fragment.setExamListener(listenerExam);
 		return fragment;
 	}
 
-	private void setExamListener(ExamFragment.ExamListener examListener) {
+	private void setExamListener(com.ism.fragment.tutorialGroup.ExamFragment.ExamListener examListener) {
 		listenerExam = examListener;
 	}
 
@@ -178,7 +178,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 						Utility.alertOffline(getActivity());
 					}
 				} else {*/
-					getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam)).commit();
+					getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.tutorialGroup.ExamFragment.newInstance(listenerExam)).commit();
 /*				}
 			}
 		} else {
@@ -438,7 +438,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 							&& responseHandler.getFridayExamStatus().get(0).getIsReady().equals("yes")) {
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity(), true);
 						Alarm.cancelAlarm(getActivity(), Alarm.REQUEST_CODE_FRIDAY_EXAM_STATUS);
-						getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam)).commit();
+						getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.tutorialGroup.ExamFragment.newInstance(listenerExam)).commit();
 					} else {
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity(), false);
 						rlHeader.setVisibility(View.GONE);
@@ -446,7 +446,7 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 						rlWaiting.setVisibility(View.VISIBLE);
 
 						/**
-						 * Set alarm to check Exam status every 5mins.
+						 * Set alarm to check ROExam status every 5mins.
 						 */
 						Calendar calendar = Calendar.getInstance();
 						calendar.add(Calendar.MINUTE, 5);

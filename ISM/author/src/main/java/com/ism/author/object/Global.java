@@ -1,6 +1,5 @@
 package com.ism.author.object;
 
-import com.ism.author.model.GetRealmDataModel;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -17,5 +16,4 @@ public class Global {
     public static String checkSlotNo = "yes";
 
     public static MyTypeFace myTypeFace;
-    public static GetRealmDataModel getRealmDataModel = new GetRealmDataModel();
 }

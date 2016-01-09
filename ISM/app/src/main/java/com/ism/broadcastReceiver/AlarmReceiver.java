@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
@@ -43,7 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver implements WebserviceWrappe
 //			if (!PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, context)) {
 
 				/**
-				 * Set alarm to check Exam status every 5mins.
+				 * Set alarm to check ROExam status every 5mins.
 				 */
 				Calendar calendar = Calendar.getInstance();
 				calendar.add(Calendar.MINUTE, 5);

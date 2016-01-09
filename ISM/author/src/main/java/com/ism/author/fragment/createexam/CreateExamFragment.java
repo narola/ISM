@@ -670,7 +670,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     onResponseGetClassrooms(object, error);
                     break;
                 case WebConstants.GETBOOKSBYAUTHOR:
-//                    onResponseGetSubjects(object, error);
                     onResponseGetBooksForAuthor(object, error);
                     break;
                 case WebConstants.CREATEEXAM:

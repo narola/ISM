@@ -17,7 +17,7 @@ import com.ism.fragment.desk.JotterFragment;
 import com.ism.object.Global;
 
 import io.realm.RealmResults;
-import model.Notes;
+import model.RONotes;
 
 /**
  * Created by c162 on 24/12/15.
@@ -28,7 +28,7 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
 
     private LayoutInflater inflater;
     private Context context;
-    private RealmResults<model.Notes> arrayList;
+    private RealmResults<RONotes> arrayList;
     //	private HostActivity activityHost;
     ViewNoteListener viewNoteListener;
     private int lastSelected;
@@ -37,7 +37,7 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
         this.viewNoteListener = viewNoteListener;
     }
 
-    public JotterNotesAdapter(Context context, RealmResults<Notes> arrListNotice, JotterFragment jotterFragment, int lastPosition) {
+    public JotterNotesAdapter(Context context, RealmResults<RONotes> arrListNotice, JotterFragment jotterFragment, int lastPosition) {
         this.context = context;
         this.arrayList = arrListNotice;
         this.viewNoteListener = jotterFragment;
@@ -62,7 +62,7 @@ public class JotterNotesAdapter extends RecyclerView.Adapter<JotterNotesAdapter.
 //            }
             holder.txtSubject.setText(arrayList.get(position).getNoteSubject());
             holder.txtNotename.setText(arrayList.get(position).getNoteName());
-            holder.txtNoteBy.setText("By : " + arrayList.get(position).getUser().getFullName());
+            holder.txtNoteBy.setText("By : " + arrayList.get(position).getRoUser().getFullName());
 
             holder.txtNoteBy.setOnClickListener(new View.OnClickListener() {
                 @Override

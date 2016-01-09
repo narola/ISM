@@ -67,7 +67,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
             holder.tvStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
             holder.tvStudentRollNo.setText(mContext.getResources().getString(R.string.strrollno) + (position + 1));
 
-            if (getBundleArgument().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
+            if (getBundleArgument().getString(ExamSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
                 holder.tvStudentName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
             } else {
                 holder.tvStudentName.setTextColor(mContext.getResources().getColor(R.color.color_gray));
@@ -150,12 +150,12 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
     }
 
     public void setBundleArgument(int position) {
-        getBundleArgument().putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
-        getBundleArgument().putString(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
+        getBundleArgument().putInt(ExamSubmittorAdapter.ARG_STUDENT_POSITION, position);
+        getBundleArgument().putString(ExamSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
                 arrListExamSubmittor.get(position).getStudentProfilePic());
-        getBundleArgument().putString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME,
+        getBundleArgument().putString(ExamSubmittorAdapter.ARG_STUDENT_NAME,
                 arrListExamSubmittor.get(position).getStudentName());
-        getBundleArgument().putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID,
+        getBundleArgument().putString(ExamSubmittorAdapter.ARG_STUDENT_ID,
                 arrListExamSubmittor.get(position).getStudentId());
         notifyDataSetChanged();
     }

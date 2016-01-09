@@ -18,12 +18,13 @@ import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.User;
-import com.ism.author.utility.Debug;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import model.AuthorProfile;
+import model.ROAuthorProfile;
+import model.ROUser;
 import realmhelper.AuthorHelper;
 
 /**
@@ -133,9 +134,9 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         txtTotalBadgesEarned.setTypeface(Global.myTypeFace.getRalewayBold());
         txtQuestionAnswered.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtTotalFavQuestions.setTypeface(Global.myTypeFace.getRalewayBold());
-        AuthorProfile authorProfile=getAuthorData();
-        if(authorProfile!=null){
-            setUpDBData(authorProfile);
+        ROAuthorProfile ROAuthorProfile =getAuthorData();
+        if(ROAuthorProfile !=null){
+            setUpDBData(ROAuthorProfile);
             callApiGetAboutMe();
         }
         else {
@@ -190,34 +191,34 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void saveAuthorProfile(User user) {
         try {
-            AuthorProfile authorProfile = new AuthorProfile();
-            model.User userData = authorHelper.getUser(Integer.parseInt(Global.strUserId));
-            if (userData != null) {
-                authorProfile.setUser(userData);
+            ROAuthorProfile ROAuthorProfile = new ROAuthorProfile();
+            ROUser ROUserData = authorHelper.getUser(Integer.parseInt(Global.strUserId));
+            if (ROUserData != null) {
+                ROAuthorProfile.setRoUser(ROUserData);
             } else {
-                userData = new model.User();
-                userData.setUserId(Integer.parseInt(user.getUserId()));
+                ROUserData = new ROUser();
+                ROUserData.setUserId(Integer.parseInt(user.getUserId()));
 //                newuser.setUsername(user.getUsername());
-                userData.setFullName(user.getUsername());
-                userData.setProfilePicture(user.getProfilePic());
-                authorHelper.saveUser(userData);
-                authorProfile.setUser(userData);
+                ROUserData.setFullName(user.getUsername());
+                ROUserData.setProfilePicture(user.getProfilePic());
+                authorHelper.saveUser(ROUserData);
+                ROAuthorProfile.setRoUser(ROUserData);
             }
-            authorProfile.setServerAuthorId(Integer.parseInt(user.getUserId()));
-            authorProfile.setAboutAuthor(user.getAboutAuthor());
-            //authorProfile.setContactNumber(user.getContactNumber()); // this field is never used in author module
-            authorProfile.setBirthDate(getDateFormate(user.getBirthdate()));
-            authorProfile.setEducation(user.getEducation());
-            authorProfile.setTotalAssignment(Integer.parseInt(user.getTotalAssignment() == null ? "0" : user.getTotalAssignment()));
-            authorProfile.setTotalBadges(Integer.parseInt(user.getTotalBadgesEarned() == null ? "0" : user.getTotalBadgesEarned()));
-            authorProfile.setTotalPost(Integer.parseInt(user.getTotalPost() == null ? "0" : user.getTotalPost()));
-            authorProfile.setTotalQuestionAnswered(Integer.parseInt(user.getTotalQuestionsAnswered() == null ? "0" : user.getTotalQuestionsAnswered()));
-            authorProfile.setTotalFavouritesQuestions(Integer.parseInt(user.getTotalFavoriteQuestions() == null ? "0" : user.getTotalFavoriteQuestions()));
-            authorProfile.setTotalFollowers(Integer.parseInt(user.getTotalFollowers() == null ? "0" : user.getTotalFollowers()));
-            authorProfile.setTotalFollpwing(Integer.parseInt(user.getTotalFollowing() == null ? "0" : user.getTotalFollowing()));
-            authorProfile.setTotalExamCreated(Integer.parseInt(user.getTotalExams() == null ? "0" : user.getTotalExams()));
-            authorProfile.setTotalBooks(Integer.parseInt(user.getTotalBooks() == null ? "0" : user.getTotalBooks()));
-            authorHelper.saveAuthorProfile(authorProfile);
+            ROAuthorProfile.setServerAuthorId(Integer.parseInt(user.getUserId()));
+            ROAuthorProfile.setAboutAuthor(user.getAboutAuthor());
+            //ROAuthorProfile.setContactNumber(user.getContactNumber()); // this field is never used in author module
+            ROAuthorProfile.setBirthDate(getDateFormate(user.getBirthdate()));
+            ROAuthorProfile.setEducation(user.getEducation());
+            ROAuthorProfile.setTotalAssignment(Integer.parseInt(user.getTotalAssignment() == null ? "0" : user.getTotalAssignment()));
+            ROAuthorProfile.setTotalBadges(Integer.parseInt(user.getTotalBadgesEarned() == null ? "0" : user.getTotalBadgesEarned()));
+            ROAuthorProfile.setTotalPost(Integer.parseInt(user.getTotalPost() == null ? "0" : user.getTotalPost()));
+            ROAuthorProfile.setTotalQuestionAnswered(Integer.parseInt(user.getTotalQuestionsAnswered() == null ? "0" : user.getTotalQuestionsAnswered()));
+            ROAuthorProfile.setTotalFavouritesQuestions(Integer.parseInt(user.getTotalFavoriteQuestions() == null ? "0" : user.getTotalFavoriteQuestions()));
+            ROAuthorProfile.setTotalFollowers(Integer.parseInt(user.getTotalFollowers() == null ? "0" : user.getTotalFollowers()));
+            ROAuthorProfile.setTotalFollpwing(Integer.parseInt(user.getTotalFollowing() == null ? "0" : user.getTotalFollowing()));
+            ROAuthorProfile.setTotalExamCreated(Integer.parseInt(user.getTotalExams() == null ? "0" : user.getTotalExams()));
+            ROAuthorProfile.setTotalBooks(Integer.parseInt(user.getTotalBooks() == null ? "0" : user.getTotalBooks()));
+            authorHelper.saveAuthorProfile(ROAuthorProfile);
             setUpDBData(getAuthorData());
 
         } catch (Exception e) {
@@ -225,7 +226,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         }
     }
 
-    private AuthorProfile getAuthorData() {
+    private ROAuthorProfile getAuthorData() {
         return authorHelper.getAuthorprofile(Integer.parseInt(Global.strUserId));
     }
 
@@ -257,9 +258,9 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         return null;
     }
 
-    private void setUpDBData(model.AuthorProfile data) {
+    private void setUpDBData(ROAuthorProfile data) {
         try {
-            txtUserName.setText(data.getUser().getFullName().toUpperCase());
+            txtUserName.setText(data.getRoUser().getFullName().toUpperCase());
             txtEducationName.setText(data.getEducation());
             txtBirthdate.setText(com.ism.commonsource.utility.Utility.DateFormat(getDateFormate(data.getBirthDate())));
 
@@ -314,7 +315,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             else
                 txtTotalFollowing.setText(data.getTotalFollpwing());
 
-            txtAboutAuhtor.setText("ABOUT " + data.getUser().getFullName().toUpperCase());
+            txtAboutAuhtor.setText("ABOUT " + data.getRoUser().getFullName().toUpperCase());
 //            Global.imageLoader.displayImage(WebConstants.USER_IMAGES + data.getProfilePic(), imgProfilePic, ISMAuthor.options);
             Global.imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMAuthor.options);
         } catch (Exception e) {

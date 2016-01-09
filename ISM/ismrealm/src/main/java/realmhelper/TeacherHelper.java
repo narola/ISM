@@ -7,8 +7,8 @@ import com.realm.ismrealm.RealmAdaptor;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
-import model.AdminConfig;
-import model.teachermodel.ClassPerformanceRealmModel;
+import model.ROAdminConfig;
+import model.teachermodel.ROClassPerformance;
 
 /**
  * Created by c166 on 16/12/15.
@@ -24,11 +24,11 @@ public class TeacherHelper {
     }
 
     public String getGlobalPassword() {
-        RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
+        RealmResults<ROAdminConfig> ROAdminConfigs = realm.where(ROAdminConfig.class)
                 .equalTo("configKey", "globalPassword")
                 .findAll();
-        if (adminConfigs != null && adminConfigs.size() > 0) {
-            return adminConfigs.get(0).getConfigValue();
+        if (ROAdminConfigs != null && ROAdminConfigs.size() > 0) {
+            return ROAdminConfigs.get(0).getConfigValue();
         } else {
             return null;
         }
@@ -37,18 +37,18 @@ public class TeacherHelper {
     /**
      * Save admin config data
      *
-     * @param adminConfig
+     * @param ROAdminConfig
      */
-    public void saveAdminConfig(AdminConfig adminConfig) {
+    public void saveAdminConfig(ROAdminConfig ROAdminConfig) {
         try {
-            Number configId = realm.where(AdminConfig.class).max("configId");
+            Number configId = realm.where(ROAdminConfig.class).max("configId");
             long newId = 0;
             if (configId != null) {
                 newId = (long) configId + 1;
             }
             realm.beginTransaction();
-            adminConfig.setConfigId((int) newId);
-            realm.copyToRealmOrUpdate(adminConfig);
+            ROAdminConfig.setConfigId((int) newId);
+            realm.copyToRealmOrUpdate(ROAdminConfig);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveAdminConfig Exception : " + e.toString());
@@ -64,7 +64,7 @@ public class TeacherHelper {
      *
      * @param realmClassPerformance is returned from GetRealmDataModel.getRealmClassPerformance
      */
-    public void addClassPerformance(ClassPerformanceRealmModel realmClassPerformance) {
+    public void addClassPerformance(ROClassPerformance realmClassPerformance) {
         try {
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(realmClassPerformance);
