@@ -20,20 +20,16 @@ import com.ism.activity.PostFeedActivity;
 import com.ism.adapter.PostFeedsAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
+import com.ism.realm.RealmHandler;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Comment;
-import com.ism.ws.model.FeedImages;
 import com.ism.ws.model.Feeds;
 
 import java.util.ArrayList;
 
 import io.realm.RealmResults;
-import model.FeedComment;
-import model.FeedImage;
-import model.User;
 import realmhelper.StudentHelper;
 
 public class ClassWallFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
@@ -48,6 +44,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     private PostFeedsAdapter adpPostFeeds;
     private HostActivity activityHost;
     private StudentHelper studentHelper;
+    private RealmHandler dataToRealm;
     private Handler mHandler = new Handler();
 
     public static ClassWallFragment newInstance() {
@@ -69,6 +66,8 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
     }
 
     private void initGlobal() {
+        dataToRealm=new RealmHandler(getActivity());
+
         recyclerPostFeeds = (RecyclerView) view.findViewById(R.id.recycler_post);
         rlNewPost = (RelativeLayout) view.findViewById(R.id.rl_new_post);
         recyclerPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -267,74 +266,75 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 
     private void ParseAllData(ArrayList<Feeds> arrayList) {
         try {
-            for (int i = 0; i < arrayList.size(); i++) {
-                Log.e(TAG,"I item : " +i);
-                model.Feeds feeds = new model.Feeds();
-                feeds.setFeedId(Integer.parseInt(arrayList.get(i).getFeedId()));
-                feeds.setUser(studentHelper.getUser(Integer.parseInt(arrayList.get(i).getUserId())));
-                User feedBy = studentHelper.getUser(Integer.parseInt(arrayList.get(i).getFeedBy()));
-                if (feedBy == null) {
-                    feedBy = new User();
-                    feedBy.setUserId(Integer.parseInt(arrayList.get(i).getFeedBy()));
-                    feedBy.setFullName(arrayList.get(i).getFullName());
-                    feedBy.setProfilePicture(arrayList.get(i).getProfilePic());
-                    studentHelper.saveUser(feedBy);
-                    feeds.setFeedBy(feedBy);
-                }
-                else{
-                    feeds.setFeedBy(feedBy);
-                }
-                feeds.setFeedText(arrayList.get(i).getFeedText());
-                //feeds.setProfilePic(arrayList.get(i).getProfilePic());
-                feeds.setAudioLink(arrayList.get(i).getAudioLink());
-                feeds.setVideoLink(arrayList.get(i).getVideoLink());
-                feeds.setVideoThumbnail(arrayList.get(i).getVideoThumbnail());
-                feeds.setTotalComment(Integer.parseInt(arrayList.get(i).getTotalComment()));
-                feeds.setTotalLike(Integer.parseInt(arrayList.get(i).getTotalLike()));
-                feeds.setCreatedDate(Utility.getDateFormateMySql(arrayList.get(i).getCreatedDate()));
-                if (!arrayList.get(i).getModifiedDate().equals("0000-00-00 00:00:00"))
-                    feeds.setModifiedDate(Utility.getDateFormateMySql(arrayList.get(i).getModifiedDate()));
-                feeds.setSelfLike(arrayList.get(i).getLike());
-                feeds.setIsSync(0);
-                feeds.setPostedOn(Utility.getDateFormate(arrayList.get(i).getLike()));
-                studentHelper.saveFeeds(feeds);
-                ArrayList<Comment> arrayListComment = arrayList.get(i).getComments();
-                if (arrayListComment.size() > 0) {
-                    for (int j = 0; j < arrayListComment.size(); j++) {
-                        FeedComment feedComment = new FeedComment();
-                        feedComment.setFeedCommentId(Integer.parseInt(arrayListComment.get(j).getId()));
-                        feedComment.setComment(arrayListComment.get(j).getComment());
-                        feedComment.setFeed(feeds);
-                        User commentBy = studentHelper.getUser(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
-                        if (commentBy == null) {
-                            commentBy = new User();
-                            commentBy.setUserId(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
-                            commentBy.setFullName(arrayListComment.get(j).getFullName());
-                            commentBy.setProfilePicture(arrayListComment.get(j).getProfilePic());
-                            studentHelper.saveUser(commentBy);
-                            feedComment.setCommentBy(commentBy);
-                        }
-                        else{
-                            feedComment.setCommentBy(commentBy);
-                        }
-                        feedComment.setFeed(feeds);
-                        feedComment.setCreatedDate(Utility.getDateFormateMySql(arrayListComment.get(j).getCreatedDate()));
-                        //studentHelper.saveComments(feedComment);
-                        feeds.getComments().add(feedComment);
-                    }
-                }
-                ArrayList<FeedImages> arrayListImages = arrayList.get(i).getFeedImages();
-                if (arrayListImages.size() > 0) {
-                    for (int j = 0; j < arrayListImages.size(); j++) {
-                        FeedImage feedImage = new FeedImage();
-                        feedImage.setFeedImageId(Integer.parseInt(arrayListImages.get(j).getId()));
-                        feedImage.setImageLink(arrayListImages.get(j).getImageLink());
-                        feedImage.setFeed(feeds);
-                        //studentHelper.saveFeedImages(feedImage);
-                        feeds.getFeedImages().add(feedImage);
-                    }
-                }
-            }
+            dataToRealm.saveFeeds(arrayList);
+//            for (int i = 0; i < arrayList.size(); i++) {
+//                Log.e(TAG,"I item : " +i);
+//                model.Feeds feeds = new model.Feeds();
+//                feeds.setFeedId(Integer.parseInt(arrayList.get(i).getFeedId()));
+//                feeds.setUser(studentHelper.getUser(Integer.parseInt(arrayList.get(i).getUserId())));
+//                User feedBy = studentHelper.getUser(Integer.parseInt(arrayList.get(i).getFeedBy()));
+//                if (feedBy == null) {
+//                    feedBy = new User();
+//                    feedBy.setUserId(Integer.parseInt(arrayList.get(i).getFeedBy()));
+//                    feedBy.setFullName(arrayList.get(i).getFullName());
+//                    feedBy.setProfilePicture(arrayList.get(i).getProfilePic());
+//                    studentHelper.saveUser(feedBy);
+//                    feeds.setFeedBy(feedBy);
+//                }
+//                else{
+//                    feeds.setFeedBy(feedBy);
+//                }
+//                feeds.setFeedText(arrayList.get(i).getFeedText());
+//                //feeds.setProfilePic(arrayList.get(i).getProfilePic());
+//                feeds.setAudioLink(arrayList.get(i).getAudioLink());
+//                feeds.setVideoLink(arrayList.get(i).getVideoLink());
+//                feeds.setVideoThumbnail(arrayList.get(i).getVideoThumbnail());
+//                feeds.setTotalComment(Integer.parseInt(arrayList.get(i).getTotalComment()));
+//                feeds.setTotalLike(Integer.parseInt(arrayList.get(i).getTotalLike()));
+//                feeds.setCreatedDate(Utility.getDateFormateMySql(arrayList.get(i).getCreatedDate()));
+//                if (!arrayList.get(i).getModifiedDate().equals("0000-00-00 00:00:00"))
+//                    feeds.setModifiedDate(Utility.getDateFormateMySql(arrayList.get(i).getModifiedDate()));
+//                feeds.setSelfLike(arrayList.get(i).getLike());
+//                feeds.setIsSync(0);
+//                feeds.setPostedOn(Utility.getDateFormate(arrayList.get(i).getLike()));
+//                studentHelper.saveFeeds(feeds);
+//                ArrayList<Comment> arrayListComment = arrayList.get(i).getComments();
+//                if (arrayListComment.size() > 0) {
+//                    for (int j = 0; j < arrayListComment.size(); j++) {
+//                        FeedComment feedComment = new FeedComment();
+//                        feedComment.setFeedCommentId(Integer.parseInt(arrayListComment.get(j).getId()));
+//                        feedComment.setComment(arrayListComment.get(j).getComment());
+//                        feedComment.setFeed(feeds);
+//                        User commentBy = studentHelper.getUser(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
+//                        if (commentBy == null) {
+//                            commentBy = new User();
+//                            commentBy.setUserId(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
+//                            commentBy.setFullName(arrayListComment.get(j).getFullName());
+//                            commentBy.setProfilePicture(arrayListComment.get(j).getProfilePic());
+//                            studentHelper.saveUser(commentBy);
+//                            feedComment.setCommentBy(commentBy);
+//                        }
+//                        else{
+//                            feedComment.setCommentBy(commentBy);
+//                        }
+//                        feedComment.setFeed(feeds);
+//                        feedComment.setCreatedDate(Utility.getDateFormateMySql(arrayListComment.get(j).getCreatedDate()));
+//                        studentHelper.saveComments(feedComment);
+//                        //feeds.getComments().add(feedComment);
+//                    }
+//                }
+//                ArrayList<FeedImages> arrayListImages = arrayList.get(i).getFeedImages();
+//                if (arrayListImages.size() > 0) {
+//                    for (int j = 0; j < arrayListImages.size(); j++) {
+//                        FeedImage feedImage = new FeedImage();
+//                        feedImage.setFeedImageId(Integer.parseInt(arrayListImages.get(j).getId()));
+//                        feedImage.setImageLink(arrayListImages.get(j).getImageLink());
+//                        feedImage.setFeed(feeds);
+//                        studentHelper.saveFeedImages(feedImage);
+//                        //feeds.getFeedImages().add(feedImage);
+//                    }
+//                }
+//            }
         } catch (Exception e) {
             Log.e(TAG, "ParseAllData Exception : " + e.toString());
         }
@@ -348,38 +348,17 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 
     public void setUpData(RealmResults<model.Feeds> realmResultFeeds) {
         try {
-//            ArrayList<saveFeeds> arrayList = new ArrayList<>();
-//            for (int i = 0; i < realmResultFeeds.size(); i++) {
-//                saveFeeds feeds = new saveFeeds();
-//                feeds.setFeedId(String.valueOf(realmResultFeeds.get(i).getFeedId()));
-//                feeds.setSelfLike(realmResultFeeds.get(i).getSelfLike());
-//                feeds.setTotalComment(String.valueOf(realmResultFeeds.get(i).getTotalComment()));
-//                feeds.setTotalLike(String.valueOf(realmResultFeeds.get(i).getTotalLike()));
-//                feeds.setFullName((realmResultFeeds.get(i).getFeedBy() == null ? realmResultFeeds.get(i).getFeedBy() + "" : realmResultFeeds.get(i).getFeedBy().getFullName()));
-//                feeds.setAudioLink(realmResultFeeds.get(i).getAudioLink());
-//                feeds.setVideoThumbnail(realmResultFeeds.get(i).getVideoThumbnail());
-//                feeds.setVideoLink(realmResultFeeds.get(i).getVideoLink());
-//                ArrayList<Comment> arrayListComments = new ArrayList<>();
-//                RealmList<FeedComment> realmListComments = realmResultFeeds.get(i).getComments();
-//                for (int j = 0; j < realmListComments.size(); j++) {
-//                    Comment comment = new Comment();
-//                    comment.setComment(realmListComments.get(j).getComment());
-//                    comment.setCommentBy(String.valueOf(realmListComments.get(j).getCommentBy().getUserId()));
-//                    comment.setId(String.valueOf(realmListComments.get(j).getFeedCommentId()));
-//                    comment.setProfilePic(String.valueOf(realmListComments.get(j).getCommentBy().getProfilePicture()));
-//                    arrayListComments.add(comment);
-//                }
-//                feeds.setComments(arrayListComments);
-//                feeds.setFeedText(realmResultFeeds.get(i).getFeedText());
-//                feeds.setProfilePic((realmResultFeeds.get(i).getFeedBy() == null ? realmResultFeeds.get(i).getFeedBy() + "" : realmResultFeeds.get(i).getFeedBy().getProfilePicture()));
-//                feeds.setUserId(String.valueOf((realmResultFeeds.get(i).getFeedBy() == null ? realmResultFeeds.get(i).getFeedBy() + "" : realmResultFeeds.get(i).getFeedBy().getUserId())));
-//                arrayList.add(feeds);
-//            }
             adpPostFeeds = new PostFeedsAdapter(getActivity(), realmResultFeeds);
             Log.e(TAG, "arrayList size : " + realmResultFeeds.size());
             recyclerPostFeeds.setAdapter(adpPostFeeds);
         } catch (Exception e) {
             Log.e(TAG, "setUpData Exception :" + e.getLocalizedMessage());
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dataToRealm.removeRealm();
     }
 }

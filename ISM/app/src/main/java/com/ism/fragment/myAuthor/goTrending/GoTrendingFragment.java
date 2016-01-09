@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.adapter.myAuthor.GoTrendingQueAnsAuthorAdapter;
 import com.ism.fragment.MyAuthorFragment;
 import com.ism.interfaces.FragmentListener;
+import com.ism.views.CirclePageIndicator;
 
 /**
  * Created by c162 on 07/01/16.
@@ -22,6 +24,8 @@ public class GoTrendingFragment extends Fragment {
     private HostActivity activityHost;
     private View view;
     private ViewPager viewpager;
+    private GoTrendingQueAnsAuthorAdapter authorAdapter ;
+    private CirclePageIndicator indicator;
 
     public static GoTrendingFragment newInstance() {
         GoTrendingFragment fragment = new GoTrendingFragment();
@@ -43,6 +47,11 @@ public class GoTrendingFragment extends Fragment {
 
     private void initGlobal() {
         viewpager = (ViewPager) view.findViewById(R.id.viewpager);
+        authorAdapter=new GoTrendingQueAnsAuthorAdapter(getActivity());
+        viewpager.setAdapter(authorAdapter);
+
+        indicator=(CirclePageIndicator)view.findViewById(R.id.indicator);
+        indicator.setViewPager(viewpager);
        // viewpager.setAdapter(new Ima);
     }
 

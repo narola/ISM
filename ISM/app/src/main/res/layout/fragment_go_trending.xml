@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/gray_light"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:mContext="com.ism.fragment.myAuthor.goTrending.GoTrendingFragment"
     android:orientation="horizontal">
 
     <RelativeLayout
@@ -10,20 +14,46 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txt_question_tending"
+        <RelativeLayout
+            android:id="@+id/rr_tittle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/trending_tab_height"
-            android:background="@drawable/shadow_separator"
-            android:gravity="center"
-            android:text="@string/strQuestionTrendingForThisWeek"
-            android:textSize="@dimen/sp16" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/shadow_separator_bg_white">
+
+            <TextView
+                android:id="@+id/txt_question_tending"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/trending_tab_height"
+                android:gravity="center"
+                android:text="@string/strQuestionTrendingForThisWeek"
+                android:textSize="@dimen/sp16" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_share_notes_acitve" />
+        </RelativeLayout>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/txt_question_tending" />
+            android:layout_height="300dp"
+            android:layout_below="@id/rr_tittle" />
+
+        <com.ism.views.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp5"
+            app:radius="@dimen/dp5"
+            android:layout_margin="@dimen/dp10"
+            android:layout_below="@id/viewpager"
+            app:fillColor="@color/color_answer"
+            app:pageColor="@color/text_gray"
+            app:strokeColor="@color/text_gray"/>
+
     </RelativeLayout>
 
     <TextView

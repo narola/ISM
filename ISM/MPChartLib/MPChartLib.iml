@@ -19,6 +19,7 @@
           <task>generateDebugSources</task>
         </afterSyncTasks>
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="" />
         <option name="LIBRARY_PROJECT" value="true" />
       </configuration>
     </facet>
@@ -66,6 +67,6 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" scope="TEST" name="realm-android-0.84.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="realm-android-0.84.1-SNAPSHOT" level="project" />
   </component>
 </module>

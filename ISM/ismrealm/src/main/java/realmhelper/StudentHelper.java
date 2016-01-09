@@ -41,6 +41,7 @@ public class StudentHelper {
      * use to save user data in ISM database.
      */
     public void saveUser(User user) {
+        Log.e(TAG,"saveUser : "+user.getUserId());
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(user);
         realm.commitTransaction();
