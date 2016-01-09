@@ -10,9 +10,13 @@ import com.ism.teacher.ws.model.Feeds;
 import com.ism.teacher.ws.model.StudentsScore;
 import com.ism.teacher.ws.model.SubjectWiseScore;
 
-import model.teachermodel.ClassPerformanceRealmModel;
-import model.teachermodel.StudentsScoreRealmModel;
-import model.teachermodel.SubjectWiseScoreRealmModel;
+import model.ROFeedComment;
+import model.ROFeedImage;
+import model.ROFeeds;
+import model.ROUser;
+import model.teachermodel.ROClassPerformance;
+import model.teachermodel.ROStudentsScore;
+import model.teachermodel.ROSubjectWiseScore;
 
 /**
  * Created by c166 on 06/01/16.
@@ -25,74 +29,74 @@ public class GetRealmDataModel {
     }
 
     /**
-     * This method return ClassPerformanceRealmModel object which is used by realm to store data of classPerformance.
+     * This method return ROClassPerformance object which is used by realm to store data of classPerformance.
      *
      * @param classPerformance
      * @return
      */
 
-    public ClassPerformanceRealmModel getRealmClassPerformance(ClassPerformance classPerformance) {
+    public ROClassPerformance getRealmClassPerformance(ClassPerformance classPerformance) {
 
-        ClassPerformanceRealmModel classPerformanceRealmModel = new ClassPerformanceRealmModel();
-        classPerformanceRealmModel.setExamName(classPerformance.getExamName());
-        classPerformanceRealmModel.setExamScore(classPerformance.getExamScore());
-        classPerformanceRealmModel.setInternalMarks(classPerformance.getInternalMarks());
+        ROClassPerformance ROClassPerformance = new ROClassPerformance();
+        ROClassPerformance.setExamName(classPerformance.getExamName());
+        ROClassPerformance.setExamScore(classPerformance.getExamScore());
+        ROClassPerformance.setInternalMarks(classPerformance.getInternalMarks());
 
         for (StudentsScore studentsScore : classPerformance.getStudentsScore()) {
 
-            StudentsScoreRealmModel studentsScoreRealmModel = new StudentsScoreRealmModel();
+            ROStudentsScore ROStudentsScore = new ROStudentsScore();
 
-            studentsScoreRealmModel.setStudentId(studentsScore.getStudentId());
-            studentsScoreRealmModel.setStudentName(studentsScore.getStudentName());
-            studentsScoreRealmModel.setStudentPic(studentsScore.getStudentPic());
-            studentsScoreRealmModel.setStudentScore(studentsScore.getStudentScore());
-            studentsScoreRealmModel.setPercentage(studentsScore.getPercentage());
-            studentsScoreRealmModel.setRank(studentsScore.getRank());
-            studentsScoreRealmModel.setGrade(studentsScore.getGrade());
-            studentsScoreRealmModel.setHeadMistressComment(studentsScore.getHeadMistressComment());
-            studentsScoreRealmModel.setClassMistressComment(studentsScore.getClassMistressComment());
+            ROStudentsScore.setStudentId(studentsScore.getStudentId());
+            ROStudentsScore.setStudentName(studentsScore.getStudentName());
+            ROStudentsScore.setStudentPic(studentsScore.getStudentPic());
+            ROStudentsScore.setStudentScore(studentsScore.getStudentScore());
+            ROStudentsScore.setPercentage(studentsScore.getPercentage());
+            ROStudentsScore.setRank(studentsScore.getRank());
+            ROStudentsScore.setGrade(studentsScore.getGrade());
+            ROStudentsScore.setHeadMistressComment(studentsScore.getHeadMistressComment());
+            ROStudentsScore.setClassMistressComment(studentsScore.getClassMistressComment());
 
             for (SubjectWiseScore subjectWiseScore : studentsScore.getSubjectWiseScore()) {
 
-                SubjectWiseScoreRealmModel subjectWiseScoreRealmModel = new SubjectWiseScoreRealmModel();
-                subjectWiseScoreRealmModel.setSubjectId(subjectWiseScore.getSubjectId());
-                subjectWiseScoreRealmModel.setSubjectName(subjectWiseScore.getSubjectName());
-                subjectWiseScoreRealmModel.setMarksObtained(subjectWiseScore.getMarksObtained());
-                subjectWiseScoreRealmModel.setPercentage(subjectWiseScore.getPercentage());
-                subjectWiseScoreRealmModel.setSubjectGrade(subjectWiseScore.getSubjectGrade());
-                subjectWiseScoreRealmModel.setRemarks(subjectWiseScore.getRemarks());
-                subjectWiseScoreRealmModel.setSubjectRank(subjectWiseScore.getSubjectRank());
-                subjectWiseScoreRealmModel.setInternalScore(subjectWiseScore.getInternalScore());
+                ROSubjectWiseScore ROSubjectWiseScore = new ROSubjectWiseScore();
+                ROSubjectWiseScore.setSubjectId(subjectWiseScore.getSubjectId());
+                ROSubjectWiseScore.setSubjectName(subjectWiseScore.getSubjectName());
+                ROSubjectWiseScore.setMarksObtained(subjectWiseScore.getMarksObtained());
+                ROSubjectWiseScore.setPercentage(subjectWiseScore.getPercentage());
+                ROSubjectWiseScore.setSubjectGrade(subjectWiseScore.getSubjectGrade());
+                ROSubjectWiseScore.setRemarks(subjectWiseScore.getRemarks());
+                ROSubjectWiseScore.setSubjectRank(subjectWiseScore.getSubjectRank());
+                ROSubjectWiseScore.setInternalScore(subjectWiseScore.getInternalScore());
 
-                studentsScoreRealmModel.getSubjectWiseScore().add(subjectWiseScoreRealmModel);
+                ROStudentsScore.getRoSubjectWiseScore().add(ROSubjectWiseScore);
 
             }
 
 
-            classPerformanceRealmModel.getStudentsScore().add(studentsScoreRealmModel);
+            ROClassPerformance.getStudentsScore().add(ROStudentsScore);
         }
-        return classPerformanceRealmModel;
+        return ROClassPerformance;
 
 
     }
 
     /**
-     * get the realm Feeds model for postfeed.
+     * get the realm ROFeeds model for postfeed.
      *
      * @param feed
      * @return
      */
-    public model.Feeds getRealmFeed(Feeds feed) {
+    public ROFeeds getRealmFeed(Feeds feed) {
 
-        model.Feeds postFeed = new model.Feeds();
+        ROFeeds postFeed = new ROFeeds();
         postFeed.setFeedId(feed.getFeedId());
 
-        model.User user = new model.User();
-        user.setUserId(feed.getFeedBy());
-        user.setProfilePicture(feed.getProfilePic());
-        user.setFullName(feed.getFullName());
+        ROUser ROUser = new ROUser();
+        ROUser.setUserId(feed.getFeedBy());
+        ROUser.setProfilePicture(feed.getProfilePic());
+        ROUser.setFullName(feed.getFullName());
 
-        postFeed.setFeedBy(user);
+        postFeed.setFeedBy(ROUser);
         postFeed.setFeedText(feed.getFeedText());
         postFeed.setVideoLink(feed.getVideoLink());
         postFeed.setAudioLink(feed.getAudioLink());
@@ -108,30 +112,30 @@ public class GetRealmDataModel {
 
         for (CommentList comment : feed.getCommentList()) {
 
-            model.FeedComment feedComment = new model.FeedComment();
-            feedComment.setFeedCommentId(comment.getId());
-            feedComment.setComment(comment.getComment());
-            feedComment.setCreatedDate(Utility.getRealmDateFormat(comment.getCreatedDate()));
+            ROFeedComment ROFeedComment = new ROFeedComment();
+            ROFeedComment.setFeedCommentId(comment.getId());
+            ROFeedComment.setComment(comment.getComment());
+            ROFeedComment.setCreatedDate(Utility.getRealmDateFormat(comment.getCreatedDate()));
 
-            model.User commentBy = new model.User();
+            ROUser commentBy = new ROUser();
             commentBy.setUserId(comment.getCommentBy());
             commentBy.setProfilePicture(comment.getProfilePic());
             commentBy.setFullName(comment.getFullName());
 
-            feedComment.setCommentBy(commentBy);
-            feedComment.setFeed(postFeed);
-            postFeed.getComments().add(feedComment);
+            ROFeedComment.setCommentBy(commentBy);
+            ROFeedComment.setFeed(postFeed);
+            postFeed.getComments().add(ROFeedComment);
         }
 
 
         for (FeedImages image : feed.getFeedImages()) {
 
-            model.FeedImage feedImage = new model.FeedImage();
-            feedImage.setFeedImageId(image.getId());
-            feedImage.setImageLink(image.getImageLink());
-            feedImage.setFeed(postFeed);
+            ROFeedImage ROFeedImage = new ROFeedImage();
+            ROFeedImage.setFeedImageId(image.getId());
+            ROFeedImage.setImageLink(image.getImageLink());
+            ROFeedImage.setFeed(postFeed);
 
-            postFeed.getFeedImages().add(feedImage);
+            postFeed.getROFeedImages().add(ROFeedImage);
         }
         return postFeed;
     }
@@ -142,12 +146,12 @@ public class GetRealmDataModel {
      *
      * @return
      */
-    public model.User getRealmUser() {
-        model.User user = new model.User();
-        user.setUserId(Integer.valueOf(Global.strUserId));
-        user.setFullName(Global.strFullName);
-        user.setProfilePicture(Global.strProfilePic);
-        return user;
+    public ROUser getRealmUser() {
+        ROUser ROUser = new ROUser();
+        ROUser.setUserId(Integer.valueOf(Global.strUserId));
+        ROUser.setFullName(Global.strFullName);
+        ROUser.setProfilePicture(Global.strProfilePic);
+        return ROUser;
     }
 
 
@@ -157,9 +161,9 @@ public class GetRealmDataModel {
      * @param classroom
      * @return
      */
-//    public model.Classrooms getRealmClassroom(Classrooms classroom) {
+//    public model.ROClassrooms getRealmClassroom(ROClassrooms classroom) {
 //
-//        model.Classrooms classrooms = new model.Classrooms();
+//        model.ROClassrooms classrooms = new model.ROClassrooms();
 //        classrooms.setClassRoomId(Integer.valueOf(classroom.getId()));
 //        classrooms.setClassName(classroom.getClassName());
 //        classrooms.setNickName(classroom.getClassNickname());
@@ -168,37 +172,37 @@ public class GetRealmDataModel {
 //    }
 
 
-//    public model.Exam getRealmExam(Exams exams, TeacherHelper teacherHelper) {
+//    public model.ROExam getRealmExam(Exams exams, TeacherHelper teacherHelper) {
 //
-//        model.Exam exam = new model.Exam();
+//        model.ROExam exam = new model.ROExam();
 //        exam.setExamId(Integer.valueOf(exams.getExamId()));
 //        exam.setExamName(exams.getExamName());
 //        exam.setInstructions(exams.getExamInstructions());
 //
-//        model.Classrooms classroom = null;
+//        model.ROClassrooms classroom = null;
 //        classroom = teacherHelper.getExamClassroom(Integer.valueOf(exams.getClassroomId()));
 //        if (classroom == null) {
-//            classroom = new model.Classrooms();
+//            classroom = new model.ROClassrooms();
 //            classroom.setClassRoomId(Integer.valueOf(exams.getClassroomId()));
 //            classroom.setClassName(exams.getClassroomName());
 //            classroom.setNickName("");
 //        }
-//        exam.setClassroom(classroom);
+//        exam.setRoClassroom(classroom);
 //        exam.setCreatedBy(getRealmUser());
 //
-//        AuthorBook authorBook = null;
+//        ROAuthorBook authorBook = null;
 //        authorBook = teacherHelper.getExamAuthorBook(Integer.valueOf(exams.getBookId()));
 //        if (authorBook == null) {
-//            authorBook.setAuthorBookId(teacherHelper.getTotalRecordsInTable(AuthorBook.class) + 1);
+//            authorBook.setAuthorBookId(teacherHelper.getTotalRecordsInTable(ROAuthorBook.class) + 1);
 //            authorBook.setUser(getRealmUser());
 //
-//            model.Books book = new model.Books();
+//            model.ROBooks book = new model.ROBooks();
 //            book.setBookId(Integer.valueOf(exams.getBookId()));
 //            book.setBookName(exams.getBookName());
-//            authorBook.setBook(book);
+//            authorBook.setRoBooks(book);
 //        }
 //
-//        exam.setAuthorBook(authorBook);
+//        exam.setRoAuthorBook(authorBook);
 //        exam.setExamType(exams.getExamType());
 //        exam.setExamCategory(exams.getExamCategory());
 //        exam.setExamMode(exams.getExamMode());

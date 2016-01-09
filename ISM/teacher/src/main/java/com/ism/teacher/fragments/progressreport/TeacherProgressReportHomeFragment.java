@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.RealmResults;
-import model.teachermodel.ClassPerformanceRealmModel;
+import model.teachermodel.ROClassPerformance;
 import realmhelper.TeacherHelper;
 
 
@@ -64,12 +64,19 @@ public class TeacherProgressReportHomeFragment extends Fragment implements Webse
 
     //Realm
     private TeacherHelper teacherHelper;
-    private RealmResults<ClassPerformanceRealmModel> arrListClassPerformances = null;
+    private RealmResults<ROClassPerformance> arrListClassPerformances = null;
 
     //Chart
     BarChart chartAvgscoreVsStudent, chartAvgscoreVsSubject;
     float sum = 0;
     float average = 0;
+    int totalStudents = 0;
+    /**
+     *     this will add rows based on total students >10
+     *     If  total students >10 then increment interval by 10(i.e 11 to 20 and so on)
+     */
+
+    int countTotalColumnsOnXaxis =0;
 
 
     public static TeacherProgressReportHomeFragment newInstance() {
@@ -253,10 +260,11 @@ public class TeacherProgressReportHomeFragment extends Fragment implements Webse
             if (arrListClassPerformances.size() > 0) {
                 for (int i = 0; i < arrListClassPerformances.size(); i++) {
                     sum += Double.valueOf(arrListClassPerformances.get(i).getStudentsScore().get(i).getPercentage());
+                    totalStudents += arrListClassPerformances.get(i).getStudentsScore().size();
                 }
 
                 average = sum / arrListClassPerformances.size();
-                Debug.e(TAG, "sum is:" + sum + " and avg is:" + average);
+                Debug.e(TAG, "sum is:" + sum + " and avg is:" + average + " and total students are:" + totalStudents);
                 chartAvgscoreVsStudent.setDrawBarShadow(false);
                 chartAvgscoreVsStudent.setDrawValueAboveBar(true);
 
@@ -293,11 +301,14 @@ public class TeacherProgressReportHomeFragment extends Fragment implements Webse
 
 
                 /**
-                 * count,range,id.
+                 * countTotalColumnsOnXaxis
                  */
 
-                setData(arrListClassPerformances.size());
 
+                for (int i = 0; i < totalStudents; i+=10) {
+                    countTotalColumnsOnXaxis++;
+                }
+                setDataOnGraph(countTotalColumnsOnXaxis);
                 chartAvgscoreVsStudent.animateY(1000);
 
             }
@@ -308,7 +319,7 @@ public class TeacherProgressReportHomeFragment extends Fragment implements Webse
     }
 
 
-    private void setData(int count) {
+    private void setDataOnGraph(int count) {
 
         ArrayList<String> xVals = new ArrayList<String>();
 
@@ -316,7 +327,7 @@ public class TeacherProgressReportHomeFragment extends Fragment implements Webse
 
         for (int i = 0; i < count; i++) {
             xVals.add(String.valueOf(startValue));
-            startValue += 10;
+             startValue += 10;
         }
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
@@ -331,7 +342,7 @@ public class TeacherProgressReportHomeFragment extends Fragment implements Webse
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
 
-        BarData data = new BarData(xVals,dataSets);
+        BarData data = new BarData(xVals, dataSets);
         data.setValueTextSize(10f);
         data.setValueTypeface(Global.myTypeFace.getRalewayRegular());
 

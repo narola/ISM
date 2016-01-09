@@ -73,35 +73,38 @@ public class WebConstants {
     public static final int MANAGE_FAVOURITES = 60;
     public static final int MANAGE_BOOK_LIBRARY = 61;
     public static final int POSTFEED = 62;
-	public static final int LIKE_FEED =63 ;
+    public static final int LIKE_FEED = 63;
 
 
-	/**
-	 * my author
-	 */
+    /**
+     * my author
+     */
 //	public static final String HOST = "http://clientapp.narolainfotech.com/";                               // SERVER
-	public static final int GET_AUTHOR_BOOK_ASSIGNMENT = 101;
-	public static final int GET_ASSIGNMENT_BY_BOOK = 102;
-	public static final int GET_BOOKS_BY_AUTHOR =103 ;
-	public static final int GET_FOLLOW_USER = 104;
-	public static final int GET_RECOMMENDED_AUTHORS = 105;
+    public static final int GET_AUTHOR_BOOK_ASSIGNMENT = 101;
+    public static final int GET_ASSIGNMENT_BY_BOOK = 102;
+    public static final int GET_BOOKS_BY_AUTHOR = 103;
+    public static final int GET_FOLLOW_USER = 104;
+    public static final int GET_RECOMMENDED_AUTHORS = 105;
+    public static final int GET_TRENDING_QUESTIONS = 106;
+    public static final int GET_TRENDING_QUESTION_DETAIL =107 ;
+    public static final int FOLLOW_QUESTION = 108;
 
-	/**
-	 *  URLs
-	 */
+    /**
+     * URLs
+     */
 //	private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";  // KRUNAL
 //	private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
 //	private static final String URL_HOST_147 = HOST_147 + "WS_ISM/ISMServices.php?Service=";                // KINJAL
 //	private static final String URL_IMAGE_PATH = "http://192.168.1.147/WS_ISM/Images"
 
-//	public static final String HOST = "http://192.168.1.202/";                      // SERVER
+    public static final String HOST = "http://192.168.1.202/";                      // SERVER
 //	public static final String HOST = "http://clientapp.narolainfotech.com/";       // SERVER
-    public static final String HOST = "http://192.168.1.147/";                    // KINJAL
+//    public static final String HOST = "http://192.168.1.147/";                    // KINJAL
 
-//    private static final String DIR_PATH = "pg/ISM/WS_ISM/";                        //  SERVER
-    private static final String DIR_PATH = "WS_ISM/";                             //  KINJAL
+    private static final String DIR_PATH = "pg/ISM/WS_ISM/";                        //  SERVER
+//    private static final String DIR_PATH = "WS_ISM/";                             //  KINJAL
 
-	private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
+    private static final String HOST_WS = HOST + DIR_PATH + "ISMServices.php?Service=";
 
 	//	public static final String HOST_IMAGE_USER = HOST + DIR_PATH + "images/users_images/";
 	public static final String HOST_IMAGE_USER = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
@@ -156,58 +159,61 @@ public class WebConstants {
 	public static final String URL_ALLOCATE_TEACHER_TO_GROUP = HOST_WS + "AllocateTeacherToGroup";
 	public static final String URL_GET_SUNDAY_EXAM_QUESTION = HOST_WS + "GetSundayExamQuestion";
 
-	/*
-	* edit profile
-	* */
-	public static final String URL_GET_ABOUT_ME =  HOST_WS + "GetAboutMe";
-	public static final String URL_GET_BOOKS_FOR_USER =  HOST_WS + "GetBooksForUser";
-	public static final String URL_EDIT_ABOUT_ME =  HOST_WS + "EditAboutMe";
-	public static final String URL_GET_MOVIES_FOR_USER =  HOST_WS + "GetMoviesForUser";
-	public static final String URL_GET_PASTTIME_FOR_USER =  HOST_WS + "GetPastimeForUser";
-	public static final String URL_GET_ROLEMODEL_FOR_USER =  HOST_WS + "GetRoleModelForUser";
-	public static final String URL_MANAGE_FAVOURITES =  HOST_WS + "ManageFavorite";
-	public static final String URL_MANAGE_BOOK_LIBRARY =  HOST_WS + "ManageBookLibrary";
-	public static final String URL_EDIT_PROFILE_PIC = " ";
-	public static final String URL_GET_BLOCKED_USER =  HOST_WS + "GetBlockedUser";
-	public static final String URL_GET_ALL_BOOKS = HOST_WS + "GetAllBooks";
+    /*
+    * edit profile
+    * */
+    public static final String URL_GET_ABOUT_ME = HOST_WS + "GetAboutMe";
+    public static final String URL_GET_BOOKS_FOR_USER = HOST_WS + "GetBooksForUser";
+    public static final String URL_EDIT_ABOUT_ME = HOST_WS + "EditAboutMe";
+    public static final String URL_GET_MOVIES_FOR_USER = HOST_WS + "GetMoviesForUser";
+    public static final String URL_GET_PASTTIME_FOR_USER = HOST_WS + "GetPastimeForUser";
+    public static final String URL_GET_ROLEMODEL_FOR_USER = HOST_WS + "GetRoleModelForUser";
+    public static final String URL_MANAGE_FAVOURITES = HOST_WS + "ManageFavorite";
+    public static final String URL_MANAGE_BOOK_LIBRARY = HOST_WS + "ManageBookLibrary";
+    public static final String URL_EDIT_PROFILE_PIC = " ";
+    public static final String URL_GET_BLOCKED_USER = HOST_WS + "GetBlockedUser";
+    public static final String URL_GET_ALL_BOOKS = HOST_WS + "GetAllBooks";
 
-	public static final String URL_UNBLOCK_USER =  HOST_WS + "UnBlockUser";
-	/**
-	 * my author
-	 */
+    public static final String URL_UNBLOCK_USER = HOST_WS + "UnBlockUser";
+    /**
+     * my author
+     */
 
-	public static final String URL_GET_AUTHOR_BOOK_ASSIGNMENT = HOST_WS + "GetAuthorBookAssignment";
-	public static final String URL_GET_BOOKS_BY_AUTHOR = HOST_WS + "GetBooksByAuthors";
-	public static final String URL_GET_ASSIGNMENT_BY_BOOK = HOST_WS + "GetAssignmentByBook";
-	public static final String URL_GET_FOLLOW_USER = HOST_WS + "FollowUser";
-	public static final String URL_GET_RECOMMENDED_AUTHORS = HOST_WS + "GetRecommendedAuthors";
-	/**
-	 * Parameter value Constants
-	 */
-	public static final String NO_USERNAME = "nousername";
-	public static final String STUDYMATE_REQUEST = "studymate_request";
-	public static final String MESSAGES = "messages";
-	public static final String NOTIFICATION = "notification";
-	public static final String ROLE_ALL = "all";
-	public static final String ROLE_STUDENT = "student";
-	public static final String MONDAY = "Mon";
-	public static final String TUESDAY = "Tues";
-	public static final String WEDNESDAY = "Wed";
-	public static final String THURSDAY = "Thurs";
-	public static final String FRIDAY = "Fri";
-	public static final String SATURDAY = "Sat";
+    public static final String URL_GET_AUTHOR_BOOK_ASSIGNMENT = HOST_WS + "GetAuthorBookAssignment";
+    public static final String URL_GET_BOOKS_BY_AUTHOR = HOST_WS + "GetBooksByAuthors";
+    public static final String URL_GET_ASSIGNMENT_BY_BOOK = HOST_WS + "GetAssignmentByBook";
+    public static final String URL_GET_FOLLOW_USER = HOST_WS + "FollowUser";
+    public static final String URL_GET_RECOMMENDED_AUTHORS = HOST_WS + "GetRecommendedAuthors";
+    public static final String URL_GET_TRENDIN_GQUESTIONS = HOST_WS + "GetTrendingQuestions";
+    public static final String URL_GET_TRENDIN_GQUESTION_DETAIL = HOST_WS + "GetTrendingQuestionDetail";
+    public static final String URL_FOLLOW_QUESTION = HOST_WS + "FollowQuestion";
+    /**
+     * Parameter value Constants
+     */
+    public static final String NO_USERNAME = "nousername";
+    public static final String STUDYMATE_REQUEST = "studymate_request";
+    public static final String MESSAGES = "messages";
+    public static final String NOTIFICATION = "notification";
+    public static final String ROLE_ALL = "all";
+    public static final String ROLE_STUDENT = "student";
+    public static final String MONDAY = "Mon";
+    public static final String TUESDAY = "Tues";
+    public static final String WEDNESDAY = "Wed";
+    public static final String THURSDAY = "Thurs";
+    public static final String FRIDAY = "Fri";
+    public static final String SATURDAY = "Sat";
 
-	/**
-	 * Parameter value Variables
-	 */
-	public static String SECRET_KEY;
-	public static String ACCESS_KEY;
+    /**
+     * Parameter value Variables
+     */
+    public static String SECRET_KEY;
+    public static String ACCESS_KEY;
 
-	/**
-	 * Response values
-	 */
-	public static final String SUCCESS = "success";
-	public static final String FAILED = "failed";
-	public static final String DUPLICATE_ENTRY = "Duplicate entry";
+    /**
+     * Response values
+     */
+    public static final String SUCCESS = "success";
+    public static final String FAILED = "failed";
+    public static final String DUPLICATE_ENTRY = "Duplicate entry";
 
 }

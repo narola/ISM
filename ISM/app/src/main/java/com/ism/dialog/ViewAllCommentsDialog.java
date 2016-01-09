@@ -15,7 +15,7 @@ import com.ism.adapter.PostFeedCommentsAdapter;
 import java.util.List;
 
 import io.realm.RealmResults;
-import model.FeedComment;
+import model.ROFeedComment;
 
 /**
  * Created by c166 on 24/10/15.
@@ -26,9 +26,9 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
     private RecyclerView rvPostFeedsComments;
     private PostFeedCommentsAdapter postFeedCommentsAdapter;
     private TextView tvDialogClose;
-    private List<FeedComment> commentsList;
+    private List<ROFeedComment> commentsList;
 
-    public ViewAllCommentsDialog(Context mContext, RealmResults<FeedComment> commentsList) {
+    public ViewAllCommentsDialog(Context mContext, RealmResults<ROFeedComment> commentsList) {
         super(mContext);
 
         this.mContext = mContext;

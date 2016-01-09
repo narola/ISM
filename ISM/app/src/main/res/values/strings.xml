@@ -642,6 +642,11 @@
 	<string name="title_discusstion_board">Disagreement Resolution - Discussion Board</string>
 	<string name="title_finalize_answer">Finalize Answer With Discussion</string>
 	<string name="msg_not_same_answer">All 5 members do not have same answer</string>
+<<<<<<< HEAD
 	<string name="agree">Agree</string>
 	<string name="disagree">Disagree</string>
+=======
+	<string name="strUnFollowQuestion">Unfollow Question</string>
+	<string name="strFollowQuestion">Follow Question</string>
+>>>>>>> 870ff28c7e85887aaf28d6998f977af60f5b5883
 </resources>

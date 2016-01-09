@@ -71,13 +71,15 @@ public class CirclePageIndicator extends View implements PageIndicator {
         final Resources res = getResources();
         final int defaultPageColor = res.getColor(R.color.default_circle_indicator_page_color);
         final int defaultFillColor = res.getColor(R.color.default_circle_indicator_fill_color);
-        final int defaultOrientation = res.getInteger(R.integer.default_circle_indicator_orientation);
+        final int defaultOrientation = 0;//res.getInteger(R.integer.default_circle_indicator_orientation);
         final int defaultStrokeColor = res.getColor(R.color.default_circle_indicator_stroke_color);
         final float defaultStrokeWidth = res.getDimension(R.dimen.default_circle_indicator_stroke_width);
         final float defaultRadius = res.getDimension(R.dimen.default_circle_indicator_radius);
-        final boolean defaultCentered = res.getBoolean(R.bool.default_circle_indicator_centered);
-        final boolean defaultSnap = res.getBoolean(R.bool.default_circle_indicator_snap);
-
+        final boolean defaultCentered = true;//res.getBoolean(R.bool.default_circle_indicator_centered);
+        final boolean defaultSnap = false;//res.getBoolean(R.bool.default_circle_indicator_snap);
+//        <integer name="default_circle_indicator_orientation">0</integer>
+//        <bool name="default_circle_indicator_snap">false</bool>
+//        <bool name="default_circle_indicator_centered">true</bool>
         //Retrieve styles attributes
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CirclePageIndicator, defStyle, 0);
 

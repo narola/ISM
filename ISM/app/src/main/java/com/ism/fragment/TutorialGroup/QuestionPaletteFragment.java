@@ -33,7 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import model.AdminConfig;
+import model.ROAdminConfig;
 import realmhelper.StudentHelper;
 
 /**
@@ -107,7 +107,7 @@ public class QuestionPaletteFragment extends Fragment implements FridayExamFragm
 //			cal.set(Calendar.AM_PM, Calendar.AM);
 			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
 				try {
-					AdminConfig configStartTime = studentHelper.getActiveHoursStartTime();
+					ROAdminConfig configStartTime = studentHelper.getActiveHoursStartTime();
 					SimpleDateFormat DATE_FORMAT_TIME = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
 					Calendar calStartTime = Calendar.getInstance();
 					String startTime = configStartTime.getConfigValue() + " " + configStartTime.getValueUnit();
@@ -118,7 +118,7 @@ public class QuestionPaletteFragment extends Fragment implements FridayExamFragm
 					calStartTime.set(Calendar.MINUTE, date.getMinutes());
 
 					if (cal.after(calStartTime)) {
-						AdminConfig configEndTime = studentHelper.getActiveHoursEndTime();
+						ROAdminConfig configEndTime = studentHelper.getActiveHoursEndTime();
 						String endTime = configEndTime.getConfigValue() + " " + configEndTime.getValueUnit();
 //						String endTime = "04:15 pm";
 						Log.e(TAG, "end time : " + endTime);
@@ -221,7 +221,7 @@ public class QuestionPaletteFragment extends Fragment implements FridayExamFragm
 
 			lvTutorialGroup.setVisibility(View.VISIBLE);
 			rlQuestionPalette.setVisibility(View.GONE);
-			getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ResultFragment.newInstance(arrListQuestions,
+			getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.tutorialGroup.ResultFragment.newInstance(arrListQuestions,
 					strExamId, false, timeSpent)).commit();
 //			getFragmentManager().beginTransaction().remove(this).commit();
 		} catch (Exception e) {

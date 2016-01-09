@@ -23,7 +23,7 @@ public class WebConstants {
 
     public static final String URL_UPLOADPROFILEIMAGES = URL_HOST + "UploadProfileImages";
 
-    public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Feeds/";
+    public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/ROFeeds/";
     //    public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
     public static final String USER_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
 

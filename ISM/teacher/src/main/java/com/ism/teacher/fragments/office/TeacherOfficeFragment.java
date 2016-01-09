@@ -25,7 +25,6 @@ import com.ism.teacher.fragments.createexam.CreateExamAssignmentContainerFragmen
 import com.ism.teacher.fragments.notes.AllNotesFragment;
 import com.ism.teacher.fragments.notes.NotesAddEditFragment;
 import com.ism.teacher.fragments.notes.NotesContainer;
-import com.ism.teacher.fragments.progressreport.TeacherProgressReportHomeFragment;
 import com.ism.teacher.fragments.results.AllResultsFragment;
 import com.ism.teacher.interfaces.FragmentListener;
 

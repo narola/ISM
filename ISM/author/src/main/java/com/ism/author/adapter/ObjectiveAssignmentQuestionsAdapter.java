@@ -76,8 +76,8 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
 
             holder.tvEvoluationsNotes.setText(Utility.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
             holder.tvSolution.setText(Utility.formatHtml(arrListQuestions.get(position).getSolution()));
-            if (getBundleArguments().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_NAME)) {
-                holder.txtStudentnameAnswer.setText(getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME) + " " +
+            if (getBundleArguments().containsKey(ExamSubmittorAdapter.ARG_STUDENT_NAME)) {
+                holder.txtStudentnameAnswer.setText(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_NAME) + " " +
                         mContext.getString(R.string.stranswer));
 
             }

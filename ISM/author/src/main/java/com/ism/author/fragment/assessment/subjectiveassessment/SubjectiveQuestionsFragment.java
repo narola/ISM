@@ -19,7 +19,7 @@ import com.ism.author.R;
 import com.ism.author.utility.Debug;
 import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.adapter.AssignmentSubmittorAdapter;
+import com.ism.author.adapter.ExamSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.adapter.SubjectiveQuestionListAdapter;
@@ -192,7 +192,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
                 request.setExamId(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setStudentId(getBaseFragment().getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
+                request.setStudentId(getBaseFragment().getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID));
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {
@@ -283,7 +283,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     private void loadNextStudentData() {
 
         isFromLeft = false;
-        int position = getBaseFragment().getBundleArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
+        int position = getBaseFragment().getBundleArguments().getInt(ExamSubmittorAdapter.ARG_STUDENT_POSITION);
         if (position < arrListExamSubmittor.size() - 1) {
             position++;
             setStudentData(position);
@@ -293,10 +293,10 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     private void loadPreviousStudentData() {
 
         isFromLeft = true;
-        int position = getBaseFragment().getBundleArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
+        int position = getBaseFragment().getBundleArguments().getInt(ExamSubmittorAdapter.ARG_STUDENT_POSITION);
         if (position >= 1) {
             position--;
-            getBaseFragment().getBundleArguments().putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
+            getBaseFragment().getBundleArguments().putInt(ExamSubmittorAdapter.ARG_STUDENT_POSITION, position);
             setStudentData(position);
         }
     }
@@ -335,7 +335,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     public void loadStudentEvaluationData() {
 
-        if (getBaseFragment().getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID) != null) {
+        if (getBaseFragment().getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID) != null) {
             setQuestions();
             callAPiGetExamEvaluation();
             scrollToSpecificQuestion(0);
@@ -352,16 +352,16 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         arrListExamSubmittor = getBaseFragment().getBundleArguments().getParcelableArrayList(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
 
         tvStudentEvalutionNo.setText(getActivity().getResources().getString(R.string.strevaluation) + " " +
-                (getBaseFragment().getBundleArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION) + 1) + " " +
+                (getBaseFragment().getBundleArguments().getInt(ExamSubmittorAdapter.ARG_STUDENT_POSITION) + 1) + " " +
                 getActivity().getResources().getString(R.string.strof) + " " +
                 arrListExamSubmittor.size());
 
         imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                 imgStudentProfilePic, ISMAuthor.options);
 
-        tvStudentName.setText(getBaseFragment().getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME));
+        tvStudentName.setText(getBaseFragment().getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_NAME));
         tvStudentRollNo.setText(getResources().getString(R.string.strrollno) + " " +
-                (getBaseFragment().getBundleArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION) + 1));
+                (getBaseFragment().getBundleArguments().getInt(ExamSubmittorAdapter.ARG_STUDENT_POSITION) + 1));
         tvAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + " " +
                 getBaseFragment().getBundleArguments().getInt(ExamsAdapter.ARG_EXAM_NO));
         tvAssignmentTitle.setText(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_NAME));

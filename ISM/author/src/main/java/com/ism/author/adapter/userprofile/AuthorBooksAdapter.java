@@ -18,7 +18,7 @@ import com.ism.author.ws.model.BookData;
 
 import java.util.ArrayList;
 
-import model.AuthorBook;
+import model.ROAuthorBook;
 
 /**
  * Created by c166 on 01/01/16.
@@ -26,7 +26,7 @@ import model.AuthorBook;
 public class AuthorBooksAdapter extends RecyclerView.Adapter<AuthorBooksAdapter.ViewHolder> {
 
 
-    private static final String TAG = AuthorBook.class.getSimpleName();
+    private static final String TAG = ROAuthorBook.class.getSimpleName();
     private Context mContext;
     private ArrayList<BookData> arrListAuthorBooks = new ArrayList<BookData>();
     private LayoutInflater inflater;
