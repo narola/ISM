@@ -41,7 +41,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
     private FragmentListener fragListener;
     private View.OnClickListener listenerOnWeekDayClick;
 	private TutorialDiscussionFragment fragTutorialDiscussion;
-	private ExamFragment.ExamListener listenerExam;
+	private FridayExamFragment.ExamListener listenerExam;
 	private TutorialGroupProfile tutorialGroupProfile;
 	private HostActivity activityHost;
 
@@ -60,7 +60,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 	private static int intCurrentDay = -1;
 	private boolean isExamTime;
 
-    public static TutorialFragment newInstance(Bundle fragmentArguments, ExamFragment.ExamListener examListener) {
+    public static TutorialFragment newInstance(Bundle fragmentArguments, FridayExamFragment.ExamListener examListener) {
         TutorialFragment fragmentTutorial = new TutorialFragment();
 	    fragmentTutorial.setExamListener(examListener);
 	    fragmentTutorial.setArguments(fragmentArguments);
@@ -264,7 +264,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 		setWeekDaySelection(dayId);
 	}
 
-	public void setExamListener(ExamFragment.ExamListener examListener) {
+	public void setExamListener(FridayExamFragment.ExamListener examListener) {
 		listenerExam = examListener;
 	}
 

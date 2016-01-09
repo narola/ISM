@@ -23,18 +23,18 @@ import com.ism.utility.PreferenceData;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.FridayExam;
-import com.ism.ws.model.FridayExamAnswer;
-import com.ism.ws.model.FridayExamQuestion;
+import com.ism.ws.model.Exam;
+import com.ism.ws.model.ExamAnswer;
+import com.ism.ws.model.ExamQuestion;
 
 import java.util.ArrayList;
 
 /**
  * Created by c161 on 13/10/15.
  */
-public class ExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class FridayExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
-	private static final String TAG = ExamFragment.class.getSimpleName();
+	private static final String TAG = FridayExamFragment.class.getSimpleName();
 
 	private View view;
 	private RelativeLayout rlInstruction, rlQuestion;
@@ -48,8 +48,8 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 
 	private ExamListener listenerExam;
 	private QuestionPaletteAdapter adpQuestionPalette;
-	private FridayExam fridayExam;
-	private ArrayList<FridayExamQuestion> arrListQuestions;
+	private Exam exam;
+	private ArrayList<ExamQuestion> arrListQuestions;
 	private HostActivity activityHost;
 	private TutorialFragment fragmentTutorial;
 
@@ -59,17 +59,17 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 	private boolean isOptionsLoading = false;
 
 	public interface ExamListener {
-		public void startTest(ArrayList<FridayExamQuestion> questions, String examId, ExamFragment examFragment);
+		public void startTest(ArrayList<ExamQuestion> questions, String examId, FridayExamFragment fridayExamFragment);
 		public void onQuestionSet(int position);
 	}
 
-	public static ExamFragment newInstance(ExamListener examListener) {
-		ExamFragment fragment = new ExamFragment();
+	public static FridayExamFragment newInstance(ExamListener examListener) {
+		FridayExamFragment fragment = new FridayExamFragment();
 		fragment.setListenerExam(examListener);
 		return fragment;
 	}
 
-	public ExamFragment() {
+	public FridayExamFragment() {
 	}
 
 	@Override
@@ -224,20 +224,20 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 	}
 
 	private void saveAnswer(int optionPosition, boolean isChecked) {
-		arrListQuestions.get(intCurrentQuestionIndex).getFridayExamAnswers().get(optionPosition).setIsSelected(isChecked);
+		arrListQuestions.get(intCurrentQuestionIndex).getExamAnswers().get(optionPosition).setIsSelected(isChecked);
 		arrListQuestions.get(intCurrentQuestionIndex).setIsCorrect(
-				arrListQuestions.get(intCurrentQuestionIndex).getFridayExamAnswers().get(optionPosition).isAnswer()
-						&& arrListQuestions.get(intCurrentQuestionIndex).getFridayExamAnswers().get(optionPosition).isSelected());
+				arrListQuestions.get(intCurrentQuestionIndex).getExamAnswers().get(optionPosition).isAnswer()
+						&& arrListQuestions.get(intCurrentQuestionIndex).getExamAnswers().get(optionPosition).isSelected());
 	}
 
 	private void startTest() {
 //		txtHeader.setText(Utility.stringForTime(intExamDurationMinutes * 60 * 1000));
 		activityHost.updateLayoutForExam(true);
 		fragmentTutorial.updateLayoutForFridayExam(true);
-		txtHeader.setText(fridayExam.getExamName() + " - " + fridayExam.getId());
+		txtHeader.setText(exam.getExamName() + " - " + exam.getId());
 		txtInstruct.setText(R.string.choose_answer);
 		if (listenerExam != null) {
-			listenerExam.startTest(arrListQuestions, fridayExam.getId(), this);
+			listenerExam.startTest(arrListQuestions, exam.getId(), this);
 		}
 		setQuestion(intCurrentQuestionIndex);
 	}
@@ -246,7 +246,7 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 		try {
 			intCurrentQuestionIndex = questionIndex;
 			txtQuestion.setText(arrListQuestions.get(intCurrentQuestionIndex).getQuestionText());
-			ArrayList<FridayExamAnswer> options = arrListQuestions.get(intCurrentQuestionIndex).getFridayExamAnswers();
+			ArrayList<ExamAnswer> options = arrListQuestions.get(intCurrentQuestionIndex).getExamAnswers();
 			isOptionsLoading = true;
 			rgOptions.clearCheck();
 			for (int i = 0; i < 6; i++) {
@@ -294,8 +294,8 @@ public class ExamFragment extends Fragment implements WebserviceWrapper.Webservi
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-					fridayExam = responseHandler.getFridayExam().get(0);
-					arrListQuestions = responseHandler.getFridayExam().get(0).getQuestions();
+					exam = responseHandler.getExam().get(0);
+					arrListQuestions = responseHandler.getExam().get(0).getQuestions();
 					btnStartTest.setEnabled(true);
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetFridayExamQuestions Failed message : " + responseHandler.getMessage());

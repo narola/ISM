@@ -8,13 +8,13 @@
     <color name="green_medium">#00b3a1</color>
     <color name="green_dark">#00a494</color>
 
-    <color name="red_light">#FB8584</color>
+    <color name="red_start">#FB8584</color>
     <color name="red_medium">#EF7776</color>
-    <color name="red_dark">#E46767</color>
+    <color name="red_end">#E46767</color>
 
-    <color name="blue_light">#00B3DD</color>
+    <color name="blue_start">#00B3DD</color>
     <color name="blue_medium">#009FC7</color>
-    <color name="blue_dark">#008BB4</color>
+    <color name="blue_end">#008BB4</color>
 
     <color name="black_light">#3E3E3E</color>
     <color name="black_medium">#313131</color>

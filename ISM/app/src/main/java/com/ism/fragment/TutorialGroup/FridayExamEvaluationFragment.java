@@ -11,16 +11,16 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.object.Global;
 import com.ism.views.CircleImageView;
-import com.ism.ws.model.FridayExamQuestion;
+import com.ism.ws.model.ExamQuestion;
 
 import java.util.ArrayList;
 
 /**
  * Created by c161 on 21/12/15.
  */
-public class ExamEvaluationFragment extends Fragment {
+public class FridayExamEvaluationFragment extends Fragment {
 
-	private static final String TAG = ExamEvaluationFragment.class.getSimpleName();
+	private static final String TAG = FridayExamEvaluationFragment.class.getSimpleName();
 
 	private View view;
 	private TextView txtHeaderQuestion, txtQuestion, txtYourAnswer, txtCorrectAnswer, txtSolutionContent, txtTutorialmateName1,
@@ -29,17 +29,17 @@ public class ExamEvaluationFragment extends Fragment {
 	private CircleImageView imgTutorialmateDp1, imgTutorialmateDp2, imgTutorialmateDp3, imgTutorialmateDp4, imgTutorialmateDp5;
 	private ImageView imgPrevious, imgNext;
 
-	private ArrayList<FridayExamQuestion> arrListQuestions;
+	private ArrayList<ExamQuestion> arrListQuestions;
 
 	private int currentQuestion = 0;
 
-	public static ExamEvaluationFragment newInstance(ArrayList<FridayExamQuestion> questions) {
-		ExamEvaluationFragment fragment = new ExamEvaluationFragment();
+	public static FridayExamEvaluationFragment newInstance(ArrayList<ExamQuestion> questions) {
+		FridayExamEvaluationFragment fragment = new FridayExamEvaluationFragment();
 		fragment.setQuestion(questions);
 		return fragment;
 	}
 
-	public ExamEvaluationFragment() {
+	public FridayExamEvaluationFragment() {
 	}
 
 	@Override
@@ -133,9 +133,9 @@ public class ExamEvaluationFragment extends Fragment {
 		txtQuestion.setText(arrListQuestions.get(questionPosition).getQuestionText());
 
 		String choiceText = "";
-		for (int i = 0; i < arrListQuestions.get(questionPosition).getFridayExamAnswers().size(); i++) {
-			if (arrListQuestions.get(questionPosition).getFridayExamAnswers().get(i).isSelected()) {
-				txtYourAnswer.setText(getString(R.string.your_answer) + " " + arrListQuestions.get(questionPosition).getFridayExamAnswers().get(i).getChoiceText());
+		for (int i = 0; i < arrListQuestions.get(questionPosition).getExamAnswers().size(); i++) {
+			if (arrListQuestions.get(questionPosition).getExamAnswers().get(i).isSelected()) {
+				txtYourAnswer.setText(getString(R.string.your_answer) + " " + arrListQuestions.get(questionPosition).getExamAnswers().get(i).getChoiceText());
 				switch (i) {
 					case 0:
 						choiceText = "A";
@@ -151,8 +151,8 @@ public class ExamEvaluationFragment extends Fragment {
 						break;
 				}
 			}
-			if (arrListQuestions.get(questionPosition).getFridayExamAnswers().get(i).isAnswer()) {
-				txtCorrectAnswer.setText(getString(R.string.correct_answer) + " " + arrListQuestions.get(questionPosition).getFridayExamAnswers().get(i).getChoiceText());
+			if (arrListQuestions.get(questionPosition).getExamAnswers().get(i).isAnswer()) {
+				txtCorrectAnswer.setText(getString(R.string.correct_answer) + " " + arrListQuestions.get(questionPosition).getExamAnswers().get(i).getChoiceText());
 			}
 		}
 
@@ -164,7 +164,7 @@ public class ExamEvaluationFragment extends Fragment {
 //		txtAnsweredOption5;
 	}
 
-	public void setQuestion(ArrayList<FridayExamQuestion> questions) {
+	public void setQuestion(ArrayList<ExamQuestion> questions) {
 		arrListQuestions = questions;
 	}
 

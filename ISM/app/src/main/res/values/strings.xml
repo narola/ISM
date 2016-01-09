@@ -642,4 +642,6 @@
 	<string name="title_discusstion_board">Disagreement Resolution - Discussion Board</string>
 	<string name="title_finalize_answer">Finalize Answer With Discussion</string>
 	<string name="msg_not_same_answer">All 5 members do not have same answer</string>
+	<string name="agree">Agree</string>
+	<string name="disagree">Disagree</string>
 </resources>

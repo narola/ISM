@@ -51,6 +51,7 @@ public class WebConstants {
 	public static final int GET_FRIDAY_EXAM_QUESTIONS = 41;
 	public static final int SUBMIT_STUDENT_OBJECTIVE_RESPONSE = 42;
 	public static final int ALLOCATE_TEACHER_TO_GROUP = 43;
+	public static final int GET_SUNDAY_EXAM_QUESTION = 44;
 
     //general settings
 
@@ -153,6 +154,7 @@ public class WebConstants {
 	public static final String URL_GET_FRIDAY_EXAM_QUESTIONS = HOST_WS + "GetFridayExamQuestion";
 	public static final String URL_SUBMIT_STUDENT_OBJECTIVE_RESPONSE = HOST_WS + "SubmitStudentObjectiveResponse";
 	public static final String URL_ALLOCATE_TEACHER_TO_GROUP = HOST_WS + "AllocateTeacherToGroup";
+	public static final String URL_GET_SUNDAY_EXAM_QUESTION = HOST_WS + "GetSundayExamQuestion";
 
 	/*
 	* edit profile
