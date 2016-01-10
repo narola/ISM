@@ -41,7 +41,7 @@ public class StudentHelper {
      * use to save user data in ISM database.
      */
     public void saveUser(User user) {
-        Log.e(TAG,"saveUser : "+user.getUserId());
+        //Log.e(TAG,"saveUser : "+user.getUserId());
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(user);
         realm.commitTransaction();
@@ -166,7 +166,7 @@ public class StudentHelper {
     public User getUser(int user_id) {
         realm.beginTransaction();
         User user = realm.where(User.class).equalTo("userId", user_id).findFirst();
-        Log.i(TAG, "getUser : " + user);
+        //Log.e(TAG, "getUser : " + user);
         realm.commitTransaction();
         return user;
     }
@@ -211,7 +211,7 @@ public class StudentHelper {
         toUpdateFeeds.setSelfLike(feeds.getSelfLike().equals("0") ? "1" : "0");
         toUpdateFeeds.setTotalLike(feeds.getSelfLike().equals("0") ? feeds.getTotalLike() - 1 : feeds.getTotalLike() + 1);
         toUpdateFeeds.setIsSync(feeds.isSync() == 0 ? 1 : 0);
-        Log.i(TAG, "updateFeedLikes : " + toUpdateFeeds.getSelfLike() + "--" + toUpdateFeeds.getFeedId() + "--" + toUpdateFeeds.isSync());
+        Log.e(TAG, "updateFeedLikes : " + toUpdateFeeds.getSelfLike() + "--" + toUpdateFeeds.getFeedId() + "--" + toUpdateFeeds.isSync());
         realm.commitTransaction();
     }
 
@@ -232,7 +232,7 @@ public class StudentHelper {
 //    public RealmResults<Feeds> managedFeedLikeStatus(Date lastSynch, Date modified) {
         realm.beginTransaction();
         RealmResults<Feeds> feedsRealmResults = realm.where(Feeds.class).equalTo("isSync", 1).findAll();
-        Log.i(TAG, "managedFeedLikeStatus feedsRealmResults.size: " + feedsRealmResults.size());
+        Log.e(TAG, "managedFeedLikeStatus feedsRealmResults.size: " + feedsRealmResults.size());
         if (statusUpdation) {
             //after sync
             for (int i = 0; i < feedsRealmResults.size(); i++)

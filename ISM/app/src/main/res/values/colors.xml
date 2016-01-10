@@ -58,7 +58,7 @@
     <color name="bg_wallet_head">#616D79</color>
     <color name="edit_shadow">#32000000</color>
     <color name="border_my_wallet">#D6DBDF</color>
-    <color name="color_red">#D9524F</color>
+    <color name="red">#D9524F</color>
     <color name="border_timeline">#ededed</color>
     <color name="text_red_timeline">#fc3f35</color>
     <color name="bg_table_head">#F2F2F2</color>

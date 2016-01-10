@@ -22,6 +22,7 @@ import realmhelper.StudentHelper;
 public class RealmHandler {
 
     private static final String TAG = RealmHandler.class.getSimpleName();
+
     private StudentHelper studentHelper;
 
     public RealmHandler(Context context) {
@@ -35,7 +36,7 @@ public class RealmHandler {
     public void saveFeeds(ArrayList<Feeds> arrayList) {
         try {
             for (int i = 0; i < arrayList.size(); i++) {
-                Log.e(TAG, "I item : " + i);
+//                Log.e(TAG, "I item : " + i);
                 model.Feeds feeds = new model.Feeds();
                 feeds.setFeedId(Integer.parseInt(arrayList.get(i).getFeedId()));
                 feeds.setUser(studentHelper.getUser(Integer.parseInt(arrayList.get(i).getUserId())));

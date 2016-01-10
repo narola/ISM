@@ -127,7 +127,7 @@
                 android:padding="@dimen/dp8"
                 android:textSize="@dimen/sp12"
                 android:hint="Enter subject"
-                android:textColor="@color/color_red" />
+                android:textColor="@color/red" />
             <com.narola.kpa.richtexteditor.view.RichTextEditor
                 android:id="@+id/rte_notes"
                 android:layout_width="match_parent"

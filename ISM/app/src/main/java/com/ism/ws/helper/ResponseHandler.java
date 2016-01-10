@@ -25,12 +25,14 @@ import com.ism.ws.model.Notes;
 import com.ism.ws.model.Notice;
 import com.ism.ws.model.Notification;
 import com.ism.ws.model.Pastime;
+import com.ism.ws.model.TrendingQuestionDetails;
 import com.ism.ws.model.QuestionForFriday;
 import com.ism.ws.model.RoleModel;
 import com.ism.ws.model.SettingPreferences;
 import com.ism.ws.model.State;
 import com.ism.ws.model.StudymateRequest;
 import com.ism.ws.model.Token;
+import com.ism.ws.model.TrendingQuestion;
 import com.ism.ws.model.TutorialGroup;
 import com.ism.ws.model.TutorialGroupProfile;
 import com.ism.ws.model.User;
@@ -89,6 +91,8 @@ public class ResponseHandler {
     private ArrayList<FridayExam> fridayExam;
     private ArrayList<BookData> authorBook;
     private ArrayList<AuthorData> author;
+    private ArrayList<TrendingQuestion> trendingQuestions;
+    private ArrayList<TrendingQuestionDetails> trendingQuestionDetails;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -467,5 +471,23 @@ public class ResponseHandler {
 
     public void setAuthor(ArrayList<AuthorData> author) {
         this.author = author;
+    }
+
+    @JsonProperty("trending_question")
+    public ArrayList<TrendingQuestion> getTrendingQuestions() {
+        return this.trendingQuestions;
+    }
+
+    public void setTrendingQuestions(ArrayList<TrendingQuestion> trendingQuestions) {
+        this.trendingQuestions = trendingQuestions;
+    }
+    @JsonProperty("trending_question_detail")
+    public ArrayList<TrendingQuestionDetails> getTrendingQuestionDetails() {
+        return trendingQuestionDetails;
+    }
+
+    public ResponseHandler setTrendingQuestionDetails(ArrayList<TrendingQuestionDetails> trendingQuestionDetails) {
+        this.trendingQuestionDetails = trendingQuestionDetails;
+        return this;
     }
 }
