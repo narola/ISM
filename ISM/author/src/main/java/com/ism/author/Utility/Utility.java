@@ -494,7 +494,7 @@ public class Utility {
             } catch (Exception e) {
                 Log.e("Realm", "Date exception");
             }
-            Log.e(TAG, "The realmDate format is::" + realmDateFormat);
+//            Log.e(TAG, "The realmDate format is::" + realmDateFormat);
             return realmDateFormat;
         } else {
             return null;

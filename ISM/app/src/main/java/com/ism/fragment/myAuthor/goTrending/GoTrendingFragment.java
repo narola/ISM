@@ -34,6 +34,7 @@ import com.ism.ws.model.TrendingQuestionDetails;
 import java.util.ArrayList;
 
 import io.realm.RealmResults;
+import model.ROTrendingQuestion;
 
 /**
  * Created by c162 on 07/01/16.
@@ -197,15 +198,15 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
             Debug.i(TAG, "onResponseGetTrending Exceptions : " + e.getLocalizedMessage());
         }
     }
-    private void setUpData(RealmResults<model.TrendingQuestion> trendingQuestions) {
+    private void setUpData(RealmResults<ROTrendingQuestion> ROTrendingQuestions) {
         try {
-            if (trendingQuestions != null && trendingQuestions.size() > 0) {
+            if (ROTrendingQuestions != null && ROTrendingQuestions.size() > 0) {
                // setEmptyView(false);
 
-                sendQuestionsAdapter = new SendQuestionToAuthorAdapter(this,getActivity(),trendingQuestions);
+                sendQuestionsAdapter = new SendQuestionToAuthorAdapter(this,getActivity(), ROTrendingQuestions);
                 rvQuestions.setAdapter(sendQuestionsAdapter);
-                for(model.TrendingQuestion trendingQuestion:trendingQuestions){
-                    callApiForGetTrendingQuestionDetails(trendingQuestion.getTrendingId());
+                for(ROTrendingQuestion ROTrendingQuestion : ROTrendingQuestions){
+                    callApiForGetTrendingQuestionDetails(ROTrendingQuestion.getTrendingId());
                 }
 //                trendingQueAnsAuthorAdapter =new GoTrendingQueAnsAuthorAdapter(getActivity());
 //                trendingQueAnsAuthorAdapter.addAll(realmHandler.getTrendingQuestions(activityHost.getBundle().getString(AppConstant.AUTHOR_ID)));

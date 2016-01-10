@@ -32,7 +32,7 @@ public class Data implements Serializable {
     private String className;
 
 
-    //Feeds Response
+    //ROFeeds Response
     private String course_name;
 
     private String feed_id;

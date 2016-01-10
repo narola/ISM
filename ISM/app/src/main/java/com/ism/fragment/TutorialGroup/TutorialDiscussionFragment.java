@@ -469,7 +469,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 					Subjects subjects = new Subjects();
 					subjects.setSubjectName(arrListDiscussionData.get(i).getSubjectName());
 					studentHelper.saveSubjects(subjects);
-					tutorialTopic.setSubject(subjects);
+					tutorialTopic.setRoSubjects(subjects);
 
 					studentHelper.saveTutorialGroupTopic(tutorialTopic);
 				}*/

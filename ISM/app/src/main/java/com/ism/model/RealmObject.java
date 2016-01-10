@@ -8,9 +8,9 @@ public class RealmObject {
     public RealmObject() {
     }
 
-//    public void saveTrendingQuestion(ArrayList<TrendingQuestion> arrayList) {
-//        for(TrendingQuestion question:arrayList){
-//            model.TrendingQuestion trendingQuestion=new model.TrendingQuestion();
+//    public void saveTrendingQuestion(ArrayList<ROTrendingQuestion> arrayList) {
+//        for(ROTrendingQuestion question:arrayList){
+//            model.ROTrendingQuestion trendingQuestion=new model.ROTrendingQuestion();
 //            trendingQuestion.setTrendingId(Integer.parseInt(question.getTrendingId()));
 //            trendingQuestion.setQuestionText(question.getQuestionText());
 //            trendingQuestion.setFollowerCount(Integer.parseInt(question.getFollowerCount() == null ? "0" : question.getFollowerCount()));

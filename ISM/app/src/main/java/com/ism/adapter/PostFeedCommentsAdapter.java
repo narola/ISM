@@ -14,11 +14,10 @@ import com.ism.R;
 import com.ism.commonsource.utility.Utility;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
-import com.ism.utility.Debug;
 
 import java.util.List;
 
-import model.FeedComment;
+import model.ROFeedComment;
 
 /**
  * these adapter class is for getallthe comments of particular feed
@@ -28,7 +27,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     private static final String TAG = PostFeedCommentsAdapter.class.getSimpleName();
 
     Context context;
-    List<FeedComment> listOfComments;
+    List<ROFeedComment> listOfComments;
 
 
     @Override
@@ -53,7 +52,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     }
 
 
-    public void addAll(List<FeedComment> comments) {
+    public void addAll(List<ROFeedComment> comments) {
         try {
             listOfComments=comments;
             listOfComments.clear();

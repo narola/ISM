@@ -1,0 +1,126 @@
+package model;
+
+import java.util.Date;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+/**
+ * Created by c85 on 19/11/15.
+ * {@link RealmObject} class - students' answer for objective questions.
+ * Relationship with {@link ROUser}
+ * Relationship with {@link ROExam}
+ * Relationship with {@link ROQuestions}
+ * Relationship with {@link ROAnswerChoices}
+ */
+public class ROStudentObjectiveResponse extends RealmObject {
+
+    @PrimaryKey
+    private  int studentObjectiveResponseId;
+    private String answerText;
+   private ROUser roUser;
+    private ROExam roExam;
+    private ROQuestions question;
+    private ROAnswerChoices answerChoice;
+    private int answerStatus;
+    private int markObtained;
+    private int responseDuration;
+    private boolean isRight;
+    private Date createdDate;
+    private Date modifiedDate;
+
+    public int getStudentObjectiveResponseId() {
+        return studentObjectiveResponseId;
+    }
+
+    public void setStudentObjectiveResponseId(int studentObjectiveResponseId) {
+        this.studentObjectiveResponseId = studentObjectiveResponseId;
+    }
+
+    public String getAnswerText() {
+        return answerText;
+    }
+
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
+    }
+
+    public ROUser getRoUser() {
+        return roUser;
+    }
+
+    public void setRoUser(ROUser roUser) {
+        this.roUser = roUser;
+    }
+
+    public ROExam getRoExam() {
+        return roExam;
+    }
+
+    public void setRoExam(ROExam roExam) {
+        this.roExam = roExam;
+    }
+
+    public ROQuestions getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(ROQuestions question) {
+        this.question = question;
+    }
+
+    public ROAnswerChoices getAnswerChoice() {
+        return answerChoice;
+    }
+
+    public void setAnswerChoice(ROAnswerChoices answerChoice) {
+        this.answerChoice = answerChoice;
+    }
+
+    public int getAnswerStatus() {
+        return answerStatus;
+    }
+
+    public void setAnswerStatus(int answerStatus) {
+        this.answerStatus = answerStatus;
+    }
+
+    public int getMarkObtained() {
+        return markObtained;
+    }
+
+    public void setMarkObtained(int markObtained) {
+        this.markObtained = markObtained;
+    }
+
+    public int getResponseDuration() {
+        return responseDuration;
+    }
+
+    public void setResponseDuration(int responseDuration) {
+        this.responseDuration = responseDuration;
+    }
+
+    public boolean isRight() {
+        return isRight;
+    }
+
+    public void setIsRight(boolean isRight) {
+        this.isRight = isRight;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+}

@@ -16,7 +16,7 @@ import com.ism.author.R;
 import com.ism.author.utility.Debug;
 import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.adapter.AssignmentSubmittorAdapter;
+import com.ism.author.adapter.ExamSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.ObjectiveAssignmentQuestionsAdapter;
 import com.ism.author.constant.AppConstant;
@@ -167,7 +167,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setExamId(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                attribute.setStudentId(getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
+                attribute.setStudentId(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID));
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {

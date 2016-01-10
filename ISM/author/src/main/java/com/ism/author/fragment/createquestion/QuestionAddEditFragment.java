@@ -800,7 +800,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 //                    arrListAnswerChioces.clear();
 //                    for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
 //                        View v = llAddMcqanswer.getChildAt(i);
-//                        AnswerChoices answerChoices = new AnswerChoices();
+//                        ROAnswerChoices answerChoices = new ROAnswerChoices();
 //                        answerChoices.setChoiceText(((EditText) v.findViewById(R.id.et_add_mcq_answer)).getText().toString());
 //                        answerChoices.setIsRight(getIsSelected((ImageView) v.findViewById(R.id.img_ans_radio)));
 //                        arrListAnswerChioces.add(answerChoices);

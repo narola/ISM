@@ -25,6 +25,7 @@ import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 
 import io.realm.RealmResults;
+import model.ROTrendingQuestion;
 
 /**
  * Created by c162 on 01/01/16.
@@ -34,14 +35,14 @@ public class SendQuestionToAuthorAdapter extends RecyclerView.Adapter<SendQuesti
 
     private static final String TAG = SendQuestionToAuthorAdapter.class.getSimpleName();
     private final Context mContext;
-    private final RealmResults<model.TrendingQuestion> arrayList;
+    private final RealmResults<ROTrendingQuestion> arrayList;
     private final RealmHandler realmHandler;
     private GoTrendingFragment fragment;
     private Fragment mFragment;
     private LayoutInflater inflater;
     private int totalQuestions = 5;
 
-    public SendQuestionToAuthorAdapter(Fragment mFragment, Context mContext, RealmResults<model.TrendingQuestion> arrayList) {
+    public SendQuestionToAuthorAdapter(Fragment mFragment, Context mContext, RealmResults<ROTrendingQuestion> arrayList) {
         this.mFragment = mFragment;
         this.mContext = mContext;
         this.arrayList = arrayList;

@@ -30,6 +30,7 @@ import com.ism.ws.model.Feeds;
 import java.util.ArrayList;
 
 import io.realm.RealmResults;
+import model.ROFeeds;
 
 public class ClassWallFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
@@ -135,9 +136,9 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                 Attribute attribute = new Attribute();
                 ArrayList<String> likedId = new ArrayList<>();
                 ArrayList<String> unlikedId = new ArrayList<>();
-                RealmResults<model.Feeds> realmResSyncFeedLikes = dataToRealm.getUpdatedFeedLikes(false);
+                RealmResults<ROFeeds> realmResSyncFeedLikes = dataToRealm.getUpdatedFeedLikes(false);
                 Log.e(TAG, "realmResSyncFeedLikes size : " + realmResSyncFeedLikes.size());
-//                RealmResults<model.Feeds> realmResSyncFeedLikes = studentHelper.managedFeedLikeStatus(Utility.getDateFormateMySql("2015-12-16 9:41:42"), Utility.getDateMySql());
+//                RealmResults<model.ROFeeds> realmResSyncFeedLikes = studentHelper.managedFeedLikeStatus(Utility.getDateFormateMySql("2015-12-16 9:41:42"), Utility.getDateMySql());
                 if (realmResSyncFeedLikes.size() > 0) {
                     for (int i = 0; i < realmResSyncFeedLikes.size(); i++) {
                         if (realmResSyncFeedLikes.get(i).getSelfLike().equals("1")) {
@@ -276,7 +277,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
         activityHost = (HostActivity) activity;
     }
 
-    public void setUpData(RealmResults<model.Feeds> realmResultFeeds) {
+    public void setUpData(RealmResults<ROFeeds> realmResultFeeds) {
         try {
             adpPostFeeds = new PostFeedsAdapter(getActivity(), realmResultFeeds);
             Log.e(TAG, "arrayList size : " + realmResultFeeds.size());

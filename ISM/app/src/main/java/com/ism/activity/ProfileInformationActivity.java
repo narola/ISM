@@ -49,7 +49,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import model.User;
+import model.ROUser;
 import realmhelper.StudentHelper;
 import realmhelper.UserHelper;
 
@@ -852,12 +852,12 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 		                PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, WebConstants.ACCESS_KEY);
 	                }
 
-                     User user = new User();
-                     user.setFullName(responseHandler.getUser().get(0).getFullName());
-                     user.setProfilePicture(responseHandler.getUser().get(0).getProfilePic());
-                     user.setUserId(Integer.parseInt(responseHandler.getUser().get(0).getUserId()));
+                     ROUser ROUser = new ROUser();
+                     ROUser.setFullName(responseHandler.getUser().get(0).getFullName());
+                     ROUser.setProfilePicture(responseHandler.getUser().get(0).getProfilePic());
+                     ROUser.setUserId(Integer.parseInt(responseHandler.getUser().get(0).getUserId()));
 
-                     new UserHelper(user,this).saveUser();
+                     new UserHelper(ROUser,this).saveUser();
 
                     Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
                     startActivity(intentWelcome);

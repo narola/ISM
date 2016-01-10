@@ -7,23 +7,23 @@ import com.realm.ismrealm.RealmAdaptor;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
-import model.AdminConfig;
-import model.AuthorProfile;
-import model.Classrooms;
-import model.Courses;
-import model.FeedComment;
-import model.FeedImage;
-import model.Feeds;
-import model.Notes;
-import model.School;
-import model.StudentProfile;
-import model.Subjects;
-import model.TrendingQuestion;
-import model.TrendingQuestionComment;
-import model.TrendingQuestionFollower;
-import model.TutorialGroupDiscussion;
-import model.TutorialTopic;
-import model.User;
+import model.ROAdminConfig;
+import model.ROAuthorProfile;
+import model.ROClassrooms;
+import model.ROCourses;
+import model.ROFeedComment;
+import model.ROFeedImage;
+import model.ROFeeds;
+import model.RONotes;
+import model.ROSchool;
+import model.ROStudentProfile;
+import model.ROSubjects;
+import model.ROTrendingQuestion;
+import model.ROTutorialGroupDiscussion;
+import model.ROTutorialTopic;
+import model.ROUser;
+import model.ROTrendingQuestionComment;
+import model.ROTrendingQuestionFollower;
 
 /**
  * Created by c161 on 08/12/15.
@@ -33,11 +33,11 @@ public class StudentHelper {
     private static final String TAG = StudentHelper.class.getSimpleName();
 
     public Realm realm;
-    private RealmResults<Feeds> feedsRealmResults;
-    private RealmResults<Notes> notesRealmResults;
-    private RealmResults<TrendingQuestion> trendingQuestionRealmResults;
-    private TrendingQuestionFollower trendingQuestionFollowerResults;
-    private TrendingQuestion trendingQuestion;
+    private RealmResults<ROFeeds> ROFeedsRealmResults;
+    private RealmResults<RONotes> RONotesRealmResults;
+    private RealmResults<ROTrendingQuestion> ROTrendingQuestionRealmResults;
+    private ROTrendingQuestionFollower ROTrendingQuestionFollowerResults;
+    private ROTrendingQuestion ROTrendingQuestion;
 
     public StudentHelper(Context context) {
         realm = RealmAdaptor.getInstance(context);
@@ -46,28 +46,28 @@ public class StudentHelper {
     /**
      * use to save user data in ISM database.
      */
-    public void saveUser(User user) {
-        //Log.e(TAG,"saveUser : "+user.getUserId());
+    public void saveUser(ROUser ROUser) {
+        Log.e(TAG, "saveUser : " + ROUser.getUserId());
         realm.beginTransaction();
-        realm.copyToRealmOrUpdate(user);
+        realm.copyToRealmOrUpdate(ROUser);
         realm.commitTransaction();
     }
 
     /**
      * Save admin config data
      *
-     * @param adminConfig
+     * @param ROAdminConfig
      */
-    public void saveAdminConfig(AdminConfig adminConfig) {
+    public void saveAdminConfig(ROAdminConfig ROAdminConfig) {
         try {
-            Number configId = realm.where(AdminConfig.class).max("configId");
+            Number configId = realm.where(ROAdminConfig.class).max("configId");
             long newId = 1;
             if (configId != null) {
                 newId = (long) configId + 1;
             }
             realm.beginTransaction();
-            adminConfig.setConfigId((int) newId);
-            realm.copyToRealmOrUpdate(adminConfig);
+            ROAdminConfig.setConfigId((int) newId);
+            realm.copyToRealmOrUpdate(ROAdminConfig);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveAdminConfig Exception : " + e.toString());
@@ -88,54 +88,54 @@ public class StudentHelper {
     }
 
     public String getGlobalPassword() {
-        RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
+        RealmResults<ROAdminConfig> ROAdminConfigs = realm.where(ROAdminConfig.class)
                 .equalTo("configKey", "globalPassword")
                 .findAll();
-        if (adminConfigs != null && adminConfigs.size() > 0) {
-            return adminConfigs.get(0).getConfigValue();
+        if (ROAdminConfigs != null && ROAdminConfigs.size() > 0) {
+            return ROAdminConfigs.get(0).getConfigValue();
         } else {
             return null;
         }
     }
 
     public int getFridayExamAnswerScore() {
-        RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
+        RealmResults<ROAdminConfig> ROAdminConfigs = realm.where(ROAdminConfig.class)
                 .equalTo("configKey", "fridayInternalExamScore")
                 .findAll();
-        if (adminConfigs != null && adminConfigs.size() > 0) {
-            return Integer.parseInt(adminConfigs.get(0).getConfigValue());
+        if (ROAdminConfigs != null && ROAdminConfigs.size() > 0) {
+            return Integer.parseInt(ROAdminConfigs.get(0).getConfigValue());
         } else {
             return 0;
         }
     }
 
-    public AdminConfig getActiveHoursStartTime() {
-        RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
+    public ROAdminConfig getActiveHoursStartTime() {
+        RealmResults<ROAdminConfig> ROAdminConfigs = realm.where(ROAdminConfig.class)
                 .equalTo("configKey", "activeHoursStartTime")
                 .findAll();
-        if (adminConfigs != null && adminConfigs.size() > 0) {
-            return adminConfigs.get(0);
+        if (ROAdminConfigs != null && ROAdminConfigs.size() > 0) {
+            return ROAdminConfigs.get(0);
         } else {
             return null;
         }
     }
 
-    public AdminConfig getActiveHoursEndTime() {
-        RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
+    public ROAdminConfig getActiveHoursEndTime() {
+        RealmResults<ROAdminConfig> ROAdminConfigs = realm.where(ROAdminConfig.class)
                 .equalTo("configKey", "activeHoursEndTime")
                 .findAll();
-        if (adminConfigs != null && adminConfigs.size() > 0) {
-            return adminConfigs.get(0);
+        if (ROAdminConfigs != null && ROAdminConfigs.size() > 0) {
+            return ROAdminConfigs.get(0);
         } else {
             return null;
         }
     }
 
-    public void saveFeeds(Feeds feeds) {
+    public void saveFeeds(ROFeeds ROFeeds) {
 
         // remaining : to update feed with local id;
         realm.beginTransaction();
-        realm.copyToRealmOrUpdate(feeds);
+        realm.copyToRealmOrUpdate(ROFeeds);
         realm.commitTransaction();
     }
 
@@ -147,19 +147,19 @@ public class StudentHelper {
      * @param userId
      * @return
      */
-    public RealmResults<Feeds> getFeeds(final int feedId, final int userId) {
+    public RealmResults<ROFeeds> getFeeds(final int feedId, final int userId) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 if (feedId != -1) {
-                    feedsRealmResults = realm.where(Feeds.class).equalTo("feedId", feedId).equalTo("user.userId", userId).findAll();
+                    ROFeedsRealmResults = realm.where(ROFeeds.class).equalTo("feedId", feedId).equalTo("user.userId", userId).findAll();
                 } else {
-                    feedsRealmResults = realm.where(Feeds.class).equalTo("user.userId", userId).findAll();
+                    ROFeedsRealmResults = realm.where(ROFeeds.class).equalTo("user.userId", userId).findAll();
                 }
             }
         });
-        Log.e(TAG, "getFeeds feedsRealmResults.size: " + feedsRealmResults.size());
-        return feedsRealmResults;
+        Log.e(TAG, "getFeeds ROFeedsRealmResults.size: " + ROFeedsRealmResults.size());
+        return ROFeedsRealmResults;
     }
 
 
@@ -169,12 +169,12 @@ public class StudentHelper {
      * @param user_id
      * @return
      */
-    public User getUser(int user_id) {
+    public ROUser getUser(int user_id) {
         realm.beginTransaction();
-        User user = realm.where(User.class).equalTo("userId", user_id).findFirst();
-        //Log.e(TAG, "getUser : " + user);
+        ROUser ROUser = realm.where(ROUser.class).equalTo("userId", user_id).findFirst();
+        Log.i(TAG, "getUser : " + ROUser);
         realm.commitTransaction();
-        return user;
+        return ROUser;
     }
 
 
@@ -184,11 +184,11 @@ public class StudentHelper {
      * @param feedId
      * @return
      */
-    public RealmResults<FeedComment> getFeedComments(int feedId) {
+    public RealmResults<ROFeedComment> getFeedComments(int feedId) {
         realm.beginTransaction();
-        RealmResults<FeedComment> feedsRealmResults = realm.where(FeedComment.class).equalTo("feed.feedId", feedId).findAll();
+        RealmResults<ROFeedComment> feedsRealmResults = realm.where(ROFeedComment.class).equalTo("feed.feedId", feedId).findAll();
         Log.e(TAG, "all comments : " + feedsRealmResults);
-        Log.e(TAG, "getFeedComments feedsRealmResults.size: " + feedsRealmResults.size());
+        Log.e(TAG, "getFeedComments ROFeedsRealmResults.size: " + feedsRealmResults.size());
 
         realm.commitTransaction();
         return feedsRealmResults;
@@ -199,9 +199,9 @@ public class StudentHelper {
 //     *
 //     * @param feedLike
 //     */
-//    public void saveFeedLikes(FeedLike feedLike) {
+//    public void saveFeedLikes(ROFeedLike feedLike) {
 //        realm.beginTransaction();
-//        Number feedLikeId = realm.where(FeedLike.class).max("feedLikeId");
+//        Number feedLikeId = realm.where(ROFeedLike.class).max("feedLikeId");
 //        long newId = 1;
 //        if (feedLikeId != null) {
 //            newId = (long) feedLikeId + 1;
@@ -211,21 +211,21 @@ public class StudentHelper {
 //        realm.commitTransaction();
 //    }
 
-    public void updateFeedLikes(Feeds feeds) {
-        Feeds toUpdateFeeds = realm.where(Feeds.class).equalTo("feedId", feeds.getFeedId()).findFirst();
+    public void updateFeedLikes(ROFeeds ROFeeds) {
+        ROFeeds toUpdateROFeeds = realm.where(ROFeeds.class).equalTo("feedId", ROFeeds.getFeedId()).findFirst();
         realm.beginTransaction();
-        toUpdateFeeds.setSelfLike(feeds.getSelfLike().equals("0") ? "1" : "0");
-        toUpdateFeeds.setTotalLike(feeds.getSelfLike().equals("0") ? feeds.getTotalLike() - 1 : feeds.getTotalLike() + 1);
-        toUpdateFeeds.setIsSync(feeds.isSync() == 0 ? 1 : 0);
-        Log.e(TAG, "updateFeedLikes : " + toUpdateFeeds.getSelfLike() + "--" + toUpdateFeeds.getFeedId() + "--" + toUpdateFeeds.isSync());
+        toUpdateROFeeds.setSelfLike(ROFeeds.getSelfLike().equals("0") ? "1" : "0");
+        toUpdateROFeeds.setTotalLike(ROFeeds.getSelfLike().equals("0") ? ROFeeds.getTotalLike() - 1 : ROFeeds.getTotalLike() + 1);
+        toUpdateROFeeds.setIsSync(ROFeeds.isSync() == 0 ? 1 : 0);
+        Log.i(TAG, "updateFeedLikes : " + toUpdateROFeeds.getSelfLike() + "--" + toUpdateROFeeds.getFeedId() + "--" + toUpdateROFeeds.isSync());
         realm.commitTransaction();
     }
 
-    public void updateTotalComments(Feeds feeds) {
-        Feeds toUpdateFeeds = realm.where(Feeds.class).equalTo("feedId", feeds.getFeedId()).findFirst();
+    public void updateTotalComments(ROFeeds ROFeeds) {
+        ROFeeds toUpdateROFeeds = realm.where(ROFeeds.class).equalTo("feedId", ROFeeds.getFeedId()).findFirst();
         realm.beginTransaction();
-        toUpdateFeeds.setTotalComment(feeds.getTotalComment() + 1);
-        //toUpdateFeeds.getComments().add(feeds.getComments().get(0));
+        toUpdateROFeeds.setTotalComment(ROFeeds.getTotalComment() + 1);
+        //toUpdateROFeeds.getComments().add(ROFeeds.getComments().get(0));
         realm.commitTransaction();
     }
 
@@ -233,35 +233,35 @@ public class StudentHelper {
      * @param statusUpdation
      * @return
      */
-    public RealmResults<Feeds> managedFeedLikeStatus(boolean statusUpdation) {
-//    public RealmResults<Feeds> managedFeedLikeStatus(Date lastSynch, Date modified) {
+    public RealmResults<ROFeeds> managedFeedLikeStatus(boolean statusUpdation) {
+//    public RealmResults<ROFeeds> managedFeedLikeStatus(Date lastSynch, Date modified) {
         realm.beginTransaction();
-        RealmResults<Feeds> feedsRealmResults = realm.where(Feeds.class).equalTo("isSync", 1).findAll();
-        Log.e(TAG, "managedFeedLikeStatus feedsRealmResults.size: " + feedsRealmResults.size());
+        RealmResults<ROFeeds> ROFeedsRealmResults = realm.where(ROFeeds.class).equalTo("isSync", 1).findAll();
+        Log.i(TAG, "managedFeedLikeStatus ROFeedsRealmResults.size: " + ROFeedsRealmResults.size());
         if (statusUpdation) {
             //after sync
-            for (int i = 0; i < feedsRealmResults.size(); i++)
-                feedsRealmResults.get(i).setIsSync(0);
+            for (int i = 0; i < ROFeedsRealmResults.size(); i++)
+                ROFeedsRealmResults.get(i).setIsSync(0);
         }
         realm.commitTransaction();
-        if (feedsRealmResults.size() == 0) {
+        if (ROFeedsRealmResults.size() == 0) {
             return null;
         } else {
-            return feedsRealmResults;
+            return ROFeedsRealmResults;
         }
     }
 
-//    public RealmResults<Feeds> getUpdatedFeedLikeStatus() {
+//    public RealmResults<ROFeeds> getUpdatedFeedLikeStatus() {
 //        realm.beginTransaction();
-//        RealmResults<Feeds> feedsRealmResults = realm.where(Feeds.class).equalTo("isSync", 1).findAll();
+//        RealmResults<ROFeeds> ROFeedsRealmResults = realm.where(ROFeeds.class).equalTo("isSync", 1).findAll();
 //
-//        Log.e(TAG, "managedFeedLikeStatus feedsRealmResults.size: " + feedsRealmResults.size());
+//        Log.e(TAG, "managedFeedLikeStatus ROFeedsRealmResults.size: " + ROFeedsRealmResults.size());
 //
 //        realm.commitTransaction();
-//        if (feedsRealmResults.size() == 0) {
+//        if (ROFeedsRealmResults.size() == 0) {
 //            return null;
 //        } else {
-//            return feedsRealmResults;
+//            return ROFeedsRealmResults;
 //        }
 //    }
 
@@ -269,15 +269,15 @@ public class StudentHelper {
     /**
      * store feed related comments
      *
-     * @param feedComment
+     * @param ROFeedComment
      * @param
      */
-    public void saveComments(FeedComment feedComment) {
+    public void saveComments(ROFeedComment ROFeedComment) {
         try {
-            Feeds feeds = feedComment.getFeed();
+            ROFeeds ROFeeds = ROFeedComment.getFeed();
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(feedComment);
-            feeds.getComments().add(feedComment);
+            realm.copyToRealmOrUpdate(ROFeedComment);
+            ROFeeds.getComments().add(ROFeedComment);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveComments Exceptions : " + e.getLocalizedMessage());
@@ -287,56 +287,56 @@ public class StudentHelper {
     /**
      * store feed images
      *
-     * @param feedImage
+     * @param ROFeedImage
      */
-    public void saveFeedImages(FeedImage feedImage) {
+    public void saveFeedImages(ROFeedImage ROFeedImage) {
         try {
-            Feeds feeds = feedImage.getFeed();
+            ROFeeds ROFeeds = ROFeedImage.getFeed();
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(feedImage);
-            feeds.getFeedImages().add(feedImage);
+            realm.copyToRealmOrUpdate(ROFeedImage);
+            ROFeeds.getROFeedImages().add(ROFeedImage);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveFeedImages Exceptions : " + e.getLocalizedMessage());
         }
     }
 
-    public void saveTutorialGroupDiscussion(TutorialGroupDiscussion tutorialGroupDiscussion) {
+    public void saveTutorialGroupDiscussion(ROTutorialGroupDiscussion ROTutorialGroupDiscussion) {
         try {
-            Number discussionId = realm.where(TutorialGroupDiscussion.class).max("tutorialGroupDiscussionId");
+            Number discussionId = realm.where(ROTutorialGroupDiscussion.class).max("tutorialGroupDiscussionId");
             long newId = 1;
             if (discussionId != null) {
                 newId = (long) discussionId + 1;
             }
             realm.beginTransaction();
-            tutorialGroupDiscussion.setTutorialGroupDiscussionId((int) newId);
-            realm.copyToRealmOrUpdate(tutorialGroupDiscussion);
+            ROTutorialGroupDiscussion.setTutorialGroupDiscussionId((int) newId);
+            realm.copyToRealmOrUpdate(ROTutorialGroupDiscussion);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveTutorialGroupDiscussion Exception : " + e.toString());
         }
     }
 
-    public void saveTutorialGroupTopic(TutorialTopic tutorialTopic) {
+    public void saveTutorialGroupTopic(ROTutorialTopic ROTutorialTopic) {
         try {
-            Number topicId = realm.where(TutorialTopic.class).max("tutorialTopicId");
+            Number topicId = realm.where(ROTutorialTopic.class).max("tutorialTopicId");
             long newId = 1;
             if (topicId != null) {
                 newId = (long) topicId + 1;
             }
             realm.beginTransaction();
-            tutorialTopic.setTutorialTopicId((int) newId);
-            realm.copyToRealmOrUpdate(tutorialTopic);
+            ROTutorialTopic.setTutorialTopicId((int) newId);
+            realm.copyToRealmOrUpdate(ROTutorialTopic);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveTutorialGroupTopic Exception : " + e.toString());
         }
     }
 
-    public void saveSubjects(Subjects subjects) {
+    public void saveSubjects(ROSubjects ROSubjects) {
         try {
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(subjects);
+            realm.copyToRealmOrUpdate(ROSubjects);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveSubjects Exception : " + e.toString());
@@ -346,20 +346,20 @@ public class StudentHelper {
     /**
      * used for the save notes or jottings
      *
-     * @param notes
+     * @param RONotes
      */
-    public void saveNote(Notes notes) {
+    public void saveNote(RONotes RONotes) {
         try {
-            if (notes.getLocalNoteId() == 0) {
-                Number id = realm.where(Notes.class).max("localNoteId");
+            if (RONotes.getLocalNoteId() == 0) {
+                Number id = realm.where(RONotes.class).max("localNoteId");
                 long newId = 1;
                 if (id != null) {
                     newId = (long) id + 1;
                 }
-                notes.setLocalNoteId((int) newId);
+                RONotes.setLocalNoteId((int) newId);
             }
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(notes);
+            realm.copyToRealmOrUpdate(RONotes);
             realm.commitTransaction();
 
         } catch (Exception e) {
@@ -373,47 +373,47 @@ public class StudentHelper {
      * @param userId
      * @return
      */
-    public RealmResults<Notes> getNotes(final int userId) {
+    public RealmResults<RONotes> getNotes(final int userId) {
         try {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    notesRealmResults = realm.where(Notes.class).equalTo("user.userId", userId).findAll();
+                    RONotesRealmResults = realm.where(RONotes.class).equalTo("user.userId", userId).findAll();
                 }
             });
-//            Log.e(TAG, "getNotes notesRealmResults.size: " + notesRealmResults.size());
-//            Log.e(TAG, "getNotes notesRealmResults : " + notesRealmResults);
+           // Log.e(TAG, "getNotes notesRealmResults.size: " + RONotesRealmResults.size());
+          //  Log.e(TAG, "getNotes notesRealmResults : " + RONotesRealmResults);
         } catch (Exception e) {
             Log.e(TAG, "getNotes Exception : " + e.getLocalizedMessage());
         }
-        return notesRealmResults;
+        return RONotesRealmResults;
     }
 
     /**
      * save author profile information
      *
-     * @param authorProfile
+     * @param ROAuthorProfile
      */
-    public void saveAuthorProfile(AuthorProfile authorProfile) {
+    public void saveAuthorProfile(ROAuthorProfile ROAuthorProfile) {
         try {
-//            Number id = realm.where(AuthorProfile.class).max("localAuthorId");
+//            Number id = realm.where(ROAuthorProfile.class).max("localAuthorId");
 //            long newId = 1;
 //            if (id != null) {
 //                newId = (long) id + 1;
 //            }
-//            authorProfile.setLocalAuthorId((int) newId);
+//            ROAuthorProfile.setLocalAuthorId((int) newId);
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(authorProfile);
+            realm.copyToRealmOrUpdate(ROAuthorProfile);
             realm.commitTransaction();
-//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
+//            Log.e(TAG, "Records availbale in ROAuthorProfile table :" + realm.where(ROAuthorProfile.class).findAll().size());
         } catch (Exception e) {
             Log.e(TAG, " saveAuthorProfile Exceptions : " + e.getLocalizedMessage());
         }
     }
 
-    public AuthorProfile getAuthorprofile(int userId) {
+    public ROAuthorProfile getAuthorprofile(int userId) {
         try {
-            return realm.where(AuthorProfile.class).equalTo("serverAuthorId", userId).findFirst();
+            return realm.where(ROAuthorProfile.class).equalTo("serverAuthorId", userId).findFirst();
         } catch (Exception e) {
             Log.e(TAG, "getAuthorprofile Exceptions : " + e.getLocalizedMessage());
         }
@@ -423,28 +423,28 @@ public class StudentHelper {
     /**
      * save student profile information
      *
-     * @param studentProfile
+     * @param ROStudentProfile
      */
-    public void saveStudentProfile(StudentProfile studentProfile) {
+    public void saveStudentProfile(ROStudentProfile ROStudentProfile) {
         try {
-            Number id = realm.where(StudentProfile.class).max("localStudentId");
+            Number id = realm.where(ROStudentProfile.class).max("localStudentId");
             long newId = 1;
             if (id != null) {
                 newId = (long) id + 1;
             }
-            studentProfile.setLocalStudentId((int) newId);
+            ROStudentProfile.setLocalStudentId((int) newId);
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(studentProfile);
+            realm.copyToRealmOrUpdate(ROStudentProfile);
             realm.commitTransaction();
-//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
+//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(ROAuthorProfile.class).findAll().size());
         } catch (Exception e) {
             Log.e(TAG, " saveStudentProfile Exceptions : " + e.getLocalizedMessage());
         }
     }
 
-    public StudentProfile getStudentProfile(int id) {
+    public ROStudentProfile getStudentProfile(int id) {
         try {
-            return realm.where(StudentProfile.class).equalTo("serverStudentId", id).findFirst();
+            return realm.where(ROStudentProfile.class).equalTo("serverStudentId", id).findFirst();
         } catch (Exception e) {
             Log.e(TAG, "getStudentProfile Exceptions : " + e.getLocalizedMessage());
         }
@@ -453,16 +453,15 @@ public class StudentHelper {
 
     /**
      * save school
-     *
-     * @param school
+     * @param ROSchool
      */
-    public void saveSchool(School school) {
+    public void saveSchool(ROSchool ROSchool) {
         try {
 
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(school);
+            realm.copyToRealmOrUpdate(ROSchool);
             realm.commitTransaction();
-//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
+//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(ROAuthorProfile.class).findAll().size());
         } catch (Exception e) {
             Log.e(TAG, " saveSchool Exceptions : " + e.getLocalizedMessage());
         }
@@ -473,90 +472,90 @@ public class StudentHelper {
      *
      * @param classroom
      */
-    public void saveClassRoom(Classrooms classroom) {
+    public void saveClassRoom(ROClassrooms classroom) {
         try {
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(classroom);
             realm.commitTransaction();
-//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
+//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(ROAuthorProfile.class).findAll().size());
         } catch (Exception e) {
             Log.e(TAG, " saveClassRoom Exceptions : " + e.getLocalizedMessage());
         }
     }
 
     /**
-     * @param courses
+     * @param ROCourses
      */
-    public void saveCourse(Courses courses) {
+    public void saveCourse(ROCourses ROCourses) {
         try {
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(courses);
+            realm.copyToRealmOrUpdate(ROCourses);
             realm.commitTransaction();
-//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
+//            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(ROAuthorProfile.class).findAll().size());
         } catch (Exception e) {
             Log.e(TAG, " saveCourse Exceptions : " + e.getLocalizedMessage());
         }
     }
 
     /**
-     * @param trendingQuestion
+     * @param ROTrendingQuestion
      */
-    public void saveTrendingQuestion(TrendingQuestion trendingQuestion) {
+    public void saveTrendingQuestion(ROTrendingQuestion ROTrendingQuestion) {
 
         realm.beginTransaction();
-        realm.copyToRealmOrUpdate(trendingQuestion);
+        realm.copyToRealmOrUpdate(ROTrendingQuestion);
         realm.commitTransaction();
     }
 
     /**
      * @param questionFollower
      */
-    public void saveTrendingQuestionFolloer(TrendingQuestionFollower questionFollower) {
+    public void saveTrendingQuestionFolloer(ROTrendingQuestionFollower questionFollower) {
 
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(questionFollower);
         realm.commitTransaction();
     }
 
-    public TrendingQuestion getTrendingQuestion(final String trendingQuestionId) {
+    public ROTrendingQuestion getTrendingQuestion(final String trendingQuestionId) {
 
         try {
             realm.beginTransaction();
-            trendingQuestion = realm.where(TrendingQuestion.class).equalTo("trendingId", Integer.parseInt(trendingQuestionId)).findFirst();
+            ROTrendingQuestion = realm.where(ROTrendingQuestion.class).equalTo("trendingId", Integer.parseInt(trendingQuestionId)).findFirst();
             realm.commitTransaction();
-            return trendingQuestion;
+            return ROTrendingQuestion;
         } catch (Exception e) {
-            Log.e(TAG, "getTrendingQuestion Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "getROTrendingQuestion Exception : " + e.getLocalizedMessage());
         }
         return null;
     }
 
-    public RealmResults<TrendingQuestion> getTrendingQuestionResult(final String authorId, boolean isForWeek) {
+    public RealmResults<ROTrendingQuestion> getTrendingQuestionResult(final String authorId, boolean isForWeek) {
 
         try {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    trendingQuestionRealmResults
-                            = realm.where(TrendingQuestion.class).equalTo("questionFor.userId", Integer.parseInt(authorId)).findAll();
+                    ROTrendingQuestionRealmResults
+                            = realm.where(ROTrendingQuestion.class).equalTo("questionFor.userId", Integer.parseInt(authorId)).findAll();
                 }
             });
-            return trendingQuestionRealmResults;
+            return ROTrendingQuestionRealmResults;
         } catch (Exception e) {
             Log.e(TAG, "getTrendingQuestionResult Exception : " + e.getLocalizedMessage());
         }
         return null;
     }
 
-    public TrendingQuestionFollower getTrendingQuestionFollower(final String trendingId, final String userId) {
+    public ROTrendingQuestionFollower getTrendingQuestionFollower(final String trendingId, final String userId) {
         try {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    trendingQuestionFollowerResults = realm.where(TrendingQuestionFollower.class).equalTo("trendingQuestion.trendingId", Integer.parseInt(trendingId)).equalTo("followerBy.userId", Integer.parseInt(userId)).findFirst();
+                    ROTrendingQuestionFollowerResults = realm.where(ROTrendingQuestionFollower.class).equalTo("ROTrendingQuestion.trendingId", Integer.parseInt(trendingId)).equalTo("followerBy.userId", Integer.parseInt(userId)).findFirst();
                 }
             });
-            return trendingQuestionFollowerResults;
+            return ROTrendingQuestionFollowerResults;
         } catch (Exception e) {
             Log.e(TAG, "getTrendingQuestionFollower Exception : " + e.getLocalizedMessage());
         }
@@ -568,7 +567,7 @@ public class StudentHelper {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    realm.where(TrendingQuestionFollower.class).equalTo("questionFollowerId", questionFollowerId).findFirst().removeFromRealm();
+                    realm.where(ROTrendingQuestionFollower.class).equalTo("questionFollowerId", questionFollowerId).findFirst().removeFromRealm();
                 }
             });
         } catch (Exception e) {
@@ -577,7 +576,7 @@ public class StudentHelper {
 
     }
 
-    public void saveTrendingQuestionComment(TrendingQuestionComment questionComment) {
+    public void saveTrendingQuestionComment(ROTrendingQuestionComment questionComment) {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(questionComment);
         realm.commitTransaction();
