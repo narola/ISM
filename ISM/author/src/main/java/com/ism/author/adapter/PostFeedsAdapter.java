@@ -198,7 +198,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     }
 
-
     @Override
     public int getItemCount() {
 
@@ -218,7 +217,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             comment = "";
             arrListFeeds = authorHelper.getAllPostFeeds();
         } catch (Exception e) {
-            e.printStackTrace();
+            Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
         notifyDataSetChanged();
     }

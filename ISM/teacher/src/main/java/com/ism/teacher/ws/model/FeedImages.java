@@ -8,16 +8,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeedImages {
 
-    private String id;
+    private int id;
     private String imageLink;
 
 
     @JsonProperty("id")
-    public String getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

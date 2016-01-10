@@ -142,7 +142,8 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         holder.txtAssignmentClassName.setText(arrayListAssignments.get(position).getClassroomName());
 
         if (arrayListAssignments.get(position).getExamCreatedDate() != null && !arrayListAssignments.get(position).getExamCreatedDate().equals("")) {
-            holder.txtAssignmentDate.setText(Html.fromHtml("<font color='#0E970C'>Assignment Date:" + "</font>" + " " + (Utility.getFormattedDate("dd-MMM-yyyy", arrayListAssignments.get(position).getExamCreatedDate()))));
+            holder.txtAssignmentDate.setText(Html.fromHtml("<font color='#0E970C'>Assignment Date:" + "</font>" + " " +
+                    (Utility.getFormattedDate("dd-MMM-yyyy", arrayListAssignments.get(position).getExamCreatedDate()))));
 
         } else {
             holder.txtAssignmentDate.setText(Html.fromHtml("<font color='#0E970C'>Assignment Date:" + "</font>" + " " + "--"));

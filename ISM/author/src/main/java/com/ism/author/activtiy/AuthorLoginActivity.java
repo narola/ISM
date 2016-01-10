@@ -96,7 +96,8 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         if (Utility.isConnected(this)) {
             initializeData();
         } else {
-            Utility.alertOffline(this);
+//            Utility.alertOffline(this);
+            resumeApp();
         }
 
     }

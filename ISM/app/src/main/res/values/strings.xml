@@ -576,10 +576,10 @@
 	<string name="msg_question_data_missing"><![CDATA[>  Question or some of the options are missing.]]></string>
 	<string name="strSectionName">Section Name</string>
 	<string name="strViewAll">View all</string>
-    <string name="strHintEmailAddress">(Email Address)</string>
-    <string name="strBlock">Block</string>
-    <string name="strUnblock">UNBLOCK</string>
-    <string name="strEnterHere">Enter here</string>
+	<string name="strHintEmailAddress">(Email Address)</string>
+	<string name="strBlock">Block</string>
+	<string name="strUnblock">UNBLOCK</string>
+	<string name="strEnterHere">Enter here</string>
 	<string name="strYes">Yes</string>
 	<string name="strNo">No</string>
 	<string name="strStudymates">Studymates</string>
@@ -638,4 +638,8 @@
 	<string name="strSendQuestionTo">Send Question To</string>
 	<string name="tip">Tip :</string>
 	<string name="question">"Question : "</string>
+	<string name="sunday_special_interface">Sunday Special Interface</string>
+	<string name="title_discusstion_board">Disagreement Resolution - Discussion Board</string>
+	<string name="title_finalize_answer">Finalize Answer With Discussion</string>
+	<string name="msg_not_same_answer">All 5 members do not have same answer</string>
 </resources>

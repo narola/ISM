@@ -89,12 +89,12 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 		NetworkStatusReceiver.setNetworkStateListener(this);
 
-		launchHostActivity();
-//		if (Utility.isConnected(this)) {
-//			initializeData();
-//		} else {
-//			Utility.alertOffline(this);
-//		}
+//		launchHostActivity();   // Just for temporary testing.
+		if (Utility.isConnected(this)) {
+			initializeData();
+		} else {
+			Utility.alertOffline(this);
+		}
 
 	}
 

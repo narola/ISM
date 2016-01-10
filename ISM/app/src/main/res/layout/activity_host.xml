@@ -176,13 +176,13 @@
             android:id="@+id/img_notes"
             android:layout_width="@dimen/controller_top_button_width"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/img_author_profile"
+            android:layout_toLeftOf="@+id/img_profile_controller"
             android:background="@drawable/bg_left_controller_top_button"
             android:scaleType="centerInside"
             android:src="@drawable/img_notes" />
 
         <ImageView
-            android:id="@+id/img_author_profile"
+            android:id="@+id/img_profile_controller"
             android:layout_width="@dimen/controller_top_button_width"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/img_chat"

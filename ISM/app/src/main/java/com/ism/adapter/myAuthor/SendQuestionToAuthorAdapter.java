@@ -131,7 +131,7 @@ public class SendQuestionToAuthorAdapter extends RecyclerView.Adapter<SendQuesti
         }
     }
 
-    private void onResponseFollowQuestion(Object object, Exception error) {
+    private void onResponseFollowQuestion(Object object, Exception error) {it
         try {
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;

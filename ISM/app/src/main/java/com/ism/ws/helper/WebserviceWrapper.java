@@ -269,6 +269,9 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_FOLLOW_QUESTION).execute(ResponseHandler.class,
                                         attribute);
                                 break;
+                            case WebConstants.ALLOCATE_TEACHER_TO_GROUP:
+                                responseObject = new WebserviceConnector(WebConstants.URL_ALLOCATE_TEACHER_TO_GROUP).execute(ResponseHandler.class, attribute);
+                                break;
                         }
                     }
                 }

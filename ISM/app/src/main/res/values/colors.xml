@@ -91,6 +91,7 @@
     <color name="border_layout_tutorialmate_answers">#BBBBBB</color>
     <color name="transparent">#00000000</color>
     <color name="assignment_separator">#DEDCDD</color>
+    <color name="black_transperant">#32000000</color>
 
     <!-- ################################# -->
     <bool name="default_circle_indicator_centered">true</bool>

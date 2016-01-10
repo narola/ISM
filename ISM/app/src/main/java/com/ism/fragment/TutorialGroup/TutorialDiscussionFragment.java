@@ -35,10 +35,7 @@ import com.ism.ws.model.GroupDiscussionData;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
-import model.Subjects;
-import model.TutorialTopic;
 import realmhelper.StudentHelper;
 
 /**
@@ -432,6 +429,8 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 						break;
 					}
 				}
+
+//				testcode
 				PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity(), arrListDiscussionData.get(0).getTutorialTopicId());
 
 //				Save data

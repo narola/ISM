@@ -162,11 +162,11 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 		intPaddingLable = getResources().getDimensionPixelOffset(R.dimen.padding_createquestion_lable);
 		inputValidator = new InputValidator(getActivity());
 
-		/*if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
+		if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
 
-			*//**
+			/**
 			 * Check if question set for today
-			 *//*
+			 */
 			if (PreferenceData.getStringPrefs(PreferenceData.FRIDAY_EXAM_QUESTION_SET_DATE, getActivity(), "").equals(Utility.getDate())) {
 				if (!PreferenceData.getBooleanPrefs(PreferenceData.IS_FRIDAY_EXAM_READY, getActivity())) {
 					rlHeader.setVisibility(View.GONE);
@@ -177,13 +177,13 @@ public class TutorialFriAddQuestionFragment extends Fragment implements Webservi
 					} else {
 						Utility.alertOffline(getActivity());
 					}
-				} else {*/
+				} else {
 					getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance(listenerExam)).commit();
-/*				}
+				}
 			}
 		} else {
 			txtCreateQuestion.setEnabled(false);
-		}*/
+		}
 
 		etQuestion.setText("Tutorial group topic friday exam question 1");
 		etOption1.setText("Tutorial group topic friday exam option 1");
