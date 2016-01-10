@@ -17,7 +17,7 @@ import com.ism.activity.HostActivity;
 import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
-import com.ism.ws.model.TrendingQuestionDetails;
+import com.ism.realm.RealmHandler;
 
 import java.util.ArrayList;
 
@@ -29,15 +29,17 @@ public class GoTrendingQueAnsAuthorAdapter extends PagerAdapter {
 
     private static final String TAG = GoTrendingQueAnsAuthorAdapter.class.getSimpleName();
     private final Context mContext;
-    private ArrayList<TrendingQuestionDetails> arrayList = new ArrayList<>();
+    private final RealmHandler realmHandler;
+    private ArrayList<com.ism.ws.model.TrendingQuestionDetails> arrayList=new ArrayList<>();
     private LayoutInflater inflater;
 
     public GoTrendingQueAnsAuthorAdapter(Context mContext) {
         this.mContext = mContext;
+        realmHandler=new RealmHandler(mContext);
         this.inflater = LayoutInflater.from(mContext);
     }
 
-    public void addAll(ArrayList<TrendingQuestionDetails> trendingQuestionDetailses) {
+    public void addAll(ArrayList<com.ism.ws.model.TrendingQuestionDetails> trendingQuestionDetailses) {
         try {
             this.arrayList.clear();
             this.arrayList.addAll(trendingQuestionDetailses);
@@ -47,9 +49,18 @@ public class GoTrendingQueAnsAuthorAdapter extends PagerAdapter {
         notifyDataSetChanged();
     }
 
+//    public void add(TrendingQuestionDetails trendingQuestionDetail) {
+//        try {
+//            this.arrayList.add(trendingQuestionDetail);
+//        } catch (Exception e) {
+//            Log.e(TAG, "addAllData Exception : " + e.toString());
+//        }
+//        notifyDataSetChanged();
+//    }
+
     @Override
     public int getCount() {
-        return arrayList.size();
+        return arrayList ==null ? 0:arrayList.size();
     }
 
     @Override
@@ -78,7 +89,8 @@ public class GoTrendingQueAnsAuthorAdapter extends PagerAdapter {
 
         ImageView imgUserPic=(ImageView)view.findViewById(R.id.img_user_pic);
 
-        Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER+arrayList.get(position).getPostedByPic(),imgUserPic, ISMStudent.options);
+        Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrayList.get(position).getPostedByPic(), imgUserPic, ISMStudent.options);
+//        Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER+arrayList.get(position).getQuestionBy().getProfilePicture(),imgUserPic, ISMStudent.options);
 
         txtAuthorname.setText(((HostActivity) mContext).getBundle().getString(AppConstant.AUTHOR_NAME));
 
@@ -87,6 +99,7 @@ public class GoTrendingQueAnsAuthorAdapter extends PagerAdapter {
         txtAnswer.setText(arrayList.get(position).getAnswerText());
 
         txtUsername.setText(arrayList.get(position).getPostedByUsername());
+//        txtUsername.setText(arrayList.get(position).getQuestionBy().getFullName());
 
         container.addView(view);
         return view;

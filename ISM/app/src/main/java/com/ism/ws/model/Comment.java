@@ -79,7 +79,6 @@ public class Comment {
 
     @JsonProperty("comment_id")
     public int getCommentId() {
-
         return commentId;
     }
 }

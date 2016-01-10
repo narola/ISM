@@ -124,4 +124,6 @@
     <dimen name="trending_tab_height">@dimen/dp45</dimen>
     <dimen name="circlularImage_user_question_tending">@dimen/dp70</dimen>
     <dimen name="height_author_answer">@dimen/dp200</dimen>
+    <dimen name="default_circle_indicator_radius">3dp</dimen>
+    <dimen name="default_circle_indicator_stroke_width">1dp</dimen>
 </resources>

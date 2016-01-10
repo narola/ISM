@@ -18,6 +18,9 @@ import model.Notes;
 import model.School;
 import model.StudentProfile;
 import model.Subjects;
+import model.TrendingQuestion;
+import model.TrendingQuestionComment;
+import model.TrendingQuestionFollower;
 import model.TutorialGroupDiscussion;
 import model.TutorialTopic;
 import model.User;
@@ -32,6 +35,9 @@ public class StudentHelper {
     public Realm realm;
     private RealmResults<Feeds> feedsRealmResults;
     private RealmResults<Notes> notesRealmResults;
+    private RealmResults<TrendingQuestion> trendingQuestionRealmResults;
+    private TrendingQuestionFollower trendingQuestionFollowerResults;
+    private TrendingQuestion trendingQuestion;
 
     public StudentHelper(Context context) {
         realm = RealmAdaptor.getInstance(context);
@@ -224,7 +230,6 @@ public class StudentHelper {
     }
 
     /**
-     *
      * @param statusUpdation
      * @return
      */
@@ -271,7 +276,7 @@ public class StudentHelper {
         try {
             Feeds feeds = feedComment.getFeed();
             realm.beginTransaction();
-           realm.copyToRealmOrUpdate(feedComment);
+            realm.copyToRealmOrUpdate(feedComment);
             feeds.getComments().add(feedComment);
             realm.commitTransaction();
         } catch (Exception e) {
@@ -376,8 +381,8 @@ public class StudentHelper {
                     notesRealmResults = realm.where(Notes.class).equalTo("user.userId", userId).findAll();
                 }
             });
-            Log.e(TAG, "getNotes notesRealmResults.size: " + notesRealmResults.size());
-            Log.e(TAG, "getNotes notesRealmResults : " + notesRealmResults);
+//            Log.e(TAG, "getNotes notesRealmResults.size: " + notesRealmResults.size());
+//            Log.e(TAG, "getNotes notesRealmResults : " + notesRealmResults);
         } catch (Exception e) {
             Log.e(TAG, "getNotes Exception : " + e.getLocalizedMessage());
         }
@@ -418,7 +423,7 @@ public class StudentHelper {
     /**
      * save student profile information
      *
-     * @param  studentProfile
+     * @param studentProfile
      */
     public void saveStudentProfile(StudentProfile studentProfile) {
         try {
@@ -447,7 +452,8 @@ public class StudentHelper {
     }
 
     /**
-     *  save school
+     * save school
+     *
      * @param school
      */
     public void saveSchool(School school) {
@@ -464,6 +470,7 @@ public class StudentHelper {
 
     /**
      * save classroom
+     *
      * @param classroom
      */
     public void saveClassRoom(Classrooms classroom) {
@@ -478,7 +485,6 @@ public class StudentHelper {
     }
 
     /**
-     *
      * @param courses
      */
     public void saveCourse(Courses courses) {
@@ -490,5 +496,90 @@ public class StudentHelper {
         } catch (Exception e) {
             Log.e(TAG, " saveCourse Exceptions : " + e.getLocalizedMessage());
         }
+    }
+
+    /**
+     * @param trendingQuestion
+     */
+    public void saveTrendingQuestion(TrendingQuestion trendingQuestion) {
+
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(trendingQuestion);
+        realm.commitTransaction();
+    }
+
+    /**
+     * @param questionFollower
+     */
+    public void saveTrendingQuestionFolloer(TrendingQuestionFollower questionFollower) {
+
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(questionFollower);
+        realm.commitTransaction();
+    }
+
+    public TrendingQuestion getTrendingQuestion(final String trendingQuestionId) {
+
+        try {
+            realm.beginTransaction();
+            trendingQuestion = realm.where(TrendingQuestion.class).equalTo("trendingId", Integer.parseInt(trendingQuestionId)).findFirst();
+            realm.commitTransaction();
+            return trendingQuestion;
+        } catch (Exception e) {
+            Log.e(TAG, "getTrendingQuestion Exception : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public RealmResults<TrendingQuestion> getTrendingQuestionResult(final String authorId, boolean isForWeek) {
+
+        try {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    trendingQuestionRealmResults
+                            = realm.where(TrendingQuestion.class).equalTo("questionFor.userId", Integer.parseInt(authorId)).findAll();
+                }
+            });
+            return trendingQuestionRealmResults;
+        } catch (Exception e) {
+            Log.e(TAG, "getTrendingQuestionResult Exception : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public TrendingQuestionFollower getTrendingQuestionFollower(final String trendingId, final String userId) {
+        try {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    trendingQuestionFollowerResults = realm.where(TrendingQuestionFollower.class).equalTo("trendingQuestion.trendingId", Integer.parseInt(trendingId)).equalTo("followerBy.userId", Integer.parseInt(userId)).findFirst();
+                }
+            });
+            return trendingQuestionFollowerResults;
+        } catch (Exception e) {
+            Log.e(TAG, "getTrendingQuestionFollower Exception : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public void removeTrendingQuestionFollower(final int questionFollowerId) {
+        try {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.where(TrendingQuestionFollower.class).equalTo("questionFollowerId", questionFollowerId).findFirst().removeFromRealm();
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "getTrendingQuestionFollower Exception : " + e.getLocalizedMessage());
+        }
+
+    }
+
+    public void saveTrendingQuestionComment(TrendingQuestionComment questionComment) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(questionComment);
+        realm.commitTransaction();
     }
 }
