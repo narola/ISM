@@ -268,10 +268,10 @@ public class StudentHelper {
      */
     public void saveComments(ROFeedComment ROFeedComment) {
         try {
-            ROFeeds ROFeeds = ROFeedComment.getFeed();
+            ROFeeds ROFeeds = ROFeedComment.getRoFeed();
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(ROFeedComment);
-            ROFeeds.getComments().add(ROFeedComment);
+            ROFeeds.getRoFeedComment().add(ROFeedComment);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveComments Exceptions : " + e.getLocalizedMessage());
@@ -288,7 +288,7 @@ public class StudentHelper {
             ROFeeds ROFeeds = ROFeedImage.getFeed();
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(ROFeedImage);
-            ROFeeds.getROFeedImages().add(ROFeedImage);
+            ROFeeds.getRoFeedImages().add(ROFeedImage);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveFeedImages Exceptions : " + e.getLocalizedMessage());

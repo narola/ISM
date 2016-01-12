@@ -12,13 +12,12 @@ import io.realm.annotations.PrimaryKey;
  * Relationship with {@link ROUser}
  * Relationship with {@link ROExam}
  * Relationship with {@link ROQuestions}
- * Relationship with {@link ROAnswerChoices}
  */
-public class ROStudentObjectiveResponse extends RealmObject {
+public class ROExamQuestions extends RealmObject{
 
 
     @PrimaryKey
-    private int studentObjectiveResponseId;//this is the exam id.
+    private int examId;//this is the exam id.
     private ROUser roUser;
     private ROExam roExam;
     private RealmList<ROQuestions> roQuestions = new RealmList<ROQuestions>();
@@ -31,12 +30,12 @@ public class ROStudentObjectiveResponse extends RealmObject {
     private Date createdDate;
     private Date modifiedDate;
 
-    public int getStudentObjectiveResponseId() {
-        return studentObjectiveResponseId;
+    public int getExamId() {
+        return examId;
     }
 
-    public void setStudentObjectiveResponseId(int studentObjectiveResponseId) {
-        this.studentObjectiveResponseId = studentObjectiveResponseId;
+    public void setExamId(int examId) {
+        this.examId = examId;
     }
 
     public String getAnswerText() {

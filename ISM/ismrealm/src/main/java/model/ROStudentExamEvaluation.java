@@ -2,18 +2,27 @@ package model;
 
 import java.util.Date;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import model.authormodel.ROExamSubmittor;
 
 /**
  * Created by c85 on 19/11/15.
  * {@link RealmObject} class - evaluation related to exam.
  * Relationship with {@link ROExamSchedule}
  */
-public class ROExamEvaluation extends RealmObject {
+public class ROStudentExamEvaluation extends RealmObject {
 
     @PrimaryKey
-    private int examEvaluationId;
+    private int evaluationId;//This is the examID.
+    private String examScore;
+    private ROExam roExam;
+    private ROExamSubmittor roExamSubmittor;
+    private RealmList<ROQuestionPalette> roQuestionPalette = new RealmList<ROQuestionPalette>();
+    private RealmList<ROEvaluation> roEvaluation = new RealmList<ROEvaluation>();
+
+
     private ROExamSchedule roExamSchedule;
     private int evaluationStatus;
     private int publishResultStatus;
@@ -23,12 +32,12 @@ public class ROExamEvaluation extends RealmObject {
     private Date createdDate;
     private Date modifiedDate;
 
-    public int getExamEvaluationId() {
-        return examEvaluationId;
+    public int getEvaluationId() {
+        return evaluationId;
     }
 
-    public void setExamEvaluationId(int examEvaluationId) {
-        this.examEvaluationId = examEvaluationId;
+    public void setEvaluationId(int evaluationId) {
+        this.evaluationId = evaluationId;
     }
 
     public ROExamSchedule getRoExamSchedule() {
@@ -94,4 +103,50 @@ public class ROExamEvaluation extends RealmObject {
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
+
+
+    public RealmList<ROEvaluation> getRoEvaluation() {
+        return roEvaluation;
+    }
+
+    public void setRoEvaluation(RealmList<ROEvaluation> roEvaluation) {
+        this.roEvaluation = roEvaluation;
+
+    }
+
+    public RealmList<ROQuestionPalette> getRoQuestionPalette() {
+        return roQuestionPalette;
+    }
+
+    public void setRoQuestionPalette(RealmList<ROQuestionPalette> roQuestionPalette) {
+        this.roQuestionPalette = roQuestionPalette;
+
+    }
+
+    public String getExamScore() {
+        return examScore;
+    }
+
+    public void setExamScore(String examScore) {
+        this.examScore = examScore;
+    }
+
+
+    public ROExamSubmittor getRoExamSubmittor() {
+        return roExamSubmittor;
+    }
+
+    public void setRoExamSubmittor(ROExamSubmittor roExamSubmittor) {
+        this.roExamSubmittor = roExamSubmittor;
+    }
+
+
+    public ROExam getRoExam() {
+        return roExam;
+    }
+
+    public void setRoExam(ROExam roExam) {
+        this.roExam = roExam;
+    }
+
 }

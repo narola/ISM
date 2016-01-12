@@ -30,7 +30,7 @@ import com.ism.author.ws.model.Followers;
 import com.ism.author.ws.model.HashTags;
 import com.ism.author.ws.model.Message;
 import com.ism.author.ws.model.Notification;
-import com.ism.author.ws.model.Question;
+import com.ism.author.ws.model.AddEditQuestion;
 import com.ism.author.ws.model.QuestionComments;
 import com.ism.author.ws.model.Questions;
 import com.ism.author.ws.model.SettingPreferences;
@@ -116,7 +116,7 @@ public class ResponseHandler {
     private ArrayList<Courses> courses;
     private ArrayList<Questions> questions;
     private ArrayList<Questions> questionBank;
-    private ArrayList<Question> question;
+    private ArrayList<AddEditQuestion> question;
     private ArrayList<HashTags> tags;
     private ArrayList<BookData> authorBook;
     private ArrayList<Token> token;
@@ -367,11 +367,11 @@ public class ResponseHandler {
     }
 
     @JsonProperty("question")
-    public ArrayList<Question> getQuestion() {
+    public ArrayList<AddEditQuestion> getQuestion() {
         return this.question;
     }
 
-    public void setQuestion(ArrayList<Question> question) {
+    public void setQuestion(ArrayList<AddEditQuestion> question) {
         this.question = question;
     }
 

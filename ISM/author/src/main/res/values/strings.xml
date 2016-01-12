@@ -3,7 +3,7 @@
 
     <string name="app_name">ISM Author</string>
     <string name="hello_world">Hello world!</string>
-    <string name="strtest">test</string>
+    <string name="strtest"></string>
     <string name="action_settings">Settings</string>
     <string name="str_personal_info">PERSONAL INFORMATION</string>
     <string name="str_manage_credential">MANAGE CREDENTIAL</string>
@@ -65,6 +65,7 @@
     <string name="strnotanswered">Not Answered</string>
     <string name="strskipped">Skipped</string>
     <string name="strunasssessed">Unassessed</string>
+    <string name="strfinished">Finished</string>
     <string name="strassignmenttype">Assignment Type :</string>
     <string name="stravgscore">Avrage Score</string>
     <string name="strquestionscore">Question Score</string>

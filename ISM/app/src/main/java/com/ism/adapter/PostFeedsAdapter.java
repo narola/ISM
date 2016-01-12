@@ -114,14 +114,14 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             feedLiked = Integer.parseInt(arrListFeeds.get(position).getSelfLike());
             holder.llComments.removeAllViews();
 
-            if (arrListFeeds.get(position).getComments() != null) {
+            if (arrListFeeds.get(position).getRoFeedComment() != null) {
                 holder.txtViewAll.setVisibility(arrListFeeds.get(position).getTotalComment() > 2 ? View.VISIBLE : View.GONE);
-                int j = arrListFeeds.get(position).getComments().size() - 2;
+                int j = arrListFeeds.get(position).getRoFeedComment().size() - 2;
                 if (j < 0) {
                     j = 0;
                 }
-                for (int i = j; i < arrListFeeds.get(position).getComments().size(); i++) {
-                    holder.llComments.addView(getCommentView(arrListFeeds.get(position).getComments().get(i)));
+                for (int i = j; i < arrListFeeds.get(position).getRoFeedComment().size(); i++) {
+                    holder.llComments.addView(getCommentView(arrListFeeds.get(position).getRoFeedComment().get(i)));
                 }
             }
             holder.imgLike.setActivated(arrListFeeds.get(position).getSelfLike().equals("1"));
@@ -392,7 +392,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             ROFeedComment.setComment(attributeComments.getComment());
             ROFeedComment.setFeedCommentId(commentId);
             ROFeedComment.setCreatedDate(Utility.getDateMySql());
-            ROFeedComment.setFeed(ROFeeds);
+            ROFeedComment.setRoFeed(ROFeeds);
             studentHelper.saveComments(ROFeedComment);
             studentHelper.updateTotalComments(ROFeeds);
             arrListFeeds = studentHelper.getFeeds(-1, Integer.parseInt(Global.strUserId));
@@ -427,7 +427,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                     ROUser.setUserId(Integer.parseInt(comments.get(i).getCommentBy()));
                     studentHelper.saveUser(ROUser);
                     ROFeedComment.setCommentBy(ROUser);
-                    ROFeedComment.setFeed(ROFeeds);
+                    ROFeedComment.setRoFeed(ROFeeds);
                     ROFeedComment.setCreatedDate(Utility.getDateFormateMySql(comments.get(i).getCreatedDate()));
                     ROFeedComment.setComment(comments.get(i).getComment());
                     studentHelper.saveComments(ROFeedComment);

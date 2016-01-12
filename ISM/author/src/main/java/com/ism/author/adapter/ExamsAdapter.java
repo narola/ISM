@@ -81,7 +81,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
         try {
 
 
-            holder.tvExamBookName.setText(arrListROExams.get(position).getRoAuthorBook().getRoBooks().getBookName());
+            holder.tvExamBookName.setText(arrListROExams.get(position).getRoAuthorBook().getRoBook().getBookName());
             holder.tvExamName.setText(arrListROExams.get(position).getExamName());
 
             if (arrListROExams.get(position).getRoClassroom() != null) {
@@ -241,8 +241,8 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             getBundleArguments().putString(ARG_EXAM_CLASSROOM_NAME, "");
         }
 
-        getBundleArguments().putString(ARG_EXAM_BOOK_ID, String.valueOf(arrListROExams.get(position).getRoAuthorBook().getRoBooks().getBookId()));
-        getBundleArguments().putString(ARG_EXAM_BOOK_NAME, arrListROExams.get(position).getRoAuthorBook().getRoBooks().getBookName());
+        getBundleArguments().putString(ARG_EXAM_BOOK_ID, String.valueOf(arrListROExams.get(position).getRoAuthorBook().getRoBook().getBookId()));
+        getBundleArguments().putString(ARG_EXAM_BOOK_NAME, arrListROExams.get(position).getRoAuthorBook().getRoBook().getBookName());
         getBundleArguments().putString(ARG_EXAM_CATEGORY, arrListROExams.get(position).getExamCategory());
         getBundleArguments().putString(ARG_EXAM_MODE, arrListROExams.get(position).getExamMode());
         getBundleArguments().putString(ARG_EXAM_PASS_PERCENTAGE, arrListROExams.get(position).getPassPercentage());

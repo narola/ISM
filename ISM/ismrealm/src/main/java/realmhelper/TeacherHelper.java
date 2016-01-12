@@ -82,8 +82,8 @@ public class TeacherHelper {
      * @return
      */
 
-    public RealmResults<ClassPerformanceRealmModel> getAllClassPerformances() {
-        RealmQuery<ClassPerformanceRealmModel> query = realm.where(ClassPerformanceRealmModel.class);
+    public RealmResults<ROClassPerformance> getAllClassPerformances() {
+        RealmQuery<ROClassPerformance> query = realm.where(ROClassPerformance.class);
         return query.findAll();
     }
 }

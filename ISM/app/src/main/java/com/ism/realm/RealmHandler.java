@@ -71,7 +71,7 @@ public class RealmHandler {
                         ROFeedComment ROFeedComment = new ROFeedComment();
                         ROFeedComment.setFeedCommentId(Integer.parseInt(arrayListComment.get(j).getId()));
                         ROFeedComment.setComment(arrayListComment.get(j).getComment());
-                        ROFeedComment.setFeed(ROFeeds);
+                        ROFeedComment.setRoFeed(ROFeeds);
                         ROUser commentBy = studentHelper.getUser(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
                         if (commentBy == null) {
                             commentBy = new ROUser();
@@ -84,7 +84,7 @@ public class RealmHandler {
                         } else {
                             ROFeedComment.setCommentBy(commentBy);
                         }
-                        ROFeedComment.setFeed(ROFeeds);
+                        ROFeedComment.setRoFeed(ROFeeds);
                         ROFeedComment.setCreatedDate(Utility.getDateFormateMySql(arrayListComment.get(j).getCreatedDate()));
                         studentHelper.saveComments(ROFeedComment);
                         //feeds.getComments().add(feedComment);

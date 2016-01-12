@@ -95,13 +95,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         holder.llCommentInflater.removeAllViews();
 
-        if (arrListFeeds.get(position).getComments() != null) {
+        if (arrListFeeds.get(position).getRoFeedComment() != null) {
 
             holder.txtCommentViewAll.setVisibility(arrListFeeds.get(position).getTotalComment() > 0 ? View.VISIBLE : View.GONE);
             if (holder.llCommentInflater.getChildCount() == 0) {
-                for (int i = 0; i < arrListFeeds.get(position).getComments().size(); i++) {
+                for (int i = 0; i < arrListFeeds.get(position).getRoFeedComment().size(); i++) {
                     if (i <= 1) {
-                        View v = getCommetInflaterView(arrListFeeds.get(position).getComments().get(i));
+                        View v = getCommetInflaterView(arrListFeeds.get(position).getRoFeedComment().get(i));
                         holder.llCommentInflater.addView(v);
                     } else {
                         break;
@@ -182,12 +182,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             // holder.imgAudio.setVisibility(View.VISIBLE);
         }
         // images
-        if (arrListFeeds.get(position).getROFeedImages().size() != 0) {
+        if (arrListFeeds.get(position).getRoFeedImages().size() != 0) {
 
             // holder.imgImage.setVisibility(View.VISIBLE);
 
             RealmList<ROFeedImage> ROFeedImages = new RealmList<>();
-            ROFeedImages = arrListFeeds.get(position).getROFeedImages();
+            ROFeedImages = arrListFeeds.get(position).getRoFeedImages();
             for (int i = 0; i < ROFeedImages.size(); i++) {
                 Log.i(TAG, WebConstants.FEED_MEDIA_KINJAL + ROFeedImages.get(i).getImageLink() + "");
                 //  Global.imageLoader.displayImage(WebConstants.FEED_MEDIA_KINJAL + ROFeedImages.get(i).getImageLink(), holder.imgImage, ISMAuthor.options);
@@ -448,7 +448,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 commentBy.setFullName(Global.strFullName);
 
                 ROFeedComment.setCommentBy(commentBy);
-                ROFeedComment.setFeed(arrListFeeds.get(addCommentFeedPosition));
+                ROFeedComment.setRoFeed(arrListFeeds.get(addCommentFeedPosition));
 
                 authorHelper.addComment(arrListFeeds.get(addCommentFeedPosition).getFeedId(), ROFeedComment);
 

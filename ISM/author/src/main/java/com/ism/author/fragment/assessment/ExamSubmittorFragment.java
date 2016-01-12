@@ -17,15 +17,16 @@ import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.model.RealmDataModel;
 import com.ism.author.object.Global;
 import com.ism.author.utility.Debug;
 import com.ism.author.utility.Utility;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.Examsubmittor;
+import com.ism.author.ws.model.ExamSubmission;
 
-import java.util.ArrayList;
+import realmhelper.AuthorHelper;
 
 /**
  * Created by c166 on 10/11/15.
@@ -38,7 +39,8 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
     private RecyclerView rvExamSubmittorList;
     private ExamSubmittorAdapter examSubmittorAdapter;
     private FragmentListener fragListener;
-    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
+    private AuthorHelper authorHelper;
+    private RealmDataModel realmDataModel;
 
     public static ExamSubmittorFragment newInstance() {
         ExamSubmittorFragment examSubmittorFragment = new ExamSubmittorFragment();
@@ -58,6 +60,10 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
     }
 
     private void initGlobal() {
+
+        authorHelper = new AuthorHelper(getActivity());
+        realmDataModel = new RealmDataModel();
+
         tvSubmittorTitle = (TextView) view.findViewById(R.id.tv_submittor_title);
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         rvExamSubmittorList = (RecyclerView) view.findViewById(R.id.rv_exam_submittor_list);
@@ -92,7 +98,7 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            setUpData();
         }
     }
 
@@ -117,16 +123,15 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+
                     if (responseHandler.getExamSubmission().size() > 0) {
-                        arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
-                        examSubmittorAdapter.addAll(arrListExamSubmittor);
-                        examSubmittorAdapter.notifyDataSetChanged();
                         setEmptyView(false);
-
+                        addExamSubmission(responseHandler.getExamSubmission().get(0));
+                        setUpData();
                     } else {
-
                         setEmptyView(true);
                     }
+
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), getActivity());
@@ -136,6 +141,32 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseGetAllExamSubmission Exception : " + e.toString());
+        }
+    }
+
+
+    private void addExamSubmission(ExamSubmission examSubmission) {
+
+        if (examSubmission.getExamsubmittor().size() > 0) {
+
+            authorHelper.addExamSubmission(realmDataModel.getROExamSubmission(examSubmission, authorHelper));
+            /**
+             * here we update the examsubmission data in exams table.
+             */
+            authorHelper.updateExamSubmissionData(authorHelper.getExamSubmission(Integer.valueOf(examSubmission.getExamId())));
+        }
+    }
+
+    private void setUpData() {
+
+        if (authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))) != null) {
+            if (authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))).getRoExamSubmittors().size() > 0) {
+                setEmptyView(false);
+                examSubmittorAdapter.addAll(authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))).
+                        getRoExamSubmittors());
+            }
+        } else {
+            setEmptyView(true);
         }
     }
 
@@ -160,6 +191,7 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
             if (fragListener != null) {
                 fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
                 Debug.i(TAG, "detach");
+                authorHelper.realm.close();
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());

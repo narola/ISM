@@ -10,20 +10,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.utility.Debug;
-import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.StudentAttemptedAssignmentAdapter;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.model.RealmDataModel;
 import com.ism.author.object.Global;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.Examsubmittor;
+import com.ism.author.ws.model.ExamSubmission;
 
-import java.util.ArrayList;
+import realmhelper.AuthorHelper;
 
 /**
  * Created by c166 on 19/11/15.
@@ -33,21 +33,24 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
 
     private static final String TAG = StudentAttemptedAssignmentFragment.class.getSimpleName();
     private View view;
+    private AuthorHelper authorHelper;
+    private RealmDataModel realmDataModel;
 
     public static StudentAttemptedAssignmentFragment newInstance() {
+
         StudentAttemptedAssignmentFragment studentAttemptedAssignmentFragment = new StudentAttemptedAssignmentFragment();
         return studentAttemptedAssignmentFragment;
+
     }
 
     public StudentAttemptedAssignmentFragment() {
         // Required empty public constructor
     }
 
-    private MyTypeFace myTypeFace;
+
     private TextView tvTitleStudentattempted, tvNoDataMsg;
     private RecyclerView rvStudentattemptedList;
     private StudentAttemptedAssignmentAdapter studentAttemptedAssignmentAdapter;
-    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,9 +62,13 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
+        authorHelper = new AuthorHelper(getActivity());
+        realmDataModel = new RealmDataModel();
+
         tvTitleStudentattempted = (TextView) view.findViewById(R.id.tv_title_studentattempted);
+        tvTitleStudentattempted.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
+
         rvStudentattemptedList = (RecyclerView) view.findViewById(R.id.rv_studentattempted_list);
         studentAttemptedAssignmentAdapter = new StudentAttemptedAssignmentAdapter(getActivity());
         rvStudentattemptedList.setAdapter(studentAttemptedAssignmentAdapter);
@@ -78,6 +85,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
 
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
+
                 Attribute request = new Attribute();
                 request.setExamId(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 request.setUserId(Global.strUserId);
@@ -88,7 +96,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            setUpData();
         }
     }
 
@@ -117,13 +125,11 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
 
                     if (responseHandler.getExamSubmission().size() > 0) {
                         setEmptyView(false);
-                        arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
-                        studentAttemptedAssignmentAdapter.addAll(arrListExamSubmittor);
-                        studentAttemptedAssignmentAdapter.notifyDataSetChanged();
+                        addExamSubmission(responseHandler.getExamSubmission().get(0));
+                        setUpData();
                     } else {
                         setEmptyView(true);
                     }
-
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), getActivity());
@@ -133,6 +139,32 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseGetAllExamSubmission Exception : " + e.toString());
+        }
+    }
+
+
+    private void addExamSubmission(ExamSubmission examSubmission) {
+
+        if (examSubmission.getExamsubmittor().size() > 0) {
+
+            authorHelper.addExamSubmission(realmDataModel.getROExamSubmission(examSubmission, authorHelper));
+            /**
+             * here we update the examsubmission data in exams table.
+             */
+            authorHelper.updateExamSubmissionData(authorHelper.getExamSubmission(Integer.valueOf(examSubmission.getExamId())));
+        }
+    }
+
+    private void setUpData() {
+
+        if (authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))) != null) {
+            if (authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))).getRoExamSubmittors().size() > 0) {
+                setEmptyView(false);
+                studentAttemptedAssignmentAdapter.addAll(authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))).
+                        getRoExamSubmittors());
+            }
+        } else {
+            setEmptyView(true);
         }
     }
 

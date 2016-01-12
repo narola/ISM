@@ -177,7 +177,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                      * Position-2 because two static elements are added in the spinner in beginning
                      * so to fetch the first element from arraylist at index zero we are doing position-2
                      */
-                    filterAuthorBookWiseAssignments(String.valueOf(arrListROAuthorBooks.get(position - 2).getRoBooks().getBookId()));
+                    filterAuthorBookWiseAssignments(String.valueOf(arrListROAuthorBooks.get(position - 2).getRoBook().getBookId()));
                 } else {
                     clearFilters();
                 }
@@ -397,7 +397,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private void addAuthorBooks(ArrayList<BookData> arrListAuthorBooks) {
         if (arrListAuthorBooks.size() > 0) {
             for (BookData authorBook : arrListAuthorBooks) {
-                authorHelper.addAuthorBooks(realmDataModel.getRealmAuthorBook(authorBook, arrListAuthorBooks.indexOf(authorBook)));
+                authorHelper.addAuthorBooks(realmDataModel.getROAuthorBook(authorBook, arrListAuthorBooks.indexOf(authorBook)));
             }
         }
     }
@@ -406,7 +406,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
         if (arrListClassrooms.size() > 0) {
             for (Classrooms classroom : arrListClassrooms) {
-                authorHelper.addClassrooms(realmDataModel.getRealmClassroom(classroom));
+                authorHelper.addClassrooms(realmDataModel.getROClassroom(classroom));
             }
         }
 
@@ -417,7 +417,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
         if (arrListExams.size() > 0) {
             for (Exams exam : arrListExams) {
-                authorHelper.addExams(realmDataModel.getRealmExam(exam, authorHelper));
+                authorHelper.addExams(realmDataModel.getROExam(exam, authorHelper));
             }
         }
     }
@@ -440,7 +440,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
         authorBooks.add(getString(R.string.strbookname));
         authorBooks.add(getString(R.string.strall));
         for (ROAuthorBook ROAuthorBook : arrListROAuthorBooks) {
-            authorBooks.add(ROAuthorBook.getRoBooks().getBookName());
+            authorBooks.add(ROAuthorBook.getRoBook().getBookName());
 
         }
         Adapters.setUpSpinner(getActivity(), spExamAuthorBooks, authorBooks, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);

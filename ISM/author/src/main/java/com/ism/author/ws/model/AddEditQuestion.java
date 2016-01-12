@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Question {
+public class AddEditQuestion {
 
     private String questionId;
     private String hashtag;
@@ -28,7 +28,7 @@ public class Question {
         return hashtag;
     }
 
-    public Question setHashtag(String hashtag) {
+    public AddEditQuestion setHashtag(String hashtag) {
         this.hashtag = hashtag;
         return this;
     }

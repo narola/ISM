@@ -30,7 +30,7 @@
             android:layout_marginBottom="@dimen/d5dp"
             android:gravity="left|center"
             android:padding="@dimen/d5dp"
-            android:text="Question text"
+            android:text="Question"
             android:textAllCaps="false"
             android:textColor="@color/question_color"
             android:textSize="@dimen/d22sp" />
@@ -47,7 +47,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_questions_evaluation_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

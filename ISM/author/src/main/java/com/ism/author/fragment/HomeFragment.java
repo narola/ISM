@@ -233,7 +233,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
         if (arrayListFeeds.size() > 0) {
             for (Feeds feed : arrayListFeeds) {
-                authorHelper.addFeeds(realmDataModel.getRealmFeed(feed));
+                authorHelper.addFeeds(realmDataModel.getROFeeds(feed));
             }
         }
 

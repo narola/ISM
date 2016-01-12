@@ -2,6 +2,7 @@ package model;
 
 import java.util.Date;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -12,23 +13,30 @@ import io.realm.annotations.PrimaryKey;
  */
 public class ROQuestions extends RealmObject {
 
+
     @PrimaryKey
-    private  int questionId;
-    private String questionText;
+    private int questionId;
+    private ROUser questionCreator;
+    private ROExam roExam;
+    private String questionFormat;
     private String questionHint;
+    private String questionText;
     private String assetsLink;
     private String questionImageLink;
-    private String videoLink;
+    private String questionScore;
     private String evaluationNotes;
     private String solution;
+    private ROTopics roTopic;
+    private ROSubjects roSubject;
+    private ROClassrooms roClassroom;
+    private ROBooks roBook;
+    private RealmList<ROAnswerChoices> roAnswerChoices = new RealmList<ROAnswerChoices>();
+    private RealmList<ROTags> roTags = new RealmList<ROTags>();
+    private String roSpannedText;
+
+
+    private String videoLink;
     private int difficultyLevel;
-    private int questionScore;
-    private int questionFormat;
-    private ROUser questionCreator;
-    private ROTopics topic;
-    private ROSubjects subject;
-    private ROClassrooms classroom;
-    private ROBooks book;
     private Date createdDate;
     private Date modifiedDate;
 
@@ -105,19 +113,19 @@ public class ROQuestions extends RealmObject {
         this.difficultyLevel = difficultyLevel;
     }
 
-    public int getQuestionScore() {
+    public String getQuestionScore() {
         return questionScore;
     }
 
-    public void setQuestionScore(int questionScore) {
+    public void setQuestionScore(String questionScore) {
         this.questionScore = questionScore;
     }
 
-    public int getQuestionFormat() {
+    public String getQuestionFormat() {
         return questionFormat;
     }
 
-    public void setQuestionFormat(int questionFormat) {
+    public void setQuestionFormat(String questionFormat) {
         this.questionFormat = questionFormat;
     }
 
@@ -129,36 +137,36 @@ public class ROQuestions extends RealmObject {
         this.questionCreator = questionCreator;
     }
 
-    public ROTopics getTopic() {
-        return topic;
+    public ROTopics getRoTopic() {
+        return roTopic;
     }
 
-    public void setTopic(ROTopics topic) {
-        this.topic = topic;
+    public void setRoTopic(ROTopics roTopic) {
+        this.roTopic = roTopic;
     }
 
-    public ROSubjects getSubject() {
-        return subject;
+    public ROSubjects getRoSubject() {
+        return roSubject;
     }
 
-    public void setSubject(ROSubjects subject) {
-        this.subject = subject;
+    public void setRoSubject(ROSubjects roSubject) {
+        this.roSubject = roSubject;
     }
 
-    public ROClassrooms getClassroom() {
-        return classroom;
+    public ROClassrooms getRoClassroom() {
+        return roClassroom;
     }
 
-    public void setClassroom(ROClassrooms classroom) {
-        this.classroom = classroom;
+    public void setRoClassroom(ROClassrooms roClassroom) {
+        this.roClassroom = roClassroom;
     }
 
-    public ROBooks getBook() {
-        return book;
+    public ROBooks getRoBook() {
+        return roBook;
     }
 
-    public void setBook(ROBooks book) {
-        this.book = book;
+    public void setRoBook(ROBooks roBook) {
+        this.roBook = roBook;
     }
 
     public Date getCreatedDate() {
@@ -176,4 +184,40 @@ public class ROQuestions extends RealmObject {
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
+
+    public ROExam getRoExam() {
+        return roExam;
+    }
+
+    public void setRoExam(ROExam roExam) {
+        this.roExam = roExam;
+    }
+
+    public RealmList<ROAnswerChoices> getRoAnswerChoices() {
+        return roAnswerChoices;
+    }
+
+    public void setRoAnswerChoices(RealmList<ROAnswerChoices> roAnswerChoices) {
+        this.roAnswerChoices = roAnswerChoices;
+
+    }
+
+    public RealmList<ROTags> getRoTags() {
+        return roTags;
+    }
+
+    public void setRoTags(RealmList<ROTags> roTags) {
+        this.roTags = roTags;
+    }
+
+    public String getRoSpannedText() {
+        return roSpannedText;
+    }
+
+    public void setRoSpannedText(String roSpannedText) {
+        this.roSpannedText = roSpannedText;
+
+    }
+
+
 }

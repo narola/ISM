@@ -1,7 +1,12 @@
 package model.authormodel;
 
+import java.util.Date;
+
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import model.ROExam;
+import model.ROStudentExamEvaluation;
 
 /**
  * Created by c166 on 08/01/16.
@@ -16,8 +21,12 @@ public class ROExamSubmittor extends RealmObject {
     private String studentClassName;
     private String evaluationScore;
     private String examStatus;
-    private String submissionDate;
+    private Date submissionDate;
     private String remarks;
+
+    private RealmList<ROExam> roExams = new RealmList<ROExam>();
+    private RealmList<ROStudentExamEvaluation> roStudentExamEvaluations = new RealmList<ROStudentExamEvaluation>();
+
 
     public int getStudentId() {
         return studentId;
@@ -77,11 +86,11 @@ public class ROExamSubmittor extends RealmObject {
         this.examStatus = examStatus;
     }
 
-    public String getSubmissionDate() {
+    public Date getSubmissionDate() {
         return submissionDate;
     }
 
-    public void setSubmissionDate(String submissionDate) {
+    public void setSubmissionDate(Date submissionDate) {
         this.submissionDate = submissionDate;
     }
 
@@ -91,6 +100,24 @@ public class ROExamSubmittor extends RealmObject {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public RealmList<ROExam> getRoExams() {
+        return roExams;
+    }
+
+    public void setRoExams(RealmList<ROExam> roExams) {
+        this.roExams = roExams;
+    }
+
+
+    public RealmList<ROStudentExamEvaluation> getRoStudentExamEvaluations() {
+        return roStudentExamEvaluations;
+    }
+
+    public ROExamSubmittor setRoStudentExamEvaluations(RealmList<ROStudentExamEvaluation> roStudentExamEvaluations) {
+        this.roStudentExamEvaluations = roStudentExamEvaluations;
+        return this;
     }
 
 

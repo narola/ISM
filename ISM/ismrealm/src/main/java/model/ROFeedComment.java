@@ -16,7 +16,7 @@ public class ROFeedComment extends RealmObject {
     private int feedCommentId;
     private ROUser commentBy;
     private String comment;
-    private ROFeeds feed;
+    private ROFeeds roFeed;
     private Date createdDate;
     private Date modifiedDate;
 
@@ -44,12 +44,12 @@ public class ROFeedComment extends RealmObject {
         this.comment = comment;
     }
 
-    public ROFeeds getFeed() {
-        return feed;
+    public ROFeeds getRoFeed() {
+        return roFeed;
     }
 
-    public void setFeed(ROFeeds feed) {
-        this.feed = feed;
+    public void setRoFeed(ROFeeds roFeed) {
+        this.roFeed = roFeed;
     }
 
     public Date getCreatedDate() {
