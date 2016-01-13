@@ -272,6 +272,9 @@ public class WebserviceWrapper {
                             case WebConstants.ALLOCATE_TEACHER_TO_GROUP:
                                 responseObject = new WebserviceConnector(WebConstants.URL_ALLOCATE_TEACHER_TO_GROUP).execute(ResponseHandler.class, attribute);
                                 break;
+                            case WebConstants.GET_SUNDAY_EXAM_QUESTION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_SUNDAY_EXAM_QUESTION).execute(ResponseHandler.class, attribute);
+                                break;
                         }
                     }
                 }

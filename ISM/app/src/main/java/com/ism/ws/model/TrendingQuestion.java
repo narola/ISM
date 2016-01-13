@@ -25,6 +25,7 @@ public class TrendingQuestion {
     private String followerCount;
     private String answerText;
     private Spanned span = null;
+    private String isFollowed;
 
 
     @JsonProperty("question_text")
@@ -120,4 +121,11 @@ public class TrendingQuestion {
     }
 
 
+    public String getIsFollowed() {
+        return isFollowed;
+    }
+
+    public void setIsFollowed(String isFollowed) {
+        this.isFollowed = isFollowed;
+    }
 }

@@ -18,9 +18,12 @@ import model.RONotes;
 import model.ROSchool;
 import model.ROStudentProfile;
 import model.ROSubjects;
+import model.ROTrendingQuestion;
 import model.ROTutorialGroupDiscussion;
 import model.ROTutorialTopic;
 import model.ROUser;
+import model.ROTrendingQuestionComment;
+import model.ROTrendingQuestionFollower;
 
 /**
  * Created by c161 on 08/12/15.
@@ -32,6 +35,9 @@ public class StudentHelper {
     public Realm realm;
     private RealmResults<ROFeeds> ROFeedsRealmResults;
     private RealmResults<RONotes> RONotesRealmResults;
+    private RealmResults<ROTrendingQuestion> ROTrendingQuestionRealmResults;
+    private ROTrendingQuestionFollower ROTrendingQuestionFollowerResults;
+    private ROTrendingQuestion ROTrendingQuestion;
 
     public StudentHelper(Context context) {
         realm = RealmAdaptor.getInstance(context);
@@ -375,8 +381,8 @@ public class StudentHelper {
                     RONotesRealmResults = realm.where(RONotes.class).equalTo("user.userId", userId).findAll();
                 }
             });
-            Log.e(TAG, "getNotes notesRealmResults.size: " + RONotesRealmResults.size());
-            Log.e(TAG, "getNotes notesRealmResults : " + RONotesRealmResults);
+           // Log.e(TAG, "getNotes notesRealmResults.size: " + RONotesRealmResults.size());
+          //  Log.e(TAG, "getNotes notesRealmResults : " + RONotesRealmResults);
         } catch (Exception e) {
             Log.e(TAG, "getNotes Exception : " + e.getLocalizedMessage());
         }
@@ -447,7 +453,6 @@ public class StudentHelper {
 
     /**
      * save school
-     *
      * @param ROSchool
      */
     public void saveSchool(ROSchool ROSchool) {
@@ -490,5 +495,90 @@ public class StudentHelper {
         } catch (Exception e) {
             Log.e(TAG, " saveCourse Exceptions : " + e.getLocalizedMessage());
         }
+    }
+
+    /**
+     * @param ROTrendingQuestion
+     */
+    public void saveTrendingQuestion(ROTrendingQuestion ROTrendingQuestion) {
+
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(ROTrendingQuestion);
+        realm.commitTransaction();
+    }
+
+    /**
+     * @param questionFollower
+     */
+    public void saveTrendingQuestionFolloer(ROTrendingQuestionFollower questionFollower) {
+
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(questionFollower);
+        realm.commitTransaction();
+    }
+
+    public ROTrendingQuestion getTrendingQuestion(final String trendingQuestionId) {
+
+        try {
+            realm.beginTransaction();
+            ROTrendingQuestion = realm.where(ROTrendingQuestion.class).equalTo("trendingId", Integer.parseInt(trendingQuestionId)).findFirst();
+            realm.commitTransaction();
+            return ROTrendingQuestion;
+        } catch (Exception e) {
+            Log.e(TAG, "getROTrendingQuestion Exception : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public RealmResults<ROTrendingQuestion> getTrendingQuestionResult(final String authorId, boolean isForWeek) {
+
+        try {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    ROTrendingQuestionRealmResults
+                            = realm.where(ROTrendingQuestion.class).equalTo("questionFor.userId", Integer.parseInt(authorId)).findAll();
+                }
+            });
+            return ROTrendingQuestionRealmResults;
+        } catch (Exception e) {
+            Log.e(TAG, "getTrendingQuestionResult Exception : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public ROTrendingQuestionFollower getTrendingQuestionFollower(final String trendingId, final String userId) {
+        try {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    ROTrendingQuestionFollowerResults = realm.where(ROTrendingQuestionFollower.class).equalTo("ROTrendingQuestion.trendingId", Integer.parseInt(trendingId)).equalTo("followerBy.userId", Integer.parseInt(userId)).findFirst();
+                }
+            });
+            return ROTrendingQuestionFollowerResults;
+        } catch (Exception e) {
+            Log.e(TAG, "getTrendingQuestionFollower Exception : " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public void removeTrendingQuestionFollower(final int questionFollowerId) {
+        try {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.where(ROTrendingQuestionFollower.class).equalTo("questionFollowerId", questionFollowerId).findFirst().removeFromRealm();
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "getTrendingQuestionFollower Exception : " + e.getLocalizedMessage());
+        }
+
+    }
+
+    public void saveTrendingQuestionComment(ROTrendingQuestionComment questionComment) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(questionComment);
+        realm.commitTransaction();
     }
 }

@@ -1,4 +1,4 @@
-package com.ism.fragment.TutorialGroup;
+package com.ism.fragment.tutorialGroup;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;

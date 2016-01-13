@@ -6,6 +6,7 @@
              tools:context="com.ism.fragment.tutorialGroup.SundayExamFragment">
 
     <TextView
+	    android:id="@+id/txt_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blue"
@@ -123,6 +124,7 @@
 			</LinearLayout>
 
 			<View
+				android:id="@+id/view_cover1"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 			    android:background="@color/black_transperant"
@@ -140,7 +142,6 @@
 				android:layout_height="wrap_content"
 				android:background="@color/green"
 				android:textSize="@dimen/sp13"
-				android:text="Question - 1"
 				android:paddingBottom="@dimen/dp1"
 				android:paddingLeft="@dimen/dp10"
 				android:textColor="@android:color/white"/>
@@ -158,23 +159,49 @@
 					android:layout_height="wrap_content"
 					android:orientation="vertical">
 
-					<TextView
-						android:id="@+id/txt_question"
+					<RelativeLayout
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:layout_margin="@dimen/dp8"
-						android:background="@drawable/bg_question"
-						android:gravity="center"
-						android:paddingLeft="@dimen/dp23"
-						android:paddingRight="@dimen/dp23"
-						android:text="When parallel elements meet, which reaction occurs?\nline 2\nQuestion line 3\n\n\n\nHello"
-						android:textSize="@dimen/sp15"/>
+						android:padding="@dimen/dp20"
+						android:background="@drawable/bg_question">
+
+						<com.ism.views.CircleImageView
+							android:id="@+id/img_dp_admin"
+							android:layout_width="@dimen/dp_size_list_notification"
+							android:layout_height="@dimen/dp_size_list_notification"
+							android:src="@drawable/img_no_cover_available"/>
+
+						<TextView
+							android:id="@+id/txt_name_admin"
+							android:layout_width="@dimen/dp_size_list_notification"
+							android:layout_height="wrap_content"
+							android:layout_below="@id/img_dp_admin"
+							android:layout_marginTop="@dimen/dp5"
+							android:gravity="center"
+							android:textColor="@color/bg_app_dark"
+							android:textSize="@dimen/text_sunday_member_name"
+							android:text="@string/admin"/>
+
+						<TextView
+							android:id="@+id/txt_question"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_margin="@dimen/dp8"
+							android:layout_toRightOf="@id/img_dp_admin"
+							android:gravity="center"
+							android:paddingLeft="@dimen/dp23"
+							android:paddingRight="@dimen/dp23"
+							android:text="When parallel elements meet, which reaction occurs?\nline 2\nQuestion line 3\n\n\n\nHello"
+							android:textSize="@dimen/sp15"
+							android:textColor="@color/bg_app_dark"/>
+					</RelativeLayout>
 
 					<TextView
+						android:id="@+id/txt_options"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginLeft="@dimen/dp23"
-						android:text="Options:"
+						android:text="@string/options_lable"
 						android:textSize="@dimen/sp14"
 						android:textStyle="bold"/>
 
@@ -241,7 +268,7 @@
 				<com.ism.views.CircleImageView
 					android:id="@+id/img_dp_member1"
 					android:layout_width="@dimen/width_sunday_member_view"
-					android:layout_height="@dimen/dp_size_list_small"
+					android:layout_height="@dimen/dp_size_sunday_exam"
 					android:src="@drawable/img_no_cover_available"/>
 
 				<TextView
@@ -249,80 +276,111 @@
 					android:layout_width="@dimen/width_sunday_member_view"
 					android:layout_height="wrap_content"
 					android:layout_below="@id/img_dp_member1"
-					android:layout_marginTop="@dimen/dp3"
+					android:layout_marginTop="@dimen/dp5"
 					android:gravity="center"
 					android:textColor="@color/bg_app_dark"
-					android:textSize="@dimen/sp15"
+					android:textSize="@dimen/text_sunday_member_name"
 					android:text="Adam"/>
 
 				<com.ism.views.CircleImageView
 					android:id="@+id/img_dp_member2"
 					android:layout_width="@dimen/width_sunday_member_view"
-					android:layout_height="@dimen/dp_size_list_small"
+					android:layout_height="@dimen/dp_size_sunday_exam"
+					android:layout_toRightOf="@id/img_dp_member1"
 					android:src="@drawable/img_no_cover_available"/>
 
 				<TextView
 					android:id="@+id/txt_name_member2"
 					android:layout_width="@dimen/width_sunday_member_view"
 					android:layout_height="wrap_content"
-					android:layout_below="@id/img_dp_member1"
+					android:layout_below="@id/img_dp_member2"
+					android:layout_toRightOf="@id/txt_name_member1"
 					android:layout_marginTop="@dimen/dp3"
 					android:gravity="center"
 					android:textColor="@color/bg_app_dark"
-					android:textSize="@dimen/sp15"
+					android:textSize="@dimen/text_sunday_member_name"
 					android:text="Adam"/>
 
 				<com.ism.views.CircleImageView
 					android:id="@+id/img_dp_member3"
 					android:layout_width="@dimen/width_sunday_member_view"
-					android:layout_height="@dimen/dp_size_list_small"
+					android:layout_height="@dimen/dp_size_sunday_exam"
+					android:layout_toRightOf="@id/img_dp_member2"
 					android:src="@drawable/img_no_cover_available"/>
 
 				<TextView
 					android:id="@+id/txt_name_member3"
 					android:layout_width="@dimen/width_sunday_member_view"
 					android:layout_height="wrap_content"
-					android:layout_below="@id/img_dp_member1"
+					android:layout_below="@id/img_dp_member3"
+					android:layout_toRightOf="@id/txt_name_member2"
 					android:layout_marginTop="@dimen/dp3"
 					android:gravity="center"
 					android:textColor="@color/bg_app_dark"
-					android:textSize="@dimen/sp15"
+					android:textSize="@dimen/text_sunday_member_name"
 					android:text="Adam"/>
 
 				<com.ism.views.CircleImageView
 					android:id="@+id/img_dp_member4"
 					android:layout_width="@dimen/width_sunday_member_view"
-					android:layout_height="@dimen/dp_size_list_small"
+					android:layout_height="@dimen/dp_size_sunday_exam"
+					android:layout_toRightOf="@id/img_dp_member3"
 					android:src="@drawable/img_no_cover_available"/>
 
 				<TextView
 					android:id="@+id/txt_name_member4"
 					android:layout_width="@dimen/width_sunday_member_view"
 					android:layout_height="wrap_content"
-					android:layout_below="@id/img_dp_member1"
+					android:layout_below="@id/img_dp_member4"
+					android:layout_toRightOf="@id/txt_name_member3"
 					android:layout_marginTop="@dimen/dp3"
 					android:gravity="center"
 					android:textColor="@color/bg_app_dark"
-					android:textSize="@dimen/sp15"
+					android:textSize="@dimen/text_sunday_member_name"
 					android:text="Adam"/>
 
 				<com.ism.views.CircleImageView
 					android:id="@+id/img_dp_member5"
 					android:layout_width="@dimen/width_sunday_member_view"
-					android:layout_height="@dimen/dp_size_list_small"
+					android:layout_height="@dimen/dp_size_sunday_exam"
+					android:layout_toRightOf="@id/img_dp_member4"
 					android:src="@drawable/img_no_cover_available"/>
 
 				<TextView
 					android:id="@+id/txt_name_member5"
 					android:layout_width="@dimen/width_sunday_member_view"
 					android:layout_height="wrap_content"
-					android:layout_below="@id/img_dp_member1"
+					android:layout_below="@id/img_dp_member5"
+					android:layout_toRightOf="@id/txt_name_member4"
 					android:layout_marginTop="@dimen/dp3"
 					android:gravity="center"
 					android:textColor="@color/bg_app_dark"
-					android:textSize="@dimen/sp15"
+					android:textSize="@dimen/text_sunday_member_name"
 					android:text="Adam"/>
 
+				<Button
+					android:id="@+id/btn_agree"
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/btn_height_sunday_exam"
+					android:layout_marginBottom="@dimen/dp5"
+					android:layout_toRightOf="@id/img_dp_member5"
+					android:text="@string/agree"
+					android:textSize="@dimen/sp14"
+					android:background="@drawable/bg_button_green"
+					android:visibility="gone"
+					android:textColor="@color/white"/>
+
+				<Button
+					android:id="@+id/btn_disagree"
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/btn_height_sunday_exam"
+					android:layout_toRightOf="@id/img_dp_member5"
+					android:layout_below="@id/btn_agree"
+					android:text="@string/disagree"
+					android:textSize="@dimen/sp14"
+					android:background="@drawable/bg_button_red"
+					android:visibility="gone"
+					android:textColor="@color/white"/>
 			</RelativeLayout>
 
 			<TextView
@@ -350,6 +408,7 @@
 				android:text="@string/title_finalize_answer"/>
 
 			<View
+				android:id="@+id/view_cover2"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:background="@color/black_transperant"

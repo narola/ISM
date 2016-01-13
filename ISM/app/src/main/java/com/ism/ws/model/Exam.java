@@ -11,13 +11,13 @@ import java.util.ArrayList;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FridayExam {
+public class Exam {
 	
     private String createdDate;
     private String id;
     private String className;
     private String examName;
-    private ArrayList<FridayExamQuestion> fridayExamQuestions;
+    private ArrayList<ExamQuestion> examQuestions;
     private String bookName;
     private String instruction;
 
@@ -58,12 +58,12 @@ public class FridayExam {
     }
 
     @JsonProperty("questions")
-    public ArrayList<FridayExamQuestion> getQuestions() {
-        return this.fridayExamQuestions;
+    public ArrayList<ExamQuestion> getQuestions() {
+        return this.examQuestions;
     }
 
-    public void setQuestions(ArrayList<FridayExamQuestion> questions) {
-        this.fridayExamQuestions = questions;
+    public void setQuestions(ArrayList<ExamQuestion> questions) {
+        this.examQuestions = questions;
     }
 
     @JsonProperty("book_name")

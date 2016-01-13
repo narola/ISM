@@ -149,11 +149,14 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
 
         if (examSubmission.getExamsubmittor().size() > 0) {
 
-            authorHelper.addExamSubmission(realmDataModel.getROExamSubmission(examSubmission, authorHelper));
+
+//            authorHelper.addExamSubmission(realmDataModel.getROExamSubmission(examSubmission, authorHelper));
             /**
              * here we update the examsubmission data in exams table.
              */
-            authorHelper.updateExamSubmissionData(authorHelper.getExamSubmission(Integer.valueOf(examSubmission.getExamId())));
+//            authorHelper.updateExamSubmissionData(authorHelper.getExamSubmission(Integer.valueOf(examSubmission.getExamId())));
+            
+            authorHelper.updateExamSubmissionData(realmDataModel.getROExamSubmission(examSubmission, authorHelper));
         }
     }
 

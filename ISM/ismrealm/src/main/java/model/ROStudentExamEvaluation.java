@@ -15,7 +15,7 @@ import model.authormodel.ROExamSubmittor;
 public class ROStudentExamEvaluation extends RealmObject {
 
     @PrimaryKey
-    private int evaluationId;//This is the examID.
+    private int studentExamEvaluationId;
     private String examScore;
     private ROExam roExam;
     private ROExamSubmittor roExamSubmittor;
@@ -32,12 +32,12 @@ public class ROStudentExamEvaluation extends RealmObject {
     private Date createdDate;
     private Date modifiedDate;
 
-    public int getEvaluationId() {
-        return evaluationId;
+    public int getStudentExamEvaluationId() {
+        return studentExamEvaluationId;
     }
 
-    public void setEvaluationId(int evaluationId) {
-        this.evaluationId = evaluationId;
+    public void setStudentExamEvaluationId(int studentExamEvaluationId) {
+        this.studentExamEvaluationId = studentExamEvaluationId;
     }
 
     public ROExamSchedule getRoExamSchedule() {

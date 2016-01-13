@@ -115,9 +115,8 @@ public class ROExamSubmittor extends RealmObject {
         return roStudentExamEvaluations;
     }
 
-    public ROExamSubmittor setRoStudentExamEvaluations(RealmList<ROStudentExamEvaluation> roStudentExamEvaluations) {
+    public void setRoStudentExamEvaluations(RealmList<ROStudentExamEvaluation> roStudentExamEvaluations) {
         this.roStudentExamEvaluations = roStudentExamEvaluations;
-        return this;
     }
 
 

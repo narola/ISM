@@ -2,6 +2,7 @@ package model;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import model.authormodel.ROExamSubmittor;
 
 /**
  * Created by c166 on 12/01/16.
@@ -10,17 +11,19 @@ public class ROQuestionPalette extends RealmObject {
 
 
     @PrimaryKey
-    private int evaluationId;
+    private int questionPaletteId;
     private String value;
+    private ROQuestions roQuestion;
+    private ROExamSubmittor roExamSubmittor;
     private ROStudentExamEvaluation roStudentExamEvaluation;
 
 
-    public int getEvaluationId() {
-        return evaluationId;
+    public int getQuestionPaletteId() {
+        return questionPaletteId;
     }
 
-    public void setEvaluationId(int evaluationId) {
-        this.evaluationId = evaluationId;
+    public void setQuestionPaletteId(int questionPaletteId) {
+        this.questionPaletteId = questionPaletteId;
     }
 
     public String getValue() {
@@ -40,5 +43,20 @@ public class ROQuestionPalette extends RealmObject {
 
     }
 
+    public ROQuestions getRoQuestion() {
+        return roQuestion;
+    }
 
+    public void setRoQuestion(ROQuestions roQuestion) {
+        this.roQuestion = roQuestion;
+    }
+
+
+    public ROExamSubmittor getRoExamSubmittor() {
+        return roExamSubmittor;
+    }
+
+    public void setRoExamSubmittor(ROExamSubmittor roExamSubmittor) {
+        this.roExamSubmittor = roExamSubmittor;
+    }
 }

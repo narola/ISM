@@ -243,6 +243,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                 if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     if (responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions().size() > 0) {
+
                         setEmptyView(false);
                         addExamQuestions(responseObjGetAllExamQuestions.getExamQuestions().get(0));
                         setUpExamQuestionsData();
@@ -250,7 +251,6 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                         if (getBundleArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                             loadStudentEvaluationData();
                         }
-
 
                     } else {
                         setEmptyView(true);
@@ -276,15 +276,11 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                     rvGetObjectiveAssignmentQuestionslist.scrollToPosition(0);
 
                     if (responseHandler.getExamEvaluation().get(0).getEvaluation() != null) {
-
                         if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() > 0) {
-
                             addEvaluationData(responseHandler.getExamEvaluation().get(0));
                             setUpEvaluationData();
                         }
-
                     } else {
-
                         Utility.showToast(getResources().getString(R.string.msg_no_user_evaluation), getActivity());
                         objectiveAssignmentQuestionsAdapter.setEvaluationData(null);
                     }
@@ -304,8 +300,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
     private void addExamQuestions(ExamQuestions examQuestions) {
 
         if (examQuestions.getQuestions().size() > 0) {
-            authorHelper.addExamQuestions(realmDataModel.getROExamQuestions(examQuestions, authorHelper));
-            authorHelper.updateExamQuestionsData(authorHelper.getExamQuestions(Integer.valueOf(examQuestions.getId())));
+            authorHelper.updateExamQuestionsData(realmDataModel.getROExamQuestions(examQuestions, authorHelper));
         }
     }
 
@@ -323,21 +318,34 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
 
     private void addEvaluationData(ExamEvaluation examEvaluation) {
 
-        authorHelper.addStudentExamEvaluation(realmDataModel.getROStudentExamEvaluation(examEvaluation,
-                Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID)), authorHelper));
+
+//        authorHelper.addStudentExamEvaluation(realmDataModel.getROStudentExamEvaluation(examEvaluation,
+//                Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID)), authorHelper));
+//
+//        authorHelper.updateExamSubmittorData(Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID)),
+//                authorHelper.getStudentExamEvaluation(Integer.valueOf(examEvaluation.getExamId()),
+//                        Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID))));
+
+
+        authorHelper.updateExamSubmittorData(Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID)),
+                realmDataModel.getROStudentExamEvaluation(examEvaluation,
+                        Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID)), authorHelper));
 
     }
 
 
     private void setUpEvaluationData() {
 
-        if (authorHelper.getStudentExamEvaluation(
+        if (authorHelper.getStudentExamEvaluation(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID)),
                 Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID))) != null) {
-            objectiveAssignmentQuestionsAdapter.setEvaluationData(authorHelper.getStudentExamEvaluation(
+
+            objectiveAssignmentQuestionsAdapter.setEvaluationData(authorHelper.getStudentExamEvaluation(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID)),
                     Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID))).getRoEvaluation());
         } else {
+
             objectiveAssignmentQuestionsAdapter.setEvaluationData(null);
             Utility.showToast(getResources().getString(R.string.msg_no_user_evaluation), getActivity());
+
         }
 
     }

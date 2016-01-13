@@ -17,15 +17,15 @@ import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.fragment.myAuthor.goTrending.GoTrendingFragment;
 import com.ism.object.Global;
+import com.ism.realm.RealmHandler;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Assignment;
-import com.ism.ws.model.TrendingQuestion;
 
-import java.util.ArrayList;
+import io.realm.RealmResults;
+import model.ROTrendingQuestion;
 
 /**
  * Created by c162 on 01/01/16.
@@ -35,19 +35,20 @@ public class SendQuestionToAuthorAdapter extends RecyclerView.Adapter<SendQuesti
 
     private static final String TAG = SendQuestionToAuthorAdapter.class.getSimpleName();
     private final Context mContext;
-    private final ArrayList<TrendingQuestion> arrayList;
+    private final RealmResults<ROTrendingQuestion> arrayList;
+    private final RealmHandler realmHandler;
     private GoTrendingFragment fragment;
     private Fragment mFragment;
-    private ArrayList<Assignment> arrListBookAssignment = new ArrayList<Assignment>();
     private LayoutInflater inflater;
     private int totalQuestions = 5;
 
-    public SendQuestionToAuthorAdapter(Fragment mFragment, Context mContext, ArrayList<TrendingQuestion> arrayList) {
+    public SendQuestionToAuthorAdapter(Fragment mFragment, Context mContext, RealmResults<ROTrendingQuestion> arrayList) {
         this.mFragment = mFragment;
         this.mContext = mContext;
         this.arrayList = arrayList;
         this.inflater = LayoutInflater.from(mContext);
         fragment = GoTrendingFragment.newInstance();
+        realmHandler=new RealmHandler(mContext);
     }
 
 
@@ -61,17 +62,21 @@ public class SendQuestionToAuthorAdapter extends RecyclerView.Adapter<SendQuesti
 
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         try {
             if (position < totalQuestions) {
                 Utility.showView(holder.rrQuestion);
                 Utility.hideView(holder.rrSubmit);
                 holder.txtQuestion.setText(arrayList.get(position).getQuestionText());
-                holder.txtUserName.setText(arrayList.get(position).getPostedByUsername());
+                holder.txtUserName.setText(arrayList.get(position).getQuestionBy().getFullName());
                 holder.txtQuestionNo.setText(String.valueOf(position + 1));
-                holder.txtTotalFollowing.setText(arrayList.get(position).getFollowerCount());
-                Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrayList.get(position).getPostedByPic(), holder.imgUserPic, ISMStudent.options);
+                holder.txtTotalFollowing.setText(String.valueOf(arrayList.get(position).getFollowerCount()));
+                if(arrayList.get(position).getIsFollowed()==1)
+                holder.txtFollowQuestion.setText(R.string.strUnFollowQuestion);
+                else
+                    holder.txtFollowQuestion.setText(R.string.strFollowQuestion);
+                Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrayList.get(position).getQuestionBy().getProfilePicture(), holder.imgUserPic, ISMStudent.options);
             } else {
                 Utility.hideView(holder.rrQuestion);
                 Utility.showView(holder.rrSubmit);
@@ -81,7 +86,13 @@ public class SendQuestionToAuthorAdapter extends RecyclerView.Adapter<SendQuesti
             holder.txtFollowQuestion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    callApiForFollowQuestion(arrayList.get(position).getTrendingId());
+
+                    realmHandler.updateFollowedStatus(String.valueOf(arrayList.get(position).getTrendingId()));
+                    if(arrayList.get(position).getIsFollowed()==0)
+                        holder.txtFollowQuestion.setText(R.string.strUnFollowQuestion);
+                    else
+                        holder.txtFollowQuestion.setText(R.string.strFollowQuestion);
+                    callApiForFollowQuestion(String.valueOf(arrayList.get(position).getTrendingId()));
                 }
             });
         } catch (Exception e) {
@@ -90,6 +101,8 @@ public class SendQuestionToAuthorAdapter extends RecyclerView.Adapter<SendQuesti
     }
 
     private void callApiForFollowQuestion(String trendingId) {
+       // realmHandler.saveTrendingQuestionFollow(trendingId,Global.strUserId);
+//        realmHandler.updateFollowedStatus(trendingId);
         if (Utility.isConnected(mContext)) {
             try {
                 ((HostActivity)mContext).showProgress();
@@ -137,6 +150,7 @@ public class SendQuestionToAuthorAdapter extends RecyclerView.Adapter<SendQuesti
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     //update value for follow_question
+
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Debug.i(TAG, "onResponseFollowQuestion : " + WebConstants.FAILED);
                 }

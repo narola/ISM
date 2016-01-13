@@ -226,7 +226,6 @@ public class RealmDataModel {
         ROExamQuestions roExamQuestions = authorHelper.getExamQuestions(Integer.valueOf(exams.getExamId()));
         roExam.setExamQuestions(roExamQuestions);
 
-
         return roExam;
     }
 
@@ -239,6 +238,13 @@ public class RealmDataModel {
      */
     public ROExamSubmission getROExamSubmission(ExamSubmission examSubmission, AuthorHelper authorHelper) {
 
+//        authorHelper.realm.beginTransaction();
+//        ROExamSubmission roExamSubmission = authorHelper.realm.createObject(ROExamSubmission.class);
+//        roExamSubmission.setExamId(Integer.valueOf(examSubmission.getExamId()));
+//        authorHelper.realm.commitTransaction();
+//        return roExamSubmission;
+
+        authorHelper.realm.beginTransaction();
         ROExamSubmission roExamSubmission = new ROExamSubmission();
         roExamSubmission.setExamId(Integer.valueOf(examSubmission.getExamId()));
 
@@ -258,7 +264,6 @@ public class RealmDataModel {
             roExamSubmittor.setSubmissionDate(Utility.getRealmDateFormat(examsubmittor.getSubmissionDate()));
             roExamSubmittor.setRemarks(examsubmittor.getRemarks());
 
-
             /**
              * this is to check that exam is added or not for the student.
              */
@@ -271,16 +276,18 @@ public class RealmDataModel {
                 }
             }
 
-
-//            if (authorHelper.getStudentExamEvaluation(Integer.valueOf(examSubmission.getExamId()), Integer.valueOf(examsubmittor.getStudentId())) != null) {
-//
-//                roExamSubmittor.getRoStudentExamEvaluations().addAll();
-//            }
+            if (authorHelper.getListOfStudentEvaluations(roExamSubmittor.getStudentId()) != null) {
+                roExamSubmittor.getRoStudentExamEvaluations().addAll(authorHelper.getListOfStudentEvaluations(roExamSubmittor.getStudentId()));
+            }
 
 
+            roExamSubmittor.getRoStudentExamEvaluations().addAll(authorHelper.getListOfStudentEvaluations(roExamSubmittor.getStudentId()));
             roExamSubmission.getRoExamSubmittors().add(roExamSubmittor);
         }
-        return roExamSubmission;
+
+        authorHelper.realm.copyToRealmOrUpdate(roExamSubmission);
+        authorHelper.realm.commitTransaction();
+        return authorHelper.getExamSubmission(Integer.valueOf(examSubmission.getExamId()));
     }
 
 
@@ -318,7 +325,6 @@ public class RealmDataModel {
             roQuestion.setRoBook(authorHelper.getBook(Integer.valueOf(question.getBookId())));
         }
 
-
         for (Answers answer : question.getAnswers()) {
             ROAnswerChoices roAnswerChoices = new ROAnswerChoices();
             roAnswerChoices.setAnswerChoicesId(Integer.valueOf(answer.getId()));
@@ -333,7 +339,6 @@ public class RealmDataModel {
             roQuestion.getRoAnswerChoices().add(roAnswerChoices);
         }
 
-
         for (Tags tag : question.getTags()) {
             ROTags roTag = new ROTags();
             roTag.setTagId(Integer.valueOf(tag.getTagId()));
@@ -341,10 +346,7 @@ public class RealmDataModel {
 
             roQuestion.getRoTags().add(roTag);
         }
-
-
         return roQuestion;
-
     }
 
     /**
@@ -357,6 +359,9 @@ public class RealmDataModel {
 
     public ROExamQuestions getROExamQuestions(ExamQuestions examQuestions, AuthorHelper authorHelper) {
 
+
+        authorHelper.realm.beginTransaction();
+
         ROExamQuestions roExamQuestions = new ROExamQuestions();
 
         roExamQuestions.setExamId(Integer.valueOf(examQuestions.getId()));
@@ -368,7 +373,12 @@ public class RealmDataModel {
         for (Questions question : examQuestions.getQuestions()) {
             roExamQuestions.getRoQuestions().add(getROQuestion(question, authorHelper, roExam));
         }
-        return roExamQuestions;
+
+        authorHelper.realm.copyToRealmOrUpdate(roExamQuestions);
+        authorHelper.realm.commitTransaction();
+
+
+        return authorHelper.getExamQuestions(Integer.valueOf(examQuestions.getId()));
 
     }
 
@@ -379,12 +389,16 @@ public class RealmDataModel {
      * @param questionPalette
      * @return
      */
-    public ROQuestionPalette getROQuestionPalette(QuestionPalette questionPalette, ROStudentExamEvaluation roStudentExamEvaluation) {
+    public ROQuestionPalette getROQuestionPalette(QuestionPalette questionPalette, ROStudentExamEvaluation roStudentExamEvaluation,
+                                                  AuthorHelper authorHelper, int primaryKeyId, int studentId) {
 
         ROQuestionPalette roQuestionPalette = new ROQuestionPalette();
-        roQuestionPalette.setEvaluationId(roStudentExamEvaluation.getEvaluationId());
+        roQuestionPalette.setQuestionPaletteId(primaryKeyId);
         roQuestionPalette.setValue(questionPalette.getValue());
+        roQuestionPalette.setRoQuestion(authorHelper.getROQuestions(Integer.valueOf(questionPalette.getQuestionId())));
+        roQuestionPalette.setRoExamSubmittor(authorHelper.getExamSubmittor(studentId));
         roQuestionPalette.setRoStudentExamEvaluation(roStudentExamEvaluation);
+
         return roQuestionPalette;
 
     }
@@ -396,17 +410,20 @@ public class RealmDataModel {
      * @param evaluation
      * @return
      */
-    public ROEvaluation getROEvaluation(Evaluation evaluation, ROStudentExamEvaluation roStudentExamEvaluation) {
+    public ROEvaluation getROEvaluation(Evaluation evaluation, ROStudentExamEvaluation roStudentExamEvaluation, AuthorHelper authorHelper, int primaryKeyId, int studentId
+    ) {
 
         ROEvaluation roEvaluation = new ROEvaluation();
-
-        roEvaluation.setEvaluationId(roStudentExamEvaluation.getEvaluationId());
+        roEvaluation.setEvaluationId(primaryKeyId);
         roEvaluation.setStudentResposne(evaluation.getStudentResponse());
         roEvaluation.setEvaluationScore(evaluation.getEvaluationScore());
         roEvaluation.setIsRight(evaluation.getIsRight().equals("1") ? true : false);
         roEvaluation.setAnswerStatus(evaluation.getAnswerStatus());
         roEvaluation.setQuestionScore(evaluation.getQuestionScore());
+        roEvaluation.setRoQuestion(authorHelper.getROQuestions(Integer.valueOf(evaluation.getQuestionId())));
+        roEvaluation.setRoExamSubmittor(authorHelper.getExamSubmittor(studentId));
         roEvaluation.setRoStudentExamEvaluation(roStudentExamEvaluation);
+
 
         return roEvaluation;
     }
@@ -414,17 +431,61 @@ public class RealmDataModel {
 
     public ROStudentExamEvaluation getROStudentExamEvaluation(ExamEvaluation examEvaluation, int studentId, AuthorHelper authorHelper) {
 
+
+        authorHelper.realm.beginTransaction();
         ROStudentExamEvaluation roStudentExamEvaluation = new ROStudentExamEvaluation();
 
-        roStudentExamEvaluation.setEvaluationId(authorHelper.getTotalRecordsInTable(ROStudentExamEvaluation.class) + 1);
-        roStudentExamEvaluation.setExamScore(examEvaluation.getExamScore());
+        /**
+         * check that examevaluation is available for the student or not.
+         */
 
-        for (QuestionPalette questionPalette : examEvaluation.getQuestionPalette()) {
-            roStudentExamEvaluation.getRoQuestionPalette().add(getROQuestionPalette(questionPalette, roStudentExamEvaluation));
+        if (authorHelper.getStudentExamEvaluation(Integer.valueOf(examEvaluation.getExamId()),
+                studentId) != null) {
+            roStudentExamEvaluation.setStudentExamEvaluationId((authorHelper.getStudentExamEvaluation(Integer.valueOf(examEvaluation.getExamId()),
+                    studentId)).getStudentExamEvaluationId());
+        } else {
+            roStudentExamEvaluation.setStudentExamEvaluationId(authorHelper.getTotalRecordsInTable(ROStudentExamEvaluation.class) + 1);
         }
 
+
+        roStudentExamEvaluation.setExamScore(examEvaluation.getExamScore());
+
+        /**
+         * add question palette data for the evaluation.
+         */
+
+        int questionPalettePrimaryId = authorHelper.getTotalRecordsInTable(ROQuestionPalette.class);
+        for (QuestionPalette questionPalette : examEvaluation.getQuestionPalette()) {
+
+            /**
+             * check that question palette data is already added or not.
+             */
+            if (authorHelper.getQuestionPalette(Integer.valueOf(questionPalette.getQuestionId()), studentId) != null) {
+                roStudentExamEvaluation.getRoQuestionPalette().add(getROQuestionPalette(questionPalette, roStudentExamEvaluation, authorHelper,
+                        authorHelper.getQuestionPalette(Integer.valueOf(questionPalette.getQuestionId()), studentId).getQuestionPaletteId(), studentId));
+            } else {
+                questionPalettePrimaryId++;
+                roStudentExamEvaluation.getRoQuestionPalette().add(getROQuestionPalette(questionPalette, roStudentExamEvaluation, authorHelper, questionPalettePrimaryId, studentId));
+            }
+        }
+
+
+        /**
+         * add evaluation data.
+         */
+        int evaluationPrimaryId = authorHelper.getTotalRecordsInTable(ROEvaluation.class);
         for (Evaluation evaluation : examEvaluation.getEvaluation()) {
-            roStudentExamEvaluation.getRoEvaluation().add(getROEvaluation(evaluation, roStudentExamEvaluation));
+
+            /**
+             * check that evaluation data is already added or not.
+             */
+            if (authorHelper.getEvaluation(Integer.valueOf(evaluation.getQuestionId()), studentId) != null) {
+                roStudentExamEvaluation.getRoEvaluation().add(getROEvaluation(evaluation, roStudentExamEvaluation, authorHelper,
+                        authorHelper.getEvaluation(Integer.valueOf(evaluation.getQuestionId()), studentId).getEvaluationId(), studentId));
+            } else {
+                evaluationPrimaryId++;
+                roStudentExamEvaluation.getRoEvaluation().add(getROEvaluation(evaluation, roStudentExamEvaluation, authorHelper, evaluationPrimaryId, studentId));
+            }
         }
 
         ROExam roExam = authorHelper.getExam(Integer.valueOf(examEvaluation.getExamId()));
@@ -433,7 +494,12 @@ public class RealmDataModel {
         ROExamSubmittor roExamSubmittor = authorHelper.getExamSubmittor(studentId);
         roStudentExamEvaluation.setRoExamSubmittor(roExamSubmittor);
 
-        return roStudentExamEvaluation;
+
+        authorHelper.realm.copyToRealmOrUpdate(roStudentExamEvaluation);
+        authorHelper.realm.commitTransaction();
+
+        return authorHelper.getStudentExamEvaluation(Integer.valueOf(examEvaluation.getExamId()),
+                studentId);
 
     }
 

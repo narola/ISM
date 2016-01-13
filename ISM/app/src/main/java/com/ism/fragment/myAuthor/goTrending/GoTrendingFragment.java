@@ -21,6 +21,7 @@ import com.ism.constant.WebConstants;
 import com.ism.fragment.MyAuthorFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
+import com.ism.realm.RealmHandler;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.views.CirclePageIndicator;
@@ -31,6 +32,9 @@ import com.ism.ws.model.TrendingQuestion;
 import com.ism.ws.model.TrendingQuestionDetails;
 
 import java.util.ArrayList;
+
+import io.realm.RealmResults;
+import model.ROTrendingQuestion;
 
 /**
  * Created by c162 on 07/01/16.
@@ -51,6 +55,7 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
     private ArrayList<TrendingQuestionDetails> arrayListTrendingQuestionDetails=new ArrayList<>();
     private TextView txtTrendingQuestion;
     private TextView txtTrendingQuestionFor;
+    private RealmHandler realmHandler;
 
     public static GoTrendingFragment newInstance() {
         GoTrendingFragment fragment = new GoTrendingFragment();
@@ -71,6 +76,8 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private void initGlobal() {
+
+        realmHandler=new RealmHandler(getActivity());
         viewpager = (ViewPager) view.findViewById(R.id.viewpager);
         trendingQueAnsAuthorAdapter =new GoTrendingQueAnsAuthorAdapter(getActivity());
         viewpager.setAdapter(trendingQueAnsAuthorAdapter);
@@ -153,7 +160,10 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrayListTrendingQuestionDetails.add(responseHandler.getTrendingQuestionDetails().get(0));
-                    trendingQueAnsAuthorAdapter.addAll(arrayListTrendingQuestionDetails);
+                   // realmHandler.updateTrendingQuestion(responseHandler.getTrendingQuestionDetails().get(0));
+
+                   trendingQueAnsAuthorAdapter.addAll(arrayListTrendingQuestionDetails);
+//                   trendingQueAnsAuthorAdapter.addAll(realmHandler.getTrendingQuestions(activityHost.getBundle().getString(AppConstant.AUTHOR_ID)));
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Debug.i(TAG, "onResponseTrendingQuestionDetail : " + WebConstants.FAILED);
 
@@ -173,7 +183,9 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrayListTrendingQuestions = responseHandler.getTrendingQuestions();
-                    setUpData(arrayListTrendingQuestions);
+//                    setUpData(arrayListTrendingQuestions);
+                    realmHandler.saveTrendingQuestion(arrayListTrendingQuestions,activityHost.getBundle().getString(AppConstant.AUTHOR_ID));
+                    setUpData(realmHandler.getTrendingQuestions(activityHost.getBundle().getString(AppConstant.AUTHOR_ID)));
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Debug.i(TAG, "onResponseGetTrending : " + WebConstants.FAILED);
 
@@ -186,16 +198,20 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
             Debug.i(TAG, "onResponseGetTrending Exceptions : " + e.getLocalizedMessage());
         }
     }
-    private void setUpData(ArrayList<TrendingQuestion> trendingQuestions) {
+    private void setUpData(RealmResults<ROTrendingQuestion> ROTrendingQuestions) {
         try {
-            if (trendingQuestions != null && trendingQuestions.size() > 0) {
+            if (ROTrendingQuestions != null && ROTrendingQuestions.size() > 0) {
                // setEmptyView(false);
 
-                sendQuestionsAdapter = new SendQuestionToAuthorAdapter(this,getActivity(),trendingQuestions);
+                sendQuestionsAdapter = new SendQuestionToAuthorAdapter(this,getActivity(), ROTrendingQuestions);
                 rvQuestions.setAdapter(sendQuestionsAdapter);
-                for(TrendingQuestion trendingQuestion:trendingQuestions){
-                    callApiForGetTrendingQuestionDetails(trendingQuestion.getTrendingId());
+                for(ROTrendingQuestion ROTrendingQuestion : ROTrendingQuestions){
+                    callApiForGetTrendingQuestionDetails(ROTrendingQuestion.getTrendingId());
                 }
+//                trendingQueAnsAuthorAdapter =new GoTrendingQueAnsAuthorAdapter(getActivity());
+//                trendingQueAnsAuthorAdapter.addAll(realmHandler.getTrendingQuestions(activityHost.getBundle().getString(AppConstant.AUTHOR_ID)));
+//                viewpager.setAdapter(trendingQueAnsAuthorAdapter);
+//                indicator.setViewPager(viewpager);
 
             } else {
               //  setEmptyView(true);
@@ -206,12 +222,12 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
         }
     }
 
-    private void callApiForGetTrendingQuestionDetails(String trendingId) {
+    private void callApiForGetTrendingQuestionDetails(int trendingId) {
         if (Utility.isConnected(getActivity())) {
             try {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setQuestionId(trendingId);
+                attribute.setQuestionId(String.valueOf(trendingId));
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GET_TRENDING_QUESTION_DETAIL);

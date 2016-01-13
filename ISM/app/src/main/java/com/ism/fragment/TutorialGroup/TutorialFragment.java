@@ -27,7 +27,7 @@ import java.util.Calendar;
 /**
  * Created by c161 on --/10/15.
  */
-public class TutorialFragment extends Fragment implements TutorialDiscussionFragment.TutorialDiscussionFragmentListener,
+public class TutorialFragment extends Fragment implements com.ism.fragment.tutorialGroup.TutorialDiscussionFragment.TutorialDiscussionFragmentListener,
 		WebserviceWrapper.WebserviceResponse, HostActivity.HostListenerTutorial {
 
     private static final String TAG = TutorialFragment.class.getSimpleName();
@@ -41,7 +41,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
     private FragmentListener fragListener;
     private View.OnClickListener listenerOnWeekDayClick;
 	private TutorialDiscussionFragment fragTutorialDiscussion;
-	private ExamFragment.ExamListener listenerExam;
+	private FridayExamFragment.ExamListener listenerExam;
 	private TutorialGroupProfile tutorialGroupProfile;
 	private HostActivity activityHost;
 
@@ -60,7 +60,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 	private static int intCurrentDay = -1;
 	private boolean isExamTime;
 
-    public static TutorialFragment newInstance(Bundle fragmentArguments, ExamFragment.ExamListener examListener) {
+    public static TutorialFragment newInstance(Bundle fragmentArguments, FridayExamFragment.ExamListener examListener) {
         TutorialFragment fragmentTutorial = new TutorialFragment();
 	    fragmentTutorial.setExamListener(examListener);
 	    fragmentTutorial.setArguments(fragmentArguments);
@@ -209,7 +209,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 						Log.e(TAG, "set day : " + intCurrentDay);
 						fragTutorialDiscussion.setDay(intCurrentDay);
 					} else {
-						fragTutorialDiscussion = TutorialDiscussionFragment.newInstance(intCurrentDay);
+						fragTutorialDiscussion = com.ism.fragment.tutorialGroup.TutorialDiscussionFragment.newInstance(intCurrentDay);
 						fragTutorialDiscussion.setTutorialDiscussionListener(this);
 						getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, fragTutorialDiscussion).commit();
 					}
@@ -264,7 +264,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 		setWeekDaySelection(dayId);
 	}
 
-	public void setExamListener(ExamFragment.ExamListener examListener) {
+	public void setExamListener(FridayExamFragment.ExamListener examListener) {
 		listenerExam = examListener;
 	}
 

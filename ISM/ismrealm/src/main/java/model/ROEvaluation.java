@@ -2,6 +2,7 @@ package model;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import model.authormodel.ROExamSubmittor;
 
 /**
  * Created by c166 on 12/01/16.
@@ -16,6 +17,8 @@ public class ROEvaluation extends RealmObject {
     private Boolean isRight;
     private String answerStatus;
     private String questionScore;
+    private ROQuestions roQuestion;
+    private ROExamSubmittor roExamSubmittor;
     private ROStudentExamEvaluation roStudentExamEvaluation;
 
 
@@ -75,4 +78,21 @@ public class ROEvaluation extends RealmObject {
     public void setRoStudentExamEvaluation(ROStudentExamEvaluation roStudentExamEvaluation) {
         this.roStudentExamEvaluation = roStudentExamEvaluation;
     }
+
+    public ROQuestions getRoQuestion() {
+        return roQuestion;
+    }
+
+    public void setRoQuestion(ROQuestions roQuestion) {
+        this.roQuestion = roQuestion;
+    }
+
+    public ROExamSubmittor getRoExamSubmittor() {
+        return roExamSubmittor;
+    }
+
+    public void setRoExamSubmittor(ROExamSubmittor roExamSubmittor) {
+        this.roExamSubmittor = roExamSubmittor;
+    }
+
 }

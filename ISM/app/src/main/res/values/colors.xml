@@ -79,6 +79,7 @@
     <color name="question_color">#74777C</color>
     <color name="btn_save">#26AF61</color>
     <color name="color_violet_assignment">#A44B99</color>
+    <color name="red_dark">#861f1c</color>
 
     <!-- Tutorial Group Friday Exam Colors -->
 
@@ -94,13 +95,10 @@
     <color name="black_transperant">#32000000</color>
 
     <!-- ################################# -->
-    <bool name="default_circle_indicator_centered">true</bool>
+   <!--viewpager indicator-->
     <color name="default_circle_indicator_fill_color">#FFFFFFFF</color>
     <color name="default_circle_indicator_page_color">#00000000</color>
-    <integer name="default_circle_indicator_orientation">0</integer>
-    <dimen name="default_circle_indicator_radius">3dp</dimen>
-    <bool name="default_circle_indicator_snap">false</bool>
     <color name="default_circle_indicator_stroke_color">#FFDDDDDD</color>
-    <dimen name="default_circle_indicator_stroke_width">1dp</dimen>
+
 
 </resources>

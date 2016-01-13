@@ -7,6 +7,8 @@ import com.ism.utility.Utility;
 import com.ism.ws.model.Comment;
 import com.ism.ws.model.FeedImages;
 import com.ism.ws.model.Feeds;
+import com.ism.ws.model.TrendingQuestion;
+import com.ism.ws.model.TrendingQuestionDetails;
 
 import java.util.ArrayList;
 
@@ -14,7 +16,9 @@ import io.realm.RealmResults;
 import model.ROFeedComment;
 import model.ROFeedImage;
 import model.ROFeeds;
+import model.ROTrendingQuestion;
 import model.ROUser;
+import model.ROTrendingQuestionComment;
 import realmhelper.StudentHelper;
 
 /**
@@ -23,6 +27,7 @@ import realmhelper.StudentHelper;
 public class RealmHandler {
 
     private static final String TAG = RealmHandler.class.getSimpleName();
+
     private StudentHelper studentHelper;
 
     public RealmHandler(Context context) {
@@ -114,4 +119,90 @@ public class RealmHandler {
     public RealmResults<ROFeeds> getUpdatedFeedLikes(boolean status) {
         return studentHelper.managedFeedLikeStatus(status);
     }
+
+    public void saveTrendingQuestion(ArrayList<TrendingQuestion> arrayList, String authorId) {
+        ROUser userPostFor = studentHelper.getUser(Integer.parseInt(authorId));
+        for (TrendingQuestion question : arrayList) {
+            ROTrendingQuestion ROTrendingQuestion = new ROTrendingQuestion();
+            ROTrendingQuestion.setTrendingId(Integer.parseInt(question.getTrendingId()));
+            ROTrendingQuestion.setQuestionText(question.getQuestionText());
+            ROTrendingQuestion.setFollowerCount(Integer.parseInt(question.getFollowerCount() == null ? "0" : question.getFollowerCount()));
+            ROTrendingQuestion.setTotalComment(Integer.parseInt(question.getTotalComment() == null ? "0" : question.getTotalComment()));
+            ROTrendingQuestion.setIsFollowed(Integer.parseInt(question.getIsFollowed() == null ? "0" : question.getIsFollowed()));
+            ROTrendingQuestion.setCreatedDate(Utility.getDateFormateMySql(question.getPostedOn()));
+            ROUser userPostBy = studentHelper.getUser(Integer.parseInt(question.getPostedByUserId()));
+
+            if (userPostBy == null) {
+                userPostBy = new ROUser();
+                userPostBy.setUserId(Integer.parseInt(question.getPostedByUserId()));
+                userPostBy.setFullName(question.getPostedByUsername());
+                userPostBy.setProfilePicture(question.getPostedByPic());
+                ROTrendingQuestion.setQuestionBy(userPostBy);
+            } else
+                ROTrendingQuestion.setQuestionBy(userPostBy);
+
+            ROTrendingQuestion.setQuestionFor(userPostFor);
+            studentHelper.saveTrendingQuestion(ROTrendingQuestion);
+        }
+    }
+
+    public RealmResults<ROTrendingQuestion> getTrendingQuestions(String authorId) {
+
+        return studentHelper.getTrendingQuestionResult(authorId,true);
+    }
+
+    public void updateFollowedStatus(final String trendingId) {
+        final ROTrendingQuestion ROTrendingQuestion = studentHelper.getTrendingQuestion(trendingId);
+        studentHelper.realm.beginTransaction();
+        Log.e(TAG, "(ROTrendingQuestion.getIsFollowed() : " + ROTrendingQuestion.getIsFollowed());
+        ROTrendingQuestion.setIsFollowed(ROTrendingQuestion.getIsFollowed() == 0 ? 1 : 0);//0 is unfollowed 1 is followed
+        studentHelper.realm.commitTransaction();
+    }
+
+    public void updateTrendingQuestion(TrendingQuestionDetails question) {
+        ROTrendingQuestion ROTrendingQuestion = studentHelper.getTrendingQuestion(question.getTrendingId());
+        studentHelper.realm.beginTransaction();
+        Log.e(TAG, "(ROTrendingQuestion.getTrendingId() : " + ROTrendingQuestion.getTrendingId());
+        ROTrendingQuestion.setFollowerCount(Integer.parseInt(question.getFollowerCount() == null ? "0" : question.getFollowerCount()));
+        ROTrendingQuestion.setTotalComment(Integer.parseInt(question.getTotalComment() == null ? "0" : question.getTotalComment()));
+        ROTrendingQuestion.setAnswerText(question.getAnswerText());
+        if (question.getComment().size() > 0) {
+            for (Comment comment : question.getComment()) {
+                ROTrendingQuestionComment questionComment = new ROTrendingQuestionComment();
+                questionComment.setTrendingQuestionCommentId(comment.getCommentId());
+                questionComment.setComment(comment.getComment());
+                questionComment.setROTrendingQuestion(ROTrendingQuestion);
+               ROUser commentBy = studentHelper.getUser(Integer.parseInt(comment.getCommentBy()));
+                if (commentBy != null)
+                    questionComment.setCommentBy(commentBy);
+                else {
+                    commentBy = new ROUser();
+                    commentBy.setUserId(Integer.parseInt(comment.getCommentBy()));
+                    commentBy.setFullName(comment.getFullName());
+                    commentBy.setProfilePicture(comment.getProfilePic());
+                    questionComment.setCommentBy(commentBy);
+                }
+                questionComment.setComment(comment.getComment());
+                ROTrendingQuestion.getROTrendingQuestionComments().add(questionComment);
+               // studentHelper.saveTrendingQuestionComment(questionComment);
+            }
+        }
+
+
+        // ROTrendingQuestion.setIsFollowed(ROTrendingQuestion.getIsFollowed() == 0 ? 1 : 0);//0 is unfollowed 1 is followed
+        studentHelper.realm.commitTransaction();
+    }
+
+//    public void saveTrendingQuestionFollow(String trendingId, String userId) {
+//        ROTrendingQuestionFollower follower=studentHelper.getTrendingQuestionFollower(trendingId,userId);
+//        if(follower==null){
+//            follower=new ROTrendingQuestionFollower();
+//            follower.setFollowerBy(studentHelper.getUser(Integer.parseInt(userId)));
+//            follower.setROTrendingQuestion(studentHelper.getROTrendingQuestion(trendingId));
+//            studentHelper.saveTrendingQuestionFolloer(follower);
+//        }
+//        else{
+//            studentHelper.removeTrendingQuestionFollower(follower.getQuestionFollowerId());
+//        }
+//    }
 }

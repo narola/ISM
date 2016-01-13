@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FridayExamQuestion {
+public class ExamQuestion {
 	
     private String questionFormat;
     private String questionAssetsLink;
@@ -21,7 +21,7 @@ public class FridayExamQuestion {
     private String topicId;
     private String questionCreatorName;
     private String classroomId;
-    private ArrayList<FridayExamAnswer> fridayExamAnswers;
+    private ArrayList<ExamAnswer> examAnswers;
     private ArrayList<String> tags;
     private String subjectId;
     private String bookId;
@@ -31,6 +31,11 @@ public class FridayExamQuestion {
     private String questionText;
     private String questionCreatorId;
     private String questionScore;
+    private int responseDuration;
+    private int correctAnswerScore;
+    private int isRight;
+    private int choiceId;
+    private String answerStatus;
     private boolean isSkipped;
     private boolean isReviewLater;
     private boolean isAnswered;
@@ -109,12 +114,12 @@ public class FridayExamQuestion {
     }
 
     @JsonProperty("answers")
-    public ArrayList<FridayExamAnswer> getFridayExamAnswers() {
-        return this.fridayExamAnswers;
+    public ArrayList<ExamAnswer> getExamAnswers() {
+        return this.examAnswers;
     }
 
-    public void setFridayExamAnswers(ArrayList<FridayExamAnswer> fridayExamAnswers) {
-        this.fridayExamAnswers = fridayExamAnswers;
+    public void setExamAnswers(ArrayList<ExamAnswer> examAnswers) {
+        this.examAnswers = examAnswers;
     }
 
     @JsonProperty("tags")
@@ -196,6 +201,51 @@ public class FridayExamQuestion {
 
     public void setQuestionScore(String questionScore) {
         this.questionScore = questionScore;
+    }
+
+    @JsonProperty("response_duration")
+    public int getResponseDuration() {
+        return this.responseDuration;
+    }
+
+    public void setResponseDuration(int responseDuration) {
+        this.responseDuration = responseDuration;
+    }
+
+    @JsonProperty("correct_answer_score")
+    public int getCorrectAnswerScore() {
+        return this.correctAnswerScore;
+    }
+
+    public void setCorrectAnswerScore(int correctAnswerScore) {
+        this.correctAnswerScore = correctAnswerScore;
+    }
+
+    @JsonProperty("is_right")
+    public int getIsRight() {
+        return this.isRight;
+    }
+
+    public void setIsRight(int isRight) {
+        this.isRight = isRight;
+    }
+
+    @JsonProperty("choice_id")
+    public int getChoiceId() {
+        return this.choiceId;
+    }
+
+    public void setChoiceId(int choiceId) {
+        this.choiceId = choiceId;
+    }
+
+    @JsonProperty("answer_status")
+    public String getAnswerStatus() {
+        return this.answerStatus;
+    }
+
+    public void setAnswerStatus(String answerStatus) {
+        this.answerStatus = answerStatus;
     }
 
 	public boolean isSkipped() {

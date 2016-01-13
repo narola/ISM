@@ -13,7 +13,7 @@ import io.realm.annotations.PrimaryKey;
  * Relationship with {@link ROExam}
  * Relationship with {@link ROQuestions}
  */
-public class ROExamQuestions extends RealmObject{
+public class ROExamQuestions extends RealmObject {
 
 
     @PrimaryKey

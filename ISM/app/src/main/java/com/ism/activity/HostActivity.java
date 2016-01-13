@@ -38,7 +38,6 @@ import com.ism.fragment.DeskFragment;
 import com.ism.fragment.MyAuthorFragment;
 import com.ism.fragment.desk.JotterScientificSymbolFragment;
 import com.ism.fragment.myAuthor.authorDesk.AuthorDeskFragment;
-import com.ism.fragment.tutorialGroup.QuestionPaletteFragment;
 import com.ism.fragment.tutorialGroup.TutorialFragment;
 import com.ism.fragment.userProfile.AllMessageFragment;
 import com.ism.fragment.userProfile.AllNoticeFragment;
@@ -522,7 +521,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     break;
                 case FRAGMENT_TUTORIAL:
                     if (currentMainFragment != fragment) {
-                        QuestionPaletteFragment questionPaletteFragment = QuestionPaletteFragment.newInstance(true);
+                        com.ism.fragment.tutorialGroup.QuestionPaletteFragment questionPaletteFragment = com.ism.fragment.tutorialGroup.QuestionPaletteFragment.newInstance(true);
                         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
 		                        TutorialFragment.newInstance(fragmentArguments, questionPaletteFragment)).commit();
 
