@@ -84,7 +84,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 Debug.e(TAG + Utility.getString(R.string.strerrormessage, getActivity()), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
     }
 

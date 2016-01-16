@@ -238,13 +238,8 @@ public class RealmDataModel {
      */
     public ROExamSubmission getROExamSubmission(ExamSubmission examSubmission, AuthorHelper authorHelper) {
 
-//        authorHelper.realm.beginTransaction();
-//        ROExamSubmission roExamSubmission = authorHelper.realm.createObject(ROExamSubmission.class);
-//        roExamSubmission.setExamId(Integer.valueOf(examSubmission.getExamId()));
-//        authorHelper.realm.commitTransaction();
-//        return roExamSubmission;
-
         authorHelper.realm.beginTransaction();
+
         ROExamSubmission roExamSubmission = new ROExamSubmission();
         roExamSubmission.setExamId(Integer.valueOf(examSubmission.getExamId()));
 
@@ -276,18 +271,26 @@ public class RealmDataModel {
                 }
             }
 
-            if (authorHelper.getListOfStudentEvaluations(roExamSubmittor.getStudentId()) != null) {
-                roExamSubmittor.getRoStudentExamEvaluations().addAll(authorHelper.getListOfStudentEvaluations(roExamSubmittor.getStudentId()));
+
+            if (authorHelper.getExamSubmittor(Integer.valueOf(examsubmittor.getStudentId())) != null) {
+
+                if (authorHelper.getListOfStudentEvaluations(Integer.valueOf(examsubmittor.getStudentId())) != null) {
+
+
+//                    roExamSubmittor.getRoStudentExamEvaluations().removeAll(authorHelper.getListOfStudentEvaluations(Integer.valueOf(examsubmittor.getStudentId())));
+                    roExamSubmittor.getRoStudentExamEvaluations().addAll(authorHelper.getExamSubmittor(Integer.valueOf(examsubmittor.getStudentId())).getRoStudentExamEvaluations());
+
+                }
             }
 
-
-            roExamSubmittor.getRoStudentExamEvaluations().addAll(authorHelper.getListOfStudentEvaluations(roExamSubmittor.getStudentId()));
             roExamSubmission.getRoExamSubmittors().add(roExamSubmittor);
         }
 
         authorHelper.realm.copyToRealmOrUpdate(roExamSubmission);
         authorHelper.realm.commitTransaction();
+
         return authorHelper.getExamSubmission(Integer.valueOf(examSubmission.getExamId()));
+
     }
 
 
@@ -410,7 +413,8 @@ public class RealmDataModel {
      * @param evaluation
      * @return
      */
-    public ROEvaluation getROEvaluation(Evaluation evaluation, ROStudentExamEvaluation roStudentExamEvaluation, AuthorHelper authorHelper, int primaryKeyId, int studentId
+    public ROEvaluation getROEvaluation(Evaluation evaluation, ROStudentExamEvaluation roStudentExamEvaluation,
+                                        AuthorHelper authorHelper, int primaryKeyId, int studentId
     ) {
 
         ROEvaluation roEvaluation = new ROEvaluation();
@@ -438,7 +442,6 @@ public class RealmDataModel {
         /**
          * check that examevaluation is available for the student or not.
          */
-
         if (authorHelper.getStudentExamEvaluation(Integer.valueOf(examEvaluation.getExamId()),
                 studentId) != null) {
             roStudentExamEvaluation.setStudentExamEvaluationId((authorHelper.getStudentExamEvaluation(Integer.valueOf(examEvaluation.getExamId()),
@@ -446,7 +449,6 @@ public class RealmDataModel {
         } else {
             roStudentExamEvaluation.setStudentExamEvaluationId(authorHelper.getTotalRecordsInTable(ROStudentExamEvaluation.class) + 1);
         }
-
 
         roStudentExamEvaluation.setExamScore(examEvaluation.getExamScore());
 
@@ -461,11 +463,16 @@ public class RealmDataModel {
              * check that question palette data is already added or not.
              */
             if (authorHelper.getQuestionPalette(Integer.valueOf(questionPalette.getQuestionId()), studentId) != null) {
+
                 roStudentExamEvaluation.getRoQuestionPalette().add(getROQuestionPalette(questionPalette, roStudentExamEvaluation, authorHelper,
                         authorHelper.getQuestionPalette(Integer.valueOf(questionPalette.getQuestionId()), studentId).getQuestionPaletteId(), studentId));
+
             } else {
+
                 questionPalettePrimaryId++;
-                roStudentExamEvaluation.getRoQuestionPalette().add(getROQuestionPalette(questionPalette, roStudentExamEvaluation, authorHelper, questionPalettePrimaryId, studentId));
+                roStudentExamEvaluation.getRoQuestionPalette().add(getROQuestionPalette(questionPalette, roStudentExamEvaluation, authorHelper,
+                        questionPalettePrimaryId, studentId));
+
             }
         }
 
@@ -480,11 +487,16 @@ public class RealmDataModel {
              * check that evaluation data is already added or not.
              */
             if (authorHelper.getEvaluation(Integer.valueOf(evaluation.getQuestionId()), studentId) != null) {
+
                 roStudentExamEvaluation.getRoEvaluation().add(getROEvaluation(evaluation, roStudentExamEvaluation, authorHelper,
                         authorHelper.getEvaluation(Integer.valueOf(evaluation.getQuestionId()), studentId).getEvaluationId(), studentId));
+
             } else {
+
                 evaluationPrimaryId++;
-                roStudentExamEvaluation.getRoEvaluation().add(getROEvaluation(evaluation, roStudentExamEvaluation, authorHelper, evaluationPrimaryId, studentId));
+                roStudentExamEvaluation.getRoEvaluation().add(getROEvaluation(evaluation, roStudentExamEvaluation, authorHelper,
+                        evaluationPrimaryId, studentId));
+
             }
         }
 

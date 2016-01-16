@@ -61,7 +61,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private String strExamStartDate = "", strExamEndDate = "";
     private AuthorHelper authorHelper;
     private RealmDataModel realmDataModel;
-    private RealmResults<ROAuthorBook> arrListROAuthorBooks = null;
+    private RealmResults<ROAuthorBook> arrListAuthorBooks = null;
     private RealmResults<ROClassrooms> arrListClassRooms = null;
     private RealmResults<ROExam> arrListROExams = null;
 
@@ -168,7 +168,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
         if (view == spExamAuthorBooks) {
 
-            if (arrListROAuthorBooks != null && position > 0) {
+            if (arrListAuthorBooks != null && position > 0) {
                 spExamClass.setSelection(0);
                 spExamEvaluationStatus.setSelection(0);
 
@@ -177,7 +177,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
                      * Position-2 because two static elements are added in the spinner in beginning
                      * so to fetch the first element from arraylist at index zero we are doing position-2
                      */
-                    filterAuthorBookWiseAssignments(String.valueOf(arrListROAuthorBooks.get(position - 2).getRoBook().getBookId()));
+                    filterAuthorBookWiseAssignments(String.valueOf(arrListAuthorBooks.get(position - 2).getRoBook().getBookId()));
                 } else {
                     clearFilters();
                 }
@@ -403,7 +403,6 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     private void addClassRooms(ArrayList<Classrooms> arrListClassrooms) {
-
         if (arrListClassrooms.size() > 0) {
             for (Classrooms classroom : arrListClassrooms) {
                 authorHelper.addClassrooms(realmDataModel.getROClassroom(classroom));
@@ -435,11 +434,11 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     private void setUpAuthorBooksData() {
-        arrListROAuthorBooks = authorHelper.getAuthorBooks();
+        arrListAuthorBooks = authorHelper.getAuthorBooks();
         List<String> authorBooks = new ArrayList<String>();
         authorBooks.add(getString(R.string.strbookname));
         authorBooks.add(getString(R.string.strall));
-        for (ROAuthorBook ROAuthorBook : arrListROAuthorBooks) {
+        for (ROAuthorBook ROAuthorBook : arrListAuthorBooks) {
             authorBooks.add(ROAuthorBook.getRoBook().getBookName());
 
         }
@@ -484,7 +483,6 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
             if (fragListener != null) {
                 fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ASSESSMENT);
                 Debug.i(TAG, "detach");
-                authorHelper.realm.close();
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
@@ -531,4 +529,9 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        authorHelper.realm.close();
+    }
 }

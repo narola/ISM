@@ -142,26 +142,18 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
         } catch (Exception e) {
             Debug.e(TAG, "onResponseGetAllExamSubmission Exception : " + e.toString());
         }
+
     }
 
 
     private void addExamSubmission(ExamSubmission examSubmission) {
 
         if (examSubmission.getExamsubmittor().size() > 0) {
-
-
-//            authorHelper.addExamSubmission(realmDataModel.getROExamSubmission(examSubmission, authorHelper));
-            /**
-             * here we update the examsubmission data in exams table.
-             */
-//            authorHelper.updateExamSubmissionData(authorHelper.getExamSubmission(Integer.valueOf(examSubmission.getExamId())));
-            
             authorHelper.updateExamSubmissionData(realmDataModel.getROExamSubmission(examSubmission, authorHelper));
         }
     }
 
     private void setUpData() {
-
         if (authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))) != null) {
             if (authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))).getRoExamSubmittors().size() > 0) {
                 setEmptyView(false);
@@ -170,6 +162,7 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
             }
         } else {
             setEmptyView(true);
+
         }
     }
 
@@ -194,71 +187,11 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
             if (fragListener != null) {
                 fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
                 Debug.i(TAG, "detach");
-                authorHelper.realm.close();
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
-    }
-
-
-    /**
-     * Created by c162 on 26/10/15.
-     */
-    public static class BooksFragment extends Fragment {
-
-        private static final String TAG = BooksFragment.class.getSimpleName();
-        private View view;
-        private FragmentListener fragListener;
-
-        public static BooksFragment newInstance() {
-            BooksFragment fragBooks = new BooksFragment();
-            return fragBooks;
-        }
-
-        public BooksFragment() {
-            // Required empty public constructor
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            view = inflater.inflate(R.layout.fragment_my_books, container, false);
-
-            initGlobal();
-
-            return view;
-        }
-
-        private void initGlobal() {
-
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            try {
-                fragListener = (FragmentListener) activity;
-                if (fragListener != null) {
-                    fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
-                }
-            } catch (ClassCastException e) {
-                Debug.e(TAG, "onAttach Exception : " + e.toString());
-            }
-        }
-
-        @Override
-        public void onDetach() {
-            super.onDetach();
-            try {
-                if (fragListener != null) {
-                    fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
-                }
-            } catch (ClassCastException e) {
-                Debug.e(TAG, "onDetach Exception : " + e.toString());
-            }
-            fragListener = null;
-        }
     }
 
     public void onBackClick() {
@@ -281,5 +214,11 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
         tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         rvExamSubmittorList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        authorHelper.realm.close();
     }
 }

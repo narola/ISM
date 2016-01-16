@@ -140,7 +140,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
                         callApiGetTopics(Integer.parseInt(arrListSubject.get(position - 1).getId()));
                     } else {
-                        Utility.toastOffline(getActivity());
+                        Utility.alertOffline(getActivity());
                     }
                 } else {
                     Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
@@ -173,7 +173,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
 
     }
@@ -188,7 +188,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
 
     }
@@ -205,7 +205,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
 
     }
@@ -236,7 +236,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
 
     }

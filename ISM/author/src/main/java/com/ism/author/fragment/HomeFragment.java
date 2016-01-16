@@ -136,7 +136,6 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         try {
             if (fragListener != null) {
                 fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_HOME);
-                authorHelper.realm.close();
             }
         } catch (ClassCastException e) {
             Log.i(TAG, "onDetach Exception : " + e.toString());
@@ -247,5 +246,11 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         rvPostFeeds.setVisibility(isEnable ? View.GONE : View.VISIBLE);
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        authorHelper.realm.close();
     }
 }

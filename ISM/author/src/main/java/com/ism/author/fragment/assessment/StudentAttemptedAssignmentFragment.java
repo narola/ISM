@@ -146,21 +146,17 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
     private void addExamSubmission(ExamSubmission examSubmission) {
 
         if (examSubmission.getExamsubmittor().size() > 0) {
-
 //            authorHelper.addExamSubmission(realmDataModel.getROExamSubmission(examSubmission, authorHelper));
 //            /**
 //             * here we update the examsubmission data in exams table.
 //             */
 //            authorHelper.updateExamSubmissionData(authorHelper.getExamSubmission(Integer.valueOf(examSubmission.getExamId())));
 
-
-
             authorHelper.updateExamSubmissionData(realmDataModel.getROExamSubmission(examSubmission, authorHelper));
         }
     }
 
     private void setUpData() {
-
         if (authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))) != null) {
             if (authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))).getRoExamSubmittors().size() > 0) {
                 setEmptyView(false);
@@ -182,5 +178,12 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
 
     private Bundle getBundleArguments() {
         return ((AuthorHostActivity) getActivity()).getBundle();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        authorHelper.realm.close();
     }
 }

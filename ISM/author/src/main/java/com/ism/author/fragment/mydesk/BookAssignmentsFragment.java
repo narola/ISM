@@ -156,7 +156,7 @@ public class BookAssignmentsFragment extends Fragment implements WebserviceWrapp
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
 
     }

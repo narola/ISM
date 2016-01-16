@@ -30,9 +30,6 @@ import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.ExamEvaluation;
 import com.ism.author.ws.model.ExamQuestions;
-import com.ism.author.ws.model.Questions;
-
-import java.util.ArrayList;
 
 import realmhelper.AuthorHelper;
 
@@ -53,7 +50,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
 
     private RecyclerView rvGetObjectiveAssignmentQuestionslist;
     private ObjectiveAssignmentQuestionsAdapter objectiveAssignmentQuestionsAdapter;
-    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
+//    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
 
     public static String ARG_ARR_LIST_QUESTIONS = "arrListQuestions";
     public static String ARG_EXAM_TYPE = "examType";
@@ -138,7 +135,8 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
     private void setExamQuestions() {
 
         if (responseObjGetAllExamQuestions != null) {
-            getBundleArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
+
+//            getBundleArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
             getBundleArguments().putString(ARG_EXAM_TYPE, getString(R.string.strobjective));
 
 
@@ -300,6 +298,11 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
     private void addExamQuestions(ExamQuestions examQuestions) {
 
         if (examQuestions.getQuestions().size() > 0) {
+
+
+//            authorHelper.addExamQuestions(realmDataModel.getROExamQuestions(examQuestions, authorHelper));
+//            authorHelper.updateExamQuestionsData(authorHelper.getExamQuestions(Integer.valueOf(examQuestions.getId())));
+
             authorHelper.updateExamQuestionsData(realmDataModel.getROExamQuestions(examQuestions, authorHelper));
         }
     }
@@ -312,6 +315,10 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                     getRoQuestions());
         } else {
             setEmptyView(true);
+        }
+
+        if (!Utility.isConnected(getActivity())) {
+            setUpEvaluationData();
         }
 
     }
@@ -393,5 +400,12 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         rvGetObjectiveAssignmentQuestionslist.setVisibility(isEnable ? View.INVISIBLE : View.VISIBLE);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        authorHelper.realm.close();
     }
 }

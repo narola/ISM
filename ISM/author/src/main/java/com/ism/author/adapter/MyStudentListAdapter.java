@@ -12,17 +12,17 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.utility.Debug;
-import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.object.Global;
+import com.ism.author.utility.Debug;
 import com.ism.author.views.CircleImageView;
-import com.ism.author.ws.model.Examsubmittor;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import java.util.ArrayList;
+import io.realm.RealmList;
+import model.authormodel.ROExamSubmittor;
 
 /**
  * Created by c166 on 17/11/15.
@@ -31,11 +31,11 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
 
     private static final String TAG = MyStudentListAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
+    private RealmList<ROExamSubmittor> arrListExamSubmittor = null;
     private ImageLoader imageLoader;
     private Fragment mFragment;
     private LayoutInflater inflater;
-    public static String ARG_ARR_LIST_STUDENTS = "arrListStudents";
+    public static String ARG_TOTAL_NO_OF_STUDENTS = "totalStudents";
 
 
     public MyStudentListAdapter(Context mContext, Fragment mFragment) {
@@ -61,9 +61,12 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
 
         try {
 
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
-                    holder.imgStudentProfilePic, ISMAuthor.options);
-
+            if (arrListExamSubmittor.get(position).getStudentProfilePic() != null && arrListExamSubmittor.get(position).getStudentProfilePic() != "") {
+                Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrListExamSubmittor.get(position).getStudentProfilePic(),
+                        holder.imgStudentProfilePic, ISMAuthor.options);
+            } else {
+                holder.imgStudentProfilePic.setImageResource(R.drawable.userdp);
+            }
             holder.tvStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
             holder.tvStudentRollNo.setText(mContext.getResources().getString(R.string.strrollno) + (position + 1));
 
@@ -77,7 +80,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
                 @Override
                 public void onClick(View v) {
                     setBundleArgument(position);
-                    getFragmnet().loadStudentEvaluationData(arrListExamSubmittor.get(position).getStudentId());
+                    getFragmnet().loadStudentEvaluationData(String.valueOf(arrListExamSubmittor.get(position).getStudentId()));
                 }
             });
 
@@ -89,15 +92,22 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
 
     @Override
     public int getItemCount() {
-        return arrListExamSubmittor.size();
+
+        if (arrListExamSubmittor != null) {
+            return arrListExamSubmittor.size();
+        } else {
+            return 0;
+        }
+
     }
 
-    public void addAll(ArrayList<Examsubmittor> examSubmittor) {
+    public void addAll(RealmList<ROExamSubmittor> arrListExamSubmittors) {
         try {
-            this.arrListExamSubmittor.clear();
-            this.arrListExamSubmittor.addAll(examSubmittor);
-            this.copyListOfStudents = examSubmittor;
-            getBundleArgument().putParcelableArrayList(ARG_ARR_LIST_STUDENTS, examSubmittor);
+
+            this.arrListExamSubmittor = arrListExamSubmittors;
+            this.copyListOfStudents = arrListExamSubmittors;
+//            getBundleArgument().putParcelableArrayList(ARG_ARR_LIST_STUDENTS, examSubmittor);
+            getBundleArgument().putInt(ARG_TOTAL_NO_OF_STUDENTS, arrListExamSubmittors.size());
 
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
@@ -130,33 +140,35 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
         }
     }
 
-    ArrayList<Examsubmittor> copyListOfStudents;
+    private RealmList<ROExamSubmittor> copyListOfStudents;
 
     public void filter(CharSequence charText) {
 
-        arrListExamSubmittor.clear();
-        if (charText.length() == 0) {
-            arrListExamSubmittor.addAll(copyListOfStudents);
-        } else {
-            for (Examsubmittor wp : copyListOfStudents) {
-                if (Utility.containsString(wp.getStudentName(), charText.toString(), false)) {
-                    arrListExamSubmittor.add(wp);
-                }
-            }
-            if (arrListExamSubmittor.size() == 0) {
-            }
-        }
-        notifyDataSetChanged();
+
+//        arrListExamSubmittor.clear();
+//        if (charText.length() == 0) {
+//            arrListExamSubmittor.addAll(copyListOfStudents);
+//        } else {
+//            for (ROExamSubmittor wp : copyListOfStudents) {
+//                if (Utility.containsString(wp.getStudentName(), charText.toString(), false)) {
+//                    arrListExamSubmittor.add(wp);
+//                }
+//            }
+//            if (arrListExamSubmittor.size() == 0) {
+//            }
+//        }
+//        notifyDataSetChanged();
     }
 
     public void setBundleArgument(int position) {
+
         getBundleArgument().putInt(ExamSubmittorAdapter.ARG_STUDENT_POSITION, position);
         getBundleArgument().putString(ExamSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
                 arrListExamSubmittor.get(position).getStudentProfilePic());
         getBundleArgument().putString(ExamSubmittorAdapter.ARG_STUDENT_NAME,
                 arrListExamSubmittor.get(position).getStudentName());
         getBundleArgument().putString(ExamSubmittorAdapter.ARG_STUDENT_ID,
-                arrListExamSubmittor.get(position).getStudentId());
+                String.valueOf(arrListExamSubmittor.get(position).getStudentId()));
         notifyDataSetChanged();
     }
 

@@ -15,15 +15,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.author.R;
+import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveQuestionsFragment;
+import com.ism.author.object.Global;
 import com.ism.author.utility.Debug;
 import com.ism.author.utility.HtmlImageGetter;
 import com.ism.author.utility.Utility;
-import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveQuestionsFragment;
-import com.ism.author.object.Global;
-import com.ism.author.ws.model.Evaluation;
-import com.ism.author.ws.model.Questions;
 
-import java.util.ArrayList;
+import io.realm.RealmList;
+import model.ROEvaluation;
+import model.ROQuestions;
 
 /**
  * Created by c166 on 17/11/15.
@@ -33,7 +33,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     private static final String TAG = SubjectiveQuestionListAdapter.class.getSimpleName();
 
     private Context mContext;
-    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
+    private RealmList<ROQuestions> arrListQuestions = null;
     private LayoutInflater inflater;
     private Fragment mFragment;
 
@@ -57,26 +57,27 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
         try {
 
 
-
-
             holder.tvSubjectiveQuestionNo.setText(mContext.getResources().getString(R.string.strquestion) + " : " + (position + 1));
-
-//            holder.tvSubjectiveQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
-//                    new HtmlImageGetter(50, 50, mContext, null), null));
 
 
             if (arrListQuestions.get(position).getQuestionText().contains("img") || arrListQuestions.get(position).getQuestionText().contains("http:")
                     || arrListQuestions.get(position).getQuestionText().contains("https:")) {
 
-                if (arrListQuestions.get(position).getSpan() == null) {
 
-                    arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
-                            new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
-                            ), null));
+                /**
+                 * this is to handle imageload from url in textview android.
+                 */
+                if (holder.tvSubjectiveQuestion.getTag() == null) {
+
+                    holder.tvSubjectiveQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText()));
+                    Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                            new HtmlImageGetter(60, 60, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+                            ), null);
+                    holder.tvSubjectiveQuestion.setTag(String.valueOf(position));
+
                 } else {
-
                     holder.tvSubjectiveQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
-                            new HtmlImageGetter(50, 50, mContext, null
+                            new HtmlImageGetter(60, 60, mContext, null
                             ), null));
                 }
             } else {
@@ -98,8 +99,8 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
                 int evaluationIndex = checkIsQuestionEvaluated(arrListQuestions.get(position).getQuestionId());
                 if (evaluationIndex != -1) {
-                    if (evaluationList.get(position).getStudentResponse() != null) {
-                        holder.tvSubjectiveQuestionAns.setText(Utility.formatHtml(evaluationList.get(evaluationIndex).getStudentResponse()));
+                    if (evaluationList.get(position).getStudentResposne() != null) {
+                        holder.tvSubjectiveQuestionAns.setText(Utility.formatHtml(evaluationList.get(evaluationIndex).getStudentResposne()));
                     }
 
 
@@ -155,13 +156,16 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
     @Override
     public int getItemCount() {
-        return arrListQuestions.size();
+        if (arrListQuestions != null) {
+            return arrListQuestions.size();
+        } else {
+            return 0;
+        }
     }
 
-    public void addAll(ArrayList<Questions> questionsList) {
+    public void addAll(RealmList<ROQuestions> arrListQuestions) {
         try {
-            this.arrListQuestions.clear();
-            this.arrListQuestions.addAll(questionsList);
+            this.arrListQuestions = arrListQuestions;
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
@@ -229,11 +233,14 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
         }
     }
 
-    ArrayList<Evaluation> evaluationList = new ArrayList<Evaluation>();
+    RealmList<ROEvaluation> evaluationList = new RealmList<ROEvaluation>();
 
-    public void setEvaluationData(ArrayList<Evaluation> evaluationList) {
+    public void setEvaluationData(RealmList<ROEvaluation> evaluationList) {
+
+        this.evaluationList = evaluationList;
         this.evaluationList = evaluationList;
         notifyDataSetChanged();
+
     }
 
 
@@ -246,7 +253,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
         public void onClick(View v) {
             int position = (Integer) v.getTag(R.id.idPosition);
 
-            getFragment().updateQuestionEvaluationStatus(position);
+//            getFragment().updateQuestionEvaluationStatus(position);
             TextView[] scoreTextArray = (TextView[]) v.getTag(R.id.idView);
 
             for (int i = 0; i < scoreTextArray.length; i++) {
@@ -260,14 +267,18 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
         }
     };
 
-    private int checkIsQuestionEvaluated(String questionId) {
+    private int checkIsQuestionEvaluated(int questionId) {
 
         int evaluationIndex = -1;
-        for (Evaluation evaluation : evaluationList) {
-            if (evaluation.getQuestionId() != null && evaluation.getQuestionId().contains(questionId)) {
+
+        for (ROEvaluation evaluation : evaluationList) {
+
+
+            if (evaluation.getRoQuestion().getQuestionId() != 0 && evaluation.getRoQuestion().getQuestionId() == questionId) {
                 evaluationIndex = evaluationList.indexOf(evaluation);
                 break;
             }
+
         }
         return evaluationIndex;
     }

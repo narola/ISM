@@ -87,7 +87,7 @@ public class FollowersFragment extends Fragment implements WebserviceWrapper.Web
                 Debug.e(TAG + Utility.getString(R.string.strerrormessage, getActivity()), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
     }
 

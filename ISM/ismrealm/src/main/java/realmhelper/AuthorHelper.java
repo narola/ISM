@@ -44,7 +44,6 @@ public class AuthorHelper {
         realm = RealmAdaptor.getInstance(context);
     }
 
-
     /**
      * Method to get the config data
      *
@@ -490,6 +489,22 @@ public class AuthorHelper {
 
 
     /**
+     * Add ExamSubmittor
+     *
+     * @param roExamSubmission
+     */
+    public void addExamSubmission(ROExamSubmission roExamSubmission) {
+
+        try {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(roExamSubmission);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.e(TAG, "addExamSubmission Exception : " + e.toString());
+        }
+    }
+
+    /**
      * get ExamSubmission.
      *
      * @param examId
@@ -501,6 +516,12 @@ public class AuthorHelper {
     }
 
 
+    /**
+     * get ExamSubmittor.
+     *
+     * @param studentId
+     * @return
+     */
     public ROExamSubmittor getExamSubmittor(int studentId) {
 
         RealmQuery<ROExamSubmittor> query = realm.where(ROExamSubmittor.class).equalTo("studentId", studentId);
@@ -530,6 +551,24 @@ public class AuthorHelper {
 
         } catch (Exception e) {
             Log.e(TAG, "updateExamSubmissionData Exception : " + e.toString());
+        }
+    }
+
+
+    /**
+     * add questions set for the particular exam.
+     *
+     * @param roExamQuestions
+     */
+    public void addExamQuestions(ROExamQuestions roExamQuestions) {
+
+        try {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(roExamQuestions);
+            realm.commitTransaction();
+
+        } catch (Exception e) {
+            Log.e(TAG, "addExamQuestions Exception : " + e.toString());
         }
     }
 
@@ -620,6 +659,14 @@ public class AuthorHelper {
 
     }
 
+
+    /**
+     * get QuestionPalette Data.
+     *
+     * @param questionId
+     * @param studentId
+     * @return
+     */
     public ROQuestionPalette getQuestionPalette(int questionId, int studentId) {
 
         RealmQuery<ROQuestionPalette> query = realm.where(ROQuestionPalette.class).equalTo("roQuestion.questionId", questionId).
@@ -629,6 +676,13 @@ public class AuthorHelper {
     }
 
 
+    /**
+     * getEvaluation data.
+     *
+     * @param questionId
+     * @param studentId
+     * @return
+     */
     public ROEvaluation getEvaluation(int questionId, int studentId) {
 
         RealmQuery<ROEvaluation> query = realm.where(ROEvaluation.class).equalTo("roQuestion.questionId", questionId).
@@ -638,36 +692,49 @@ public class AuthorHelper {
     }
 
 
+    /**
+     * This is to update ExamSubmittor data for the evaluation.
+     *
+     * @param studentId
+     * @param roStudentExamEvaluation
+     */
     public void updateExamSubmittorData(int studentId, ROStudentExamEvaluation roStudentExamEvaluation) {
 
         try {
             RealmQuery<ROExamSubmittor> query = realm.where(ROExamSubmittor.class).equalTo("studentId", studentId);
-
             if (roStudentExamEvaluation.isValid()) {
-
                 ROExamSubmittor roExamSubmittor = query.findFirst();
-                realm.beginTransaction();
-                roExamSubmittor.getRoStudentExamEvaluations().add(roStudentExamEvaluation);
-                realm.copyToRealmOrUpdate(roExamSubmittor);
-                realm.commitTransaction();
-
+                if (!roExamSubmittor.getRoStudentExamEvaluations().contains(roStudentExamEvaluation)) {
+                    realm.beginTransaction();
+                    roExamSubmittor.getRoStudentExamEvaluations().add(roStudentExamEvaluation);
+                    realm.copyToRealmOrUpdate(roExamSubmittor);
+                    realm.commitTransaction();
+                }
             } else {
                 Log.e(TAG, "Object is not valid");
             }
-
         } catch (Exception e) {
             Log.e(TAG, "updateExamQuestionsData Exception : " + e.toString());
         }
     }
 
+
+    /**
+     * get the liost of evaluations for particular exam submittor.
+     *
+     * @param studentId
+     * @return
+     */
     public RealmList<ROStudentExamEvaluation> getListOfStudentEvaluations(int studentId) {
 
         RealmQuery<ROExamSubmittor> query = realm.where(ROExamSubmittor.class).equalTo("studentId", studentId);
+        return query.findFirst().getRoStudentExamEvaluations() != null ? query.findFirst().getRoStudentExamEvaluations() : null;
 
-        return query.findFirst().getRoStudentExamEvaluations();
 
     }
 
+
+    //*******************************************************************************************//
 
     /**
      * arti's code starts from here...

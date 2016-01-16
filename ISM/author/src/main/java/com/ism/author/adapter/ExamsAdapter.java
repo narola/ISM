@@ -97,14 +97,14 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 
 
             if (arrListROExams.get(position).getTotalAssessed() == null || arrListROExams.get(position).getTotalAssessed().equals("")) {
-                holder.tvExamNoofAssessed.setText("0");
+                holder.tvExamNoofAssessed.setText("--");
             } else {
                 holder.tvExamNoofAssessed.setText(arrListROExams.get(position).getTotalAssessed());
             }
 
 
             if (arrListROExams.get(position).getTotalQuestion() == null || arrListROExams.get(position).getTotalQuestion().equals("")) {
-                holder.tvExamNoofQuestion.setText("0");
+                holder.tvExamNoofQuestion.setText("--");
             } else {
                 holder.tvExamNoofQuestion.setText(arrListROExams.get(position).getTotalQuestion());
             }
@@ -113,7 +113,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             if (arrListROExams.get(position).getExamMode().equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
                 holder.tvExamUnassessed.setText(mContext.getString(R.string.strunasssessed));
                 if (arrListROExams.get(position).getTotalUnassessed() == null || arrListROExams.get(position).getTotalUnassessed().equals("")) {
-                    holder.tvExamNoofUnassessed.setText("0");
+                    holder.tvExamNoofUnassessed.setText("--");
                 } else {
                     holder.tvExamNoofUnassessed.setText(arrListROExams.get(position).getTotalUnassessed());
                 }
@@ -121,7 +121,8 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
                 holder.tvExamUnassessed.setText(mContext.getString(R.string.stravgscore));
 
                 if (arrListROExams.get(position).getAverageScore() == null || arrListROExams.get(position).getAverageScore().equals("")) {
-                    holder.tvExamNoofUnassessed.setText("0 " + mContext.getString(R.string.strpercent));
+//                    holder.tvExamNoofUnassessed.setText("0 " + mContext.getString(R.string.strpercent));
+                    holder.tvExamNoofUnassessed.setText("--");
                 } else {
                     holder.tvExamNoofUnassessed.setText(arrListROExams.get(position).getAverageScore() + mContext.getString(R.string.strpercent));
                 }
