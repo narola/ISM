@@ -370,7 +370,7 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
             }
             tvObjectiveAssignmentTitle.setText(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
 
-            tvObjectiveAssignmentDate.setText(Utility.getDateInApiFormat(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CREATED_DATE)));
+            tvObjectiveAssignmentDate.setText(Utility.getDateFromRealm(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CREATED_DATE)));
 
         }
     }

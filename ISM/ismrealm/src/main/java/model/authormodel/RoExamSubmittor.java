@@ -10,6 +10,9 @@ import model.ROStudentExamEvaluation;
 
 /**
  * Created by c166 on 08/01/16.
+ * {@link RealmObject} class-details of exam submittor.
+ * Relationship with {@link ROExam}
+ * Relationship with {@link ROStudentExamEvaluation}
  */
 public class ROExamSubmittor extends RealmObject {
 
