@@ -21,15 +21,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.utility.Debug;
-import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.QuestionBankListAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.assessment.objectiveassessment.ObjectiveAssignmentQuestionsFragment;
+import com.ism.author.model.RealmDataModel;
 import com.ism.author.object.Global;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -40,6 +41,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import io.realm.RealmResults;
+import model.ROAuthorBook;
+import realmhelper.AuthorHelper;
 
 /**
  * these fragment is for getting the questionbank.
@@ -61,7 +66,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private Spinner spQuestionlistFilter, spQuestionlistAuthorBooks, spQuestionlistSort;
     private List<String> arrListFilter, arrListSort;
-    private List<BookData> arrListAuthorBooks;
+    private RealmResults<ROAuthorBook> arrListAuthorBooks = null;
     private EditText etSearchQuestions;
     private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview, tvNoDataMsg;
     private RecyclerView rvQuestionlist;
@@ -76,6 +81,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     public ArrayList<Questions> filterlistOfQuestionBank = new ArrayList<Questions>();
 
 
+    private AuthorHelper authorHelper;
+    private RealmDataModel realmDataModel;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_questionlist, container, false);
@@ -84,6 +93,9 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     }
 
     private void initGlobal() {
+
+        authorHelper = new AuthorHelper(getActivity());
+        realmDataModel = new RealmDataModel();
 
         imgSearchQuestions = (ImageView) view.findViewById(R.id.img_search_questions);
         imgSearchQuestions.setOnClickListener(this);
@@ -151,7 +163,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position >= 1) {
-                    if (arrListAuthorBooks.get(position - 1).getBookId().equalsIgnoreCase(getBaseFragment().
+                    if (String.valueOf(arrListAuthorBooks.get(position - 1).getRoBook().getBookId()).equalsIgnoreCase(getBaseFragment().
                             getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_ID))) {
                         questionBankListAdapter.canAddToPreview = true;
                     } else {
@@ -159,7 +171,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     }
                     spQuestionlistFilter.setSelection(1);
                     spQuestionlistSort.setSelection(1);
-                    filterBooks(arrListAuthorBooks.get(position - 1).getBookId());
+                    filterBooks(String.valueOf(arrListAuthorBooks.get(position - 1).getRoBook().getBookId()));
                 } else {
                     clearFilters();
                 }
@@ -232,6 +244,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     }
 
     private void callApiGetAuthorBooks() {
+
         if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
@@ -243,7 +256,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.alertOffline(getActivity());
+            setUpAuthorBooksData();
         }
     }
 
@@ -263,6 +276,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
+
             Utility.alertOffline(getActivity());
         }
 
@@ -293,27 +307,31 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    if (responseHandler.getAuthorBook().size() > 0) {
-                        arrListAuthorBooks = new ArrayList<BookData>();
-                        arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
-                        List<String> authorBooks = new ArrayList<String>();
-                        authorBooks.add(getString(R.string.strbookname));
-//                    authorBooks.add(getString(R.string.strall));
-                        for (BookData authorbook : arrListAuthorBooks) {
-                            authorBooks.add(authorbook.getBookName());
+//                    if (responseHandler.getAuthorBook().size() > 0) {
+//                        arrListAuthorBooks = new ArrayList<BookData>();
+//                        arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
+//                        List<String> authorBooks = new ArrayList<String>();
+//                        authorBooks.add(getString(R.string.strbookname));
+////                    authorBooks.add(getString(R.string.strall));
+//                        for (BookData authorbook : arrListAuthorBooks) {
+//                            authorBooks.add(authorbook.getBookName());
+//
+//                        }
+//                        Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks,
+//                                Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
+//                        if (getBaseFragment().getBundleArguments() != null) {
+//                            Debug.e(TAG, "THE BOOK NAME IS " + getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
+////                            if (arrListAuthorBooks.contains(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME))) {
+//                            spQuestionlistAuthorBooks.setSelection(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
+////                            } else {
+////                                spQuestionlistAuthorBooks.setSelection(1);
+////                            }
+//                        }
+//                    }
 
-                        }
-                        Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks,
-                                Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
-                        if (getBaseFragment().getBundleArguments() != null) {
-                            Debug.e(TAG, "THE BOOK NAME IS " + getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
-//                            if (arrListAuthorBooks.contains(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME))) {
-                            spQuestionlistAuthorBooks.setSelection(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
-//                            } else {
-//                                spQuestionlistAuthorBooks.setSelection(1);
-//                            }
-                        }
-                    }
+
+                    addAuthorBooks(responseHandler.getAuthorBook());
+                    setUpAuthorBooksData();
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), getActivity());
@@ -333,10 +351,21 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
+//                    if (responseHandler.getQuestionBank().size() > 0) {
+//                        arrListQuestions.addAll(responseHandler.getQuestionBank());
+//                        setQuestionData(arrListQuestions);
+//                        setEmptyView(false);
+//                    } else {
+//                        setEmptyView(true);
+//                    }
+
+
                     if (responseHandler.getQuestionBank().size() > 0) {
-                        arrListQuestions.addAll(responseHandler.getQuestionBank());
-                        setQuestionData(arrListQuestions);
+
                         setEmptyView(false);
+                        addExamQuestions(responseHandler.getQuestionBank());
+//                        setUpExamQuestionsData();
+
                     } else {
                         setEmptyView(true);
                     }
@@ -351,6 +380,38 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         } catch (Exception e) {
             Debug.e(TAG, "onResponseGetCourses Exception : " + e.toString());
         }
+    }
+
+
+    private void addExamQuestions(ArrayList<Questions> arrListQuestions) {
+
+        if (arrListQuestions.size() > 0) {
+
+
+        }
+
+    }
+
+
+    private void addAuthorBooks(ArrayList<BookData> arrListAuthorBooks) {
+        if (arrListAuthorBooks.size() > 0) {
+            for (BookData authorBook : arrListAuthorBooks) {
+                authorHelper.addAuthorBooks(realmDataModel.getROAuthorBook(authorBook, arrListAuthorBooks.indexOf(authorBook)));
+            }
+        }
+    }
+
+    private void setUpAuthorBooksData() {
+        arrListAuthorBooks = authorHelper.getAuthorBooks();
+        List<String> authorBooks = new ArrayList<String>();
+        authorBooks.add(getString(R.string.strbookname));
+        authorBooks.add(getString(R.string.strall));
+        for (ROAuthorBook ROAuthorBook : arrListAuthorBooks) {
+            authorBooks.add(ROAuthorBook.getRoBook().getBookName());
+
+        }
+        Adapters.setUpSpinner(getActivity(), spQuestionlistAuthorBooks, authorBooks, Global.myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
+        spQuestionlistAuthorBooks.setSelection(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
     }
 
 
@@ -458,7 +519,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
         /*this is to retain the status of filter after add edit*/
         filterBooks(spQuestionlistAuthorBooks.getSelectedItemPosition() > 0 ?
-                arrListAuthorBooks.get(spQuestionlistAuthorBooks.getSelectedItemPosition() - 1).getBookId() : "0");
+                String.valueOf(arrListAuthorBooks.get(spQuestionlistAuthorBooks.getSelectedItemPosition() - 1).getRoBook().getBookId()) : "0");
         filterQuestions(spQuestionlistFilter.getSelectedItemPosition());
         sortQuestions(spQuestionlistSort.getSelectedItemPosition());
 

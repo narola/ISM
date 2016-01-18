@@ -19,9 +19,6 @@ import com.ism.author.ws.model.Questions;
 import java.util.ArrayList;
 
 
-/**
- * these fragment class is container of questionlist,questionaddeditfragment,previewquestionfragment.
- */
 //implements FragmentManager.OnBackStackChangedListener
 
 public class AddQuestionContainerFragment extends Fragment {
@@ -41,7 +38,6 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
     FrameLayout flAddquestionfragmentContainerLeft, flAddquestionfragmentContainerRight;
-    public static final int FRAGMENT_QUESTIONLIST = 0, FRAGMENT_QUESTIONADDEDIT = 1, FRAGMENT_PREVIEWQUESTION = 2;
     public QuestionListFragment questionListFragment;
     public PreviewQuestionFragment previewQuestionFragment;
     public QuestionAddEditFragment questionAddEditFragment;

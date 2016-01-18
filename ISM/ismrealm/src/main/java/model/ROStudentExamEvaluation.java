@@ -11,6 +11,8 @@ import model.authormodel.ROExamSubmittor;
  * Created by c85 on 19/11/15.
  * {@link RealmObject} class - evaluation related to exam.
  * Relationship with {@link ROExamSchedule}
+ * Relationship with {@link ROQuestionPalette}
+ * Relationship with {@link ROEvaluation}
  */
 public class ROStudentExamEvaluation extends RealmObject {
 

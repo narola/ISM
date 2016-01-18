@@ -416,6 +416,20 @@ public class Utility {
 
     }
 
+    public static String formatDate(DateFormat dateFormat, String dateText) {
+        String newDate = "";
+        try {
+            Date date = dateFormat.parse(dateText);
+            newDate = DATE_FORMAT_API.format(date);
+
+        } catch (Exception e) {
+
+            Log.e("Exception", "Date exception");
+        }
+        return newDate;
+
+    }
+
 
     public static String getDateFromRealm(String dateText) {
         String newDate = "";
@@ -475,11 +489,14 @@ public class Utility {
 
     public static Date getRealmDateFormat(String date) {
 
+//        Debug.e(TAG, "The Date Is::" + date);
+
         if (date != null && !date.equals("")) {
 
             Date realmDateFormat = null;
             try {
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+//                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                 realmDateFormat = format.parse(date);
             } catch (Exception e) {
                 Log.e("Realm", "Date exception");
