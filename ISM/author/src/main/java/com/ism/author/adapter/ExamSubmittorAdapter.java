@@ -12,16 +12,15 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
+import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.constant.WebConstants;
+import com.ism.author.object.Global;
 import com.ism.author.utility.Debug;
 import com.ism.author.utility.Utility;
-import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.object.Global;
 import com.ism.author.views.CircleImageView;
-import com.ism.author.ws.model.Examsubmittor;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import java.util.ArrayList;
+import io.realm.RealmList;
+import model.authormodel.ROExamSubmittor;
 
 /**
  * Created by c166 on 10/11/15.
@@ -30,8 +29,7 @@ public class ExamSubmittorAdapter extends RecyclerView.Adapter<ExamSubmittorAdap
 
     private static final String TAG = ExamSubmittorAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
-    private ImageLoader imageLoader;
+    private RealmList<ROExamSubmittor> arrListExamSubmittor = null;
     private LayoutInflater inflater;
 
     public static String ARG_STUDENT_ID = "studenId";
@@ -42,8 +40,6 @@ public class ExamSubmittorAdapter extends RecyclerView.Adapter<ExamSubmittorAdap
 
     public ExamSubmittorAdapter(Context mContext) {
         this.mContext = mContext;
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(this.mContext));
         inflater = LayoutInflater.from(mContext);
     }
 
@@ -61,16 +57,24 @@ public class ExamSubmittorAdapter extends RecyclerView.Adapter<ExamSubmittorAdap
 
         try {
 
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
-                    holder.imgExamSubmittorDp, ISMAuthor.options);
+
+            if (arrListExamSubmittor.get(position).getStudentProfilePic() != null && arrListExamSubmittor.get(position).getStudentProfilePic() != "") {
+                Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrListExamSubmittor.get(position).getStudentProfilePic(),
+                        holder.imgExamSubmittorDp, ISMAuthor.options);
+            } else {
+                holder.imgExamSubmittorDp.setImageResource(R.drawable.userdp);
+            }
+
 
             holder.tvExamSubmittorName.setText(arrListExamSubmittor.get(position).getStudentName());
             holder.tvExamSubmittorRollno.setText(mContext.getString(R.string.strrollno) + " " + arrListExamSubmittor.get(position).getStudentId());/*this data set is left*/
             if (arrListExamSubmittor.get(position).getSubmissionDate() != null) {
-                holder.tvExamSubmissionDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", arrListExamSubmittor.get(position).getSubmissionDate()));
+                holder.tvExamSubmissionDate.setText(Utility.getDateFromRealm(arrListExamSubmittor.get(position).getSubmissionDate().toString()));
             }
-            if (arrListExamSubmittor.get(position).getExamStatus().equalsIgnoreCase("finished")) {
+            if (arrListExamSubmittor.get(position).getExamStatus().equalsIgnoreCase(mContext.getResources().getString(R.string.strfinished))) {
+
                 holder.tvExamStatus.setText(arrListExamSubmittor.get(position).getExamStatus());
+
             } else {
                 holder.tvExamStatus.setText(mContext.getResources().getString(R.string.strunasssessed));
             }
@@ -79,24 +83,17 @@ public class ExamSubmittorAdapter extends RecyclerView.Adapter<ExamSubmittorAdap
                 @Override
                 public void onClick(View v) {
 
-                    getBundleArguments().putString(ARG_STUDENT_ID, arrListExamSubmittor.get(position).getStudentId());
-                    getBundleArguments().putInt(ARG_STUDENT_POSITION, position);
-                    getBundleArguments().putString(ARG_STUDENT_PROFILE_PIC, arrListExamSubmittor.get(position).getStudentProfilePic());
-                    getBundleArguments().putString(ARG_STUDENT_NAME, arrListExamSubmittor.get(position).getStudentName());
-
-
+                    setBundleArguments(position);
                     if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase("subjective")) {
+
                         ((AuthorHostActivity) mContext).loadFragmentInMainContainer
                                 (AuthorHostActivity.FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER);
+
                     } else if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase("objective")) {
 
                         ((AuthorHostActivity) mContext).loadFragmentInMainContainer
                                 (AuthorHostActivity.FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS);
-
-                         /*if arguments are there then call the students in the right fragment*/
-//                        if (bundleArgument != null) {
                         ((AuthorHostActivity) mContext).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT);
-//                        }
 
                     }
 
@@ -113,13 +110,17 @@ public class ExamSubmittorAdapter extends RecyclerView.Adapter<ExamSubmittorAdap
 
     @Override
     public int getItemCount() {
-        return arrListExamSubmittor.size();
+
+        if (arrListExamSubmittor != null) {
+            return arrListExamSubmittor.size();
+        } else {
+            return 0;
+        }
     }
 
-    public void addAll(ArrayList<Examsubmittor> examsubmittor) {
+    public void addAll(RealmList<ROExamSubmittor> arrListExamSubmittors) {
         try {
-            this.arrListExamSubmittor.clear();
-            this.arrListExamSubmittor.addAll(examsubmittor);
+            this.arrListExamSubmittor = arrListExamSubmittors;
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
@@ -162,6 +163,16 @@ public class ExamSubmittorAdapter extends RecyclerView.Adapter<ExamSubmittorAdap
         }
     }
 
+
+    private void setBundleArguments(int position) {
+
+
+        Debug.e(TAG, "The Student id is::" + String.valueOf(arrListExamSubmittor.get(position).getStudentId()));
+        getBundleArguments().putString(ARG_STUDENT_ID, String.valueOf(arrListExamSubmittor.get(position).getStudentId()));
+        getBundleArguments().putInt(ARG_STUDENT_POSITION, position);
+        getBundleArguments().putString(ARG_STUDENT_PROFILE_PIC, arrListExamSubmittor.get(position).getStudentProfilePic());
+        getBundleArguments().putString(ARG_STUDENT_NAME, arrListExamSubmittor.get(position).getStudentName());
+    }
 
     private Bundle getBundleArguments() {
         return ((AuthorHostActivity) mContext).getBundle();

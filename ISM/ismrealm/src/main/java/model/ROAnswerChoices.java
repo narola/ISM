@@ -11,14 +11,17 @@ import io.realm.annotations.PrimaryKey;
  * Relationship with {@link ROQuestions}
  */
 public class ROAnswerChoices extends RealmObject {
+
+
     @PrimaryKey
-    private  int answerChoicesId;
+    private int answerChoicesId;
+    private int questionId;
     private String choiceText;
+    private boolean isRight;
     private String imageLink;
     private String audioLink;
     private String videoLink;
     private ROQuestions roQuestions;
-    private boolean isRight;
     private Date createdDate;
     private Date modifiedDate;
 
@@ -28,6 +31,15 @@ public class ROAnswerChoices extends RealmObject {
 
     public void setAnswerChoicesId(int answerChoicesId) {
         this.answerChoicesId = answerChoicesId;
+    }
+
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+
     }
 
     public String getChoiceText() {

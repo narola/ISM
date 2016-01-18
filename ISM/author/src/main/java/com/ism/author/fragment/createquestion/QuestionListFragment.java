@@ -243,7 +243,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
     }
 
@@ -263,7 +263,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
 
     }

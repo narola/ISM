@@ -262,7 +262,7 @@ public class WebserviceWrapper {
                                         attribute);
                                 break;
                             case WebConstants.GET_TRENDING_QUESTION_DETAIL:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GET_TRENDIN_GQUESTION_DETAIL).execute(ResponseHandler.class,
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_TRENDING_GQUESTION_DETAIL).execute(ResponseHandler.class,
                                         attribute);
                                 break;
                             case WebConstants.FOLLOW_QUESTION:
@@ -271,6 +271,12 @@ public class WebserviceWrapper {
                                 break;
                             case WebConstants.ALLOCATE_TEACHER_TO_GROUP:
                                 responseObject = new WebserviceConnector(WebConstants.URL_ALLOCATE_TEACHER_TO_GROUP).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_SUNDAY_EXAM_QUESTION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_SUNDAY_EXAM_QUESTION).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_PAST_TRENDING_QUESTION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_PAST_TRENDING_QUESTION).execute(ResponseHandler.class, attribute);
                                 break;
                         }
                     }

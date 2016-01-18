@@ -42,9 +42,9 @@ public class RealmHandler {
         try {
             for (int i = 0; i < arrayList.size(); i++) {
                 Log.e(TAG, "I item : " + i);
-                ROFeeds ROFeeds = new ROFeeds();
-                ROFeeds.setFeedId(Integer.parseInt(arrayList.get(i).getFeedId()));
-                ROFeeds.setRoUser(studentHelper.getUser(Integer.parseInt(arrayList.get(i).getUserId())));
+                ROFeeds roFeeds = new ROFeeds();
+                roFeeds.setFeedId(Integer.parseInt(arrayList.get(i).getFeedId()));
+                roFeeds.setRoUser(studentHelper.getUser(Integer.parseInt(arrayList.get(i).getUserId())));
                 ROUser feedBy = studentHelper.getUser(Integer.parseInt(arrayList.get(i).getFeedBy()));
                 if (feedBy == null) {
                     feedBy = new ROUser();
@@ -52,31 +52,31 @@ public class RealmHandler {
                     feedBy.setFullName(arrayList.get(i).getFullName());
                     feedBy.setProfilePicture(arrayList.get(i).getProfilePic());
                     studentHelper.saveUser(feedBy);
-                    ROFeeds.setFeedBy(feedBy);
+                    roFeeds.setFeedBy(feedBy);
                 } else {
-                    ROFeeds.setFeedBy(feedBy);
+                    roFeeds.setFeedBy(feedBy);
                 }
-                ROFeeds.setFeedText(arrayList.get(i).getFeedText());
+                roFeeds.setFeedText(arrayList.get(i).getFeedText());
                 //ROFeeds.setProfilePic(arrayList.get(i).getProfilePic());
-                ROFeeds.setAudioLink(arrayList.get(i).getAudioLink());
-                ROFeeds.setVideoLink(arrayList.get(i).getVideoLink());
-                ROFeeds.setVideoThumbnail(arrayList.get(i).getVideoThumbnail());
-                ROFeeds.setTotalComment(Integer.parseInt(arrayList.get(i).getTotalComment()));
-                ROFeeds.setTotalLike(Integer.parseInt(arrayList.get(i).getTotalLike()));
-                ROFeeds.setCreatedDate(Utility.getDateFormateMySql(arrayList.get(i).getCreatedDate()));
+                roFeeds.setAudioLink(arrayList.get(i).getAudioLink());
+                roFeeds.setVideoLink(arrayList.get(i).getVideoLink());
+                roFeeds.setVideoThumbnail(arrayList.get(i).getVideoThumbnail());
+                roFeeds.setTotalComment(Integer.parseInt(arrayList.get(i).getTotalComment()));
+                roFeeds.setTotalLike(Integer.parseInt(arrayList.get(i).getTotalLike()));
+                roFeeds.setCreatedDate(Utility.getDateFormateMySql(arrayList.get(i).getCreatedDate()));
                 if (!arrayList.get(i).getModifiedDate().equals("0000-00-00 00:00:00"))
-                    ROFeeds.setModifiedDate(Utility.getDateFormateMySql(arrayList.get(i).getModifiedDate()));
-                ROFeeds.setSelfLike(arrayList.get(i).getLike());
-                ROFeeds.setIsSync(0);
-                ROFeeds.setPostedOn(Utility.getDateFormate(arrayList.get(i).getLike()));
-                studentHelper.saveFeeds(ROFeeds);
+                    roFeeds.setModifiedDate(Utility.getDateFormateMySql(arrayList.get(i).getModifiedDate()));
+                roFeeds.setSelfLike(arrayList.get(i).getLike());
+                roFeeds.setIsSync(0);
+                roFeeds.setPostedOn(Utility.getDateFormate(arrayList.get(i).getLike()));
+                studentHelper.saveFeeds(roFeeds);
                 ArrayList<Comment> arrayListComment = arrayList.get(i).getComments();
                 if (arrayListComment.size() > 0) {
                     for (int j = 0; j < arrayListComment.size(); j++) {
-                        ROFeedComment ROFeedComment = new ROFeedComment();
-                        ROFeedComment.setFeedCommentId(Integer.parseInt(arrayListComment.get(j).getId()));
-                        ROFeedComment.setComment(arrayListComment.get(j).getComment());
-                        ROFeedComment.setFeed(ROFeeds);
+                        ROFeedComment roFeedComment = new ROFeedComment();
+                        roFeedComment.setFeedCommentId(Integer.parseInt(arrayListComment.get(j).getId()));
+                        roFeedComment.setComment(arrayListComment.get(j).getComment());
+                        roFeedComment.setRoFeed(roFeeds);
                         ROUser commentBy = studentHelper.getUser(Integer.parseInt(arrayListComment.get(j).getCommentBy()));
                         if (commentBy == null) {
                             commentBy = new ROUser();
@@ -85,24 +85,24 @@ public class RealmHandler {
                             commentBy.setFullName(arrayListComment.get(j).getFullName());
                             commentBy.setProfilePicture(arrayListComment.get(j).getProfilePic());
                             studentHelper.saveUser(commentBy);
-                            ROFeedComment.setCommentBy(commentBy);
+                            roFeedComment.setCommentBy(commentBy);
                         } else {
-                            ROFeedComment.setCommentBy(commentBy);
+                            roFeedComment.setCommentBy(commentBy);
                         }
-                        ROFeedComment.setFeed(ROFeeds);
-                        ROFeedComment.setCreatedDate(Utility.getDateFormateMySql(arrayListComment.get(j).getCreatedDate()));
-                        studentHelper.saveComments(ROFeedComment);
+                        roFeedComment.setRoFeed(roFeeds);
+                        roFeedComment.setCreatedDate(Utility.getDateFormateMySql(arrayListComment.get(j).getCreatedDate()));
+                        studentHelper.saveComments(roFeedComment);
                         //feeds.getComments().add(feedComment);
                     }
                 }
                 ArrayList<FeedImages> arrayListImages = arrayList.get(i).getFeedImages();
                 if (arrayListImages.size() > 0) {
                     for (int j = 0; j < arrayListImages.size(); j++) {
-                        ROFeedImage ROFeedImage = new ROFeedImage();
-                        ROFeedImage.setFeedImageId(Integer.parseInt(arrayListImages.get(j).getId()));
-                        ROFeedImage.setImageLink(arrayListImages.get(j).getImageLink());
-                        ROFeedImage.setFeed(ROFeeds);
-                        studentHelper.saveFeedImages(ROFeedImage);
+                        ROFeedImage roFeedImage = new ROFeedImage();
+                        roFeedImage.setFeedImageId(Integer.parseInt(arrayListImages.get(j).getId()));
+                        roFeedImage.setImageLink(arrayListImages.get(j).getImageLink());
+                        roFeedImage.setFeed(roFeeds);
+                        studentHelper.saveFeedImages(roFeedImage);
                         //ROFeeds.getROFeedImages().add(ROFeedImage);
                     }
                 }
@@ -112,8 +112,8 @@ public class RealmHandler {
         }
     }
 
-    public RealmResults<ROFeeds> getFeeds(int feed_id, int userId) {
-        return studentHelper.getFeeds(feed_id, userId);
+    public RealmResults<ROFeeds> getFeeds() {
+        return studentHelper.getFeeds();
     }
 
     public RealmResults<ROFeeds> getUpdatedFeedLikes(boolean status) {
@@ -123,13 +123,13 @@ public class RealmHandler {
     public void saveTrendingQuestion(ArrayList<TrendingQuestion> arrayList, String authorId) {
         ROUser userPostFor = studentHelper.getUser(Integer.parseInt(authorId));
         for (TrendingQuestion question : arrayList) {
-            ROTrendingQuestion ROTrendingQuestion = new ROTrendingQuestion();
-            ROTrendingQuestion.setTrendingId(Integer.parseInt(question.getTrendingId()));
-            ROTrendingQuestion.setQuestionText(question.getQuestionText());
-            ROTrendingQuestion.setFollowerCount(Integer.parseInt(question.getFollowerCount() == null ? "0" : question.getFollowerCount()));
-            ROTrendingQuestion.setTotalComment(Integer.parseInt(question.getTotalComment() == null ? "0" : question.getTotalComment()));
-            ROTrendingQuestion.setIsFollowed(Integer.parseInt(question.getIsFollowed() == null ? "0" : question.getIsFollowed()));
-            ROTrendingQuestion.setCreatedDate(Utility.getDateFormateMySql(question.getPostedOn()));
+            ROTrendingQuestion roTrendingQuestion = new ROTrendingQuestion();
+            roTrendingQuestion.setTrendingId(Integer.parseInt(question.getTrendingId()));
+            roTrendingQuestion.setQuestionText(question.getQuestionText());
+            roTrendingQuestion.setFollowerCount(Integer.parseInt(question.getFollowerCount() == null ? "0" : question.getFollowerCount()));
+            roTrendingQuestion.setTotalComment(Integer.parseInt(question.getTotalComment() == null ? "0" : question.getTotalComment()));
+            roTrendingQuestion.setIsFollowed(Integer.parseInt(question.getIsFollowed() == null ? "0" : question.getIsFollowed()));
+            roTrendingQuestion.setCreatedDate(Utility.getDateFormateMySql(question.getPostedOn()));
             ROUser userPostBy = studentHelper.getUser(Integer.parseInt(question.getPostedByUserId()));
 
             if (userPostBy == null) {
@@ -137,12 +137,12 @@ public class RealmHandler {
                 userPostBy.setUserId(Integer.parseInt(question.getPostedByUserId()));
                 userPostBy.setFullName(question.getPostedByUsername());
                 userPostBy.setProfilePicture(question.getPostedByPic());
-                ROTrendingQuestion.setQuestionBy(userPostBy);
+                roTrendingQuestion.setQuestionBy(userPostBy);
             } else
-                ROTrendingQuestion.setQuestionBy(userPostBy);
+                roTrendingQuestion.setQuestionBy(userPostBy);
 
-            ROTrendingQuestion.setQuestionFor(userPostFor);
-            studentHelper.saveTrendingQuestion(ROTrendingQuestion);
+            roTrendingQuestion.setQuestionFor(userPostFor);
+            studentHelper.saveTrendingQuestion(roTrendingQuestion);
         }
     }
 

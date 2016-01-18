@@ -90,7 +90,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
             callApiGetAllFeeds();
         } else {
             Utility.alertOffline(getActivity());
-            setUpData(dataToRealm.getFeeds(-1, Integer.parseInt(Global.strUserId)));
+            setUpData(dataToRealm.getFeeds());
         }
 //        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
 //            recyclerPostFeeds.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -196,7 +196,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                         .execute(WebConstants.GET_ALL_FEEDS);
             } else {
                 Utility.alertOffline(getActivity());
-                setUpData(dataToRealm.getFeeds(-1, Integer.parseInt(Global.strUserId)));
+                setUpData(dataToRealm.getFeeds());
             }
 
         } catch (Exception e) {
@@ -247,7 +247,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     if (responseHandler.getFeeds().size() != 0) {
                         ParseAllData(responseHandler.getFeeds());
-                        adpPostFeeds = new PostFeedsAdapter(getActivity(), dataToRealm.getFeeds(-1,Integer.parseInt(Global.strUserId)));
+                        adpPostFeeds = new PostFeedsAdapter(getActivity(), dataToRealm.getFeeds());
                         recyclerPostFeeds.setAdapter(adpPostFeeds);
 
                         //setUpData(studentHelper.getFeeds(-1));

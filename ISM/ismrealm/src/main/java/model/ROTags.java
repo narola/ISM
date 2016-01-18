@@ -12,11 +12,10 @@ import io.realm.annotations.PrimaryKey;
 public class ROTags extends RealmObject {
 
     @PrimaryKey
-    private  int tagId;
+    private int tagId;
     private String tagName;
     private Date createdDate;
     private Date modifiedDate;
-
 
 
     public int getTagId() {

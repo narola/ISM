@@ -174,7 +174,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                     if (Utility.isConnected(getActivity())) {
                         callApiGetStates(Integer.parseInt(arrListCountries.get(position - 1).getId()));
                     } else {
-                        Utility.toastOffline(getActivity());
+                        Utility.alertOffline(getActivity());
                     }
                 } else {
                     Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
@@ -194,7 +194,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                     if (Utility.isConnected(getActivity())) {
                         callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
                     } else {
-                        Utility.toastOffline(getActivity());
+                        Utility.alertOffline(getActivity());
                     }
                 } else {
                     Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
@@ -355,7 +355,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
     }
 

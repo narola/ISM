@@ -32,8 +32,8 @@ public class ROFeeds extends RealmObject {
     private int isSync;
     private String selfLike;
 
-    private RealmList<ROFeedComment> comments = new RealmList<ROFeedComment>();
-    private RealmList<ROFeedImage> ROFeedImages = new RealmList<ROFeedImage>();
+    private RealmList<ROFeedComment> roFeedComment = new RealmList<ROFeedComment>();
+    private RealmList<ROFeedImage> roFeedImages = new RealmList<ROFeedImage>();
 
     public ROUser getRoUser() {
         return roUser;
@@ -139,20 +139,20 @@ public class ROFeeds extends RealmObject {
         this.selfLike = selfLike;
     }
 
-    public RealmList<ROFeedComment> getComments() {
-        return comments;
+    public RealmList<ROFeedComment> getRoFeedComment() {
+        return roFeedComment;
     }
 
-    public void setComments(RealmList<ROFeedComment> comments) {
-        this.comments = comments;
+    public void setRoFeedComment(RealmList<ROFeedComment> roFeedComment) {
+        this.roFeedComment = roFeedComment;
     }
 
-    public RealmList<ROFeedImage> getROFeedImages() {
-        return ROFeedImages;
+    public RealmList<ROFeedImage> getRoFeedImages() {
+        return roFeedImages;
     }
 
-    public void setROFeedImages(RealmList<ROFeedImage> ROFeedImages) {
-        this.ROFeedImages = ROFeedImages;
+    public void setRoFeedImages(RealmList<ROFeedImage> roFeedImages) {
+        this.roFeedImages = roFeedImages;
     }
 
     public int isSync() {

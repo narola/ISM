@@ -56,6 +56,7 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
     private TextView txtTrendingQuestion;
     private TextView txtTrendingQuestionFor;
     private RealmHandler realmHandler;
+    private TextView txtPastQuestions;
 
     public static GoTrendingFragment newInstance() {
         GoTrendingFragment fragment = new GoTrendingFragment();
@@ -91,13 +92,23 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
         txtTrendingQuestion=(TextView)view.findViewById(R.id.txt_question_tending);
         txtTrendingQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
 
+        txtPastQuestions=(TextView)view.findViewById(R.id.txt_past_questions);
+        txtPastQuestions.setTypeface(Global.myTypeFace.getRalewayRegular());
+
         txtTrendingQuestionFor=(TextView)view.findViewById(R.id.txt_question_for);
         txtTrendingQuestionFor.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-        txtTrendingQuestionFor.setText(getResources().getString(R.string.strSendQuestionTo)+" " +activityHost.getBundle().getString(AppConstant.AUTHOR_NAME));
+        txtTrendingQuestionFor.setText(getResources().getString(R.string.strSendQuestionTo) + " " + activityHost.getBundle().getString(AppConstant.AUTHOR_NAME));
 
 
         callApiForGetTrending();
+
+        txtPastQuestions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activityHost.loadFragment(MyAuthorFragment.FRAGMENT_AUTHOR_PAST_QUESTIONS,null);
+            }
+        });
 //        sendQuestionsAdapter=new SendQuestionToAuthorAdapter(this,getActivity());
 //        rvQuestions.setAdapter(sendQuestionsAdapter);
     }
@@ -198,15 +209,15 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
             Debug.i(TAG, "onResponseGetTrending Exceptions : " + e.getLocalizedMessage());
         }
     }
-    private void setUpData(RealmResults<ROTrendingQuestion> ROTrendingQuestions) {
+    private void setUpData(RealmResults<ROTrendingQuestion> realmResults) {
         try {
-            if (ROTrendingQuestions != null && ROTrendingQuestions.size() > 0) {
+            if (realmResults != null && realmResults.size() > 0) {
                // setEmptyView(false);
 
-                sendQuestionsAdapter = new SendQuestionToAuthorAdapter(this,getActivity(), ROTrendingQuestions);
+                sendQuestionsAdapter = new SendQuestionToAuthorAdapter(this,getActivity(), realmResults);
                 rvQuestions.setAdapter(sendQuestionsAdapter);
-                for(ROTrendingQuestion ROTrendingQuestion : ROTrendingQuestions){
-                    callApiForGetTrendingQuestionDetails(ROTrendingQuestion.getTrendingId());
+                for(ROTrendingQuestion roTrendingQuestion : realmResults){
+                    callApiForGetTrendingQuestionDetails(roTrendingQuestion.getTrendingId());
                 }
 //                trendingQueAnsAuthorAdapter =new GoTrendingQueAnsAuthorAdapter(getActivity());
 //                trendingQueAnsAuthorAdapter.addAll(realmHandler.getTrendingQuestions(activityHost.getBundle().getString(AppConstant.AUTHOR_ID)));

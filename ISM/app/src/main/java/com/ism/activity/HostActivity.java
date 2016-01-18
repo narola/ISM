@@ -142,7 +142,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 
     private int currentMainFragment = -1;
     private int currentRightFragment;
-	private int relaunchRightFragmentId = -1;
+    private int relaunchRightFragmentId = -1;
     private int currentMainFragmentBg;
     private ArrayList<NotificationSetting> arrayListNotificationSettings = new ArrayList<>();
     private ArrayList<SMSAlert> arrayListSMSAlert = new ArrayList<>();
@@ -443,10 +443,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
         });
 
         imgProfileController.setOnClickListener(new View.OnClickListener() {
-	        @Override
-	        public void onClick(View v) {
-		        loadFragment(FRAGMENT_PROFILE_CONTROLLER, null);
-	        }
+            @Override
+            public void onClick(View v) {
+                loadFragment(FRAGMENT_PROFILE_CONTROLLER, null);
+            }
         });
 
         imgChat.setOnClickListener(new View.OnClickListener() {
@@ -523,19 +523,19 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     if (currentMainFragment != fragment) {
                         com.ism.fragment.tutorialGroup.QuestionPaletteFragment questionPaletteFragment = com.ism.fragment.tutorialGroup.QuestionPaletteFragment.newInstance(true);
                         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-		                        TutorialFragment.newInstance(fragmentArguments, questionPaletteFragment)).commit();
+                                TutorialFragment.newInstance(fragmentArguments, questionPaletteFragment)).commit();
 
-	                    switch (currentRightFragment) {
-		                    case FRAGMENT_NOTES:
-		                    case FRAGMENT_PROFILE_CONTROLLER:
-		                    case FRAGMENT_CHAT:
-			                    relaunchRightFragmentId = currentRightFragment;
-			                    break;
-		                    default:
-			                    relaunchRightFragmentId = FRAGMENT_CHAT;
-			                    break;
-	                    }
-	                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        switch (currentRightFragment) {
+                            case FRAGMENT_NOTES:
+                            case FRAGMENT_PROFILE_CONTROLLER:
+                            case FRAGMENT_CHAT:
+                                relaunchRightFragmentId = currentRightFragment;
+                                break;
+                            default:
+                                relaunchRightFragmentId = FRAGMENT_CHAT;
+                                break;
+                        }
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.fl_fragment_container_right, questionPaletteFragment).commit();
 
                         /*FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -545,9 +545,9 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                         imgProfileController.setActivated(false);
                         imgChat.setActivated(false);*/
                     } else if (fragmentArguments != null) {
-	                    if (listenerHostTutorial != null) {
-		                    listenerHostTutorial.setNewFragmentArguments(fragmentArguments);
-	                    }
+                        if (listenerHostTutorial != null) {
+                            listenerHostTutorial.setNewFragmentArguments(fragmentArguments);
+                        }
                     }
                     break;
                 case FRAGMENT_CLASSROOM:
@@ -645,6 +645,12 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                 case MyAuthorFragment.FRAGMENT_GO_TRENDING:
                     listenerHostMyAuthor.onLoadFragment(MyAuthorFragment.FRAGMENT_GO_TRENDING);
                     //activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
+                    break;
+                case MyAuthorFragment.FRAGMENT_AUTHOR_PAST_QUESTIONS:
+                    listenerHostMyAuthor.onLoadFragment(MyAuthorFragment.FRAGMENT_AUTHOR_PAST_QUESTIONS);
+                    break;
+                case MyAuthorFragment.FRAGMENT_PAST_TRENDING_QUESTION_DETAIL:
+                    listenerHostMyAuthor.onLoadFragment(MyAuthorFragment.FRAGMENT_PAST_TRENDING_QUESTION_DETAIL);
                     break;
             }
         } catch (Exception e) {
@@ -784,9 +790,18 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     currentMainChildFragment = fragment;
 
                     break;
+                case MyAuthorFragment.FRAGMENT_AUTHOR_PAST_QUESTIONS:
+                    loadTopMenuItem(getResources().getString(R.string.strAuthorsPastQuestions), true);
+                    currentMainChildFragment = fragment;
+
+                    break;
                 case FRAGMENT_SUNDAY_EXAM:
                     llControllerLeft.setVisibility(View.GONE);
-	                flFragmentContainerRight.setVisibility(View.GONE);
+                    flFragmentContainerRight.setVisibility(View.GONE);
+                    break;
+                case MyAuthorFragment.FRAGMENT_PAST_TRENDING_QUESTION_DETAIL:
+                    loadTopMenuItem(getResources().getString(R.string.strAuthorsPastQuestions), true);
+                    currentMainChildFragment = fragment;
                     break;
 
             }
@@ -827,7 +842,7 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
                     imgTutorial.setActivated(false);
                     loadControllerTopMenu(null);
 //                    getFragmentManager().popBackStack(QuestionPaletteFragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-	                loadFragment(relaunchRightFragmentId > 0 ? relaunchRightFragmentId : FRAGMENT_CHAT, null);
+                    loadFragment(relaunchRightFragmentId > 0 ? relaunchRightFragmentId : FRAGMENT_CHAT, null);
                     txtTitle.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_CLASSROOM:
@@ -896,10 +911,10 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
 //                case AuthorDeskFragment.FRAGMENT_BOOKS:
                     currentChildAuthorDesk = -1;
                     break;
-	            case FRAGMENT_SUNDAY_EXAM:
-		            llControllerLeft.setVisibility(View.VISIBLE);
-		            flFragmentContainerRight.setVisibility(View.VISIBLE);
-		            break;
+                case FRAGMENT_SUNDAY_EXAM:
+                    llControllerLeft.setVisibility(View.VISIBLE);
+                    flFragmentContainerRight.setVisibility(View.VISIBLE);
+                    break;
 
             }
         } catch (Exception e) {
@@ -1415,13 +1430,13 @@ public class HostActivity extends FragmentActivity implements FragmentListener, 
     }
 
     public void updateLayoutForExam(boolean examStart) {
-	    llControllerLeft.setVisibility(examStart ? View.GONE : View.VISIBLE);
-	    imgHome.setEnabled(!examStart);
-	    imgSearch.setEnabled(!examStart);
+        llControllerLeft.setVisibility(examStart ? View.GONE : View.VISIBLE);
+        imgHome.setEnabled(!examStart);
+        imgSearch.setEnabled(!examStart);
         etSearch.setEnabled(!examStart);
-	    imgNotes.setEnabled(!examStart);
-	    imgProfileController.setEnabled(!examStart);
-	    imgChat.setEnabled(!examStart);
+        imgNotes.setEnabled(!examStart);
+        imgProfileController.setEnabled(!examStart);
+        imgChat.setEnabled(!examStart);
     }
 
 }

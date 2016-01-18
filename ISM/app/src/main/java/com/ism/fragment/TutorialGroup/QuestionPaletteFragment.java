@@ -22,7 +22,7 @@ import com.ism.activity.HostActivity;
 import com.ism.adapter.QuestionPaletteAdapter;
 import com.ism.adapter.TutorialGroupAdapter;
 import com.ism.views.TimerView;
-import com.ism.ws.model.FridayExamQuestion;
+import com.ism.ws.model.ExamQuestion;
 import com.ism.ws.model.TutorialGroupMember;
 import com.ism.ws.model.TutorialGroupProfile;
 
@@ -39,7 +39,7 @@ import realmhelper.StudentHelper;
 /**
  * Created by c161 on 14/10/15.
  */
-public class QuestionPaletteFragment extends Fragment implements com.ism.fragment.tutorialGroup.ExamFragment.ExamListener, HostActivity.HostListenerQuestionPalette {
+public class QuestionPaletteFragment extends Fragment implements FridayExamFragment.ExamListener, HostActivity.HostListenerQuestionPalette {
 
 	private static final String TAG = QuestionPaletteFragment.class.getSimpleName();
 
@@ -57,7 +57,7 @@ public class QuestionPaletteFragment extends Fragment implements com.ism.fragmen
 	private CountDownTimer timerExam;
 //	private ExamFragment fragExam;
 	private QuestionPaletteAdapter adpQuestionPalette;
-	private ArrayList<FridayExamQuestion> arrListQuestions;
+	private ArrayList<ExamQuestion> arrListQuestions;
 	private TutorialGroupAdapter adpTutorialGroup;
 	private ArrayList<TutorialGroupMember> arrListGroupMembers;
 	private StudentHelper studentHelper;
@@ -164,7 +164,7 @@ public class QuestionPaletteFragment extends Fragment implements com.ism.fragmen
 	}
 
 	@Override
-	public void startTest(ArrayList<FridayExamQuestion> questions, String examId, com.ism.fragment.tutorialGroup.ExamFragment examFragment) {
+	public void startTest(ArrayList<ExamQuestion> questions, String examId, FridayExamFragment fridayExamFragment) {
 		try {
 			/*longExamDurationMilli = examFragment.getExamDurationMinutes() * 60 * 1000;
 			timerViewExam.setTotalTimeMin(examFragment.getExamDurationMinutes());
@@ -188,7 +188,7 @@ public class QuestionPaletteFragment extends Fragment implements com.ism.fragmen
 			lvTutorialGroup.setVisibility(View.GONE);
 			rlQuestionPalette.setVisibility(View.VISIBLE);
 			arrListQuestions = questions;
-			adpQuestionPalette = new QuestionPaletteAdapter(getActivity(), arrListQuestions, examFragment);
+			adpQuestionPalette = new QuestionPaletteAdapter(getActivity(), arrListQuestions, fridayExamFragment);
 			gridQuestion.setAdapter(adpQuestionPalette);
 			txtTitle.setText(R.string.question_palette);
 		} catch (Exception e) {

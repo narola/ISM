@@ -49,7 +49,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private int addCommentFeedPosition = -1;
     private int tagFeedPosition = -1;
     private StudentHelper studentHelper;
-    private int viewAllFeedId = -1;
+    private int viewAllCommentFeedId = -1;
     private Attribute attributeComments;
     private int feedLiked;
     private int totalLikes = -1;
@@ -114,14 +114,14 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             feedLiked = Integer.parseInt(arrListFeeds.get(position).getSelfLike());
             holder.llComments.removeAllViews();
 
-            if (arrListFeeds.get(position).getComments() != null) {
+            if (arrListFeeds.get(position).getRoFeedComment() != null) {
                 holder.txtViewAll.setVisibility(arrListFeeds.get(position).getTotalComment() > 2 ? View.VISIBLE : View.GONE);
-                int j = arrListFeeds.get(position).getComments().size() - 2;
+                int j = arrListFeeds.get(position).getRoFeedComment().size() - 2;
                 if (j < 0) {
                     j = 0;
                 }
-                for (int i = j; i < arrListFeeds.get(position).getComments().size(); i++) {
-                    holder.llComments.addView(getCommentView(arrListFeeds.get(position).getComments().get(i)));
+                for (int i = j; i < arrListFeeds.get(position).getRoFeedComment().size(); i++) {
+                    holder.llComments.addView(getCommentView(arrListFeeds.get(position).getRoFeedComment().get(i)));
                 }
             }
             holder.imgLike.setActivated(arrListFeeds.get(position).getSelfLike().equals("1"));
@@ -151,7 +151,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 @Override
                 public void onClick(View v) {
                     if (Utility.isConnected(context)) {
-                        viewAllFeedId = position;
+                        viewAllCommentFeedId = position;
                         callApiGetAllComments(position);
                     } else {
                         setUpData(studentHelper.getFeedComments(arrListFeeds.get(position).getFeedId()));
@@ -346,15 +346,15 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 //                    studentHelper.saveUser(user);
 //                    ROFeedComment.setCommentBy(user);
 //                    model.saveFeeds feeds = new model.saveFeeds();
-//                    feeds.setFeedId(Integer.parseInt(arrListFeeds.get(viewAllFeedId).getFeedId()));
+//                    feeds.setFeedId(Integer.parseInt(arrListFeeds.get(viewAllCommentFeedId).getFeedId()));
 //                    ROFeedComment.setFeed(feeds);
 //                    ROFeedComment.setComment(comments.get(i).getComment());
 //                    studentHelper.FeedCommments(ROFeedComment);
                 }
             }
-            setUpData(studentHelper.getFeedComments(arrListFeeds.get(viewAllFeedId).getFeedId()));
+            //  setUpData(studentHelper.getFeedComments(arrListFeeds.get(viewAllCommentFeedId).getFeedId()));
         } catch (Exception e) {
-            Log.e(TAG, "ParseAllStudymatesData Ec=xceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "ParseAllStudymatesData Exceptions : " + e.getLocalizedMessage());
         }
     }
 
@@ -386,16 +386,16 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private void saveComment(int commentId) {
         try {
-            ROFeeds ROFeeds = studentHelper.getFeeds(arrListFeeds.get(addCommentFeedPosition).getFeedId(), Integer.parseInt(Global.strUserId)).get(0);
+            ROFeeds ROFeeds = studentHelper.getFeeds(arrListFeeds.get(addCommentFeedPosition).getFeedId());
             ROFeedComment ROFeedComment = new ROFeedComment();
             ROFeedComment.setCommentBy(studentHelper.getUser(Integer.parseInt(Global.strUserId)));
             ROFeedComment.setComment(attributeComments.getComment());
             ROFeedComment.setFeedCommentId(commentId);
             ROFeedComment.setCreatedDate(Utility.getDateMySql());
-            ROFeedComment.setFeed(ROFeeds);
+            ROFeedComment.setRoFeed(ROFeeds);
             studentHelper.saveComments(ROFeedComment);
             studentHelper.updateTotalComments(ROFeeds);
-            arrListFeeds = studentHelper.getFeeds(-1, Integer.parseInt(Global.strUserId));
+            arrListFeeds = studentHelper.getFeeds();
             notifyDataSetChanged();
         } catch (Exception e) {
             Log.e(TAG, "addCommentToDb Exception : " + e.getLocalizedMessage());
@@ -405,9 +405,9 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private void updateFeedLike(int feedId) {
         try {
 
-            ROFeeds ROFeeds = studentHelper.getFeeds(feedId, Integer.parseInt(Global.strUserId)).get(0);
+            ROFeeds ROFeeds = studentHelper.getFeeds(feedId);
             studentHelper.updateFeedLikes(ROFeeds);
-            arrListFeeds = studentHelper.getFeeds(-1, Integer.parseInt(Global.strUserId));
+            arrListFeeds = studentHelper.getFeeds();
             notifyDataSetChanged();
         } catch (Exception e) {
             Log.e(TAG, "updateFeedLike Exception : " + e.getLocalizedMessage());
@@ -418,23 +418,27 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         try {
             if (comments.size() > 0) {
                 for (int i = 0; i < comments.size(); i++) {
-                    ROFeeds ROFeeds = studentHelper.getFeeds(arrListFeeds.get(viewAllFeedId).getFeedId(), Integer.parseInt(Global.strUserId)).get(0);
-                    ROFeedComment ROFeedComment = new ROFeedComment();
-                    ROFeedComment.setFeedCommentId(Integer.parseInt(comments.get(i).getId()));
-                    ROUser ROUser = new ROUser();
-                    ROUser.setFullName(comments.get(i).getFullName());
-                    ROUser.setProfilePicture(comments.get(i).getProfilePic());
-                    ROUser.setUserId(Integer.parseInt(comments.get(i).getCommentBy()));
-                    studentHelper.saveUser(ROUser);
-                    ROFeedComment.setCommentBy(ROUser);
-                    ROFeedComment.setFeed(ROFeeds);
-                    ROFeedComment.setCreatedDate(Utility.getDateFormateMySql(comments.get(i).getCreatedDate()));
-                    ROFeedComment.setComment(comments.get(i).getComment());
-                    studentHelper.saveComments(ROFeedComment);
-                    Log.e(TAG, "PaseAllComments : " + ROFeedComment);
+                    Log.e(TAG, "Feed ID : " + arrListFeeds.get(viewAllCommentFeedId).getFeedId());
+                    ROFeeds roFeeds = studentHelper.getFeeds(arrListFeeds.get(viewAllCommentFeedId).getFeedId());
+                    ROFeedComment roFeedComment = new ROFeedComment();
+                    roFeedComment.setFeedCommentId(Integer.parseInt(comments.get(i).getId()));
+                    ROUser rOUser = studentHelper.getUser(Integer.parseInt(comments.get(i).getCommentBy()));
+                    if (rOUser == null) {
+                        rOUser = new ROUser();
+                        rOUser.setFullName(comments.get(i).getFullName());
+                        rOUser.setProfilePicture(comments.get(i).getProfilePic());
+                        rOUser.setUserId(Integer.parseInt(comments.get(i).getCommentBy()));
+                    }
+                    studentHelper.saveUser(rOUser);
+                    roFeedComment.setCommentBy(rOUser);
+                    roFeedComment.setRoFeed(roFeeds);
+                    roFeedComment.setCreatedDate(Utility.getDateFormateMySql(comments.get(i).getCreatedDate()));
+                    roFeedComment.setComment(comments.get(i).getComment());
+                    studentHelper.saveComments(roFeedComment);
+                    Log.e(TAG, "PaseAllComments : " + roFeedComment);
                 }
             }
-            setUpData(studentHelper.getFeedComments(arrListFeeds.get(viewAllFeedId).getFeedId()));
+            setUpData(studentHelper.getFeedComments(arrListFeeds.get(viewAllCommentFeedId).getFeedId()));
 
         } catch (Exception e) {
             Log.e(TAG, "ParseAllComments Exception : " + e.getLocalizedMessage());

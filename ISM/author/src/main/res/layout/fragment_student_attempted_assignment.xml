@@ -24,7 +24,8 @@
             android:id="@+id/rv_studentattempted_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/d1dp"/>
 
         <include
             layout="@layout/include_no_data"

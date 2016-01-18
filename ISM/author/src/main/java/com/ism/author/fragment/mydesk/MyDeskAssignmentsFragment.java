@@ -86,7 +86,7 @@ public class MyDeskAssignmentsFragment extends Fragment implements WebserviceWra
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
 
     }

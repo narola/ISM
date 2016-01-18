@@ -141,8 +141,8 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
         showLoginLayout();
 
-//        etUserName.setText("twinkle");
-//        etPwd.setText("narola21");
+        etUserName.setText("twinkle");
+        etPwd.setText("narola21");
 
 
         etUserName.setTypeface(myTypeFace.getRalewayRegular());

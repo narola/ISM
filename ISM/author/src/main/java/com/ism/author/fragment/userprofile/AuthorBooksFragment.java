@@ -162,7 +162,7 @@ public class AuthorBooksFragment extends Fragment implements WebserviceWrapper.W
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
 
     }

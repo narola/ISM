@@ -748,7 +748,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
     }
 
@@ -841,7 +841,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 //                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
 //            }
 //        } else {
-//            Utility.toastOffline(getActivity());
+//            Utility.alertOffline(getActivity());
 //        }
 //
 //    }
@@ -969,7 +969,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
 
     }
@@ -1081,7 +1081,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
     }
 

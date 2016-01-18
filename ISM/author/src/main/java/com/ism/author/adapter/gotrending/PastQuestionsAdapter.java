@@ -85,8 +85,7 @@ public class PastQuestionsAdapter extends RecyclerView.Adapter<PastQuestionsAdap
                     /*this is to select the current student*/
                     setBundleArgument(arrayList.get(position).getTrendingId());
                     ((AuthorHostActivity) context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRENDING_QUESTION_DETAIL);
-
-//
+                    //
                 }
             });
 

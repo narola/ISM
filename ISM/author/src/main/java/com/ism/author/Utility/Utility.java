@@ -106,16 +106,6 @@ public class Utility {
 
     /**
      * Krunal Panchal
-     * Toast alert when user is offline.
-     *
-     * @param context
-     */
-    public static void toastOffline(Context context) {
-        Toast.makeText(context, R.string.msg_offline, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Krunal Panchal
      * Convert bitmap to base64 string.
      *
      * @param bitmap

@@ -18,6 +18,8 @@ import com.ism.fragment.myAuthor.FindMoreAuthorsFragment;
 import com.ism.fragment.myAuthor.MyAuthorsFragment;
 import com.ism.fragment.myAuthor.authorDesk.AuthorDeskFragment;
 import com.ism.fragment.myAuthor.goTrending.GoTrendingFragment;
+import com.ism.fragment.myAuthor.goTrending.PastTrendingQuestionsFragment;
+import com.ism.fragment.myAuthor.goTrending.PastTrendingQuestionDetailFragment;
 import com.ism.interfaces.FragmentListener;
 
 /**
@@ -26,12 +28,13 @@ import com.ism.interfaces.FragmentListener;
 public class MyAuthorFragment extends Fragment implements HostActivity.HostListenerMyAuthor {
 
     private static final String TAG = MyAuthorFragment.class.getSimpleName();
-    private View view;
 
+    private View view;
     //My Author
     public static final int FRAGMENT_AUTHOR_OFFICE = 31;
 
     public static final int FRAGMENT_AUTHOR_DESK = 32;
+
     public static final int FRAGMENT_GO_TRENDING = 33;
     public static final int FRAGMENT_TRIAL = 34;
     public static final int FRAGMENT_MYTHIRTY = 35;
@@ -39,6 +42,9 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
     public static final int FRAGMENT_MY_AUTHORS = 37;
     public static final int FRAGMENT_FIND_MORE_AUTHORS = 38;
     public static final int FRAGMENT_TERM_AND_CONDITION = 39;
+    public static final int FRAGMENT_AUTHOR_PAST_QUESTIONS = 40;
+    public static final int FRAGMENT_PAST_TRENDING_QUESTION_DETAIL = 41;
+
 
     private FragmentListener fragListener;
     private RecyclerView rvMyAuthorList;
@@ -128,6 +134,16 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
                     GoTrendingFragment goTrendingFragment = GoTrendingFragment.newInstance();
                     getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, goTrendingFragment).commit();
                     break;
+                case MyAuthorFragment.FRAGMENT_AUTHOR_PAST_QUESTIONS:
+                    currentFragment = fragment;
+                    PastTrendingQuestionsFragment questionsFragment = PastTrendingQuestionsFragment.newInstance();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, questionsFragment).commit();
+                    break;
+                case MyAuthorFragment.FRAGMENT_PAST_TRENDING_QUESTION_DETAIL:
+                    currentFragment = fragment;
+                    PastTrendingQuestionDetailFragment questionDetailFragment = PastTrendingQuestionDetailFragment.newInstance();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_my_authors, questionDetailFragment).commit();
+                    break;
 
             }
         } catch (Exception e) {
@@ -147,6 +163,12 @@ public class MyAuthorFragment extends Fragment implements HostActivity.HostListe
         } else if (position == FRAGMENT_AUTHOR_DESK || position==FRAGMENT_GO_TRENDING) {
             activityHost.hideControllerTopBackButton();
             loadFragment(FRAGMENT_AUTHOR_OFFICE);
+        } else if (position == FRAGMENT_AUTHOR_PAST_QUESTIONS) {
+            activityHost.hideControllerTopBackButton();
+            loadFragment(FRAGMENT_GO_TRENDING);
+        }else if (position == FRAGMENT_PAST_TRENDING_QUESTION_DETAIL) {
+            activityHost.hideControllerTopBackButton();
+            loadFragment(FRAGMENT_AUTHOR_PAST_QUESTIONS);
         }
     }
 

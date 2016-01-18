@@ -38,6 +38,7 @@
                 android:layout_marginRight="@dimen/dp2"
                 android:padding="@dimen/dp2"
                 android:text="Past"
+                android:id="@+id/txt_past_questions"
                 android:textColor="@color/red" />
         </RelativeLayout>
 

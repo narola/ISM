@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp10"
+    android:background="@drawable/bg_white_border_gray"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_no_of_followers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center|bottom"
+            android:text="50"
+            android:textColor="@color/red"
+            android:textSize="@dimen/sp23" />
+
+        <TextView
+            android:id="@+id/txt_followers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center|top"
+            android:text="followers"
+            android:textSize="@dimen/sp15" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="@dimen/dp2"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/dp10"
+        android:layout_marginTop="@dimen/dp10"
+        android:background="@color/divider_light"
+        android:gravity="center"
+        android:padding="@dimen/dp10"
+        android:textSize="@dimen/sp23" />
+
+    <LinearLayout
+        android:id="@+id/ll_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:orientation="vertical">
+
+        <com.ism.views.CircleImageView
+            android:id="@+id/img_user_dp"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp60"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp10"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/img_default_dp" />
+
+        <TextView
+            android:id="@+id/txt_creator_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/dp5"
+            android:text="Adam Stanger"
+            android:textColor="@color/color_blue"
+            android:textSize="@dimen/sp13" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.7"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_weight="1"
+            android:text=""
+            android:textColor="#BE76B6"
+            android:textSize="@dimen/sp15" />
+
+        <TextView
+            android:id="@+id/txt_author_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_question"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp10"
+            android:text=""
+            android:textColor="@color/color_answer"
+            android:textSize="@dimen/sp14" />
+
+    </RelativeLayout>
+</LinearLayout>

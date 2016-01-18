@@ -120,10 +120,13 @@
     <dimen name="author_tab_width">@dimen/dp236</dimen>
     <dimen name="margin_left_tutorial_triangle">@dimen/dp_n1</dimen>
     <dimen name="controller_search_width">@dimen/dp200</dimen>
-    <dimen name="width_sunday_member_view">100dp</dimen>
+    <dimen name="width_sunday_member_view">@dimen/dp80</dimen>
     <dimen name="trending_tab_height">@dimen/dp45</dimen>
     <dimen name="circlularImage_user_question_tending">@dimen/dp70</dimen>
     <dimen name="height_author_answer">@dimen/dp200</dimen>
+    <dimen name="dp_size_sunday_exam">@dimen/dp35</dimen>
+    <dimen name="text_sunday_member_name">@dimen/sp12</dimen>
+    <dimen name="btn_height_sunday_exam">@dimen/dp25</dimen>
     <dimen name="default_circle_indicator_radius">3dp</dimen>
     <dimen name="default_circle_indicator_stroke_width">1dp</dimen>
 </resources>

@@ -79,6 +79,7 @@
     <color name="question_color">#74777C</color>
     <color name="btn_save">#26AF61</color>
     <color name="color_violet_assignment">#A44B99</color>
+    <color name="red_dark">#861f1c</color>
 
     <!-- Tutorial Group Friday Exam Colors -->
 
@@ -99,5 +100,5 @@
     <color name="default_circle_indicator_page_color">#00000000</color>
     <color name="default_circle_indicator_stroke_color">#FFDDDDDD</color>
 
-
+    <color name="color_question">#8F9396</color>
 </resources>

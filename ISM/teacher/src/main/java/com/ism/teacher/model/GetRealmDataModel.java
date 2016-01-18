@@ -123,8 +123,8 @@ public class GetRealmDataModel {
             commentBy.setFullName(comment.getFullName());
 
             ROFeedComment.setCommentBy(commentBy);
-            ROFeedComment.setFeed(postFeed);
-            postFeed.getComments().add(ROFeedComment);
+            ROFeedComment.setRoFeed(postFeed);
+            postFeed.getRoFeedComment().add(ROFeedComment);
         }
 
 
@@ -135,7 +135,7 @@ public class GetRealmDataModel {
             ROFeedImage.setImageLink(image.getImageLink());
             ROFeedImage.setFeed(postFeed);
 
-            postFeed.getROFeedImages().add(ROFeedImage);
+            postFeed.getRoFeedImages().add(ROFeedImage);
         }
         return postFeed;
     }

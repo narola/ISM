@@ -159,6 +159,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp34"
+            android:id="@+id/rr_post_comment"
             android:layout_below="@id/et_writePost"
             android:background="@color/green">
 
@@ -184,6 +185,13 @@
                 android:textSize="@dimen/dp15"
                 android:textStyle="bold" />
         </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp2"
+            android:layout_below="@id/rr_post_comment"
+            android:layout_marginTop="@dimen/dp5"
+            android:paddingBottom="@dimen/dp5"
+            android:background="@color/divider" />
     </RelativeLayout>
 </RelativeLayout>
 

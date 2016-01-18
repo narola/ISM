@@ -15,7 +15,7 @@ public class ROAuthorBook extends RealmObject {
     @PrimaryKey
     private int authorBookId;
     private ROUser roUser;
-    private ROBooks roBooks;
+    private ROBooks roBook;
     private Date createdDate;
     private Date modifiedDate;
 
@@ -35,12 +35,12 @@ public class ROAuthorBook extends RealmObject {
         this.roUser = roUser;
     }
 
-    public ROBooks getRoBooks() {
-        return roBooks;
+    public ROBooks getRoBook() {
+        return roBook;
     }
 
-    public void setRoBooks(ROBooks roBooks) {
-        this.roBooks = roBooks;
+    public void setRoBook(ROBooks roBook) {
+        this.roBook = roBook;
     }
 
     public Date getCreatedDate() {

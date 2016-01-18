@@ -33,11 +33,12 @@ public class StudentHelper {
     private static final String TAG = StudentHelper.class.getSimpleName();
 
     public Realm realm;
-    private RealmResults<ROFeeds> ROFeedsRealmResults;
+    private RealmResults<ROFeeds> roFeedsRealmResults;
     private RealmResults<RONotes> RONotesRealmResults;
     private RealmResults<ROTrendingQuestion> ROTrendingQuestionRealmResults;
     private ROTrendingQuestionFollower ROTrendingQuestionFollowerResults;
     private ROTrendingQuestion ROTrendingQuestion;
+    private ROFeeds roFeeds;
 
     public StudentHelper(Context context) {
         realm = RealmAdaptor.getInstance(context);
@@ -140,28 +141,27 @@ public class StudentHelper {
     }
 
     /**
-     * if feedId is -1 then its return the all feeds
-     * else return the single record of @param feedId
-     *
-     * @param feedId
-     * @param userId
      * @return
      */
-    public RealmResults<ROFeeds> getFeeds(final int feedId, final int userId) {
+    public RealmResults<ROFeeds> getFeeds() {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                if (feedId != -1) {
-                    ROFeedsRealmResults = realm.where(ROFeeds.class).equalTo("feedId", feedId).equalTo("user.userId", userId).findAll();
-                } else {
-                    ROFeedsRealmResults = realm.where(ROFeeds.class).equalTo("user.userId", userId).findAll();
-                }
+//                if (feedId != -1) {
+//                    roFeedsRealmResults = realm.where(ROFeeds.class).equalTo("feedId", feedId).findAll();
+//                } else {
+                roFeedsRealmResults = realm.where(ROFeeds.class).findAll();
             }
         });
-        Log.e(TAG, "getFeeds ROFeedsRealmResults.size: " + ROFeedsRealmResults.size());
-        return ROFeedsRealmResults;
+        Log.e(TAG, "getFeeds roFeedsRealmResults.size: " + roFeedsRealmResults.size());
+        return roFeedsRealmResults;
     }
 
+    public ROFeeds getFeeds(final int feedId) {
+        roFeeds = realm.where(ROFeeds.class).equalTo("feedId", feedId).findFirst();
+        Log.e(TAG, "getFeeds :  " + roFeeds);
+        return roFeeds;
+    }
 
     /**
      * get the User
@@ -170,11 +170,7 @@ public class StudentHelper {
      * @return
      */
     public ROUser getUser(int user_id) {
-        realm.beginTransaction();
-        ROUser ROUser = realm.where(ROUser.class).equalTo("userId", user_id).findFirst();
-        Log.i(TAG, "getUser : " + ROUser);
-        realm.commitTransaction();
-        return ROUser;
+        return realm.where(ROUser.class).equalTo("userId", user_id).findFirst();
     }
 
 
@@ -185,13 +181,13 @@ public class StudentHelper {
      * @return
      */
     public RealmResults<ROFeedComment> getFeedComments(int feedId) {
-        realm.beginTransaction();
-        RealmResults<ROFeedComment> feedsRealmResults = realm.where(ROFeedComment.class).equalTo("feed.feedId", feedId).findAll();
-        Log.e(TAG, "all comments : " + feedsRealmResults);
-        Log.e(TAG, "getFeedComments ROFeedsRealmResults.size: " + feedsRealmResults.size());
-
-        realm.commitTransaction();
-        return feedsRealmResults;
+        RealmResults<ROFeedComment> feedsRealmResults = realm.where(ROFeedComment.class).equalTo("roFeed.feedId", feedId).findAll();
+//        Log.e(TAG, "all comments : " + feedsRealmResults);
+        Log.e(TAG, "getFeedComments roFeedsRealmResults.size: " + feedsRealmResults.size());
+        if (feedsRealmResults != null)
+            return feedsRealmResults;
+        else
+            return null;
     }
 
 //    /**
@@ -237,7 +233,7 @@ public class StudentHelper {
 //    public RealmResults<ROFeeds> managedFeedLikeStatus(Date lastSynch, Date modified) {
         realm.beginTransaction();
         RealmResults<ROFeeds> ROFeedsRealmResults = realm.where(ROFeeds.class).equalTo("isSync", 1).findAll();
-        Log.i(TAG, "managedFeedLikeStatus ROFeedsRealmResults.size: " + ROFeedsRealmResults.size());
+        Log.i(TAG, "managedFeedLikeStatus roFeedsRealmResults.size: " + ROFeedsRealmResults.size());
         if (statusUpdation) {
             //after sync
             for (int i = 0; i < ROFeedsRealmResults.size(); i++)
@@ -253,15 +249,15 @@ public class StudentHelper {
 
 //    public RealmResults<ROFeeds> getUpdatedFeedLikeStatus() {
 //        realm.beginTransaction();
-//        RealmResults<ROFeeds> ROFeedsRealmResults = realm.where(ROFeeds.class).equalTo("isSync", 1).findAll();
+//        RealmResults<ROFeeds> roFeedsRealmResults = realm.where(ROFeeds.class).equalTo("isSync", 1).findAll();
 //
-//        Log.e(TAG, "managedFeedLikeStatus ROFeedsRealmResults.size: " + ROFeedsRealmResults.size());
+//        Log.e(TAG, "managedFeedLikeStatus roFeedsRealmResults.size: " + roFeedsRealmResults.size());
 //
 //        realm.commitTransaction();
-//        if (ROFeedsRealmResults.size() == 0) {
+//        if (roFeedsRealmResults.size() == 0) {
 //            return null;
 //        } else {
-//            return ROFeedsRealmResults;
+//            return roFeedsRealmResults;
 //        }
 //    }
 
@@ -274,10 +270,10 @@ public class StudentHelper {
      */
     public void saveComments(ROFeedComment ROFeedComment) {
         try {
-            ROFeeds ROFeeds = ROFeedComment.getFeed();
+            ROFeeds ROFeeds = ROFeedComment.getRoFeed();
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(ROFeedComment);
-            ROFeeds.getComments().add(ROFeedComment);
+            ROFeeds.getRoFeedComment().add(ROFeedComment);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveComments Exceptions : " + e.getLocalizedMessage());
@@ -294,7 +290,7 @@ public class StudentHelper {
             ROFeeds ROFeeds = ROFeedImage.getFeed();
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(ROFeedImage);
-            ROFeeds.getROFeedImages().add(ROFeedImage);
+            ROFeeds.getRoFeedImages().add(ROFeedImage);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveFeedImages Exceptions : " + e.getLocalizedMessage());
@@ -381,8 +377,8 @@ public class StudentHelper {
                     RONotesRealmResults = realm.where(RONotes.class).equalTo("user.userId", userId).findAll();
                 }
             });
-           // Log.e(TAG, "getNotes notesRealmResults.size: " + RONotesRealmResults.size());
-          //  Log.e(TAG, "getNotes notesRealmResults : " + RONotesRealmResults);
+            // Log.e(TAG, "getNotes notesRealmResults.size: " + RONotesRealmResults.size());
+            //  Log.e(TAG, "getNotes notesRealmResults : " + RONotesRealmResults);
         } catch (Exception e) {
             Log.e(TAG, "getNotes Exception : " + e.getLocalizedMessage());
         }
@@ -453,6 +449,7 @@ public class StudentHelper {
 
     /**
      * save school
+     *
      * @param ROSchool
      */
     public void saveSchool(ROSchool ROSchool) {

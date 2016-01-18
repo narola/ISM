@@ -47,6 +47,8 @@ public class ROExam extends RealmObject {
     private String averageScore;
     private String totalAssessed;
     private String totalUnassessed;
+    private ROExamSubmission examSubmission;
+    private ROExamQuestions examQuestions;
 
     public int getExamId() {
         return examId;
@@ -295,5 +297,22 @@ public class ROExam extends RealmObject {
 
     public void setTotalUnassessed(String totalUnassessed) {
         this.totalUnassessed = totalUnassessed;
+    }
+
+    public ROExamSubmission getExamSubmission() {
+        return examSubmission;
+    }
+
+    public void setExamSubmission(ROExamSubmission examSubmission) {
+        this.examSubmission = examSubmission;
+    }
+
+
+    public ROExamQuestions getExamQuestions() {
+        return examQuestions;
+    }
+
+    public void setExamQuestions(ROExamQuestions examQuestions) {
+        this.examQuestions = examQuestions;
     }
 }

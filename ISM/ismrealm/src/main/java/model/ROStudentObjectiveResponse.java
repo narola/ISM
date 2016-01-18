@@ -2,8 +2,10 @@ package model;
 
 import java.util.Date;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by c85 on 19/11/15.
  * {@link RealmObject} class - students' answer for objective questions.
@@ -14,13 +16,14 @@ import io.realm.annotations.PrimaryKey;
  */
 public class ROStudentObjectiveResponse extends RealmObject {
 
+
     @PrimaryKey
-    private  int studentObjectiveResponseId;
-    private String answerText;
-   private ROUser roUser;
+    private int studentObjectiveResponseId;//this is the exam id.
+    private ROUser roUser;
     private ROExam roExam;
-    private ROQuestions question;
-    private ROAnswerChoices answerChoice;
+    private RealmList<ROQuestions> roQuestions = new RealmList<ROQuestions>();
+
+    private String answerText;
     private int answerStatus;
     private int markObtained;
     private int responseDuration;
@@ -60,21 +63,6 @@ public class ROStudentObjectiveResponse extends RealmObject {
         this.roExam = roExam;
     }
 
-    public ROQuestions getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(ROQuestions question) {
-        this.question = question;
-    }
-
-    public ROAnswerChoices getAnswerChoice() {
-        return answerChoice;
-    }
-
-    public void setAnswerChoice(ROAnswerChoices answerChoice) {
-        this.answerChoice = answerChoice;
-    }
 
     public int getAnswerStatus() {
         return answerStatus;
@@ -122,5 +110,14 @@ public class ROStudentObjectiveResponse extends RealmObject {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+
+    public RealmList<ROQuestions> getRoQuestions() {
+        return roQuestions;
+    }
+
+    public void setRoQuestions(RealmList<ROQuestions> roQuestions) {
+        this.roQuestions = roQuestions;
     }
 }

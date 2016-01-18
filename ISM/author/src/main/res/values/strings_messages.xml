@@ -80,6 +80,7 @@
     <string name="msg_server_connection">Can\'t connect to server!</string>
     <string name="msg_no_studymates">Sorry,No studymates to tag.</string>
     <string name="msg_success_post_feed">Posted feed successfully.</string>
+    <string name="msg_no_user_evaluation">No evaluation available for user.</string>
 
 
 </resources>

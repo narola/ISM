@@ -182,10 +182,10 @@ public class Utility {
             builder.setMessage(message);
         }
         AlertDialog dialog = builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-	        @Override
-	        public void onClick(DialogInterface dialog, int which) {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
-	        }
+            }
         }).create();
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();
@@ -216,44 +216,44 @@ public class Utility {
                 confirmationListener.onConfirmationResponse(requestId, true);
             }
         }).setNegativeButton(R.string.strcancel, new DialogInterface.OnClickListener() {
-	        @Override
-	        public void onClick(DialogInterface dialog, int which) {
-		        confirmationListener.onConfirmationResponse(requestId, false);
-	        }
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                confirmationListener.onConfirmationResponse(requestId, false);
+            }
         }).create();
         dialog.setCancelable(cancelable);
 //        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();
     }
 
-	/**
-	 * Krunal Panchal
-	 * Get formatted date as String in required format.
-	 *
-	 * @param date
-	 * @param dateFormat
-	 * @return Formatted date as String
-	 */
-	public static String formatDate(Date date, SimpleDateFormat dateFormat) {
+    /**
+     * Krunal Panchal
+     * Get formatted date as String in required format.
+     *
+     * @param date
+     * @param dateFormat
+     * @return Formatted date as String
+     */
+    public static String formatDate(Date date, SimpleDateFormat dateFormat) {
         return dateFormat.format(date);
     }
 
-	/**
-	 * Krunal Panchal
-	 * Formate MySql formatted date to required format.
-	 *
-	 * @param mySqlFormattedDate
-	 * @param dateFormat
-	 * @return Formatted String date.
-	 */
-	public static String formatMySqlDate(String mySqlFormattedDate, SimpleDateFormat dateFormat) {
-		try {
-			return dateFormat.format(DATE_FORMAT_MY_SQL.parse(mySqlFormattedDate));
-		} catch (ParseException e) {
-			Log.e(TAG, "formatMySqlDate Exception : " + e.toString());
-			return null;
-		}
-	}
+    /**
+     * Krunal Panchal
+     * Formate MySql formatted date to required format.
+     *
+     * @param mySqlFormattedDate
+     * @param dateFormat
+     * @return Formatted String date.
+     */
+    public static String formatMySqlDate(String mySqlFormattedDate, SimpleDateFormat dateFormat) {
+        try {
+            return dateFormat.format(DATE_FORMAT_MY_SQL.parse(mySqlFormattedDate));
+        } catch (ParseException e) {
+            Log.e(TAG, "formatMySqlDate Exception : " + e.toString());
+            return null;
+        }
+    }
 
     /**
      * Arti
@@ -451,6 +451,20 @@ public class Utility {
         return filePath;
     }
 
+    public static String getDateInApiFormat(String dateText) {
+        String newDate = "";
+        try {
+            Date date = DATE_FORMAT_API.parse(dateText);
+            newDate = DATE_FORMAT_API.format(date);
+
+        } catch (Exception e) {
+            Log.e(TAG, "getDateInApiFormat Exception :" + e.getLocalizedMessage());
+        }
+        return newDate;
+
+    }
+
+
     /*
     * Arti Patel
     * */
@@ -572,7 +586,7 @@ public class Utility {
 
     /**
      * Arti patel
-     *  show the view
+     * show the view
      *
      * @param view
      */
@@ -583,7 +597,6 @@ public class Utility {
     public static SpannableString f;
 
     /**
-     *
      * @param spanString
      * @param color
      * @return
@@ -598,7 +611,6 @@ public class Utility {
     }
 
     /**
-     *
      * @param original
      * @param tobeChecked
      * @param caseSensitive

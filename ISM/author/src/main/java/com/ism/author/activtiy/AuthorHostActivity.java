@@ -1112,13 +1112,18 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         if (currentMainFragment == FRAGMENT_TRIAL || currentMainFragment == FRAGMENT_ASSESSMENT
                 || currentMainFragment == FRAGMENT_ASSIGNMENT_SUBMITTOR) {
 
+
             getBundle().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, true);
             loadFragmentInMainContainer(FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT);
 
+
         } else if (currentMainFragment == FRAGMENT_ADDQUESTION_CONTAINER) {
 
+
         } else if (currentMainFragment == FRAGMENT_GOTRENDING) {
+
             loadFragmentInMainContainer(FRAGMENT_PAST_TRENDING_QUESTIONS);
+
         }
 
 
@@ -1268,7 +1273,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_BADGES_COUNT);
             } else {
-                Utility.alertOffline(getApplicationContext());
+
+
+//                Utility.alertOffline(getApplicationContext());
             }
         } catch (Exception e) {
             Log.e(TAG, "callApiGetAllBadgesCount Exception : " + e.toString());
@@ -1384,7 +1391,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 showProgress();
                 new WebserviceWrapper(this, new Attribute(), this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTING_PREFERENCES);
             } else {
-                Utility.alertOffline(getApplicationContext());
+
+//                Utility.alertOffline(getApplicationContext());
             }
 
         } catch (Exception e) {

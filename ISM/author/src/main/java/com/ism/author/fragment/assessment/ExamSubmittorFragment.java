@@ -17,15 +17,16 @@ import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.model.RealmDataModel;
 import com.ism.author.object.Global;
 import com.ism.author.utility.Debug;
 import com.ism.author.utility.Utility;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.Examsubmittor;
+import com.ism.author.ws.model.ExamSubmission;
 
-import java.util.ArrayList;
+import realmhelper.AuthorHelper;
 
 /**
  * Created by c166 on 10/11/15.
@@ -38,7 +39,8 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
     private RecyclerView rvExamSubmittorList;
     private ExamSubmittorAdapter examSubmittorAdapter;
     private FragmentListener fragListener;
-    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
+    private AuthorHelper authorHelper;
+    private RealmDataModel realmDataModel;
 
     public static ExamSubmittorFragment newInstance() {
         ExamSubmittorFragment examSubmittorFragment = new ExamSubmittorFragment();
@@ -58,6 +60,10 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
     }
 
     private void initGlobal() {
+
+        authorHelper = new AuthorHelper(getActivity());
+        realmDataModel = new RealmDataModel();
+
         tvSubmittorTitle = (TextView) view.findViewById(R.id.tv_submittor_title);
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         rvExamSubmittorList = (RecyclerView) view.findViewById(R.id.rv_exam_submittor_list);
@@ -92,7 +98,7 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            setUpData();
         }
     }
 
@@ -117,16 +123,15 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+
                     if (responseHandler.getExamSubmission().size() > 0) {
-                        arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
-                        examSubmittorAdapter.addAll(arrListExamSubmittor);
-                        examSubmittorAdapter.notifyDataSetChanged();
                         setEmptyView(false);
-
+                        addExamSubmission(responseHandler.getExamSubmission().get(0));
+                        setUpData();
                     } else {
-
                         setEmptyView(true);
                     }
+
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), getActivity());
@@ -136,6 +141,28 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseGetAllExamSubmission Exception : " + e.toString());
+        }
+
+    }
+
+
+    private void addExamSubmission(ExamSubmission examSubmission) {
+
+        if (examSubmission.getExamsubmittor().size() > 0) {
+            authorHelper.updateExamSubmissionData(realmDataModel.getROExamSubmission(examSubmission, authorHelper));
+        }
+    }
+
+    private void setUpData() {
+        if (authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))) != null) {
+            if (authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))).getRoExamSubmittors().size() > 0) {
+                setEmptyView(false);
+                examSubmittorAdapter.addAll(authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))).
+                        getRoExamSubmittors());
+            }
+        } else {
+            setEmptyView(true);
+
         }
     }
 
@@ -167,65 +194,6 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
         fragListener = null;
     }
 
-
-    /**
-     * Created by c162 on 26/10/15.
-     */
-    public static class BooksFragment extends Fragment {
-
-        private static final String TAG = BooksFragment.class.getSimpleName();
-        private View view;
-        private FragmentListener fragListener;
-
-        public static BooksFragment newInstance() {
-            BooksFragment fragBooks = new BooksFragment();
-            return fragBooks;
-        }
-
-        public BooksFragment() {
-            // Required empty public constructor
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            view = inflater.inflate(R.layout.fragment_my_books, container, false);
-
-            initGlobal();
-
-            return view;
-        }
-
-        private void initGlobal() {
-
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            try {
-                fragListener = (FragmentListener) activity;
-                if (fragListener != null) {
-                    fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
-                }
-            } catch (ClassCastException e) {
-                Debug.e(TAG, "onAttach Exception : " + e.toString());
-            }
-        }
-
-        @Override
-        public void onDetach() {
-            super.onDetach();
-            try {
-                if (fragListener != null) {
-                    fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
-                }
-            } catch (ClassCastException e) {
-                Debug.e(TAG, "onDetach Exception : " + e.toString());
-            }
-            fragListener = null;
-        }
-    }
-
     public void onBackClick() {
 
         getBundleArguments().remove(ExamSubmittorAdapter.ARG_STUDENT_ID);
@@ -246,5 +214,11 @@ public class ExamSubmittorFragment extends Fragment implements WebserviceWrapper
         tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         rvExamSubmittorList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        authorHelper.realm.close();
     }
 }

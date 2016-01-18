@@ -156,7 +156,7 @@ public class TutorialSunFragment extends Fragment implements WebserviceWrapper.W
 					Log.e(TAG, "onResponseAllocateTeacherToGroup Failed message : " + responseHandler.getMessage());
 				}
 			} else if (error != null) {
-				Log.e(TAG, "onResponseAllocateTeacherToGroup Excepiton : " + error.toString());
+				Log.e(TAG, "onResponseAllocateTeacherToGroup api Excepiton : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseAllocateTeacherToGroup Excepiton : " + e.toString());

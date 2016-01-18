@@ -13,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.utility.Debug;
-import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.ExamSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
@@ -23,13 +21,17 @@ import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.createexam.CreateExamFragment;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.model.RealmDataModel;
 import com.ism.author.object.Global;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.Questions;
+import com.ism.author.ws.model.ExamEvaluation;
+import com.ism.author.ws.model.ExamQuestions;
 
-import java.util.ArrayList;
+import realmhelper.AuthorHelper;
 
 /**
  * Created by c166 on 10/11/15.
@@ -48,10 +50,13 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
 
     private RecyclerView rvGetObjectiveAssignmentQuestionslist;
     private ObjectiveAssignmentQuestionsAdapter objectiveAssignmentQuestionsAdapter;
-    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
+//    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
+
     public static String ARG_ARR_LIST_QUESTIONS = "arrListQuestions";
     public static String ARG_EXAM_TYPE = "examType";
     public static String ARG_EXAM_ISCOPY = "examIsCopy";
+    private AuthorHelper authorHelper;
+    private RealmDataModel realmDataModel;
 
 
     public static ObjectiveAssignmentQuestionsFragment newInstance() {
@@ -74,6 +79,9 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
 
     private void initGlobal() {
 
+
+        authorHelper = new AuthorHelper(getActivity());
+        realmDataModel = new RealmDataModel();
 
         tvObjectiveAssignmentSubject = (TextView) view.findViewById(R.id.tv_objective_assignment_subject);
         tvObjectiveAssignmentClass = (TextView) view.findViewById(R.id.tv_objective_assignment_class);
@@ -99,9 +107,6 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         rvGetObjectiveAssignmentQuestionslist.setAdapter(objectiveAssignmentQuestionsAdapter);
         rvGetObjectiveAssignmentQuestionslist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        setAssignmentDetails();
-        callApiGetExamQuestions();
-
         imgEditExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,6 +126,8 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         });
 
         setEmptyView(false);
+        setAssignmentDetails();
+        callApiGetExamQuestions();
 
     }
 
@@ -128,7 +135,8 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
     private void setExamQuestions() {
 
         if (responseObjGetAllExamQuestions != null) {
-            getBundleArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
+
+//            getBundleArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
             getBundleArguments().putString(ARG_EXAM_TYPE, getString(R.string.strobjective));
 
 
@@ -154,27 +162,28 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            setUpExamQuestionsData();
         }
     }
 
-
-    /*if bundle arguments are not null then we will call get exam evaluation for student nd set data according to it*/
     private void callAPiGetExamEvaluation() {
 
         if (Utility.isConnected(getActivity())) {
+
             try {
                 ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setExamId(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 attribute.setStudentId(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID));
+
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
+
         } else {
-            Utility.toastOffline(getActivity());
+            setUpEvaluationData();
         }
     }
 
@@ -232,17 +241,16 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
                 if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     if (responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions().size() > 0) {
-                        arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
-                        objectiveAssignmentQuestionsAdapter.addAll(arrListQuestions);
-                        objectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
-                        if (getBundleArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
-                            callAPiGetExamEvaluation();
-                        }
 
                         setEmptyView(false);
+                        addExamQuestions(responseObjGetAllExamQuestions.getExamQuestions().get(0));
+                        setUpExamQuestionsData();
+
+                        if (getBundleArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                            loadStudentEvaluationData();
+                        }
 
                     } else {
-
                         setEmptyView(true);
                     }
 
@@ -267,10 +275,11 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
 
                     if (responseHandler.getExamEvaluation().get(0).getEvaluation() != null) {
                         if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() > 0) {
-                            objectiveAssignmentQuestionsAdapter.setEvaluationData(responseHandler.getExamEvaluation().get(0).getEvaluation());
+                            addEvaluationData(responseHandler.getExamEvaluation().get(0));
+                            setUpEvaluationData();
                         }
-
                     } else {
+                        Utility.showToast(getResources().getString(R.string.msg_no_user_evaluation), getActivity());
                         objectiveAssignmentQuestionsAdapter.setEvaluationData(null);
                     }
 
@@ -283,6 +292,69 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         } catch (Exception e) {
             Debug.e(TAG, "onResponseGetExamEvaluation Exception : " + e.toString());
         }
+    }
+
+
+    private void addExamQuestions(ExamQuestions examQuestions) {
+
+        if (examQuestions.getQuestions().size() > 0) {
+
+
+//            authorHelper.addExamQuestions(realmDataModel.getROExamQuestions(examQuestions, authorHelper));
+//            authorHelper.updateExamQuestionsData(authorHelper.getExamQuestions(Integer.valueOf(examQuestions.getId())));
+
+            authorHelper.updateExamQuestionsData(realmDataModel.getROExamQuestions(examQuestions, authorHelper));
+        }
+    }
+
+    private void setUpExamQuestionsData() {
+
+        if (authorHelper.getExamQuestions(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))).getRoQuestions().size() > 0) {
+            setEmptyView(false);
+            objectiveAssignmentQuestionsAdapter.addAll(authorHelper.getExamQuestions(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))).
+                    getRoQuestions());
+        } else {
+            setEmptyView(true);
+        }
+
+        if (!Utility.isConnected(getActivity())) {
+            setUpEvaluationData();
+        }
+
+    }
+
+    private void addEvaluationData(ExamEvaluation examEvaluation) {
+
+
+//        authorHelper.addStudentExamEvaluation(realmDataModel.getROStudentExamEvaluation(examEvaluation,
+//                Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID)), authorHelper));
+//
+//        authorHelper.updateExamSubmittorData(Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID)),
+//                authorHelper.getStudentExamEvaluation(Integer.valueOf(examEvaluation.getExamId()),
+//                        Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID))));
+
+
+        authorHelper.updateExamSubmittorData(Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID)),
+                realmDataModel.getROStudentExamEvaluation(examEvaluation,
+                        Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID)), authorHelper));
+
+    }
+
+
+    private void setUpEvaluationData() {
+
+        if (authorHelper.getStudentExamEvaluation(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID)),
+                Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID))) != null) {
+
+            objectiveAssignmentQuestionsAdapter.setEvaluationData(authorHelper.getStudentExamEvaluation(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID)),
+                    Integer.valueOf(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID))).getRoEvaluation());
+        } else {
+
+            objectiveAssignmentQuestionsAdapter.setEvaluationData(null);
+            Utility.showToast(getResources().getString(R.string.msg_no_user_evaluation), getActivity());
+
+        }
+
     }
 
     private void setAssignmentDetails() {
@@ -328,5 +400,12 @@ public class ObjectiveAssignmentQuestionsFragment extends Fragment implements We
         tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         rvGetObjectiveAssignmentQuestionslist.setVisibility(isEnable ? View.INVISIBLE : View.VISIBLE);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        authorHelper.realm.close();
     }
 }
