@@ -16,8 +16,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/dp25"
-            android:paddingRight="@dimen/dp25">
+            android:paddingLeft="@dimen/dp15"
+            android:paddingRight="@dimen/dp15">
 
             <com.ism.views.CircleImageView
                 android:id="@+id/img_user_dp"
@@ -41,7 +41,7 @@
                 android:gravity="center"
                 android:text="Adam Stanger"
                 android:textColor="@color/red"
-                android:textSize="@dimen/sp16" />
+                android:textSize="@dimen/sp13" />
 
         </LinearLayout>
 
@@ -53,26 +53,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp10"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txt_question"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dp15"
-                android:text=""
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
+                android:paddingBottom="@dimen/dp5"
+                android:paddingTop="@dimen/dp5"
                 android:textColor="@color/color_blue"
-                android:textSize="@dimen/sp17" />
+                android:textSize="@dimen/sp15" />
 
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp15"
-                android:paddingRight="@dimen/dp15">
-
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10">
 
                 <TextView
                     android:id="@+id/txt_date"
@@ -82,7 +83,7 @@
                     android:layout_alignParentTop="true"
                     android:text="26th Oct 2015"
                     android:textColor="@color/color_question"
-                    android:textSize="@dimen/sp15" />
+                    android:textSize="@dimen/sp12" />
 
 
                 <LinearLayout
@@ -99,7 +100,7 @@
                         android:gravity="left"
                         android:text="50 followers"
                         android:textColor="@color/pink"
-                        android:textSize="@dimen/sp15" />
+                        android:textSize="@dimen/sp12" />
 
                     <TextView
                         android:id="@+id/txt_total_comments"
@@ -110,7 +111,7 @@
                         android:gravity="left"
                         android:text="50 Comments"
                         android:textColor="@color/pink"
-                        android:textSize="@dimen/sp15" />
+                        android:textSize="@dimen/sp12" />
 
                 </LinearLayout>
             </RelativeLayout>
@@ -147,15 +148,13 @@
             android:id="@+id/et_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp8"
-            android:layout_marginLeft="@dimen/dp11"
-            android:layout_marginRight="@dimen/dp11"
-            android:layout_marginTop="@dimen/dp11"
+            android:layout_margin="@dimen/dp10"
             android:layout_toLeftOf="@+id/btn_comment"
             android:background="@drawable/selector"
             android:hint="@string/strwriteyourcommenthere"
             android:inputType="textMultiLine"
-            android:padding="@dimen/dp11"
+            android:padding="@dimen/dp10"
+            android:textSize="@dimen/sp14"
             android:textColorHint="@color/color_text_hint" />
 
         <TextView
@@ -163,15 +162,14 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/button_height_normal"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/dp15"
-            android:layout_marginTop="@dimen/dp16"
+            android:layout_marginRight="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp15"
             android:background="@color/color_dark_gray"
-            android:paddingLeft="@dimen/dp8"
-            android:paddingRight="@dimen/dp8"
+            android:padding="@dimen/dp10"
             android:gravity="center"
             android:text="@string/comment"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp15"
+            android:textSize="@dimen/sp14"
             android:textStyle="bold" />
     </RelativeLayout>
 </RelativeLayout>

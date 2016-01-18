@@ -30,12 +30,12 @@ public class GoTrendingQueAnsAuthorAdapter extends PagerAdapter {
     private static final String TAG = GoTrendingQueAnsAuthorAdapter.class.getSimpleName();
     private final Context mContext;
     private final RealmHandler realmHandler;
-    private ArrayList<com.ism.ws.model.TrendingQuestionDetails> arrayList=new ArrayList<>();
+    private ArrayList<com.ism.ws.model.TrendingQuestionDetails> arrayList = new ArrayList<>();
     private LayoutInflater inflater;
 
     public GoTrendingQueAnsAuthorAdapter(Context mContext) {
         this.mContext = mContext;
-        realmHandler=new RealmHandler(mContext);
+        realmHandler = new RealmHandler(mContext);
         this.inflater = LayoutInflater.from(mContext);
     }
 
@@ -60,7 +60,7 @@ public class GoTrendingQueAnsAuthorAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return arrayList ==null ? 0:arrayList.size();
+        return arrayList == null ? 0 : arrayList.size();
     }
 
     @Override
@@ -68,41 +68,42 @@ public class GoTrendingQueAnsAuthorAdapter extends PagerAdapter {
         //return super.instantiateItem(container, position);
         try {
 
-        }
-        catch (Exception e){
-            Log.e(TAG,"instantiateItem Exceptions : "+e.getLocalizedMessage());
-        }
-        View view = inflater.inflate(R.layout.list_item_question_answer_trending, container, false);
-        RelativeLayout main=(RelativeLayout)view.findViewById(R.id.rr_main);
-        TextView txtUsername=(TextView)view.findViewById(R.id.txt_user_name);
-        txtUsername.setTypeface(Global.myTypeFace.getRalewayMedium());
 
-        TextView txtAuthorname=(TextView)view.findViewById(R.id.txt_author_name);
-        txtAuthorname.setTypeface(Global.myTypeFace.getRalewayBold());
+            View view = inflater.inflate(R.layout.list_item_question_answer_trending, container, false);
+            RelativeLayout main = (RelativeLayout) view.findViewById(R.id.rr_main);
+            TextView txtUsername = (TextView) view.findViewById(R.id.txt_user_name);
+            txtUsername.setTypeface(Global.myTypeFace.getRalewayMedium());
 
-        TextView txtAnswer=(TextView)view.findViewById(R.id.txt_answer);
-        txtAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
-        txtAnswer.setMovementMethod(new ScrollingMovementMethod());
+            TextView txtAuthorname = (TextView) view.findViewById(R.id.txt_author_name);
+            txtAuthorname.setTypeface(Global.myTypeFace.getRalewayBold());
 
-        TextView txtQuestion=(TextView)view.findViewById(R.id.txt_question);
-        txtQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+            TextView txtAnswer = (TextView) view.findViewById(R.id.txt_answer);
+            txtAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtAnswer.setMovementMethod(new ScrollingMovementMethod());
 
-        ImageView imgUserPic=(ImageView)view.findViewById(R.id.img_user_pic);
+            TextView txtQuestion = (TextView) view.findViewById(R.id.txt_question);
+            txtQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-        Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrayList.get(position).getPostedByPic(), imgUserPic, ISMStudent.options);
+            ImageView imgUserPic = (ImageView) view.findViewById(R.id.img_user_pic);
+
+            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrayList.get(position).getPostedByPic(), imgUserPic, ISMStudent.options);
 //        Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER+arrayList.get(position).getQuestionBy().getProfilePicture(),imgUserPic, ISMStudent.options);
 
-        txtAuthorname.setText(((HostActivity) mContext).getBundle().getString(AppConstant.AUTHOR_NAME));
+            txtAuthorname.setText(((HostActivity) mContext).getBundle().getString(AppConstant.AUTHOR_NAME));
 
-        txtQuestion.setText(arrayList.get(position).getQuestionText());
+            txtQuestion.setText(arrayList.get(position).getQuestionText());
 
-        txtAnswer.setText(arrayList.get(position).getAnswerText());
+            txtAnswer.setText(arrayList.get(position).getAnswerText());
 
-        txtUsername.setText(arrayList.get(position).getPostedByUsername());
+            txtUsername.setText(arrayList.get(position).getPostedByUsername());
 //        txtUsername.setText(arrayList.get(position).getQuestionBy().getFullName());
 
-        container.addView(view);
-        return view;
+            container.addView(view);
+            return view;
+        } catch (Exception e) {
+            Log.e(TAG, "instantiateItem Exceptions : " + e.getLocalizedMessage());
+        }
+        return null;
     }
 
     @Override
@@ -113,7 +114,7 @@ public class GoTrendingQueAnsAuthorAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((RelativeLayout)object);
+        container.removeView((RelativeLayout) object);
     }
 
 }

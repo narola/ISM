@@ -424,9 +424,12 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
     private void setUpData() {
         try {
             arraylistNotes = studentHelper.getNotes(Integer.parseInt(Global.strUserId));
-            jotterNotesAdapter = new JotterNotesAdapter(getActivity(), arraylistNotes, this, lastPosition);
-            listView.setAdapter(jotterNotesAdapter);
-            setUpNoteDetails(arraylistNotes.get(lastPosition));
+            if (arraylistNotes.size() <= 0) {
+            } else {
+                jotterNotesAdapter = new JotterNotesAdapter(getActivity(), arraylistNotes, this, lastPosition);
+                listView.setAdapter(jotterNotesAdapter);
+                setUpNoteDetails(arraylistNotes.get(lastPosition));
+            }
         } catch (Exception e) {
             Log.e(TAG, "setUpData Exceptions : " + e.getLocalizedMessage());
         }

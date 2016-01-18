@@ -129,54 +129,56 @@ public class PastTrendingQuestionDetailFragment extends Fragment implements Webs
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 
 
-                  //  setData(responseHandler.getTrendingQuestionDetails().get(0));
+                    //  setData(responseHandler.getTrendingQuestionDetails().get(0));
 
                     if (responseHandler.getTrendingQuestionDetails().size() > 0) {
-                        arrListComments.addAll(responseHandler.getTrendingQuestionDetails().get(0).getComment());
-                        questionCommentAdapter.addAll(arrListComments);
-                        questionCommentAdapter.notifyDataSetChanged();
-
+                        setUpData(responseHandler.getTrendingQuestionDetails());
                         setEmptyView(false);
 
                     } else {
-
                         setEmptyView(true);
-
                     }
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Debug.i(TAG, "onResponseGetTrendingQuestionDetail : " + WebConstants.FAILED);
+                    Log.e(TAG, "onResponseGetTrendingQuestionDetail : " + WebConstants.FAILED);
 
                 }
             } else if (error != null) {
-                Debug.i(TAG, "onResponseGetTrendingQuestionDetail error : " + error.toString());
+                Log.e(TAG, "onResponseGetTrendingQuestionDetail error : " + error.toString());
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "onResponseGetTrendingQuestionDetail Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "onResponseGetTrendingQuestionDetail Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void setUpData(ArrayList<TrendingQuestionDetails> arrayList) {
+        try {
+
+            Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrayList.get(0).getPostedByPic(),
+                    imgUserDp, ISMStudent.options);
+            txtCreatorName.setText(arrayList.get(0).getPostedByUsername());
+            txtDate.setText(Utility.getDateInApiFormat(arrayList.get(0).getPostedOn()));
+
+//        txtDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", questionComments.getPostedOn()));
+            txtQuestion.setText(Html.fromHtml(arrayList.get(0).getQuestionText()));
+            txtTotalFollowers.setText(arrayList.get(0).getFollowerCount() + " " + getActivity().getString(R.string.strfollowers));
+            txtTotalComments.setText(arrayList.get(0).getTotalComment() + " " + getActivity().getString(R.string.strcomments));
+            arrListComments.addAll(arrayList.get(0).getComment());
+            questionCommentAdapter.addAll(arrListComments);
+            questionCommentAdapter.notifyDataSetChanged();
+
+        } catch (Exception e) {
+            Debug.e(TAG, "setUpData Exception : " + e.getLocalizedMessage());
         }
     }
 
 
-    private void setData(TrendingQuestionDetails questionComments) {
-
-        Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + questionComments.getPostedByPic(),
-                imgUserDp, ISMStudent.options);
-        txtCreatorName.setText(questionComments.getPostedByUsername());
-        txtDate.setText(Utility.getDateInApiFormat(questionComments.getPostedOn()));
-
-//        txtDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", questionComments.getPostedOn()));
-        txtQuestion.setText(Html.fromHtml(questionComments.getQuestionText()));
-        txtTotalFollowers.setText(questionComments.getFollowerCount() + " " + getActivity().getString(R.string.strfollowers));
-        txtTotalComments.setText(questionComments.getTotalComment() + " " + getActivity().getString(R.string.strcomments));
-
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        activityHost =(HostActivity) activity;
-        fragmentListener =(FragmentListener) activity;
-        if(fragmentListener!=null){
+        activityHost = (HostActivity) activity;
+        fragmentListener = (FragmentListener) activity;
+        if (fragmentListener != null) {
             activityHost.onFragmentAttached(MyAuthorFragment.FRAGMENT_PAST_TRENDING_QUESTION_DETAIL);
         }
     }
@@ -192,7 +194,7 @@ public class PastTrendingQuestionDetailFragment extends Fragment implements Webs
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "onResponse Exceptions : " + e.getLocalizedMessage());
+            Log.e(TAG, "onResponse Exceptions : " + e.getLocalizedMessage());
         }
     }
 }
