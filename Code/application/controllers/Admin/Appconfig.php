@@ -16,9 +16,12 @@ class Appconfig extends ADMIN_Controller {
 	 * @return [type] [description]
 	 */
 	public function index(){
+
 		$this->data['page_title'] = 'App Config';
 		$this->data['tab'] = 'author';
+
 		$author_where = $student_where = $teacher_where = array();
+
 		if(isset($_POST['author_status'])){
 			if($this->input->post('author_status') != '')
 				$author_where['where']['status'] = $this->input->post('author_status'); 
@@ -37,7 +40,9 @@ class Appconfig extends ADMIN_Controller {
 			$this->data['teacher_status'] = $this->input->post('teacher_status');
 			$this->data['tab'] = 'teacher';
 		}
+
 		if(isset($_POST['author_btn'])){
+			$this->data['tab'] = 'author';
 			$author_selected_images = $this->input->post('author');
 			$data = array(
 						'status'=>'archive'
@@ -54,6 +59,7 @@ class Appconfig extends ADMIN_Controller {
 			}
 		}
 		if(isset($_POST['student_btn'])){
+			$this->data['tab'] = 'student';
 			$student_selected_images = $this->input->post('student');
 			$data = array(
 						'status'=>'archive'
@@ -70,6 +76,7 @@ class Appconfig extends ADMIN_Controller {
 			}
 		}
 		if(isset($_POST['teacher_btn'])){
+			$this->data['tab'] = 'teacher';
 			$teacher_selected_images = $this->input->post('teacher');
 			$data = array(
 						'status'=>'archive'

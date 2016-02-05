@@ -28,9 +28,20 @@
   <div class="tab-content">
     <div id="author" class="tab-pane fade <?php echo ($tab == 'author')  ? 'in active' : ''; ?>">
 
+          <div class="col-sm-12 ">
+            <div class="col-sm-6">
+            <div class="form-group select">
+                    <select class="form-control" name="bulk_action" onchange="submit_bulk_form(this.value)"> 
+                        <option value="">Bulk Action</option>
+                        <option value="delete" >Delete</option>
+                    </select>
+                </div>
+            </div>
+            
+      <div class="col-sm-6">
       <form method="post" id="author_filter">
         <div class="filter">
-          <div class="col-sm-12 ">
+
             <div class="form-group pull-right">
                 <select class="form-control" name="author_status" id="author_status">
                     <option <?php if(isset($author_status)) echo ($author_status == '') ? 'selected' : ''; ?> value="">Both</option>
@@ -38,15 +49,19 @@
                     <option <?php if(isset($author_status)) echo ($author_status == 'archive') ? 'selected' : ''; ?> value="archive">Inactive</option>
                 </select>
             </div>
-          </div>
         </div>
       </form>
+          </div>
+          </div>
 
       <form id="author_frm" method="post" enctype="multipart/form-data">
       <div id="author_thumbnails" class="thumbnails">
         <ul class="clearfix">
         <?php foreach ($author_images as $image) { ?>
           <li class="col-md-3 text-center">
+            <div class="row">
+              <input type="checkbox" name="author_multiple[]" value="<?php echo $image['id']; ?>" />
+            </div>
             <div class="row">
               <a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a>
             </div>
@@ -83,6 +98,9 @@
         <?php foreach ($student_images as $image) { ?>
           <li class="col-md-3 text-center">
             <div class="row">
+              <input type="checkbox" name="student_multiple[]" value="<?php echo $image['id']; ?>" />
+            </div>
+            <div class="row">
               <a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a>
             </div>
              <div class="row make-switch ">
@@ -101,7 +119,7 @@
       <form method="post" id="teacher_filter">
         <div class="filter">
           <div class="col-sm-12">
-            <div class="form-group">
+            <div class="form-group pull-right">
                 <select class="form-control" name="teacher_status" id="teacher_status">
                     <option <?php if(isset($teacher_status)) echo ($teacher_status == '') ? 'selected' : ''; ?> value="">Both</option>
                     <option <?php if(isset($teacher_status)) echo ($teacher_status == 'active') ? 'selected' : ''; ?> value="active">Active</option>
@@ -116,6 +134,9 @@
         <ul class="clearfix">
         <?php foreach ($teacher_images as $image) { ?>
           <li class="col-md-3 text-center">
+            <div class="row">
+              <input type="checkbox" name="teacher_multiple[]" value="<?php echo $image['id']; ?>" />
+            </div>
             <div class="row">
               <a href="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>"><img height="130" src="<?php echo UPLOAD_URL ?>/images/<?php echo $image['image_url']; ?>" alt="turntable"></a>
             </div>

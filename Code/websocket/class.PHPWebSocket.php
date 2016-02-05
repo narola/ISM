@@ -1965,7 +1965,7 @@ class PHPWebSocket {
         if (!file_exists($output_file)) {
             mkdir($output_file, 0777);
         }
-        $data['name'] = preg_replace("/[^a-zA-Z]+/", "", $data['name']);
+        $data['name'] = preg_replace("/[^a-zA-Z.]+/", "", $data['name']);
         $data['webpath'] = 'user_' . $user_id . '/sentFiles/' . $time . '_' . $data['name'];
         $output_file .= '\\' . $time . '_' . $data['name'];
 

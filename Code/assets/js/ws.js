@@ -427,10 +427,10 @@ if ("WebSocket" in window)
         } else if (obj.type == 'like') {
             if (wp == obj.id) {
                 if (obj.message == 'like') {
-                    $('.like_btn[data-id="' + obj.fid + '"]').html('<span class="icon icon_thumb"></span>' + obj.like_cnt);
+                    $('.like_btn[data-id="' + obj.fid + '"]').html('<span data-toggle="tooltip" title="Unlike" class="icon icon_thumb"></span>' + obj.like_cnt);
                 }
                 else {
-                    $('.like_btn[data-id="' + obj.fid + '"]').html('<span class="icon icon_thumb_0"></span>' + obj.like_cnt);
+                    $('.like_btn[data-id="' + obj.fid + '"]').html('<span data-toggle="tooltip" title="Like" class="icon icon_thumb_0"></span>' + obj.like_cnt);
                 }
             }
             else {
