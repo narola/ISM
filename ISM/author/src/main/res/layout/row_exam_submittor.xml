@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/d8dp">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_assessment_box">
+
+        <LinearLayout
+            android:id="@+id/ll_exam_submittor_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_top_assignment_submission"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="@dimen/d0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"></LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:layout_marginTop="@dimen/d5dp"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_exam_submittor_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/d5dp"
+                        android:text="@string/strtest"
+                        android:textColor="@color/color_black_light_medium"
+                        android:textSize="@dimen/d18sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/d5dp">
+
+                        <ImageView
+                            android:id="@+id/img_exam_submittor_chat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ic_chat_white" />
+
+                        <ImageView
+                            android:id="@+id/img_exam_submission_msg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/d15dp"
+                            android:layout_toRightOf="@+id/img_exam_submittor_chat"
+                            android:background="@drawable/ic_message_white" />
+
+                        <TextView
+                            android:id="@+id/tv_exam_submittor_rollno"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="@dimen/d10dp"
+                            android:text="@string/strtest"
+                            android:textColor="@color/color_black_light_medium"
+                            android:textSize="@dimen/d15sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/d25dp"
+                android:layout_marginTop="@dimen/d25dp"
+                android:background="@color/color_white">
+
+                <LinearLayout
+                    android:layout_width="@dimen/d0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_exam_submission_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/d5dp"
+                        android:singleLine="true"
+                        android:text="@string/strtest"
+                        android:textColor="@color/color_blue_assignment"
+                        android:textSize="@dimen/d20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_submission_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/d5dp"
+                        android:singleLine="true"
+                        android:text="@string/strsubmission_date"
+                        android:textColor="@color/color_assignment_submission"
+                        android:textSize="@dimen/d15sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/d1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/assignment_separator" />
+
+                <LinearLayout
+                    android:layout_width="@dimen/d0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_assessment_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/d5dp"
+                        android:singleLine="true"
+                        android:text="@string/strtest"
+                        android:textColor="@color/bg_office"
+                        android:textSize="@dimen/d20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/d5dp"
+                        android:singleLine="true"
+                        android:text="@string/strstatus"
+                        android:textColor="@color/color_assignment_submission"
+                        android:textSize="@dimen/d15sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.ism.author.views.CircleImageView
+            android:id="@+id/img_exam_submittor_dp"
+            android:layout_width="@dimen/d70dp"
+            android:layout_height="@dimen/d70dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/d5dp"
+            android:layout_marginTop="@dimen/d15dp"
+            android:background="@drawable/userdp" />
+    </RelativeLayout>
+</LinearLayout>

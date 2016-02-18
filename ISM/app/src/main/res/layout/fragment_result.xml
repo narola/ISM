@@ -85,7 +85,7 @@
 				android:layout_below="@id/txt_correct"
 				android:layout_alignParentRight="true"
 				android:textSize="@dimen/score_text"
-				android:textColor="@color/color_red"
+				android:textColor="@color/red"
 				android:textStyle="bold"
 				android:paddingRight="@dimen/score_text_padding"
 				android:paddingTop="@dimen/dp12"/>

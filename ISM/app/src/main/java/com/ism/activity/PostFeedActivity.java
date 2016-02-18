@@ -32,7 +32,6 @@ import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.model.PostFileModel;
 import com.ism.object.Global;
-import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.views.CircularSeekBar;
 import com.ism.views.HorizontalListView;
@@ -50,10 +49,10 @@ import java.util.Locale;
 
 
 public class PostFeedActivity extends Activity implements View.OnClickListener, WebserviceWrapper.WebserviceResponse {
-    public static final String TAG = PostFeedActivity.class.getSimpleName();
+    private static final String TAG = PostFeedActivity.class.getSimpleName();
     public static final String IMAGE = "image";
     public static final String VIDEO = "video";
-    private static final String AUDIO = "audio";
+    public static final String AUDIO = "audio";
     private InputMethodManager inputMethod;
     private TextView txtPost, txtCaptue, txtChoose, txtCancel;
     private EditText etSayIt;
@@ -530,21 +529,6 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-//    private void onResponsePostFeedMeida(Object object, Exception error) {
-//        hideProgress();
-//        if (object != null) {
-//            ResponseHandler responseHandler = (ResponseHandler) object;
-//            if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-//                arrayList.clear();
-//                super.onBackPressed();
-//            } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-//                Utility.showToast(this, "Please try again!");
-//            }
-//        } else if (error != null) {
-//            Log.e(TAG, "onResponsePostFeedMeida error : " + error);
-//        }
-//    }
-
     private void onResponsePostFeed(Object object, Exception error) {
         if (object != null) {
             ResponseHandler responseHandler = (ResponseHandler) object;
@@ -592,12 +576,12 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 
             MediaUploadAttribute feedTextParam = new MediaUploadAttribute();
             feedTextParam.setParamName("feed_text");
-            feedTextParam.setParamValue(feed_id);
+            feedTextParam.setParamValue(etSayIt.getText().toString());
             attribute.getArrListParam().add(feedTextParam);
 
             MediaUploadAttribute feedPostOnParam = new MediaUploadAttribute();
-            feedPostOnParam.setParamName("feed_text");
-            feedPostOnParam.setParamValue(feed_id);
+            feedPostOnParam.setParamName("posted_on");
+            feedPostOnParam.setParamValue(Utility.getDate());
             attribute.getArrListParam().add(feedPostOnParam);
 
             MediaUploadAttribute feedByParam = new MediaUploadAttribute();
@@ -637,8 +621,6 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         } else if (requestCode == MEDIA_TYPE_VIDEO && resultCode == RESULT_OK) {
             Uri uri = data.getData();
-
-            Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory());
             Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory() + uri.getPath());
             model = new PostFileModel(VIDEO, uri, "");
             MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();

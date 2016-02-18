@@ -24,7 +24,6 @@ import com.ism.adapter.deskAdapter.FavNotesAdapter;
 import com.ism.fragment.DeskFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
-import com.ism.utility.Debug;
 
 /**
  * Created by c162 on 24/10/15.
@@ -92,7 +91,7 @@ public class FavoriteFragment extends Fragment implements HostActivity.HostListe
         txtNotes = (TextView) includeNotes.findViewById(R.id.txt_fav_item);
         txtNotes.setTypeface(Global.myTypeFace.getRalewayMedium());
         txtNotes.setText(R.string.notes);
-        txtNotes.setBackgroundColor(getResources().getColor(R.color.color_red));
+        txtNotes.setBackgroundColor(getResources().getColor(R.color.red));
 
         txtViewAllNotes = (TextView) includeNotes.findViewById(R.id.txt_view_all);
         txtViewAllNotes.setTypeface(Global.myTypeFace.getRalewayRegular());

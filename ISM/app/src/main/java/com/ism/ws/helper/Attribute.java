@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.constant.WebConstants;
 import com.ism.ws.model.AnswerChoice;
+import com.ism.ws.model.ExamQuestion;
 import com.ism.ws.model.Preferences;
-import com.ism.ws.model.Question;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ import java.util.List;
  */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-//@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Attribute {
 
@@ -116,13 +115,15 @@ public class Attribute {
 	private String authorId;
 	private String bookId;
 	private int examId;
-	private ArrayList<Question> question;
+	private ArrayList<ExamQuestion> question;
 	private String followerId;
 	private String followTo;
 
 	/* these are the upload media params */
 	private ArrayList<MediaUploadAttribute> arrListFile ;//= new ArrayList<MediaUploadAttribute>();
 	private ArrayList<MediaUploadAttribute> arrListParam ;//= new ArrayList<MediaUploadAttribute>();
+	private String checkSlot;
+	private String questionId;
 
 
 	public Attribute() {
@@ -845,11 +846,11 @@ public class Attribute {
 	}
 
 	@JsonProperty("question")
-	public ArrayList<Question> getQuestion() {
+	public ArrayList<ExamQuestion> getQuestion() {
 		return this.question;
 	}
 
-	public void setQuestion(ArrayList<Question> question) {
+	public void setQuestion(ArrayList<ExamQuestion> question) {
 		this.question = question;
 	}
 
@@ -871,5 +872,23 @@ public class Attribute {
 		return followTo;
 	}
 
+
+	public String getCheckSlot() {
+		return this.checkSlot;
+	}
+
+	@JsonProperty("check_slot")
+	public void setCheckSlot(String checkSlot) {
+		this.checkSlot = checkSlot;
+	}
+
+	public String getQuestionId() {
+		return questionId;
+	}
+
+	@JsonProperty("question_id")
+	public void setQuestionId(String questionId) {
+		this.questionId = questionId;
+	}
 
 }

@@ -27,6 +27,7 @@ public class HtmlImageGetter implements Html.ImageGetter {
     private Context mContext;
     private RefreshDataAfterLoadImage refreshDataAfterLoadImage;
 
+
 //    public HtmlImageGetter(int height, int width, Context context) {
 //        this.height = height;
 //        this.width = width;

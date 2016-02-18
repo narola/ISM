@@ -38,10 +38,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import model.Classrooms;
-import model.Courses;
-import model.School;
-import model.StudentProfile;
+import model.ROClassrooms;
+import model.ROCourses;
+import model.ROSchool;
+import model.ROStudentProfile;
+import model.ROUser;
 import realmhelper.StudentHelper;
 
 /**
@@ -200,9 +201,9 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             }
         });
 
-        model.StudentProfile studentProfile=getUserDetails();
-        if(studentProfile!=null){
-            setUpRealmData(studentProfile);
+        ROStudentProfile ROStudentProfile =getUserDetails();
+        if(ROStudentProfile !=null){
+            setUpRealmData(ROStudentProfile);
             callApiGetAboutMe();
         }else{
             callApiGetAboutMe();
@@ -240,59 +241,59 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void saveUserProfile(User user) {
         try {
-            model.StudentProfile studentProfile = new StudentProfile();
-            model.User userData = studentHelper.getUser(Integer.parseInt(user.getUserId()));
-            if (userData != null) {
-                studentProfile.setUser(userData);
+            ROStudentProfile ROStudentProfile = new ROStudentProfile();
+            ROUser ROUserData = studentHelper.getUser(Integer.parseInt(user.getUserId()));
+            if (ROUserData != null) {
+                ROStudentProfile.setRoUser(ROUserData);
             } else {
-                userData = new model.User();
-                userData.setUserId(Integer.parseInt(user.getUserId()));
+                ROUserData = new ROUser();
+                ROUserData.setUserId(Integer.parseInt(user.getUserId()));
 //                newuser.setUsername(user.getUsername());
-                userData.setFullName(user.getUsername());
-                userData.setProfilePicture(user.getProfilePic());
-                studentHelper.saveUser(userData);
-                studentProfile.setUser(userData);
+                ROUserData.setFullName(user.getUsername());
+                ROUserData.setProfilePicture(user.getProfilePic());
+                studentHelper.saveUser(ROUserData);
+                ROStudentProfile.setRoUser(ROUserData);
             }
 
-            School  school=new School();
-            school.setSchoolName(user.getSchoolName());
-            studentHelper.saveSchool(school);
-            studentProfile.setSchool(school);
+            ROSchool ROSchool =new ROSchool();
+            ROSchool.setSchoolName(user.getSchoolName());
+            studentHelper.saveSchool(ROSchool);
+            ROStudentProfile.setRoSchool(ROSchool);
 
-            Classrooms classrooms=new Classrooms();
-            classrooms.setClassName(user.getClassName());
-            studentHelper.saveClassRoom(classrooms);
-            studentProfile.setClassroom(classrooms);
+            ROClassrooms ROClassrooms =new ROClassrooms();
+            ROClassrooms.setClassName(user.getClassName());
+            studentHelper.saveClassRoom(ROClassrooms);
+            ROStudentProfile.setClassroom(ROClassrooms);
 
-            Courses courses=new Courses();
-            courses.setCourseName(user.getCourseName());
-            courses.setCourseId(Integer.parseInt(user.getCourseId() == null ? "0" : user.getCourseId()));
-            studentHelper.saveCourse(courses);
-            studentProfile.setCourse(courses);
+            ROCourses ROCourses =new ROCourses();
+            ROCourses.setCourseName(user.getCourseName());
+            ROCourses.setCourseId(Integer.parseInt(user.getCourseId() == null ? "0" : user.getCourseId()));
+            studentHelper.saveCourse(ROCourses);
+            ROStudentProfile.setCourse(ROCourses);
 
-            studentProfile.setServerStudentId(Integer.parseInt(user.getUserId()));
-            studentProfile.setAmbitionInLife(user.getAmbitionInLife());
-            studentProfile.setContactNumber(user.getContactNumber());
-           // studentProfile.setClassroom(user.getC());
+            ROStudentProfile.setServerStudentId(Integer.parseInt(user.getUserId()));
+            ROStudentProfile.setAmbitionInLife(user.getAmbitionInLife());
+            ROStudentProfile.setContactNumber(user.getContactNumber());
+           // studentProfile.setRoClassroom(user.getC());
 
 //            remaining to store classroom,course and school
 
 
             //authorProfile.setContactNumber(user.getContactNumber()); // this field is never used in author module
-            studentProfile.setBirthDate(getDateFormate(user.getBirthdate()));
-            studentProfile.setAcademicYear(user.getAcademicYear());
-            studentProfile.setAboutMe(user.getAboutMeText());
-            studentProfile.setTotalAssignment(Integer.parseInt(user.getTotalAssignment() == null ? "0" : user.getTotalAssignment()));
-            studentProfile.setTotalBadges(Integer.parseInt(user.getTotalBadgesEarned() == null ? "0" : user.getTotalBadgesEarned()));
-            studentProfile.setTotalPost(Integer.parseInt(user.getTotalPost() == null ? "0" : user.getTotalPost()));
-            studentProfile.setTotalAuthorFollowed(Integer.parseInt(user.getTotalAuthorsFollowed() == null ? "0" : user.getTotalAuthorsFollowed()));
-            studentProfile.setTotalExam(Integer.parseInt(user.getTotalExams() == null ? "0" : user.getTotalExams()));
-            studentProfile.setTotalFavoriteQuestion(Integer.parseInt(user.getTotalFavoriteQuestions() == null ? "0" : user.getTotalFavoriteQuestions()));
-            studentProfile.setTotalQuestionAsked(Integer.parseInt(user.getTotalQuestionAsked() == null ? "0" : user.getTotalQuestionAsked()));
-            studentProfile.setTotalScore(Integer.parseInt(user.getIsmScore() == null ? "0" : user.getIsmScore()));
-            studentProfile.setTotalStudyMate(Integer.parseInt(user.getTotalStudymates() == null ? "0" : user.getTotalStudymates()));
-            studentProfile.setRank(Integer.parseInt(user.getIsmRank() == null ? "0" : user.getIsmRank()));
-            studentHelper.saveStudentProfile(studentProfile);
+            ROStudentProfile.setBirthDate(getDateFormate(user.getBirthdate()));
+            ROStudentProfile.setAcademicYear(user.getAcademicYear());
+            ROStudentProfile.setAboutMe(user.getAboutMeText());
+            ROStudentProfile.setTotalAssignment(Integer.parseInt(user.getTotalAssignment() == null ? "0" : user.getTotalAssignment()));
+            ROStudentProfile.setTotalBadges(Integer.parseInt(user.getTotalBadgesEarned() == null ? "0" : user.getTotalBadgesEarned()));
+            ROStudentProfile.setTotalPost(Integer.parseInt(user.getTotalPost() == null ? "0" : user.getTotalPost()));
+            ROStudentProfile.setTotalAuthorFollowed(Integer.parseInt(user.getTotalAuthorsFollowed() == null ? "0" : user.getTotalAuthorsFollowed()));
+            ROStudentProfile.setTotalExam(Integer.parseInt(user.getTotalExams() == null ? "0" : user.getTotalExams()));
+            ROStudentProfile.setTotalFavoriteQuestion(Integer.parseInt(user.getTotalFavoriteQuestions() == null ? "0" : user.getTotalFavoriteQuestions()));
+            ROStudentProfile.setTotalQuestionAsked(Integer.parseInt(user.getTotalQuestionAsked() == null ? "0" : user.getTotalQuestionAsked()));
+            ROStudentProfile.setTotalScore(Integer.parseInt(user.getIsmScore() == null ? "0" : user.getIsmScore()));
+            ROStudentProfile.setTotalStudyMate(Integer.parseInt(user.getTotalStudymates() == null ? "0" : user.getTotalStudymates()));
+            ROStudentProfile.setRank(Integer.parseInt(user.getIsmRank() == null ? "0" : user.getIsmRank()));
+            studentHelper.saveStudentProfile(ROStudentProfile);
             setUpRealmData(getUserDetails());
 
         } catch (Exception e) {
@@ -306,17 +307,17 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         studentHelper.realm.close();
     }
 
-    private void setUpRealmData(model.StudentProfile data) {
+    private void setUpRealmData(ROStudentProfile data) {
             try {
-                txtUserName.setText(data.getUser().getFullName());
-                txtSchool.setText(data.getSchool().getSchoolName());
+                txtUserName.setText(data.getRoUser().getFullName());
+                txtSchool.setText(data.getRoSchool().getSchoolName());
                 txtClass.setText(data.getCourse().getCourseName());
-//                txtClass.setText(data.getClassroom().getClassName());
+//                txtClass.setText(data.getRoClassroom().getClassName());
                 etDob.setText(com.ism.commonsource.utility.Utility.DateFormat(getDateFormate(data.getBirthDate())));
                 etCno.setText(data.getContactNumber());
                 //  Global.strProfilePic=WebConstants.HOST_IMAGE_USER + data.getProfilePic();
-                Log.e(TAG, "WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic() :" + WebConstants.HOST_IMAGE_USER + data.getUser().getProfilePicture());
-                Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + data.getUser().getProfilePicture(), imgProfilePic, ISMStudent.options);
+                Log.e(TAG, "WebConstants.HOST_IMAGE_USER_OLD + data.getProfilePic() :" + WebConstants.HOST_IMAGE_USER + data.getRoUser().getProfilePicture());
+                Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + data.getRoUser().getProfilePicture(), imgProfilePic, ISMStudent.options);
                     txtTotalAssignment.setText(String.valueOf(data.getTotalAssignment()));
                     txtTotalAuthorFollowed.setText(String.valueOf(data.getTotalAuthorFollowed()));
                     txtTotalBadgesEarned.setText(String.valueOf(data.getTotalBadges()));
@@ -359,7 +360,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         }
     }
 
-    private model.StudentProfile getUserDetails() {
+    private ROStudentProfile getUserDetails() {
         return studentHelper.getStudentProfile(Integer.parseInt(Global.strUserId));
     }
 

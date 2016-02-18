@@ -16,19 +16,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.utility.Debug;
-import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.model.RealmDataModel;
 import com.ism.author.object.Global;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.Examsubmittor;
+import com.ism.author.ws.model.ExamSubmission;
 
-import java.util.ArrayList;
+import realmhelper.AuthorHelper;
 
 /**
  * Created by c166 on 16/11/15.
@@ -48,7 +49,8 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private TextView tvTitleMystudents, tvNoDataMsg;
     private RecyclerView rvMystudentList;
     private MyStudentListAdapter myStudentListAdapter;
-    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
+    private AuthorHelper authorHelper;
+    private RealmDataModel realmDataModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +62,9 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
 
     private void initGlobal() {
 
+
+        authorHelper = new AuthorHelper(getActivity());
+        realmDataModel = new RealmDataModel();
 
         imgSearchMystudents = (ImageView) view.findViewById(R.id.img_search_mystudents);
         etSearchMystudents = (EditText) view.findViewById(R.id.et_search_mystudents);
@@ -155,7 +160,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            setUpData();
         }
     }
 
@@ -182,13 +187,21 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    if (responseHandler.getExamSubmission().get(0).getExamsubmittor().size() > 0) {
+                    /*if (responseHandler.getExamSubmission().get(0).getExamsubmittor().size() > 0) {
                         arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
                         myStudentListAdapter.addAll(arrListExamSubmittor);
                         myStudentListAdapter.notifyDataSetChanged();
                         getBaseFragment().setTitleDetails();
                         setEmptyView(false);
 
+                    } else {
+                        setEmptyView(true);
+                    }*/
+
+                    if (responseHandler.getExamSubmission().get(0).getExamsubmittor().size() > 0) {
+                        setEmptyView(false);
+                        addExamSubmission(responseHandler.getExamSubmission().get(0));
+                        setUpData();
                     } else {
                         setEmptyView(true);
                     }
@@ -206,6 +219,29 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     }
 
 
+    private void addExamSubmission(ExamSubmission examSubmission) {
+
+        if (examSubmission.getExamsubmittor().size() > 0) {
+            authorHelper.updateExamSubmissionData(realmDataModel.getROExamSubmission(examSubmission, authorHelper));
+        }
+    }
+
+    private void setUpData() {
+        if (authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))) != null) {
+            if (authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))).getRoExamSubmittors().size() > 0) {
+                setEmptyView(false);
+
+                myStudentListAdapter.addAll(authorHelper.getExamSubmission(Integer.valueOf(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_ID))).
+                        getRoExamSubmittors());
+
+                getBaseFragment().setTitleDetails();
+            }
+        } else {
+            setEmptyView(true);
+
+        }
+    }
+
     /*this is to refresh adapter for student navigation button in subjective questions fragment*/
 
     public void setBundleArgument(int position) {
@@ -213,6 +249,12 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         myStudentListAdapter.setBundleArgument(position);
 
     }
+
+
+    private Bundle getBundleArguments() {
+        return ((AuthorHostActivity) getActivity()).getBundle();
+    }
+
 
     private SubjectiveAssignmentQuestionsContainerFragment getBaseFragment() {
         return (SubjectiveAssignmentQuestionsContainerFragment) mFragment;
@@ -226,6 +268,12 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         rvMystudentList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        authorHelper.realm.close();
     }
 
 }

@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import com.ism.R;
 import com.ism.utility.Debug;
 import com.ism.ws.model.AllBooks;
-
 import java.util.ArrayList;
 
 /**

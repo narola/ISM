@@ -113,7 +113,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
 
     }

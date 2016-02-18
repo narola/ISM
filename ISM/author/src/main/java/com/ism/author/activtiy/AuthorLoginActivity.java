@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import model.ROAdminConfig;
+import model.ROUser;
 import realmhelper.AuthorHelper;
 
 /**
@@ -96,7 +98,8 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         if (Utility.isConnected(this)) {
             initializeData();
         } else {
-            Utility.alertOffline(this);
+//            Utility.alertOffline(this);
+            resumeApp();
         }
 
     }
@@ -138,8 +141,8 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
         showLoginLayout();
 
-//        etUserName.setText("twinkle");
-//        etPwd.setText("narola21");
+        etUserName.setText("twinkle");
+        etPwd.setText("narola21");
 
 
         etUserName.setTypeface(myTypeFace.getRalewayRegular());
@@ -551,15 +554,15 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                     Debug.e(TAG, "admin config size : " + arrListAdminConfig.size());
 
                     if (arrListAdminConfig != null) {
-                        authorHelper.clearTableData(model.AdminConfig.class);
+                        authorHelper.clearTableData(ROAdminConfig.class);
                     }
 
                     if (arrListAdminConfig != null && arrListAdminConfig.size() > 0) {
                         for (AdminConfig config : arrListAdminConfig) {
-                            model.AdminConfig adminConfig = new model.AdminConfig();
-                            adminConfig.setConfigKey(config.getConfigKey());
-                            adminConfig.setConfigValue(config.getConfigValue());
-                            authorHelper.saveAdminConfig(adminConfig);
+                            ROAdminConfig ROAdminConfig = new ROAdminConfig();
+                            ROAdminConfig.setConfigKey(config.getConfigKey());
+                            ROAdminConfig.setConfigValue(config.getConfigValue());
+                            authorHelper.saveAdminConfig(ROAdminConfig);
                         }
                         PreferenceData.setStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, getActivity(),
                                 Utility.formatDateMySql(Calendar.getInstance().getTime()));
@@ -776,12 +779,12 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
     private void saveUser(User user, String userName) {
         try {
-            model.User userData = new model.User();
-            userData.setUserId(Integer.parseInt(user.getUserId()));
-            userData.setProfilePicture(user.getProfilePic());
-            userData.setFullName(user.getFullName());
-            userData.setUserName(userName);
-            authorHelper.saveUser(userData);
+            ROUser ROUserData = new ROUser();
+            ROUserData.setUserId(Integer.parseInt(user.getUserId()));
+            ROUserData.setProfilePicture(user.getProfilePic());
+            ROUserData.setFullName(user.getFullName());
+            ROUserData.setUserName(userName);
+            authorHelper.saveUser(ROUserData);
         } catch (Exception e) {
             Debug.i(TAG, "saveUser Exceptions : " + e.getLocalizedMessage());
         }

@@ -1,0 +1,418 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+              android:orientation="vertical"
+             tools:context="com.ism.fragment.tutorialGroup.SundayExamFragment">
+
+    <TextView
+	    android:id="@+id/txt_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:gravity="center"
+        android:text="@string/sunday_special_interface"
+        android:textSize="@dimen/sp11"
+        android:paddingBottom="@dimen/dp2"
+        android:textColor="@android:color/white"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal">
+
+		<RelativeLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:layout_marginRight="@dimen/dp1"
+			android:background="@color/white">
+
+			<TextView
+				android:id="@+id/txt_discussion_title"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@color/green"
+				android:text="@string/title_discusstion_board"
+				android:textSize="@dimen/sp13"
+				android:paddingBottom="@dimen/dp1"
+				android:paddingLeft="@dimen/dp10"
+				android:textColor="@android:color/white"/>
+
+			<android.support.v7.widget.RecyclerView
+				android:id="@+id/recycler_discussion"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@color/white"
+				android:layout_below="@id/txt_discussion_title"
+				android:layout_above="@+id/ll_attachments"></android.support.v7.widget.RecyclerView>
+
+			<LinearLayout
+				android:id="@+id/ll_attachments"
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/attachment_button_height"
+				android:layout_above="@+id/ll_message"
+				android:background="@color/green"
+				android:orientation="horizontal">
+
+				<ImageView
+					android:id="@+id/img_attach_file"
+					android:layout_width="@dimen/attachment_button_width"
+					android:layout_height="match_parent"
+					android:layout_marginLeft="@dimen/margin_left_attachment"
+					android:scaleType="centerInside"
+					android:src="@drawable/ic_attach_file"/>
+
+				<ImageView
+					android:id="@+id/img_attach_image"
+					android:layout_width="@dimen/attachment_button_width"
+					android:layout_height="match_parent"
+					android:layout_marginLeft="@dimen/margin_left_attachment"
+					android:scaleType="centerInside"
+					android:src="@drawable/ic_attach_image"/>
+
+				<ImageView
+					android:id="@+id/img_attach_audio"
+					android:layout_width="@dimen/attachment_button_width"
+					android:layout_height="match_parent"
+					android:layout_marginLeft="@dimen/margin_left_attachment"
+					android:scaleType="centerInside"
+					android:src="@drawable/ic_attach_audio"/>
+
+				<ImageView
+					android:id="@+id/img_attach_link"
+					android:layout_width="@dimen/attachment_button_width"
+					android:layout_height="match_parent"
+					android:layout_marginLeft="@dimen/margin_left_attachment"
+					android:scaleType="centerInside"
+					android:src="@drawable/ic_attach_link"/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:id="@+id/ll_message"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="@dimen/dp4"
+				android:layout_alignParentBottom="true"
+				android:orientation="horizontal">
+
+				<EditText
+					android:id="@+id/et_message"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:inputType="textMultiLine"
+					android:gravity="start"
+					android:hint="@string/say_it"
+					android:layout_margin="@dimen/dp4"
+					android:background="@color/transparent"
+					android:textSize="@dimen/sp14"
+					android:textColor="@color/bg_app_dark"
+					android:maxLines="3"/>
+
+				<Button
+					android:id="@+id/btn_send"
+					android:layout_width="wrap_content"
+					android:layout_height="@dimen/dp30"
+					android:background="@drawable/bg_btn_dark"
+					android:textSize="@dimen/sp14"
+					android:paddingLeft="@dimen/dp15"
+					android:paddingRight="@dimen/dp15"
+					android:text="@string/send"
+					android:layout_gravity="bottom"
+					android:textColor="@color/white"/>
+			</LinearLayout>
+
+			<View
+				android:id="@+id/view_cover1"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+			    android:background="@color/black_transperant"
+				android:visibility="gone"/>
+		</RelativeLayout>
+
+		<RelativeLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1">
+
+			<TextView
+				android:id="@+id/txt_question_title"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@color/green"
+				android:textSize="@dimen/sp13"
+				android:paddingBottom="@dimen/dp1"
+				android:paddingLeft="@dimen/dp10"
+				android:textColor="@android:color/white"/>
+
+			<ScrollView
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_below="@id/txt_question_title"
+				android:background="@color/white"
+				android:layout_marginBottom="@dimen/dp10"
+				android:layout_above="@+id/rl_members">
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+
+					<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:padding="@dimen/dp20"
+						android:background="@drawable/bg_question">
+
+						<com.ism.views.CircleImageView
+							android:id="@+id/img_dp_admin"
+							android:layout_width="@dimen/dp_size_list_notification"
+							android:layout_height="@dimen/dp_size_list_notification"
+							android:src="@drawable/img_no_cover_available"/>
+
+						<TextView
+							android:id="@+id/txt_name_admin"
+							android:layout_width="@dimen/dp_size_list_notification"
+							android:layout_height="wrap_content"
+							android:layout_below="@id/img_dp_admin"
+							android:layout_marginTop="@dimen/dp5"
+							android:gravity="center"
+							android:textColor="@color/bg_app_dark"
+							android:textSize="@dimen/text_sunday_member_name"
+							android:text="@string/admin"/>
+
+						<TextView
+							android:id="@+id/txt_question"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_margin="@dimen/dp8"
+							android:layout_toRightOf="@id/img_dp_admin"
+							android:gravity="center"
+							android:paddingLeft="@dimen/dp23"
+							android:paddingRight="@dimen/dp23"
+							android:text="When parallel elements meet, which reaction occurs?\nline 2\nQuestion line 3\n\n\n\nHello"
+							android:textSize="@dimen/sp15"
+							android:textColor="@color/bg_app_dark"/>
+					</RelativeLayout>
+
+					<TextView
+						android:id="@+id/txt_options"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="@dimen/dp23"
+						android:text="@string/options_lable"
+						android:textSize="@dimen/sp14"
+						android:textStyle="bold"/>
+
+					<RadioGroup
+						android:id="@+id/rg_options"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="@dimen/dp15"
+						android:layout_marginRight="@dimen/dp23"
+						android:layout_marginLeft="@dimen/dp23"
+						android:layout_marginBottom="@dimen/dp23"
+						android:orientation="vertical">
+
+						<RadioButton
+							android:id="@+id/rb_op1"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:button="@drawable/bg_rb"
+							android:padding="@dimen/padding_rb_exam"
+							android:text="Option 1"
+							android:textSize="@dimen/text_rb_exam"/>
+
+						<RadioButton
+							android:id="@+id/rb_op2"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:button="@drawable/bg_rb"
+							android:padding="@dimen/padding_rb_exam"
+							android:text="Option 2"
+							android:textSize="@dimen/text_rb_exam"/>
+
+						<RadioButton
+							android:id="@+id/rb_op3"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:button="@drawable/bg_rb"
+							android:padding="@dimen/padding_rb_exam"
+							android:text="Option 3"
+							android:textSize="@dimen/text_rb_exam"/>
+
+						<RadioButton
+							android:id="@+id/rb_op4"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:button="@drawable/bg_rb"
+							android:padding="@dimen/padding_rb_exam"
+							android:text="Option 4"
+							android:textSize="@dimen/text_rb_exam"/>
+					</RadioGroup>
+				</LinearLayout>
+			</ScrollView>
+
+			<RelativeLayout
+				android:id="@+id/rl_members"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_above="@+id/txt_msg"
+				android:paddingTop="@dimen/dp5"
+				android:paddingBottom="@dimen/dp10"
+				android:paddingLeft="@dimen/dp5"
+				android:paddingRight="@dimen/dp5"
+				android:background="@drawable/bg_white_bottom_shadowed_dark">
+
+				<com.ism.views.CircleImageView
+					android:id="@+id/img_dp_member1"
+					android:layout_width="@dimen/width_sunday_member_view"
+					android:layout_height="@dimen/dp_size_sunday_exam"
+					android:src="@drawable/img_no_cover_available"/>
+
+				<TextView
+					android:id="@+id/txt_name_member1"
+					android:layout_width="@dimen/width_sunday_member_view"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/img_dp_member1"
+					android:layout_marginTop="@dimen/dp5"
+					android:gravity="center"
+					android:textColor="@color/bg_app_dark"
+					android:textSize="@dimen/text_sunday_member_name"
+					android:text="Adam"/>
+
+				<com.ism.views.CircleImageView
+					android:id="@+id/img_dp_member2"
+					android:layout_width="@dimen/width_sunday_member_view"
+					android:layout_height="@dimen/dp_size_sunday_exam"
+					android:layout_toRightOf="@id/img_dp_member1"
+					android:src="@drawable/img_no_cover_available"/>
+
+				<TextView
+					android:id="@+id/txt_name_member2"
+					android:layout_width="@dimen/width_sunday_member_view"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/img_dp_member2"
+					android:layout_toRightOf="@id/txt_name_member1"
+					android:layout_marginTop="@dimen/dp3"
+					android:gravity="center"
+					android:textColor="@color/bg_app_dark"
+					android:textSize="@dimen/text_sunday_member_name"
+					android:text="Adam"/>
+
+				<com.ism.views.CircleImageView
+					android:id="@+id/img_dp_member3"
+					android:layout_width="@dimen/width_sunday_member_view"
+					android:layout_height="@dimen/dp_size_sunday_exam"
+					android:layout_toRightOf="@id/img_dp_member2"
+					android:src="@drawable/img_no_cover_available"/>
+
+				<TextView
+					android:id="@+id/txt_name_member3"
+					android:layout_width="@dimen/width_sunday_member_view"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/img_dp_member3"
+					android:layout_toRightOf="@id/txt_name_member2"
+					android:layout_marginTop="@dimen/dp3"
+					android:gravity="center"
+					android:textColor="@color/bg_app_dark"
+					android:textSize="@dimen/text_sunday_member_name"
+					android:text="Adam"/>
+
+				<com.ism.views.CircleImageView
+					android:id="@+id/img_dp_member4"
+					android:layout_width="@dimen/width_sunday_member_view"
+					android:layout_height="@dimen/dp_size_sunday_exam"
+					android:layout_toRightOf="@id/img_dp_member3"
+					android:src="@drawable/img_no_cover_available"/>
+
+				<TextView
+					android:id="@+id/txt_name_member4"
+					android:layout_width="@dimen/width_sunday_member_view"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/img_dp_member4"
+					android:layout_toRightOf="@id/txt_name_member3"
+					android:layout_marginTop="@dimen/dp3"
+					android:gravity="center"
+					android:textColor="@color/bg_app_dark"
+					android:textSize="@dimen/text_sunday_member_name"
+					android:text="Adam"/>
+
+				<com.ism.views.CircleImageView
+					android:id="@+id/img_dp_member5"
+					android:layout_width="@dimen/width_sunday_member_view"
+					android:layout_height="@dimen/dp_size_sunday_exam"
+					android:layout_toRightOf="@id/img_dp_member4"
+					android:src="@drawable/img_no_cover_available"/>
+
+				<TextView
+					android:id="@+id/txt_name_member5"
+					android:layout_width="@dimen/width_sunday_member_view"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/img_dp_member5"
+					android:layout_toRightOf="@id/txt_name_member4"
+					android:layout_marginTop="@dimen/dp3"
+					android:gravity="center"
+					android:textColor="@color/bg_app_dark"
+					android:textSize="@dimen/text_sunday_member_name"
+					android:text="Adam"/>
+
+				<Button
+					android:id="@+id/btn_agree"
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/btn_height_sunday_exam"
+					android:layout_marginBottom="@dimen/dp5"
+					android:layout_toRightOf="@id/img_dp_member5"
+					android:text="@string/agree"
+					android:textSize="@dimen/sp14"
+					android:background="@drawable/bg_button_green"
+					android:visibility="gone"
+					android:textColor="@color/white"/>
+
+				<Button
+					android:id="@+id/btn_disagree"
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/btn_height_sunday_exam"
+					android:layout_toRightOf="@id/img_dp_member5"
+					android:layout_below="@id/btn_agree"
+					android:text="@string/disagree"
+					android:textSize="@dimen/sp14"
+					android:background="@drawable/bg_button_red"
+					android:visibility="gone"
+					android:textColor="@color/white"/>
+			</RelativeLayout>
+
+			<TextView
+				android:id="@+id/txt_msg"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_above="@+id/btn_finalize_answer"
+				android:text="@string/msg_not_same_answer"
+				android:textColor="@color/bg_app_dark"
+				android:gravity="center"
+				android:textSize="@dimen/sp15"
+				android:padding="@dimen/dp5"/>
+
+			<Button
+				android:id="@+id/btn_finalize_answer"
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/button_height"
+				android:layout_margin="@dimen/dp5"
+				android:layout_alignParentBottom="true"
+				android:textColor="@color/white"
+				android:textAllCaps="false"
+				android:gravity="center"
+				android:background="@drawable/bg_btn_blue"
+				android:textSize="@dimen/sp16"
+				android:text="@string/title_finalize_answer"/>
+
+			<View
+				android:id="@+id/view_cover2"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@color/black_transperant"
+				android:visibility="gone"/>
+		</RelativeLayout>
+	</LinearLayout>
+</LinearLayout>

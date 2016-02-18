@@ -169,7 +169,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 Utility.alert(getActivity(), null, getString(R.string.strnopreviewquestions));
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
 
     }

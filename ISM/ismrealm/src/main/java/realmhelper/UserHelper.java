@@ -6,7 +6,7 @@ import android.content.Context;
 import com.realm.ismrealm.RealmAdaptor;
 
 import io.realm.Realm;
-import model.User;
+import model.ROUser;
 
 /**
  * Created by c85 on 24/11/15.
@@ -14,16 +14,16 @@ import model.User;
 public class UserHelper {
 
     Realm realm;
-    User user;
+    ROUser ROUser;
 
     /**
-     * @param user
+     * @param ROUser
      * @param context
      */
-    public UserHelper(User user, Context context) {
+    public UserHelper(ROUser ROUser, Context context) {
 
         realm = RealmAdaptor.getInstance(context);
-        this.user = user;
+        this.ROUser = ROUser;
 
     }
 
@@ -32,7 +32,7 @@ public class UserHelper {
      */
     public void saveUser() {
         realm.beginTransaction();
-        realm.copyToRealmOrUpdate(user);
+        realm.copyToRealmOrUpdate(ROUser);
         realm.commitTransaction();
     }
 

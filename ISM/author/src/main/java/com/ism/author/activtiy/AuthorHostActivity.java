@@ -34,7 +34,7 @@ import com.ism.author.fragment.BooksFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.OfficeFragment;
 import com.ism.author.fragment.TrialFragment;
-import com.ism.author.fragment.assessment.AssignmentsSubmittorFragment;
+import com.ism.author.fragment.assessment.ExamSubmittorFragment;
 import com.ism.author.fragment.assessment.ExamsFragment;
 import com.ism.author.fragment.assessment.StudentAttemptedAssignmentFragment;
 import com.ism.author.fragment.assessment.objectiveassessment.ObjectiveAssignmentQuestionsFragment;
@@ -78,7 +78,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
-import model.Preferences;
+import model.ROPreferences;
 import realmhelper.AuthorHelper;
 
 /*
@@ -151,7 +151,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private ArrayList<PrivacySetting> arrayListPrivacySetting;
     private ArrayList<NotificationSetting> arrayListNotificationSettings;
     private ArrayList<SMSAlert> arrayListSMSAlert;
-    private Preferences preference;
+    private ROPreferences preference;
 
     private AuthorHelper authorHelper;
 
@@ -230,7 +230,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author_host);
 
-        registerAlarmBroadCastReceiver();
+//        registerAlarmBroadCastReceiver();
         inigGlobal();
 
     }
@@ -428,7 +428,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
                     setBackStackFragmentKey(AppConstant.FRAGMENT_ASSIGNMENT_SUBMITTOR);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AssignmentsSubmittorFragment.newInstance(), AppConstant.FRAGMENT_ASSIGNMENT_SUBMITTOR).commit();
+                            ExamSubmittorFragment.newInstance(), AppConstant.FRAGMENT_ASSIGNMENT_SUBMITTOR).commit();
                     break;
 
                 case FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS:
@@ -1077,9 +1077,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 break;
 
             case FRAGMENT_ASSIGNMENT_SUBMITTOR:
-                AssignmentsSubmittorFragment assignmentsSubmittorFragment = (AssignmentsSubmittorFragment)
+                ExamSubmittorFragment examSubmittorFragment = (ExamSubmittorFragment)
                         getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_ASSIGNMENT_SUBMITTOR);
-                assignmentsSubmittorFragment.onBackClick();
+                examSubmittorFragment.onBackClick();
                 break;
 
             case FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS:
@@ -1111,13 +1111,18 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         if (currentMainFragment == FRAGMENT_TRIAL || currentMainFragment == FRAGMENT_ASSESSMENT
                 || currentMainFragment == FRAGMENT_ASSIGNMENT_SUBMITTOR) {
 
+
             getBundle().putBoolean(CreateExamFragment.ARG_IS_CREATE_EXAM, true);
             loadFragmentInMainContainer(FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT);
 
+
         } else if (currentMainFragment == FRAGMENT_ADDQUESTION_CONTAINER) {
 
+
         } else if (currentMainFragment == FRAGMENT_GOTRENDING) {
+
             loadFragmentInMainContainer(FRAGMENT_PAST_TRENDING_QUESTIONS);
+
         }
 
 
@@ -1267,7 +1272,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_BADGES_COUNT);
             } else {
-                Utility.alertOffline(getApplicationContext());
+
+
+//                Utility.alertOffline(getApplicationContext());
             }
         } catch (Exception e) {
             Log.e(TAG, "callApiGetAllBadgesCount Exception : " + e.toString());
@@ -1336,7 +1343,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         try {
             arrayListSMSAlert = arrayList.get(0).getSMSAlert();
             for (int j = 0; j < arrayListSMSAlert.size(); j++) {
-                preference = new Preferences();
+                preference = new ROPreferences();
                 preference.setPreferencesId(Integer.parseInt(arrayListSMSAlert.get(j).getId()));
                 preference.setDefaultValue(arrayListSMSAlert.get(j).getDefaultValue());
                 preference.setDisplayValue(arrayListSMSAlert.get(j).getDisplayValue());
@@ -1348,7 +1355,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             }
             arrayListNotificationSettings = arrayList.get(0).getNotificationSettings();
             for (int j = 0; j < arrayListNotificationSettings.size(); j++) {
-                preference = new Preferences();
+                preference = new ROPreferences();
                 preference.setPreferencesId(Integer.parseInt(arrayListNotificationSettings.get(j).getId()));
                 preference.setDefaultValue(arrayListNotificationSettings.get(j).getDefaultValue());
                 preference.setDisplayValue(arrayListNotificationSettings.get(j).getDisplayValue());
@@ -1361,7 +1368,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
             arrayListPrivacySetting = arrayList.get(0).getPrivacySetting();
             for (int j = 0; j < arrayListPrivacySetting.size(); j++) {
-                preference = new Preferences();
+                preference = new ROPreferences();
                 preference.setPreferencesId(Integer.parseInt(arrayListPrivacySetting.get(j).getId()));
                 preference.setDefaultValue(arrayListPrivacySetting.get(j).getDefaultValue());
                 preference.setDisplayValue(arrayListPrivacySetting.get(j).getDisplayValue());
@@ -1383,7 +1390,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 showProgress();
                 new WebserviceWrapper(this, new Attribute(), this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTING_PREFERENCES);
             } else {
-                Utility.alertOffline(getApplicationContext());
+
+//                Utility.alertOffline(getApplicationContext());
             }
 
         } catch (Exception e) {

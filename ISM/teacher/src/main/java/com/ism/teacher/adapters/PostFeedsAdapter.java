@@ -161,8 +161,8 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         holder.txtUsernamePostCreator.setText(arrListFeeds.get(position).getFullName());
         holder.txtPostContent.setText(arrListFeeds.get(position).getFeedText());
-        holder.txtPostLikeCounter.setText(arrListFeeds.get(position).getTotalLike());
-        holder.txtPostCommentsCounter.setText(arrListFeeds.get(position).getTotalComment());
+        holder.txtPostLikeCounter.setText(String.valueOf(arrListFeeds.get(position).getTotalLike()));
+        holder.txtPostCommentsCounter.setText(String.valueOf(arrListFeeds.get(position).getTotalComment()));
 
 
         if (addCommentFeedPosition != -1 && addCommentFeedPosition == position) {
@@ -170,7 +170,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             addCommentFeedPosition = -1;
         }
 
-        if (arrListFeeds.get(position).getLike().equalsIgnoreCase("1")) {
+        if (arrListFeeds.get(position).getSelfLike().equalsIgnoreCase("1")) {
             holder.imgLikePost.setSelected(true);
         } else {
             holder.imgLikePost.setSelected(false);
@@ -181,7 +181,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         if (arrListFeeds.get(position).getCommentList() != null) {
 
-            holder.txtViewAllComments.setVisibility(Integer.parseInt(arrListFeeds.get(position).getTotalComment()) > 0 ? View.VISIBLE : View.GONE);
+            holder.txtViewAllComments.setVisibility(arrListFeeds.get(position).getTotalComment() > 0 ? View.VISIBLE : View.GONE);
             if (holder.llCommentRowInflater.getChildCount() == 0) {
                 for (int i = 0; i < arrListFeeds.get(position).getCommentList().size(); i++) {
                     if (i <= 1) {
@@ -201,7 +201,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             public void onClick(View view) {
 
 
-                int total_comments = Integer.parseInt(arrListFeeds.get(position).getTotalComment());
+                int total_comments = arrListFeeds.get(position).getTotalComment();
                 if (total_comments > 0) {
                     callApiGetAllComments(position);
                 }
@@ -253,13 +253,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 holder.imgLikePost.setSelected(!holder.imgLikePost.isSelected());
 
                 if (holder.imgLikePost.isSelected()) {
-                    arrListFeeds.get(position).setLike(String.valueOf(AppConstant.LIKE));
-                    arrListFeeds.get(position).setTotalLike(String.valueOf(Integer.parseInt(arrListFeeds.get(position).getTotalLike()) + 1));
+                    arrListFeeds.get(position).setSelfLike(String.valueOf(AppConstant.LIKE));
+                    arrListFeeds.get(position).setTotalLike(arrListFeeds.get(position).getTotalLike() + 1);
 
                     setPrefForLike(arrListFeeds.get(position).getFeedId() + ",");
                 } else {
-                    arrListFeeds.get(position).setLike(String.valueOf(AppConstant.DISLIKE));
-                    arrListFeeds.get(position).setTotalLike(String.valueOf(Integer.parseInt(arrListFeeds.get(position).getTotalLike()) - 1));
+                    arrListFeeds.get(position).setSelfLike(String.valueOf(AppConstant.DISLIKE));
+                    arrListFeeds.get(position).setTotalLike(arrListFeeds.get(position).getTotalLike()  - 1);
 
                     setPrefForUnlike(arrListFeeds.get(position).getFeedId() + ",");
 
@@ -296,12 +296,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         }
 
         // images
-//        if (arrListFeeds.get(position).getFeedImages().size() != 0) {
+//        if (arrListFeeds.get(position).getROFeedImages().size() != 0) {
 //
 //            holder.imgImage.setVisibility(View.VISIBLE);
 //
 //            ArrayList<FeedImages> feedImages = new ArrayList<FeedImages>();
-//            feedImages = arrListFeeds.get(position).getFeedImages();
+//            feedImages = arrListFeeds.get(position).getROFeedImages();
 //            for (int i = 0; i < feedImages.size(); i++) {
 //                Log.i(TAG, WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink() + "");
 //                Global.imageLoader.displayImage(WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink(), holder.imgImage, ISMTeacher.options);
@@ -402,7 +402,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         if (commentList.getCreatedDate() != null && !commentList.getCreatedDate().equals("")) {
             txtCommentDuration.setText(com.ism.commonsource.utility.Utility.getTimeDuration(commentList.getCreatedDate()));
         }
-        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + commentList.getProfileLink(),
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + commentList.getProfilePic(),
                 img_dp_commenter, ISMTeacher.options);
 
 
@@ -496,7 +496,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                 arrListFeeds.get(addCommentFeedPosition).
-                        setTotalComment("" + (Integer.parseInt(arrListFeeds.get(addCommentFeedPosition).getTotalComment()) + 1));
+                        setTotalComment(arrListFeeds.get(addCommentFeedPosition).getTotalComment() + 1);
                 notifyDataSetChanged();
             } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                 Toast.makeText(mContext, R.string.msg_failed_comment, Toast.LENGTH_LONG).show();

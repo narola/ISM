@@ -8,23 +8,33 @@ import com.realm.ismrealm.RealmAdaptor;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-import model.AdminConfig;
-import model.AuthorBook;
-import model.AuthorProfile;
-import model.Classrooms;
-import model.Exam;
-import model.FeedComment;
-import model.FeedLike;
-import model.Feeds;
-import model.Preferences;
-import model.User;
+import model.ROAdminConfig;
+import model.ROAuthorBook;
+import model.ROAuthorProfile;
+import model.ROBooks;
+import model.ROClassrooms;
+import model.ROEvaluation;
+import model.ROExam;
+import model.ROExamQuestions;
+import model.ROExamSubmission;
+import model.ROFeedComment;
+import model.ROFeedLike;
+import model.ROFeeds;
+import model.ROPreferences;
+import model.ROQuestionPalette;
+import model.ROQuestions;
+import model.ROStudentExamEvaluation;
+import model.ROUser;
+import model.authormodel.ROExamSubmittor;
 
 /**
  * Created by c166 on 16/12/15.
  */
 public class AuthorHelper {
+
 
     private static final String TAG = AuthorHelper.class.getSimpleName();
 
@@ -34,7 +44,6 @@ public class AuthorHelper {
         realm = RealmAdaptor.getInstance(context);
     }
 
-
     /**
      * Method to get the config data
      *
@@ -43,12 +52,11 @@ public class AuthorHelper {
 
     public String getGlobalPassword() {
 
-        RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
+        RealmResults<ROAdminConfig> ROAdminConfigs = realm.where(ROAdminConfig.class)
                 .equalTo("configKey", "globalPassword")
                 .findAll();
-
-        if (adminConfigs != null && adminConfigs.size() > 0) {
-            return adminConfigs.get(0).getConfigValue();
+        if (ROAdminConfigs != null && ROAdminConfigs.size() > 0) {
+            return ROAdminConfigs.get(0).getConfigValue();
         } else {
             return null;
         }
@@ -57,19 +65,20 @@ public class AuthorHelper {
     /**
      * Save admin config data
      *
-     * @param adminConfig
+     * @param ROAdminConfig
      */
-    public void saveAdminConfig(AdminConfig adminConfig) {
+    public void saveAdminConfig(ROAdminConfig ROAdminConfig) {
+
         try {
-            Number configId = realm.where(AdminConfig.class).max("configId");
+            Number configId = realm.where(ROAdminConfig.class).max("configId");
             long newId = 0;
             if (configId != null) {
                 newId = (long) configId + 1;
             }
             realm.beginTransaction();
 
-            adminConfig.setConfigId((int) newId);
-            realm.copyToRealmOrUpdate(adminConfig);
+            ROAdminConfig.setConfigId((int) newId);
+            realm.copyToRealmOrUpdate(ROAdminConfig);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "saveAdminConfig Exception : " + e.toString());
@@ -99,36 +108,30 @@ public class AuthorHelper {
      */
     public int getTotalRecordsInTable(Class className) {
 
-        RealmQuery<AdminConfig> query = null;
-        try {
-            query = realm.where(className);
-            Log.e(TAG, "The Total No Of records in " + className.getSimpleName() + " table are::::" + query.findAll().size());
+        Log.e(TAG, "The Total No Of records in " + className.getSimpleName() + " table are::::" + realm.where(className).findAll().size());
+        return realm.where(className).findAll().size();
 
-        } catch (Exception e) {
-            Log.e(TAG, "getTotalRecordsInTable Exception : " + e.toString());
-        }
-        return query.findAll().size();
     }
 
     /**
      * @return all the postfeeds.
      */
-    public RealmResults<Feeds> getAllPostFeeds() {
-        RealmQuery<Feeds> query = realm.where(Feeds.class);
+    public RealmResults<ROFeeds> getAllPostFeeds() {
+        RealmQuery<ROFeeds> query = realm.where(ROFeeds.class);
         return query.findAll();
     }
 
 
     /**
-     * Add feeds into table.
+     * Add ROFeeds into table.
      *
-     * @param feeds
+     * @param ROFeeds
      */
-    public void addFeeds(Feeds feeds) {
+    public void addFeeds(ROFeeds ROFeeds) {
 
         try {
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(feeds);
+            realm.copyToRealmOrUpdate(ROFeeds);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "addFeedsData Exception : " + e.toString());
@@ -141,16 +144,16 @@ public class AuthorHelper {
      * @param feedId
      * @param comment
      */
-    public void addComment(int feedId, FeedComment comment) {
+    public void addComment(int feedId, ROFeedComment comment) {
 
         try {
 
-            RealmQuery<Feeds> query = realm.where(Feeds.class).equalTo("feedId", feedId);
-            Feeds feed = query.findFirst();
+            RealmQuery<ROFeeds> query = realm.where(ROFeeds.class).equalTo("feedId", feedId);
+            ROFeeds feed = query.findFirst();
 
             if (feed.getTotalComment() < 2) {
                 realm.beginTransaction();
-                feed.getComments().add(comment);
+                feed.getRoFeedComment().add(comment);
                 feed.setTotalComment(feed.getTotalComment() + 1);
                 realm.copyToRealmOrUpdate(feed);
                 realm.commitTransaction();
@@ -164,7 +167,7 @@ public class AuthorHelper {
 
 
     /**
-     * Method to update {@param selfLike} in FeedLike.
+     * Method to update {@param selfLike} in ROFeedLike.
      *
      * @param feedId
      * @param selfLike
@@ -172,8 +175,8 @@ public class AuthorHelper {
     public void updateFeedSelfLikeStatus(int feedId, String selfLike) {
 
         try {
-            RealmQuery<Feeds> query = realm.where(Feeds.class).equalTo("feedId", feedId);
-            Feeds feed = query.findFirst();
+            RealmQuery<ROFeeds> query = realm.where(ROFeeds.class).equalTo("feedId", feedId);
+            ROFeeds feed = query.findFirst();
             realm.beginTransaction();
             feed.setSelfLike(selfLike);
             feed.setTotalLike(selfLike.equals("1") ? feed.getTotalLike() + 1 : feed.getTotalLike() - 1);
@@ -188,30 +191,30 @@ public class AuthorHelper {
 
 
     /**
-     * Method to insert {@param feedLike} data and its sync value.
+     * Method to insert {@param ROFeedLike} data and its sync value.
      *
-     * @param feedLike
+     * @param ROFeedLike
      */
-    public void insertUpdateLikeFeedData(FeedLike feedLike) {
+    public void insertUpdateLikeFeedData(ROFeedLike ROFeedLike) {
         try {
-            FeedLike isRecordExist = realm.where(FeedLike.class)
-                    .equalTo("feed.feedId", feedLike.getFeed().getFeedId()).equalTo("likeBy.userId", feedLike.getLikeBy().getUserId()).findFirst();
+            ROFeedLike isRecordExist = realm.where(ROFeedLike.class)
+                    .equalTo("feed.feedId", ROFeedLike.getFeed().getFeedId()).equalTo("likeBy.userId", ROFeedLike.getLikeBy().getUserId()).findFirst();
 
             if (isRecordExist == null) {
-                Number feedLikeId = realm.where(FeedLike.class).max("feedLikeId");
+                Number feedLikeId = realm.where(ROFeedLike.class).max("feedLikeId");
                 long newId = 0;
                 if (feedLikeId != null) {
                     newId = (long) feedLikeId + 1;
                 }
-                feedLike.setFeedLikeId((int) newId);
+                ROFeedLike.setFeedLikeId((int) newId);
             }
 
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(feedLike);
+            realm.copyToRealmOrUpdate(ROFeedLike);
             realm.commitTransaction();
 
 
-            getTotalRecordsInTable(FeedLike.class);
+            getTotalRecordsInTable(ROFeedLike.class);
         } catch (Exception e) {
             Log.e(TAG, "insertUpdateLikeFeedData Exception : " + e.toString());
         }
@@ -228,22 +231,22 @@ public class AuthorHelper {
         try {
             if (arrListLikeFeedId.size() > 0) {
                 for (int feedId : arrListLikeFeedId) {
-                    FeedLike feedLike = realm.where(FeedLike.class)
+                    ROFeedLike ROFeedLike = realm.where(ROFeedLike.class)
                             .equalTo("feed.feedId", feedId).equalTo("likeBy.userId", Integer.valueOf(strUserId)).findFirst();
                     realm.beginTransaction();
-                    feedLike.setIsSync(1);
-                    realm.copyToRealmOrUpdate(feedLike);
+                    ROFeedLike.setIsSync(1);
+                    realm.copyToRealmOrUpdate(ROFeedLike);
                     realm.commitTransaction();
 
                 }
             }
             if (arrListUnlikeFeedId.size() > 0) {
                 for (int feedId : arrListUnlikeFeedId) {
-                    model.FeedLike feedLike = realm.where(FeedLike.class)
+                    ROFeedLike ROFeedLike = realm.where(ROFeedLike.class)
                             .equalTo("feed.feedId", feedId).equalTo("likeBy.userId", Integer.valueOf(strUserId)).findFirst();
                     realm.beginTransaction();
-                    feedLike.setIsSync(1);
-                    realm.copyToRealmOrUpdate(feedLike);
+                    ROFeedLike.setIsSync(1);
+                    realm.copyToRealmOrUpdate(ROFeedLike);
                     realm.commitTransaction();
                 }
             }
@@ -269,18 +272,18 @@ public class AuthorHelper {
                 public void execute(Realm bgRealm) {
                     if (arrListLikeFeedId.size() > 0) {
                         for (int feedId : arrListLikeFeedId) {
-                            model.FeedLike feedLike = bgRealm.where(model.FeedLike.class)
+                            ROFeedLike ROFeedLike = bgRealm.where(ROFeedLike.class)
                                     .equalTo("feed.feedId", feedId).equalTo("likeBy.userId", Integer.valueOf(strUserId)).findFirst();
-                            feedLike.setIsSync(1);
-                            bgRealm.copyToRealmOrUpdate(feedLike);
+                            ROFeedLike.setIsSync(1);
+                            bgRealm.copyToRealmOrUpdate(ROFeedLike);
                         }
                     }
                     if (arrListUnlikeFeedId.size() > 0) {
                         for (int feedId : arrListUnlikeFeedId) {
-                            model.FeedLike feedLike = bgRealm.where(model.FeedLike.class)
+                            ROFeedLike ROFeedLike = bgRealm.where(ROFeedLike.class)
                                     .equalTo("feed.feedId", feedId).equalTo("likeBy.userId", Integer.valueOf(strUserId)).findFirst();
-                            feedLike.setIsSync(1);
-                            bgRealm.copyToRealmOrUpdate(feedLike);
+                            ROFeedLike.setIsSync(1);
+                            bgRealm.copyToRealmOrUpdate(ROFeedLike);
                         }
                     }
                 }
@@ -302,15 +305,15 @@ public class AuthorHelper {
 
 
     /**
-     * Add authorBook.
+     * Add ROAuthorBook.
      *
-     * @param authorBook
+     * @param ROAuthorBook
      */
-    public void addAuthorBooks(AuthorBook authorBook) {
+    public void addAuthorBooks(ROAuthorBook ROAuthorBook) {
 
         try {
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(authorBook);
+            realm.copyToRealmOrUpdate(ROAuthorBook);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "addAuthorBooks Exception : " + e.toString());
@@ -320,22 +323,22 @@ public class AuthorHelper {
     /**
      * @return all the authorbooks.
      */
-    public RealmResults<AuthorBook> getAuthorBooks() {
-        RealmQuery<AuthorBook> query = realm.where(AuthorBook.class);
+    public RealmResults<ROAuthorBook> getAuthorBooks() {
+        RealmQuery<ROAuthorBook> query = realm.where(ROAuthorBook.class);
         return query.findAll();
     }
 
 
     /**
-     * Add classrooms
+     * Add ROClassrooms
      *
-     * @param classrooms
+     * @param ROClassrooms
      */
-    public void addClassrooms(Classrooms classrooms) {
+    public void addClassrooms(ROClassrooms ROClassrooms) {
 
         try {
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(classrooms);
+            realm.copyToRealmOrUpdate(ROClassrooms);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, "addClassrooms Exception : " + e.toString());
@@ -346,8 +349,8 @@ public class AuthorHelper {
     /**
      * @return all the classrooms.
      */
-    public RealmResults<Classrooms> getClassrooms() {
-        RealmQuery<Classrooms> query = realm.where(Classrooms.class);
+    public RealmResults<ROClassrooms> getClassrooms() {
+        RealmQuery<ROClassrooms> query = realm.where(ROClassrooms.class);
         return query.findAll();
     }
 
@@ -358,38 +361,380 @@ public class AuthorHelper {
      * @param classroomId
      * @return
      */
-    public Classrooms getExamClassroom(int classroomId) {
-        RealmQuery<Classrooms> query = realm.where(Classrooms.class).equalTo("classRoomId", classroomId);
+    public ROClassrooms getExamClassroom(int classroomId) {
+
+        RealmQuery<ROClassrooms> query = realm.where(ROClassrooms.class).equalTo("classRoomId", classroomId);
         return query.findFirst();
+
     }
 
     /**
-     * Method to get the book data of created exam.
+     * Method to get the author book data of created exam.
      *
      * @param bookId
      * @return
      */
-    public AuthorBook getExamAuthorBook(int bookId) {
-        RealmQuery<AuthorBook> query = realm.where(AuthorBook.class).equalTo("book.bookId", bookId);
+    public ROAuthorBook getExamAuthorBook(int bookId) {
+
+        RealmQuery<ROAuthorBook> query = realm.where(ROAuthorBook.class).equalTo("roBook.bookId", bookId);
         return query.findFirst();
+
+    }
+
+
+    /**
+     * Method to get the book data.
+     *
+     * @param bookId
+     * @return
+     */
+    public ROBooks getBook(int bookId) {
+
+        RealmQuery<ROBooks> query = realm.where(ROBooks.class).equalTo("bookId", bookId);
+        return query.findFirst();
+
     }
 
 
     /**
      * Add classrooms
      *
-     * @param exam
+     * @param ROExam
      */
-    public void addExams(Exam exam) {
+    public void addExams(ROExam ROExam) {
 
         try {
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(exam);
+            realm.copyToRealmOrUpdate(ROExam);
             realm.commitTransaction();
         } catch (Exception e) {
-            Log.e(TAG, "addClassrooms Exception : " + e.toString());
+            Log.e(TAG, "addExams Exception : " + e.toString());
         }
     }
+
+    /**
+     * @return all the exams.
+     */
+    public RealmResults<ROExam> getAllExams() {
+        RealmQuery<ROExam> query = realm.where(ROExam.class);
+        return query.findAll();
+    }
+
+
+    /**
+     * filter exams by book.
+     *
+     * @param bookId
+     * @return
+     */
+    public RealmResults<ROExam> getExamsByBooks(int bookId) {
+
+        RealmQuery<ROExam> query = realm.where(ROExam.class).equalTo("roAuthorBook.roBook.bookId", bookId);
+        return query.findAll();
+
+    }
+
+
+    /**
+     * filter exams by classroom.
+     *
+     * @param classRoomId
+     * @return
+     */
+    public RealmResults<ROExam> getExamsByClassRooms(int classRoomId) {
+
+        RealmQuery<ROExam> query = realm.where(ROExam.class).equalTo("roClassroom.classRoomId", classRoomId);
+        return query.findAll();
+
+    }
+
+    /**
+     * filter exams by evaluation status.
+     *
+     * @param evaluationStatus
+     * @return
+     */
+    public RealmResults<ROExam> getExamsByEvaluationStatus(String evaluationStatus) {
+
+        RealmQuery<ROExam> query = realm.where(ROExam.class).equalTo("evaluationStatus", evaluationStatus);
+        return query.findAll();
+
+    }
+
+
+    /**
+     * filter exams by date.
+     *
+     * @param startDate
+     * @return
+     */
+    public RealmResults<ROExam> getExamsByDates(String startDate) {
+
+        RealmQuery<ROExam> query = realm.where(ROExam.class).equalTo("examStartDate", startDate);
+        return query.findAll();
+
+    }
+
+    /**
+     * Get Exam to link it with ExamSubmittor data.
+     *
+     * @param examId
+     * @return
+     */
+
+    public ROExam getExam(int examId) {
+        RealmQuery<ROExam> query = realm.where(ROExam.class).equalTo("examId", examId);
+        return query.findFirst();
+    }
+
+
+    /**
+     * Add ExamSubmittor
+     *
+     * @param roExamSubmission
+     */
+    public void addExamSubmission(ROExamSubmission roExamSubmission) {
+
+        try {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(roExamSubmission);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.e(TAG, "addExamSubmission Exception : " + e.toString());
+        }
+    }
+
+    /**
+     * get ExamSubmission.
+     *
+     * @param examId
+     */
+    public ROExamSubmission getExamSubmission(int examId) {
+
+        RealmQuery<ROExamSubmission> query = realm.where(ROExamSubmission.class).equalTo("examId", examId);
+        return query.findFirst();
+    }
+
+
+    /**
+     * get ExamSubmittor.
+     *
+     * @param studentId
+     * @return
+     */
+    public ROExamSubmittor getExamSubmittor(int studentId) {
+
+        RealmQuery<ROExamSubmittor> query = realm.where(ROExamSubmittor.class).equalTo("studentId", studentId);
+        return query.findFirst();
+
+    }
+
+
+    /**
+     * here updateExamdata for the examsubmission after add it in submission table.
+     *
+     * @param roExamSubmission
+     */
+    public void updateExamSubmissionData(ROExamSubmission roExamSubmission) {
+        try {
+            RealmQuery<ROExam> query = realm.where(ROExam.class).equalTo("examId", roExamSubmission.getExamId());
+
+            if (roExamSubmission.isValid()) {
+                ROExam roExam = query.findFirst();
+                realm.beginTransaction();
+                roExam.setExamSubmission(roExamSubmission);
+                realm.copyToRealmOrUpdate(roExam);
+                realm.commitTransaction();
+            } else {
+                Log.e(TAG, "Object is not valid");
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, "updateExamSubmissionData Exception : " + e.toString());
+        }
+    }
+
+
+    /**
+     * add questions set for the particular exam.
+     *
+     * @param roExamQuestions
+     */
+    public void addExamQuestions(ROExamQuestions roExamQuestions) {
+
+        try {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(roExamQuestions);
+            realm.commitTransaction();
+
+        } catch (Exception e) {
+            Log.e(TAG, "addExamQuestions Exception : " + e.toString());
+        }
+    }
+
+
+    /**
+     * This is to update questions data of exam.
+     *
+     * @param roExamQuestions
+     */
+    public void updateExamQuestionsData(ROExamQuestions roExamQuestions) {
+
+        try {
+            RealmQuery<ROExam> query = realm.where(ROExam.class).equalTo("examId", roExamQuestions.getExamId());
+            if (roExamQuestions.isValid()) {
+                ROExam roExam = query.findFirst();
+                realm.beginTransaction();
+                roExam.setExamQuestions(roExamQuestions);
+                realm.copyToRealmOrUpdate(roExam);
+                realm.commitTransaction();
+            } else {
+                Log.e(TAG, "Object is not valid");
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, "updateExamQuestionsData Exception : " + e.toString());
+        }
+    }
+
+
+    /**
+     * This is to get the questions set for the particular exam.
+     *
+     * @param examId
+     * @return
+     */
+    public ROExamQuestions getExamQuestions(int examId) {
+
+        RealmQuery<ROExamQuestions> query = realm.where(ROExamQuestions.class).equalTo("examId", examId);
+        return query.findFirst();
+    }
+
+
+    /**
+     * add Evaluation of student for particular exam.
+     *
+     * @param roStudentExamEvaluation
+     */
+    public void addStudentExamEvaluation(ROStudentExamEvaluation roStudentExamEvaluation) {
+        try {
+
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(roStudentExamEvaluation);
+            realm.commitTransaction();
+        } catch (Exception e) {
+
+            Log.e(TAG, "addStudentExamEvaluation Exception : " + e.toString());
+
+        }
+    }
+
+
+    /**
+     * get the exam evaluation data of student.
+     *
+     * @param examId
+     * @param studentId
+     * @return
+     */
+    public ROStudentExamEvaluation getStudentExamEvaluation(int examId, int studentId) {
+
+        RealmQuery<ROStudentExamEvaluation> query = realm.where(ROStudentExamEvaluation.class).equalTo("roExam.examId", examId).
+                equalTo("roExamSubmittor.studentId", studentId);
+        return query.findFirst();
+
+    }
+
+
+    /**
+     * getQuestion data.
+     *
+     * @param questionId
+     * @return
+     */
+
+    public ROQuestions getROQuestions(int questionId) {
+        RealmQuery<ROQuestions> query = realm.where(ROQuestions.class).equalTo("questionId", questionId);
+        return query.findFirst();
+
+    }
+
+
+    /**
+     * get QuestionPalette Data.
+     *
+     * @param questionId
+     * @param studentId
+     * @return
+     */
+    public ROQuestionPalette getQuestionPalette(int questionId, int studentId) {
+
+        RealmQuery<ROQuestionPalette> query = realm.where(ROQuestionPalette.class).equalTo("roQuestion.questionId", questionId).
+                equalTo("roExamSubmittor.studentId", studentId);
+        return query.findFirst();
+
+    }
+
+
+    /**
+     * getEvaluation data.
+     *
+     * @param questionId
+     * @param studentId
+     * @return
+     */
+    public ROEvaluation getEvaluation(int questionId, int studentId) {
+
+        RealmQuery<ROEvaluation> query = realm.where(ROEvaluation.class).equalTo("roQuestion.questionId", questionId).
+                equalTo("roExamSubmittor.studentId", studentId);
+        return query.findFirst();
+
+    }
+
+
+    /**
+     * This is to update ExamSubmittor data for the evaluation.
+     *
+     * @param studentId
+     * @param roStudentExamEvaluation
+     */
+    public void updateExamSubmittorData(int studentId, ROStudentExamEvaluation roStudentExamEvaluation) {
+
+        try {
+            RealmQuery<ROExamSubmittor> query = realm.where(ROExamSubmittor.class).equalTo("studentId", studentId);
+            if (roStudentExamEvaluation.isValid()) {
+                ROExamSubmittor roExamSubmittor = query.findFirst();
+                if (!roExamSubmittor.getRoStudentExamEvaluations().contains(roStudentExamEvaluation)) {
+                    realm.beginTransaction();
+                    roExamSubmittor.getRoStudentExamEvaluations().add(roStudentExamEvaluation);
+                    realm.copyToRealmOrUpdate(roExamSubmittor);
+                    realm.commitTransaction();
+                }
+            } else {
+                Log.e(TAG, "Object is not valid");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "updateExamQuestionsData Exception : " + e.toString());
+        }
+    }
+
+
+    /**
+     * get the liost of evaluations for particular exam submittor.
+     *
+     * @param studentId
+     * @return
+     */
+    public RealmList<ROStudentExamEvaluation> getListOfStudentEvaluations(int studentId) {
+
+        RealmQuery<ROExamSubmittor> query = realm.where(ROExamSubmittor.class).equalTo("studentId", studentId);
+        return query.findFirst().getRoStudentExamEvaluations() != null ? query.findFirst().getRoStudentExamEvaluations() : null;
+
+
+    }
+
+
+    //*******************************************************************************************//
 
     /**
      * arti's code starts from here...
@@ -398,12 +743,12 @@ public class AuthorHelper {
     /**
      * This method for save the preferences data
      *
-     * @param preferences
+     * @param ROPreferences
      */
-    public void saveAllPreferences(Preferences preferences) {
+    public void saveAllPreferences(ROPreferences ROPreferences) {
         try {
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(preferences);
+            realm.copyToRealmOrUpdate(ROPreferences);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.i(TAG, " saveAllPreferences Exceptions : " + e.getLocalizedMessage());
@@ -414,18 +759,18 @@ public class AuthorHelper {
     /**
      * save author profile information
      *
-     * @param authorProfile
+     * @param ROAuthorProfile
      */
-    public void saveAuthorProfile(AuthorProfile authorProfile) {
+    public void saveAuthorProfile(ROAuthorProfile ROAuthorProfile) {
         try {
-//            Number id = realm.where(AuthorProfile.class).max("localAuthorId");
+//            Number id = realm.where(ROAuthorProfile.class).max("localAuthorId");
 //            long newId = 1;
 //            if (id != null) {
 //                newId = (long) id + 1;
 //            }
-//            authorProfile.setLocalAuthorId((int) newId);
+//            ROAuthorProfile.setLocalAuthorId((int) newId);
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(authorProfile);
+            realm.copyToRealmOrUpdate(ROAuthorProfile);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.e(TAG, " saveAuthorProfile Exceptions : " + e.getLocalizedMessage());
@@ -433,28 +778,28 @@ public class AuthorHelper {
     }
 
 
-    public User getUser(int userId) {
+    public ROUser getUser(int userId) {
         try {
-            return realm.where(User.class).equalTo("userId", userId).findFirst();
+            return realm.where(ROUser.class).equalTo("userId", userId).findFirst();
         } catch (Exception e) {
             Log.i(TAG, "getUser Exceptions : " + e.getLocalizedMessage());
         }
         return null;
     }
 
-    public void saveUser(User user) {
+    public void saveUser(ROUser ROUser) {
         try {
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(user);
+            realm.copyToRealmOrUpdate(ROUser);
             realm.commitTransaction();
         } catch (Exception e) {
             Log.i(TAG, " saveUser Exceptions : " + e.getLocalizedMessage());
         }
     }
 
-    public AuthorProfile getAuthorprofile(int userId) {
+    public ROAuthorProfile getAuthorprofile(int userId) {
         try {
-            return realm.where(AuthorProfile.class).equalTo("serverAuthorId", userId).findFirst();
+            return realm.where(ROAuthorProfile.class).equalTo("serverAuthorId", userId).findFirst();
         } catch (Exception e) {
             Log.i(TAG, "getAuthorProfile Exceptions : " + e.getLocalizedMessage());
         }

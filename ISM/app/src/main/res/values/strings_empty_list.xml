@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="no_notification_available">No notification available!</string>
-	<string name="no_message_available">No message available!</string>
-	<string name="no_request_available">No studymate request available!</string>
+    <string name="no_notification_available">No notification available!</string>
+    <string name="no_message_available">No message available!</string>
+    <string name="no_request_available">No studymate request available!</string>
 	<string name="no_feeds_available">No feeds available!</string>
-	<string name="no_activity_available">No activity available!</string>
-	<string name="no_coupons_available">No coupons available!</string>
-	<string name="no_books_available">No books available!</string>
-	<string name="no_rolemodels_available">No role models available!</string>
-	<string name="no_movies_available">No movies available!</string>
-	<string name="no_pastimes_available">No pastimes available!</string>
-	<string name="no_blocked_users_available">No blocked users available!</string>
-	<string name="no_messages_found">No messages found!</string>
-	<string name="no_more_authors_available">No more author\'s availalbe!</string>
+    <string name="no_activity_available">No activity available!</string>
+    <string name="no_coupons_available">No coupons available!</string>
+    <string name="no_books_available">No books available!</string>
+    <string name="no_rolemodels_available">No role models available!</string>
+    <string name="no_movies_available">No movies available!</string>
+    <string name="no_pastimes_available">No pastimes available!</string>
+    <string name="no_blocked_users_available">No blocked users available!</string>
+    <string name="no_messages_found">No messages found!</string>
+    <string name="no_more_authors_available">No more author\'s availalbe!</string>
 	<string name="no_assignment_available">No assignments available!</string>
+    <string name="no_past_trending_questions">No Past trending questions available!</string>
+    <string name="no_comments_available">No comments available!</string>
+    <string name="no_notes_available">No notes available!</string>
+
 </resources>

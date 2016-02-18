@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <!-- From: file:/Volumes/DATA/Projects/Android_Project/ISM/git/ISM/ISM/AndroidAsync/test/res/values/strings.xml -->
 =======
     <!-- From: file:/Volumes/DATA/ISM_github/ISM/ISM/AndroidAsync/test/res/values/strings.xml -->
 >>>>>>> adddedd0f52cebbf2708517d26e06ea1e3c5b94b
+=======
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/AndroidAsync/test/res/values/strings.xml -->
+>>>>>>> 4fe1a1b1e0e0eb24785907b077004fe4f9f54ecf
     <eat-comment/>
     <string name="app_name">AndroidAsyncTestTest</string>
 </resources>

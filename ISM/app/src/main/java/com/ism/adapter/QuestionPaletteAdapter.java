@@ -9,8 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.fragment.tutorialGroup.ExamFragment;
-import com.ism.ws.model.FridayExamQuestion;
+import com.ism.fragment.tutorialGroup.FridayExamFragment;
+import com.ism.ws.model.ExamQuestion;
 
 import java.util.ArrayList;
 
@@ -21,16 +21,16 @@ public class QuestionPaletteAdapter extends BaseAdapter {
 
 	private static final String TAG = QuestionPaletteAdapter.class.getSimpleName();
 
-	private ExamFragment fragExam;
-	private ArrayList<FridayExamQuestion> arrListQuestions;
+	private FridayExamFragment fragExam;
+	private ArrayList<ExamQuestion> arrListQuestions;
 	private Context context;
 	private LayoutInflater inflater;
 	private int intCurrentPosition;
 
-	public QuestionPaletteAdapter(Context context, ArrayList<FridayExamQuestion> arrListQuestions, ExamFragment examFragment) {
+	public QuestionPaletteAdapter(Context context, ArrayList<ExamQuestion> arrListQuestions, FridayExamFragment fridayExamFragment) {
 		this.context = context;
 		this.arrListQuestions = arrListQuestions;
-		this.fragExam = examFragment;
+		this.fragExam = fridayExamFragment;
 		inflater = LayoutInflater.from(this.context);
 	}
 

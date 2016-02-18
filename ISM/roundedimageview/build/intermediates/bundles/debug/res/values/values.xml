@@ -2,10 +2,14 @@
 <resources>
     <declare-styleable name="RoundedImageView"><attr format="dimension" name="riv_corner_radius"/><attr format="dimension" name="riv_corner_radius_top_left"/><attr format="dimension" name="riv_corner_radius_top_right"/><attr format="dimension" name="riv_corner_radius_bottom_left"/><attr format="dimension" name="riv_corner_radius_bottom_right"/><attr format="dimension" name="riv_border_width"/><attr format="color" name="riv_border_color"/><attr format="boolean" name="riv_mutate_background"/><attr format="boolean" name="riv_oval"/><attr name="android:scaleType"/><attr name="riv_tile_mode"><enum name="clamp" value="0"/><enum name="repeat" value="1"/><enum name="mirror" value="2"/></attr><attr name="riv_tile_mode_x"><enum name="clamp" value="0"/><enum name="repeat" value="1"/><enum name="mirror" value="2"/></attr><attr name="riv_tile_mode_y"><enum name="clamp" value="0"/><enum name="repeat" value="1"/><enum name="mirror" value="2"/></attr></declare-styleable>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <!-- From: file:/Volumes/DATA/Projects/Android_Project/ISM/git/ISM/ISM/roundedimageview/src/main/res/values/about_libraries_def.xml -->
 =======
     <!-- From: file:/Volumes/DATA/ISM_github/ISM/ISM/roundedimageview/src/main/res/values/about_libraries_def.xml -->
 >>>>>>> adddedd0f52cebbf2708517d26e06ea1e3c5b94b
+=======
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/roundedimageview/src/main/res/values/about_libraries_def.xml -->
+>>>>>>> 4fe1a1b1e0e0eb24785907b077004fe4f9f54ecf
     <eat-comment/>
     <string name="define_roundedimageview"/>
     <string name="library_roundedimageview_author">Vince Mi</string>

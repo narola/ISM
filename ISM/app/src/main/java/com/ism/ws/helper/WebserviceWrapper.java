@@ -257,6 +257,27 @@ public class WebserviceWrapper {
                             case WebConstants.GET_RECOMMENDED_AUTHORS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_RECOMMENDED_AUTHORS).execute(ResponseHandler.class, attribute);
                                 break;
+                            case WebConstants.GET_TRENDING_QUESTIONS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_TRENDIN_GQUESTIONS).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+                            case WebConstants.GET_TRENDING_QUESTION_DETAIL:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_TRENDING_GQUESTION_DETAIL).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+                            case WebConstants.FOLLOW_QUESTION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_FOLLOW_QUESTION).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+                            case WebConstants.ALLOCATE_TEACHER_TO_GROUP:
+                                responseObject = new WebserviceConnector(WebConstants.URL_ALLOCATE_TEACHER_TO_GROUP).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_SUNDAY_EXAM_QUESTION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_SUNDAY_EXAM_QUESTION).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_PAST_TRENDING_QUESTION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_PAST_TRENDING_QUESTION).execute(ResponseHandler.class, attribute);
+                                break;
                         }
                     }
                 }

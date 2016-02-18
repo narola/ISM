@@ -14,7 +14,9 @@ public class Comment {
     private String id;
     private String commentBy;
     private String comment;
+    private String commentText;
     private String fullName;
+    private String username;
     private String profilePic;
     private String createdDate;
     private int commentId;
@@ -37,6 +39,15 @@ public class Comment {
         this.commentBy = commentBy;
     }
 
+    @JsonProperty("comment_text")
+    public String getCommentText() {
+        return this.commentText;
+    }
+
+    public void setCommentText(String commentText) {
+        this.commentText = commentText;
+    }
+
     @JsonProperty("comment")
     public String getComment() {
         return this.comment;
@@ -53,6 +64,15 @@ public class Comment {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    @JsonProperty("username")
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @JsonProperty("profile_pic")
@@ -79,7 +99,6 @@ public class Comment {
 
     @JsonProperty("comment_id")
     public int getCommentId() {
-
         return commentId;
     }
 }

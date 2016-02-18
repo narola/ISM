@@ -22,7 +22,7 @@ import com.ism.activity.HostActivity;
 import com.ism.adapter.QuestionPaletteAdapter;
 import com.ism.adapter.TutorialGroupAdapter;
 import com.ism.views.TimerView;
-import com.ism.ws.model.FridayExamQuestion;
+import com.ism.ws.model.ExamQuestion;
 import com.ism.ws.model.TutorialGroupMember;
 import com.ism.ws.model.TutorialGroupProfile;
 
@@ -33,13 +33,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import model.AdminConfig;
+import model.ROAdminConfig;
 import realmhelper.StudentHelper;
 
 /**
  * Created by c161 on 14/10/15.
  */
-public class QuestionPaletteFragment extends Fragment implements ExamFragment.ExamListener, HostActivity.HostListenerQuestionPalette {
+public class QuestionPaletteFragment extends Fragment implements FridayExamFragment.ExamListener, HostActivity.HostListenerQuestionPalette {
 
 	private static final String TAG = QuestionPaletteFragment.class.getSimpleName();
 
@@ -57,7 +57,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	private CountDownTimer timerExam;
 //	private ExamFragment fragExam;
 	private QuestionPaletteAdapter adpQuestionPalette;
-	private ArrayList<FridayExamQuestion> arrListQuestions;
+	private ArrayList<ExamQuestion> arrListQuestions;
 	private TutorialGroupAdapter adpTutorialGroup;
 	private ArrayList<TutorialGroupMember> arrListGroupMembers;
 	private StudentHelper studentHelper;
@@ -107,7 +107,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 //			cal.set(Calendar.AM_PM, Calendar.AM);
 			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
 				try {
-					AdminConfig configStartTime = studentHelper.getActiveHoursStartTime();
+					ROAdminConfig configStartTime = studentHelper.getActiveHoursStartTime();
 					SimpleDateFormat DATE_FORMAT_TIME = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
 					Calendar calStartTime = Calendar.getInstance();
 					String startTime = configStartTime.getConfigValue() + " " + configStartTime.getValueUnit();
@@ -118,7 +118,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 					calStartTime.set(Calendar.MINUTE, date.getMinutes());
 
 					if (cal.after(calStartTime)) {
-						AdminConfig configEndTime = studentHelper.getActiveHoursEndTime();
+						ROAdminConfig configEndTime = studentHelper.getActiveHoursEndTime();
 						String endTime = configEndTime.getConfigValue() + " " + configEndTime.getValueUnit();
 //						String endTime = "04:15 pm";
 						Log.e(TAG, "end time : " + endTime);
@@ -164,7 +164,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	}
 
 	@Override
-	public void startTest(ArrayList<FridayExamQuestion> questions, String examId, ExamFragment examFragment) {
+	public void startTest(ArrayList<ExamQuestion> questions, String examId, FridayExamFragment fridayExamFragment) {
 		try {
 			/*longExamDurationMilli = examFragment.getExamDurationMinutes() * 60 * 1000;
 			timerViewExam.setTotalTimeMin(examFragment.getExamDurationMinutes());
@@ -188,7 +188,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 			lvTutorialGroup.setVisibility(View.GONE);
 			rlQuestionPalette.setVisibility(View.VISIBLE);
 			arrListQuestions = questions;
-			adpQuestionPalette = new QuestionPaletteAdapter(getActivity(), arrListQuestions, examFragment);
+			adpQuestionPalette = new QuestionPaletteAdapter(getActivity(), arrListQuestions, fridayExamFragment);
 			gridQuestion.setAdapter(adpQuestionPalette);
 			txtTitle.setText(R.string.question_palette);
 		} catch (Exception e) {
@@ -221,7 +221,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 
 			lvTutorialGroup.setVisibility(View.VISIBLE);
 			rlQuestionPalette.setVisibility(View.GONE);
-			getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ResultFragment.newInstance(arrListQuestions,
+			getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, com.ism.fragment.tutorialGroup.ResultFragment.newInstance(arrListQuestions,
 					strExamId, false, timeSpent)).commit();
 //			getFragmentManager().beginTransaction().remove(this).commit();
 		} catch (Exception e) {

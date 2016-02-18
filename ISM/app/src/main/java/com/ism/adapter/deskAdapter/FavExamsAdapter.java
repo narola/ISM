@@ -36,7 +36,7 @@ public class FavExamsAdapter extends RecyclerView.Adapter<FavExamsAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         try {
             holder.txtYearClass.setText(Html.fromHtml("2015 : <font color='#66C188'><b>12 th Science</b></font>"));
-            holder.txtExamType.setText(Html.fromHtml("Exam Type : <font color='#1BC4A2'>ISM MOCK</font>"));
+            holder.txtExamType.setText(Html.fromHtml("ROExam Type : <font color='#1BC4A2'>ISM MOCK</font>"));
         } catch (Exception e) {
             Log.e(TAG, "onBinderViewHolder Exceptions : " + e.getLocalizedMessage());
         }

@@ -230,34 +230,34 @@ public class Utility {
         dialog.show();
     }
 
-	/**
-	 * Krunal Panchal
-	 * Get formatted date as String in required format.
-	 *
-	 * @param date
-	 * @param dateFormat
-	 * @return Formatted date as String
-	 */
-	public static String formatDate(Date date, SimpleDateFormat dateFormat) {
+    /**
+     * Krunal Panchal
+     * Get formatted date as String in required format.
+     *
+     * @param date
+     * @param dateFormat
+     * @return Formatted date as String
+     */
+    public static String formatDate(Date date, SimpleDateFormat dateFormat) {
         return dateFormat.format(date);
     }
 
-	/**
-	 * Krunal Panchal
-	 * Formate MySql formatted date to required format.
-	 *
-	 * @param mySqlFormattedDate
-	 * @param dateFormat
-	 * @return Formatted String date.
-	 */
-	public static String formatMySqlDate(String mySqlFormattedDate, SimpleDateFormat dateFormat) {
-		try {
-			return dateFormat.format(DATE_FORMAT_MY_SQL.parse(mySqlFormattedDate));
-		} catch (ParseException e) {
-			Log.e(TAG, "formatMySqlDate Exception : " + e.toString());
-			return null;
-		}
-	}
+    /**
+     * Krunal Panchal
+     * Formate MySql formatted date to required format.
+     *
+     * @param mySqlFormattedDate
+     * @param dateFormat
+     * @return Formatted String date.
+     */
+    public static String formatMySqlDate(String mySqlFormattedDate, SimpleDateFormat dateFormat) {
+        try {
+            return dateFormat.format(DATE_FORMAT_MY_SQL.parse(mySqlFormattedDate));
+        } catch (ParseException e) {
+            Log.e(TAG, "formatMySqlDate Exception : " + e.toString());
+            return null;
+        }
+    }
 
     /**
      * return current date with format DATE_FORMAT_YYYYMMDDHHMMSS
@@ -486,6 +486,20 @@ public class Utility {
         return filePath;
     }
 
+    public static String getDateInApiFormat(String dateText) {
+        String newDate = "";
+        try {
+            Date date = DATE_FORMAT_API.parse(dateText);
+            newDate = DATE_FORMAT_API.format(date);
+
+        } catch (Exception e) {
+            Log.e(TAG, "getDateInApiFormat Exception :" + e.getLocalizedMessage());
+        }
+        return newDate;
+
+    }
+
+
     /*
     * Arti Patel
     * */
@@ -621,7 +635,7 @@ public class Utility {
 
     /**
      * Arti patel
-     *  show the view
+     * show the view
      *
      * @param view
      */
@@ -632,7 +646,6 @@ public class Utility {
     public static SpannableString f;
 
     /**
-     *
      * @param spanString
      * @param color
      * @return
@@ -647,7 +660,6 @@ public class Utility {
     }
 
     /**
-     *
      * @param original
      * @param tobeChecked
      * @param caseSensitive

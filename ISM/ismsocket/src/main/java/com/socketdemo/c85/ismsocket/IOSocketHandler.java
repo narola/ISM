@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import isminterface.OnSocketResponse;
-import model.TutorialGroupDiscussion;
+import model.ROTutorialGroupDiscussion;
 import utils.SocketConstants;
 
 /**
@@ -138,7 +138,7 @@ public class IOSocketHandler implements EventCallback,DisconnectCallback{
      * send tutorial discussion message in group
      * @param tutorialGroupDiscussion
      */
-    public void sendMessage(TutorialGroupDiscussion tutorialGroupDiscussion){
+    public void sendMessage(ROTutorialGroupDiscussion tutorialGroupDiscussion){
 
         JSONObject sendDiscussionMessage = new JSONObject();
 

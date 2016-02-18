@@ -13,25 +13,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
+import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.object.Global;
 import com.ism.author.utility.Debug;
 import com.ism.author.utility.HtmlImageGetter;
 import com.ism.author.utility.Utility;
-import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.object.Global;
-import com.ism.author.ws.model.Answers;
-import com.ism.author.ws.model.Evaluation;
-import com.ism.author.ws.model.Questions;
 
-import java.util.ArrayList;
+import io.realm.RealmList;
+import model.ROAnswerChoices;
+import model.ROEvaluation;
+import model.ROQuestions;
 
 /**
  * Created by c166 on 16/11/15.
  */
-public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<ObjectiveAssignmentQuestionsAdapter.ViewHolder> implements HtmlImageGetter.RefreshDataAfterLoadImage {
+public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<ObjectiveAssignmentQuestionsAdapter.ViewHolder>
+        implements HtmlImageGetter.RefreshDataAfterLoadImage {
 
     private static final String TAG = ObjectiveAssignmentQuestionsAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
+    private RealmList<ROQuestions> arrListQuestions = null;
     private LayoutInflater inflater;
 
 
@@ -54,20 +55,39 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
 
             holder.txtQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
             holder.txtQuestionNo.setPaintFlags(holder.txtQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-//            holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext, null), null));
 
 
             if (arrListQuestions.get(position).getQuestionText().contains("img") || arrListQuestions.get(position).getQuestionText().contains("http:")
                     || arrListQuestions.get(position).getQuestionText().contains("https:")) {
-                if (arrListQuestions.get(position).getSpan() == null) {
 
-                    arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
-                            new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
-                            ), null));
+
+//                if (arrListQuestions.get(position).getSpan() == null) {
+//
+//                    arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+//                            new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+//                            ), null));
+//                } else {
+//
+//                    holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+//                            new HtmlImageGetter(50, 50, mContext, null
+//                            ), null));
+//                }
+
+
+                /**
+                 * this is to handle imageload from url in textview android.
+                 */
+                if (holder.txtQuestionText.getTag() == null) {
+
+                    holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText()));
+                    Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                            new HtmlImageGetter(60, 60, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+                            ), null);
+                    holder.txtQuestionText.setTag(String.valueOf(position));
+
                 } else {
-
                     holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
-                            new HtmlImageGetter(50, 50, mContext, null
+                            new HtmlImageGetter(60, 60, mContext, null
                             ), null));
                 }
             } else {
@@ -76,13 +96,17 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
 
             holder.tvEvoluationsNotes.setText(Utility.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
             holder.tvSolution.setText(Utility.formatHtml(arrListQuestions.get(position).getSolution()));
-            if (getBundleArguments().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_NAME)) {
-                holder.txtStudentnameAnswer.setText(getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME) + " " +
-                        mContext.getString(R.string.stranswer));
 
+            /**
+             * set the stududent name in case of evaluation.
+             */
+            if (getBundleArguments().containsKey(ExamSubmittorAdapter.ARG_STUDENT_NAME)) {
+                holder.txtStudentnameAnswer.setText(getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_NAME) + " " +
+                        mContext.getString(R.string.stranswer));
             }
 
             if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
+
                 holder.llQuestionsOptions.setVisibility(View.GONE);
                 holder.llAnswerContainer.setVisibility(View.GONE);
                 holder.llEvaluationContainer.setVisibility(View.VISIBLE);
@@ -93,29 +117,44 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
 
 
             } else if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
+
                 holder.llQuestionsOptions.setVisibility(View.VISIBLE);
                 holder.llAnswerContainer.setVisibility(View.VISIBLE);
                 holder.llEvaluationContainer.setVisibility(View.GONE);
                 holder.llQuestionsOptions.removeAllViews();
 
+
+                /**
+                 * inflate MCQ options view
+                 */
                 if (holder.llQuestionsOptions.getChildCount() == 0) {
-                    for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
-                        View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
+                    for (int i = 0; i < arrListQuestions.get(position).getRoAnswerChoices().size(); i++) {
+                        View ansView = getAnsInflaterView(arrListQuestions.get(position).getRoAnswerChoices().get(i), i);
                         holder.llQuestionsOptions.addView(ansView);
                     }
                 }
 
+
+                /**
+                 * Set the right answer form the available MCQ options.
+                 */
                 holder.txtAnswer.setText("");
-                if (arrListQuestions.get(position).getAnswers() != null) {
-                    for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
-                        if (arrListQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
+
+                if (arrListQuestions.get(position).getRoAnswerChoices() != null) {
+                    for (int i = 0; i < arrListQuestions.get(position).getRoAnswerChoices().size(); i++) {
+                        if (arrListQuestions.get(position).getRoAnswerChoices().get(i).isRight()) {
+
                             holder.txtAnswer.setText(Utility.formatHtml(Utility.getCharForNumber(i + 1) + ". " +
-                                    arrListQuestions.get(position).getAnswers().get(i).getChoiceText()));
+                                    arrListQuestions.get(position).getRoAnswerChoices().get(i).getChoiceText()));
                             break;
                         }
                     }
                 }
 
+
+                /**
+                 * check for that this adapter is called for the evaluation or to just view questions.
+                 */
                 if (getBundleArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION) ||
                         getBundleArguments().getInt(ExamsAdapter.ARG_FRAGMENT_TYPE) == AuthorHostActivity.FRAGMENT_TRIAL) {
                     holder.llEvaluationContainer.setVisibility(View.VISIBLE);
@@ -126,18 +165,28 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
                 }
             }
 
+
+            /**
+             * This is to set the student answer data.
+             */
             holder.txtStudentAnswer.setText("");
+
             if (evaluationList != null) {
                 if (evaluationList.size() > 0 && position < evaluationList.size()) {
+
                     if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective))) {
-                        for (int j = 0; j < arrListQuestions.get(position).getAnswers().size(); j++) {
-                            if (evaluationList.get(position).getStudentResponse().equalsIgnoreCase
-                                    (arrListQuestions.get(position).getAnswers().get(j).getId())) {
+
+                        for (int j = 0; j < arrListQuestions.get(position).getRoAnswerChoices().size(); j++) {
+
+                            if (evaluationList.get(position).getStudentResposne().equalsIgnoreCase(
+                                    String.valueOf(arrListQuestions.get(position).getRoAnswerChoices().get(j).getAnswerChoicesId()))) {
                                 holder.txtStudentAnswer.setText(Utility.formatHtml(Utility.getCharForNumber(j + 1) + ". " +
-                                        arrListQuestions.get(position).getAnswers().get(j).getChoiceText()));
+                                        arrListQuestions.get(position).getRoAnswerChoices().get(j).getChoiceText()));
                                 break;
                             }
+
                         }
+
                     } else if (getBundleArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective))) {
 
 
@@ -152,13 +201,16 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
 
     @Override
     public int getItemCount() {
-        return arrListQuestions.size();
+        if (arrListQuestions != null) {
+            return arrListQuestions.size();
+        } else {
+            return 0;
+        }
     }
 
-    public void addAll(ArrayList<Questions> listOfQuestions) {
+    public void addAll(RealmList<ROQuestions> arrListQuestions) {
         try {
-            this.arrListQuestions.clear();
-            this.arrListQuestions.addAll(listOfQuestions);
+            this.arrListQuestions = arrListQuestions;
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
@@ -214,7 +266,7 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
     }
 
 
-    private View getAnsInflaterView(Answers answer, int position) {
+    private View getAnsInflaterView(ROAnswerChoices answer, int position) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View v;
@@ -227,9 +279,10 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
     }
 
 
-    ArrayList<Evaluation> evaluationList = new ArrayList<Evaluation>();
+    RealmList<ROEvaluation> evaluationList = new RealmList<ROEvaluation>();
 
-    public void setEvaluationData(ArrayList<Evaluation> evaluationList) {
+    public void setEvaluationData(RealmList<ROEvaluation> evaluationList) {
+
         this.evaluationList = evaluationList;
         notifyDataSetChanged();
 

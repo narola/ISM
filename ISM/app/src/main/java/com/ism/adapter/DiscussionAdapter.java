@@ -24,7 +24,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
-import model.TutorialGroupDiscussion;
+import model.ROTutorialGroupDiscussion;
 
 /**
  * Created by c161 on 25/11/15.
@@ -34,14 +34,14 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 	private static final String TAG = DiscussionAdapter.class.getSimpleName();
 
 	private Context context;
-	private ArrayList<TutorialGroupDiscussion> arrListDiscussion;
+	private ArrayList<ROTutorialGroupDiscussion> arrListDiscussion;
 	private ImageLoader imageLoader;
 	private MyTypeFace myTypeFace;
 	private LayoutInflater inflater;
 	private int userId,previousId = -1;
 	private String previousWeekDay= "";
 
-	public DiscussionAdapter(Context context, ArrayList<TutorialGroupDiscussion> arrListDiscussion) {
+	public DiscussionAdapter(Context context, ArrayList<ROTutorialGroupDiscussion> arrListDiscussion) {
 		this.context = context;
 		this.arrListDiscussion = arrListDiscussion;
 		imageLoader = ImageLoader.getInstance();

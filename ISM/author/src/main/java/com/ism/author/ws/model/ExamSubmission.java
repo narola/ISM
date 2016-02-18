@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ExamSubmission {
+public class ExamSubmission  {
 
     private String examId;
     private ArrayList<Examsubmittor> examsubmittor;

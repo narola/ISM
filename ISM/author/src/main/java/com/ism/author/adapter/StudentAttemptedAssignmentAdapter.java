@@ -11,15 +11,14 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.utility.Debug;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.object.Global;
+import com.ism.author.utility.Debug;
 import com.ism.author.views.CircleImageView;
-import com.ism.author.ws.model.Examsubmittor;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import java.util.ArrayList;
+import io.realm.RealmList;
+import model.authormodel.ROExamSubmittor;
 
 /**
  * Created by c166 on 19/11/15.
@@ -28,16 +27,12 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
 
     private static final String TAG = StudentAttemptedAssignmentAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
-
-    private ImageLoader imageLoader;
+    private RealmList<ROExamSubmittor> arrListExamSubmittor = null;
     private LayoutInflater inflater;
 
 
     public StudentAttemptedAssignmentAdapter(Context mContext) {
         this.mContext = mContext;
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         inflater = LayoutInflater.from(mContext);
     }
 
@@ -54,17 +49,21 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
 
         try {
 
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
-                    holder.imgUserPic, ISMAuthor.options);
-
+            if (arrListExamSubmittor.get(position).getStudentProfilePic() != null && arrListExamSubmittor.get(position).getStudentProfilePic() != "") {
+                Global.imageLoader.displayImage(WebConstants.USER_IMAGES + arrListExamSubmittor.get(position).getStudentProfilePic(),
+                        holder.imgUserPic, ISMAuthor.options);
+            } else {
+                holder.imgUserPic.setImageResource(R.drawable.userdp);
+            }
 
 
             holder.txtStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
-//            holder.txtStudentSchool.setText(arrListExamSubmittor.get(position).getSchoolName());
+            holder.txtStudentSchool.setText(arrListExamSubmittor.get(position).getStudentSchoolName());
             holder.txtStudentMarks.setText(arrListExamSubmittor.get(position).getEvaluationScore());
+            holder.txtStudentClass.setText(arrListExamSubmittor.get(position).getStudentClassName());
 
-            if (getBundleArguments().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_ID)) {
-                if (getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
+            if (getBundleArguments().containsKey(ExamSubmittorAdapter.ARG_STUDENT_ID)) {
+                if (getBundleArguments().getString(ExamSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
                     holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.fragment_background_color));
                     holder.txt_bottom_line.setBackgroundColor(mContext.getResources().getColor(R.color.color_blue));
                 } else {
@@ -85,7 +84,6 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
                 }
             });
 
-//
         } catch (Exception e) {
             Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());
         }
@@ -94,13 +92,19 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
 
     @Override
     public int getItemCount() {
-        return arrListExamSubmittor.size();
+
+        if (arrListExamSubmittor != null) {
+            return arrListExamSubmittor.size();
+        } else {
+            return 0;
+        }
     }
 
-    public void addAll(ArrayList<Examsubmittor> examSubmittors) {
+    public void addAll(RealmList<ROExamSubmittor> arrListExamSubmittors) {
+
+
         try {
-            this.arrListExamSubmittor.clear();
-            this.arrListExamSubmittor.addAll(examSubmittors);
+            this.arrListExamSubmittor = arrListExamSubmittors;
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
@@ -139,13 +143,15 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
     }
 
     public void setBundleArgument(int position) {
-        getBundleArguments().putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
-        getBundleArguments().putString(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
+
+        Debug.e(TAG, "THE STUDENT ID IS:::" + arrListExamSubmittor.get(position).getStudentId());
+        getBundleArguments().putInt(ExamSubmittorAdapter.ARG_STUDENT_POSITION, position);
+        getBundleArguments().putString(ExamSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
                 arrListExamSubmittor.get(position).getStudentProfilePic());
-        getBundleArguments().putString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME,
+        getBundleArguments().putString(ExamSubmittorAdapter.ARG_STUDENT_NAME,
                 arrListExamSubmittor.get(position).getStudentName());
-        getBundleArguments().putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID,
-                arrListExamSubmittor.get(position).getStudentId());
+        getBundleArguments().putString(ExamSubmittorAdapter.ARG_STUDENT_ID,
+                String.valueOf(arrListExamSubmittor.get(position).getStudentId()));
         notifyDataSetChanged();
     }
 

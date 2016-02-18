@@ -58,7 +58,7 @@
     <color name="bg_wallet_head">#616D79</color>
     <color name="edit_shadow">#32000000</color>
     <color name="border_my_wallet">#D6DBDF</color>
-    <color name="color_red">#D9524F</color>
+    <color name="red">#D9524F</color>
     <color name="border_timeline">#ededed</color>
     <color name="text_red_timeline">#fc3f35</color>
     <color name="bg_table_head">#F2F2F2</color>
@@ -74,23 +74,31 @@
     <color name="color_green_events">#36C2A9</color>
     <color name="color_orange">#FF4F30</color>
     <color name="dark_grey">#3C4650</color>
-    <color name="title_bg"> #D6DBDF</color>
+    <color name="title_bg">#D6DBDF</color>
     <color name="color_answer">#6F6F74</color>
     <color name="question_color">#74777C</color>
     <color name="btn_save">#26AF61</color>
     <color name="color_violet_assignment">#A44B99</color>
+    <color name="red_dark">#861f1c</color>
 
     <!-- Tutorial Group Friday Exam Colors -->
 
     <color name="button_dark_start">#99CCCCCC</color>
     <color name="button_dark_end">#00000000</color>
-	<color name="yellow">#FEBA01</color>
-	<color name="notation_not_answered">#D8DDE0</color>
-	<color name="bg_button_dark_pressed">#131619</color>
+    <color name="yellow">#FEBA01</color>
+    <color name="notation_not_answered">#D8DDE0</color>
+    <color name="bg_button_dark_pressed">#131619</color>
     <color name="bg_layout_tutorialmate_answers">#DCDCDC</color>
     <color name="border_layout_tutorialmate_answers">#BBBBBB</color>
     <color name="transparent">#00000000</color>
     <color name="assignment_separator">#DEDCDD</color>
+    <color name="black_transperant">#32000000</color>
 
     <!-- ################################# -->
+   <!--viewpager indicator-->
+    <color name="default_circle_indicator_fill_color">#FFFFFFFF</color>
+    <color name="default_circle_indicator_page_color">#00000000</color>
+    <color name="default_circle_indicator_stroke_color">#FFDDDDDD</color>
+
+    <color name="color_question">#8F9396</color>
 </resources>

@@ -14,6 +14,7 @@ public class Evaluation {
     private String questionId;
     private String studentResponse;
     private String answerStatus;
+    private String questionScore;
 
 
     @JsonProperty("evaluation_score")
@@ -61,5 +62,15 @@ public class Evaluation {
         this.answerStatus = answerStatus;
     }
 
+
+    @JsonProperty("question_score")
+    public String getQuestionScore() {
+        return questionScore;
+    }
+
+    public Evaluation setQuestionScore(String questionScore) {
+        this.questionScore = questionScore;
+        return this;
+    }
 
 }

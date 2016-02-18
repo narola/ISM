@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="vpiCirclePageIndicatorStyle">@style/CustomCirclePageIndicator</item>
     </style>
 
 	<style name="AppTheme.NoActionBar">
@@ -38,4 +39,35 @@
         <attr name="pb_colorNormal" format="color" />
         <attr name="pb_cornerRadius" format="dimension" />
     </declare-styleable>
+
+    <style name="StyledIndicators" parent="@android:style/Theme.Light">
+        <item name="vpiCirclePageIndicatorStyle">@style/CustomCirclePageIndicator</item>
+    </style>
+
+    <style name="CustomCirclePageIndicator">
+        <item name="fillColor">#FF888888</item>
+        <item name="strokeColor">#FF000000</item>
+        <item name="strokeWidth">@dimen/dp2</item>
+        <item name="radius">@dimen/dp5</item>
+        <item name="centered">true</item>
+    </style>
+
+    <!--<style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">-->
+        <!--&lt;!&ndash;<item name="android:background">@drawable/custom_tab_indicator</item>&ndash;&gt;-->
+        <!--<item name="android:textAppearance">@style/CustomTabPageIndicator.Text</item>-->
+        <!--<item name="android:textColor">#FF555555</item>-->
+        <!--<item name="android:textSize">16sp</item>-->
+        <!--&lt;!&ndash;<item name="android:divider">@drawable/custom_tab_indicator_divider</item>&ndash;&gt;-->
+        <!--<item name="android:dividerPadding">10dp</item>-->
+        <!--<item name="android:showDividers">middle</item>-->
+        <!--<item name="android:paddingLeft">8dp</item>-->
+        <!--<item name="android:paddingRight">8dp</item>-->
+        <!--<item name="android:fadingEdge">horizontal</item>-->
+        <!--<item name="android:fadingEdgeLength">8dp</item>-->
+    <!--</style>-->
+
+    <style name="CustomTabPageIndicator.Text" parent="android:TextAppearance.Medium">
+        <item name="android:typeface">monospace</item>
+    </style>
+
 </resources>

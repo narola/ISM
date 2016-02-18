@@ -27,10 +27,11 @@ import com.ism.author.ws.helper.WebserviceWrapper;
 
 import io.realm.RealmList;
 import io.realm.RealmResults;
-import model.FeedImage;
-import model.FeedLike;
-import model.Feeds;
-import model.User;
+import model.ROFeedImage;
+import model.ROFeedLike;
+import model.ROFeeds;
+import model.ROFeedComment;
+import model.ROUser;
 import realmhelper.AuthorHelper;
 
 /**
@@ -42,7 +43,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private static final String TAG = PostFeedsAdapter.class.getSimpleName();
     private Context mContext;
-    private RealmResults<Feeds> arrListFeeds = null;
+    private RealmResults<ROFeeds> arrListFeeds = null;
 
     private LayoutInflater inflater;
     private AuthorHelper authorHelper;
@@ -94,13 +95,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         holder.llCommentInflater.removeAllViews();
 
-        if (arrListFeeds.get(position).getComments() != null) {
+        if (arrListFeeds.get(position).getRoFeedComment() != null) {
 
             holder.txtCommentViewAll.setVisibility(arrListFeeds.get(position).getTotalComment() > 0 ? View.VISIBLE : View.GONE);
             if (holder.llCommentInflater.getChildCount() == 0) {
-                for (int i = 0; i < arrListFeeds.get(position).getComments().size(); i++) {
+                for (int i = 0; i < arrListFeeds.get(position).getRoFeedComment().size(); i++) {
                     if (i <= 1) {
-                        View v = getCommetInflaterView(arrListFeeds.get(position).getComments().get(i));
+                        View v = getCommetInflaterView(arrListFeeds.get(position).getRoFeedComment().get(i));
                         holder.llCommentInflater.addView(v);
                     } else {
                         break;
@@ -140,7 +141,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                     callApiGetStudyMates();
 
                 } else {
-                    Utility.toastOffline(getActivity());
+                    Utility.alertOffline(getActivity());
                 }
 
 
@@ -181,23 +182,22 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             // holder.imgAudio.setVisibility(View.VISIBLE);
         }
         // images
-        if (arrListFeeds.get(position).getFeedImages().size() != 0) {
+        if (arrListFeeds.get(position).getRoFeedImages().size() != 0) {
 
             // holder.imgImage.setVisibility(View.VISIBLE);
 
-            RealmList<FeedImage> feedImages = new RealmList<>();
-            feedImages = arrListFeeds.get(position).getFeedImages();
-            for (int i = 0; i < feedImages.size(); i++) {
-                Log.i(TAG, WebConstants.FEED_MEDIA_KINJAL + feedImages.get(i).getImageLink() + "");
-                //  Global.imageLoader.displayImage(WebConstants.FEED_MEDIA_KINJAL + feedImages.get(i).getImageLink(), holder.imgImage, ISMAuthor.options);
-                // holder.rlImage.addView(getMediaFilesView(feedImages.get(i).getImageLink(), PostFeedActivity.IMAGE));
+            RealmList<ROFeedImage> ROFeedImages = new RealmList<>();
+            ROFeedImages = arrListFeeds.get(position).getRoFeedImages();
+            for (int i = 0; i < ROFeedImages.size(); i++) {
+                Log.i(TAG, WebConstants.FEED_MEDIA_KINJAL + ROFeedImages.get(i).getImageLink() + "");
+                //  Global.imageLoader.displayImage(WebConstants.FEED_MEDIA_KINJAL + ROFeedImages.get(i).getImageLink(), holder.imgImage, ISMAuthor.options);
+                // holder.rlImage.addView(getMediaFilesView(ROFeedImages.get(i).getImageLink(), PostFeedActivity.IMAGE));
             }
 
         }
 
 
     }
-
 
     @Override
     public int getItemCount() {
@@ -218,7 +218,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             comment = "";
             arrListFeeds = authorHelper.getAllPostFeeds();
         } catch (Exception e) {
-            e.printStackTrace();
+            Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
         notifyDataSetChanged();
     }
@@ -269,7 +269,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         }
     }
 
-    private View getCommetInflaterView(model.FeedComment feedComment) {
+    private View getCommetInflaterView(ROFeedComment ROFeedComment) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
 
         View v;
@@ -287,12 +287,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         txtCommentDuration.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
-        txtCommenterUsername.setText(feedComment.getCommentBy().getFullName());
-        txtCommenterComment.setText(feedComment.getComment());
-        txtCommentDuration.setText(com.ism.commonsource.utility.Utility.getTimeDuration(feedComment.getCreatedDate()));
+        txtCommenterUsername.setText(ROFeedComment.getCommentBy().getFullName());
+        txtCommenterComment.setText(ROFeedComment.getComment());
+        txtCommentDuration.setText(com.ism.commonsource.utility.Utility.getTimeDuration(ROFeedComment.getCreatedDate()));
 
 
-        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + feedComment.getCommentBy().getProfilePicture(),
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + ROFeedComment.getCommentBy().getProfilePicture(),
                 imgCommenterDp, Utility.getDisplayImageOption(R.drawable.userdp, R.drawable.userdp));
 
 
@@ -337,7 +337,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 Log.e(TAG, "callApiAddComment Exception : " + e.toString());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
     }
 
@@ -355,7 +355,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 Debug.i(TAG + getActivity().getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
     }
 
@@ -372,7 +372,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 Log.i(TAG + getActivity().getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
     }
 
@@ -392,7 +392,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 Log.e(TAG, "callApiTagUsers Exception : " + e.toString());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
     }
 
@@ -437,20 +437,20 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
                 Utility.showToast(getActivity().getString(R.string.msg_success_comment_add), getActivity());
 
-                model.FeedComment feedComment = new model.FeedComment();
-                feedComment.setFeedCommentId(responseHandler.getComment().get(0).getCommentId());
-                feedComment.setComment(comment);
-                feedComment.setCreatedDate(null);
+                ROFeedComment ROFeedComment = new ROFeedComment();
+                ROFeedComment.setFeedCommentId(responseHandler.getComment().get(0).getCommentId());
+                ROFeedComment.setComment(comment);
+                ROFeedComment.setCreatedDate(null);
 
-                model.User commentBy = new model.User();
+                ROUser commentBy = new ROUser();
                 commentBy.setUserId(Integer.valueOf(Global.strUserId));
                 commentBy.setProfilePicture(Global.strProfilePic);
                 commentBy.setFullName(Global.strFullName);
 
-                feedComment.setCommentBy(commentBy);
-                feedComment.setFeed(arrListFeeds.get(addCommentFeedPosition));
+                ROFeedComment.setCommentBy(commentBy);
+                ROFeedComment.setRoFeed(arrListFeeds.get(addCommentFeedPosition));
 
-                authorHelper.addComment(arrListFeeds.get(addCommentFeedPosition).getFeedId(), feedComment);
+                authorHelper.addComment(arrListFeeds.get(addCommentFeedPosition).getFeedId(), ROFeedComment);
 
                 addAll();
             } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
@@ -513,21 +513,21 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private void insertUpdateLikeFeedData(int position, int isLike) {
 
-        FeedLike feedLike = new FeedLike();
+        ROFeedLike ROFeedLike = new ROFeedLike();
 
-        User user = new User();
-        user.setUserId(Integer.valueOf(Global.strUserId));
-        user.setFullName(Global.strFullName);
-        user.setProfilePicture(Global.strProfilePic);
+        ROUser ROUser = new ROUser();
+        ROUser.setUserId(Integer.valueOf(Global.strUserId));
+        ROUser.setFullName(Global.strFullName);
+        ROUser.setProfilePicture(Global.strProfilePic);
 
-        feedLike.setLikeBy(user);
-        feedLike.setFeed(arrListFeeds.get(position));
-        feedLike.setCreatedDate(null);
-        feedLike.setModifiedDate(null);
-        feedLike.setIsLiked(isLike);
-        feedLike.setIsSync(0);
+        ROFeedLike.setLikeBy(ROUser);
+        ROFeedLike.setFeed(arrListFeeds.get(position));
+        ROFeedLike.setCreatedDate(null);
+        ROFeedLike.setModifiedDate(null);
+        ROFeedLike.setIsLiked(isLike);
+        ROFeedLike.setIsSync(0);
 
-        authorHelper.insertUpdateLikeFeedData(feedLike);
+        authorHelper.insertUpdateLikeFeedData(ROFeedLike);
     }
 
 }

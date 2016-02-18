@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import model.ROAdminConfig;
 import realmhelper.TeacherHelper;
 
 
@@ -550,10 +551,10 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
 
                     if (arrListAdminConfig != null && arrListAdminConfig.size() > 0) {
                         for (AdminConfig config : arrListAdminConfig) {
-                            model.AdminConfig adminConfig = new model.AdminConfig();
-                            adminConfig.setConfigKey(config.getConfigKey());
-                            adminConfig.setConfigValue(config.getConfigValue());
-                            teacherHelper.saveAdminConfig(adminConfig);
+                            ROAdminConfig ROAdminConfig = new ROAdminConfig();
+                            ROAdminConfig.setConfigKey(config.getConfigKey());
+                            ROAdminConfig.setConfigValue(config.getConfigValue());
+                            teacherHelper.saveAdminConfig(ROAdminConfig);
                         }
                         PreferenceData.setStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, getActivity(),
                                 Utility.formatDateMySql(Calendar.getInstance().getTime()));

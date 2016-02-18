@@ -16,7 +16,7 @@ import com.ism.author.ws.helper.WebserviceWrapper;
 import java.util.ArrayList;
 
 import io.realm.RealmResults;
-import model.FeedLike;
+import model.ROFeedLike;
 import realmhelper.AuthorHelper;
 
 /**
@@ -68,23 +68,23 @@ public class AlarmReceiver extends BroadcastReceiver implements WebserviceWrappe
 
 
     private void getLikeFeedData() {
-        RealmResults<FeedLike> realmResults = authorHelper.realm.where(model.FeedLike.class)
+        RealmResults<ROFeedLike> realmResults = authorHelper.realm.where(ROFeedLike.class)
                 .equalTo("isLiked", 1).equalTo("isSync", 0).findAll();
         if (realmResults.size() > 0) {
-            for (model.FeedLike feedLike : realmResults) {
-                arrListLikeFeedId.add(feedLike.getFeed().getFeedId());
+            for (ROFeedLike ROFeedLike : realmResults) {
+                arrListLikeFeedId.add(ROFeedLike.getFeed().getFeedId());
             }
         }
     }
 
     private void getUnLikeFeedData() {
 
-        RealmResults<model.FeedLike> realmResults = authorHelper.realm.where(model.FeedLike.class)
+        RealmResults<ROFeedLike> realmResults = authorHelper.realm.where(ROFeedLike.class)
                 .equalTo("isLiked", 0).equalTo("isSync", 0).findAll();
 
         if (realmResults.size() > 0) {
-            for (model.FeedLike feedLike : realmResults) {
-                arrListUnlikeFeedId.add(feedLike.getFeed().getFeedId());
+            for (ROFeedLike ROFeedLike : realmResults) {
+                arrListUnlikeFeedId.add(ROFeedLike.getFeed().getFeedId());
             }
         }
     }

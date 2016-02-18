@@ -7,14 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.ism.author.R;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.QuestionPalette;
 import com.ism.author.ws.model.Questions;
 
@@ -27,19 +25,17 @@ public class SubjectiveAssignmentQuestionsContainerFragment extends Fragment {
 
     private static final String TAG = SubjectiveAssignmentQuestionsContainerFragment.class.getSimpleName();
     private View view;
-    private MyTypeFace myTypeFace;
     private FragmentListener fragListener;
     public GetStudentsFragment getStudentsFragment;
     public SubjectiveQuestionsFragment subjectiveQuestionsFragment;
     public QuestionPaletteFragment questionPaletteFragment;
-    private FrameLayout flGetsubjectiveAssignmentContainerLeft, flGetsubjectiveAssignmentContainerMiddle,
-            flGetsubjectiveAssignmentContainerRight;
 
 
     public static SubjectiveAssignmentQuestionsContainerFragment newInstance() {
         SubjectiveAssignmentQuestionsContainerFragment subjectiveAssignmentQuestionsContainerFragment = new
                 SubjectiveAssignmentQuestionsContainerFragment();
         return subjectiveAssignmentQuestionsContainerFragment;
+
     }
 
     public SubjectiveAssignmentQuestionsContainerFragment() {
@@ -59,10 +55,6 @@ public class SubjectiveAssignmentQuestionsContainerFragment extends Fragment {
         getStudentsFragment = new GetStudentsFragment(this);
         subjectiveQuestionsFragment = new SubjectiveQuestionsFragment(this);
         questionPaletteFragment = new QuestionPaletteFragment(this);
-
-        flGetsubjectiveAssignmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_getsubjective_assignment_container_left);
-        flGetsubjectiveAssignmentContainerMiddle = (FrameLayout) view.findViewById(R.id.fl_getsubjective_assignment_container_middle);
-        flGetsubjectiveAssignmentContainerRight = (FrameLayout) view.findViewById(R.id.fl_getsubjective_assignment_container_right);
 
         getFragmentManager()
                 .beginTransaction()
@@ -148,7 +140,7 @@ public class SubjectiveAssignmentQuestionsContainerFragment extends Fragment {
     /*this is for back navigation*/
     public void onBackClick() {
 
-        getBundleArguments().remove(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
+        getBundleArguments().remove(MyStudentListAdapter.ARG_TOTAL_NO_OF_STUDENTS);
         ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER);
     }
 

@@ -22,6 +22,7 @@ import com.ism.author.adapter.PostFeedsAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.model.RealmDataModel;
 import com.ism.author.object.Global;
 import com.ism.author.utility.Debug;
 import com.ism.author.utility.Utility;
@@ -66,6 +67,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
     private ArrayList<String> arrListLikeFeedId, arrListUnlikeFeedId;
     private AuthorHelper authorHelper;
+    private RealmDataModel realmDataModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,6 +80,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
 
         authorHelper = new AuthorHelper(getActivity());
+        realmDataModel = new RealmDataModel();
 
         arrListLikeFeedId = new ArrayList<String>();
         arrListUnlikeFeedId = new ArrayList<String>();
@@ -133,7 +136,6 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         try {
             if (fragListener != null) {
                 fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_HOME);
-                authorHelper.realm.close();
             }
         } catch (ClassCastException e) {
             Log.i(TAG, "onDetach Exception : " + e.toString());
@@ -230,7 +232,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
         if (arrayListFeeds.size() > 0) {
             for (Feeds feed : arrayListFeeds) {
-                authorHelper.addFeeds(Global.getRealmDataModel.getRealmFeed(feed));
+                authorHelper.addFeeds(realmDataModel.getROFeeds(feed));
             }
         }
 
@@ -244,5 +246,11 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         rvPostFeeds.setVisibility(isEnable ? View.GONE : View.VISIBLE);
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        authorHelper.realm.close();
     }
 }

@@ -42,7 +42,7 @@ import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
 import io.realm.RealmResults;
 import jp.wasabeef.richeditor.RichEditor;
-import model.Notes;
+import model.RONotes;
 import realmhelper.StudentHelper;
 
 /**
@@ -76,14 +76,14 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
     private EditText etSubject;
     private String strNote = "";
     private TextView txtNoteBy, txtNoteTitle;
-    private RealmResults<model.Notes> arraylistNotes;
+    private RealmResults<RONotes> arraylistNotes;
     private CircleImageView imgUser;
     private String strNoteText = "";
     private String strNoteId = "";
     private int lastPosition = 0;
     private int strNoteByID;
     private StudentHelper studentHelper;
-    private Notes objNotes;
+    private RONotes objRONotes;
 
     public static JotterFragment newInstance() {
         JotterFragment jotterFragment = new JotterFragment();
@@ -194,10 +194,10 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
     private void editNote(String subject, String noteText) {
         try {
             studentHelper.realm.beginTransaction();
-            objNotes.setNoteText(noteText);
-            objNotes.setNoteSubject(subject);
-            objNotes.setIsSync(1);
-            objNotes.setModifiedDate(Utility.getDateMySql());
+            objRONotes.setNoteText(noteText);
+            objRONotes.setNoteSubject(subject);
+            objRONotes.setIsSync(1);
+            objRONotes.setModifiedDate(Utility.getDateMySql());
             studentHelper.realm.commitTransaction();
 //
             setUpData();
@@ -330,15 +330,15 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
     }
 
     public void copyDataToRealm(String noteName, String noteText, String noteSubject) {
-        model.Notes notes = new model.Notes();
-        notes.setUser(studentHelper.getUser(Integer.parseInt(Global.strUserId)));
-        notes.setNoteName(noteName);
-        notes.setServerNoteId(0);
-        notes.setLocalNoteId(0);
-        notes.setIsSync(1);
+        RONotes RONotes = new RONotes();
+        RONotes.setRoUser(studentHelper.getUser(Integer.parseInt(Global.strUserId)));
+        RONotes.setNoteName(noteName);
+        RONotes.setServerNoteId(0);
+        RONotes.setLocalNoteId(0);
+        RONotes.setIsSync(1);
 //        notes.setNoteText(strNoteText);
-        notes.setCreatedDate(Utility.getDateMySql());
-        studentHelper.saveNote(notes);
+        RONotes.setCreatedDate(Utility.getDateMySql());
+        studentHelper.saveNote(RONotes);
         setUpData();
     }
 
@@ -424,9 +424,12 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
     private void setUpData() {
         try {
             arraylistNotes = studentHelper.getNotes(Integer.parseInt(Global.strUserId));
-            jotterNotesAdapter = new JotterNotesAdapter(getActivity(), arraylistNotes, this, lastPosition);
-            listView.setAdapter(jotterNotesAdapter);
-            setUpNoteDetails(arraylistNotes.get(lastPosition));
+            if (arraylistNotes.size() <= 0) {
+            } else {
+                jotterNotesAdapter = new JotterNotesAdapter(getActivity(), arraylistNotes, this, lastPosition);
+                listView.setAdapter(jotterNotesAdapter);
+                setUpNoteDetails(arraylistNotes.get(lastPosition));
+            }
         } catch (Exception e) {
             Log.e(TAG, "setUpData Exceptions : " + e.getLocalizedMessage());
         }
@@ -442,7 +445,7 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
         }
     }
 
-    private void setUpNoteDetails(Notes notes) {
+    private void setUpNoteDetails(RONotes RONotes) {
         try {
 
             if (arraylistNotes == null) {
@@ -454,16 +457,16 @@ public class JotterFragment extends Fragment implements HostActivity.InsertSymbo
                 Utility.hideView(etSubject);
                 Utility.hideView(imgUser);
             } else {
-                objNotes = notes;
-                strNoteId = String.valueOf(notes.getLocalNoteId());
+                objRONotes = RONotes;
+                strNoteId = String.valueOf(RONotes.getLocalNoteId());
                 imgEdit.setActivated(false);
                 imgShare.setActivated(false);
-                txtNoteTitle.setText(notes.getNoteName());
-                txtNoteBy.setText("By : " + notes.getUser().getFullName());
-                strNoteByID = notes.getUser().getUserId();
-                rteNotes.setHtml(notes.getNoteText());
-                etSubject.setText(notes.getNoteSubject());
-                Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + notes.getUser().getProfilePicture(), imgUser, ISMStudent.options);
+                txtNoteTitle.setText(RONotes.getNoteName());
+                txtNoteBy.setText("By : " + RONotes.getRoUser().getFullName());
+                strNoteByID = RONotes.getRoUser().getUserId();
+                rteNotes.setHtml(RONotes.getNoteText());
+                etSubject.setText(RONotes.getNoteSubject());
+                Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + RONotes.getRoUser().getProfilePicture(), imgUser, ISMStudent.options);
             }
         } catch (Exception e) {
             Log.e(TAG, "setNoteDetails Exceptions : " + e.getLocalizedMessage());

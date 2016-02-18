@@ -22,8 +22,7 @@ import com.ism.object.Global;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.FridayExamQuestion;
-import com.ism.ws.model.Question;
+import com.ism.ws.model.ExamQuestion;
 
 import java.util.ArrayList;
 
@@ -47,7 +46,7 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 
 	private StudentHelper studentHelper;
 	private HostActivity activityHost;
-	private ArrayList<FridayExamQuestion> arrListQuestions;
+	private ArrayList<ExamQuestion> arrListQuestions;
 
 	private static final String ARG_SHOW_GRAPH = "showGraph";
 	private static final String ARG_TIME_SPENT = "timeSpent";
@@ -56,7 +55,7 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 	private int intTimeSpent;
 	private String strExamId;
 
-	public static ResultFragment newInstance(ArrayList<FridayExamQuestion> questions, String examId, boolean showGraph, int timeSpent) {
+	public static ResultFragment newInstance(ArrayList<ExamQuestion> questions, String examId, boolean showGraph, int timeSpent) {
 		ResultFragment fragment = new ResultFragment();
 		fragment.setQuestion(questions);
 		Bundle args = new Bundle();
@@ -112,7 +111,7 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 		btnViewAnswers.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamEvaluationFragment.newInstance(arrListQuestions)).commit();
+				getFragmentManager().beginTransaction().replace(R.id.fl_tutorial, FridayExamEvaluationFragment.newInstance(arrListQuestions)).commit();
 			}
 		});
 
@@ -153,14 +152,14 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 			attribute.setUserId(Global.strUserId);
 
 			int correctAnsScore = studentHelper.getFridayExamAnswerScore();
-			ArrayList<Question> questions = new ArrayList<>();
+			ArrayList<ExamQuestion> questions = new ArrayList<>();
 			for (int i = 0; i < arrListQuestions.size(); i++) {
-				Question question = new Question();
-				question.setQuestionId(Integer.parseInt(arrListQuestions.get(i).getQuestionId()));
+				ExamQuestion question = new ExamQuestion();
+				question.setQuestionId(arrListQuestions.get(i).getQuestionId());
 
-				for (int j = 0; j < arrListQuestions.get(i).getFridayExamAnswers().size(); j++) {
-					if (arrListQuestions.get(i).getFridayExamAnswers().get(j).isSelected()) {
-						question.setChoiceId(Integer.parseInt(arrListQuestions.get(i).getFridayExamAnswers().get(j).getId()));
+				for (int j = 0; j < arrListQuestions.get(i).getExamAnswers().size(); j++) {
+					if (arrListQuestions.get(i).getExamAnswers().get(j).isSelected()) {
+						question.setChoiceId(Integer.parseInt(arrListQuestions.get(i).getExamAnswers().get(j).getId()));
 						break;
 					}
 				}
@@ -210,7 +209,7 @@ public class ResultFragment extends Fragment implements WebserviceWrapper.Webser
 		}
 	}
 
-	public void setQuestion(ArrayList<FridayExamQuestion> questions) {
+	public void setQuestion(ArrayList<ExamQuestion> questions) {
 		arrListQuestions = questions;
 	}
 

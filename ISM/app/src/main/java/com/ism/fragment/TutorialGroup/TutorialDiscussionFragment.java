@@ -45,14 +45,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-
 import io.realm.RealmResults;
 import isminterface.OnSocketResponse;
-import model.Subjects;
-import model.TutorialGroupDiscussion;
-import model.TutorialGroupTopicAllocation;
-import model.TutorialTopic;
-import model.User;
+import model.ROSubjects;
+import model.ROTutorialGroupDiscussion;
+import model.ROTutorialGroupTopicAllocation;
+import model.ROTutorialTopic;
+import model.ROUser;
+
 
 import realmhelper.StudentHelper;
 import utils.SocketConstants;
@@ -84,7 +84,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	private TutorialDiscussionFragmentListener listenerTutorialDiscussion;
 	private Whiteboard.WhiteboardListener whiteboardListener;
 	private View.OnClickListener listenerOnUtilityClick;
-	private ArrayList<TutorialGroupDiscussion> arrListTestDiscussion = new ArrayList<TutorialGroupDiscussion>();
+	private ArrayList<ROTutorialGroupDiscussion> arrListTestDiscussion = new ArrayList<ROTutorialGroupDiscussion>();
 	//private ArrayList<TutorialGroupDiscussion> arrListDiscussionData = new ArrayList<TutorialGroupDiscussion>();;
 	private ArrayList<Discussion> arrListDiscussion;
 	private DiscussionAdapter adpDiscussion;
@@ -100,7 +100,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	private int intWeekDay;
 	private String strCurrentWeekDay = "";
     private String weekDay;
-	private TutorialGroupTopicAllocation tutorialGroupTopicAllocationDetail;
+	private ROTutorialGroupTopicAllocation tutorialGroupTopicAllocationDetail;
 
   	public static TutorialDiscussionFragment newInstance(int weekDay) {
 		TutorialDiscussionFragment fragment = new TutorialDiscussionFragment();
@@ -241,18 +241,18 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 
 					/*** new one ***/
 				 	StudentHelper studentHelper = new StudentHelper(getActivity());
-					TutorialGroupDiscussion tutorialGroupDiscussion = new TutorialGroupDiscussion();
+					ROTutorialGroupDiscussion tutorialGroupDiscussion = new ROTutorialGroupDiscussion();
 					tutorialGroupDiscussion.setMessage(etMessage.getText().toString().trim());
 					tutorialGroupDiscussion.setCommentScore(2);
 					tutorialGroupDiscussion.setInActiveHours(true);
 					tutorialGroupDiscussion.setCreatedDate(new Date());
 					//tutorialGroupDiscussion.setShowDetails(true);
 					//if(tutorialGroupTopicAllocationDetail == null){
-					TutorialGroupTopicAllocation tutorialGroupTopicAllocation = studentHelper.getTutorialTopicAllocationByDayOfWeek(String.valueOf(intWeekDay-1));
+					ROTutorialGroupTopicAllocation tutorialGroupTopicAllocation = studentHelper.getTutorialTopicAllocationByDayOfWeek(String.valueOf(intWeekDay-1));
 					//}
-					tutorialGroupDiscussion.setTopic(tutorialGroupTopicAllocation.getTutorialTopic());
+					tutorialGroupDiscussion.setTopic(tutorialGroupTopicAllocation.getTopic());
 
-					User user = studentHelper.getUser(Integer.parseInt(Global.strUserId));
+					ROUser user = studentHelper.getUser(Integer.parseInt(Global.strUserId));
 					tutorialGroupDiscussion.setSender(user);
 
 					/*** new one ***/
@@ -558,13 +558,13 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	private void getGroupDiscussion(){
 
     StudentHelper studentHelper = new StudentHelper(getActivity());
-		RealmResults<TutorialGroupDiscussion> tutorialGroupDiscussions = studentHelper.getTutorialGroupDiscussionByGroup(135);
+		RealmResults<ROTutorialGroupDiscussion> tutorialGroupDiscussions = studentHelper.getTutorialGroupDiscussionByGroup(135);
 
 		if(tutorialGroupDiscussions != null){
 		int j = 0;
 			int i =0;
 			int topicId =0;
-        for(TutorialGroupDiscussion tutorialGroupDiscussion : tutorialGroupDiscussions) {
+        for(ROTutorialGroupDiscussion tutorialGroupDiscussion : tutorialGroupDiscussions) {
            j++;
 
 
@@ -619,7 +619,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 		try {
 			String strDate = "";
 			StudentHelper studentHelper = new StudentHelper(getActivity());
-			User user = studentHelper.getUser(Integer.parseInt(Global.strUserId));
+			ROUser user = studentHelper.getUser(Integer.parseInt(Global.strUserId));
            if(user.getCreatedDate() == null){
 
 			   Date date = null;
@@ -836,12 +836,12 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 
 	/**
 	 * save or update<br/>
-	 * 1){@link TutorialTopic}<br/>
-	 * 2){@link TutorialGroupDiscussion}<br/>
-	 * 3){@link TutorialGroupTopicAllocation}<br/>
-	 * 4){@link User} - topic created by<br/>
-	 * 5){@link User} - sender in discussion<br/>
-	 * 6){@link Subjects} - subject for  {@link TutorialTopic}<br/>
+	 * 1){@link ROTutorialTopic}<br/>
+	 * 2){@link ROTutorialGroupDiscussion}<br/>
+	 * 3){@link ROTutorialGroupTopicAllocation}<br/>
+	 * 4){@link ROUser} - topic created by<br/>
+	 * 5){@link ROUser} - sender in discussion<br/>
+	 * 6){@link ROSubjects} - subject for  {@link ROTutorialTopic}<br/>
 	 *
 	 * @param response - Group Discussion Tutorial response object
 	 */
@@ -854,11 +854,11 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 				for (GroupDiscussionData groupDiscussionData : response.getGroupDiscussionData()) {
                     boolean isTopicSaved = false;
 					StudentHelper studentHelper = new StudentHelper(getActivity());
-					TutorialTopic tutorialTopic = studentHelper.getTutorialTopic(Integer.parseInt(groupDiscussionData.getTutorialTopicId()));
+					ROTutorialTopic tutorialTopic = studentHelper.getTutorialTopic(Integer.parseInt(groupDiscussionData.getTutorialTopicId()));
 
 					if(tutorialTopic == null){
 
-						tutorialTopic = new TutorialTopic();
+						tutorialTopic = new ROTutorialTopic();
 						tutorialTopic.setTutorialTopicId(Integer.parseInt(groupDiscussionData.getTutorialTopicId()));
 						tutorialTopic.setTopicName(groupDiscussionData.getTutorialTopic());
 						tutorialTopic.setTopicDescription(groupDiscussionData.getTopicDescription());
@@ -867,18 +867,18 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 
 
                         // add subject
-                        Subjects subject = studentHelper.getSubject(Integer.parseInt(groupDiscussionData.getSubjectId()));
+						ROSubjects subject = studentHelper.getSubject(Integer.parseInt(groupDiscussionData.getSubjectId()));
 						if(subject == null){
-							subject = new Subjects();
+							subject = new ROSubjects();
 							subject.setSubjectId(Integer.parseInt(groupDiscussionData.getSubjectId()));
 							subject.setSubjectName(groupDiscussionData.getSubjectName());
  							studentHelper.saveSubject(subject);
 						}
 						tutorialTopic.setSubject(subject);
 
-						User createdBy = studentHelper.getUser(Integer.parseInt(groupDiscussionData.getAssignedBy()));
+						ROUser createdBy = studentHelper.getUser(Integer.parseInt(groupDiscussionData.getAssignedBy()));
 						if(createdBy == null){
-							createdBy = new User();
+							createdBy = new ROUser();
 								createdBy.setUserId(Integer.parseInt(groupDiscussionData.getAssignedBy()));
 							studentHelper.saveUser(createdBy);
 						}
@@ -888,11 +888,11 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 						int j = 0;
 						for(Discussion discussion : groupDiscussionData.getDiscussion()){
 							j++;
-							TutorialGroupDiscussion tutorialGroupDiscussion = studentHelper.getTutorialGroupDiscussion(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
+							ROTutorialGroupDiscussion tutorialGroupDiscussion = studentHelper.getTutorialGroupDiscussion(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
 
 							if(tutorialGroupDiscussion == null){
 
-								tutorialGroupDiscussion = new TutorialGroupDiscussion();
+								tutorialGroupDiscussion = new ROTutorialGroupDiscussion();
 								tutorialGroupDiscussion.setTutorialGroupDiscussionId(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
 								tutorialGroupDiscussion.setLocalId(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
 								tutorialGroupDiscussion.setMessage(discussion.getComment());
@@ -901,9 +901,9 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 								tutorialGroupDiscussion.setCreatedDate(Utility.getDateTime(discussion.getCommentTimestamp(),Utility.DATE_FORMAT_MMMDDYY_HHMMA));
 								tutorialGroupDiscussion.setMessageType(discussion.getMessageType());
 								tutorialGroupDiscussion.setMediaLink(discussion.getMediaLink());
-								User user = studentHelper.getUser(Integer.parseInt(discussion.getUserId()));
+								ROUser user = studentHelper.getUser(Integer.parseInt(discussion.getUserId()));
 								if(user == null){
-									user = new User();
+									user = new ROUser();
 									user.setFullName(discussion.getFullName());
 									user.setProfilePicture(discussion.getProfilePic());
 									user.setUserId(Integer.parseInt(discussion.getUserId()));
@@ -937,15 +937,16 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 						}
 
 					}
+
 					else{
                         isTopicSaved = true;
 						int j = 0;
 						for(Discussion discussion : groupDiscussionData.getDiscussion()){
 							j++;
-							TutorialGroupDiscussion tutorialGroupDiscussion = studentHelper.getTutorialGroupDiscussion(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
+							ROTutorialGroupDiscussion tutorialGroupDiscussion = studentHelper.getTutorialGroupDiscussion(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
 
 							if(tutorialGroupDiscussion == null){
-								tutorialGroupDiscussion = new TutorialGroupDiscussion();
+								tutorialGroupDiscussion = new ROTutorialGroupDiscussion();
 								tutorialGroupDiscussion.setTutorialGroupDiscussionId(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
 								tutorialGroupDiscussion.setLocalId(Integer.parseInt(discussion.getTutorialGroupDiscussionId()));
 								tutorialGroupDiscussion.setMessage(discussion.getComment());
@@ -953,9 +954,9 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 								tutorialGroupDiscussion.setCreatedDate(Utility.getDateTime(discussion.getCommentTimestamp(),Utility.DATE_FORMAT_MMMDDYY_HHMMA));
 								tutorialGroupDiscussion.setMessageType(discussion.getMessageType());
 								tutorialGroupDiscussion.setMediaLink(discussion.getMediaLink());
-								User user = studentHelper.getUser(Integer.parseInt(discussion.getUserId()));
+								ROUser user = studentHelper.getUser(Integer.parseInt(discussion.getUserId()));
 								if(user == null){
-									user = new User();
+									user = new ROUser();
 									user.setFullName(discussion.getFullName());
 									user.setProfilePicture(discussion.getProfilePic());
 									user.setUserId(Integer.parseInt(discussion.getUserId()));
@@ -981,11 +982,11 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 						}
 					}
 
-					TutorialGroupTopicAllocation tutorialGroupTopicAllocation = studentHelper.getTutorialTopicAllocation(Integer.parseInt(groupDiscussionData.getTutorialTopicAllocationId()));
+					ROTutorialGroupTopicAllocation tutorialGroupTopicAllocation = studentHelper.getTutorialTopicAllocation(Integer.parseInt(groupDiscussionData.getTutorialTopicAllocationId()));
 					if(tutorialGroupTopicAllocation == null){
-						tutorialGroupTopicAllocation = new TutorialGroupTopicAllocation();
+						tutorialGroupTopicAllocation = new ROTutorialGroupTopicAllocation();
 						tutorialGroupTopicAllocation.setTutorialGroupTopicId(Integer.parseInt(groupDiscussionData.getTutorialTopicAllocationId()));
-						tutorialGroupTopicAllocation.setTutorialTopic(tutorialTopic);
+						tutorialGroupTopicAllocation.setTopic(tutorialTopic);
 						tutorialGroupTopicAllocation.setWeekNumber(Integer.parseInt(groupDiscussionData.getWeekNumber()));
 						tutorialGroupTopicAllocation.setDateDay(groupDiscussionData.getWeekDay());
 						tutorialGroupTopicAllocation.setCreatedDate(Utility.getDateTime(groupDiscussionData.getAssignedTime(),Utility.DATE_FORMAT_MY_SQL));
@@ -993,10 +994,65 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 					}
 
                     if(!isTopicSaved) {
-                        tutorialTopic.setParent(tutorialGroupTopicAllocation);
+                        tutorialTopic.setTutorialGroupTopicAllocation(tutorialGroupTopicAllocation);
 
                         studentHelper.saveTutorialTopic(tutorialTopic);
-                    }
+					}
+//=======
+//				}
+//
+////				testcode
+//				PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity(), arrListDiscussionData.get(0).getTutorialTopicId());
+//
+////				Save data
+//				/*for (int i = 0; i < arrListDiscussionData.size(); i++) {
+//					TutorialTopic tutorialTopic = new TutorialTopic();
+//					*/
+//
+//
+//				 /*
+//					*
+//						  "tutorial_topic_id": "13",
+//					      "tutorial_topic": "Magnetism and Matter - Laws and usuage",
+//					      "topic_description": "Discuss about Laws and usuage of Magnetism and matter",
+//					      "assigned_by": "109",
+//					      "day_name": "Thurs",
+//					>      "interface_type": null,
+//					      "assigned_time": "2015-12-16 15:41:27",
+//					      "subject_name": "Physics",
+//					      "is_current_day": "no",
+//					      "group_score": "1",
+//					      "total_active_comments": "8",
+//					      "total_active_comments_score": "118"
+//					*
+//					*
+//					* */
+//
+//				/*
+//
+//					tutorialTopic.setServerTutorialTopicId(Integer.parseInt(arrListDiscussionData.get(i).getTutorialTopicId()));
+//					tutorialTopic.setTopicName(arrListDiscussionData.get(i).getTutorialTopic());
+//					tutorialTopic.setTopicDescription(arrListDiscussionData.get(i).getTopicDescription());
+//					tutorialTopic.setCreatedBy(Integer.parseInt(arrListDiscussionData.get(i).getAssignedBy()));
+//					tutorialTopic.setTopicDay(arrListDiscussionData.get(i).getDayName());
+//					tutorialTopic.setCreatedDate(Utility.DATE_FORMAT_MY_SQL.parse(arrListDiscussionData.get(i).getAssignedTime()));
+//
+//					Subjects subjects = new Subjects();
+//					subjects.setSubjectName(arrListDiscussionData.get(i).getSubjectName());
+//					studentHelper.saveSubjects(subjects);
+//					tutorialTopic.setRoSubjects(subjects);
+//
+//					studentHelper.saveTutorialGroupTopic(tutorialTopic);
+//				}*/
+//
+//                arrListDiscussion = new ArrayList<>();
+//                for (int i = 0; i < arrListDiscussionData.size(); i++) {
+//                    for (Discussion discussion : arrListDiscussionData.get(i).getDiscussion()) {
+//                        discussion.setWeekDay(arrListDiscussionData.get(i).getDayName());
+//                        discussion.setTopicPosition(i);
+//                        arrListDiscussion.add(discussion);
+//>>>>>>> 4fe1a1b1e0e0eb24785907b077004fe4f9f54ecf
+                   // }
 
 					i++;
 				}
@@ -1035,7 +1091,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
 	 * send message to tutorial group
 	 * @param tutorialGroupDiscussion
 	 */
-	private void sendTutorialMessage(TutorialGroupDiscussion tutorialGroupDiscussion){
+	private void sendTutorialMessage(ROTutorialGroupDiscussion tutorialGroupDiscussion){
 
 		IOSocketHandler ioSocketHandler = new IOSocketHandler();
 
@@ -1053,7 +1109,7 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
     public void onNewMessage(JSONObject message) throws JSONException {
             /*** new one ***/
         StudentHelper studentHelper = new StudentHelper(getActivity());
-        TutorialGroupDiscussion tutorialGroupDiscussion = new TutorialGroupDiscussion();
+		ROTutorialGroupDiscussion tutorialGroupDiscussion = new ROTutorialGroupDiscussion();
         tutorialGroupDiscussion.setMessage(message.getString(SocketConstants.MESSAGE));
         tutorialGroupDiscussion.setCommentScore(message.getInt("comment_score"));
         tutorialGroupDiscussion.setInActiveHours(Boolean.parseBoolean(message.getString("in_active_hours")));
@@ -1061,15 +1117,15 @@ public class TutorialDiscussionFragment extends Fragment implements WebserviceWr
         tutorialGroupDiscussion.setCreatedDate(Utility.convertStringToDate(message.getString(SocketConstants.CREATED_DATE)));
 
 
-        TutorialGroupTopicAllocation tutorialGroupTopicAllocation = studentHelper.getTutorialTopicAllocationByDayOfWeek(String.valueOf(intWeekDay
+		ROTutorialGroupTopicAllocation tutorialGroupTopicAllocation = studentHelper.getTutorialTopicAllocationByDayOfWeek(String.valueOf(intWeekDay
 		-1));
 
-        tutorialGroupDiscussion.setTopic(tutorialGroupTopicAllocation.getTutorialTopic());
+        tutorialGroupDiscussion.setTopic(tutorialGroupTopicAllocation.getTopic());
 
-        User user = studentHelper.getUser(message.getInt("sender_id"));
+		ROUser user = studentHelper.getUser(message.getInt("sender_id"));
 
         if(user == null){
-            user = new User();
+            user = new ROUser();
             user.setProfilePicture(message.getString(SocketConstants.PROFILE_PICTURE));
             user.setUserId(message.getInt("sender_id"));
             user.setFullName(message.getString(SocketConstants.FULL_NAME));

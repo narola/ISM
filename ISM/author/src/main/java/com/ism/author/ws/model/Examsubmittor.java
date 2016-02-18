@@ -19,6 +19,8 @@ public class Examsubmittor implements Parcelable {
     private String submissionDate;
     private String studentName;
     private String studentId;
+    private String studentSchoolName;
+    private String studentClassName;
     private boolean isFlagged;
 
     public Examsubmittor() {
@@ -32,6 +34,8 @@ public class Examsubmittor implements Parcelable {
         this.submissionDate = parcelExamSubmittor.readString();
         this.studentName = parcelExamSubmittor.readString();
         this.studentId = parcelExamSubmittor.readString();
+        this.studentSchoolName = parcelExamSubmittor.readString();
+        this.studentClassName = parcelExamSubmittor.readString();
     }
 
     @JsonProperty("remarks")
@@ -105,6 +109,26 @@ public class Examsubmittor implements Parcelable {
         this.isFlagged = isFlagged;
     }
 
+    @JsonProperty("student_class_name")
+    public String getStudentClassName() {
+        return studentClassName;
+    }
+
+    public Examsubmittor setStudentClassName(String studentClassName) {
+        this.studentClassName = studentClassName;
+        return this;
+    }
+
+    @JsonProperty("student_school_name")
+    public String getStudentSchoolName() {
+        return studentSchoolName;
+    }
+
+    public Examsubmittor setStudentSchoolName(String studentSchoolName) {
+        this.studentSchoolName = studentSchoolName;
+        return this;
+    }
+
 
     @Override
     public int describeContents() {
@@ -120,6 +144,8 @@ public class Examsubmittor implements Parcelable {
         dest.writeString(getSubmissionDate());
         dest.writeString(getStudentName());
         dest.writeString(getStudentId());
+        dest.writeString(getStudentClassName());
+        dest.writeString((getStudentSchoolName()));
     }
 
 

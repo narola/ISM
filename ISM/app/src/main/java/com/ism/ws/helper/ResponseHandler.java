@@ -16,7 +16,7 @@ import com.ism.ws.model.City;
 import com.ism.ws.model.Comment;
 import com.ism.ws.model.Country;
 import com.ism.ws.model.Feeds;
-import com.ism.ws.model.FridayExam;
+import com.ism.ws.model.Exam;
 import com.ism.ws.model.FridayExamStatus;
 import com.ism.ws.model.GroupDiscussionData;
 import com.ism.ws.model.Message;
@@ -25,12 +25,14 @@ import com.ism.ws.model.Notes;
 import com.ism.ws.model.Notice;
 import com.ism.ws.model.Notification;
 import com.ism.ws.model.Pastime;
+import com.ism.ws.model.TrendingQuestionDetails;
 import com.ism.ws.model.QuestionForFriday;
 import com.ism.ws.model.RoleModel;
 import com.ism.ws.model.SettingPreferences;
 import com.ism.ws.model.State;
 import com.ism.ws.model.StudymateRequest;
 import com.ism.ws.model.Token;
+import com.ism.ws.model.TrendingQuestion;
 import com.ism.ws.model.TutorialGroup;
 import com.ism.ws.model.TutorialGroupProfile;
 import com.ism.ws.model.User;
@@ -86,9 +88,11 @@ public class ResponseHandler {
     private ArrayList<AllBooks> allBooks;
     private ArrayList<AuthorBookAssignment> authorBookAssignment;
     private ArrayList<Assignment> assignment;
-    private ArrayList<FridayExam> fridayExam;
+    private ArrayList<Exam> exam;
     private ArrayList<BookData> authorBook;
     private ArrayList<AuthorData> author;
+    private ArrayList<TrendingQuestion> trendingQuestions;
+    private ArrayList<TrendingQuestionDetails> trendingQuestionDetails;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -443,12 +447,12 @@ public class ResponseHandler {
     }
 
     @JsonProperty("exam_questions")
-    public ArrayList<FridayExam> getFridayExam() {
-        return this.fridayExam;
+    public ArrayList<Exam> getExam() {
+        return this.exam;
     }
 
-    public void setFridayExam(ArrayList<FridayExam> fridayExam) {
-        this.fridayExam = fridayExam;
+    public void setExam(ArrayList<Exam> exam) {
+        this.exam = exam;
     }
 
     @JsonProperty("author_book")
@@ -467,5 +471,23 @@ public class ResponseHandler {
 
     public void setAuthor(ArrayList<AuthorData> author) {
         this.author = author;
+    }
+
+    @JsonProperty("trending_question")
+    public ArrayList<TrendingQuestion> getTrendingQuestions() {
+        return this.trendingQuestions;
+    }
+
+    public void setTrendingQuestions(ArrayList<TrendingQuestion> trendingQuestions) {
+        this.trendingQuestions = trendingQuestions;
+    }
+    @JsonProperty("trending_question_detail")
+    public ArrayList<TrendingQuestionDetails> getTrendingQuestionDetails() {
+        return trendingQuestionDetails;
+    }
+
+    public ResponseHandler setTrendingQuestionDetails(ArrayList<TrendingQuestionDetails> trendingQuestionDetails) {
+        this.trendingQuestionDetails = trendingQuestionDetails;
+        return this;
     }
 }

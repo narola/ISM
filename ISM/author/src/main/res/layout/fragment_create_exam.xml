@@ -167,7 +167,6 @@
                             android:layout_marginLeft="@dimen/d10dp"
                             android:layout_marginTop="@dimen/d5dp"
                             android:background="@drawable/spinner_selector"
-                            android:entries="@array/list"
                             android:padding="@dimen/d20dp"
                             android:spinnerMode="dropdown" />
                     </LinearLayout>
@@ -200,7 +199,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/d5dp"
                             android:background="@drawable/spinner_selector"
-                            android:entries="@array/list"
                             android:padding="@dimen/d20dp"
                             android:spinnerMode="dropdown" />
                     </LinearLayout>

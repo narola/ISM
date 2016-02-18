@@ -96,7 +96,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            Utility.alertOffline(getActivity());
         }
     }
 

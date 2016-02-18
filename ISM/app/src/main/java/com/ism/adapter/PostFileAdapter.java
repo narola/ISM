@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.ism.R;
 import com.ism.activity.PostFeedActivity;
 import com.ism.model.PostFileModel;
-import com.ism.utility.Debug;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -109,10 +108,7 @@ public class PostFileAdapter extends BaseAdapter {
                 File file = new File(arrayList.get(position).getStrFilePath().getPath());
                 if (file != null) {
                     mMediaMetadataRetriever.setDataSource(context, arrayList.get(position).getStrFilePath());
-                    Log.e(TAG, "Frame size : " + mMediaMetadataRetriever.getFrameAtTime());
-                    Log.e(TAG, "Frame size : " + arrayList.get(position).getStrFilePath().getPath());
                     bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-                    // MICRO_KIND: 96 x 96 thumbnail
                     imageView.setImageBitmap(bitmap);
                 } else {
                     imageView.setBackgroundColor(Color.BLACK);
@@ -120,7 +116,7 @@ public class PostFileAdapter extends BaseAdapter {
                 imgPlay.setVisibility(View.VISIBLE);
 
 
-            } else if (arrayList.get(position).getStrFileType().equals("audio")) {
+            } else if (arrayList.get(position).getStrFileType().equals(PostFeedActivity.AUDIO)) {
                 imgClose.setVisibility(View.VISIBLE);
                 videoIndicator.setVisibility(View.VISIBLE);
                 imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.audioplay));
