@@ -4,73 +4,72 @@
     <item>
         <shape>
             <padding
-                android:bottom="1px"
-                android:left="1px"
-                android:right="1px"
-                android:top="1px" />
+                android:bottom="@dimen/dp1"
+                android:left="@dimen/dp1"
+                android:right="@dimen/dp1"
+                android:top="@dimen/dp1" />
             <solid android:color="#0091E9DB" />
-            <size android:height="@dimen/d50dp"/>
+            <size android:height="@dimen/dp38"/>
 
         </shape>
     </item>
     <item>
         <shape>
             <padding
-                android:bottom="1px"
-                android:left="1px"
-                android:right="1px"
-                android:top="1px" />
+                android:bottom="@dimen/dp1"
+                android:left="@dimen/dp1"
+                android:right="@dimen/dp1"
+                android:top="@dimen/dp1" />
             <solid android:color="#1091E9DB" />
-            <size android:height="@dimen/d50dp"/>
+            <size android:height="@dimen/dp38"/>
 
         </shape>
     </item>
     <item>
         <shape>
             <padding
-                android:bottom="1px"
-                android:left="1px"
-                android:right="1px"
-                android:top="1px" />
+                android:bottom="@dimen/dp1"
+                android:left="@dimen/dp1"
+                android:right="@dimen/dp1"
+                android:top="@dimen/dp1" />
             <solid android:color="#2091E9DB" />
-            <size android:height="@dimen/d50dp"/>
+            <size android:height="@dimen/dp38"/>
 
         </shape>
     </item>
     <item>
         <shape>
             <padding
-                android:bottom="1px"
-                android:left="1px"
-                android:right="1px"
-                android:top="1px" />
+                android:bottom="@dimen/dp1"
+                android:left="@dimen/dp1"
+                android:right="@dimen/dp1"
+                android:top="@dimen/dp1" />
             <solid android:color="#3091E9DB" />
-            <size android:height="@dimen/d50dp"/>
+            <size android:height="@dimen/dp38"/>
 
         </shape>
     </item>
     <item>
         <shape>
             <padding
-                android:bottom="1px"
-                android:left="1px"
-                android:right="1px"
-                android:top="1px" />
+                android:bottom="@dimen/dp1"
+                android:left="@dimen/dp1"
+                android:right="@dimen/dp1"
+                android:top="@dimen/dp1" />
             <solid android:color="#2091E9DB" />
-            <size android:height="@dimen/d50dp"/>
+            <size android:height="@dimen/dp38"/>
 
         </shape>
     </item>
     <item>
         <shape>
             <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
-
+                android:bottom="@dimen/dp1"
+                android:left="@dimen/dp1"
+                android:right="@dimen/dp1"
+                android:top="@dimen/dp1" />
             <solid android:color="#ffffff" />
-            <size android:height="@dimen/d50dp"/>
+            <size android:height="@dimen/dp38"/>
         </shape>
     </item>
 

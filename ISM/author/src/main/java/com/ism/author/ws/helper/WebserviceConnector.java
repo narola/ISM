@@ -9,7 +9,7 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.ism.author.Utility.Debug;
+import com.ism.author.utility.Debug;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -127,7 +127,7 @@ public class WebserviceConnector {
 
         try {
             MultipartUtility multipart = new MultipartUtility(requestURL, charset);
-            /*No header so checkSlotNo need to add it*/
+            multipart.addHeaderField("User-Agent", "android");
 
 //            multipart.addHeaderField("User-Agent", "CodeJava");
 //            multipart.addHeaderField("Test-Header", "Header-Value");
@@ -143,6 +143,7 @@ public class WebserviceConnector {
                 multipart.addFilePart(mediaUploadAttribute.getArrListFile().get(i).getParamName(),
                         new File(mediaUploadAttribute.getArrListFile().get(i).getFileName()));
             }
+
 
             List<String> response = multipart.finish();
             Debug.e(TAG, "SERVER REPLIED:");

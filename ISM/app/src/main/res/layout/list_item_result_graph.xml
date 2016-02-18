@@ -12,7 +12,7 @@
         android:paddingBottom="40dp"
         android:background="@drawable/bg_white_border_gray_bottom"
         android:textAllCaps="true"
-        android:textSize="@dimen/d20sp"
+        android:textSize="@dimen/sp15"
         android:text="Subject 1"
         android:textColor="@color/bg_app_dark"
         android:gravity="start"/>
@@ -20,8 +20,8 @@
     <ProgressBar
         android:id="@+id/prog_score"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="45dp"
+        android:layout_height="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp34"
         android:layout_marginLeft="@dimen/score_spacing_double"
         android:layout_marginRight="@dimen/score_spacing_double"
         android:progressDrawable="@drawable/bg_progress_score"

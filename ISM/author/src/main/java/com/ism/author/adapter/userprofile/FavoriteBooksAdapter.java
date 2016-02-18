@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.dialog.BookDetailsDialog;
@@ -22,9 +22,11 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class FavoriteBooksAdapter extends  RecyclerView.Adapter<FavoriteBooksAdapter.ViewHolder> {
+public class FavoriteBooksAdapter extends RecyclerView.Adapter<FavoriteBooksAdapter.ViewHolder> {
 
     private static final String TAG = FavoriteBooksAdapter.class.getSimpleName();
+
+
     private final AuthorHostActivity.BooksListner booksListner;
     Context context;
     ArrayList<BookData> arrayList = new ArrayList<>();
@@ -61,8 +63,8 @@ public class FavoriteBooksAdapter extends  RecyclerView.Adapter<FavoriteBooksAda
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    myPopup(position);
-                    BookDetailsDialog bookDetailsDialog = new BookDetailsDialog(context, arrayList, position, Global.imageLoader);
+
+                    BookDetailsDialog bookDetailsDialog = new BookDetailsDialog(context,arrayList.get(position));
                     bookDetailsDialog.show();
                 }
             });
@@ -91,7 +93,7 @@ public class FavoriteBooksAdapter extends  RecyclerView.Adapter<FavoriteBooksAda
             });
 
         } catch (Exception e) {
-            Debug.i(TAG,"onBindViewHolder Exception : " + e.getLocalizedMessage());
+            Debug.i(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
 
     }

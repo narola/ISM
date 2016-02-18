@@ -92,32 +92,47 @@ public class ControllerTopMenuItem {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.jotter), context.getString(R.string.add_notes), null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.jotter), null, null));
             ArrayList<String> favorites = new ArrayList<String>();
+            favorites.add(context.getString(R.string.favorite));
             favorites.add(context.getString(R.string.notes));
+
             favorites.add(context.getString(R.string.books));
             favorites.add(context.getString(R.string.assignments));
-            favorites.add(context.getString(R.string.exam));
+            favorites.add(context.getString(R.string.exams));
             favorites.add(context.getString(R.string.links));
             favorites.add(context.getString(R.string.events));
-            favorites.add(context.getString(R.string.Authors));
+//            favorites.add(context.getString(R.string.Authors));
             menu.add(new ControllerTopMenuItem(context.getString(R.string.favorite), context.getString(R.string.add_new_favorite), favorites));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.timetable), context.getString(R.string.add_question), null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.timetable), context.getString(R.string.strAskQuestion), null));
             menu.add(new ControllerTopMenuItem(context.getString(R.string.books), context.getString(R.string.add_book), null));
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.forum), context.getString(R.string.add_question), null));
+//            menu.add(new ControllerTopMenuItem(context.getString(R.string.forum), context.getString(R.string.add_question), null));
         } catch (Exception e) {
             Log.e(TAG, "getMenuDesk Exception : " + e.toString());
         }
         return menu;
     }
 
-    public static ArrayList<ControllerTopMenuItem> getMenuReportCard(Context context) {
+    public static ArrayList<ControllerTopMenuItem> getMenuMyAuthor(Context context) {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(context.getString(R.string.progress_report), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.strMyAuthors), null, null));
+
         } catch (Exception e) {
-            Log.e(TAG, "getMenuReportCard Exception : " + e.toString());
+            Log.e(TAG, "getMenuMyAuthor Exception : " + e.toString());
+        }
+        return menu;
+    }
+
+    public static ArrayList<ControllerTopMenuItem> getMenuMyAuthorDesk(Context context) {
+        ArrayList<ControllerTopMenuItem> menu = null;
+        try {
+            menu = new ArrayList<ControllerTopMenuItem>();
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.strAuthorsDesk), null, null));
+
+        } catch (Exception e) {
+            Log.e(TAG, "getMenuMyAuthorDesk Exception : " + e.toString());
         }
         return menu;
     }
@@ -140,5 +155,4 @@ public class ControllerTopMenuItem {
         return menu;
 
     }
-
 }

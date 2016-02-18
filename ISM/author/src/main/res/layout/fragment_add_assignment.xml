@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_graylight"
     android:orientation="vertical"
-    tools:mContext="com.ism.author.fragment.mydesk.AddAssignmentFragment">
+    tools:mContext="com.ism.author.fragment.mydesk.CreateAssignmentFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:background="@drawable/bg_tab_my_desk"
             android:gravity="center"
             android:padding="@dimen/d10dp"
-            android:text="Assignment Information"
+            android:text="@string/strassignmentinformation"
             android:textSize="@dimen/d25sp" />
 
         <TextView
@@ -66,41 +66,39 @@
 
     </RelativeLayout>
 
-    <!--<TextView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/d5dp"-->
-    <!--android:background="@drawable/shadow_separator" />-->
-
     <LinearLayout
         android:id="@+id/fl_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/et_assignment_name"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/d10dp"
             android:layout_weight="1"
-            android:textSize="@dimen/d20dp"
-            android:background="@drawable/bg_edit_gray"
+            android:background="@drawable/selector"
             android:hint="Assignment Name"
-            android:padding="@dimen/d10dp" />
+            android:padding="@dimen/d10dp"
+            android:textSize="@dimen/d20sp" />
 
         <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
             android:id="@+id/sp_books"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/d10dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_edit_gray" />
+            android:background="@drawable/spinner_selector"
+            android:padding="@dimen/d10dp" />
 
     </LinearLayout>
 
     <com.narola.kpa.richtexteditor.view.RichTextEditor
         android:id="@+id/richtexteditor"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/d10dp"
-        android:layout_height="@dimen/rich_text_editor_height"></com.narola.kpa.richtexteditor.view.RichTextEditor>
+        android:layout_height="@dimen/rich_text_editor_height"
+        android:layout_margin="@dimen/d10dp"></com.narola.kpa.richtexteditor.view.RichTextEditor>
+
 </LinearLayout>

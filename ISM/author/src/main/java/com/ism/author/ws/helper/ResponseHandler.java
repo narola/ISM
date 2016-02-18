@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.author.ws.model.AdminConfig;
+import com.ism.author.ws.model.AllBooks;
 import com.ism.author.ws.model.Assignment;
-import com.ism.author.ws.model.AuthorBook;
+import com.ism.author.ws.model.AuthorBookAssignment;
 import com.ism.author.ws.model.Badges;
 import com.ism.author.ws.model.BlockedUsers;
+import com.ism.author.ws.model.BookData;
 import com.ism.author.ws.model.Books;
 import com.ism.author.ws.model.Cities;
 import com.ism.author.ws.model.Classrooms;
@@ -21,12 +23,15 @@ import com.ism.author.ws.model.ExamQuestions;
 import com.ism.author.ws.model.ExamSubmission;
 import com.ism.author.ws.model.Exams;
 import com.ism.author.ws.model.Feed;
+import com.ism.author.ws.model.FeedComment;
 import com.ism.author.ws.model.Feeds;
 import com.ism.author.ws.model.FileUploadResponse;
+import com.ism.author.ws.model.Followers;
 import com.ism.author.ws.model.HashTags;
 import com.ism.author.ws.model.Message;
 import com.ism.author.ws.model.Notification;
 import com.ism.author.ws.model.Question;
+import com.ism.author.ws.model.QuestionComments;
 import com.ism.author.ws.model.Questions;
 import com.ism.author.ws.model.SettingPreferences;
 import com.ism.author.ws.model.States;
@@ -35,8 +40,8 @@ import com.ism.author.ws.model.Studymates;
 import com.ism.author.ws.model.Subjects;
 import com.ism.author.ws.model.Token;
 import com.ism.author.ws.model.Topics;
-import com.ism.author.ws.model.UploadQuestion;
 import com.ism.author.ws.model.TrendingQuestion;
+import com.ism.author.ws.model.UploadQuestion;
 import com.ism.author.ws.model.User;
 import com.ism.author.ws.model.UserImages;
 import com.ism.author.ws.model.UserPreferences;
@@ -113,13 +118,18 @@ public class ResponseHandler {
     private ArrayList<Questions> questionBank;
     private ArrayList<Question> question;
     private ArrayList<HashTags> tags;
-    private ArrayList<AuthorBook> authorBook;
+    private ArrayList<BookData> authorBook;
     private ArrayList<Token> token;
     private ArrayList<AdminConfig> adminConfig;
     private ArrayList<Assignment> assignment;
+    private ArrayList<Followers> followers;
+    private ArrayList<AllBooks> allBooks;
+    private ArrayList<FeedComment> feedComment;
     private UserImages userImages;
     FileUploadResponse fileUploadResponse;
     private UploadQuestion uploadQuestion;
+    private ArrayList<AuthorBookAssignment> authorBookAssignment;
+    private ArrayList<QuestionComments> questionComments;
 
     @JsonProperty("user_preference")
     public ArrayList<UserPreferences> getUserPreference() {
@@ -384,11 +394,11 @@ public class ResponseHandler {
     }
 
     @JsonProperty("author_book")
-    public ArrayList<AuthorBook> getAuthorBook() {
+    public ArrayList<BookData> getAuthorBook() {
         return this.authorBook;
     }
 
-    public void setAuthorBook(ArrayList<AuthorBook> authorBook) {
+    public void setAuthorBook(ArrayList<BookData> authorBook) {
         this.authorBook = authorBook;
     }
 
@@ -474,5 +484,56 @@ public class ResponseHandler {
     public void setBlockedUsers(ArrayList<BlockedUsers> blockedUsers) {
         this.blockedUsers = blockedUsers;
     }
+
+    @JsonProperty("followers")
+    public ArrayList<Followers> getFollowers() {
+        return followers;
+    }
+
+    public ResponseHandler setFollowers(ArrayList<Followers> followers) {
+        this.followers = followers;
+        return this;
+    }
+
+
+    @JsonProperty("book_assignments")
+    public ArrayList<AuthorBookAssignment> getAuthorBookAssignment() {
+        return this.authorBookAssignment;
+    }
+
+    public void setAuthorBookAssignment(ArrayList<AuthorBookAssignment> authorBookAssignment) {
+        this.authorBookAssignment = authorBookAssignment;
+    }
+
+    @JsonProperty("all_books")
+    public ArrayList<AllBooks> getAllBooks() {
+        return allBooks;
+    }
+
+    public ResponseHandler setAllBooks(ArrayList<AllBooks> allBooks) {
+        this.allBooks = allBooks;
+        return this;
+    }
+
+    @JsonProperty("trending_question_detail")
+    public ArrayList<QuestionComments> getQuestionComments() {
+        return questionComments;
+    }
+
+    public ResponseHandler setQuestionComments(ArrayList<QuestionComments> questionComments) {
+        this.questionComments = questionComments;
+        return this;
+    }
+
+    @JsonProperty("comment")
+    public ArrayList<FeedComment> getComment() {
+        return this.feedComment;
+    }
+
+    public void setComment(ArrayList<FeedComment> feedComment) {
+        this.feedComment = feedComment;
+    }
+
+
 }
 

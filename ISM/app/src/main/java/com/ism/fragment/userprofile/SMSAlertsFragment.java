@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
-import com.ism.object.MyTypeFace;
+import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
 import com.ism.ws.helper.ResponseHandler;
@@ -24,14 +24,13 @@ import com.ism.ws.helper.WebserviceWrapper;
  */
 public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
     private View view;
-    private MyTypeFace myTypeFace;
     private View includeEval, includeAssign, includeConference;
     private TextView txtConference, txtAssign, txtEvaluation, txtConfNotifi, txtAssignNotifi, txtEvalNotifi;
     private RadioGroup radioGroupConf, radioGroupAssign, radioGroupEval;
     private RadioButton radioButtonYesConf, radioButtonNoconf, radioButtonYesAssign, radioButtonNoAssign, radioButtonYesEval, radioButtonNoEval;
     private static String TAG = SMSAlertsFragment.class.getSimpleName();
     private HostActivity activityHost;
-    private GeneralSettingsFragment generalSettingsFragment;
+    private com.ism.fragment.userProfile.GeneralSettingsFragment generalSettingsFragment;
 
     public static SMSAlertsFragment newInstance() {
         SMSAlertsFragment fragment = new SMSAlertsFragment();
@@ -52,8 +51,7 @@ public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.Web
     }
 
     private void initGlobal() {
-        myTypeFace = new MyTypeFace(getActivity());
-        generalSettingsFragment = GeneralSettingsFragment.newInstance();
+        generalSettingsFragment = com.ism.fragment.userProfile.GeneralSettingsFragment.newInstance();
         txtAssign = (TextView) view.findViewById(R.id.txt_alerts_assignment);
         txtEvaluation = (TextView) view.findViewById(R.id.txt_alerts_evaluations);
         txtConference = (TextView) view.findViewById(R.id.txt_alerts_conference);
@@ -82,18 +80,18 @@ public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.Web
         txtEvalNotifi.setText(R.string.strSmsAlertForExamEvaluations);
 
         //set typeface
-        txtConfNotifi.setTypeface(myTypeFace.getRalewayRegular());
-        txtAssign.setTypeface(myTypeFace.getRalewayRegular());
-        txtEvalNotifi.setTypeface(myTypeFace.getRalewayRegular());
-        txtAssignNotifi.setTypeface(myTypeFace.getRalewayRegular());
-        txtEvaluation.setTypeface(myTypeFace.getRalewayRegular());
-        txtConference.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonNoAssign.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonNoconf.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonNoEval.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonYesAssign.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonYesEval.setTypeface(myTypeFace.getRalewayRegular());
-        radioButtonYesConf.setTypeface(myTypeFace.getRalewayRegular());
+        txtConfNotifi.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAssign.setTypeface(Global.myTypeFace.getRalewayMedium());
+        txtEvalNotifi.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAssignNotifi.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtEvaluation.setTypeface(Global.myTypeFace.getRalewayMedium());
+        txtConference.setTypeface(Global.myTypeFace.getRalewayMedium());
+        radioButtonNoAssign.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonNoconf.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonNoEval.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonYesAssign.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonYesEval.setTypeface(Global.myTypeFace.getRalewayRegular());
+        radioButtonYesConf.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         radioButtonNoAssign.setOnClickListener(this);
         radioButtonNoconf.setOnClickListener(this);
@@ -126,17 +124,17 @@ public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.Web
     public void onClick(View v) {
         String key_value, strPref = null, value = null;
         if (v == radioButtonNoAssign) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_NEW_ASSIGNMENT, getActivity()), "No", getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_NEW_ASSIGNMENT, getActivity()), getActivity().getResources().getString(R.string.strNo), getActivity());
         } else if (v == radioButtonYesAssign) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_NEW_ASSIGNMENT, getActivity()), "Yes", getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_NEW_ASSIGNMENT, getActivity()), getActivity().getResources().getString(R.string.strYes), getActivity());
         } else if (v == radioButtonNoconf) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_CONFERENCE_SCHECDULE, getActivity()), "No", getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_CONFERENCE_SCHECDULE, getActivity()),getActivity().getResources().getString(R.string.strNo), getActivity());
         } else if (v == radioButtonYesConf) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_CONFERENCE_SCHECDULE, getActivity()), "Yes", getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_CONFERENCE_SCHECDULE, getActivity()), getActivity().getResources().getString(R.string.strYes), getActivity());
         } else if (v == radioButtonNoEval) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_EVALUATION_READY, getActivity()), "No", getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_EVALUATION_READY, getActivity()),getActivity().getResources().getString(R.string.strNo), getActivity());
         } else if (v == radioButtonYesEval) {
-            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_EVALUATION_READY, getActivity()), "Yes", getActivity());
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_EVALUATION_READY, getActivity()), getActivity().getResources().getString(R.string.strYes), getActivity());
         }
     }
 
@@ -169,22 +167,22 @@ public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.Web
     private void setDefaultValues() {
         String key_value;
         key_value = getKeyPereference(PreferenceData.SA_ALERT_EVALUATION_READY);
-        // Debug.i(TAG,"Value: "+key+"::"+key_value);
-        if (key_value.equals("No")) {
+        // Log.e(TAG,"Value: "+key+"::"+key_value);
+        if (key_value.equals(getActivity().getResources().getString(R.string.strNo))) {
             radioGroupEval.check(R.id.radiobutton_no);
 
         } else {
             radioGroupEval.check(R.id.radiobutton_yes);
         }
         key_value = getKeyPereference(PreferenceData.SA_ALERT_CONFERENCE_SCHECDULE);
-        if (key_value.equals("No")) {
+        if (key_value.equals(getActivity().getResources().getString(R.string.strNo))) {
             radioGroupConf.check(R.id.radiobutton_no);
 
         } else {
             radioGroupConf.check(R.id.radiobutton_yes);
         }
         key_value = getKeyPereference(PreferenceData.SA_ALERT_NEW_ASSIGNMENT);
-        if (key_value.equals("No")) {
+        if (key_value.equals(getActivity().getResources().getString(R.string.strNo))) {
             radioGroupAssign.check(R.id.radiobutton_no);
 
         } else {

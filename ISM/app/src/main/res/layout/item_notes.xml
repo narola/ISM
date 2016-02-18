@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp180"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dp8"
+    android:layout_marginLeft="@dimen/dp4"
+    android:layout_marginRight="@dimen/dp4"
+    android:layout_marginTop="@dimen/dp8"
+    android:background="@drawable/bg_notes_fav_row">
+
+    <TextView
+        android:id="@+id/txt_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp4"
+        android:ellipsize="end"
+        android:lines="9"
+        android:padding="@dimen/dp4"
+        android:text="wave, in physics, the transfer of energy by the regular vibration, or oscillatory motion, either of some material medium or by the variation in magnitude of the field vectors of an electromagnetic field (see electromagnetic radiation). Many familiar phenomena are associated with energy transfer in the form of waves. Sound is a longitudinal wave that travels through material media by alternatively forcing the molecules of the medium closer together, then spreading them apart. Light and other forms of electromagnetic radiation travel through space as transverse waves; the displacements at right angles to the direction of the waves are the field intensity vectors rather than motions of the material particles of some medium. With the development of the quantum theory, it was found that particles in motion also have certain wave properties, including an associated wavelength and frequency related to their momentum and energy. Thus, the study of waves and wave motion has applications throughout the entire range of physical phenomena."
+        android:textSize="@dimen/sp12" />
+
+    <ImageView
+        android:id="@+id/img_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_notes"
+        android:layout_marginLeft="@dimen/dp4"
+        android:src="@drawable/ic_share_notes_acitve" />
+
+    <ImageView
+        android:id="@+id/img_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/txt_notes"
+        android:layout_marginRight="@dimen/dp4"
+        android:src="@drawable/ic_like_green" />
+</RelativeLayout>

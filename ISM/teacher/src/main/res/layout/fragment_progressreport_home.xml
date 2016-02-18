@@ -1,0 +1,230 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/ll_grades">
+        <!-- ll Top row -->
+        <LinearLayout
+            android:id="@+id/ll_date_range"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d70dp"
+            android:orientation="horizontal">
+
+            <!-- Containerof right side controls of date range-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_marginTop="@dimen/d5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_date_range"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/str_date_range"
+                    android:textSize="@dimen/d16sp" />
+                <!-- Ll report from-->
+                <LinearLayout
+                    android:id="@+id/ll_report_from"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/d45dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_startdate"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector"
+                        android:editable="false"
+                        android:gravity="center_vertical"
+                        android:hint="@string/str_from"
+                        android:textColor="@color/color_black"
+                        android:textColorHint="@color/color_text_hint"
+                        android:textSize="@dimen/d20sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/d40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dminus8dp"
+                        android:background="@drawable/btn_calendar" />
+                </LinearLayout>
+
+                <!-- Ll report two-->
+                <LinearLayout
+                    android:id="@+id/ll_report_to"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/d45dp"
+                    android:layout_marginStart="@dimen/d10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_enddate"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector"
+                        android:editable="false"
+                        android:gravity="center_vertical"
+                        android:hint="@string/str_to"
+                        android:textColor="@color/color_black"
+                        android:textColorHint="@color/color_text_hint"
+                        android:textSize="@dimen/d20sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/d40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dminus8dp"
+                        android:background="@drawable/btn_calendar" />
+                </LinearLayout>
+
+                <!-- Spinner exam type-->
+                <LinearLayout
+                    android:id="@+id/ll_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/d45dp"
+                    android:layout_marginStart="@dimen/d10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/sp_exam_type"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_selector"
+                        android:entries="@array/list"
+                        android:padding="@dimen/d10dp"
+                        android:spinnerMode="dropdown" />
+
+                </LinearLayout>
+
+                <!-- Ll  toggle report view-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/img_graph_report"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_graph_enabled" />
+
+                    <ImageView
+                        android:id="@+id/img_list_report"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_detail_enabled" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Graph based report grid-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_students_report"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ll_date_range"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <!-- Extreme right -->
+    <LinearLayout
+        android:id="@+id/ll_grades"
+        android:layout_width="@dimen/content_right_width"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/bg_fragment_separator"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d50dp"
+            android:background="@color/color_blue"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/d10dp"
+            android:text="@string/str_grand"
+            android:textColor="@color/white" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_grades"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_score_obtained_bg"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/d10dp">
+
+            <TextView
+                android:id="@+id/tv_score_obtained_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d5dp"
+                android:text="@string/str_score_obtained"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/d20sp" />
+
+            <TextView
+                android:id="@+id/tv_score_obtained"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d5dp"
+                android:text="@string/strtest"
+                android:textSize="@dimen/d18sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d1dp"
+            android:background="@color/color_shade_news_feed" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_score_obtained_bg"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/d10dp">
+
+
+            <TextView
+                android:id="@+id/tv_promoted_to_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d5dp"
+                android:text="@string/str_promoted_to"
+                android:textColor="@color/color_percent_red"
+                android:textSize="@dimen/d20sp" />
+
+            <TextView
+                android:id="@+id/tv_promoted_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d5dp"
+                android:text="@string/strtest"
+                android:textSize="@dimen/d18sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

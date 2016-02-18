@@ -21,9 +21,9 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.PreferenceData;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.PreferenceData;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.userprofile.MessageAdapter;
 import com.ism.author.adapter.userprofile.NotificationAdapter;
@@ -57,7 +57,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
     private TextView txtUserName;
     private AuthorHostActivity activityHost;
     private TextView txtMessageNo, txtNotification, txtstudymatesRequest;
-    private TextView txtMyFeeds, txtMyActivity, txtGeneralSetting, txtFollowers;
+    private TextView txtMyFeeds, txtMyActivity, txtGeneralSetting, txtFollowers, txtMyBooks;
     private ListView lvNotifications;
     private Button btnViewAll;
     private ImageView imgNotification;
@@ -105,6 +105,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         txtGeneralSetting = (TextView) view.findViewById(R.id.txt_general_setting);
         txtFollowers = (TextView) view.findViewById(R.id.txt_followers);
         txtMyFeeds = (TextView) view.findViewById(R.id.txt_myfeeds);
+        txtMyBooks = (TextView) view.findViewById(R.id.txt_mybooks);
         imgNotification = (ImageView) view.findViewById(R.id.img_notification);
         imgMessage = (ImageView) view.findViewById(R.id.img_message);
         imgStudymatesRequest = (ImageView) view.findViewById(R.id.img_friend_request);
@@ -119,6 +120,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         txtGeneralSetting.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtMyFeeds.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtMyActivity.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtMyBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         arrImgNotificationIcon = new ImageView[]{imgNotification, imgMessage, imgStudymatesRequest};
 
@@ -147,6 +149,9 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
                     case R.id.rr_view_profile:
                     case R.id.txt_user_name:
                         activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_DESK);
+                        break;
+                    case R.id.txt_mybooks:
+                        activityHost.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MY_BOOKS);
                         break;
                 }
             }
@@ -180,6 +185,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
         imgNotification.setOnClickListener(onClickNotificationItems);
         imgMessage.setOnClickListener(onClickNotificationItems);
         imgStudymatesRequest.setOnClickListener(onClickNotificationItems);
+        txtMyBooks.setOnClickListener(onClickLabel);
         showBadges();
 
 
@@ -253,7 +259,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             }
         });
 
-        popupMessage.showAtLocation(imgMessage, Gravity.END, 10, 80);
+        popupMessage.showAtLocation(imgMessage, Gravity.END, 10, 90);
     }
 
     private void loadFragmentAllMessage(int position) {
@@ -313,7 +319,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             }
         });
 
-        popupNotification.showAtLocation(imgNotification, Gravity.END, 10, 80);
+        popupNotification.showAtLocation(imgNotification, Gravity.END, 10, 90);
     }
 
     private void loadFragmentAllNotification(int position) {
@@ -400,7 +406,7 @@ public class AuthorProfileFragment extends Fragment implements AuthorHostActivit
             }
         });
 
-        popupFriendRequest.showAtLocation(imgStudymatesRequest, Gravity.END, 10, 80);
+        popupFriendRequest.showAtLocation(imgStudymatesRequest, Gravity.END, 10, 90);
     }
 
     private void loadFragmentAllStudymateRequest(int position) {

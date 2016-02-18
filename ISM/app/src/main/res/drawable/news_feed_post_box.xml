@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 	<stroke
-		android:width="1dp"
+		android:width="@dimen/dp1"
 		android:color="@color/news_feed_post_box_color"/>
 	<padding
-		android:bottom="2dp"
-		android:left="2dp"
-		android:right="2dp"
-		android:top="2dp"/>
+		android:bottom="@dimen/dp2"
+		android:left="@dimen/dp2"
+		android:right="@dimen/dp2"
+		android:top="@dimen/dp2"/>
 	<solid android:color="@color/white"/>
 </shape>

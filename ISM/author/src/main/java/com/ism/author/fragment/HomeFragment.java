@@ -16,9 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.activtiy.PostFeedActivity;
 import com.ism.author.adapter.PostFeedsAdapter;
@@ -26,15 +23,18 @@ import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.Feeds;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 
 import java.util.ArrayList;
 
-import io.realm.RealmResults;
+import realmhelper.AuthorHelper;
 
 /*
 * This is the homefragment containg the newsfeed.
@@ -65,6 +65,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     private TextView tvNoDataMsg;
 
     private ArrayList<String> arrListLikeFeedId, arrListUnlikeFeedId;
+    private AuthorHelper authorHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,6 +76,9 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
     private void initGlobal(View view) {
 
+
+        authorHelper = new AuthorHelper(getActivity());
+
         arrListLikeFeedId = new ArrayList<String>();
         arrListUnlikeFeedId = new ArrayList<String>();
 
@@ -84,33 +88,29 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         etWritePost.setEnabled(true);
 
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_post_feeds));
+
+        setEmptyView(false);
 
         onClickAttachFile = new OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                onAttachFileClick(view);
+                if (Utility.isConnected(getActivity())) {
+                    onAttachFileClick(view);
+                } else {
+                    Utility.alertOffline(getActivity());
+                }
             }
         };
         etWritePost.setOnClickListener(onClickAttachFile);
         llPost.setOnClickListener(onClickAttachFile);
 
 
-        postFeedsAdapter = new PostFeedsAdapter(getActivity());
+        postFeedsAdapter = new PostFeedsAdapter(getActivity(), authorHelper);
         rvPostFeeds.setAdapter(postFeedsAdapter);
         rvPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
-//        Global.authorHelper.clearTableData(FeedLike.class);
-        if (isDataAvailableForSync()) {
-            callApiLikeFeed();
-        } else {
-            callApiGetAllPostFeeds();
-        }
-
+        callApiGetAllPostFeeds();
 
     }
 
@@ -133,22 +133,13 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         try {
             if (fragListener != null) {
                 fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_HOME);
+                authorHelper.realm.close();
             }
         } catch (ClassCastException e) {
             Log.i(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
     }
-
-//    private void onAttachFileClick(View view) {
-//
-//        if (view == llPost || view == etWritePost) {
-//            Intent intent = new Intent(getActivity(), PostFeedActivity.class);
-//            startActivity(intent);
-//
-//        }
-//
-//    }
 
     private void onAttachFileClick(View view) {
         if (view == llPost || view == etWritePost) {
@@ -168,19 +159,34 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
 
     private void callApiGetAllPostFeeds() {
+
         if (Utility.isConnected(getActivity())) {
             ((AuthorHostActivity) getActivity()).showProgress();
+
             try {
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GETALLFEEDS);
+
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utility.toastOffline(getActivity());
+            setUpData();
         }
+    }
+
+    private void setUpData() {
+
+        if (authorHelper.getAllPostFeeds().size() > 0) {
+            setEmptyView(false);
+            postFeedsAdapter.addAll();
+        } else {
+            setEmptyView(true);
+        }
+
+
     }
 
 
@@ -190,9 +196,6 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
             switch (apiCode) {
                 case WebConstants.GETALLFEEDS:
                     onResponseGetAllFeeds(object, error);
-                    break;
-                case WebConstants.LIKEFEED:
-                    onResponseLikeFeed(object, error);
                     break;
             }
         } catch (Exception e) {
@@ -207,15 +210,13 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-
                     if (responseHandler.getFeeds().size() > 0) {
-                        postFeedsAdapter.addAll(responseHandler.getFeeds());
-                        tvNoDataMsg.setVisibility(View.GONE);
-                    } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+                        addFeeds(responseHandler.getFeeds());
                     }
+
+                    setUpData();
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAllFeeds api Exception : " + error.toString());
@@ -225,75 +226,23 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         }
     }
 
+    private void addFeeds(ArrayList<Feeds> arrayListFeeds) {
 
-    private void getLikeFeedData() {
-        RealmResults<model.FeedLike> realmResults = Global.authorHelper.realm.where(model.FeedLike.class)
-                .equalTo("isLiked", 1).equalTo("isSync", 0).findAll();
-        if (realmResults.size() > 0) {
-            for (model.FeedLike feedLike : realmResults) {
-                arrListLikeFeedId.add(feedLike.getFeedId());
+        if (arrayListFeeds.size() > 0) {
+            for (Feeds feed : arrayListFeeds) {
+                authorHelper.addFeeds(Global.getRealmDataModel.getRealmFeed(feed));
             }
         }
-    }
 
-    private void getUnLikeFeedData() {
-        RealmResults<model.FeedLike> realmResults = Global.authorHelper.realm.where(model.FeedLike.class)
-                .equalTo("isLiked", 0).equalTo("isSync", 0).findAll();
-
-        if (realmResults.size() > 0) {
-            for (model.FeedLike feedLike : realmResults) {
-                arrListUnlikeFeedId.add(feedLike.getFeedId());
-            }
-        }
-    }
-
-    private Boolean isDataAvailableForSync() {
-
-        getLikeFeedData();
-        getUnLikeFeedData();
-        Boolean isDataAvailable = false;
-        if (arrListLikeFeedId.size() > 0 || arrListUnlikeFeedId.size() > 0) {
-            isDataAvailable = true;
-        }
-        return isDataAvailable;
-    }
-
-    private void callApiLikeFeed() {
-        if (Utility.isConnected(getActivity())) {
-            ((AuthorHostActivity) getActivity()).showProgress();
-            try {
-                Attribute attribute = new Attribute();
-                attribute.setUserId(Global.strUserId);
-                attribute.setLikedId(arrListLikeFeedId);
-                attribute.setUnlikedId(arrListUnlikeFeedId);
-                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-                        .execute(WebConstants.LIKEFEED);
-            } catch (Exception e) {
-                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-            }
-        } else {
-            Utility.toastOffline(getActivity());
-        }
     }
 
 
-    private void onResponseLikeFeed(Object object, Exception error) {
-        try {
-            ((AuthorHostActivity) getActivity()).hideProgress();
-            if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    Utils.showToast("DATA SYNCED SUCCESSFULLY", getActivity());
-                    Global.authorHelper.updateSyncStatusForFeeds(arrListLikeFeedId, arrListUnlikeFeedId, Global.strUserId);
-                    callApiGetAllPostFeeds();
-                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
-                }
-            } else if (error != null) {
-                Debug.e(TAG, "onResponseLikeFeeds api Exception : " + error.toString());
-            }
-        } catch (Exception e) {
-            Debug.e(TAG, "onResponseLikeFeeds Exception : " + e.toString());
-        }
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setText(getString(R.string.no_post_feeds));
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvPostFeeds.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+
     }
 }

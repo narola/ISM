@@ -3,20 +3,20 @@
 
     <item>
         <shape>
-            <padding android:bottom="2dp" />
+            <padding android:bottom="@dimen/bg_controller_border" />
             <solid android:color="@color/shadow_divider_dark" />
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:bottom="2dp" />
+            <padding android:bottom="@dimen/bg_controller_border" />
             <solid android:color="@color/shadow_divider_light" />
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:left="4dp" />
-            <solid android:color="@color/bg_report_card" />
+            <padding android:left="@dimen/bg_controller_border_left" />
+            <solid android:color="@color/bg_my_author" />
         </shape>
     </item>
     <item>

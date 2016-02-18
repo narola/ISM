@@ -13,7 +13,6 @@ import com.ism.author.R;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.constant.AppConstant;
-import com.ism.author.fragment.assessment.objectiveassessment.GetStudentsFragment;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.QuestionPalette;
@@ -138,6 +137,13 @@ public class SubjectiveAssignmentQuestionsContainerFragment extends Fragment {
         subjectiveQuestionsFragment.scrollToSpecificQuestion(position);
     }
 
+
+    /*
+    this is to set title details in subjective questions fragment from bundle arguments.
+     */
+    public void setTitleDetails() {
+        subjectiveQuestionsFragment.setTitleDetails();
+    }
 
     /*this is for back navigation*/
     public void onBackClick() {

@@ -16,9 +16,8 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
@@ -27,6 +26,7 @@ import com.ism.author.adapter.SubjectiveQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.assessment.objectiveassessment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.createexam.CreateExamFragment;
+import com.ism.author.object.Global;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.helper.Attribute;
@@ -64,7 +64,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private CircleImageView imgStudentProfilePic;
     private TextView tvStudentName, tvStudentRollNo, tvAssignmentNo, tvAssignmentTitle, tvSubjectiveScore, tvSubjectiveMarks,
-            tvStudentEvalutionNo;
+            tvStudentEvalutionNo, tvNoDataMsg;
     private RecyclerView rvSubjectiveQuestionsList;
     private MyTypeFace myTypeFace;
     private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
@@ -77,6 +77,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
@@ -142,6 +143,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
             }
         });
 
+        setEmptyView(false);
         callApiGetExamQuestions();
     }
 
@@ -204,19 +206,19 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     @Override
     public void onResponse(int apiCode, Object object, Exception error) {
-//        try {
-        switch (apiCode) {
-            case WebConstants.GETEXAMQUESTIONS:
-                onResponseGetAllExamQuestions(object, error);
-                break;
-            case WebConstants.GETEXAMEVALUATIONS:
-                onResponseGetExamEvaluation(object, error);
-                break;
-        }
+        try {
+            switch (apiCode) {
+                case WebConstants.GETEXAMQUESTIONS:
+                    onResponseGetAllExamQuestions(object, error);
+                    break;
+                case WebConstants.GETEXAMEVALUATIONS:
+                    onResponseGetExamEvaluation(object, error);
+                    break;
+            }
 
-//        } catch (Exception e) {
-//            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-//        }
+        } catch (Exception e) {
+            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+        }
 
     }
 
@@ -230,7 +232,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
                 if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
                     loadStudentEvaluationData();
                 } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObjGetAllExamQuestions.getMessage(), getActivity());
+                    Utility.showToast(responseObjGetAllExamQuestions.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAllExamQuestions api Exception : " + error.toString());
@@ -251,15 +253,15 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
                     loading = true;
 
                     subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
-
                     updateStatusForEvaluation();
-                    setTitleDetails();
                     getBaseFragment().setQuestionStatusData(arrListQuestions,
                             responseObjGetExamEvaluation.getExamEvaluation().get(0).getQuestionPalette());
 
+                    setTitleDetails();
+
 
                 } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObjGetExamEvaluation.getMessage(), getActivity());
+                    Utility.showToast(responseObjGetExamEvaluation.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetExamEvaluation api Exception : " + error.toString());
@@ -279,6 +281,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     ArrayList<Examsubmittor> arrListExamSubmittor;
 
     private void loadNextStudentData() {
+
         isFromLeft = false;
         int position = getBaseFragment().getBundleArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
         if (position < arrListExamSubmittor.size() - 1) {
@@ -288,6 +291,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     }
 
     private void loadPreviousStudentData() {
+
         isFromLeft = true;
         int position = getBaseFragment().getBundleArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
         if (position >= 1) {
@@ -301,23 +305,36 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private void setQuestions() {
 
-        arrListQuestions.clear();
-        arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
-        subjectiveQuestionListAdapter.addAll(arrListQuestions);
-        subjectiveQuestionListAdapter.notifyDataSetChanged();
 
-        Animation animation;
-        if (isFromLeft) {
-            animation = AnimationUtils.loadAnimation(getActivity(), R.anim.enter_from_left);
+        if (responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions().size() > 0) {
+
+            setEmptyView(false);
+
+            arrListQuestions.clear();
+            arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
+            subjectiveQuestionListAdapter.addAll(arrListQuestions);
+            subjectiveQuestionListAdapter.notifyDataSetChanged();
+
+            Animation animation;
+            if (isFromLeft) {
+                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.enter_from_left);
+            } else {
+                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.enter_from_right);
+            }
+
+            rvSubjectiveQuestionsList.setAnimation(animation);
+
         } else {
-            animation = AnimationUtils.loadAnimation(getActivity(), R.anim.enter_from_right);
+
+            setEmptyView(true);
+
         }
 
-        rvSubjectiveQuestionsList.setAnimation(animation);
 
     }
 
     public void loadStudentEvaluationData() {
+
         if (getBaseFragment().getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID) != null) {
             setQuestions();
             callAPiGetExamEvaluation();
@@ -330,7 +347,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         rvSubjectiveQuestionsList.smoothScrollToPosition(position);
     }
 
-    private void setTitleDetails() {
+    public void setTitleDetails() {
 
         arrListExamSubmittor = getBaseFragment().getBundleArguments().getParcelableArrayList(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
 
@@ -408,5 +425,13 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         arrListQuestions.get(position).setIsEvaluated(true);
     }
 
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_exam_questions));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvSubjectiveQuestionsList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+    }
 
 }

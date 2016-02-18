@@ -5,22 +5,19 @@ package com.ism.author.constant;
  */
 public class WebConstants {
 
-    //private static final String URL_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
-    // public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
-    // public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
-    public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";
+
+//    public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";
+
 
     public static final String FEED_MEDIA_KINJAL = "http://192.168.1.147/WS_ISM/Images/feeds/";
 
     public static final String FEED_MEDIA = "http://192.168.1.202/pg/ISM/WS_ISM/Images/feeds/";
-
-    public static final String USER_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
-
     public static final String HOST_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/";                                        // for books
 
     public static final String USER_IMAGES_TEST = "http://192.168.1.147/WS_ISM/Images/users_images/";
 
     public static final String HOST_202 = "http://192.168.1.202/pg/ISM/";      // pg
+    public static final String URL_KINJAL_HOST = HOST_202 + "WS_ISM/ISMServices.php?Service=";
 
     public static final String URL_HOST_202 = HOST_202 + "WS_ISM/ISMServices.php?Service=";
 
@@ -66,7 +63,7 @@ public class WebConstants {
 
     public static final int GETQUESTIONBANK = 20;
 
-    public static final int GETALLASSIGNMENTS = 21;
+    public static final int GETASSIGNMENTBYBOOK = 21;
 
     public static final int GETEXAMSUBMISSION = 22;
 
@@ -92,7 +89,7 @@ public class WebConstants {
 
     public static final int TEMPCREATEQUESTION = 33;
 
-    public static final int GETBOOKSFORAUTHOR = 34;
+    public static final int GETBOOKSBYAUTHOR = 34;
 
     public static final int UPLOADMEDIAFORQUESTION = 35;
 
@@ -104,9 +101,12 @@ public class WebConstants {
 
     public static final int REFRESH_TOKEN = 40;
 
-    public static final int UPLOADSUBQUESTIONIMAGES = 41;
 
     public static final int GET_HIGH_SCORERS = 42;
+
+    public static final int GETMYFOLLOWERS = 43;
+
+    public static final int GET_AUTHOR_BOOK_ASSIGNMENT = 44;
 
     //user settings preferences
 
@@ -144,9 +144,13 @@ public class WebConstants {
 
     public static final int GET_TRENDING_QUESTIONS = 63;
 
-    public static final int GET_PAST_QUESTIONS = 64;
+    public static final int GET_PAST_TRENDING_QUESTION = 64;
 
     public static final int SUBMIT_TRENDING_ANSWER = 65;
+
+    public static final int GET_ALL_BOOKS = 66;
+
+    public static final int GET_TRENDING_QUESTION_DETAIL = 67;
 
     /*webservice url*/
 
@@ -194,11 +198,11 @@ public class WebConstants {
 
     public static final String URL_GETALLCOURSES = URL_KINJAL_HOST + "GetAllCourses";
 
-    public static final String URL_GETBOOKSFORAUTHOR = URL_KINJAL_HOST + "GetBooksForAuthor";
+    public static final String URL_GETBOOKSBYAUTHOR = URL_KINJAL_HOST + "GetBooksByAuthors";
 
     public static final String URL_GETTRENDINGQUESTIONS = URL_KINJAL_HOST + "GetTrendingQuestions";
 
-    public static final String URL_GETPASTQUESTIONS = URL_KINJAL_HOST + "GetTrendingQuestions";
+    public static final String URL_GET_PAST_TRENDING_QUESTION = URL_KINJAL_HOST + "GetPastTrendingQuestion";
 
     public static final String URL_UPLOADMEDIAFORQUESTION = URL_KINJAL_HOST + "UploadMediaForQuestion";
 
@@ -210,7 +214,7 @@ public class WebConstants {
 
     public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
 
-    public static final String URL_GETALLASSIGNMENTS = URL_KINJAL_HOST + "GetAssignmentByBook";
+    public static final String URL_GET_ASSIGNMENT_BY_BOOK = URL_KINJAL_HOST + "GetAssignmentByBook";
 
     public static final String URL_HASHTAG = URL_KINJAL_HOST + "Hashtag";
 
@@ -252,6 +256,12 @@ public class WebConstants {
 
     public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
 
+    public static final String URL_GETMYFOLLOWERS = URL_KINJAL_HOST + "GetMyFollowers";
+
+    public static final String URL_GET_AUTHOR_BOOK_ASSIGNMENT = URL_KINJAL_HOST + "GetAuthorBookAssignment";
+
+    public static final String URL_GET_TRENDING_QUESTION_DETAIL = URL_KINJAL_HOST + "GetTrendingQuestionDetail";
+
     /*status for apisuccess ans apifailed*/
 
     public static final String URL_SUBMIT_TRENDING_ANSWER = URL_KINJAL_HOST + "SubmitTrendingAnswer";
@@ -268,7 +278,8 @@ public class WebConstants {
 
     public static final String URL_MANAGE_BOOK_LIBRARY = URL_KINJAL_HOST + "ManageBookLibrary";
 
-    public static final String URL_UPLOADSUBQUESTIONIMAGES = URL_KINJAL_HOST + "UploadSubQuestionImages";
+    public static final String URL_GET_ALL_BOOKS = URL_KINJAL_HOST + "GetAllBooks";
+
 
     /*status for apisuccess ans apifailed*/
 
@@ -276,7 +287,7 @@ public class WebConstants {
 
     public static final String FAILED = "failed";
 
-    public static final String TEST_GETSTUDYMATES = "167";
+    public static final String TEST_GETSTUDYMATES = "499";
 
     /**
      * Parameter values
@@ -290,7 +301,9 @@ public class WebConstants {
 
     /*Image Url Constants*/
 
+    public static final String USER_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
     public static final String QUESTION_IMAGES = "http://192.168.1.147/WS_ISM/Images/questions_images/";
+    public static final String BOOKS_IMAGES = "http://192.168.1.147/WS_ISM/";
 
     /**
      * Parameter value Variables

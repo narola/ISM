@@ -18,11 +18,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.InputValidator;
-import com.ism.author.Utility.PreferenceData;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.InputValidator;
+import com.ism.author.utility.PreferenceData;
+import com.ism.author.utility.Utility;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
@@ -139,16 +138,16 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
 
         arrListDefalt = new ArrayList<>();
         arrListDefalt.add(getString(R.string.select));
-        Adapters.setUpSpinner(getActivity(), spCountry, arrListDefalt, Adapters.ADAPTER_NORMAL);
-        Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, Adapters.ADAPTER_NORMAL);
-        Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spCountry, arrListDefalt, myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
+        Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
+        Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
 
         arrListGender = new ArrayList<String>();
         arrListGender.add(getString(R.string.gender));
         arrListGender.add(getString(R.string.male));
         arrListGender.add(getString(R.string.female));
-        Adapters.setUpSpinner(getActivity(), spGender, arrListGender, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spGender, arrListGender, myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
 
         if (Utility.isConnected(getActivity())) {
@@ -178,7 +177,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                         Utility.toastOffline(getActivity());
                     }
                 } else {
-                    Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spState, arrListDefalt, myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
                 }
             }
 
@@ -198,7 +197,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                         Utility.toastOffline(getActivity());
                     }
                 } else {
-                    Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spCity, arrListDefalt, myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
                 }
             }
 
@@ -567,7 +566,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                     for (Cities city : arrListCities) {
                         cities.add(city.getCityName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spCity, cities, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spCity, cities, myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCities Failed");
                 }
@@ -593,7 +592,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                     for (States state : arrListStates) {
                         states.add(state.getStateName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spState, states, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spState, states, myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseStates Failed");
                 }
@@ -620,7 +619,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                     for (Countries country : arrListCountries) {
                         countries.add(country.getCountryName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spCountry, countries, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spCountry, countries, myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCountries Failed");
                 }
@@ -679,11 +678,11 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    Utils.showToast(getString(R.string.msg_success_imgupload_profilepic), getActivity());
+                    Utility.showToast(getString(R.string.msg_success_imgupload_profilepic), getActivity());
                     PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, getActivity(), responseHandler.getUserImages().getProfileImages().get(0));
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseUploadMediaForQuestion api Exception : " + error.toString());

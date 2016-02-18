@@ -26,8 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.adapter.PostFileAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
@@ -447,7 +447,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         Cursor cursor = getContentResolver().
                 query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                         column, sel, new String[]{id}, null);
-        if(cursor==null){
+        if (cursor == null) {
             cursor = getContentResolver().
                     query(MediaStore.Audio.Media.INTERNAL_CONTENT_URI,
                             column, sel, new String[]{id}, null);

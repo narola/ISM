@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.constant.WebConstants;
+import com.ism.ws.model.AnswerChoice;
 import com.ism.ws.model.Preferences;
+import com.ism.ws.model.Question;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
  */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Attribute {
 
@@ -88,13 +91,16 @@ public class Attribute {
 	private String lastSyncDate;
 	private String weekNo;
 	private String dayNo;
+	private String tutorialTopicId;
+	private String questionText;
 
     private ArrayList<String> unfavoriteResourceId;
     private ArrayList<String> favResourceId;
     private ArrayList<String> removeBookId;
     private ArrayList<String> addBookId;
-    private ArrayList<String> likedId=new ArrayList<>();
-	private ArrayList<String> unlikedId=new ArrayList<>();
+    private ArrayList<String> likedId;//=new ArrayList<>();
+	private ArrayList<String> unlikedId;//=new ArrayList<>();
+	private ArrayList<AnswerChoice> answerChoices;
 
     private String studymateId;
     private String videoThumbnail;
@@ -104,7 +110,20 @@ public class Attribute {
     private String audioLink;
     private List<String> images;
     private String postedOn;
+
 	private String fromDate;
+
+	private String authorId;
+	private String bookId;
+	private int examId;
+	private ArrayList<Question> question;
+	private String followerId;
+	private String followTo;
+
+	/* these are the upload media params */
+	private ArrayList<MediaUploadAttribute> arrListFile ;//= new ArrayList<MediaUploadAttribute>();
+	private ArrayList<MediaUploadAttribute> arrListParam ;//= new ArrayList<MediaUploadAttribute>();
+
 
 	public Attribute() {
 		setAccessKey(WebConstants.ACCESS_KEY);
@@ -653,14 +672,23 @@ public class Attribute {
         this.audioLink = audioLink;
     }
 
-    public List<String> getImages() {
-        return this.images;
-    }
+//    public List<String> getImages() {
+//        return this.images;
+//    }
+//
+//    @JsonProperty("images")
+//    public void setImages(List<String> images) {
+//        this.images = images;
+//    }
 
-    @JsonProperty("images")
-    public void setImages(List<String> images) {
-        this.images = images;
-    }
+	public List<String> getImages() {
+		return this.images;
+	}
+
+	@JsonProperty("images")
+	public void setImages(List<String> images) {
+		this.images = images;
+	}
 
     public String getPostedOn() {
         return this.postedOn;
@@ -680,11 +708,6 @@ public class Attribute {
         this.videoThumbnail = videoThumbnail;
     }
 
-    /* these are the upload media params */
-    private ArrayList<MediaUploadAttribute> arrListFile = new ArrayList<MediaUploadAttribute>();
-    private ArrayList<MediaUploadAttribute> arrListParam = new ArrayList<MediaUploadAttribute>();
-    private String mediaType;
-
     public ArrayList<MediaUploadAttribute> getArrListFile() {
         return arrListFile;
     }
@@ -694,21 +717,12 @@ public class Attribute {
         return this;
     }
 
-    public ArrayList<MediaUploadAttribute> getArrListParam() {
-        return arrListParam;
-    }
+	public ArrayList<MediaUploadAttribute> getArrListParam() {
+		return arrListParam;
+	}
 
     public Attribute setArrListParam(ArrayList<MediaUploadAttribute> arrListParam) {
         this.arrListParam = arrListParam;
-        return this;
-    }
-
-    public String getMediaType() {
-        return mediaType;
-    }
-
-    public Attribute setMediaType(String mediaType) {
-        this.mediaType = mediaType;
         return this;
     }
 
@@ -767,6 +781,7 @@ public class Attribute {
 	}
 
 
+
 	public String getFromDate() {
 		return fromDate;
 	}
@@ -774,4 +789,87 @@ public class Attribute {
 	public void setFromDate(String fromDate) {
 		this.fromDate = fromDate;
 	}
+
+	public String getTutorialTopicId() {
+		return tutorialTopicId;
+	}
+
+	@JsonProperty("tutorial_topic_id")
+	public void setTutorialTopicId(String tutorialTopicId) {
+		this.tutorialTopicId = tutorialTopicId;
+	}
+
+	public String getQuestionText() {
+		return questionText;
+	}
+
+	@JsonProperty("question_text")
+	public void setQuestionText(String questionText) {
+		this.questionText = questionText;
+	}
+
+	public ArrayList<AnswerChoice> getAnswerChoices() {
+		return answerChoices;
+	}
+
+	@JsonProperty("answer_choices")
+	public void setAnswerChoices(ArrayList<AnswerChoice> answerChoices) {
+		this.answerChoices = answerChoices;
+	}
+
+	@JsonProperty("author_id")
+	public String getAuthorId() {
+		return authorId;
+	}
+
+	public void setAuthorId(String authorId) {
+		this.authorId = authorId;
+	}
+
+	public String getBookId() {
+		return this.bookId;
+	}
+
+	@JsonProperty("book_id")
+	public void setBookId(String bookId) {
+		this.bookId = bookId;
+	}
+
+	@JsonProperty("exam_id")
+	public int getExamId() {
+		return this.examId;
+	}
+
+	public void setExamId(int examId) {
+		this.examId = examId;
+	}
+
+	@JsonProperty("question")
+	public ArrayList<Question> getQuestion() {
+		return this.question;
+	}
+
+	public void setQuestion(ArrayList<Question> question) {
+		this.question = question;
+	}
+
+	@JsonProperty("follower_id")
+	public void setFollowerId(String followerId) {
+		this.followerId = followerId;
+	}
+
+	public String getFollowerId() {
+		return followerId;
+	}
+
+	@JsonProperty("follow_to")
+	public void setFollowTo(String followTo) {
+		this.followTo = followTo;
+	}
+
+	public String getFollowTo() {
+		return followTo;
+	}
+
+
 }

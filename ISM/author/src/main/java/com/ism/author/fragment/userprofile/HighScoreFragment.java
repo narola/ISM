@@ -11,13 +11,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.HighScoreAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.HighScoreSubject;
-import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -101,9 +100,9 @@ public class HighScoreFragment extends Fragment implements WebserviceWrapper.Web
         try {
             activityHost.showProgress();
             Attribute attribute = new Attribute();
-            attribute.setUserId(Global.strUserId);
+//            attribute.setUserId(Global.strUserId);
 //            attribute.setRoleId(Global.role);
-//            attribute.setUserId("1");
+            attribute.setUserId("1");
             attribute.setRoleId("student");
 
             new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()

@@ -5,6 +5,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
+import com.ism.teacher.Utility.HtmlImageGetter;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.object.Global;
@@ -26,12 +28,13 @@ import java.util.ArrayList;
 /**
  * Created by c75 on 16/11/15.
  */
+
 public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<SubjectiveQuestionListAdapter.ViewHolder> {
 
     private static String TAG = SubjectiveQuestionListAdapter.class.getSimpleName();
 
     Fragment mFragment;
-    Context context;
+    Context mContext;
 
     ArrayList<Evaluation> evaluationList = new ArrayList<Evaluation>();
     ArrayList<Questions> arrayListSubjectiveQuestions = new ArrayList<>();
@@ -40,7 +43,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
 
     public SubjectiveQuestionListAdapter(Context mContext, Fragment mFragment) {
-        this.context = mContext;
+        this.mContext = mContext;
         inflater = LayoutInflater.from(mContext);
         this.mFragment = mFragment;
     }
@@ -128,9 +131,29 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
             holder.tvScoreIncorrect.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
-            holder.tvSubjectiveQuestionNo.setText(context.getResources().getString(R.string.strquestion) + " : " + (position + 1));
+            holder.tvSubjectiveQuestionNo.setText(mContext.getResources().getString(R.string.strquestion) + " : " + (position + 1));
 
-            holder.tvSubjectiveQuestion.setText(Utility.formatHtml(arrayListSubjectiveQuestions.get(position).getQuestionText()));
+            /**
+             * Loading image in question
+             */
+            if (arrayListSubjectiveQuestions.get(position).getQuestionText().contains("img") || arrayListSubjectiveQuestions.get(position).getQuestionText().contains("http:")
+                    || arrayListSubjectiveQuestions.get(position).getQuestionText().contains("https:")) {
+
+                if (arrayListSubjectiveQuestions.get(position).getSpan() == null) {
+
+                    arrayListSubjectiveQuestions.get(position).setSpan(Html.fromHtml(arrayListSubjectiveQuestions.get(position).getQuestionText(),
+                            new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+                            ), null));
+                } else {
+
+                    holder.tvSubjectiveQuestion.setText(Html.fromHtml(arrayListSubjectiveQuestions.get(position).getQuestionText(),
+                            new HtmlImageGetter(50, 50, mContext, null
+                            ), null));
+                }
+            } else {
+                holder.tvSubjectiveQuestion.setText(Html.fromHtml(arrayListSubjectiveQuestions.get(position).getQuestionText()));
+            }
+
 
             holder.tvSubjectiveQuesEvaluationNotes.setText(arrayListSubjectiveQuestions.get(position).getEvaluationNotes());
 
@@ -181,9 +204,9 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
             holder.imgCopyComment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
                     cm.setText(holder.etAddComment.getText());
-                    Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Copied", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -243,6 +266,6 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     }
 
     private Bundle getBundleArguments() {
-        return ((TeacherHostActivity) context).getBundle();
+        return ((TeacherHostActivity) mContext).getBundle();
     }
 }

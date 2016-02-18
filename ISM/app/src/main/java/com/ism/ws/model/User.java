@@ -51,9 +51,15 @@ public class User {
     private String isOnline;
     private String requestStatus;
     private String tokenName;
-
-
 	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
+
+    //author
+    private String aboutAuthor;
+    private String totalFollwers;
+    private String education;
+    private String totalQuestionsAnswered;
+    private String totalFollowing;
+    private String totalBooks;
 
     @JsonProperty("total_exams")
     public String getTotalExams() {
@@ -392,6 +398,60 @@ public class User {
 
     public void setTokenName(String tokenName) {
         this.tokenName = tokenName;
+    }
+
+    //author
+
+    @JsonProperty("about_author")
+    public String getAboutAuthor() {
+        return this.aboutAuthor;
+    }
+    public void setAboutAuthor(String aboutAuthor) {
+        this.aboutAuthor = aboutAuthor;
+    }
+
+    @JsonProperty("total_follweres")
+    public String getTotalFollowers() {
+        return this.totalFollwers;
+    }
+
+    public void setTotalFollowers(String totalFollowers) {
+        this.totalFollwers = totalFollowers;
+    }
+
+    @JsonProperty("education")
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public void setTotalQuestionsAnswered(String totalQuestionsAnswered) {
+        this.totalQuestionsAnswered = totalQuestionsAnswered;
+    }
+
+    public String getTotalQuestionsAnswered() {
+        return totalQuestionsAnswered;
+    }
+
+    @JsonProperty("total_following")
+    public String getTotalFollowing() {
+        return this.totalFollowing;
+    }
+
+    public void setTotalFollowing(String totalFollowing) {
+        this.totalFollowing = totalFollowing;
+    }
+
+    @JsonProperty("total_books")
+    public String getTotalBooks() {
+        return this.totalBooks;
+    }
+
+    public void setTotalBooks(String totalBooks) {
+        this.totalBooks = totalBooks;
     }
 
 }

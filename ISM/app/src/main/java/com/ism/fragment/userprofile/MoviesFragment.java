@@ -68,7 +68,7 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_user_profile_books, container, false);
+        view = inflater.inflate(R.layout.fragment_desk_books, container, false);
 
         initGlobal();
 
@@ -237,7 +237,7 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
             });
 
         } catch (Exception e) {
-            Debug.i(TAG, "onClicks Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "onClicks Exception : " + e.getLocalizedMessage());
         }
 
     }
@@ -248,11 +248,11 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
             for (int i = 0; i < arrayList.size(); i++) {
                 if (arrayList.get(i).getMovieName().toString().toLowerCase().contains(s.toString().toLowerCase()) || arrayList.get(i).getMovieName().toString().toLowerCase().contains(s.toString().toLowerCase())) {
                     list.add(arrayList.get(i));
-                    Debug.i(TAG, "i :" + i + " String : " + s);
+                    Log.e(TAG, "i :" + i + " String : " + s);
                 }
             }
         } catch (Exception e) {
-            Debug.i(TAG, "onSearch: " + e.getLocalizedMessage());
+            Log.e(TAG, "onSearch: " + e.getLocalizedMessage());
         }
         return list;
     }
@@ -305,7 +305,7 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiGetMoviesForUser Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiGetMoviesForUser Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -379,13 +379,13 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
                     attribute.setUnfavoriteResourceId(arrayListUnFavItems);// get All the resource ids from favourite list to add resource id in user unfavourites
                 }
                 attribute.setResourceName(AppConstant.RESOURCE_MOVIES);
-                Debug.i(TAG, "Attributes object :" + attribute);
+                Log.e(TAG, "Attributes object :" + attribute);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
             } else {
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -413,15 +413,15 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
         try {
             activityHost.hideProgress();
             if (object != null) {
-                Debug.i(TAG, "Response object :" + object);
+                Log.e(TAG, "Response object :" + object);
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite success");
+                    Log.e(TAG, "onResponseAddResourceToFavorite success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
+                    Log.e(TAG, "onResponseAddResourceToFavorite Failed");
                 }
             } else if (error != null) {
-                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
+                Log.e(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
@@ -430,7 +430,7 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
 
     @Override
     public void onAddToFav(int position) {
-        Debug.i(TAG, "OnAddToFav" + position);
+        Log.e(TAG, "OnAddToFav" + position);
         try {
             arrayListFavItems.add(arrayListSuggested.get(position).getMovieId());
             arrayListFav.add(arrayListSuggested.get(position));
@@ -447,7 +447,7 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
 
     @Override
     public void onRemoveFromFav(int position) {
-        Debug.i(TAG, "onRemoveFromFav" + position);
+        Log.e(TAG, "onRemoveFromFav" + position);
         try {
             arrayListUnFavItems.add(arrayListFav.get(position).getMovieId());
             arrayListSuggested.add(arrayListFav.get(position));

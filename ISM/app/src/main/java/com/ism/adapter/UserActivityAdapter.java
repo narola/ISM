@@ -16,6 +16,7 @@ import com.ism.R;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
 import com.ism.ws.model.UserActivitiy;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -128,7 +129,7 @@ public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapte
 		Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + userActivity.getFeedPosted().getFeedUserPic(), imgDp);
 		txtName.setText(userActivity.getFeedPosted().getFeedUserName());
 		txtPost.setText(userActivity.getFeedPosted().getFeedText());
-		txtTime.setText(com.ism.utility.Utility.formatMySqlDateToMMMDDYYYY(userActivity.getActivityTime()));
+		txtTime.setText(com.ism.utility.Utility.formatMySqlDate(userActivity.getActivityTime(), Utility.DATE_FORMAT_MMMDDYYYY));
 		txtLikes.setText("4");
 		txtComment.setText("comment text");
 		imgLike.setActivated(true);
@@ -138,7 +139,7 @@ public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapte
 		holder.txtActivityTitle.setText(R.string.assignment_submitted);
 		View viewAssignment = setMyActivityLayout(holder, R.layout.layout_timeline_assignment);
 
-		TextView txtAssignmentName = (TextView) viewAssignment.findViewById(R.id.txt_assignment_name);
+		TextView txtAssignmentName = (TextView) viewAssignment.findViewById(R.id.txt_exam_name);
 		TextView txtSubjectName = (TextView) viewAssignment.findViewById(R.id.txt_subject_name);
 		TextView txtSubmittedOn = (TextView) viewAssignment.findViewById(R.id.txt_submitted_on);
 
@@ -148,7 +149,7 @@ public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapte
 
 		txtAssignmentName.setText(userActivity.getFeedPosted().getFeedUserName());
 		txtSubjectName.setText(userActivity.getFeedPosted().getFeedText());
-		txtSubmittedOn.setText(com.ism.utility.Utility.formatMySqlDateToMMMDDYYYY(userActivity.getActivityTime()));
+		txtSubmittedOn.setText(com.ism.utility.Utility.formatMySqlDate(userActivity.getActivityTime(), Utility.DATE_FORMAT_MMMDDYYYY));
 	}
 
 	private void showExam(ViewHolder holder, UserActivitiy userActivity) {
@@ -175,7 +176,7 @@ public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapte
 		Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + userActivity.getFeedPosted().getFeedUserPic(), imgDp);
 		txtName.setText(userActivity.getFeedPosted().getFeedUserName());
 		txtPost.setText(userActivity.getFeedPosted().getFeedText());
-		txtTime.setText(com.ism.utility.Utility.formatMySqlDateToMMMDDYYYY(userActivity.getActivityTime()));
+		txtTime.setText(com.ism.utility.Utility.formatMySqlDate(userActivity.getActivityTime(), Utility.DATE_FORMAT_MMMDDYYYY));
 		txtLikes.setText("4");
 		imgLike.setActivated(true);
 	}
@@ -232,7 +233,7 @@ public class UserActivityAdapter extends RecyclerView.Adapter<UserActivityAdapte
 		Global.imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + userActivity.getFeedPosted().getFeedUserPic(), imgDp);
 		txtName.setText(userActivity.getFeedPosted().getFeedUserName());
 		txtPost.setText(userActivity.getFeedPosted().getFeedText());
-		txtTime.setText(com.ism.utility.Utility.formatMySqlDateToMMMDDYYYY(userActivity.getActivityTime()));
+		txtTime.setText(com.ism.utility.Utility.formatMySqlDate(userActivity.getActivityTime(), Utility.DATE_FORMAT_MMMDDYYYY));
 	}
 
 	private View setMyActivityLayout(ViewHolder holder, int layoutResId) {

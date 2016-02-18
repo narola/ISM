@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:mContext=".fragment.userProfile.MyFeedsFragment">
+             tools:mContext=".fragment.userprofile.MyFeedsFragment">
 
 	<include android:id="@+id/rl_new_post"
 	         layout="@layout/layout_new_post"/>
@@ -23,12 +23,12 @@
 		android:layout_below="@id/rl_new_post">
 	</android.support.v7.widget.RecyclerView>
 
-	<View
-		android:id="@+id/view_highlighter_triangle"
-		android:layout_width="20dp"
-		android:layout_height="30dp"
-		android:layout_marginTop="266dp"
-		android:layout_alignParentRight="true"
-		android:visibility="gone"
-		android:background="@drawable/shape_triangle_profile_controller" />
+	<!--<View-->
+		<!--android:id="@+id/view_highlighter_triangle"-->
+		<!--android:layout_width="@dimen/d20dp"-->
+		<!--android:layout_height="@dimen/d30dp"-->
+		<!--android:layout_marginTop="@dimen/d266dp"-->
+		<!--android:layout_alignParentRight="true"-->
+		<!--android:visibility="gone"-->
+		<!--android:background="@drawable/shape_triangle_profile_controller" />-->
 </RelativeLayout>

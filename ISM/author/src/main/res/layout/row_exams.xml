@@ -23,11 +23,6 @@
                 android:orientation="vertical">
 
 
-                <!--<ImageView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:background="@color/color_assignment_top_yellow" />-->
-
                 <TextView
                     android:id="@+id/tv_exam_book_name"
                     android:layout_width="wrap_content"
@@ -37,7 +32,7 @@
                     android:text="@string/strtest"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d17dp"
+                    android:textSize="@dimen/d17sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -53,7 +48,7 @@
                     android:singleLine="false"
                     android:text="@string/strtest"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d15dp" />
+                    android:textSize="@dimen/d15sp" />
 
             </RelativeLayout>
 
@@ -70,7 +65,7 @@
                     android:paddingLeft="@dimen/d10dp"
                     android:text="@string/strassignmentdatecolon"
                     android:textColor="@color/bg_office"
-                    android:textSize="@dimen/d15dp" />
+                    android:textSize="@dimen/d15sp" />
 
             </LinearLayout>
 
@@ -88,7 +83,7 @@
                 android:singleLine="false"
                 android:text="@string/strtest"
                 android:textColor="@color/color_green"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
         </RelativeLayout>
 
         <ImageView
@@ -105,7 +100,7 @@
             android:paddingTop="@dimen/d10dp">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -117,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/strtest"
                     android:textColor="@color/color_violet_assignment"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <TextView
                     android:id="@+id/tv_exam_assessed"
@@ -125,16 +120,16 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="@string/strassessed"
-                    android:textSize="@dimen/d15dp" />
+                    android:textSize="@dimen/d15sp" />
             </LinearLayout>
 
             <ImageView
-                android:layout_width="1dp"
+                android:layout_width="@dimen/d1dp"
                 android:layout_height="match_parent"
                 android:background="@color/assignment_separator" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -146,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/strtest"
                     android:textColor="@color/color_violet_assignment"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <TextView
                     android:id="@+id/tv_exam_unassessed"
@@ -154,17 +149,17 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="@string/strunasssessed"
-                    android:textSize="@dimen/d15dp" />
+                    android:textSize="@dimen/d15sp" />
             </LinearLayout>
 
             <ImageView
-                android:layout_width="1dp"
+                android:layout_width="@dimen/d1dp"
                 android:layout_height="match_parent"
                 android:background="@color/assignment_separator" />
 
             <LinearLayout
                 android:id="@+id/ll_view_exam_questions"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -176,7 +171,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/strtest"
                     android:textColor="@color/color_violet_assignment"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <TextView
                     android:id="@+id/tv_exam_question"
@@ -184,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="@string/strquestion"
-                    android:textSize="@dimen/d15dp" />
+                    android:textSize="@dimen/d15sp" />
             </LinearLayout>
 
 
@@ -192,7 +187,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/d1dp"
             android:background="@color/assignment_separator" />
 
         <TextView
@@ -200,13 +195,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="@dimen/d2dp"
             android:gravity="center"
             android:padding="@dimen/d5dp"
             android:singleLine="true"
             android:text="@string/strassignmenttype"
             android:textColor="@color/color_dark_blue_assignment"
-            android:textSize="@dimen/d15dp" />
+            android:textSize="@dimen/d15sp" />
 
     </LinearLayout>
 

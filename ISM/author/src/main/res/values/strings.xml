@@ -256,6 +256,7 @@
     <string name="strPrice">Price :</string>
     <string name="strPublisher">Publisher :</string>
     <string name="strAuthor">Author :</string>
+    <string name="strauthor">Author</string>.
     <string name="strEbookLink">Ebook link :</string>
     <string name="strfilters">Filters</string>
     <string name="strtypetext">Type Text</string>
@@ -274,6 +275,9 @@
     <string name="strquestionanswered">Question Answered</string>
     <string name="strfavouritequestions">Favourite Questions</string>
     <string name="strbadgesearned">Badges Earned</string>
+    <string name="strassignmentinformation">Assignment Information</string>
+    <string name="strstudentfrom">Student from</string>
+    <string name="strlivein">Live in</string>
 
     <string name="strSMSAlertsForAssignments">SMS Alerts For Assignment</string>
     <string name="strSMSAlertsForEvaluations">SMS Alerts For Evaluations</string>
@@ -300,7 +304,7 @@
     <string name="strSmsAlertForConf">Send me sms alert when any cnference is scheduled</string>
     <string name="strBlockStudyMate">If you wish to block any studymate then add</string>
     <string name="strContactIsmAdmin">Contact ISM Admin</string>
-    <string name="strLikeNotification">Send me notification for like</string>
+    <string name="strLikeNotification">Send me notification for selfLike</string>
     <string name="strCommentNotification">Send me notification for comment</string>
     <string name="strNoticeNotification">Send me notification when any notice is published</string>
     <string name="strAuthorNotification">Send me notification when any author has posted anything on timeline</string>
@@ -475,7 +479,9 @@
     <string name="blackletter_capital_I">&#8465;</string>
     <!--ℑ-->
     <string name="blackletter_capital_R">&#8476;</string>
-    <string name="strSelectBook">Select book</string>
+
+
+    <string name="strSelectBook">Select authorBook</string>
     <string name="strGeneralSetting">General Setting</string>
     <string name="strStudyMates">Studymates</string>
     <string name="strEveryOne">Every One</string>

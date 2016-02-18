@@ -2,9 +2,12 @@ package com.ism.author.fragment.gotrending;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,51 +19,55 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.InputValidator;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.HtmlImageGetter;
+import com.ism.author.utility.InputValidator;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.gotrending.QuestionsMostFollowAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.dialog.AddQuestionTextDialog;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
+import com.ism.author.ws.helper.MediaUploadAttribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.TrendingQuestion;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 
 
 /**
  * Created by c166 on 21/10/15.
  */
-public class GoTrendingFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, AuthorHostActivity.HostListenerTrending {
+public class GoTrendingFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener, AuthorHostActivity.HostListenerTrending, AddQuestionTextDialog.SelectMediaListener, AddQuestionTextDialog.AddTextListener {
 
     private static final String TAG = GoTrendingFragment.class.getSimpleName();
     private View view;
 
     private FragmentListener fragListener;
-    private TextView txtYourAnswer;
+    private TextView txtYourAnswer, txtSave, txt_Creator_Name, txtQuestion, txtDate, txtFollowers,
+            txtQuestionMostFollower, txtEmpty, txtEmptyAnswer;
     private EditText etAnswer;
-    private TextView txtSave;
-    private TextView txt_Creator_Name;
-    private TextView txtQuestion;
-    private TextView txtDate;
-    private TextView txtFollowers;
-    private TextView txtQuestionMostFollower;
-    private RecyclerView rvList;
+    private RecyclerView rvTrendingQuestionsList;
     private QuestionsMostFollowAdapter questionsMostFollowAdapter;
-    private TextView txtEmpty;
     private AuthorHostActivity activityHost;
     private String trendingId;
     private ImageView imgProfilePic;
     private ArrayList<TrendingQuestion> arrayListTrendingQuestions = new ArrayList<>();
     private InputValidator inputValidator;
     private int visibleQuestionPosition = -1;
-    private TextView txtEmptyAnswer;
     ScrollView scrollView;
+
+    private ImageView imgAttachMedia;
 
     public static GoTrendingFragment newInstance() {
         GoTrendingFragment fragGoTrending = new GoTrendingFragment();
@@ -108,8 +115,8 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
         etAnswer = (EditText) view.findViewById(R.id.et_answer);
         etAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-        rvList = (RecyclerView) view.findViewById(R.id.rv_list);
-        rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvTrendingQuestionsList = (RecyclerView) view.findViewById(R.id.rv_trending_questions_list);
+        rvTrendingQuestionsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
 
@@ -119,12 +126,16 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
         txtEmptyAnswer = (TextView) view.findViewById(R.id.txt_empty_answer);
         txtEmptyAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
 
+        imgAttachMedia = (ImageView) view.findViewById(R.id.img_attach_media);
+        imgAttachMedia.setOnClickListener(this);
+
 
         setEmptyView(true);
         onClicks();
 
         callApiForGetTrending();
     }
+
 
     private void onClicks() {
         try {
@@ -172,13 +183,53 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
         if (Utility.isConnected(getActivity())) {
             try {
                 activityHost.showProgress();
+
                 Attribute attribute = new Attribute();
-                attribute.setAuthorId(Global.strUserId);
-                attribute.setQuestionid(trendingId);
-                attribute.setAnswerText(etAnswer.getText().toString().trim());
+
+                MediaUploadAttribute authorIdParam = new MediaUploadAttribute();
+                authorIdParam.setParamName("author_id");
+                authorIdParam.setParamValue(Global.strUserId);
+
+
+                MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
+                questionIdParam.setParamName("question_id");
+                questionIdParam.setParamValue(trendingId);
+
+
+                MediaUploadAttribute answerTextParam = new MediaUploadAttribute();
+                answerTextParam.setParamName("answer_text");
+                answerTextParam.setParamValue(getHtmlQuestionText());
+
+                addImage();
+
+                if (imageSources.size() > 0) {
+                    for (int i = 0; i < imageSources.size(); i++) {
+                        MediaUploadAttribute mediaFileParam = new MediaUploadAttribute();
+                        mediaFileParam.setParamName("" + i);
+                        mediaFileParam.setFileName(imageSources.get(i));
+                        attribute.getArrListFile().add(mediaFileParam);
+                    }
+                }
+
+                MediaUploadAttribute numberOfImagesParam = new MediaUploadAttribute();
+                numberOfImagesParam.setParamName("number_of_images");
+                numberOfImagesParam.setParamValue(String.valueOf(imageSources.size()));
+
+
+                attribute.getArrListParam().add(authorIdParam);
+                attribute.getArrListParam().add(questionIdParam);
+                attribute.getArrListParam().add(answerTextParam);
+                attribute.getArrListParam().add(numberOfImagesParam);
+
+
+//                attribute.setLocalAuthorId(Global.strUserId);
+//                attribute.setQuestionid(trendingId);
+//                attribute.setAnswerText(etAnswer.getText().toString().trim());
 
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.SUBMIT_TRENDING_ANSWER);
+
+
             } catch (Exception e) {
                 Log.e(TAG, "callApiForSubmitTrendingAnswer Exception : " + e.toString());
             }
@@ -188,8 +239,9 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private void setEmptyView(boolean isEnable) {
+
         txtEmpty.setVisibility(isEnable ? View.VISIBLE : View.GONE);
-        rvList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+        rvTrendingQuestionsList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
         txtEmptyAnswer.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         scrollView.setVisibility(isEnable ? View.GONE : View.VISIBLE);
 
@@ -251,12 +303,14 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseSubmitTrendingAnswer : " + WebConstants.SUCCESS);
                     etAnswer.setText("");
                     arrayListTrendingQuestions.remove(visibleQuestionPosition);
                     setQuestion(arrayListTrendingQuestions.size() - 1 > visibleQuestionPosition ? visibleQuestionPosition - 1 : visibleQuestionPosition + 1);
                     questionsMostFollowAdapter.notifyDataSetChanged();
-                    if(arrayListTrendingQuestions.size()==0) setEmptyView(true); else setEmptyView(false);
+
+
+                    if (arrayListTrendingQuestions.size() == 0) setEmptyView(true);
+                    else setEmptyView(false);
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Debug.i(TAG, "onResponseSubmitTrendingAnswer : " + WebConstants.FAILED);
 
@@ -275,18 +329,9 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseGetTrending : " + WebConstants.SUCCESS);
+
                     arrayListTrendingQuestions = responseHandler.getTrendingQuestions();
                     setUpData(arrayListTrendingQuestions);
-//                    if (getBundleArguments().containsKey(QuestionsMostFollowAdapter.ARG_TRENDING_ID)) {
-//                        txtDate.setText(com.ism.commonsource.utility.Utility.DateFormat(getBundleArguments().getString(QuestionsMostFollowAdapter.ARG_DATE)));
-//                        txt_Creator_Name.setText(getBundleArguments().getString(QuestionsMostFollowAdapter.ARG_CREATOR_NAME));
-//                        txtFollowers.setText(getBundleArguments().getString(QuestionsMostFollowAdapter.ARG_FOLLOWERS));
-//                        txtQuestion.setText(getBundleArguments().getString(QuestionsMostFollowAdapter.ARG_QUESTIONS));
-//                        trendingId = getBundleArguments().getString(QuestionsMostFollowAdapter.ARG_TRENDING_ID);
-//                        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + getBundleArguments().getString(QuestionsMostFollowAdapter.ARG_QUESTION_CREATOR_PROFILE_PIC), imgProfilePic, ISMAuthor.options);
-//                    }
-
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Debug.i(TAG, "onResponseGetTrending : " + WebConstants.FAILED);
 
@@ -306,7 +351,7 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
                 setEmptyView(false);
 
                 questionsMostFollowAdapter = new QuestionsMostFollowAdapter(getActivity(), trendingQuestions, this);
-                rvList.setAdapter(questionsMostFollowAdapter);
+                rvTrendingQuestionsList.setAdapter(questionsMostFollowAdapter);
 
             } else {
                 setEmptyView(true);
@@ -316,10 +361,6 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
             Debug.i(TAG, "setUpData Exception : " + e.getLocalizedMessage());
         }
     }
-
-//    private Bundle getBundleArguments() {
-//        return ((AuthorHostActivity) getActivity()).getBundle();
-//    }
 
     @Override
     public void onViewSelect(int position) {
@@ -342,4 +383,166 @@ public class GoTrendingFragment extends Fragment implements WebserviceWrapper.We
         }
 
     }
+
+    /**
+     * richeditor text.
+     */
+
+    AddQuestionTextDialog addRichTextDialog;
+    String htmlText;
+    String richEditText;
+    ArrayList<String> imageSources = new ArrayList<String>();
+    private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
+
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.img_attach_media:
+
+                addRichTextDialog = new AddQuestionTextDialog(getActivity(), (AddQuestionTextDialog.SelectMediaListener) this,
+                        (AddQuestionTextDialog.AddTextListener) this, getHtmlQuestionText());
+                addRichTextDialog.show();
+                break;
+        }
+    }
+
+
+    @Override
+    public void SetText(String text) {
+        htmlText = text;
+        richEditText = text;
+        etAnswer.setText(Html.fromHtml(text, new HtmlImageGetter(50, 50, getActivity(), null), null));
+
+        Debug.e(TAG, "RichEditor text is:::::::::::" + text);
+        Debug.e(TAG, "Text Of Edittext is:::::::::::" + Html.toHtml(etAnswer.getText()));
+    }
+
+    @Override
+    public void ImagePicker() {
+
+        openImage();
+
+    }
+
+    @Override
+    public void VideoPicker() {
+        openVideo();
+    }
+
+
+    private String getHtmlQuestionText() {
+
+
+        Debug.e(TAG, "Original text of edittext is:::::" + Html.toHtml(etAnswer.getText()));
+
+        htmlText = Html.toHtml(etAnswer.getText());
+        htmlText = htmlText.replaceAll("<p dir=\"ltr\"><img", "<img");
+        htmlText = htmlText.replaceAll("<p dir=\"ltr\"", "<p");
+        htmlText = htmlText.replaceAll(".png\"></p>", ".png\">");
+        htmlText = htmlText.replaceAll(".jpeg\"></p>", ".jpeg\">");
+        htmlText = htmlText.replaceAll(".jpg\"></p>", ".jpg\">");
+        htmlText = htmlText.replaceAll(".png\"> </p>", ".png\">");
+        htmlText = htmlText.replaceAll(".jpeg\"> </p>", ".jpeg\">");
+        htmlText = htmlText.replaceAll(".jpg\"> </p>", ".jpg\">");
+
+        Debug.e(TAG, "Formatted text of edittext is:::::" + htmlText);
+
+        return htmlText;
+    }
+
+    public void addImage() {
+
+        Debug.e(TAG, "The RichEditText Is:::" + richEditText);
+
+        if (richEditText != null) {
+            String richEditText;
+            imageSources.clear();
+            XmlPullParserFactory factory = null;
+            try {
+                factory = XmlPullParserFactory.newInstance();
+
+                XmlPullParser xpp = factory.newPullParser();
+                richEditText = getHtmlQuestionText().replace("&nbsp;", " ");
+                xpp.setInput(new StringReader(richEditText));
+                int eventType = xpp.getEventType();
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+
+                    if (eventType == XmlPullParser.START_TAG && "img".equals(xpp.getName())) {
+                        //found an image start tag, extract the attribute 'src' from here..
+
+                        if (xpp.getAttributeValue(0).contains("file://")) {
+                            String path = xpp.getAttributeValue(0).replace("file://", "");
+                            imageSources.add(path);
+                        }
+                    }
+                    eventType = xpp.next();
+                }
+
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private void openImage() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+    }
+
+    private void openVideo() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("video/*");
+        startActivityForResult(photoPickerIntent, SELECT_VIDEO);
+
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent returnedIntent) {
+        super.onActivityResult(requestCode, resultCode, returnedIntent);
+
+        if (returnedIntent != null) {
+
+            switch (requestCode) {
+                case SELECT_PHOTO:
+                    if (resultCode == getActivity().RESULT_OK) {
+                        try {
+                            if (addRichTextDialog != null && addRichTextDialog.isShowing()) {
+                                final Uri imageUri = returnedIntent.getData();
+                                String imgPath = Utility.getRealPathFromURI(imageUri, getActivity());
+                                addRichTextDialog.insertImage(imgPath);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+
+                case SELECT_VIDEO:
+
+                    if (resultCode == getActivity().RESULT_OK) {
+                        try {
+                            if (addRichTextDialog != null && addRichTextDialog.isShowing()) {
+
+                                final Uri videoUri = returnedIntent.getData();
+                                String videoPath = Utility.getRealPathFromURI(videoUri, getActivity());
+                                addRichTextDialog.insertVideo(videoPath);
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    break;
+            }
+        }
+    }
+
 }

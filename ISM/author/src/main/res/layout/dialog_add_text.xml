@@ -27,7 +27,7 @@
             android:padding="@dimen/d10dp"
             android:text="@string/strtypetext"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/d20dp" />
+            android:textSize="@dimen/d20sp" />
 
 
         <com.narola.kpa.richtexteditor.view.RichTextEditor
@@ -55,7 +55,7 @@
                 android:text="@string/strdone"
                 android:textAllCaps="true"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/d20dp"
+                android:textSize="@dimen/d20sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -74,7 +74,7 @@
                 android:text="@string/strclose"
                 android:textAllCaps="true"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/d20dp"
+                android:textSize="@dimen/d20sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </RelativeLayout>

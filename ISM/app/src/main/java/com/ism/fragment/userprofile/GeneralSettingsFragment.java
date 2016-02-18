@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,13 +69,13 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
 
     private void initGlobal() {
         preferencesList = new ArrayList<>();
-        viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
+       // viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
         txtPrivacySetting = (TextView) view.findViewById(R.id.txt_privacy_setting);
         txtSmsAlerts = (TextView) view.findViewById(R.id.txt_sms_alerts);
         txtBlockUsers = (TextView) view.findViewById(R.id.txt_block_users);
         txtNotifications = (TextView) view.findViewById(R.id.txt_notifications);
 
-        viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
+//        viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
         myTypeFace = new MyTypeFace(getActivity());
         txtBlockUsers.setTypeface(myTypeFace.getRalewayRegular());
@@ -220,7 +221,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "Response Exception :" + e.getLocalizedMessage());
+            Log.e(TAG, "Response Exception :" + e.getLocalizedMessage());
         }
 
     }
@@ -232,13 +233,13 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
                 ResponseHandler responseHandler = (ResponseHandler) object;
 
                 if (responseHandler.getStatus().toString().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "Updated successfully");
+                    Log.e(TAG, "Updated successfully");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Debug.i(TAG, "Failed to load manage general setting");
+                    Log.e(TAG, "Failed to load manage general setting");
                 }
 
             } else {
-                Debug.i(TAG, "onResponseManageGeneralSetting : object is null");
+                Log.e(TAG, "onResponseManageGeneralSetting : object is null");
             }
 
         } catch (Exception e) {
@@ -259,7 +260,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
                     new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_GENERAL_SETTINGS);
 
                 } else {
-                    Debug.i(TAG, "General setting Pereference list size :" + preferencesList.size());
+                    Log.e(TAG, "General setting Pereference list size :" + preferencesList.size());
                 }
             } else {
                 Utility.alertOffline(getActivity());
@@ -283,7 +284,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         requestObject.setUserId(Global.strUserId);
         requestObject.setKeyId(key);
         requestObject.setPreferenceValue(value);
-        Debug.i(TAG, "setPreferenceList " + "key:" + key + "value:" + value);
+        Log.e(TAG, "setPreferenceList " + "key:" + key + "value:" + value);
         PreferenceData.setStringPrefs(key, context, value);
         preferencesList.add(requestObject);
     }

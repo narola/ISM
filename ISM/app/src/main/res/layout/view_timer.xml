@@ -4,12 +4,12 @@
 	<RelativeLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="27dp"
-		android:layout_marginLeft="25dp">
+		android:layout_marginTop="@dimen/dp20"
+		android:layout_marginLeft="10dp">
 
 		<LinearLayout
 			android:id="@+id/ll_time"
-			android:layout_width="70dp"
+			android:layout_width="@dimen/dp53"
 			android:layout_centerHorizontal="true"
 			android:layout_height="wrap_content"
 			android:gravity="center"
@@ -19,10 +19,9 @@
 				android:id="@+id/txt_minute"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_centerHorizontal="true"
 				android:textColor="@color/bg_app_dark"
 				android:text="00:"
-				android:textSize="25sp"/>
+				android:textSize="@dimen/sp19"/>
 
 			<TextView
 				android:id="@+id/txt_second"
@@ -31,7 +30,7 @@
 				android:paddingTop="1dp"
 				android:text="00\nmin"
 				android:textColor="@color/bg_app_dark"
-				android:textSize="10sp"/>
+				android:textSize="@dimen/sp8"/>
 		</LinearLayout>
 
 		<TextView
@@ -41,13 +40,13 @@
 			android:gravity="center"
 			android:text="@string/remaining"
 			android:textColor="@color/green"
-			android:textSize="13sp"/>
+			android:textSize="@dimen/sp10"/>
 	</RelativeLayout>
 
 	<ProgressBar
 		android:id="@+id/prog_time"
-		android:layout_width="120dp"
-		android:layout_height="120dp"
+		android:layout_width="@dimen/dp90"
+		android:layout_height="@dimen/dp90"
 		style="?android:attr/progressBarStyleHorizontal"
 		android:background="@drawable/bg_circular_progressbar_timer"
 		android:progressDrawable="@drawable/bg_circular_progress_timer" />

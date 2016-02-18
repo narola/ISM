@@ -13,7 +13,8 @@ import io.realm.annotations.PrimaryKey;
 public class TutorialTopic extends RealmObject {
 
     @PrimaryKey
-    private  int tutorialTopicId;
+    private int tutorialTopicId;
+    private int serverTutorialTopicId;
     private String topicName;
     private String topicDescription;
     private String evaluationKeyword;
@@ -24,6 +25,7 @@ public class TutorialTopic extends RealmObject {
     private Topics topic;
     private String topicDay;
     private int allocationCount;
+//	private int createdBy;
     private int status;
     private boolean isCompleted;
     private Date createdDate;
@@ -35,6 +37,14 @@ public class TutorialTopic extends RealmObject {
 
     public void setTutorialTopicId(int tutorialTopicId) {
         this.tutorialTopicId = tutorialTopicId;
+    }
+
+    public int getServerTutorialTopicId() {
+        return serverTutorialTopicId;
+    }
+
+    public void setServerTutorialTopicId(int serverTutorialTopicId) {
+        this.serverTutorialTopicId = serverTutorialTopicId;
     }
 
     public String getTopicName() {
@@ -117,7 +127,15 @@ public class TutorialTopic extends RealmObject {
         this.allocationCount = allocationCount;
     }
 
-    public int getStatus() {
+//	public int getCreatedBy() {
+//		return createdBy;
+//	}
+//
+//	public void setCreatedBy(int createdBy) {
+//		this.createdBy = createdBy;
+//	}
+
+	public int getStatus() {
         return status;
     }
 

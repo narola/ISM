@@ -4,13 +4,13 @@
 			    android:layout_width="match_parent"
 			    android:layout_height="match_parent"
 			    android:background="@drawable/bg_white_border_gray_left"
-                android:paddingLeft="1dp"
+                android:paddingLeft="@dimen/dp1"
 			    tools:mContext="com.ism.fragment.ChatFragment">
 
     <com.ism.views.AccordionView
         android:id="@+id/accordion_view_chat"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="#fff5f5f5"
         android:orientation="vertical"
         accordion:header_layout_fold_button_id="@id/foldButton"
@@ -31,42 +31,42 @@
             <ListView
                 android:id="@+id/lv_studymates"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="@dimen/dp300"
                 android:divider="@color/border_gray"
-                android:dividerHeight="1dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:dividerHeight="@dimen/dp1"
+                android:paddingLeft="@dimen/dp8"
+                android:paddingRight="@dimen/dp8"
                 android:layout_marginBottom="@dimen/margin_chat" />
 
             <Button
                 android:id="@+id/btn_suggested_studymates"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/button_height"
                 android:layout_marginLeft="@dimen/margin_chat"
                 android:layout_marginRight="@dimen/margin_chat"
                 android:layout_marginBottom="@dimen/margin_chat"
                 android:text="@string/suggested_studymates"
                 android:textColor="@android:color/white"
                 android:background="@drawable/bg_btn_pink"
-                android:textSize="18sp" />
+                android:textSize="@dimen/sp14" />
 
             <Button
                 android:id="@+id/btn_find_more_studymates"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/button_height"
                 android:layout_marginLeft="@dimen/margin_chat"
                 android:layout_marginRight="@dimen/margin_chat"
                 android:layout_marginBottom="@dimen/margin_chat"
                 android:text="@string/find_more_studymates"
                 android:textColor="@android:color/white"
                 android:background="@drawable/bg_btn_blue"
-                android:textSize="18sp" />
+                android:textSize="@dimen/sp14" />
         </LinearLayout>
 
         <ListView
             android:id="@+id/lv_highScore"
             android:layout_width="match_parent"
-            android:layout_height="450sp"
+            android:layout_height="@dimen/dp338"
             android:background="@drawable/bg_highscore_subjectlist" />
     </com.ism.views.AccordionView>
 </RelativeLayout>

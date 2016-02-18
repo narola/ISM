@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:mContext="com.ism.fragment.desk.AllAssignmentsFragment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_separator"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp8"
+        android:paddingRight="@dimen/dp8"
+        android:paddingTop="@dimen/dp8">
+
+        <Spinner
+            android:id="@+id/spinner_subject"
+            android:layout_width="@dimen/dp150"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp4"
+            android:background="@drawable/bg_spinner_header" />
+
+        <Spinner
+            android:id="@+id/spinner_sort_by"
+            android:layout_width="@dimen/dp150"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp4"
+            android:background="@drawable/bg_spinner_header" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dp4"
+            android:layout_weight="1"
+            android:padding="@dimen/dp8" />
+
+        <include
+            layout="@layout/empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+</LinearLayout>

@@ -68,7 +68,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_user_profile_books, container, false);
+        view = inflater.inflate(R.layout.fragment_desk_books, container, false);
 
         initGlobal();
 
@@ -79,25 +79,34 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
     private void initGlobal() {
 
         txtFavEmpty = (TextView) view.findViewById(R.id.txt_fav_empty);
+        txtFavEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtFavEmpty.setText(R.string.no_pastimes_available);
+
         txtSuggestedEmpty = (TextView) view.findViewById(R.id.txt_suggested_empty);
+        txtSuggestedEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtSuggestedEmpty.setText(R.string.no_pastimes_available);
+
         txtSuggestedPastimes = (TextView) view.findViewById(R.id.txt_read_books);
-        txtFavPastimes = (TextView) view.findViewById(R.id.txt_fav_books);
+        txtSuggestedPastimes.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtSuggestedPastimes.setText(R.string.strSuggestedPastimes);
+
+        txtFavPastimes = (TextView) view.findViewById(R.id.txt_fav_books);
+        txtFavPastimes.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtFavPastimes.setText(R.string.strFavPastimes);
+
         imgFavSearch = (ImageView) view.findViewById(R.id.img_search_fav);
+
         etFavSearch = (EditText) view.findViewById(R.id.et_search_fav);
-        imgSuggestedSearch = (ImageView) view.findViewById(R.id.img_search_suggested);
+        etFavSearch.setTypeface(Global.myTypeFace.getRalewayRegular());
+
         etSuggestedSearch = (EditText) view.findViewById(R.id.et_search_suggested);
+        etSuggestedSearch.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+        imgSuggestedSearch = (ImageView) view.findViewById(R.id.img_search_suggested);
         imgNextFav = (ImageView) view.findViewById(R.id.img_next_fav);
         imgPrevFav = (ImageView) view.findViewById(R.id.img_prev_fav);
         imgNextSuggested = (ImageView) view.findViewById(R.id.img_next_suggested);
         imgPrevSuggested = (ImageView) view.findViewById(R.id.img_prev_suggested);
-        //set typeface
-        txtFavEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
-        txtSuggestedEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
-
-        txtFavEmpty.setText(R.string.no_pastimes_available);
-        txtSuggestedEmpty.setText(R.string.no_pastimes_available);
 
         listViewFav = (RecyclerView) view.findViewById(R.id.lv_fav_books);
         listViewSuggested = (RecyclerView) view.findViewById(R.id.lv_suggested_books);
@@ -233,7 +242,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
 
 
         } catch (Exception e) {
-            Debug.i(TAG, "onClicks Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "onClicks Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -284,7 +293,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiGetPastimeForUser Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiGetPastimeForUser Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -311,15 +320,15 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
         try {
             activityHost.hideProgress();
             if (object != null) {
-                Debug.i(TAG, "Response object :" + object);
+                Log.e(TAG, "Response object :" + object);
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite success");
+                    Log.e(TAG, "onResponseAddResourceToFavorite success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
+                    Log.e(TAG, "onResponseAddResourceToFavorite Failed");
                 }
             } else if (error != null) {
-                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
+                Log.e(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
@@ -336,7 +345,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
                     arrayListSuggested = responseHandler.getPastime().get(0).getSuggestedPastime();
                     setUpFavList(arrayListFav);
                     setUpSuggestedList(arrayListSuggested);
-                    Debug.i(TAG, "onResponseUserPastTime success");
+                    Log.e(TAG, "onResponseUserPastTime success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseUserPastTime Failed");
                 }
@@ -393,11 +402,11 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
             for (int i = 0; i < arrayList.size(); i++) {
                 if (arrayList.get(i).getPastimeName().toString().toLowerCase().contains(s.toString().toLowerCase())) {
                     list.add(arrayList.get(i));
-                    Debug.i(TAG, "i :" + i + " String : " + s);
+                    Log.e(TAG, "i :" + i + " String : " + s);
                 }
             }
         } catch (Exception e) {
-            Debug.i(TAG, "onSearch: " + e.getLocalizedMessage());
+            Log.e(TAG, "onSearch: " + e.getLocalizedMessage());
         }
         return list;
     }
@@ -419,19 +428,19 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
                     attribute.setUnfavoriteResourceId(arrayListUnFavItems);// get All the resource ids from favourite list to add resource id in user unfavourites
                 }
                 attribute.setResourceName(AppConstant.RESOURCE_PASTTIMES);
-                Debug.i(TAG, "Attributes object :" + attribute);
+                Log.e(TAG, "Attributes object :" + attribute);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
             } else {
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
         }
     }
 
     @Override
     public void onAddToFav(int position) {
-        Debug.i(TAG, "OnAddToFav" + position);
+        Log.e(TAG, "OnAddToFav" + position);
         try {
             arrayListFavItems.add(arrayListSuggested.get(position).getPastimeId());
             arrayListFav.add(arrayListSuggested.get(position));
@@ -447,7 +456,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
 
     @Override
     public void onRemoveFromFav(int position) {
-        Debug.i(TAG, "onRemoveFromFav" + position);
+        Log.e(TAG, "onRemoveFromFav" + position);
         try {
             arrayListUnFavItems.add(arrayListFav.get(position).getPastimeId());
             arrayListSuggested.add(arrayListFav.get(position));

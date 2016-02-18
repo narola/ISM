@@ -3,7 +3,9 @@ package com.ism.author.adapter;
 import android.app.Fragment;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.HtmlImageGetter;
+import com.ism.author.utility.Utility;
 import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveQuestionsFragment;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.Evaluation;
@@ -25,7 +28,7 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 17/11/15.
  */
-public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<SubjectiveQuestionListAdapter.ViewHolder> {
+public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<SubjectiveQuestionListAdapter.ViewHolder> implements HtmlImageGetter.RefreshDataAfterLoadImage {
 
     private static final String TAG = SubjectiveQuestionListAdapter.class.getSimpleName();
 
@@ -53,26 +56,32 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
         try {
 
-            holder.tvSubjectiveQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvSubjectiveQuestionScore.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvSubjectiveQuestionComment.setTypeface(Global.myTypeFace.getRalewayBold());
 
-            holder.tvSubjectiveQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvSubjectiveQuestionAnsTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvSubjectiveQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvSubjectiveQuesEvaluationNotesTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvSubjectiveQuesEvaluationNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvScoreExcellent.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvScoreGood.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvScoreFair.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvScoreAverage.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvScorePoor.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvScoreIncorrect.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
             holder.tvSubjectiveQuestionNo.setText(mContext.getResources().getString(R.string.strquestion) + " : " + (position + 1));
 
-            holder.tvSubjectiveQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
+//            holder.tvSubjectiveQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+//                    new HtmlImageGetter(50, 50, mContext, null), null));
+
+
+            if (arrListQuestions.get(position).getQuestionText().contains("img") || arrListQuestions.get(position).getQuestionText().contains("http:")
+                    || arrListQuestions.get(position).getQuestionText().contains("https:")) {
+
+                if (arrListQuestions.get(position).getSpan() == null) {
+
+                    arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                            new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+                            ), null));
+                } else {
+
+                    holder.tvSubjectiveQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                            new HtmlImageGetter(50, 50, mContext, null
+                            ), null));
+                }
+            } else {
+                holder.tvSubjectiveQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText()));
+            }
 
             holder.tvSubjectiveQuesEvaluationNotes.setText(arrListQuestions.get(position).getEvaluationNotes());
 
@@ -90,7 +99,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
                 int evaluationIndex = checkIsQuestionEvaluated(arrListQuestions.get(position).getQuestionId());
                 if (evaluationIndex != -1) {
                     if (evaluationList.get(position).getStudentResponse() != null) {
-                        holder.tvSubjectiveQuestionAns.setText(Utils.formatHtml(evaluationList.get(evaluationIndex).getStudentResponse()));
+                        holder.tvSubjectiveQuestionAns.setText(Utility.formatHtml(evaluationList.get(evaluationIndex).getStudentResponse()));
                     }
 
 
@@ -197,6 +206,23 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
                 scoreTextArray = new TextView[]{tvScoreExcellent, tvScoreGood, tvScoreFair, tvScoreAverage, tvScorePoor, tvScoreIncorrect};
 
 
+                tvSubjectiveQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
+                tvSubjectiveQuestionScore.setTypeface(Global.myTypeFace.getRalewayBold());
+                tvSubjectiveQuestionComment.setTypeface(Global.myTypeFace.getRalewayBold());
+
+                tvSubjectiveQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvSubjectiveQuestionAnsTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvSubjectiveQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvSubjectiveQuesEvaluationNotesTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvSubjectiveQuesEvaluationNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvScoreExcellent.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvScoreGood.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvScoreFair.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvScoreAverage.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvScorePoor.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvScoreIncorrect.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+
             } catch (Exception e) {
                 Debug.e(TAG, "ViewHolder Exceptions :" + e.toString());
             }
@@ -249,5 +275,19 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
     private SubjectiveQuestionsFragment getFragment() {
         return (SubjectiveQuestionsFragment) mFragment;
+    }
+
+
+    @Override
+    public void refreshData() {
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+                notifyDataSetChanged();
+                Debug.e(TAG, "notify data called");
+            }
+        };
+
+        handler.post(r);
     }
 }

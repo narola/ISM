@@ -81,7 +81,7 @@
                                     android:layout_weight="1"
                                     android:background="@drawable/selector"
                                     android:hint="@string/str_firstname"
-                                    android:padding="15dp"
+                                    android:padding="@dimen/d15dp"
                                     android:textColorHint="@color/color_text_hint" />
 
                                 <EditText
@@ -92,7 +92,7 @@
                                     android:layout_weight="1"
                                     android:background="@drawable/selector"
                                     android:hint="@string/str_lastname"
-                                    android:padding="15dp"
+                                    android:padding="@dimen/d15dp"
                                     android:textColorHint="@color/color_text_hint" />
 
 
@@ -113,7 +113,7 @@
                                     android:background="@drawable/selector"
                                     android:hint="@string/stremailaddress"
                                     android:inputType="textEmailAddress"
-                                    android:padding="15dp"
+                                    android:padding="@dimen/d15dp"
                                     android:textColorHint="@color/color_text_hint" />
                                  <EditText
                                     android:id="@+id/et_dob_teacher"
@@ -124,7 +124,7 @@
                                     android:background="@drawable/selector"
                                     android:hint="@string/strdateofbirth"
                                     android:inputType="textEmailAddress"
-                                    android:padding="15dp"
+                                    android:padding="@dimen/d15dp"
                                     android:textColorHint="@color/color_text_hint" />
 
                             </LinearLayout>
@@ -155,7 +155,7 @@
                                     android:background="@drawable/selector"
                                     android:hint="@string/strcontactnumber"
                                     android:inputType="phone"
-                                    android:padding="15dp"
+                                    android:padding="@dimen/d15dp"
                                     android:textColorHint="@color/color_text_hint" />
 
                             </LinearLayout>
@@ -170,7 +170,7 @@
                                 android:gravity="top|left"
                                 android:hint="@string/strhomeaddress"
                                 android:inputType="textMultiLine"
-                                android:padding="15dp"
+                                android:padding="@dimen/d15dp"
                                 android:textColorHint="@color/color_text_hint" />
 
                         </LinearLayout>
@@ -186,7 +186,7 @@
 
                             <com.ism.teacher.views.CircleImageView
                                 android:id="@+id/img_teacher_profile_pic"
-                                android:layout_width="200dp"
+                                android:layout_width="@dimen/d200dp"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:layout_weight="0.5"
@@ -271,7 +271,7 @@
                             <com.ism.commonsource.view.ActionProcessButton
                                 android:id="@+id/prog_city"
                                 android:layout_width="match_parent"
-                                android:layout_height="5dp"
+                                android:layout_height="@dimen/d5dp"
                                 android:visibility="invisible" />
                         </LinearLayout>
 
@@ -378,8 +378,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/selector"
                             android:hint="@string/strnameofschool"
-                            android:padding="15sp"
-                            android:textSize="20sp"
+                            android:padding="@dimen/d15dp"
+                            android:textSize="@dimen/d20sp"
                             android:gravity="center_vertical"
                             android:textColorHint="@color/color_text_hint" />
                         <!--<TextView-->
@@ -403,7 +403,7 @@
                             android:hint="@string/strprogramcourse"
                             android:background="@drawable/spinner_selector"
                             android:padding="@dimen/d20dp"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/d20sp"
                             android:gravity="center_vertical"
                             android:textColorHint="@color/color_text_hint" />
 
@@ -465,7 +465,7 @@
                             android:gravity="top|left"
                             android:hint="@string/str_education"
                             android:inputType="text"
-                            android:padding="15dp"
+                            android:padding="@dimen/d15dp"
                             android:textColorHint="@color/color_text_hint" />
 
                         <EditText
@@ -478,7 +478,7 @@
                             android:gravity="top|left"
                             android:hint="@string/str_specialization"
                             android:inputType="text"
-                            android:padding="15dp"
+                            android:padding="@dimen/d15dp"
                             android:textColorHint="@color/color_text_hint" />
 
 
@@ -532,7 +532,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/selector"
                             android:hint="@string/strusername"
-                            android:padding="15dp"
+                            android:padding="@dimen/d15dp"
                             android:textColorHint="@color/color_text_hint" />
 
                         <EditText
@@ -544,7 +544,7 @@
                             android:background="@drawable/selector"
                             android:hint="@string/strcurrentpwd"
                             android:inputType="textPassword"
-                            android:padding="15dp"
+                            android:padding="@dimen/d15dp"
                             android:textColorHint="@color/color_text_hint" />
 
                     </LinearLayout>
@@ -564,7 +564,7 @@
                             android:background="@drawable/selector"
                             android:hint="@string/strnewpwd"
                             android:inputType="textPassword"
-                            android:padding="15dp"
+                            android:padding="@dimen/d15dp"
                             android:textColorHint="@color/color_text_hint" />
 
                         <EditText
@@ -576,7 +576,7 @@
                             android:background="@drawable/selector"
                             android:hint="@string/strconfirmpwd"
                             android:inputType="textPassword"
-                            android:padding="15dp"
+                            android:padding="@dimen/d15dp"
                             android:textColorHint="@color/color_text_hint" />
                     </LinearLayout>
                 </LinearLayout>
@@ -622,7 +622,7 @@
                     android:paddingTop="@dimen/d10dp"
                     android:text="@string/strsubmit"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/d20dp"
+                    android:textSize="@dimen/d20sp"
                     app:pb_colorComplete="@color/color_blue"
                     app:pb_colorNormal="@color/color_blue"
                     app:pb_colorPressed="@color/color_blue"

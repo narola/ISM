@@ -4,19 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_news_feed"
-    android:orientation="vertical">
+    android:layout_marginTop="@dimen/d15dp"
+    android:orientation="vertical"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/d15dp"
-        android:layout_marginRight="@dimen/d15dp"
+        android:layout_margin="@dimen/d15dp"
         android:orientation="horizontal">
 
         <com.ism.teacher.views.CircleImageView
             android:id="@+id/img_dp_post_creator"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
+            android:layout_width="@dimen/d120dp"
+            android:layout_height="@dimen/d120dp"
             android:layout_gravity="top|center_horizontal"
             android:layout_margin="@dimen/d15dp"
             android:contentDescription="@string/app_name"
@@ -34,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/d10sp"
-                android:text="Emma Mall"
+                android:text=""
                 android:textColor="@color/color_black"
                 android:textSize="@dimen/d25sp" />
 
@@ -43,11 +44,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:lines="4"
-                android:padding="@dimen/d10sp"
+                android:padding="@dimen/d10dp"
                 android:text=""
                 android:textColor="@color/color_gray"
                 android:textSize="@dimen/d18sp" />
+
             <LinearLayout
                 android:id="@+id/ll_posted_video_image"
                 android:layout_width="wrap_content"
@@ -74,8 +75,8 @@
 
                     <ImageView
                         android:id="@+id/img_video"
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
+                        android:layout_width="@dimen/d200dp"
+                        android:layout_height="@dimen/d200dp"
                         android:layout_centerInParent="true"
                         android:visibility="gone" />
 
@@ -106,7 +107,7 @@
             </LinearLayout>
 
 
-            <!-- comment like/dislike section-->
+            <!-- comment selfLike/dislike section-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -185,8 +186,7 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/et_writePost"
@@ -199,8 +199,9 @@
             android:layout_toLeftOf="@+id/txt_submit_post"
             android:background="@drawable/bg_news_feed"
             android:hint="@string/strwriteyourcommenthere"
-            android:padding="15sp"
-            android:textColorHint="@color/color_text_hint" />
+            android:padding="@dimen/d15dp"
+            android:textColorHint="@color/color_text_hint"
+            android:textSize="@dimen/d18sp" />
 
         <TextView
             android:id="@+id/txt_submit_post"
@@ -211,10 +212,10 @@
             android:layout_marginRight="@dimen/d20dp"
             android:background="@color/color_dark_gray"
             android:gravity="center"
-            android:text="Comment"
+            android:text="@string/strComment"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/d20dp"
+            android:textSize="@dimen/d18sp"
             android:textStyle="bold" />
     </RelativeLayout>
 

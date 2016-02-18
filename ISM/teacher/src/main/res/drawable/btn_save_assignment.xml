@@ -3,8 +3,8 @@
     <solid android:color="@color/btn_save" />
     <padding
         android:bottom="@dimen/d10dp"
-        android:left="@dimen/d10dp"
-        android:right="@dimen/d10dp"
+        android:left="@dimen/d15dp"
+        android:right="@dimen/d15dp"
         android:top="@dimen/d10dp" />
     <corners android:radius="@dimen/d5dp" />
 </shape>

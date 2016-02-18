@@ -3,17 +3,19 @@ package com.ism.author.adapter;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.HtmlImageGetter;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.Answers;
@@ -25,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 16/11/15.
  */
-public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<ObjectiveAssignmentQuestionsAdapter.ViewHolder> {
+public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<ObjectiveAssignmentQuestionsAdapter.ViewHolder> implements HtmlImageGetter.RefreshDataAfterLoadImage {
 
     private static final String TAG = ObjectiveAssignmentQuestionsAdapter.class.getSimpleName();
     private Context mContext;
@@ -49,25 +51,31 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
     public void onBindViewHolder(ViewHolder holder, int position) {
         try {
 
-            holder.txtQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.txtQuestionText.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.txtCorrectAnswer.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.txtAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.txtStudentnameAnswer.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.txtStudentAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.txtEvoluationsNotes.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.txtSolution.setTypeface(Global.myTypeFace.getRalewayBold());
-
-            holder.etEvoluationsNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.etSolution.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             holder.txtQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
-            holder.txtQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
             holder.txtQuestionNo.setPaintFlags(holder.txtQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            holder.txtQuestionText.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
+//            holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext, null), null));
 
-            holder.etEvoluationsNotes.setText(Utils.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
-            holder.etSolution.setText(Utils.formatHtml(arrListQuestions.get(position).getSolution()));
+
+            if (arrListQuestions.get(position).getQuestionText().contains("img") || arrListQuestions.get(position).getQuestionText().contains("http:")
+                    || arrListQuestions.get(position).getQuestionText().contains("https:")) {
+                if (arrListQuestions.get(position).getSpan() == null) {
+
+                    arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                            new HtmlImageGetter(50, 50, mContext, (HtmlImageGetter.RefreshDataAfterLoadImage) this
+                            ), null));
+                } else {
+
+                    holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                            new HtmlImageGetter(50, 50, mContext, null
+                            ), null));
+                }
+            } else {
+                holder.txtQuestionText.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText()));
+            }
+
+            holder.tvEvoluationsNotes.setText(Utility.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
+            holder.tvSolution.setText(Utility.formatHtml(arrListQuestions.get(position).getSolution()));
             if (getBundleArguments().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_NAME)) {
                 holder.txtStudentnameAnswer.setText(getBundleArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME) + " " +
                         mContext.getString(R.string.stranswer));
@@ -101,7 +109,7 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
                 if (arrListQuestions.get(position).getAnswers() != null) {
                     for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
                         if (arrListQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
-                            holder.txtAnswer.setText(Utils.formatHtml(Utils.getCharForNumber(i + 1) + ". " +
+                            holder.txtAnswer.setText(Utility.formatHtml(Utility.getCharForNumber(i + 1) + ". " +
                                     arrListQuestions.get(position).getAnswers().get(i).getChoiceText()));
                             break;
                         }
@@ -125,7 +133,7 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
                         for (int j = 0; j < arrListQuestions.get(position).getAnswers().size(); j++) {
                             if (evaluationList.get(position).getStudentResponse().equalsIgnoreCase
                                     (arrListQuestions.get(position).getAnswers().get(j).getId())) {
-                                holder.txtStudentAnswer.setText(Utils.formatHtml(Utils.getCharForNumber(j + 1) + ". " +
+                                holder.txtStudentAnswer.setText(Utility.formatHtml(Utility.getCharForNumber(j + 1) + ". " +
                                         arrListQuestions.get(position).getAnswers().get(j).getChoiceText()));
                                 break;
                             }
@@ -157,11 +165,12 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
         notifyDataSetChanged();
     }
 
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtQuestionNo, txtQuestionText, txtCorrectAnswer, txtAnswer, txtStudentnameAnswer, txtStudentAnswer, txtEvoluationsNotes,
-                txtSolution;
-        EditText etEvoluationsNotes, etSolution;
+        TextView txtQuestionNo, txtQuestionText, txtCorrectAnswer, txtAnswer, txtStudentnameAnswer, txtStudentAnswer, txtEvoluationsNotesTitle,
+                txtSolutionTitle, tvEvoluationsNotes, tvSolution;
+
         LinearLayout llQuestionsOptions, llAnswerContainer, llEvaluationContainer, llCorrectAnswer;
 
         public ViewHolder(View itemView) {
@@ -170,20 +179,33 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
                 txtQuestionNo = (TextView) itemView.findViewById(R.id.txt_question_no);
                 txtQuestionText = (TextView) itemView.findViewById(R.id.txt_question_text);
                 txtCorrectAnswer = (TextView) itemView.findViewById(R.id.txt_correct_answer);
-                txtAnswer = (TextView) itemView.findViewById(R.id.txt_answer);
+                txtAnswer = (TextView) itemView.findViewById(R.id.txt_author_answer);
                 txtStudentnameAnswer = (TextView) itemView.findViewById(R.id.txt_studentname_answer);
                 txtStudentAnswer = (TextView) itemView.findViewById(R.id.txt_student_answer);
-                txtEvoluationsNotes = (TextView) itemView.findViewById(R.id.txt_evoluations_notes);
-                txtSolution = (TextView) itemView.findViewById(R.id.txt_solution);
+                txtEvoluationsNotesTitle = (TextView) itemView.findViewById(R.id.txt_evoluations_notes_title);
+                txtSolutionTitle = (TextView) itemView.findViewById(R.id.txt_solution_title);
 
-                etEvoluationsNotes = (EditText) itemView.findViewById(R.id.et_evoluations_notes);
-                etSolution = (EditText) itemView.findViewById(R.id.et_solution);
+                tvEvoluationsNotes = (TextView) itemView.findViewById(R.id.tv_evoluations_notes);
+                tvSolution = (TextView) itemView.findViewById(R.id.tv_title_solution);
 
                 llQuestionsOptions = (LinearLayout) itemView.findViewById(R.id.ll_questions_options);
                 llAnswerContainer = (LinearLayout) itemView.findViewById(R.id.ll_answer_container);
                 llEvaluationContainer = (LinearLayout) itemView.findViewById(R.id.ll_evaluation_container);
 
                 llCorrectAnswer = (LinearLayout) itemView.findViewById(R.id.ll_correct_answer);
+
+
+                txtQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
+                txtQuestionText.setTypeface(Global.myTypeFace.getRalewayRegular());
+                txtCorrectAnswer.setTypeface(Global.myTypeFace.getRalewayBold());
+                txtAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
+                txtStudentnameAnswer.setTypeface(Global.myTypeFace.getRalewayBold());
+                txtStudentAnswer.setTypeface(Global.myTypeFace.getRalewayRegular());
+                txtEvoluationsNotesTitle.setTypeface(Global.myTypeFace.getRalewayBold());
+                txtSolutionTitle.setTypeface(Global.myTypeFace.getRalewayBold());
+                tvEvoluationsNotes.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvSolution.setTypeface(Global.myTypeFace.getRalewayRegular());
+
 
             } catch (Exception e) {
                 Debug.e(TAG, "ViewHolder Exceptions :" + e.toString());
@@ -199,7 +221,7 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
         v = layoutInflater.inflate(R.layout.row_mcq_question_answer, null, false);
         TextView tvMcqQuestionAns = (TextView) v.findViewById(R.id.tv_mcq_question_ans);
         tvMcqQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvMcqQuestionAns.setText(Utils.formatHtml(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
+        tvMcqQuestionAns.setText(Utility.formatHtml(Utility.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
 
         return v;
     }
@@ -217,5 +239,18 @@ public class ObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter<Ob
         return ((AuthorHostActivity) mContext).getBundle();
     }
 
+
+    @Override
+    public void refreshData() {
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+                notifyDataSetChanged();
+                Debug.e(TAG, "notify data called");
+            }
+        };
+
+        handler.post(r);
+    }
 
 }

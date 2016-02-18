@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:mContext="com.ism.activity.PostFeedActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:mContext="com.ism.activity.PostFeedActivity">
     <!--<ScrollView-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent">-->
@@ -16,48 +16,52 @@
     <com.ism.commonsource.view.ActionProcessButton
         android:id="@+id/prog_host"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:visibility="gone"/>
+        android:layout_height="@dimen/dp2"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60sp"
+        android:layout_height="@dimen/dp45"
         android:background="@color/color_actionbar"
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/txt_cancel"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/d20sp"
-            android:gravity="center"
-            android:padding="5dp"
-            android:id="@+id/txt_cancel"
             android:background="@drawable/bg_icon"
-            android:text="@string/strcancel" />
+            android:gravity="center"
+            android:padding="@dimen/dp4"
+            android:text="@string/strcancel"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp15" />
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
         <TextView
+            android:id="@+id/txt_post"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textColor="@color/color_blue"
-            android:textSize="@dimen/d20sp"
-            android:id="@+id/txt_post"
-            android:gravity="center"
             android:layout_gravity="right"
-            android:paddingLeft="5dp"
-            android:paddingRight="@dimen/d20dp"
-            android:drawableRight="@drawable/arrow"
             android:background="@drawable/bg_icon"
-            android:text="@string/strpost" />
+            android:drawableRight="@drawable/arrow"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dp4"
+            android:paddingRight="@dimen/dp15"
+            android:text="@string/strpost"
+            android:textColor="@color/color_blue"
+            android:textSize="@dimen/sp15" />
 
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="670dp"
+        android:layout_height="@dimen/dp420"
         android:layout_weight="1"
-        android:background="@color/color_white"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -69,27 +73,27 @@
             <EditText
                 android:id="@+id/et_sayit"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="85dp"
+                android:layout_marginRight="@dimen/dp47"
+                android:layout_height="0dp"
                 android:layout_weight="0.8"
-                android:background="@color/color_white"
+                android:background="@color/white"
                 android:gravity="top"
                 android:hint="SAY IT"
-                android:padding="10dp" />
+                android:padding="@dimen/dp8" />
 
             <com.ism.views.HorizontalListView
                 android:id="@+id/horilistview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="85dp"
+                android:layout_marginRight="@dimen/dp47"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:padding="10dp"
+                android:padding="@dimen/dp8"
                 android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_tools"
-            android:layout_width="85dp"
+            android:layout_width="@dimen/dp47"
             android:layout_height="match_parent"
             android:layout_alignRight="@+id/rl_main"
             android:background="@drawable/sidebar"
@@ -197,60 +201,60 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_bottompost"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/ll_captureimg"
-                android:layout_width="250sp"
+                android:layout_width="@dimen/dp187"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="150dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginLeft="@dimen/dp98"
+                android:layout_marginRight="@dimen/dp30"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/img_capture"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/img_camera"
                     android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/txt_capture"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text=""
                     android:textColor="@color/color_black"
-                    android:textSize="30sp" />
+                    android:textSize="@dimen/sp19" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_chooseimg"
-                android:layout_width="250sp"
+                android:layout_width="@dimen/dp187"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="150dp"
+                android:layout_marginLeft="@dimen/dp30"
+                android:layout_marginRight="@dimen/dp98"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/imggallery" />
 
                 <TextView
                     android:id="@+id/txt_choose"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text=""
                     android:textColor="@color/color_black"
-                    android:textSize="30sp" />
+                    android:textSize="@dimen/sp19" />
             </LinearLayout>
         </LinearLayout>
 
@@ -269,7 +273,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="@dimen/dp5"
                 android:src="@drawable/audio_done" />
 
             <RelativeLayout
@@ -278,15 +282,15 @@
 
                 <com.ism.views.CircularSeekBar
                     android:id="@+id/circularSeekBar"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    android:layout_margin="20dp"
-                    android:padding="20dp"
-                    app:circle_color="@color/color_white"
+                    android:layout_width="@dimen/dp187"
+                    android:layout_height="@dimen/dp187"
+                    android:layout_margin="@dimen/dp15"
+                    android:padding="@dimen/dp15"
+                    app:circle_color="@color/white"
                     app:circle_progress_color="#EA4A51"
-                    app:circle_stroke_width="2dp"
-                    app:circle_x_radius="100dp"
-                    app:circle_y_radius="100dp"
+                    app:circle_stroke_width="@dimen/dp2"
+                    app:circle_x_radius="@dimen/dp60"
+                    app:circle_y_radius="@dimen/dp60"
                     app:end_angle="90"
                     app:max="100"
                     app:pointer_alpha_ontouch="100"
@@ -301,7 +305,7 @@
                     android:id="@+id/img_stop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"/>
+                    android:layout_centerInParent="true" />
             </RelativeLayout>
 
 
@@ -310,7 +314,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/dp8"
                 android:src="@drawable/img_stop" />
         </LinearLayout>
     </LinearLayout>

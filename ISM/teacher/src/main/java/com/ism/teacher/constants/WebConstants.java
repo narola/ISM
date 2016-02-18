@@ -12,16 +12,20 @@ public class WebConstants {
     public static String ACCESS_KEY;
     public static final String NO_USERNAME = "nousername";
 
-
     //Host urls
-    private static final String URL_PG_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";
-    public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
+    //  public static final String URL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
+    public static final String URL_HOST = "http://192.168.1.202/pg/ISM/WS_ISM/ISMServices.php?Service=";      // PG
 
 
-    public static final String URL_UPLOADPROFILEIMAGES = URL_KINJAL_HOST + "UploadProfileImages";
+    public static final String Image_url = "http://192.168.1.147/WS_ISM/Images/questions_images/";
+//    public static final String Image_url = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
+
+
+    public static final String URL_UPLOADPROFILEIMAGES = URL_HOST + "UploadProfileImages";
 
     public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Feeds/";
-    public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
+    //    public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
+    public static final String USER_IMAGES = "http://192.168.1.202/pg/ISM/WS_ISM/images/users_images/";
 
 
     //static parameters
@@ -30,14 +34,14 @@ public class WebConstants {
     public static final String EXAM_ID_9_OBJECTIVE = "9";
     public static final String STUDENT_ID_202_OBJECCTIVE = "202";
     public static final String USER_ID_370 = "370";
-    public static final String USER_ID_340 = "340";
+    public static final String USER_ID_319 = "319";
+    public static final String USER_ID_580 = "580";
     public static final String TEST_GETSTUDYMATES = "167";
 
 
     public static final String TEACHER_ROLE_ID = "3";
     public static final String TEST_USER_ID_52 = "52";
     public static final String TEST_USER_NAME = "Admin";
-
     /**
      * Api IDs
      */
@@ -68,7 +72,7 @@ public class WebConstants {
 
 
     public static final int GET_ALL_ASSIGNMENTS = 21;
-    public static final int GET_ALL_EXAM_SUBMISSION = 22;
+    public static final int GET_EXAM_SUBMISSION = 22;
     public static final int GET_EXAM_QUESTIONS = 23;
     public static final int GET_EXAM_EVALUATIONS = 24;
     public static final int GET_MY_STUDENTS = 25;
@@ -80,77 +84,124 @@ public class WebConstants {
     public static final int TEMP_CREATE_QUESTION = 30;
     public static final int UPLOAD_FEED_MEDIA = 31;
     public static final int UPLOADMEDIAFORQUESTION = 32;
-    public static final int REGISTERUSER = 33;
+    public static final int REGISTER_USER = 33;
     public static final int UPLOADPROFILEIMAGES = 34;
 
-    public static final int GETADMINCONFIG = 35;
+    public static final int GET_ADMIN_CONFIG = 35;
     public static final int REFRESH_TOKEN = 36;
     public static final int GROUP_ALLOCATION = 37;
+    public static final int ALL_LESSON_NOTES = 38;
+    public static final int LESSON_NOTES_WITH_DETAILS = 39;
+
+    //User Profile
+    public static final int GET_NOTIFICATION = 40;
+    public static final int UPDATE_READ_STATUS = 41;
+    public static final int GET_MESSAGES = 42;
+    public static final int RESPOND_TO_REQUEST = 43;
+    public static final int GET_STUDYMATE_REQUEST = 44;
+    public static final int GET_USER_PREFERENCES = 45;
+    public static final int MANAGE_GENERAL_SETTINGS = 46;
+    public static final int GENERAL_SETTING_PREFERENCES = 47;
+
+    public static final int BLOCK_USER = 48;
+    public static final int UNBLOCK_USER = 49;
+    public static final int BLOCKED_USER = 50;
+    public static final int GET_MY_FEEDS = 51;
 
 
-    public static final String Image_url = "http://192.168.1.147/WS_ISM/Images/questions_images/";
+    //Progress Report
 
-    /**
-     * URLs
-     */
-    // private static final String URL_HOST_75 = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";    // RAVI
-    // private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";  // KRUNAL
-    //  private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
+    public static final int GET_REPORT_DATA = 52;
 
 
-    public static final String URL_GETADMINCONFIG = URL_KINJAL_HOST + "GetAdminConfig";
-    public static final String URL_REFRESHTOKEN = URL_KINJAL_HOST + "RefreshToken";
+    public static final String URL_GET_ADMIN_CONFIG = URL_HOST + "GetAdminConfig";
+    public static final String URL_REFRESH_TOKEN = URL_HOST + "RefreshToken";
 
-    public static final String URL_REGISTERUSER = URL_KINJAL_HOST + "RegisterUser";
-    public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
-    public static final String URL_GET_ALL_FEEDS = URL_KINJAL_HOST + "GetAllFeeds";
-    public static final String URL_GET_ALL_COMMENTS = URL_KINJAL_HOST + "GetAllComments";
-    public static final String URL_GET_STUDYMATES = URL_KINJAL_HOST + "GetStudymates";
-    public static final String URL_ADD_COMMENT = URL_KINJAL_HOST + "AddComment";
-    public static final String URL_TAG_FRIEND_IN_FEED = URL_KINJAL_HOST + "TagFriendInFeed";
-    public static final String URL_LIKE_FEED = URL_KINJAL_HOST + "LikeFeed";
-    public static final String URL_GETCLASSROOMS = URL_KINJAL_HOST + "GetAllClassrooms";
-    public static final String URL_GETSUBJECT = URL_KINJAL_HOST + "GetAllSubjects";
-    public static final String URL_GETTOPICS = URL_KINJAL_HOST + "GetAllTopics";
-    public static final String URL_CREATEASSIGNMENT = URL_KINJAL_HOST + "CreateAssignment";
-    public static final String URL_GET_COURSES = URL_KINJAL_HOST + "GetAllCourses";
-    public static final String URL_CREATE_EXAM = URL_KINJAL_HOST + "CreateExam";
-    public static final String URL_GET_QUESTION_BANK = URL_KINJAL_HOST + "GetQuestionBank";
-    public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
+    public static final String URL_REGISTER_USER = URL_HOST + "RegisterUser";
+    public static final String URL_LOGIN = URL_HOST + "AuthenticateUser";
+    public static final String URL_GET_ALL_FEEDS = URL_HOST + "GetAllFeeds";
+    public static final String URL_GET_ALL_COMMENTS = URL_HOST + "GetAllComments";
+    public static final String URL_GET_STUDYMATES = URL_HOST + "GetStudymates";
+    public static final String URL_ADD_COMMENT = URL_HOST + "AddComment";
+    public static final String URL_TAG_FRIEND_IN_FEED = URL_HOST + "TagFriendInFeed";
+    public static final String URL_LIKE_FEED = URL_HOST + "LikeFeed";
+    public static final String URL_GETCLASSROOMS = URL_HOST + "GetAllClassrooms";
+    public static final String URL_GETSUBJECT = URL_HOST + "GetAllSubjects";
+    public static final String URL_GETTOPICS = URL_HOST + "GetAllTopics";
+    public static final String URL_CREATEASSIGNMENT = URL_HOST + "CreateAssignment";
+    public static final String URL_GET_COURSES = URL_HOST + "GetAllCourses";
+    public static final String URL_CREATE_EXAM = URL_HOST + "CreateExam";
+    public static final String URL_GET_QUESTION_BANK = URL_HOST + "GetQuestionBank";
+    public static final String URL_POSTFEED = URL_HOST + "PostFeed";
     //SetQuestionForexam api
-    public static final String URL_SET_QUESTIONS_FOR_EXAM = URL_KINJAL_HOST + "SetQuestionsForExam";
-    public static final String URL_FORGOT_PASSWORD = URL_KINJAL_HOST + "ForgotPassword";
-    public static final String URL_UPLOAD_FEED_MEDIA = URL_KINJAL_HOST + "UploadMedia";
-    public static final String URL_REQUEST_CREDENTIALS = URL_KINJAL_HOST + "RequestForCredentials";
+    public static final String URL_SET_QUESTIONS_FOR_EXAM = URL_HOST + "SetQuestionsForExam";
+    public static final String URL_FORGOT_PASSWORD = URL_HOST + "ForgotPassword";
+    public static final String URL_UPLOAD_FEED_MEDIA = URL_HOST + "UploadMedia";
+    public static final String URL_REQUEST_CREDENTIALS = URL_HOST + "RequestForCredentials";
 
 
     //used for assignment
-    public static final String URL_GET_ALL_ASSIGNMENTS = URL_KINJAL_HOST + "GetAllExams";
-    public static final String URL_GET_EXAM_QUESTIONS = URL_KINJAL_HOST + "GetExamQuestions";
-    public static final String URL_GET_EXAM_EVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
-    public static final String URL_GET_MY_STUDENTS = URL_KINJAL_HOST + "GetMyStudents";
+    public static final String URL_GET_ALL_ASSIGNMENTS = URL_HOST + "GetAllExams";
+    public static final String URL_GET_EXAM_QUESTIONS = URL_HOST + "GetExamQuestions";
+    public static final String URL_GET_EXAM_EVALUATIONS = URL_HOST + "GetExamEvaluation";
+    public static final String URL_GET_MY_STUDENTS = URL_HOST + "GetMyStudents";
 
 
-    public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_KINJAL_HOST + "GetExamSubmission";
+    public static final String URL_GET_EXAM_SUBMISSION = URL_HOST + "GetExamSubmission";
 
-    public static final String URL_GET_CITIES = URL_KINJAL_HOST + "GetCities";
-    public static final String URL_GET_STATES = URL_KINJAL_HOST + "GetStates";
-    public static final String URL_GET_COUNTRIES = URL_KINJAL_HOST + "GetCountries";
+    public static final String URL_GET_CITIES = URL_HOST + "GetCities";
+    public static final String URL_GET_STATES = URL_HOST + "GetStates";
+    public static final String URL_GET_COUNTRIES = URL_HOST + "GetCountries";
 
     //Add Question Functionality
 
-    public static final String URL_GET_ALL_HASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
-    public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
+    public static final String URL_GET_ALL_HASHTAG = URL_HOST + "GetAllHashtag";
+    public static final String URL_CREATEQUESTION = URL_HOST + "CreateQuestion";
 
 
     //Question Add/Edit Functionality
-    public static final String URL_HASHTAG = URL_KINJAL_HOST + "Hashtag";
-    public static final String URL_TEMP_CREATE_QUESTION = URL_KINJAL_HOST + "TempCreateQuestion";
+    public static final String URL_HASHTAG = URL_HOST + "Hashtag";
+    public static final String URL_TEMP_CREATE_QUESTION = URL_HOST + "TempCreateQuestion";
 
     //Upload Media url
 
-    public static final String URL_UPLOADMEDIAFORQUESTION = URL_KINJAL_HOST + "UploadMediaForQuestion";
+    public static final String URL_UPLOADMEDIAFORQUESTION = URL_HOST + "UploadMediaForQuestion";
     //Group Allocation url for sunday
-    public static final String URL_GROUP_ALLOCATION = URL_KINJAL_HOST + "CheckGroupAllocation";
+    public static final String URL_GROUP_ALLOCATION = URL_HOST + "CheckGroupAllocation";
+
+    //fetch all lesson notes
+    public static final String URL_ALL_LESSON_NOTES = URL_HOST + "GetAllLessonNotes";
+
+    //lesson notes with detail for subject id
+    public static final String URL_LESSON_NOTES_WITH_DETAILS = URL_HOST + "GetLessonNotesWithDetails";
+
+
+    public static final String STUDYMATE_REQUEST = "studymate_request";
+
+    public static final String MESSAGES = "messages";
+
+    public static final String NOTIFICATION = "notification";
+
+    /**
+     * User profile urls
+     */
+    public static final String URL_GET_NOTIFICATION = URL_HOST + "GetNotification";
+    public static final String URL_UPDATE_READ_STATUS = URL_HOST + "UpdateReadStatus"; // studymate_request, messages, notification
+    public static final String URL_GET_MESSAGES = URL_HOST + "GetMessages";
+    public static final String URL_RESPOND_TO_REQUEST = URL_HOST + "AcceptRequestFromStudymate";
+    public static final String URL_GET_STUDYMATE_REQUEST = URL_HOST + "GetStudymateRequest";
+    public static final String URL_GENERAL_SETTING_PREFERENCES = URL_HOST + "GetAllPreferences";
+    public static final String URL_MANAGE_GENERAL_SETTING = URL_HOST + "ManageGeneralSettings";
+    public static final String URL_GET_USER_PREFERENCES = URL_HOST + "GetUserPreferences";
+    public static final String URL_BLOCK_USER = URL_HOST + "BlockUser";
+    public static final String URL_GET_BLOCKED_USER = URL_HOST + "GetBlockedUser";
+    public static final String URL_GET_MY_FEEDS = URL_HOST + "GetMyFeeds";
+
+
+    /**
+     * Progress Report
+     */
+
+    public static final String URL_GET_REPORT_DATA = URL_HOST + "GetReportData";
 
 }

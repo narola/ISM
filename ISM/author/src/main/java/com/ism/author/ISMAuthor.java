@@ -15,6 +15,7 @@ public class ISMAuthor extends Application {
 
 
     public static DisplayImageOptions options;
+    public static DisplayImageOptions roundCorneroptions;
 
     @Override
     public void onCreate() {

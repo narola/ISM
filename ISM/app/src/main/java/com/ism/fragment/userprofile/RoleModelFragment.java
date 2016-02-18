@@ -73,7 +73,7 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_user_profile_books, container, false);
+        view = inflater.inflate(R.layout.fragment_desk_books, container, false);
         initGlobal();
 
         return view;
@@ -242,7 +242,7 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
                 }
             });
         } catch (Exception e) {
-            Debug.i(TAG, "onClicks Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "onClicks Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -257,7 +257,7 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiGetRoleModelsForUser Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiGetRoleModelsForUser Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -284,15 +284,15 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
         try {
             activityHost.hideProgress();
             if (object != null) {
-                Debug.i(TAG, "Response object :" + object);
+                Log.e(TAG, "Response object :" + object);
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite success");
+                    Log.e(TAG, "onResponseAddResourceToFavorite success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
+                    Log.e(TAG, "onResponseAddResourceToFavorite Failed");
                 }
             } else if (error != null) {
-                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
+                Log.e(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
@@ -309,7 +309,7 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
                     arrayListSuggested = responseHandler.getRoleModel().get(0).getSuggestedRolemodel();
                     setUpFavList(arrayListFav);
                     setUpSuggestedList(arrayListSuggested);
-                    Debug.i(TAG, "onResponseUserRoleModels success");
+                    Log.e(TAG, "onResponseUserRoleModels success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseUserRoleModels Failed");
                 }
@@ -323,7 +323,7 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
 
     private void setUpFavList(ArrayList<RolemodelData> arrayListFav) {
         try {
-            Debug.i(TAG, "setUpFavList :arrayListFav=" + arrayListFav.size());
+            Log.e(TAG, "setUpFavList :arrayListFav=" + arrayListFav.size());
             favRoleModelsAdapter = new FavoriteRoleModelsAdapter(getActivity(), arrayListFav, this);
             listViewFav.setAdapter(favRoleModelsAdapter);
             setVisibilityFavItems(arrayListFav.size());
@@ -341,7 +341,7 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
 
     private void setUpSuggestedList(ArrayList<RolemodelData> arrayListSuggested) {
         try {
-            Debug.i(TAG, "setUpSuggestedList :arrayListSuggested=" + arrayListSuggested.size());
+            Log.e(TAG, "setUpSuggestedList :arrayListSuggested=" + arrayListSuggested.size());
             suggestedRoleModelsAdapter = new SuggestedRoleModelsAdapter(getActivity(), arrayListSuggested, this);
             listViewSuggested.setAdapter(suggestedRoleModelsAdapter);
             setVisibilitySuggestedItems(arrayListSuggested.size());
@@ -363,11 +363,11 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
             for (int i = 0; i < arrayList.size(); i++) {
                 if (arrayList.get(i).getModelName().toString().toLowerCase().contains(s.toString().toLowerCase())) {
                     list.add(arrayList.get(i));
-                    Debug.i(TAG, "i :" + i + " String : " + s);
+                    Log.e(TAG, "i :" + i + " String : " + s);
                 }
             }
         } catch (Exception e) {
-            Debug.i(TAG, "onSearch: " + e.getLocalizedMessage());
+            Log.e(TAG, "onSearch: " + e.getLocalizedMessage());
         }
         return list;
     }
@@ -401,13 +401,13 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
                     attribute.setUnfavoriteResourceId(arrayListUnFavItems);// get All the resource ids from favourite list to add resource id in user unfavourites
                 }
                 attribute.setResourceName(AppConstant.RESOURCE_ROLEMODEL);
-                Debug.i(TAG, "Attributes object :" + attribute);
+                Log.e(TAG, "Attributes object :" + attribute);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
             } else {
                 Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -433,7 +433,7 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
 
     @Override
     public void onAddToFav(int position) {
-        Debug.i(TAG, "OnAddToFav" + position);
+        Log.e(TAG, "OnAddToFav" + position);
         try {
             arrayListFavItems.add(arrayListSuggested.get(position).getRolemodelId());
             arrayListFav.add(arrayListSuggested.get(position));
@@ -449,7 +449,7 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
 
     @Override
     public void onRemoveFromFav(int position) {
-        Debug.i(TAG, "onRemoveFromFav" + position);
+        Log.e(TAG, "onRemoveFromFav" + position);
         try {
             arrayListUnFavItems.add(arrayListFav.get(position).getRolemodelId());
             // arrayListSuggested.add(arrayListFav.get(position));

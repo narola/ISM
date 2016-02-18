@@ -13,7 +13,7 @@ import io.realm.annotations.PrimaryKey;
 public class TutorialGroup extends RealmObject {
 
     @PrimaryKey
-    private  int groupId;
+    private int groupId;
     private String groupName;
     private String groupProfilePic;
     private String groupType;

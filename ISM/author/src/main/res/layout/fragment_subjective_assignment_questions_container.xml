@@ -12,7 +12,7 @@
 
         <FrameLayout
             android:id="@+id/fl_getsubjective_assignment_container_left"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/d0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.05"></FrameLayout>
 
@@ -23,7 +23,7 @@
 
         <FrameLayout
             android:id="@+id/fl_getsubjective_assignment_container_middle"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/d0dp"
             android:layout_height="match_parent"
             android:layout_weight="2.95"></FrameLayout>
 
@@ -34,7 +34,7 @@
 
         <FrameLayout
             android:id="@+id/fl_getsubjective_assignment_container_right"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/d0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"></FrameLayout>
 

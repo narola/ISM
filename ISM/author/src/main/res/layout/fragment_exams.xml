@@ -21,11 +21,11 @@
 
             <Spinner
                 android:id="@+id/sp_exam_authorbooks"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
-                android:background="@drawable/shadow_grey_small_size" />
+                android:background="@drawable/bg_spinner_header" />
 
             <Spinner
                 android:id="@+id/sp_exam_class"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
-                android:background="@drawable/shadow_grey_small_size" />
+                android:background="@drawable/bg_spinner_header" />
 
             <Spinner
                 android:id="@+id/sp_exam_evaluation_status"
@@ -41,11 +41,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
-                android:background="@drawable/shadow_grey_small_size" />
+                android:background="@drawable/bg_spinner_header" />
 
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1">
@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/d10dp"
                     android:src="@drawable/ic_grid" />
             </RelativeLayout>
         </LinearLayout>
@@ -74,32 +74,32 @@
                 android:id="@+id/txt_submission_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/d10dp"
                 android:layout_weight="1"
                 android:gravity="left"
                 android:paddingLeft="@dimen/d10dp"
                 android:text="@string/strsubmissiondate"
                 android:textColor="@color/color_question"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/d10dp"
-                android:layout_weight="1"
-                android:padding="@dimen/d2dp">
+                android:layout_marginRight="@dimen/d10dp"
+                android:layout_weight="1">
 
                 <EditText
                     android:id="@+id/et_exam_startdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_grey_small_size"
+                    android:background="@drawable/bg_spinner_header"
                     android:editable="false"
                     android:gravity="center_vertical"
                     android:hint="@string/strstartdate"
                     android:paddingLeft="@dimen/d10dp"
                     android:textColor="@color/color_black"
                     android:textColorHint="@color/color_text_hint"
-                    android:textSize="@dimen/d15dp" />
+                    android:textSize="@dimen/d15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -111,24 +111,23 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/d10dp"
-                android:layout_weight="1"
-                android:padding="@dimen/d2dp">
+                android:layout_marginRight="@dimen/d10dp"
+                android:layout_weight="1">
 
                 <EditText
                     android:id="@+id/et_exam_startTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_grey_small_size"
+                    android:background="@drawable/bg_spinner_header"
                     android:editable="false"
                     android:gravity="center_vertical"
                     android:hint="@string/strenddate"
                     android:paddingLeft="@dimen/d10dp"
                     android:textColor="@color/color_black"
                     android:textColorHint="@color/color_text_hint"
-                    android:textSize="@dimen/d15dp" />
+                    android:textSize="@dimen/d15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -139,10 +138,12 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/d15dp"
-                android:layout_weight="1"></RelativeLayout>
+                android:layout_weight="1">
+
+
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 

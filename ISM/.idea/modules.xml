@@ -4,9 +4,13 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidAsync/AndroidAsync.iml" filepath="$PROJECT_DIR$/AndroidAsync/AndroidAsync.iml" />
       <module fileurl="file://$PROJECT_DIR$/ISM.iml" filepath="$PROJECT_DIR$/ISM.iml" />
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/android-websockets/android-websockets.iml" filepath="$PROJECT_DIR$/android-websockets/android-websockets.iml" />
       <module fileurl="file://$PROJECT_DIR$/android_websockets/android_websockets.iml" filepath="$PROJECT_DIR$/android_websockets/android_websockets.iml" />
       <module fileurl="file://$PROJECT_DIR$/android_websockets/android_websockets.iml" filepath="$PROJECT_DIR$/android_websockets/android_websockets.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
+>>>>>>> adddedd0f52cebbf2708517d26e06ea1e3c5b94b
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/assistantwebview/assistantwebview.iml" filepath="$PROJECT_DIR$/assistantwebview/assistantwebview.iml" />
       <module fileurl="file://$PROJECT_DIR$/author/author.iml" filepath="$PROJECT_DIR$/author/author.iml" />

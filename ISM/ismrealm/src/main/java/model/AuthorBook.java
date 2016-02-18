@@ -10,10 +10,10 @@ import io.realm.annotations.PrimaryKey;
  * {@link RealmObject} class - books written by author.
  * Relationship with {@link User},{@link Books}
  */
-public class AuthorBook extends RealmObject{
+public class AuthorBook extends RealmObject {
 
     @PrimaryKey
-    private  int authorBookId;
+    private int authorBookId;
     private User user;
     private Books book;
     private Date createdDate;

@@ -3,13 +3,13 @@
 
     <item>
         <shape>
-            <padding android:right="2dp" />
+            <padding android:right="@dimen/bg_controller_border" />
             <solid android:color="@color/shadow_divider_light" />
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:right="2dp" />
+            <padding android:right="@dimen/bg_controller_border" />
             <solid android:color="@color/shadow_divider_dark" />
         </shape>
     </item>

@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.object.Global;
@@ -63,8 +63,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
 
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                     holder.imgStudentProfilePic, ISMAuthor.options);
-            holder.tvStudentName.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvStudentRollNo.setTypeface(Global.myTypeFace.getRalewayRegular());
+
             holder.tvStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
             holder.tvStudentRollNo.setText(mContext.getResources().getString(R.string.strrollno) + (position + 1));
 
@@ -120,6 +119,10 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
                 tvStudentName = (TextView) convertView.findViewById(R.id.tv_student_name);
                 tvStudentRollNo = (TextView) convertView.findViewById(R.id.tv_student_roll_no);
                 llMyStudentsContainer = (LinearLayout) convertView.findViewById(R.id.ll_my_students_container);
+
+
+                tvStudentName.setTypeface(Global.myTypeFace.getRalewayRegular());
+                tvStudentRollNo.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             } catch (Exception e) {
                 Debug.e(TAG, "ViewHolder Exceptions :" + e.toString());

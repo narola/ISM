@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -47,12 +46,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 
 public class PostFeedActivity extends Activity implements View.OnClickListener, WebserviceWrapper.WebserviceResponse {
     public static final String TAG = PostFeedActivity.class.getSimpleName();
+    public static final String IMAGE = "image";
+    public static final String VIDEO = "video";
+    private static final String AUDIO = "audio";
     private InputMethodManager inputMethod;
     private TextView txtPost, txtCaptue, txtChoose, txtCancel;
     private EditText etSayIt;
@@ -88,6 +89,8 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
     private int recoderDone = 0;
     private ProgressGenerator progressGenerator;
     private ActionProcessButton progHost;
+    private Attribute attribute;
+    private int imageCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,18 +142,31 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         listview = (HorizontalListView) findViewById(R.id.horilistview);
         inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         //llBlank.setVisibility(View.VISIBLE);
-        imgKeyboard.setBackgroundColor(getResources().getColor(R.color.color_blue));
+        toolSelected(imgKeyboard);
     }
 
     public void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        try {
+            Utility.hideKeyboard(this, etSayIt);
+//            View view = this.getCurrentFocus();
+//            if (view != null) {
+//                inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//            }
+        } catch (Exception e) {
+            Log.e(TAG, "hideKeyboard Exceptions : " + e.getLocalizedMessage());
         }
     }
 
     public void showKeyboard() {
-        inputMethod.showSoftInput(etSayIt, InputMethodManager.SHOW_IMPLICIT);
+        try {
+            etSayIt.requestFocus();
+//            InputMethodManager inputMethodManager=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//            inputMethodManager.showSoftInput(etSayIt,InputMethodManager.SHOW_FORCED);
+            Utility.showSoftKeyboard(etSayIt, this);
+        } catch (Exception e) {
+            Log.e(TAG, "showKeyboard Exceptions : " + e.getLocalizedMessage());
+        }
+        //inputMethod.showSoftInput(etSayIt, InputMethodManager.SHOW_IMPLICIT);
     }
 
     public void showProgress() {
@@ -180,8 +196,8 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
     public void onClick(View v) {
         if (v == imgImage) {
             toolSelected(v);
-            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.img_camera));
-            Toast.makeText(getApplicationContext(), "Images", Toast.LENGTH_SHORT).show();
+            imgCapture.setImageResource(R.drawable.img_camera);
+            Toast.makeText(getApplicationContext(), IMAGE, Toast.LENGTH_SHORT).show();
             hideKeyboard();
             llContainer.setVisibility(View.VISIBLE);
             txtCaptue.setText(getResources().getString(R.string.strcaptureimageusingcamera));
@@ -190,17 +206,17 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 
         } else if (v == imgAudio) {
             toolSelected(v);
-            Toast.makeText(getApplicationContext(), "Audio", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), AUDIO, Toast.LENGTH_SHORT).show();
             hideKeyboard();
-            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_recorder));
+            imgCapture.setImageResource(R.drawable.img_camera);
             llContainer.setVisibility(View.VISIBLE);
             txtCaptue.setText(getResources().getString(R.string.strrecordyouraudio));
             txtChoose.setText(getResources().getString(R.string.strchooseyouraudio));
             //loadFragment(FRAGMENT_AUDIO);
         } else if (v == imgVideo) {
             toolSelected(v);
-            imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.img_camera));
-            Toast.makeText(getApplicationContext(), "Video", Toast.LENGTH_SHORT).show();
+            imgCapture.setImageResource(R.drawable.img_camera);
+            Toast.makeText(getApplicationContext(), VIDEO, Toast.LENGTH_SHORT).show();
             hideKeyboard();
             llContainer.setVisibility(View.VISIBLE);
             txtCaptue.setText(getResources().getString(R.string.strcapturevideousingcamera));
@@ -295,7 +311,7 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         } else if (v == imgKeyboard) {
             toolSelected(v);
             //llBlank.setVisibility(View.VISIBLE);
-            showKeyboard();
+            // showKeyboard();
         } else if (v == txtCancel) {
             hideKeyboard();
 
@@ -304,7 +320,8 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         } else if (v == txtPost) {
             hideKeyboard();
             if (etSayIt.getText().toString().length() != 0) {
-                callPostFeed();
+                //callPostFeed();
+                callApiForUploadMediaFile();
             } else {
                 Utility.showToast(this, "Please Write any message to post your feed!");
             }
@@ -316,127 +333,49 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         //super.onBackPressed();
     }
 
-    private void callPostFeed() {
-        String strThumbnailBase64 = null;
-        List<String> listImages = new ArrayList<String>();
-        try {
-            Log.e(TAG + "Arraylist", "" + arrayList);
-            if (arrayList != null) {
-                for (int i = 0; i < arrayList.size(); i++) {
-                    if (arrayList.get(i).getStrFileType().equals("image")) {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), arrayList.get(i).getStrFilePath());
-                        //imgDp.setImageBitmap(bitmap);
-                        String strImgBase64 = Utility.getBase64ForImage(bitmap);
-                        listImages.add(strImgBase64);
-                    } else if (arrayList.get(i).getStrFileType().equals("video")) {
-                        MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
-                        mMediaMetadataRetriever.setDataSource(this, arrayList.get(i).getStrFilePath());
-                        Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-                        strThumbnailBase64 = Utility.getBase64ForImage(bitmap);
-                    }
-                }
 
-                Attribute attribute = new Attribute();
-                attribute.setFeedBy(Global.strUserId);
-                attribute.setImages(null);
-                attribute.setVideoLink("");
-                attribute.setAudioLink("");
-                attribute.setPostedOn(Utility.getDate());
-                attribute.setVideoThumbnail(strThumbnailBase64);
-                attribute.setFeedText(etSayIt.getText().toString().trim());
-
-                new WebserviceWrapper(this, attribute, this).new WebserviceCaller()
-                        .execute(WebConstants.POSTFEED);
-
-            }
-        } catch (Exception e) {
-            Log.e(TAG + "callPostFeed Exception :", e.getLocalizedMessage() + "");
+    public static String getRealPathFromURI(Uri contentURI, Context mContext) {
+        String result;
+        Cursor cursor = mContext.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
         }
+        return result;
     }
 
-//    private Bitmap getImage(int id) {
-//
-//        Bitmap thumb = MediaStore.Video.Thumbnails.getThumbnail(
-//
-//                getContentResolver(),
-//
-//                id, MediaStore.Video.Thumbnails.MICRO_KIND, null);
-//
-//        return thumb;
-//
-//    }
-
-    public String getPathImage(Uri uri) {
-        String wholeID = DocumentsContract.getDocumentId(uri);
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-
-        String[] column = {MediaStore.Images.Media.DATA};
-
-        // where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
-
-        Cursor cursor = getContentResolver().
-                query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        column, sel, new String[]{id}, null);
-        String filePath = "";
-
-        int columnIndex = cursor.getColumnIndex(column[0]);
-
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
+    public String getPathVideo(Uri contentURI, Context mContext) {
+        String result;
+        Cursor cursor = mContext.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
         }
-        cursor.close();
-        return filePath;
+        return result;
     }
 
-    public String getPathAudio(Uri uri) {
-        String wholeID = DocumentsContract.getDocumentId(uri);
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-
-        String[] column = {MediaStore.Audio.Media.DATA};
-
-        // where id is equal to
-        String sel = MediaStore.Audio.Media._ID + "=?";
-
-        Cursor cursor = getContentResolver().
-                query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                        column, sel, new String[]{id}, null);
-        String filePath = "";
-
-        int columnIndex = cursor.getColumnIndex(column[0]);
-
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
+    public String getPathAudio(Uri contentURI, Context mContext) {
+        String result;
+        Cursor cursor = mContext.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
         }
-        cursor.close();
-        return filePath;
+        return result;
     }
 
-    public String getPathVideo(Uri uri) {
-        String wholeID = DocumentsContract.getDocumentId(uri);
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-
-        String[] column = {MediaStore.Video.Media.DATA};
-
-        // where id is equal to
-        String sel = MediaStore.Video.Media._ID + "=?";
-
-        Cursor cursor = getContentResolver().
-                query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                        column, sel, new String[]{id}, null);
-        String filePath = "";
-
-        int columnIndex = cursor.getColumnIndex(column[0]);
-
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
-        }
-        cursor.close();
-        return filePath;
-    }
 
     public void startRecording() {
         if (!isRecording) {
@@ -578,103 +517,102 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
         try {
+            hideProgress();
             if (apiCode == WebConstants.POSTFEED) {
                 onResponsePostFeed(object, error);
-            } else if (apiCode == WebConstants.UPLOAD_FEED_MEDIA) {
-                onResponsePostFeedMeida(object, error);
             }
+//            else if (apiCode == WebConstants.UPLOAD_FEED_MEDIA) {
+//                onResponsePostFeedMeida(object, error);
+//            }
 
         } catch (Exception e) {
-            Debug.i(TAG, "onResponse Exception : " + error);
+            Log.e(TAG, "onResponse Exception : " + error);
         }
     }
 
-    private void onResponsePostFeedMeida(Object object, Exception error) {
-        hideProgress();
-        if (object != null) {
-            ResponseHandler responseHandler = (ResponseHandler) object;
-            if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                arrayList.clear();
-                super.onBackPressed();
-            } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                Utility.showToast(this, "Please try again!");
-            }
-        } else if (error != null) {
-            Debug.i(TAG, "onResponsePostFeedMeida error : " + error);
-        }
-    }
+//    private void onResponsePostFeedMeida(Object object, Exception error) {
+//        hideProgress();
+//        if (object != null) {
+//            ResponseHandler responseHandler = (ResponseHandler) object;
+//            if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+//                arrayList.clear();
+//                super.onBackPressed();
+//            } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+//                Utility.showToast(this, "Please try again!");
+//            }
+//        } else if (error != null) {
+//            Log.e(TAG, "onResponsePostFeedMeida error : " + error);
+//        }
+//    }
 
     private void onResponsePostFeed(Object object, Exception error) {
         if (object != null) {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                 feed_id = responseHandler.getFeed().get(0).getFeedId();
-                if (arrayList != null) {
-                    for (int i = 0; i < arrayList.size(); i++) {
-                        if (arrayList.get(i).getStrFileType().equals("video")) {
-                            mediaType = "video";
-                            uploadUri = getPathVideo(arrayList.get(i).getStrFilePath());
-                        } else if (arrayList.get(i).getStrFileType().equals("audio")) {
-                            uploadUri = getPathAudio(arrayList.get(i).getStrFilePath());
-                            mediaType = "audio";
-                        } else if (arrayList.get(i).getStrFileType().equals("image")) {
-                            mediaType = "image";
-                            uploadUri = getPathImage(arrayList.get(i).getStrFilePath());
-                        } else if (arrayList.get(i).getStrFileType().equals("video")) {
-                            MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
-                            mMediaMetadataRetriever.setDataSource(this, arrayList.get(i).getStrFilePath());
-                            Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-                            // strThumbnailBase64 = Utility.getBase64ForImage(bitmap);
-                        }
-                        if (arrayList.get(i).getStrFilePath() != null) {
-                            Debug.e(TAG, "Thefile path is:" + uploadUri);
-                            callApiForUploadMediaFile(feed_id, mediaType,
-                                    uploadUri);
-                        }
-                    }
-                } else {
-                    arrayList.clear();
-                    super.onBackPressed();
-                }
+                arrayList.clear();
+                super.onBackPressed();
 
             } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                 Utility.showToast(this, "Please try again!");
             }
         } else if (error != null) {
-            Debug.i(TAG, "onResponsePostFeed error : " + error);
+            Log.e(TAG, "onResponsePostFeed error : " + error);
         }
     }
 
-    private void callApiForUploadMediaFile(String feed_id, String mediaType, String filepath) {
+    private void callApiForUploadMediaFile() {
         try {
             Attribute attribute = new Attribute();
-            MediaUploadAttribute fileParam = new MediaUploadAttribute();
-            fileParam.setParamName("mediaFile");
-            fileParam.setFileName(filepath);
-            attribute.getArrListFile().add(fileParam);
 
-            Debug.i(TAG, "Media File Path : " + filepath);
+            for (int i = 0; i < arrayList.size(); i++) {
+                if (arrayList.get(i).getStrFileType().equals(AppConstant.MEDIATYPE_IMAGE)) {
+                    MediaUploadAttribute imagefileParam = new MediaUploadAttribute();
+                    imagefileParam.setParamName(String.valueOf(imageCounter++));
+                    imagefileParam.setFileName(getRealPathFromURI(arrayList.get(i).getStrFilePath(), this));
+                    attribute.getArrListFile().add(imagefileParam);
+                } else if (arrayList.get(i).getStrFileType().equals(AppConstant.MEDIATYPE_VIDEO)) {
+                    MediaUploadAttribute videofileParam = new MediaUploadAttribute();
+                    videofileParam.setParamName("video_link");
+                    videofileParam.setFileName(getPathVideo(arrayList.get(i).getStrFilePath(), this));
+                    attribute.getArrListFile().add(videofileParam);
+                } else if (arrayList.get(i).getStrFileType().equals(AppConstant.MEDIATYPE_AUDIO)) {
+                    MediaUploadAttribute audiofileParam = new MediaUploadAttribute();
+                    audiofileParam.setParamName("audio_link");
+                    audiofileParam.setFileName(getPathAudio(arrayList.get(i).getStrFilePath(), this));
+                    attribute.getArrListFile().add(audiofileParam);
+                }
+            }
 
-            MediaUploadAttribute mediaTypeParam = new MediaUploadAttribute();
-            mediaTypeParam.setParamName("mediaType");
-            mediaTypeParam.setParamValue(mediaType);
-            attribute.getArrListParam().add(mediaTypeParam);
+//            MediaUploadAttribute fileParam = new MediaUploadAttribute();
+//            fileParam.setParamName("video_link");//thumnail
+//            fileParam.setFileName(filepath);
+//            attribute.getArrListFile().add(fileParam);
 
 
-            MediaUploadAttribute feedIdParam = new MediaUploadAttribute();
-            feedIdParam.setParamName("feed_id");
-            feedIdParam.setParamValue(feed_id);
-            attribute.getArrListParam().add(feedIdParam);
+            MediaUploadAttribute feedTextParam = new MediaUploadAttribute();
+            feedTextParam.setParamName("feed_text");
+            feedTextParam.setParamValue(feed_id);
+            attribute.getArrListParam().add(feedTextParam);
+
+            MediaUploadAttribute feedPostOnParam = new MediaUploadAttribute();
+            feedPostOnParam.setParamName("feed_text");
+            feedPostOnParam.setParamValue(feed_id);
+            attribute.getArrListParam().add(feedPostOnParam);
 
             MediaUploadAttribute feedByParam = new MediaUploadAttribute();
             feedByParam.setParamName("feed_by");
             feedByParam.setParamValue(Global.strUserId);
             attribute.getArrListParam().add(feedByParam);
             showProgress();
+
             new WebserviceWrapper(this, attribute, this).new WebserviceCaller()
-                    .execute(WebConstants.UPLOAD_FEED_MEDIA);
+                    .execute(WebConstants.POSTFEED);
+
+//            new WebserviceWrapper(this, attribute, this).new WebserviceCaller()
+//                    .execute(WebConstants.UPLOAD_FEED_MEDIA);
         } catch (Exception e) {
-            Debug.i(TAG, "callApiForUploadMediaFile Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "callApiForUploadMediaFile Exception : " + e.getLocalizedMessage());
 
 
         }
@@ -687,53 +625,43 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
             String path = data.getData().toString();
             Uri uri = data.getData();
             Log.i("uri", uri + "");
-            model = new PostFileModel("image", uri, "");
+            model = new PostFileModel(IMAGE, uri, "");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+            listview.setAdapter(new PostFileAdapter(arrayList, this));
             // adapter.notifyDataSetChanged();
         } else if (requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK) {
-            model = new PostFileModel("image", uriFile, "");
+            model = new PostFileModel(IMAGE, uriFile, "");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         } else if (requestCode == MEDIA_TYPE_VIDEO && resultCode == RESULT_OK) {
             Uri uri = data.getData();
+
             Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory());
             Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory() + uri.getPath());
-            model = new PostFileModel("video", uri, "");
+            model = new PostFileModel(VIDEO, uri, "");
+            MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+            mMediaMetadataRetriever.setDataSource(this, uri);
+            Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+            Log.e(TAG, "Bitmat of video frame : " + bitmap);
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+            listview.setAdapter(new PostFileAdapter(arrayList, this));
         } else if (requestCode == CAPTURE_VIDEO && resultCode == RESULT_OK) {
             Uri uri = data.getData();
             Log.i(TAG, uri.getPath() + "");
-            model = new PostFileModel("video", uri, "");
+            model = new PostFileModel(VIDEO, uri, "");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+            listview.setAdapter(new PostFileAdapter(arrayList, this));
         } else if (requestCode == MEDIA_TYPE_AUDIO && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             Log.i(TAG, uri + "");
             listview.setVisibility(View.VISIBLE);
-            model = new PostFileModel("audio", uri, "");
+            model = new PostFileModel(AUDIO, uri, "");
             arrayList.add(model);
-            listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
-        }
-    }
-
-    public String getRealPathFromURI(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Video.Media.DATA};
-            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+            listview.setAdapter(new PostFileAdapter(arrayList, this));
         }
     }
 
@@ -779,6 +707,8 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
         imgEmoticons.setBackground(getResources().getDrawable(R.drawable.sidebar));
         imgLink.setBackground(getResources().getDrawable(R.drawable.sidebar));
         v.setBackgroundColor(getResources().getColor(R.color.green));
+        if (v == imgKeyboard)
+            showKeyboard();
 //        if (v == imgImage) {
 //            imgImage.setBackgroundColor(getResources().getColor(R.color.color_green));
 //        }
@@ -851,9 +781,9 @@ public class PostFeedActivity extends Activity implements View.OnClickListener, 
 
     public boolean checkMediaFile() {
         for (int i = 0; i < arrayList.size(); i++) {
-            if (arrayList.get(i).getStrFileType().equals("video")) {
+            if (arrayList.get(i).getStrFileType().equals(VIDEO)) {
                 return true;
-            } else if (arrayList.get(i).getStrFileType().equals("audio")) {
+            } else if (arrayList.get(i).getStrFileType().equals(AUDIO)) {
                 return true;
             }
         }

@@ -8,7 +8,6 @@
 
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/news_feed_post_box"
@@ -18,8 +17,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:padding="@dimen/d10dp">
+            android:padding="@dimen/d10dp"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/img_add_emoticons_in_post"
@@ -87,7 +86,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/d10dp"
@@ -96,9 +94,8 @@
                     android:text="@string/strpost"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp"
+                    android:textSize="@dimen/d20sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
 

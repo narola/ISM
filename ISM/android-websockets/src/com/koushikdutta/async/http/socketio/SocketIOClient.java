@@ -26,6 +26,10 @@ public class SocketIOClient extends EventEmitter {
     public void emit(String name, JSONObject obj) {
         emit(name, new JSONArray().put(obj), null);
     }
+
+    public void emit(String name, JSONObject obj,Acknowledge acknowledge) {
+        emit(name, new JSONArray().put(obj), acknowledge);
+    }
     public void emit(final String message) {
         emit(message, (Acknowledge) null);
     }
@@ -33,6 +37,8 @@ public class SocketIOClient extends EventEmitter {
     public void emit(final JSONObject jsonMessage) {
         emit(jsonMessage, null);
     }
+
+
 
     public void emit(String name, JSONArray args, Acknowledge acknowledge) {
         final JSONObject event = new JSONObject();

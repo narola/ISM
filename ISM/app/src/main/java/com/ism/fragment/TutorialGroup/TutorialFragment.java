@@ -26,8 +26,10 @@ import java.util.Calendar;
 /**
  * Created by c161 on --/10/15.
  */
+
 public class TutorialFragment extends Fragment implements TutorialDiscussionFragment.TutorialDiscussionFragmentListener,
 		WebserviceWrapper.WebserviceResponse, HostActivity.HostListenerTutorial {
+
 
     private static final String TAG = TutorialFragment.class.getSimpleName();
 
@@ -300,6 +302,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 			txtFriday.performClick();
 		}
 	}
+
 
 	public void updateLayoutForExam(boolean examStart) {
 		for (int dayId = 0; dayId < txtWeekDays.length; dayId++) {

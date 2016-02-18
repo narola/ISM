@@ -2,6 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <HorizontalScrollView
+        android:id="@+id/horizontal_rich_editor_top_options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_control_bar"
@@ -190,26 +191,29 @@
 
             <Button
                 android:id="@+id/add_image"
-                android:layout_width="@dimen/button_dimen"
-                android:layout_height="@dimen/button_dimen"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="@dimen/button_padding"
                 android:text="I"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn_formula"
-                android:layout_width="@dimen/button_dimen"
-                android:layout_height="@dimen/button_dimen"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="@dimen/button_padding"
                 android:text="F"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn_video"
-                android:layout_width="@dimen/button_dimen"
-                android:layout_height="@dimen/button_dimen"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="@dimen/button_padding"
                 android:text="V"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -218,7 +222,7 @@
     <jp.wasabeef.richeditor.RichEditor
         android:id="@+id/rich_editor"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:layout_weight="1"
         android:background="@android:color/white"></jp.wasabeef.richeditor.RichEditor>

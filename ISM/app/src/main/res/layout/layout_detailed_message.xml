@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/post_dp_margin"
         android:layout_marginLeft="@dimen/post_dp_margin"
-        android:layout_marginRight="7dp"
+        android:layout_marginRight="@dimen/dp5"
         android:contentDescription="@string/app_name"
         android:src="@drawable/img_default_dp"/>
 
@@ -21,9 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/img_dp"
-        android:padding="@dimen/d10dp"
+        android:padding="@dimen/dp8"
         android:textColor="@color/black"
-        android:textSize="@dimen/d25dp"/>
+        android:textSize="@dimen/dp19"/>
 
     <TextView
         android:id="@+id/txt_message"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_name"
         android:layout_toRightOf="@id/img_dp"
-        android:padding="@dimen/d10dp"
+        android:padding="@dimen/dp8"
         android:textColor="@color/color_gray"
         android:textSize="@dimen/post_text_size"/>
 
@@ -42,7 +42,7 @@
         android:layout_below="@id/txt_message"
         android:layout_toRightOf="@id/img_dp"
         android:text="@string/reply"
-        android:padding="@dimen/d10dp"
+        android:padding="@dimen/dp8"
         android:textColor="@color/green"
-        android:textSize="@dimen/d18dp"/>
+        android:textSize="@dimen/dp14"/>
 </RelativeLayout>

@@ -13,16 +13,16 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:background="@drawable/bg_highscore_subject"
-            android:paddingBottom="@dimen/d10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="@dimen/d20dp"
-            android:paddingTop="@dimen/d10dp"
+            android:paddingBottom="@dimen/dp8"
+            android:paddingLeft="@dimen/dp15"
+            android:paddingRight="@dimen/dp15"
+            android:paddingTop="@dimen/dp8"
             android:text="@string/strWhoShouldSeeMyPersonalDetails"
             android:textColor="#323232"
-            android:textSize="@dimen/d22sp" />
+            android:textSize="@dimen/sp17" />
 
         <include
-            android:layout_marginTop="@dimen/d10dp"
+            android:layout_marginTop="@dimen/dp8"
             android:id="@+id/include_contact_info"
             layout="@layout/layout_notification_comon_row"
             android:layout_width="match_parent"
@@ -43,13 +43,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/include_birthdate_info"
             android:background="@drawable/bg_highscore_subject"
-            android:paddingBottom="@dimen/d10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="@dimen/d20dp"
-            android:paddingTop="@dimen/d10dp"
+            android:paddingBottom="@dimen/dp8"
+            android:paddingLeft="@dimen/dp15"
+            android:paddingRight="@dimen/dp15"
+            android:paddingTop="@dimen/dp8"
             android:text="@string/strWhoShouldSeeMyPersonalAcademicDetails"
             android:textColor="#323232"
-            android:textSize="@dimen/d22sp" />
+            android:textSize="@dimen/sp17" />
 
         <!--<include-->
         <!--android:id="@+id/include_evaluations"-->
@@ -61,36 +61,36 @@
             android:id="@+id/txt_alerts_exam_score"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/d10dp"
+            android:layout_marginTop="@dimen/dp8"
             android:layout_below="@+id/txt_alerts_academic_details"
-            android:layout_margin="@dimen/d15dp"
-            android:paddingBottom="3dp"
+            android:layout_margin="@dimen/dp11"
+            android:paddingBottom="@dimen/dp2"
             android:textColor="@color/color_blue"
-            android:paddingLeft="@dimen/d30dp"
-            android:paddingRight="3dp"
-            android:paddingTop="3dp"
-            android:textSize="@dimen/d18sp" />
+            android:paddingLeft="@dimen/dp23"
+            android:paddingRight="@dimen/dp2"
+            android:paddingTop="@dimen/dp2"
+            android:textSize="@dimen/sp14" />
 
         <Spinner
             android:id="@+id/sp_viewers"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/dp150"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/txt_alerts_exam_score"
             android:layout_below="@+id/txt_alerts_exam_score"
-            android:layout_marginLeft="@dimen/d20dp"
-            android:layout_marginStart="28dp"
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginStart="@dimen/dp21"
             android:background="@drawable/bg_spinner_header"
            >
 
         </Spinner>
+    <!--<View-->
+        <!--android:layout_width="16dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_above="@+id/include_contact_info"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:background="@drawable/shape_triangle_general_setting" />-->
     <View
-        android:layout_width="16dp"
-        android:layout_height="30dp"
-        android:layout_above="@+id/include_contact_info"
-        android:layout_alignParentStart="true"
-        android:background="@drawable/shape_triangle_general_setting" />
-    <View
-        android:layout_width="2dp"
+        android:layout_width="@dimen/dp2"
         android:layout_height="match_parent"
         android:background="@color/border_gray"/>
 

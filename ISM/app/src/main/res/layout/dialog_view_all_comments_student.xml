@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_marginBottom="@dimen/d50dp"
-              android:layout_marginLeft="@dimen/d150dp"
-              android:layout_marginRight="@dimen/d130dp"
-              android:layout_marginTop="@dimen/d50dp"
+              android:layout_marginBottom="@dimen/dp38"
+              android:layout_marginLeft="@dimen/dp113"
+              android:layout_marginRight="@dimen/dp98"
+              android:layout_marginTop="@dimen/dp38"
               android:background="@android:color/white"
               android:orientation="vertical">
 
@@ -14,11 +14,11 @@
 		android:layout_height="wrap_content"
 		android:background="@color/green"
 		android:gravity="center"
-		android:paddingBottom="@dimen/d10dp"
-		android:paddingTop="@dimen/d10dp"
+		android:paddingBottom="@dimen/dp8"
+		android:paddingTop="@dimen/dp8"
 		android:text="@string/strcomments"
 		android:textColor="@color/white"
-		android:textSize="@dimen/d40dp"
+		android:textSize="@dimen/dp30"
 		android:textStyle="bold"/>
 
 	<android.support.v7.widget.RecyclerView
@@ -33,11 +33,11 @@
 		android:layout_height="wrap_content"
 		android:background="@color/green"
 		android:gravity="center"
-		android:paddingBottom="@dimen/d10dp"
-		android:paddingTop="@dimen/d10dp"
+		android:paddingBottom="@dimen/dp8"
+		android:paddingTop="@dimen/dp8"
 		android:text="@string/strclose"
 		android:textAllCaps="true"
 		android:textColor="@color/white"
-		android:textSize="@dimen/d40dp"
+		android:textSize="@dimen/dp30"
 		android:textStyle="bold"/>
 </LinearLayout>

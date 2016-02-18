@@ -11,8 +11,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/AndroidAsync" />
+<<<<<<< HEAD
             <option value="$PROJECT_DIR$/android-websockets" />
             <option value="$PROJECT_DIR$/android_websockets" />
+=======
+            <option value="$PROJECT_DIR$/MPChartLib" />
+>>>>>>> adddedd0f52cebbf2708517d26e06ea1e3c5b94b
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/assistantwebview" />
             <option value="$PROJECT_DIR$/author" />

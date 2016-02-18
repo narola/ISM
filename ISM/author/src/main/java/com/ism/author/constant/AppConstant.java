@@ -62,7 +62,8 @@ public class AppConstant {
     public static final String FRAGMENT_OBJECTIVE_ASSIGNMENT_QUESTIONS = "fragmentObjectiveAssignmentQuestions";
     public static final String FRAGMENT_SUBJECTIVE_ASSIGNMENT_QUESTIONS_CONTAINER = "fragmentSubjectiveAssignmentQuestionsContainer";
     public static final String FRAGMENT_ADDQUESTION_CONTAINER = "fragmentAddQuestionContainer";
-    public static final String FRAGMENT_PAST = "fragmentPast";
+    public static final String FRAGMENT_PAST_TRENDING_QUESTIONS = "fragmentPastTrendingQuestions";
+    public static final String FRAGMENT_TRENDING_QUESTION_DETAIL = "fragmentTrendingQuestionDetail";
     public static final String FRAGMENT_ADD_ASSIGNMENT = "fragmentAddAssignment";
     public static final String FRAGMENT_ASSIGNMENTS = "fragmentAssignment";
 
@@ -71,5 +72,6 @@ public class AppConstant {
      * Date pattern
      */
 
-    public static final String DATE_YYYYMMDD="yyyy-mm-dd";
+    public static final String DATE_YYYYMMDD = "yyyy-mm-dd";
+    public static final int PENDING_INTENT_ID = 0;
 }

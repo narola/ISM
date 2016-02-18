@@ -11,8 +11,13 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import model.AdminConfig;
+import model.AuthorBook;
 import model.AuthorProfile;
+import model.Classrooms;
+import model.Exam;
+import model.FeedComment;
 import model.FeedLike;
+import model.Feeds;
 import model.Preferences;
 import model.User;
 
@@ -37,6 +42,7 @@ public class AuthorHelper {
      */
 
     public String getGlobalPassword() {
+
         RealmResults<AdminConfig> adminConfigs = realm.where(AdminConfig.class)
                 .equalTo("configKey", "globalPassword")
                 .findAll();
@@ -91,27 +97,105 @@ public class AuthorHelper {
      *
      * @param className
      */
-    public void getTotalRecordsInTable(Class className) {
-        try {
-            RealmQuery<AdminConfig> realmQuery = realm.where(className);
+    public int getTotalRecordsInTable(Class className) {
 
-            Log.e(TAG, "The Total No Of records in " + className.getSimpleName() + " table are::::" + realmQuery.findAll().size());
+        RealmQuery<AdminConfig> query = null;
+        try {
+            query = realm.where(className);
+            Log.e(TAG, "The Total No Of records in " + className.getSimpleName() + " table are::::" + query.findAll().size());
 
         } catch (Exception e) {
-            Log.e(TAG, "clearTableData Exception : " + e.toString());
+            Log.e(TAG, "getTotalRecordsInTable Exception : " + e.toString());
         }
+        return query.findAll().size();
+    }
+
+    /**
+     * @return all the postfeeds.
+     */
+    public RealmResults<Feeds> getAllPostFeeds() {
+        RealmQuery<Feeds> query = realm.where(Feeds.class);
+        return query.findAll();
     }
 
 
     /**
-     * Method to insert feedLike data and its sync value.
+     * Add feeds into table.
+     *
+     * @param feeds
+     */
+    public void addFeeds(Feeds feeds) {
+
+        try {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(feeds);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.e(TAG, "addFeedsData Exception : " + e.toString());
+        }
+    }
+
+    /**
+     * Add Comment added by user if only one comment is there.
+     *
+     * @param feedId
+     * @param comment
+     */
+    public void addComment(int feedId, FeedComment comment) {
+
+        try {
+
+            RealmQuery<Feeds> query = realm.where(Feeds.class).equalTo("feedId", feedId);
+            Feeds feed = query.findFirst();
+
+            if (feed.getTotalComment() < 2) {
+                realm.beginTransaction();
+                feed.getComments().add(comment);
+                feed.setTotalComment(feed.getTotalComment() + 1);
+                realm.copyToRealmOrUpdate(feed);
+                realm.commitTransaction();
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, "addCommentData Exception : " + e.toString());
+        }
+
+    }
+
+
+    /**
+     * Method to update {@param selfLike} in FeedLike.
+     *
+     * @param feedId
+     * @param selfLike
+     */
+    public void updateFeedSelfLikeStatus(int feedId, String selfLike) {
+
+        try {
+            RealmQuery<Feeds> query = realm.where(Feeds.class).equalTo("feedId", feedId);
+            Feeds feed = query.findFirst();
+            realm.beginTransaction();
+            feed.setSelfLike(selfLike);
+            feed.setTotalLike(selfLike.equals("1") ? feed.getTotalLike() + 1 : feed.getTotalLike() - 1);
+            realm.copyToRealmOrUpdate(feed);
+            realm.commitTransaction();
+
+        } catch (Exception e) {
+            Log.e(TAG, "updateFeedSelfLikeStatus Exception : " + e.toString());
+        }
+
+    }
+
+
+    /**
+     * Method to insert {@param feedLike} data and its sync value.
      *
      * @param feedLike
      */
     public void insertUpdateLikeFeedData(FeedLike feedLike) {
         try {
             FeedLike isRecordExist = realm.where(FeedLike.class)
-                    .equalTo("feedId", feedLike.getFeedId()).equalTo("userId", feedLike.getUserId()).findFirst();
+                    .equalTo("feed.feedId", feedLike.getFeed().getFeedId()).equalTo("likeBy.userId", feedLike.getLikeBy().getUserId()).findFirst();
 
             if (isRecordExist == null) {
                 Number feedLikeId = realm.where(FeedLike.class).max("feedLikeId");
@@ -127,66 +211,9 @@ public class AuthorHelper {
             realm.commitTransaction();
 
 
-            Log.e(TAG, "The no of records in likeFeed table is" + realm.where(FeedLike.class).findAll().size());
+            getTotalRecordsInTable(FeedLike.class);
         } catch (Exception e) {
             Log.e(TAG, "insertUpdateLikeFeedData Exception : " + e.toString());
-        }
-    }
-
-
-    /**
-     * This method for save the preferences data
-     * @param preferences
-     */
-    public void saveAllPreferences(Preferences preferences){
-        try{
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(preferences);
-            realm.commitTransaction();
-            Log.e(TAG, "Records availbale in preferences table :" + realm.where(Preferences.class).findAll().size());
-        }
-        catch (Exception e){
-            Log.i(TAG," saveAllPreferences Exceptions : "+e.getLocalizedMessage());
-        }
-    }
-
-//    /**
-//     * update the general settings
-//     * @param preferences
-//     */
-//    public void updateUserPereferenes(Preferences preferences){
-//        try{
-//            Preferences getpreferences=realm.where(Preferences.class).equalTo("preferencesId",preferences.getPreferencesId()).findFirst();
-//            realm.beginTransaction();
-//            if(getpreferences!=null){
-//                getpreferences.setIsSync(getpreferences.getIsSync()==0?1:0);
-//                getpreferences.setDefaultValue(preferences.getDefaultValue());
-//                Log.i(TAG,"Update id : " +preferences.getPreferencesId() + " and isSync : "+ getpreferences.getIsSync() + " and value is : " + preferences.getDefaultValue());
-//            }
-//            //else
-//            //realm.copyToRealmOrUpdate(preferences);
-//            realm.commitTransaction();
-//            Log.e(TAG, "Records availbale in preferences table :" + realm.where(Preferences.class).findAll().size());
-//        }
-//        catch (Exception e){
-//            Log.i(TAG," updateUserPereferenes Exceptions : "+e.getLocalizedMessage());
-//        }
-//    }
-
-
-    /**
-     * save author profile information
-     * @param authorProfile
-     */
-    public void saveAuthorProfile(AuthorProfile authorProfile){
-        try{
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(authorProfile);
-            realm.commitTransaction();
-            Log.e(TAG, "Records availbale in authorProfile table :" + realm.where(AuthorProfile.class).findAll().size());
-        }
-        catch (Exception e){
-            Log.i(TAG," saveAuthorProfile Exceptions : "+e.getLocalizedMessage());
         }
     }
 
@@ -197,108 +224,248 @@ public class AuthorHelper {
      * @param arrListUnlikeFeedId
      * @param strUserId
      */
-    public void updateSyncStatusForFeeds(ArrayList<String> arrListLikeFeedId, ArrayList<String> arrListUnlikeFeedId, String strUserId) {
-
-        if (arrListLikeFeedId.size() > 0) {
-            for (String feedId : arrListLikeFeedId) {
-                model.FeedLike feedLike = realm.where(model.FeedLike.class)
-                        .equalTo("feedId", feedId).equalTo("userId", strUserId).findFirst();
-                realm.beginTransaction();
-                feedLike.setIsSync(1);
-                realm.copyToRealmOrUpdate(feedLike);
-                realm.commitTransaction();
-            }
-        }
-        if (arrListUnlikeFeedId.size() > 0) {
-            for (String feedId : arrListUnlikeFeedId) {
-                model.FeedLike feedLike = realm.where(model.FeedLike.class)
-                        .equalTo("feedId", feedId).equalTo("userId", strUserId).findFirst();
-                realm.beginTransaction();
-                feedLike.setIsSync(1);
-                realm.copyToRealmOrUpdate(feedLike);
-                realm.commitTransaction();
-            }
-        }
-    }
-
-
-    public void updateSyncStatusForFeedsAsychrounsly(final ArrayList<String> arrListLikeFeedId, final ArrayList<String> arrListUnlikeFeedId, final String strUserId) {
-
-        realm.executeTransaction(new Realm.Transaction() {
-
-
-            @Override
-            public void execute(Realm bgRealm) {
-                if (arrListLikeFeedId.size() > 0) {
-                    for (String feedId : arrListLikeFeedId) {
-                        model.FeedLike feedLike = realm.where(model.FeedLike.class)
-                                .equalTo("feedId", feedId).equalTo("userId", strUserId).findFirst();
-                        realm.beginTransaction();
-                        feedLike.setIsSync(1);
-                        realm.copyToRealmOrUpdate(feedLike);
-                        realm.commitTransaction();
-                    }
-                }
-                if (arrListUnlikeFeedId.size() > 0) {
-                    for (String feedId : arrListUnlikeFeedId) {
-                        model.FeedLike feedLike = realm.where(model.FeedLike.class)
-                                .equalTo("feedId", feedId).equalTo("userId", strUserId).findFirst();
-                        realm.beginTransaction();
-                        feedLike.setIsSync(1);
-                        realm.copyToRealmOrUpdate(feedLike);
-                        realm.commitTransaction();
-                    }
-                }
-            }
-        }, new Realm.Transaction.Callback() {
-            @Override
-            public void onSuccess() {
-
-                Log.e(TAG, "Sync Successfully");
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-                Log.e(TAG, "UpdateSyncStatusForFeeds Exception : " + e.toString());
-            }
-        });
-    }
-
-    public void destroy() {
-
-    }
-
-    public User getUser(int userId){
+    public void updateSyncStatusForFeeds(ArrayList<Integer> arrListLikeFeedId, ArrayList<Integer> arrListUnlikeFeedId, String strUserId) {
         try {
-            return  realm.where(User.class).equalTo("userId",userId).findFirst();
+            if (arrListLikeFeedId.size() > 0) {
+                for (int feedId : arrListLikeFeedId) {
+                    FeedLike feedLike = realm.where(FeedLike.class)
+                            .equalTo("feed.feedId", feedId).equalTo("likeBy.userId", Integer.valueOf(strUserId)).findFirst();
+                    realm.beginTransaction();
+                    feedLike.setIsSync(1);
+                    realm.copyToRealmOrUpdate(feedLike);
+                    realm.commitTransaction();
+
+                }
+            }
+            if (arrListUnlikeFeedId.size() > 0) {
+                for (int feedId : arrListUnlikeFeedId) {
+                    model.FeedLike feedLike = realm.where(FeedLike.class)
+                            .equalTo("feed.feedId", feedId).equalTo("likeBy.userId", Integer.valueOf(strUserId)).findFirst();
+                    realm.beginTransaction();
+                    feedLike.setIsSync(1);
+                    realm.copyToRealmOrUpdate(feedLike);
+                    realm.commitTransaction();
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "updateSyncStatusForFeeds Exception : " + e.toString());
         }
-        catch (Exception e){
-            Log.i(TAG,"getUser Exceptions : "+e.getLocalizedMessage());
+    }
+
+    /**
+     * Method to update sync status asychrounsly after successfull data at server side.
+     *
+     * @param arrListLikeFeedId
+     * @param arrListUnlikeFeedId
+     * @param strUserId
+     */
+    public void updateSyncStatusForFeedsAsychrounsly(final ArrayList<Integer> arrListLikeFeedId, final ArrayList<Integer> arrListUnlikeFeedId,
+                                                     final String strUserId) {
+
+        try {
+            realm.executeTransaction(new Realm.Transaction() {
+
+                @Override
+                public void execute(Realm bgRealm) {
+                    if (arrListLikeFeedId.size() > 0) {
+                        for (int feedId : arrListLikeFeedId) {
+                            model.FeedLike feedLike = bgRealm.where(model.FeedLike.class)
+                                    .equalTo("feed.feedId", feedId).equalTo("likeBy.userId", Integer.valueOf(strUserId)).findFirst();
+                            feedLike.setIsSync(1);
+                            bgRealm.copyToRealmOrUpdate(feedLike);
+                        }
+                    }
+                    if (arrListUnlikeFeedId.size() > 0) {
+                        for (int feedId : arrListUnlikeFeedId) {
+                            model.FeedLike feedLike = bgRealm.where(model.FeedLike.class)
+                                    .equalTo("feed.feedId", feedId).equalTo("likeBy.userId", Integer.valueOf(strUserId)).findFirst();
+                            feedLike.setIsSync(1);
+                            bgRealm.copyToRealmOrUpdate(feedLike);
+                        }
+                    }
+                }
+            }, new Realm.Transaction.Callback() {
+                @Override
+                public void onSuccess() {
+                    Log.e(TAG, "Sync Successfully");
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e(TAG, "updateSyncStatusForFeedsAsychrounsly Exception : " + e.toString());
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "updateSyncStatusForFeedsAsychrounsly Exception : " + e.toString());
+        }
+    }
+
+
+    /**
+     * Add authorBook.
+     *
+     * @param authorBook
+     */
+    public void addAuthorBooks(AuthorBook authorBook) {
+
+        try {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(authorBook);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.e(TAG, "addAuthorBooks Exception : " + e.toString());
+        }
+    }
+
+    /**
+     * @return all the authorbooks.
+     */
+    public RealmResults<AuthorBook> getAuthorBooks() {
+        RealmQuery<AuthorBook> query = realm.where(AuthorBook.class);
+        return query.findAll();
+    }
+
+
+    /**
+     * Add classrooms
+     *
+     * @param classrooms
+     */
+    public void addClassrooms(Classrooms classrooms) {
+
+        try {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(classrooms);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.e(TAG, "addClassrooms Exception : " + e.toString());
+        }
+    }
+
+
+    /**
+     * @return all the classrooms.
+     */
+    public RealmResults<Classrooms> getClassrooms() {
+        RealmQuery<Classrooms> query = realm.where(Classrooms.class);
+        return query.findAll();
+    }
+
+
+    /**
+     * Method to get the class data for created exam.
+     *
+     * @param classroomId
+     * @return
+     */
+    public Classrooms getExamClassroom(int classroomId) {
+        RealmQuery<Classrooms> query = realm.where(Classrooms.class).equalTo("classRoomId", classroomId);
+        return query.findFirst();
+    }
+
+    /**
+     * Method to get the book data of created exam.
+     *
+     * @param bookId
+     * @return
+     */
+    public AuthorBook getExamAuthorBook(int bookId) {
+        RealmQuery<AuthorBook> query = realm.where(AuthorBook.class).equalTo("book.bookId", bookId);
+        return query.findFirst();
+    }
+
+
+    /**
+     * Add classrooms
+     *
+     * @param exam
+     */
+    public void addExams(Exam exam) {
+
+        try {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(exam);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.e(TAG, "addClassrooms Exception : " + e.toString());
+        }
+    }
+
+    /**
+     * arti's code starts from here...
+     */
+
+    /**
+     * This method for save the preferences data
+     *
+     * @param preferences
+     */
+    public void saveAllPreferences(Preferences preferences) {
+        try {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(preferences);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.i(TAG, " saveAllPreferences Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+
+    /**
+     * save author profile information
+     *
+     * @param authorProfile
+     */
+    public void saveAuthorProfile(AuthorProfile authorProfile) {
+        try {
+//            Number id = realm.where(AuthorProfile.class).max("localAuthorId");
+//            long newId = 1;
+//            if (id != null) {
+//                newId = (long) id + 1;
+//            }
+//            authorProfile.setLocalAuthorId((int) newId);
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(authorProfile);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.e(TAG, " saveAuthorProfile Exceptions : " + e.getLocalizedMessage());
+        }
+    }
+
+
+    public User getUser(int userId) {
+        try {
+            return realm.where(User.class).equalTo("userId", userId).findFirst();
+        } catch (Exception e) {
+            Log.i(TAG, "getUser Exceptions : " + e.getLocalizedMessage());
         }
         return null;
     }
 
     public void saveUser(User user) {
-        try{
+        try {
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(user);
             realm.commitTransaction();
-            Log.e(TAG, "Records availbale in user table :" + realm.where(AuthorProfile.class).findAll().size());
-        }
-        catch (Exception e){
-            Log.i(TAG," saveUser Exceptions : "+e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.i(TAG, " saveUser Exceptions : " + e.getLocalizedMessage());
         }
     }
 
     public AuthorProfile getAuthorprofile(int userId) {
         try {
-            return  realm.where(AuthorProfile.class).equalTo("authorId",userId).findFirst();
-        }
-        catch (Exception e){
-            Log.i(TAG,"getUser Exceptions : "+e.getLocalizedMessage());
+            return realm.where(AuthorProfile.class).equalTo("serverAuthorId", userId).findFirst();
+        } catch (Exception e) {
+            Log.i(TAG, "getAuthorProfile Exceptions : " + e.getLocalizedMessage());
         }
         return null;
     }
+
+    public void destroy() {
+        if (realm != null) {
+            realm.close();
+        }
+    }
+
 
 }

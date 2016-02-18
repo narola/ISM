@@ -5,7 +5,6 @@
     android:orientation="horizontal"
     tools:mContext="com.ism.author.fragment.gotrending.GoTrendingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,13 +17,13 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shadow_separator"
             android:gravity="center"
-            android:padding="24dp"
+            android:padding="@dimen/d25dp"
             android:text="Question Most Follow"
             android:textColor="@color/color_blue"
-            android:textSize="20sp" />
+            android:textSize="@dimen/d20sp" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_list"
+            android:id="@+id/rv_trending_questions_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -55,7 +54,7 @@
             android:padding="@dimen/d20dp"
             android:text="Your Answer"
             android:textColor="@color/color_white"
-            android:textSize="20sp" />
+            android:textSize="@dimen/d20sp" />
 
         <TextView
             android:id="@+id/txt_empty_answer"
@@ -67,10 +66,10 @@
             android:visibility="gone" />
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/scrollView"
             android:visibility="visible">
 
             <RelativeLayout
@@ -129,11 +128,11 @@
                             android:id="@+id/txt_creator_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:layout_marginLeft="@dimen/d5dp"
+                            android:gravity="center"
                             android:padding="@dimen/d5dp"
                             android:textColor="@color/color_red"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/d16sp" />
 
                     </LinearLayout>
 
@@ -155,14 +154,15 @@
                 <EditText
                     android:id="@+id/et_answer"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="@dimen/d250dp"
                     android:layout_below="@+id/ll_questions"
                     android:layout_margin="@dimen/d10dp"
                     android:background="@drawable/bg_edit_text"
                     android:gravity="left|top"
-                    android:visibility="visible"
                     android:inputType="textMultiLine"
-                    android:padding="10dp" />
+                    android:padding="@dimen/d10dp"
+                    android:textSize="@dimen/d18sp"
+                    android:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/img_attachment"
@@ -173,13 +173,6 @@
                     android:src="@drawable/link"
                     android:visibility="gone" />
 
-                <!--<ImageView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="@dimen/d10dp"-->
-                <!--android:id="@+id/img_attachment"-->
-                <!--android:layout_below="@+id/et_answer"-->
-                <!--android:src="@drawable/link" />-->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -192,55 +185,28 @@
                     android:visibility="visible">
 
                     <ImageView
+                        android:id="@+id/img_attach_media"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:src="@drawable/img" />
+
                     <TextView
                         android:id="@+id/txt_save"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_weight="1"
                         android:background="@color/btn_cancel"
+                        android:gravity="center"
                         android:paddingBottom="@dimen/d10dp"
                         android:paddingLeft="@dimen/d30dp"
-                        android:layout_weight="1"
-                        android:layout_alignParentEnd="true"
-                        android:gravity="center"
                         android:paddingRight="@dimen/d30dp"
                         android:paddingTop="@dimen/d10dp"
                         android:text="@string/strsubmit"
                         android:textColor="@color/color_white"
                         android:textSize="@dimen/d18sp" />
-                    <!--<TextView-->
-                        <!--android:layout_width="210dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_gravity="center_vertical"-->
-                        <!--android:padding="@dimen/d10dp"-->
-                        <!--android:text="File name"-->
-                        <!--android:textColor="@color/bg_app_dark" />-->
-
-                    <!--<ImageView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_gravity="center_vertical"-->
-                        <!--android:layout_marginRight="@dimen/d5dp"-->
-                        <!--android:src="@drawable/close_x" />-->
                 </RelativeLayout>
-
-                <!--<TextView-->
-                    <!--android:id="@+id/txt_save"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignEnd="@+id/et_answer"-->
-                    <!--android:layout_below="@+id/et_answer"-->
-                    <!--android:background="@drawable/btn_green"-->
-                    <!--android:paddingBottom="@dimen/d10dp"-->
-                    <!--android:paddingLeft="@dimen/d30dp"-->
-                    <!--android:paddingRight="@dimen/d30dp"-->
-                    <!--android:paddingTop="@dimen/d10dp"-->
-                    <!--android:text="@string/strsave"-->
-                    <!--android:textColor="@color/color_white"-->
-                    <!--android:textSize="@dimen/d18sp" />-->
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>

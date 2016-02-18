@@ -13,10 +13,7 @@ import com.ism.object.MyTypeFace;
 import com.ism.utility.Utility;
 import com.ism.ws.model.Voucher;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by c161 on 24/11/15.
@@ -73,7 +70,7 @@ public class VoucherAdapter extends BaseAdapter {
 		try {
 			convertView.setBackgroundResource(position % 2 == 0 ? R.drawable.bg_voucher_item_light : R.drawable.bg_voucher_item_dark);
 			holder.txtCode.setText(arrListVoucher.get(position).getVoucherCode());
-			holder.txtDate.setText(Utility.formatPHPDateToDMY(arrListVoucher.get(position).getCreatedDate()));
+			holder.txtDate.setText(Utility.formatMySqlDate(arrListVoucher.get(position).getCreatedDate(), Utility.DATE_FORMAT_DDMMMYY));
 			holder.txtAmount.setText(arrListVoucher.get(position).getAmount());
 		} catch (Exception e) {
 			Log.e(TAG, "getView Exception : " + e.toString());

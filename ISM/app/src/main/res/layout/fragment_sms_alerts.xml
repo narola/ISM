@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     tools:mContext="com.ism.fragment.userProfile.SMSAlertsFragment">
 
@@ -12,21 +12,21 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@drawable/bg_highscore_subject"
-        android:paddingBottom="@dimen/d10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="@dimen/d20dp"
-        android:paddingTop="@dimen/d10dp"
+        android:paddingBottom="@dimen/dp8"
+        android:paddingLeft="@dimen/dp15"
+        android:paddingRight="@dimen/dp15"
+        android:paddingTop="@dimen/dp8"
         android:text="@string/strSMSAlertsForAssignments"
         android:textColor="#323232"
-        android:textSize="@dimen/d22sp" />
+        android:textSize="@dimen/sp17" />
 
     <include
         android:id="@+id/include_assignments"
         layout="@layout/layout_notification_comon_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/d10dp"
-        android:layout_below="@+id/txt_alerts_assignment" />
+        android:layout_below="@+id/txt_alerts_assignment"
+        android:layout_marginTop="@dimen/dp8" />
 
     <TextView
         android:id="@+id/txt_alerts_evaluations"
@@ -34,21 +34,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/include_assignments"
         android:background="@drawable/bg_highscore_subject"
-        android:paddingBottom="@dimen/d10dp"
-        android:paddingLeft="20dp"
-        android:textColor="#323232"
-        android:paddingRight="@dimen/d20dp"
-        android:paddingTop="@dimen/d10dp"
+        android:paddingBottom="@dimen/dp8"
+        android:paddingLeft="@dimen/dp15"
+        android:paddingRight="@dimen/dp15"
+        android:paddingTop="@dimen/dp8"
         android:text="@string/strSMSAlertsForEvaluations"
-        android:textSize="@dimen/d22sp" />
+        android:textColor="#323232"
+        android:textSize="@dimen/sp17" />
 
     <include
-        android:layout_marginTop="@dimen/d10dp"
         android:id="@+id/include_evaluations"
         layout="@layout/layout_notification_comon_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_alerts_evaluations" />
+        android:layout_below="@+id/txt_alerts_evaluations"
+        android:layout_marginTop="@dimen/dp8" />
 
     <TextView
         android:id="@+id/txt_alerts_conference"
@@ -56,32 +56,31 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/include_evaluations"
         android:background="@drawable/bg_highscore_subject"
-        android:paddingBottom="@dimen/d10dp"
-        android:paddingLeft="20dp"
-        android:textColor="#323232"
-        android:paddingRight="@dimen/d20dp"
-        android:paddingTop="@dimen/d10dp"
+        android:paddingBottom="@dimen/dp8"
+        android:paddingLeft="@dimen/dp15"
+        android:paddingRight="@dimen/dp15"
+        android:paddingTop="@dimen/dp8"
         android:text="@string/strSMSAlertsForConference"
-        android:textSize="@dimen/d22sp" />
+        android:textColor="#323232"
+        android:textSize="@dimen/sp17" />
 
     <include
-        android:layout_marginTop="@dimen/d10dp"
         android:id="@+id/include_conference"
         layout="@layout/layout_notification_comon_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_alerts_conference" />
+        android:layout_below="@+id/txt_alerts_conference"
+        android:layout_marginTop="@dimen/dp8" />
 
+    <!--<View-->
+    <!--android:layout_width="@dimen/d16dp"-->
+    <!--android:layout_height="@dimen/d30dp"-->
+    <!--android:layout_marginTop="@dimen/d80dp"-->
+    <!--android:background="@drawable/shape_triangle_general_setting"-->
+    <!--android:layout_alignBottom="@+id/rl_block_studymates"   />-->
     <View
-        android:layout_width="16dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="@dimen/d80dp"
-        android:background="@drawable/shape_triangle_general_setting"
-        android:layout_alignBottom="@+id/rl_block_studymates"
-     />
-    <View
-        android:layout_width="2dp"
+        android:id="@+id/view"
+        android:layout_width="@dimen/dp2"
         android:layout_height="match_parent"
-        android:background="@color/border_gray"
-        android:id="@+id/view" />
+        android:background="@color/border_gray" />
 </RelativeLayout>

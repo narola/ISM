@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -20,10 +19,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.InputValidator;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.InputValidator;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.ExamsAdapter;
@@ -33,7 +31,7 @@ import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
-import com.ism.author.ws.model.AuthorBook;
+import com.ism.author.ws.model.BookData;
 import com.ism.author.ws.model.Classrooms;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
@@ -65,11 +63,12 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private TextView tvExamTitle, tvExamExamschedule, tvExamExaminstruction, tvExamDeclareresult,
             tvExamNegativemarking, tvExamRandomquestion, tvExamUsescore, tvExamQuestionscorevalue, tvExamAddnegativemark,
             tvExamName, tvExamClass, tvExamBookname, tvExamPassingpercent, tvExamCategory, tvExamExammode,
-            tvExamExamduration, tvExamAttemptcount, tvExamschedule, tvExamStartdate, tvExamStartTime, tvExamAssessor;
+            tvExamExamduration, tvExamAttemptcount, tvExamschedule, tvExamStartdate, tvExamStartTime, tvExamAssessor,
+            tvExamSave, tvExamSetquestion, tvExamCancel;
     private Spinner spExamClassroom, spExamBookname, spExamPassingpercent, spExamExamCategory, spExamExammode,
             spExamExamduration, spExamAssessor, spExamQuestionScore;
     private ArrayList<Classrooms> arrListClassRooms;
-    private ArrayList<AuthorBook> arrListAuthorBooks;
+    private ArrayList<BookData> arrListAuthorBooks;
     private List<String> arrListDefalt, arrListPassingPercent, arrListExamDuration, arrListExamMode,
             arrListExamCategory, arrListExamAssessor, arrListQuestionScore, arrListNegativeMarking;
     private EditText etExamName, etExamStartdate, etExamStartTime, etExamAttemptcount, etExamAddnegativemark;
@@ -78,7 +77,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private RadioButton radio_btn_declareresult_yes, radio_btn_declareresult_no, radio_btn_negativemarking_yes, radio_btn_negativemarking_no,
             radio_btn_randomquestion_yes, radio_btn_randomquestion_no, radio_btn_examuserscore_yes, radio_btn_examuserscore_no;
     private LinearLayout llAddQuestionscore, llAddNegativeMark, llExamStartdate, llExamStartTime;
-    private Button btnExamSave, btnExamSetquestion, btnExamCancel;
     private ScrollView svCreateExam;
     private InputValidator inputValidator;
     private RichTextEditor rteTrialExam;
@@ -211,17 +209,17 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         svCreateExam = (ScrollView) view.findViewById(R.id.sv_create_exam);
 
 
-        btnExamSave = (Button) view.findViewById(R.id.btn_exam_save);
-        btnExamSetquestion = (Button) view.findViewById(R.id.btn_exam_setquestion);
-        btnExamCancel = (Button) view.findViewById(R.id.btn_exam_cancel);
+        tvExamSave = (TextView) view.findViewById(R.id.tv_exam_save);
+        tvExamSetquestion = (TextView) view.findViewById(R.id.tv_exam_setquestion);
+        tvExamCancel = (TextView) view.findViewById(R.id.tv_exam_cancel);
 
-        btnExamSave.setTypeface(Global.myTypeFace.getRalewayRegular());
-        btnExamSetquestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-        btnExamCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamSave.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamSetquestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvExamCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-        btnExamSave.setOnClickListener(this);
-        btnExamSetquestion.setOnClickListener(this);
-        btnExamCancel.setOnClickListener(this);
+        tvExamSave.setOnClickListener(this);
+        tvExamSetquestion.setOnClickListener(this);
+        tvExamCancel.setOnClickListener(this);
 
         llAddQuestionscore = (LinearLayout) view.findViewById(R.id.ll_add_questionscore);
         llAddNegativeMark = (LinearLayout) view.findViewById(R.id.ll_add_negative_mark);
@@ -238,37 +236,37 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
 
         getPassingPercentSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), spExamPassingpercent, arrListPassingPercent, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spExamPassingpercent, arrListPassingPercent, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
         getExamDurationSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), spExamExamduration, arrListExamDuration, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spExamExamduration, arrListExamDuration, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
         getQuestionScoreSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), spExamQuestionScore, arrListQuestionScore, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spExamQuestionScore, arrListQuestionScore, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
         spExamQuestionScore.setSelection(1);
 
         arrListExamMode = new ArrayList<String>();
         arrListExamMode = Arrays.asList(getResources().getStringArray(R.array.exammode));
-        Adapters.setUpSpinner(getActivity(), spExamExammode, arrListExamMode, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spExamExammode, arrListExamMode, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
 
         arrListExamCategory = new ArrayList<String>();
         arrListExamCategory = Arrays.asList(getResources().getStringArray(R.array.examname));
-        Adapters.setUpSpinner(getActivity(), spExamExamCategory, arrListExamCategory, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spExamExamCategory, arrListExamCategory, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
 
         arrListExamAssessor = new ArrayList<String>();
         arrListExamAssessor.add(getString(R.string.strexamassessor));
         arrListExamAssessor.add(getString(R.string.strnoassessor));
         arrListExamAssessor.add(Global.strFullName);
-        Adapters.setUpSpinner(getActivity(), spExamAssessor, arrListExamAssessor, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spExamAssessor, arrListExamAssessor, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
 
         llExamStartdate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    examStartDate = Utils.showDatePickerDob(getActivity(), etExamStartdate);
+                    examStartDate = Utility.showDatePickerDob(getActivity(), etExamStartdate);
                     etExamStartdate.setError(null);
                 }
                 return true;
@@ -324,8 +322,8 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
         if (getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
 
-            btnExamSetquestion.setVisibility(View.GONE);
-            btnExamSave.setVisibility(View.VISIBLE);
+            tvExamSetquestion.setVisibility(View.GONE);
+            tvExamSave.setVisibility(View.VISIBLE);
 
         } else {
             setExamDetails();
@@ -343,12 +341,12 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         spExamExammode.setEnabled(false);
             /*we cant change the exam mode and subject for that particular exam if it once created*/
         if (getBaseFragment().getBundleArguments().getBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
-            btnExamSetquestion.setVisibility(View.GONE);
-            btnExamSave.setVisibility(View.VISIBLE);
+            tvExamSetquestion.setVisibility(View.GONE);
+            tvExamSave.setVisibility(View.VISIBLE);
         } else {
-            btnExamSetquestion.setVisibility(View.VISIBLE);
-            btnExamSave.setVisibility(View.VISIBLE);
-            btnExamSave.setText(getString(R.string.streditexam));
+            tvExamSetquestion.setVisibility(View.VISIBLE);
+            tvExamSave.setVisibility(View.VISIBLE);
+            tvExamSave.setText(getString(R.string.streditexam));
         }
         etExamName.setText(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
         spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE)));
@@ -368,11 +366,11 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
         if (getBaseFragment().getBundleArguments().getBoolean(ExamsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING)) {
             ((RadioButton) radioNegativemarking.getChildAt(0)).setChecked(true);
-            etExamAddnegativemark.setVisibility(View.VISIBLE);
+            llAddQuestionscore.setVisibility(View.VISIBLE);
             etExamAddnegativemark.setText(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE));
         } else {
             ((RadioButton) radioNegativemarking.getChildAt(1)).setChecked(true);
-            etExamAddnegativemark.setVisibility(View.GONE);
+            llAddNegativeMark.setVisibility(View.GONE);
         }
 
 
@@ -419,7 +417,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETBOOKSFORAUTHOR);
+                        .execute(WebConstants.GETBOOKSBYAUTHOR);
             } catch (Exception e) {
                 Debug.e(TAG + Utility.getString(R.string.strerrormessage, getActivity()), e.getLocalizedMessage());
             }
@@ -468,7 +466,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
                 attribute.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
                 attribute.setAttemptCount(String.valueOf(Integer.valueOf(etExamAttemptcount.getText().toString())));
-                attribute.setExamStartDate(Utils.getDateInApiFormat(etExamStartdate.getText().toString()));
+                attribute.setExamStartDate(Utility.getDateInApiFormat(etExamStartdate.getText().toString()));
                 attribute.setExamStartTime(etExamStartTime.getText().toString());
                 attribute.setDeclareResults(getRadioGropuSelection(radioDeclareresult));
                 attribute.setNegativeMarking(getRadioGropuSelection(radioNegativemarking));
@@ -671,7 +669,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 case WebConstants.GETALLCLASSROOMS:
                     onResponseGetClassrooms(object, error);
                     break;
-                case WebConstants.GETBOOKSFORAUTHOR:
+                case WebConstants.GETBOOKSBYAUTHOR:
 //                    onResponseGetSubjects(object, error);
                     onResponseGetBooksForAuthor(object, error);
                     break;
@@ -700,14 +698,14 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                         classrooms.add(classroom.getClassName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spExamClassroom, classrooms, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 //                    if (!getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
                     spExamClassroom.setSelection(classrooms.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME)));
 //                    }
 
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetClassrooms api Exception : " + error.toString());
@@ -725,21 +723,21 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListAuthorBooks = new ArrayList<AuthorBook>();
+                    arrListAuthorBooks = new ArrayList<BookData>();
                     arrListAuthorBooks.addAll(responseHandler.getAuthorBook());
                     List<String> authorBooks = new ArrayList<String>();
                     authorBooks.add(Utility.getString(R.string.strbookname, getActivity()));
-                    for (AuthorBook authorBook : arrListAuthorBooks) {
+                    for (BookData authorBook : arrListAuthorBooks) {
                         authorBooks.add(authorBook.getBookName());
                     }
-                    Adapters.setUpSpinner(getActivity(), spExamBookname, authorBooks, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spExamBookname, authorBooks, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
 
 //                    if (!getBaseFragment().getBundleArguments().getBoolean(ARG_IS_CREATE_EXAM)) {
                     spExamBookname.setSelection(authorBooks.indexOf(getBaseFragment().getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME)));
 //                    }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
@@ -759,23 +757,23 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
                     if (getBaseFragment().getBundleArguments().containsKey(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
                         if (!getBaseFragment().getBundleArguments().getBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY)) {
-                            Utils.showToast(Utility.getString(R.string.msg_success_editexam, getActivity()), getActivity());
+                            Utility.showToast(Utility.getString(R.string.msg_success_editexam, getActivity()), getActivity());
                         } else {
-                            btnExamSave.setVisibility(View.GONE);
-                            Utils.showToast(Utility.getString(R.string.msg_success_createexam, getActivity()), getActivity());
+                            tvExamSave.setVisibility(View.GONE);
+                            Utility.showToast(Utility.getString(R.string.msg_success_createexam, getActivity()), getActivity());
                         }
                     } else {
-                        Utils.showToast(Utility.getString(R.string.msg_success_createexam, getActivity()), getActivity());
+                        Utility.showToast(Utility.getString(R.string.msg_success_createexam, getActivity()), getActivity());
                     }
 
                     svCreateExam.fullScroll(ScrollView.FOCUS_UP);
-                    btnExamSetquestion.setVisibility(View.VISIBLE);
+                    tvExamSetquestion.setVisibility(View.VISIBLE);
 
                     Debug.e(TAG, "The Created ExamId is::" + responseHandler.getCreateExam().get(0).getExamId());
                     getBaseFragment().getBundleArguments().putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
                     setBundleArguments();
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseCreateExam api Exception : " + error.toString());
@@ -829,18 +827,18 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
 
         switch (v.getId()) {
-            case R.id.btn_exam_save:
+            case R.id.tv_exam_save:
                 if (isInputsValid()) {
                     callApiCreateExam();
                 }
                 break;
-            case R.id.btn_exam_setquestion:
+            case R.id.tv_exam_setquestion:
                 if (getBaseFragment().getBundleArguments() != null) {
                     setBundleArguments();
                 }
                 ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER);
                 break;
-            case R.id.btn_exam_cancel:
+            case R.id.tv_exam_cancel:
                 getBaseFragment().onBackClick();
                 break;
         }

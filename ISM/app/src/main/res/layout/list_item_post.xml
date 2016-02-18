@@ -11,7 +11,7 @@
 		android:layout_gravity="center"
 		android:layout_marginTop="@dimen/post_dp_margin"
 		android:layout_marginLeft="@dimen/post_dp_margin"
-		android:layout_marginRight="7dp"
+		android:layout_marginRight="@dimen/dp5"
 		android:contentDescription="@string/app_name"
 		android:src="@drawable/img_default_dp"/>
 
@@ -20,10 +20,9 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/img_dp"
-		android:padding="@dimen/d10dp"
-		android:text="Emma Mall"
+		android:padding="@dimen/dp8"
 		android:textColor="@color/black"
-		android:textSize="@dimen/d25dp"/>
+		android:textSize="@dimen/sp19"/>
 
 	<TextView
 		android:id="@+id/txt_post"
@@ -33,7 +32,7 @@
 		android:layout_toRightOf="@id/img_dp"
 		android:ellipsize="end"
 		android:lines="4"
-		android:padding="@dimen/d10dp"
+		android:padding="@dimen/dp8"
 		android:text="@string/strsentence"
 		android:textColor="@color/color_gray"
 		android:textSize="@dimen/post_text_size"/>
@@ -45,7 +44,7 @@
 		android:layout_below="@id/txt_post"
 		android:layout_gravity="center"
 		android:layout_toRightOf="@id/img_dp"
-		android:padding="@dimen/d5dp"
+		android:padding="@dimen/dp4"
 		android:src="@drawable/img_like"/>
 
 	<TextView
@@ -54,9 +53,9 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txt_post"
 		android:layout_toRightOf="@id/img_like"
-		android:padding="@dimen/d10dp"
+		android:padding="@dimen/dp8"
 		android:textColor="@color/black"
-		android:textSize="@dimen/d18dp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<ImageView
 		android:id="@+id/img_comment"
@@ -65,7 +64,7 @@
 		android:layout_below="@id/txt_post"
 		android:layout_gravity="center"
 		android:layout_toRightOf="@id/txt_likes"
-		android:padding="@dimen/d5dp"
+		android:padding="@dimen/dp4"
 		android:src="@drawable/comment"/>
 
 	<TextView
@@ -74,9 +73,9 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txt_post"
 		android:layout_toRightOf="@id/img_comment"
-		android:padding="@dimen/d10dp"
+		android:padding="@dimen/dp8"
 		android:textColor="@color/black"
-		android:textSize="@dimen/d18dp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<TextView
 		android:id="@+id/txt_view_all"
@@ -84,10 +83,10 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txt_post"
 		android:layout_toRightOf="@id/txt_comments"
-		android:padding="@dimen/d10dp"
+		android:padding="@dimen/dp8"
 		android:text="@string/view_all"
 		android:textColor="@color/green"
-		android:textSize="@dimen/d18dp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<ImageView
 		android:id="@+id/img_tag_study_mates"
@@ -95,7 +94,7 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txt_post"
 		android:layout_alignParentRight="true"
-		android:layout_marginRight="20dp"
+		android:layout_marginRight="@dimen/dp15"
 		android:src="@drawable/friend"/>
 
 	<LinearLayout
@@ -111,30 +110,30 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/ll_comments"
-		android:layout_marginBottom="@dimen/d10dp"
-		android:layout_marginLeft="@dimen/d15dp"
-		android:layout_marginRight="@dimen/d15dp"
-		android:layout_marginTop="@dimen/d15dp"
+		android:layout_marginBottom="@dimen/dp8"
+		android:layout_marginLeft="@dimen/dp11"
+		android:layout_marginRight="@dimen/dp11"
+		android:layout_marginTop="@dimen/dp11"
 		android:layout_toLeftOf="@+id/btn_comment"
 		android:background="@drawable/selector"
 		android:hint="@string/strwriteyourcommenthere"
-		android:padding="15sp"
+		android:padding="@dimen/dp11"
 		android:inputType="textMultiLine"
 		android:textColorHint="@color/color_text_hint"/>
 
 	<Button
 		android:id="@+id/btn_comment"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_height="@dimen/button_height_normal"
 		android:layout_below="@id/ll_comments"
 		android:layout_alignParentRight="true"
-		android:layout_marginRight="@dimen/d20dp"
-		android:layout_marginTop="21dp"
+		android:layout_marginRight="@dimen/dp15"
+		android:layout_marginTop="@dimen/dp16"
 		android:background="@color/color_dark_gray"
-		android:paddingLeft="10dp"
-		android:paddingRight="10dp"
+		android:paddingLeft="@dimen/dp8"
+		android:paddingRight="@dimen/dp8"
 		android:text="@string/comment"
 		android:textColor="@color/white"
-		android:textSize="@dimen/d20sp"
+		android:textSize="@dimen/sp15"
 		android:textStyle="bold" />
 </RelativeLayout>

@@ -180,7 +180,7 @@
 	<string name="strpost">Post</string>
 	<string name="strcreatepost">Create Post</string>
 	<string name="hello_blank_fragment">Hello blank fragment</string>
-	<string name="strviewall">7</string>
+	<string name="strviewall">View all</string>
 	<string name="last_name">Last Name</string>
 	<string name="first_name">First Name</string>
 	<string name="android">Android</string>
@@ -225,7 +225,6 @@
 	<string name="studymates">Studymates</string>
 	<string name="my_activity">My Activity</string>
 	<string name="my_wallet">My Wallet</string>
-	<string name="say_it">SAY IT</string>
 	<string name="strSMSAlertsForAssignments">SMS Alerts For Assignment</string>
 	<string name="strSMSAlertsForEvaluations">SMS Alerts For Evaluations</string>
 	<string name="strSMSAlertsForConference">SMS Alerts For Conference</string>
@@ -251,7 +250,7 @@
 	<string name="strSmsAlertForConf">Send me sms alert when any cnference is scheduled</string>
 	<string name="strBlockStudyMate">If you wish to block any studymate then add</string>
 	<string name="strContactIsmAdmin">Contact ISM Admin</string>
-	<string name="strLikeNotification">Send me notification for like</string>
+	<string name="strLikeNotification">Send me notification for selfLike</string>
 	<string name="strCommentNotification">Send me notification for comment</string>
 	<string name="strNoticeNotification">Send me notification when any notice is published</string>
 	<string name="strAuthorNotification">Send me notification when any author has posted anything on timeline</string>
@@ -267,10 +266,22 @@
 	<string name="reply">Reply</string>
 	<string name="your_studymates">Your Studymates</string>
 	<string name="find_more_studymates">Find more Studymates</string>
+
+	<!--user profile-->
 	<string name="strYourAmbitionInLife">YOUR AMBITION IN LIFE</string>
 	<string name="strClickTOAddAmbitionInLife">Click to add your ambition in life</string>
 	<string name="strAboutYou">ABOUT YOU</string>
 	<string name="strClickToWriteAboutYourSelf">Click to write detail about your self</string>
+	<string name="strSocial">SOCIAL</string>
+	<string name="strZero">0</string>
+	<string name="strAcademic">ACADEMIC</string>
+	<string name="strIsmScore">ISM Score</string>
+	<string name="strIsmRank">ISM Rank</string>
+	<string name="strExams">Exams</string>
+	<string name="strAssignments">Assignments</string>
+	<string name="strExcellence">EXCELLENCE</string>
+	<string name="strQuestionAsked">Question Asked</string>
+	<string name="strFavouriteQuestions">Favorite Questions</string>
 	<string name="notifications">Notifications</string>
 	<string name="messages">Messages</string>
 	<string name="respond_to_your">Respond to Your</string>
@@ -284,15 +295,6 @@
 	<string name="you_are_now_studymates">You are now Studymates.</string>
 	<string name="subject">Subject</string>
 	<string name="strEdit">Edit</string>
-	<string name="generate_coupon">Generate coupon</string>
-	<string name="generated_coupon">Generated coupon</string>
-	<string name="msg_generate_coupon">You can generate the coupon with amount less than wallet balance and use it in ISM Store</string>
-	<string name="enter_coupon_amount">Enter Coupon Amount:</string>
-	<string name="generate">Generate</string>
-	<string name="coupon_code">Coupon Code</string>
-	<string name="date">Date</string>
-	<string name="amount">Amount</string>
-	<string name="msg_server_connection">Can\'t connect to server!</string>
 	<string name="strBooksYouMayWantToRead">Books you may want to read</string>
 	<string name="strYourFavouriteBooks">Your Favourite Books</string>
 	<string name="strSuggestedRoleModels">Suggested role models</string>
@@ -301,7 +303,6 @@
 	<string name="strFavMovies">Your favourite movies</string>
 	<string name="strSuggestedPastimes">Suggested pastimes</string>
 	<string name="strFavPastimes">Your favourite pastimes</string>
-	<string name="connectivity_problem">Connectivity problem!</string>
 	<string name="strAuthor">Author :</string>
 	<string name="strPublisher">Publisher :</string>
 	<string name="strDescription">Description :</string>
@@ -325,6 +326,19 @@
 	<string name="strOrganization">Organization :</string>
 	<string name="strQuotes">Quotes :</string>
 	<string name="strActivities">Activities :</string>
+
+	<string name="generate_coupon">Generate coupon</string>
+	<string name="generated_coupon">Generated coupon</string>
+	<string name="msg_generate_coupon">You can generate the coupon with amount less than wallet balance and use it in ISM Store</string>
+	<string name="enter_coupon_amount">Enter Coupon Amount:</string>
+	<string name="generate">Generate</string>
+	<string name="coupon_code">Coupon Code</string>
+	<string name="date">Date</string>
+	<string name="amount">Amount</string>
+
+	<string name="msg_server_connection">Can\'t connect to server!</string>
+	<string name="connectivity_problem">Connectivity problem!</string>
+
 	<string name="topics_allocated">Topics Allocated</string>
 	<string name="assignment_submitted">Assignment Submitted</string>
 	<string name="exam_attempted">Exam Attempted</string>
@@ -363,8 +377,7 @@
 	<string name="yes">Yes</string>
 	<string name="msg_active_hours_finished">Active hours are finished!</string>
 	<string name="send">Send</string>
-	<string name="type_message">Type message...</string>
-
+	<string name="say_it">Say it...</string>
 
 	<!-- Tutorial Group Friday Exam Strings -->
 
@@ -421,6 +434,208 @@
 	<string name="correct_answer">Correct Answer:</string>
 	<string name="solution">Solution:</string>
 	<string name="admin">Admin</string>
+	<string name="strScientificSymbol">Scientific Symbol</string>
+	<string name="strInsert">Insert</string>
+	<string name="strImages">Images</string>
 
 	<!-- ################################## -->
+	<!--all scientific symbols for rich editor-->
+	<!--α-->
+	<string name="alpha">&#945;</string>
+	<!--β-->
+	<string name="beta">&#946;</string>
+	<!--γ-->
+	<string name="gamma">&#947;</string>
+	<!--δ-->
+	<string name="delta">&#948;</string>
+	<!--ε-->
+	<string name="epsilon">&#949;</string>
+	<!--ζ-->
+	<string name="zeta">&#950;</string>
+	<!--η-->
+	<string name="eta">&#951;</string>
+	<!--θ-->
+	<string name="theta">&#952;</string>
+	<!--ι-->
+	<string name="iota">&#953;</string>
+	<!--κ-->
+	<string name="kappa">&#954;</string>
+	<!--λ-->
+	<string name="lamda">&#955;</string>
+	<!--μ-->
+	<string name="mu">&#956;</string>
+	<!--ν-->
+	<string name="nu">&#957;</string>
+	<!--ξ-->
+	<string name="xi">&#958;</string>
+	<!--ο-->
+	<string name="omicron">&#959;</string>
+	<!--→π-->
+	<string name="pi">&#960;</string>
+	<!--ω-->
+	<string name="greekomega">&#969;</string>
+	<!--ϑ-->
+	<string name="greektheta">ϑ</string>
+	<!--ϒ-->
+	<string name="greekupsilon">&#978;</string>
+	<!--ϕ-->
+	<string name="phi">&#981;</string>
+	<!--ρ-->
+	<string name="greeksmallrho">&#961;</string>
+	<!--σ-->
+	<string name="greeksmallsigma">&#963;</string>
+	<!--ς-->
+	<string name="greeksmallsigmafinal">&#962;</string>
+	<!--τ-->
+	<string name="greeksmalltau">&#964;</string>
+	<!--υ-->
+	<string name="greeksmallupsilon">&#965;</string>
+	<!--φ-->
+	<string name="greeksmallphi">&#966;</string>
+	<!--χ-->
+	<string name="chi">&#935;</string>
+	<!--ψ-->
+	<string name="psi">&#968;</string>
+	<!--ϖ-->
+	<string name="greekpi">&#982;</string>
+	<string name="steAddnewCategory">Add new Category</string>
+	<string name="group_rank">Group Rank :</string>
+
+
+	<!--all scientific symbols for rich editor-->
+	<string name="sigma">&#931;</string>
+	<!--Σ-->
+	<string name="sum">&#8721;</string>
+	<!--∑-->
+	<string name="forall">&#8704;</string>
+	<!--∀-->
+	<string name="part">&#8706;</string>
+	<!--∂-->
+	<string name="and">&#8743;</string>
+	<!--∧-->
+	<string name="or">&#8744;</string>
+	<!--∨-->
+	<string name="ne">&#8800;</string>
+	<!--≠-->
+	<string name="asymp">&#8776;</string>
+	<!--≈-->
+	<string name="cong">&#8773;</string>
+	<!--≅-->
+	<string name="perp">&#8869;</string>
+	<!--⊥-->
+	<string name="le">&#8804;</string>
+	<!--<=-->
+	<string name="ge">&#8805;</string>
+	<!-->=-->
+	<string name="equiv">&#8801;</string>
+	<!--≡-->
+	<string name="prop">&#8733;</string>
+	<!--∝-->
+	<string name="rightwardsarrow">&#8594;</string>
+	<!--→-->
+	<string name="emptyset">&#8709;</string>
+	<!--∅-->
+	<string name="element_of">&#8712;</string>
+	<!--∈-->
+	<string name="not_an_element_of">&#8713;</string>
+	<!--∉-->
+	<string name="contains_as_member">&#8715;</string>
+	<!--∋-->
+	<string name="product">&#8719;</string>
+	<!--∏-->
+	<string name="intersection">&#8745;</string>
+	<!--∩-->
+	<string name="union">&#8746;</string>
+	<!--∪-->
+	<string name="subset_of">&#8834;</string>
+	<!--⊂-->
+	<string name="superset_of">&#8835;</string>
+	<!--⊃-->
+	<string name="not_a_subset_of">&#8836;</string>
+	<!--⊄-->
+	<string name="subset_of_or_equal_to">&#8838;</string>
+	<!--⊆-->
+	<string name="superset_of_or_equal_to">&#8839;</string>
+	<!--⊇-->
+	<string name="alef">&#8501;</string>
+	<!--ℵ-->
+	<string name="infinity">&#8734;</string>
+	<!--∞-->
+	<string name="angle">&#8736;</string>
+	<!--∠-->
+	<string name="integral">&#8747;</string>
+	<!--∫-->
+	<string name="script_capital_P">&#8472;</string>
+	<!--℘-->
+	<string name="blackletter_capital_I">&#8465;</string>
+	<!--ℑ-->
+	<string name="blackletter_capital_R">&#8476;</string>
+	<string name="exams">Exams</string>
+	<string name="inputs_missing">Inputs missing !</string>
+	<string name="msg_select_answer"><![CDATA[>  Please select the right answer.]]></string>
+	<string name="msg_question_data_missing"><![CDATA[>  Question or some of the options are missing.]]></string>
+	<string name="strSectionName">Section Name</string>
+	<string name="strViewAll">View all</string>
+    <string name="strHintEmailAddress">(Email Address)</string>
+    <string name="strBlock">Block</string>
+    <string name="strUnblock">UNBLOCK</string>
+    <string name="strEnterHere">Enter here</string>
+	<string name="strYes">Yes</string>
+	<string name="strNo">No</string>
+	<string name="strStudymates">Studymates</string>
+	<string name="strNotificationForCommentsandLike">Notification For Cooment And Like</string>
+	<string name="strNotificationforAuthor">Notification for Author</string>
+	<string name="msg_question_hour">Question hour will begin soon</string>
+	<string name="msg_tutorialmates_getting_ready">Your Tutorialmates are getting ready with question...</string>
+	<string name="welcome_to_ism">Welcome to ISM</string>
+	<string name="high_school">High School</string>
+	<string name="msg_your_tutorial_group">Your Tutorial group is as per below</string>
+	<string name="strEnterYourCategoryName">Enter your category name</string>
+	<string name="strPastTimes">Pastimes :</string>
+	<string name="strVideo">Video</string>
+	<string name="strAskQuestion">Ask Question</string>
+	<string name="strtotalquestions">Total Questions</string>
+	<string name="strtotalscore">Total Score</string>
+	<string name="stravg">Avrage %</string>
+	<string name="strattempted">Attempted</string>
+	<string name="streducation">Education</string>
+	<string name="strsocial">SOCIAL</string>
+	<string name="stracademic">Academic</string>
+	<string name="strexcellence">Excellence</string>
+	<string name="strfollowing">Following</string>
+	<string name="strexamcreated">Exam Created</string>
+	<string name="strassignmentcreated">Assignment Created</string>
+	<string name="strquestionanswered">Question Answered</string>
+	<string name="strfavouritequestions">Favourite Questions</string>
+	<string name="strbadgesearned">Badges Earned</string>
+	<string name="strfollowers">Followers</string>
+	<string name="strFindMoreAuthors">Find more Authors</string>
+	<string name="strMyAuthors">My Authors</string>
+	<string name="strmydesk">My Desk</string>
+	<string name="strgotrending">Go Trending</string>
+	<string name="strmy30th">My 30th</string>
+	<string name="strassessment">Assessment</string>
+	<string name="strmydeskinfo">Explore author\'s desk to reach his resources</string>
+	<string name="strgotrendinginfo">In rich your Knowlege with trending question</string>
+	<string name="strtrialinfo">Attempt trial and check your Knowlege</string>
+	<string name="strmy30thinfo">My 30th will help you access your Progress</string>
+	<string name="strassessmentinfo">Check Your score and reports of progress</string>
+	<string name="stractivity">Activity</string>
+	<string name="strexam">Exam</string>
+	<string name="strismmock">ISM_Mock</string>
+	<string name="strwassce">WASSCE</string>
+	<string name="strendofterm">EndOfTerm</string>
+	<string name="strtutorial">Tutorial</string>
+	<string name="strtrial">Trial</string>
+	<string name="strmy30">My30th</string>
+	<string name="strTrial">Trial</string>
+	<string name="strAuthorsDesk">Author\'s Desk</string>
+	<string name="strYourHaveNotJoinedAnyAuthorClickFindMoreAuthorAndAddAuthor"><![CDATA[You have not joined any author click <font color=#3EB1DE>\"find more author\" </font>and add author]]></string>
+	<string name="strIAcceptTheTermAndCondition"><![CDATA[I Accept the term & Condition]]></string>
+	<string name="msg_tutorial_exam_ready">Today\'s tutorial group exam is ready!</string>
+	<string name="strMyAuthor_sDesk">Author\'s Desk</string>
+	<string name="strQuestionTrendingForThisWeek">Questions trending for this week</string>
+	<string name="strSendQuestionTo">Send Question To</string>
+	<string name="tip">Tip :</string>
+	<string name="question">"Question : "</string>
 </resources>

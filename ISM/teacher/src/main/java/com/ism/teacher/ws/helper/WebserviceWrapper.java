@@ -68,7 +68,7 @@ public class WebserviceWrapper {
             currentApiCode = params[0];
             try {
 
-                URL url = new URL(WebConstants.URL_KINJAL_HOST);
+                URL url = new URL(WebConstants.URL_HOST);
                 HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
                 urlc.setRequestProperty("Connection", "close");
                 urlc.setConnectTimeout(2000); // Timeout 2 seconds.
@@ -81,19 +81,19 @@ public class WebserviceWrapper {
                         String globalPassword = new StudentHelper(mContext).getGlobalPassword();
                         if (globalPassword != null) {
                             WebConstants.ACCESS_KEY = AESHelper.encrypt(globalPassword, PreferenceData.getStringPrefs(PreferenceData.USER_NAME, mContext));
-                            responseObject = new WebserviceConnector(WebConstants.URL_REFRESHTOKEN).execute(ResponseHandler.class, new Attribute(WebConstants.ACCESS_KEY));
+                            responseObject = new WebserviceConnector(WebConstants.URL_REFRESH_TOKEN).execute(ResponseHandler.class, new Attribute(WebConstants.ACCESS_KEY));
                         }
                     } else {
                         switch (params[0]) {
                             case WebConstants.REFRESH_TOKEN:
-                                responseObject = new WebserviceConnector(WebConstants.URL_REFRESHTOKEN).execute(ResponseHandler.class, attribute);
+                                responseObject = new WebserviceConnector(WebConstants.URL_REFRESH_TOKEN).execute(ResponseHandler.class, attribute);
                                 break;
-                            case WebConstants.GETADMINCONFIG:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GETADMINCONFIG).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GET_ADMIN_CONFIG:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_ADMIN_CONFIG).execute(ResponseHandler.class, attribute);
                                 break;
 
-                            case WebConstants.REGISTERUSER:
-                                responseObject = new WebserviceConnector(WebConstants.URL_REGISTERUSER).execute(ResponseHandler.class, attribute);
+                            case WebConstants.REGISTER_USER:
+                                responseObject = new WebserviceConnector(WebConstants.URL_REGISTER_USER).execute(ResponseHandler.class, attribute);
                                 break;
 
                             case WebConstants.LOGIN:
@@ -179,8 +179,8 @@ public class WebserviceWrapper {
                             case WebConstants.GET_ALL_ASSIGNMENTS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_ASSIGNMENTS).execute(ResponseHandler.class, attribute);
                                 break;
-                            case WebConstants.GET_ALL_EXAM_SUBMISSION:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_EXAM_SUBMISSION).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GET_EXAM_SUBMISSION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_EXAM_SUBMISSION).execute(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.GET_EXAM_QUESTIONS:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_EXAM_QUESTIONS).execute(ResponseHandler.class, attribute);
@@ -202,13 +202,13 @@ public class WebserviceWrapper {
 
                             case WebConstants.UPLOAD_FEED_MEDIA:
                                 responseObject = new WebserviceConnector(WebConstants.URL_UPLOAD_FEED_MEDIA).uploadMedia(ResponseHandler.class,
-                                         attribute);
+                                        attribute);
                                 break;
                             case WebConstants.SET_HASHTAG:
                                 responseObject = new WebserviceConnector(WebConstants.URL_HASHTAG).execute(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.TEMP_CREATE_QUESTION:
-                                responseObject = new WebserviceConnector(WebConstants.URL_TEMP_CREATE_QUESTION).execute(ResponseHandler.class, attribute);
+                                responseObject = new WebserviceConnector(WebConstants.URL_TEMP_CREATE_QUESTION).uploadMedia(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.UPLOADMEDIAFORQUESTION:
                                 responseObject = new WebserviceConnector(WebConstants.URL_UPLOADMEDIAFORQUESTION).uploadMedia(ResponseHandler.class,
@@ -221,6 +221,59 @@ public class WebserviceWrapper {
                             case WebConstants.GROUP_ALLOCATION:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GROUP_ALLOCATION).execute(ResponseHandler.class, attribute);
                                 break;
+                            case WebConstants.ALL_LESSON_NOTES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_ALL_LESSON_NOTES).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.LESSON_NOTES_WITH_DETAILS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_LESSON_NOTES_WITH_DETAILS).execute(ResponseHandler.class, attribute);
+                                break;
+
+                             //User Profile
+
+                            case WebConstants.GET_NOTIFICATION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_NOTIFICATION).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.UPDATE_READ_STATUS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_UPDATE_READ_STATUS).execute(ResponseHandler.class, attribute);
+                                break;
+
+                            case WebConstants.GET_MESSAGES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_MESSAGES).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_STUDYMATE_REQUEST:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_STUDYMATE_REQUEST).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.RESPOND_TO_REQUEST:
+                                responseObject = new WebserviceConnector(WebConstants.URL_RESPOND_TO_REQUEST).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_MY_FEEDS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_FEEDS).execute(ResponseHandler.class, attribute);
+                                break;
+
+                            case WebConstants.GENERAL_SETTING_PREFERENCES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GENERAL_SETTING_PREFERENCES).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.GET_USER_PREFERENCES:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_USER_PREFERENCES).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.MANAGE_GENERAL_SETTINGS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_GENERAL_SETTING).execute(ResponseHandler.class, attribute);
+                                break;
+
+                            //settings
+                            case WebConstants.BLOCK_USER:
+                                responseObject = new WebserviceConnector(WebConstants.URL_BLOCK_USER).execute(ResponseHandler.class, attribute);
+                                break;
+                            case WebConstants.BLOCKED_USER:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_BLOCKED_USER).execute(ResponseHandler.class, attribute);
+                                break;
+
+                            //Progress report
+
+                            case WebConstants.GET_REPORT_DATA:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_REPORT_DATA).execute(ResponseHandler.class, attribute);
+                                break;
+
                         }
                     }
                 }

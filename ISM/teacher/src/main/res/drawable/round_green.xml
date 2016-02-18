@@ -6,7 +6,7 @@
     <solid android:color="@android:color/transparent" />
 
     <stroke
-        android:width="3dp"
+        android:width="@dimen/d3dp"
         android:color="@color/bg_office" />
     <size
         android:width="@dimen/d15dp"

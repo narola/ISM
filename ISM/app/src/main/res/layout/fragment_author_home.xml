@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:padding="@dimen/dp15"
+    tools:mContext="com.ism.author.fragment.OfficeFragment">
+
+    <GridView
+        android:id="@+id/gv_officetab"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:horizontalSpacing="@dimen/dp19"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/dp19"
+        tools:listitem="@layout/row_grid_authortab" />
+
+</LinearLayout>

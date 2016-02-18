@@ -3,7 +3,7 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#F5F5F5"
+              android:background="@color/gray_light"
               android:orientation="vertical">
 
 	<include layout="@layout/custom_actionbar"/>
@@ -16,31 +16,30 @@
 
 		<com.ism.views.CircleImageView
 			android:id="@+id/img_user_dp"
-			android:layout_width="150dp"
-			android:layout_height="150dp"
-			android:layout_marginTop="10dp"
-			android:layout_marginBottom="10dp"
-			android:layout_marginLeft="40dp"
-			android:layout_marginRight="40dp"
-			android:padding="@dimen/d15dp"
+			android:layout_width="@dimen/dp105"
+			android:layout_height="@dimen/dp105"
+			android:layout_marginTop="@dimen/dp8"
+			android:layout_marginBottom="@dimen/dp8"
+			android:layout_marginLeft="@dimen/dp30"
+			android:layout_marginRight="@dimen/dp30"
 			android:src="@drawable/img_default_dp"/>
 
 		<LinearLayout
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
-			android:paddingBottom="@dimen/d25dp"
-			android:paddingLeft="@dimen/d5dp"
-			android:paddingTop="@dimen/d25dp">
+			android:paddingBottom="@dimen/dp19"
+			android:paddingLeft="@dimen/dp4"
+			android:paddingTop="@dimen/dp19">
 
 			<TextView
 				android:id="@+id/txt_welcometoism"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:padding="0sp"
-				android:text="Welcome to ISM"
+				android:text="@string/welcome_to_ism"
 				android:textColor="@color/white"
-				android:textSize="28sp"/>
+				android:textSize="@dimen/sp21"/>
 
 			<TextView
 				android:id="@+id/txt_username"
@@ -49,16 +48,16 @@
 				android:padding="0sp"
 				android:text="John Samuel"
 				android:textColor="@color/white"
-				android:textSize="@dimen/d25dp"/>
+				android:textSize="@dimen/sp19"/>
 
 			<TextView
 				android:id="@+id/txt_schoolname"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:padding="0sp"
-				android:text="High School"
+				android:text="@string/high_school"
 				android:textColor="#ADB0B5"
-				android:textSize="@dimen/d20dp"/>
+				android:textSize="@dimen/sp15"/>
 
 			<TextView
 				android:id="@+id/txt_yearandcourse"
@@ -67,8 +66,7 @@
 				android:padding="0sp"
 				android:text="First year, Computer science"
 				android:textColor="#ADB0B5"
-				android:textSize="@dimen/d20dp"/>
-
+				android:textSize="@dimen/sp15"/>
 		</LinearLayout>
 	</LinearLayout>
 
@@ -77,38 +75,38 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
-		android:padding="10sp"
-		android:text="Your Tutorial group is as per below"
+		android:padding="@dimen/dp8"
+		android:text="@string/msg_your_tutorial_group"
 		android:textColor="@color/green"
-		android:textSize="@dimen/d25dp"/>
+		android:textSize="@dimen/dp19"/>
 
 	<GridView
 		android:id="@+id/gv_groupMember"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
-		android:layout_marginLeft="220sp"
-		android:layout_marginRight="220sp"
+		android:layout_marginLeft="@dimen/dp165"
+		android:layout_marginRight="@dimen/dp165"
 		android:gravity="center_horizontal"
-		android:horizontalSpacing="10sp"
+		android:horizontalSpacing="@dimen/dp8"
 		android:numColumns="2"
-		android:verticalSpacing="30sp"></GridView>
+		android:verticalSpacing="@dimen/dp8"></GridView>
 
 	<com.ism.commonsource.view.ActionProcessButton
 		android:id="@+id/btn_accept"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_height="@dimen/button_height_normal"
 		android:layout_gravity="center"
-		android:layout_margin="@dimen/d10dp"
+		android:layout_margin="@dimen/dp8"
 		android:gravity="center"
-		android:paddingBottom="@dimen/d10dp"
-		android:paddingLeft="@dimen/d60dp"
-		android:paddingRight="@dimen/d60dp"
-		android:paddingTop="@dimen/d10dp"
+		android:paddingBottom="@dimen/dp8"
+		android:paddingLeft="@dimen/dp45"
+		android:paddingRight="@dimen/dp45"
+		android:paddingTop="@dimen/dp8"
 		android:text="@string/striacceptedgroup"
 		android:onClick="onClickAccept"
 		android:textColor="@color/white"
-		android:textSize="@dimen/d20dp"
+		android:textSize="@dimen/sp15"
 		app:pb_colorComplete="@color/green"
 		app:pb_colorNormal="@color/green"
 		app:pb_colorPressed="@color/green"
@@ -116,5 +114,4 @@
 		app:pb_cornerRadius="@dimen/app_button_corner_radius"
 		app:pb_textComplete="@string/striacceptedgroup"
 		app:pb_textProgress="@string/processing"/>
-
 </LinearLayout>

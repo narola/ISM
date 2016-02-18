@@ -61,12 +61,12 @@ public class MyActivityFragment extends Fragment implements HostActivity.Profile
 	}
 
 	private void initGlobal() {
-		viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
+		//viewHighlighterTriangle = view.findViewById(R.id.view_highlighter_triangle);
 		recyclerMyActivity = (RecyclerView) view.findViewById(R.id.recycler_my_activity);
 		txtEmptyListMessage = (TextView) view.findViewById(R.id.txt_emptylist_message);
 
 		txtEmptyListMessage.setTypeface(Global.myTypeFace.getRalewayRegular());
-		viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
+		//viewHighlighterTriangle.setVisibility(activityHost.getCurrentRightFragment() == HostActivity.FRAGMENT_PROFILE_CONTROLLER ? View.VISIBLE : View.GONE);
 
 		if (Utility.isConnected(getActivity())) {
 			callApiGetMyActivity();

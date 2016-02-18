@@ -43,7 +43,7 @@ public class Attribute {
     private String gender;
     private String deviceType;
     private String roleId;
-    private String feedId;
+    private int feedId;
     private String commentBy;
     private String comment;
     private String assignmentText;
@@ -99,8 +99,8 @@ public class Attribute {
     private ArrayList<String> questionIdList;
     private ArrayList<Tags> tags;
     private String[] taggedUserIds;
-    private ArrayList<String> likedId;
-    private ArrayList<String> unlikedId;
+    private ArrayList<Integer> likedId;
+    private ArrayList<Integer> unlikedId;
 
     private String studymateId;
     private ArrayList<String> recordIds;
@@ -199,12 +199,12 @@ public class Attribute {
         this.resourceName = resourceName;
     }
 
-    public String getFeedId() {
+    public int getFeedId() {
         return this.feedId;
     }
 
     @JsonProperty("feed_id")
-    public void setFeedId(String feedId) {
+    public void setFeedId(int feedId) {
         this.feedId = feedId;
     }
 
@@ -543,22 +543,22 @@ public class Attribute {
         this.taggedBy = taggedBy;
     }
 
-    public ArrayList<String> getLikedId() {
+    public ArrayList<Integer> getLikedId() {
         return likedId;
     }
 
 
     @JsonProperty("liked_id")
-    public void setLikedId(ArrayList<String> likedId) {
+    public void setLikedId(ArrayList<Integer> likedId) {
         this.likedId = likedId;
     }
 
-    public ArrayList<String> getUnlikedId() {
+    public ArrayList<Integer> getUnlikedId() {
         return unlikedId;
     }
 
     @JsonProperty("unliked_id")
-    public void setUnlikedId(ArrayList<String> unlikedId) {
+    public void setUnlikedId(ArrayList<Integer> unlikedId) {
         this.unlikedId = unlikedId;
     }
 
@@ -1149,6 +1149,7 @@ public class Attribute {
     public void setPreferences(ArrayList<Preferences> preferences) {
         this.preferences = preferences;
     }
+
     @JsonProperty("key_id")
     public void setKeyId(String keyId) {
         this.keyId = keyId;

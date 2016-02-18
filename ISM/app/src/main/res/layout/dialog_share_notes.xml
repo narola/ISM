@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp300"
+    android:layout_height="@dimen/dp165"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_share_note_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/green"
+        android:gravity="left"
+        android:padding="@dimen/dp8"
+        android:text="Introduction of waves"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dp19"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/img_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/ic_share_transparent" />
+
+    <TextView
+        android:id="@+id/txt_share_with"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_share_note_title"
+        android:layout_marginLeft="@dimen/dp8"
+        android:layout_marginRight="@dimen/dp8"
+        android:layout_marginTop="@dimen/dp23"
+        android:gravity="left"
+        android:padding="@dimen/dp8"
+        android:text="Share with"
+        android:textSize="@dimen/dp15" />
+
+    <EditText
+        android:id="@+id/et_studymate_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_share_with"
+        android:layout_marginLeft="@dimen/dp8"
+        android:layout_marginRight="@dimen/dp8"
+        android:background="@drawable/bg_edit_gray"
+        android:drawableLeft="@drawable/ic_add_student"
+        android:hint="Studymate Name"
+        android:padding="@dimen/dp8"
+        android:textSize="@dimen/sp14"
+        android:singleLine="true" />
+</RelativeLayout>

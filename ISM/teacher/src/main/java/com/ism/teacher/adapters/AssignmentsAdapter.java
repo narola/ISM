@@ -103,7 +103,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
             llParentAssignment = (LinearLayout) itemView.findViewById(R.id.ll_parent_assignment);
             llViewQuestions = (LinearLayout) itemView.findViewById(R.id.ll_view_questions);
-            rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_results);
+            rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_notes);
 
             txtAssignmentSubject = (TextView) itemView.findViewById(R.id.txt_assignment_subject);
             txtExamName = (TextView) itemView.findViewById(R.id.txt_exam_name);
@@ -117,16 +117,19 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             txtUnassessedLabel = (TextView) itemView.findViewById(R.id.txt_unassessed_label);
             txtQuestionLabel = (TextView) itemView.findViewById(R.id.txt_question_label);
 
-            //        holder.txtExamName.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtAssignmentDate.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtAssignmentClassName.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtAssessedLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtNumberAssessedQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtUnassessedLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtNumberUnassessedQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtQuestionLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
-//        holder.txtAssignmentType.setTypeface(Global.myTypeFace.getRalewayRegular());
 
+            //applying fonts
+            txtExamName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtAssignmentDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtAssignmentClassName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtAssessedLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtNumberAssessedQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtUnassessedLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtNumberUnassessedQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtNumberTotalQuestions.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtQuestionLabel.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtAssignmentType.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txtAssignmentSubject.setTypeface(Global.myTypeFace.getRalewayBold());
         }
     }
 
@@ -134,18 +137,43 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        holder.txtAssignmentSubject.setTypeface(Global.myTypeFace.getRalewayBold());
-
-
         holder.txtAssignmentSubject.setText(arrayListAssignments.get(position).getSubjectName());
         holder.txtExamName.setText(arrayListAssignments.get(position).getExamName());
         holder.txtAssignmentClassName.setText(arrayListAssignments.get(position).getClassroomName());
-        holder.txtAssignmentDate.setText(Html.fromHtml("<font color='#0E970C'>Assignment Date:" + "</font>" + (Utility.getFormattedDate("dd-MMM-yyyy", arrayListAssignments.get(position).getExamCreatedDate()))));
 
-        holder.txtNumberAssessedQuestion.setText(arrayListAssignments.get(position).getTotalAssessed());
-        holder.txtNumberUnassessedQuestion.setText(arrayListAssignments.get(position).getTotalUnassessed());
-        holder.txtNumberTotalQuestions.setText(arrayListAssignments.get(position).getTotalQuestion());
-        holder.txtAssignmentType.setText(Html.fromHtml("<font color='#77C2EA'>Assignment Type:" + arrayListAssignments.get(position).getExamMode() + "</font>"));
+        if (arrayListAssignments.get(position).getExamCreatedDate() != null && !arrayListAssignments.get(position).getExamCreatedDate().equals("")) {
+            holder.txtAssignmentDate.setText(Html.fromHtml("<font color='#0E970C'>Assignment Date:" + "</font>" + " " + (Utility.getFormattedDate("dd-MMM-yyyy", arrayListAssignments.get(position).getExamCreatedDate()))));
+
+        } else {
+            holder.txtAssignmentDate.setText(Html.fromHtml("<font color='#0E970C'>Assignment Date:" + "</font>" + " " + "--"));
+
+        }
+
+        if (arrayListAssignments.get(position).getTotalAssessed() != null && !arrayListAssignments.get(position).getTotalAssessed().equals("")) {
+            holder.txtNumberAssessedQuestion.setText(arrayListAssignments.get(position).getTotalAssessed());
+
+        } else {
+            holder.txtNumberAssessedQuestion.setText("--");
+
+        }
+
+        if (arrayListAssignments.get(position).getTotalUnassessed() != null && !arrayListAssignments.get(position).getTotalUnassessed().equals("")) {
+            holder.txtNumberUnassessedQuestion.setText(arrayListAssignments.get(position).getTotalUnassessed());
+
+        } else {
+            holder.txtNumberUnassessedQuestion.setText("--");
+
+        }
+
+        if (arrayListAssignments.get(position).getTotalQuestion() != null && !arrayListAssignments.get(position).getTotalQuestion().equals("")) {
+            holder.txtNumberTotalQuestions.setText(arrayListAssignments.get(position).getTotalQuestion());
+
+        } else {
+            holder.txtNumberTotalQuestions.setText("--");
+
+        }
+
+        holder.txtAssignmentType.setText(Html.fromHtml("<font color='#77C2EA'>Assignment Type:" + " " + arrayListAssignments.get(position).getExamMode() + "</font>"));
 
 
         if (position % 2 == 0) {
@@ -169,7 +197,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
                 getBundleArguments().putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
 
                 TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
-                teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
+                teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_ASSIGNMENT_SUBMITTER);
 
                 //  getFragment().loadOfficeSubmitter(getBundleArguments());
             }
@@ -183,7 +211,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
                 getBundleArguments().putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
 
                 TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
-                teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW);
+                teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW);
 
             }
         });
@@ -211,12 +239,22 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         //new
         getBundleArguments().putString(ARG_EXAM_ATTEMPT_COUNT, arrayListAssignments.get(position).getAttemptCount());
         getBundleArguments().putString(ARG_EXAM_INSTRUCTIONS, arrayListAssignments.get(position).getExamInstructions());
-        getBundleArguments().putString(ARG_EXAM_IS_RANDOM_QUESTION, arrayListAssignments.get(position).getRandomQuestion());
-        getBundleArguments().putString(ARG_EXAM_IS_NEGATIVE_MARKING, arrayListAssignments.get(position).getNegativeMarking());
         getBundleArguments().putString(ARG_EXAM_NEGATIVE_MARK_VALUE, arrayListAssignments.get(position).getNegativeMarkValue());
-        getBundleArguments().putString(ARG_EXAM_IS_USE_QUESTION_SCORE, arrayListAssignments.get(position).getUseQuestionScore());
         getBundleArguments().putString(ARG_EXAM_CORRECT_ANSWER_SCORE, arrayListAssignments.get(position).getCorrectAnswerScore());
-        getBundleArguments().putString(ARG_EXAM_IS_DECLARE_RESULTS, arrayListAssignments.get(position).getDeclareResults());
+
+        //booleans
+
+        getBundleArguments().putBoolean(ARG_EXAM_IS_RANDOM_QUESTION, arrayListAssignments.get(position).getRandomQuestion().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+
+        getBundleArguments().putBoolean(ARG_EXAM_IS_NEGATIVE_MARKING, arrayListAssignments.get(position).getNegativeMarking().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+
+        getBundleArguments().putBoolean(ARG_EXAM_IS_USE_QUESTION_SCORE, arrayListAssignments.get(position).getUseQuestionScore().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
+
+        getBundleArguments().putBoolean(ARG_EXAM_IS_DECLARE_RESULTS, arrayListAssignments.get(position).getDeclareResults().
+                equalsIgnoreCase(mContext.getString(R.string.stryes)) ? true : false);
 
         getBundleArguments().putString(ARG_EXAM_ASSESSOR, arrayListAssignments.get(position).getExamAssessor());
         getBundleArguments().putString(ARG_EXAM_START_DATE, arrayListAssignments.get(position).getExamStartDate());

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/d60dp"
+    android:layout_height="@dimen/dp45"
     android:background="@color/color_actionbar"
     android:orientation="horizontal">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/d15dp"
+        android:layout_marginTop="@dimen/dp11"
+        android:layout_marginBottom="@dimen/dp11"
         android:src="@drawable/ism1" />
 
 </LinearLayout>

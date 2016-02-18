@@ -1,52 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="200dp"
-        android:src="@drawable/img_row_divider_books" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal">
+        android:layout_height="@dimen/d350dp"
+        android:orientation="vertical"
+        android:padding="@dimen/d15dp">
 
         <ImageView
-            android:id="@+id/img_book_one"
-            android:layout_width="160dp"
-            android:layout_height="220dp"
-            android:layout_alignParentStart="true"
-            android:layout_margin="@dimen/d10dp"
-            android:src="@drawable/img_no_cover_available" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/img_row_divider_books" />
 
-        <ImageView
-            android:id="@+id/img_book_two"
-            android:layout_width="160dp"
-            android:layout_height="220dp"
-            android:layout_margin="@dimen/d10dp"
-            android:layout_toRightOf="@+id/img_book_one"
-            android:src="@drawable/img_no_cover_available" />
+        <LinearLayout
+            android:id="@+id/ll_books"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d220dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/img_book_three"
-            android:layout_width="160dp"
-            android:layout_height="220dp"
-            android:layout_margin="@dimen/d10dp"
-            android:layout_toRightOf="@+id/img_book_two"
-            android:src="@drawable/img_no_cover_available" />
+            <ImageView
+                android:id="@+id/img_book_one"
+                android:layout_width="@dimen/d160dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/d20dp"
+                android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/img_book_four"
-            android:layout_width="160dp"
-            android:layout_height="220dp"
-            android:layout_margin="@dimen/d10dp"
-            android:layout_toRightOf="@+id/img_book_three"
-            android:src="@drawable/img_no_cover_available" />
+            <ImageView
+                android:id="@+id/img_book_two"
+                android:layout_width="@dimen/d160dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/d20dp"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/img_book_three"
+                android:layout_width="@dimen/d160dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/d20dp"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/img_book_four"
+                android:layout_width="@dimen/d160dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+        </LinearLayout>
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

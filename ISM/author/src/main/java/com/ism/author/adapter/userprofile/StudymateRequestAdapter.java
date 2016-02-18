@@ -180,13 +180,13 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 		btnAccept.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (com.ism.author.Utility.Utility.isConnected(context)) {
+				if (com.ism.author.utility.Utility.isConnected(context)) {
 					progress.setVisibility(View.VISIBLE);
 					progress.setProgress(1);
 					progressGenerator.start(progress);
 					callApiRespondToRequest(studymateId);
 				} else {
-					com.ism.author.Utility.Utility.alertOffline(context);
+					com.ism.author.utility.Utility.alertOffline(context);
 				}
 			}
 		});

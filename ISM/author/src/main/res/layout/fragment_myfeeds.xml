@@ -4,20 +4,38 @@
     android:layout_height="match_parent"
     tools:mContext=".fragment.userprofile.MyFeedsFragment">
 
-    <include android:id="@+id/rl_new_post"
-        layout="@layout/post_feed_layout"/>
+    <include
+        android:id="@+id/rl_new_post"
+        layout="@layout/post_feed_layout" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_post"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rl_new_post">
-    </android.support.v7.widget.RecyclerView>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_post"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+
+        <include
+            layout="@layout/include_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
 
     <View
-        android:layout_width="20dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="298dp"
+        android:layout_width="@dimen/d35dp"
+        android:layout_height="@dimen/d35dp"
         android:layout_alignParentRight="true"
-        android:background="@drawable/shape_triangle_profile_controller" />
+        android:layout_marginRight="@dimen/dMinus10dp"
+        android:layout_marginTop="@dimen/d223dp"
+        android:background="@drawable/indicator_dark_grey" />
 </RelativeLayout>

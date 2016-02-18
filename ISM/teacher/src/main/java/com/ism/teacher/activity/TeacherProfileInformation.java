@@ -352,7 +352,7 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
             attribute.setSpecialization(etSpecializaton.getText().toString());
 
             new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-                    .execute(WebConstants.REGISTERUSER);
+                    .execute(WebConstants.REGISTER_USER);
         } catch (Exception e) {
             Log.e(TAG, "callApiRegisterUser Exception : " + e.getLocalizedMessage());
         }
@@ -550,7 +550,7 @@ public class TeacherProfileInformation extends Activity implements WebserviceWra
                 case WebConstants.GET_CITIES:
                     onResponseCities(object, error);
                     break;
-                case WebConstants.REGISTERUSER:
+                case WebConstants.REGISTER_USER:
                     onResponseRegisterUser(object, error);
                     break;
                 case WebConstants.UPLOADPROFILEIMAGES:

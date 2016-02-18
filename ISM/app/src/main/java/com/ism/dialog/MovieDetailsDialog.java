@@ -41,7 +41,7 @@ public class MovieDetailsDialog extends Dialog implements View.OnClickListener {
         getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.imageLoader = imageLoader;
-        setContentView(R.layout.dailog_book_details);
+        setContentView(R.layout.dialog_book_details);
         w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         w.setBackgroundDrawableResource(android.R.color.transparent);
 

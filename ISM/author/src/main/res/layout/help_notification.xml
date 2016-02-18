@@ -15,9 +15,9 @@
         android:visibility="visible" />
 
     <View
-        android:layout_width="25dp"
-        android:layout_height="15dp"
+        android:layout_width="@dimen/d25dp"
+        android:layout_height="@dimen/d15dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="185dp"
+        android:layout_marginRight="@dimen/d185dp"
         android:background="@drawable/shape_triangle_popup" />
 </RelativeLayout>

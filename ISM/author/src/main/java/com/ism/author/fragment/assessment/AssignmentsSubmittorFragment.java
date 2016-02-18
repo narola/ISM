@@ -12,9 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.ExamsAdapter;
@@ -71,11 +70,10 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rvAssignmentSubmittorList.setAdapter(assignmentSubmittorAdapter);
         tvSubmittorTitle.setTypeface(Global.myTypeFace.getRalewayBold());
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_exam_submittor));
+
         tvSubmittorTitle.setText(getBundleArguments().getString(ExamsAdapter.ARG_EXAM_BOOK_NAME));
 
+        setEmptyView(false);
         callApiGetExamSubmission();
 
 
@@ -126,13 +124,15 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
                         arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
                         assignmentSubmittorAdapter.addAll(arrListExamSubmittor);
                         assignmentSubmittorAdapter.notifyDataSetChanged();
-                        tvNoDataMsg.setVisibility(View.GONE);
+                        setEmptyView(false);
+
                     } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+
+                        setEmptyView(true);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAllExamSubmission api Exception : " + error.toString());
@@ -241,5 +241,13 @@ public class AssignmentsSubmittorFragment extends Fragment implements Webservice
 
     private Bundle getBundleArguments() {
         return ((AuthorHostActivity) getActivity()).getBundle();
+    }
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_exam_submittor));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvAssignmentSubmittorList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
 }

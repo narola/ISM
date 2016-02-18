@@ -18,21 +18,22 @@
             <RelativeLayout
                 android:id="@+id/rl_top_assignment"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/d100dp"
+                android:layout_height="@dimen/d110dp"
                 android:background="@drawable/bg_subject_yellow"
                 android:orientation="vertical">
 
 
                 <TextView
-                    android:id="@+id/tv_assignment_name"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_book_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/d10dp"
-                    android:singleLine="true"
+                    android:layout_marginRight="@dimen/d90dp"
+                    android:paddingLeft="@dimen/d10dp"
+                    android:paddingTop="@dimen/d10dp"
                     android:text="@string/strtest"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d18sp"
+                    android:textSize="@dimen/d16sp"
                     android:textStyle="bold" />
 
             </RelativeLayout>
@@ -50,8 +51,8 @@
                     android:drawableRight="@drawable/arrow_green"
                     android:paddingLeft="@dimen/d20dp"
                     android:paddingRight="@dimen/d25dp"
-                    android:paddingTop="@dimen/d30dp"
-                    android:text="@string/strtest"
+                    android:paddingTop="@dimen/d20dp"
+                    android:singleLine="true"
                     android:textColor="@color/color_question"
                     android:textSize="@dimen/d18sp" />
 
@@ -63,24 +64,23 @@
                 android:layout_height="@dimen/d100dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="@dimen/d25dp"
+                android:layout_marginBottom="@dimen/d20dp"
                 android:layout_marginRight="@dimen/d15dp"
                 android:background="@drawable/bg_circle_white"
                 android:gravity="center"
                 android:padding="@dimen/d15dp"
                 android:singleLine="false"
                 android:text="@string/strtest"
-                android:textColor="@color/color_green"
+                android:textColor="@color/color_dark_blue_assignment"
                 android:textSize="@dimen/d18sp" />
         </RelativeLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/d5dp"
-            android:layout_marginTop="@dimen/d5dp"
-            android:background="@color/divider_light" />
-
+            android:layout_marginBottom="@dimen/d8dp"
+            android:layout_marginTop="@dimen/d8dp"
+            android:background="@color/fragment_background_color" />
 
         <TextView
             android:id="@+id/tv_assignment_two"
@@ -89,16 +89,16 @@
             android:drawableRight="@drawable/arrow_green"
             android:paddingLeft="@dimen/d20dp"
             android:paddingRight="@dimen/d25dp"
-            android:text="@string/strtest"
+            android:singleLine="true"
             android:textColor="@color/color_question"
             android:textSize="@dimen/d18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/d5dp"
-            android:layout_marginTop="@dimen/d5dp"
-            android:background="@color/divider_light" />
+            android:layout_marginBottom="@dimen/d8dp"
+            android:layout_marginTop="@dimen/d8dp"
+            android:background="@color/fragment_background_color" />
 
         <TextView
             android:id="@+id/tv_assignment_three"
@@ -108,7 +108,7 @@
             android:paddingBottom="@dimen/d5dp"
             android:paddingLeft="@dimen/d20sp"
             android:paddingRight="@dimen/d25dp"
-            android:text="@string/strtest"
+            android:singleLine="true"
             android:textColor="@color/color_question"
             android:textSize="@dimen/d18sp" />
 

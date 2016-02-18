@@ -3,8 +3,8 @@
 
     <item>
         <shape>
-            <padding android:bottom="3dp" />
-            <solid android:color="@color/bg_report_card" />
+            <padding android:bottom="@dimen/dp2" />
+            <solid android:color="@color/bg_my_author" />
         </shape>
     </item>
     <item>

@@ -10,11 +10,11 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_highscore_subject"
         android:gravity="center"
-        android:padding="@dimen/d5dp"
+        android:padding="@dimen/dp4"
         android:text="@string/subject"
         android:textAllCaps="true"
         android:textColor="#313131"
-        android:textSize="@dimen/d20dp" />
+        android:textSize="@dimen/sp15" />
 
     <LinearLayout
         android:id="@+id/ll_student_list"

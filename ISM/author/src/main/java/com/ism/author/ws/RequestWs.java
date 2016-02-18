@@ -1,6 +1,6 @@
 package com.ism.author.ws;
 
-import com.ism.author.Utility.Debug;
+import com.ism.author.utility.Debug;
 import com.ism.author.ws.helper.WebserviceConnector;
 
 /**

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f7f7f7"
+    android:id="@+id/rr_main"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_note_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp2"
+        android:layout_marginLeft="@dimen/dp4"
+        android:layout_marginRight="@dimen/dp4"
+        android:textColor="@color/bg_app_dark"
+        android:text="Introduction of waves"
+        android:textSize="@dimen/sp15" />
+
+    <TextView
+        android:id="@+id/txt_notes_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_note_name"
+        android:padding="@dimen/dp2"
+        android:textSize="@dimen/sp12"
+        android:layout_marginLeft="@dimen/dp4"
+        android:layout_marginRight="@dimen/dp4"
+        android:text="By Admin"
+        android:textColor="@color/text_red_timeline" />
+
+    <TextView
+        android:id="@+id/txt_subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/txt_note_name"
+        android:layout_marginLeft="@dimen/dp4"
+        android:layout_marginRight="@dimen/dp4"
+        android:padding="@dimen/dp2"
+        android:text="Physics"
+        android:textSize="@dimen/sp12"
+        android:textColor="@color/text_red_timeline" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_media_video"
+        android:src="@drawable/ic_video_dark_gray"
+        android:layout_marginLeft="@dimen/dp4"
+        android:visibility="gone"
+        android:layout_marginRight="@dimen/dp4"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_media_audio"
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_audio_gray"
+        android:layout_toLeftOf="@+id/img_media_video"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:layout_below="@id/txt_notes_by"
+        android:background="@color/text_gray"/>
+</RelativeLayout>

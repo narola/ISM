@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Progress Report-->
+    <color name="color_green_report">#26AE62</color>
+    <color name="color_grades_text">#6C747F</color>
+    <color name="color_percent_red">#BB56A6</color>
+    <color name="color_score_obtained_bg">#F5F5F5</color>
+
     <!-- Teacher Login-->
     <color name="color_pink">#FE84C1</color>
     <color name="color_blue">#41B1E3</color>
+    <color name="color_white">#ffffff</color>
     <color name="color_teacher_headers">#D5DBDF</color>
     <color name="color_black">#000000</color>
     <color name="color_shade_news_feed">#90BABABA</color>
     <color name="fragment_background_color">#F5F5F5</color>
+
+    <!-- Lesson Notes-->
+    <color name="gray_light">#F5F5F5</color>
+    <color name="rte_notes_bg">@android:color/darker_gray</color>
+    <color name="notes_group_row_bg">#f7f7f7</color>
+    <color name="text_gray">#C3C3C3</color>
+    <color name="child_divider">#D9D9D9</color>
 
     <!-- Tutorial-->
     <color name="color_txt_tutorial">#AE1F1B</color>
@@ -16,14 +30,13 @@
     <color name="color_green_exam_name">#67C08A</color>
     <color name="color_blue_group_score">#0C5097</color>
 
-
     <!-- Teacher User Profile-->
     <color name="color_living_in">#0C5097</color>
     <color name="color_violet">#A44B99</color>
     <!-- Assignment -->
     <color name="btn_save">#26AF61</color>
     <color name="btn_cancel">#3C4650</color>
-    <color name="color_assignment_date_green"> #0E970C</color>
+    <color name="color_assignment_date_green">#0E970C</color>
 
     <!--Assignment student row-->
     <color name="color_red_assignment">#D75651</color>
@@ -99,7 +112,6 @@
     <color name="divider">#F1F1F1</color>
 
 
-
     <!-- Assignment Subjective-->
     <color name="color_red">#D95350</color>
 
@@ -121,4 +133,21 @@
     <color name="questionpalette_notattemted">#D8DDE1</color>
     <color name="bg_office">#2BDC1E</color>
     <color name="circular_image_border_color">#40474F</color>
+
+    <!-- progress report-->
+    <color name="color_report_separator">#DADADA</color>
+
+    <!-- user profile-->
+    <color name="color_bg_teacher_profile">#323941</color>
+    <color name="color_friend_request_yellow">#FFBA00</color>
+    <color name="green_online">#27A611</color>
+
+    <!-- notification-->
+    <color name="color_gray_light">#F5F5F5</color>
+    <color name="divider_light">#EEEEEE</color>
+
+
+    <color name="color_online">#26A50E</color>
+    <color name="color_offline">#313840</color>
+
 </resources>

@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:background="@color/gray_light"
               android:orientation="vertical"
-              tools:mContext=".fragment.userProfile.AllNoticeFragment">
+              tools:mContext=".fragment.userprofile.AllNoticeFragment">
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -15,9 +15,9 @@
 
 		<Spinner
 			android:id="@+id/sp_notice_sortby"
-			android:layout_width="230dp"
+			android:layout_width="@dimen/dp172"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="2dp"
+			android:layout_marginBottom="@dimen/dp2"
 			android:layout_marginLeft="@dimen/header_white_spacing"
 			android:background="@drawable/bg_spinner_header"></Spinner>
 	</LinearLayout>

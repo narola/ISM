@@ -6,78 +6,107 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.ws.model.BookData;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
+import com.ism.author.constant.WebConstants;
+import com.ism.author.object.Global;
+import com.ism.author.ws.model.AllBooks;
 
 import java.util.ArrayList;
 
 /**
  * Created by c162 on 19/11/15.
  */
-public class BooksAdapter extends  RecyclerView.Adapter<BooksAdapter.ViewHolder> {
+public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> {
 
     private static final String TAG = BooksAdapter.class.getSimpleName();
-    private final AuthorHostActivity.BooksListner booksListner;
-    Context context;
-    ArrayList<BookData> arrayList = new ArrayList<>();
+    private Context mContext;
+    private ArrayList<AllBooks> arrListBooks = new ArrayList<AllBooks>();
+    private LayoutInflater inflater;
 
-    public BooksAdapter(Context context, ArrayList<BookData> arrayList, AuthorHostActivity.BooksListner booksListner) {
-        this.context = context;
-        this.arrayList = arrayList;
-        this.booksListner = booksListner;
+
+    public BooksAdapter(Context mContext) {
+        this.mContext = mContext;
+        this.inflater = LayoutInflater.from(mContext);
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(context).inflate(R.layout.row_books, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        View contactView = inflater.inflate(R.layout.row_books, parent, false);
+        ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         try {
-            //Global.imageLoader.displayImage(WebConstants.HOST_IMAGES + arrayList.get(position).getFrontCoverImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+
+            if (position == 0) {
+
+                setBookImage(holder.imgBookOne, position);
+                setBookImage(holder.imgBookTwo, position + 1);
+                setBookImage(holder.imgBookThree, position + 2);
+                setBookImage(holder.imgBookFour, position + 3);
+
+            } else {
+
+                setBookImage(holder.imgBookOne, position * 4);
+                setBookImage(holder.imgBookTwo, (position * 4) + 1);
+                setBookImage(holder.imgBookThree, (position * 4) + 2);
+                setBookImage(holder.imgBookFour, (position * 4) + 3);
+            }
 
         } catch (Exception e) {
-            Debug.i(TAG,"onBindViewHolder Exception : " + e.getLocalizedMessage());
+            Debug.i(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
 
     }
 
     @Override
-    public long getItemId(int position) {
-        return 0;
+    public int getItemCount() {
+
+        return (int) Math.ceil(((float) arrListBooks.size() / 4));
+
     }
 
-    @Override
-    public int getItemCount() {
-        return 25;
+    public void addAll(ArrayList<AllBooks> allBooks) {
+        try {
+            this.arrListBooks.clear();
+            this.arrListBooks.addAll(allBooks);
+        } catch (Exception e) {
+            Debug.e(TAG, "addAllData Exception : " + e.toString());
+        }
+        notifyDataSetChanged();
+    }
+
+
+    private void setBookImage(ImageView imageView, int position) {
+
+        if (position < arrListBooks.size()) {
+
+            Global.imageLoader.displayImage(WebConstants.BOOKS_IMAGES + arrListBooks.get(position).getFrontCoverImage(), imageView,
+                    Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+        }
+
     }
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgBook;
-        private ImageView imgInfo;
-        private ImageView imgLibraryBook;
-        private ImageView imgAddToUnFav;
-        private RelativeLayout llMain;
-        private TextView txtBookName;
+
+        ImageView imgBookOne, imgBookTwo, imgBookThree, imgBookFour;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imgBook = (ImageView) itemView.findViewById(R.id.img_pic);
-            imgInfo = (ImageView) itemView.findViewById(R.id.img_book_info);
-            imgAddToUnFav = (ImageView) itemView.findViewById(R.id.img_add_fav);
-            imgLibraryBook = (ImageView) itemView.findViewById(R.id.img_book_add);
-            txtBookName = (TextView) itemView.findViewById(R.id.txt_name);
-            llMain= (RelativeLayout) itemView.findViewById(R.id.ll_main);
+
+            imgBookOne = (ImageView) itemView.findViewById(R.id.img_book_one);
+            imgBookTwo = (ImageView) itemView.findViewById(R.id.img_book_two);
+            imgBookThree = (ImageView) itemView.findViewById(R.id.img_book_three);
+            imgBookFour = (ImageView) itemView.findViewById(R.id.img_book_four);
+
         }
     }
 }

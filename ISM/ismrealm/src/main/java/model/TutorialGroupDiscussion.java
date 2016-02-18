@@ -34,6 +34,7 @@ public class TutorialGroupDiscussion extends RealmObject {
     @Ignore
     private boolean showDetails;
 
+
     public int getTutorialGroupDiscussionId() {
         return tutorialGroupDiscussionId;
     }
@@ -41,6 +42,14 @@ public class TutorialGroupDiscussion extends RealmObject {
     public void setTutorialGroupDiscussionId(int tutorialGroupDiscussionId) {
         this.tutorialGroupDiscussionId = tutorialGroupDiscussionId;
     }
+
+//    public int getServerTutorialGroupDiscussionId() {
+//        return serverTutorialGroupDiscussionId;
+//    }
+//
+//    public void setServerTutorialGroupDiscussionId(int serverTutorialGroupDiscussionId) {
+//        this.serverTutorialGroupDiscussionId = serverTutorialGroupDiscussionId;
+//    }
 
     public String getMessage() {
         return message;

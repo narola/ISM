@@ -15,80 +15,59 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.adapter.QuestionPaletteAdapter;
-import com.ism.model.OptionTest;
-import com.ism.model.QuestionObjectiveTest;
+import com.ism.constant.WebConstants;
+import com.ism.object.Global;
+import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.FridayExam;
+import com.ism.ws.model.FridayExamAnswer;
+import com.ism.ws.model.FridayExamQuestion;
 
 import java.util.ArrayList;
 
 /**
  * Created by c161 on 13/10/15.
  */
-public class ExamFragment extends Fragment {
+public class ExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 	private static final String TAG = ExamFragment.class.getSimpleName();
 
 	private View view;
-	private RelativeLayout rlInstruction;
-	private RelativeLayout rlQuestion;
-	private TextView txtHeader;
-	private TextView txtInstruct;
-	private TextView txtSubject;
-	private TextView txtQuestion;
+	private RelativeLayout rlInstruction, rlQuestion;
+	private TextView txtHeader, txtInstruct, txtSubject, txtQuestion;
 	private RadioGroup rgOptions;
-	private RadioButton rbOption1;
-	private RadioButton rbOption2;
-	private RadioButton rbOption3;
-	private RadioButton rbOption4;
-	private RadioButton rbOption5;
-	private RadioButton rbOption6;
+	private RadioButton rbOption1, rbOption2, rbOption3, rbOption4, rbOption5, rbOption6;
 	private WebView wvInstructions;
-	private Button btnStartTest;
-	private Button btnReviewLater;
-	private Button btnClearResponse;
-	private Button btnSkip;
-	private Button btnSaveNNext;
+	private Button btnStartTest, btnReviewLater, btnClearResponse, btnSkip, btnSaveNNext;
 
 	private RadioButton rbOptions[];
 
 	private ExamListener listenerExam;
 	private QuestionPaletteAdapter adpQuestionPalette;
-	private ArrayList<QuestionObjectiveTest> arrListQuestions;
+//	private ArrayList<QuestionObjectiveTest> arrListQuestions;
+	private FridayExam fridayExam;
+	private ArrayList<FridayExamQuestion> arrListQuestions;
 
-	private static final String ARG_MINUTE = "examMinutes";
-	private static final String ARG_SHOW_GRAPH = "showGraph";
 	private int intAssessmentNo;
-	private int intExamDurationMinutes;
 	private String strSubject;
 	private int intCurrentQuestionIndex = 0;
 	private boolean isOptionsLoading = false;
-	private boolean isShowGraph = false;
 
 	public interface ExamListener {
-		public void startTest(ArrayList<QuestionObjectiveTest> questions, ExamFragment examFragment);
+		public void startTest(ArrayList<FridayExamQuestion> questions, String examId, ExamFragment examFragment);
 		public void onQuestionSet(int position);
 	}
 
-	public static ExamFragment newInstance(ExamListener examListener, int examMinutes, boolean showGraph) {
+	public static ExamFragment newInstance(ExamListener examListener) {
 		ExamFragment fragment = new ExamFragment();
 		fragment.setListenerExam(examListener);
-		Bundle args = new Bundle();
-		args.putInt(ARG_MINUTE, examMinutes);
-		args.putBoolean(ARG_SHOW_GRAPH, showGraph);
-		fragment.setArguments(args);
 		return fragment;
 	}
 
 	public ExamFragment() {
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			intExamDurationMinutes = getArguments().getInt(ARG_MINUTE);
-			isShowGraph = getArguments().getBoolean(ARG_SHOW_GRAPH);
-		}
 	}
 
 	@Override
@@ -123,13 +102,15 @@ public class ExamFragment extends Fragment {
 
 		rbOptions = new RadioButton[]{rbOption1, rbOption2, rbOption3, rbOption4, rbOption5, rbOption6};
 
+		callApiGetFridayExamQuestions();
+
 		txtHeader.setText(getString(R.string.read_instructions));
 		txtInstruct.setText(getString(R.string.assessment_no) + intAssessmentNo);
 		txtSubject.setText(strSubject);
 		wvInstructions.loadUrl("");
 		wvInstructions.getSettings().setJavaScriptEnabled(true);
 
-		arrListQuestions = QuestionObjectiveTest.getQuestions();
+//		arrListQuestions = QuestionObjectiveTest.getQuestions();
 
 		btnStartTest.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -230,18 +211,31 @@ public class ExamFragment extends Fragment {
 
 	}
 
+	private void callApiGetFridayExamQuestions() {
+		try {
+			Attribute attribute = new Attribute();
+			attribute.setTutorialTopicId(PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_TOPIC_ID, getActivity()));
+			attribute.setGroupId(Global.strTutorialGroupId);
+
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_FRIDAY_EXAM_QUESTIONS);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiGetFridayExamQuestions Exception : " + e.toString());
+		}
+	}
+
 	private void saveAnswer(int optionPosition, boolean isChecked) {
-		arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(optionPosition).setIsSelected(isChecked);
+		arrListQuestions.get(intCurrentQuestionIndex).getFridayExamAnswers().get(optionPosition).setIsSelected(isChecked);
 		arrListQuestions.get(intCurrentQuestionIndex).setIsCorrect(
-				arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(optionPosition).isAnswer()
-						&& arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(optionPosition).isSelected());
+				arrListQuestions.get(intCurrentQuestionIndex).getFridayExamAnswers().get(optionPosition).isAnswer()
+						&& arrListQuestions.get(intCurrentQuestionIndex).getFridayExamAnswers().get(optionPosition).isSelected());
 	}
 
 	private void startTest() {
-		txtHeader.setText(Utility.stringForTime(intExamDurationMinutes * 60 * 1000));
+//		txtHeader.setText(Utility.stringForTime(intExamDurationMinutes * 60 * 1000));
+		txtHeader.setText(fridayExam.getExamName() + " - " + fridayExam.getId());
 		txtInstruct.setText(R.string.choose_answer);
 		if (listenerExam != null) {
-			listenerExam.startTest(arrListQuestions, this);
+			listenerExam.startTest(arrListQuestions, fridayExam.getId(), this);
 		}
 		setQuestion(intCurrentQuestionIndex);
 	}
@@ -249,14 +243,14 @@ public class ExamFragment extends Fragment {
 	public void setQuestion(int questionIndex) {
 		try {
 			intCurrentQuestionIndex = questionIndex;
-			txtQuestion.setText(arrListQuestions.get(intCurrentQuestionIndex).getQuestion());
-			ArrayList<OptionTest> options = arrListQuestions.get(intCurrentQuestionIndex).getOptions();
+			txtQuestion.setText(arrListQuestions.get(intCurrentQuestionIndex).getQuestionText());
+			ArrayList<FridayExamAnswer> options = arrListQuestions.get(intCurrentQuestionIndex).getFridayExamAnswers();
 			isOptionsLoading = true;
 			rgOptions.clearCheck();
 			for (int i = 0; i < 6; i++) {
 				if (i < options.size()) {
 					rbOptions[i].setVisibility(View.VISIBLE);
-					rbOptions[i].setText(options.get(i).getOption());
+					rbOptions[i].setText(options.get(i).getChoiceText());
 					rbOptions[i].setChecked(options.get(i).isSelected());
 				} else {
 					rbOptions[i].setVisibility(View.GONE);
@@ -280,12 +274,36 @@ public class ExamFragment extends Fragment {
 		listenerExam = examListener;
 	}
 
-	public boolean isShowGraph() {
-		return isShowGraph;
+	@Override
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.GET_FRIDAY_EXAM_QUESTIONS:
+					onResponseGetFridayExamQuestions(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Excepiton : " + e.toString());
+		}
 	}
 
-	public int getExamDurationMinutes() {
-		return intExamDurationMinutes;
+	private void onResponseGetFridayExamQuestions(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					fridayExam = responseHandler.getFridayExam().get(0);
+					arrListQuestions = responseHandler.getFridayExam().get(0).getQuestions();
+					btnStartTest.setEnabled(true);
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Log.e(TAG, "onResponseGetFridayExamQuestions Failed message : " + responseHandler.getMessage());
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseGetFridayExamQuestions api Excepiton : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseGetFridayExamQuestions Excepiton : " + e.toString());
+		}
 	}
 
 }

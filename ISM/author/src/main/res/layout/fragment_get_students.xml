@@ -33,7 +33,7 @@
                     android:id="@+id/et_search_mystudents"
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="@dimen/d20dp"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:gravity="left|center_vertical"
@@ -44,7 +44,7 @@
                     android:singleLine="true"
                     android:textColor="@color/colorAccent"
                     android:textColorHint="@color/colorAccent"
-                    android:textSize="@dimen/d18dp"
+                    android:textSize="@dimen/d18sp"
                     android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
@@ -58,13 +58,27 @@
             android:text="@string/strmystudents"
             android:textAllCaps="true"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/d18dp" />
+            android:textSize="@dimen/d18sp" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_mystudent_list"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_height="match_parent">
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_mystudent_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <include
+                layout="@layout/include_no_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

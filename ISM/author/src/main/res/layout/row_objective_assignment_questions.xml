@@ -9,15 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:paddingLeft="@dimen/d15dp"
+        android:paddingRight="@dimen/d15dp">
 
         <TextView
             android:id="@+id/txt_question_no"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left|center"
-            android:padding="5dp"
+            android:padding="@dimen/d5dp"
             android:text="Question 1"
             android:textAllCaps="false"
             android:textColor="@color/bg_assessment"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/d5dp"
             android:gravity="left|center"
-            android:padding="5dp"
+            android:padding="@dimen/d5dp"
             android:text="Question text"
             android:textAllCaps="false"
             android:textColor="@color/question_color"
@@ -40,9 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp">
+            android:paddingBottom="@dimen/d10dp"
+            android:paddingLeft="@dimen/d5dp"
+            android:paddingRight="@dimen/d5dp">
 
         </LinearLayout>
 
@@ -57,13 +57,13 @@
                 android:id="@+id/ll_answer_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="@dimen/d10dp"
+                android:layout_marginRight="@dimen/d10dp"
                 android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/d1dp"
                     android:background="#d1d1d1" />
 
                 <LinearLayout
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:background="#f7f7f7"
                     android:orientation="horizontal"
-                    android:padding="5dp">
+                    android:padding="@dimen/d5dp">
 
                     <LinearLayout
                         android:id="@+id/ll_correct_answer"
@@ -87,16 +87,16 @@
                             android:gravity="center"
                             android:text="@string/strcorrect_answer"
                             android:textColor="@color/color_red"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/d16sp" />
 
                         <TextView
-                            android:id="@+id/txt_answer"
+                            android:id="@+id/txt_author_answer"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="left"
-                            android:paddingLeft="5dp"
+                            android:paddingLeft="@dimen/d5dp"
                             android:text="Answer"
-                            android:textSize="18sp" />
+                            android:textSize="@dimen/d18sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -113,7 +113,7 @@
                             android:gravity="center"
                             android:text="@string/stranswer"
                             android:textColor="@color/color_pink"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/d16sp"
                             android:visibility="visible" />
 
                         <TextView
@@ -121,8 +121,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
-                            android:paddingLeft="10dp"
-                            android:textSize="18sp"
+                            android:paddingLeft="@dimen/d10dp"
+                            android:textSize="@dimen/d18sp"
                             android:visibility="visible" />
                     </LinearLayout>
                 </LinearLayout>
@@ -134,79 +134,81 @@
                 android:id="@+id/ll_evaluation_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="@dimen/d10dp"
+                android:layout_marginRight="@dimen/d10dp"
                 android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/d1dp"
                     android:background="#d1d1d1" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="@dimen/d10dp">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:orientation="horizontal"
-                        android:padding="5dp">
+                        android:padding="@dimen/d5dp">
 
                         <TextView
-                            android:id="@+id/txt_evoluations_notes"
+                            android:id="@+id/txt_evoluations_notes_title"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="2"
                             android:text="@string/strevoluations_notes"
                             android:textColor="@color/color_green"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/d16sp" />
 
-                        <EditText
-                            android:id="@+id/et_evoluations_notes"
+                        <TextView
+                            android:id="@+id/tv_evoluations_notes"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/color_white"
                             android:editable="false"
                             android:gravity="left|top"
-                            android:inputType="textMultiLine" />
+                            android:inputType="textMultiLine"
+                            android:textSize="@dimen/d18sp" />
 
                     </LinearLayout>
 
                     <ImageView
-                        android:layout_width="1dp"
+                        android:layout_width="@dimen/d1dp"
                         android:layout_height="match_parent"
                         android:background="#d1d1d1" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/d0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:orientation="horizontal"
-                        android:padding="5dp">
+                        android:padding="@dimen/d5dp">
 
                         <TextView
-                            android:id="@+id/txt_solution"
+                            android:id="@+id/txt_solution_title"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="4"
                             android:text="@string/strsolutions"
                             android:textColor="@color/color_green"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/d16sp" />
 
-                        <EditText
-                            android:id="@+id/et_solution"
+                        <TextView
+                            android:id="@+id/tv_title_solution"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/color_white"
                             android:editable="false"
                             android:gravity="left|top"
-                            android:inputType="textMultiLine" />
+                            android:inputType="textMultiLine"
+                            android:textSize="@dimen/d18sp" />
 
                     </LinearLayout>
                 </LinearLayout>

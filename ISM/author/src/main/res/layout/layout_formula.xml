@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="250dp"
-    android:layout_height="400dp"
+    android:layout_width="@dimen/d250dp"
+    android:layout_height="@dimen/d400dp"
     android:layout_alignParentRight="true"
     android:layout_alignParentTop="true"
     android:background="@color/color_blue">
@@ -15,7 +15,7 @@
         android:background="@android:color/transparent"
         android:text="X"
         android:textColor="@android:color/white"
-        android:textSize="25sp"
+        android:textSize="@dimen/d25sp"
         android:textStyle="bold" />
 
     <GridView
@@ -23,8 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/btn_close"
-        android:columnWidth="50dp"
-        android:horizontalSpacing="10dp"
+        android:columnWidth="@dimen/d50dp"
+        android:horizontalSpacing="@dimen/d10dp"
         android:numColumns="auto_fit">
 
     </GridView>

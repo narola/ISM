@@ -11,9 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.TrialAdapter;
@@ -71,9 +70,8 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
         rvMythirtyList.setAdapter(trialAdapter);
 
         tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_exams));
+        setEmptyView(false);
+
 
         callApiGetAllExams();
     }
@@ -129,13 +127,15 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
                     if (responseHandler.getExams().size() > 0) {
                         arrListExams.addAll(responseHandler.getExams());
                         trialAdapter.addAll(arrListExams);
-                        tvNoDataMsg.setVisibility(View.GONE);
+
+                        setEmptyView(false);
                     } else {
-                        tvNoDataMsg.setVisibility(View.VISIBLE);
+
+                        setEmptyView(true);
                     }
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
 
                 }
             } else if (error != null) {
@@ -207,5 +207,14 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private Bundle getBundleArguments() {
         return ((AuthorHostActivity) getActivity()).getBundle();
+    }
+
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setText(getString(R.string.no_exams));
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvMythirtyList.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
 }

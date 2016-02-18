@@ -2,6 +2,9 @@ package com.ism.utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.ism.model.TestActivity;
 
 /**
  * Created by c161 on --/10/15.
@@ -37,7 +40,7 @@ public class PreferenceData {
     public static final String USER_ID = "userId";
     public static final String USER_NAME = "userName";
     public static final String USER_FULL_NAME = "userFullName";
-    public static final String USER_PROFILE_PIC = "userProfilePic";
+    public static final String USER_PROFILE_PIC = "userprofilePic";
     public static final String BADGE_COUNT_NOTIFICATION = "badgeCountNotification";
     public static final String BADGE_COUNT_MESSAGE = "badgeCountMessage";
     public static final String BADGE_COUNT_REQUEST = "badgeCountRequest";
@@ -66,6 +69,9 @@ public class PreferenceData {
     //=> Block user
 
     public static final String LAST_MODIFIED_DATE = "lastModifieddate";
+    public static final String TUTORIAL_TOPIC_ID = "tutorialTopicId";
+    public static final String FRIDAY_EXAM_QUESTION_SET_DATE = "fridayExamQuestionDate";
+    public static final String IS_FRIDAY_EXAM_READY = "isFridayExamReady";
 
 
     public static void setBooleanPrefs(String prefKey, Context context, boolean value) {

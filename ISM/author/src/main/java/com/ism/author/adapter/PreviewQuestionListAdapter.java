@@ -3,7 +3,9 @@ package com.ism.author.adapter;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.HtmlImageGetter;
+import com.ism.author.utility.Utility;
 import com.ism.author.fragment.createquestion.AddQuestionContainerFragment;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.Answers;
@@ -23,7 +27,7 @@ import java.util.ArrayList;
 /**
  * these adapter class is to set the list of previewquestions.
  */
-public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQuestionListAdapter.ViewHolder> {
+public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQuestionListAdapter.ViewHolder> implements HtmlImageGetter.RefreshDataAfterLoadImage {
 
 
     private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
@@ -52,12 +56,23 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         holder.tvPreviewQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
-        holder.tvPreviewQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
         holder.tvPreviewQuestionNo.setPaintFlags(holder.tvPreviewQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
 
-        holder.tvPreviewQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
-        holder.tvPreviewQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
+//        holder.tvPreviewQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(), new HtmlImageGetter(50, 50, mContext, null), null));
+
+
+        if (arrListQuestions.get(position).getSpan() == null) {
+
+            arrListQuestions.get(position).setSpan(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                    new HtmlImageGetter(50, 50, mContext, this
+                    ), null));
+        } else {
+
+            holder.tvPreviewQuestion.setText(Html.fromHtml(arrListQuestions.get(position).getQuestionText(),
+                    new HtmlImageGetter(50, 50, mContext, null
+                    ), null));
+        }
 
         if (arrListQuestions.get(position).getQuestionCreatorId().equals(Global.strUserId)) {
             holder.imgPreviewQuestionEdit.setVisibility(View.VISIBLE);
@@ -66,7 +81,6 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         }
 
         if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
-            holder.tvPreviewQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
             holder.tvPreviewQuestionAns.setText(arrListQuestions.get(position).getSolution());
 
 
@@ -161,6 +175,11 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
             imgPreviewQuestionDelete = (ImageView) itemView.findViewById(R.id.img_preview_question_delete);
 
 
+            tvPreviewQuestionNo.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvPreviewQuestion.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvPreviewQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+
         }
     }
 
@@ -171,7 +190,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         v = layoutInflater.inflate(R.layout.row_mcq_question_answer, null, false);
         TextView tvMcqQuestionAns = (TextView) v.findViewById(R.id.tv_mcq_question_ans);
         tvMcqQuestionAns.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvMcqQuestionAns.setText(Utils.formatHtml(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
+        tvMcqQuestionAns.setText(Utility.formatHtml(Utility.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
 
         return v;
     }
@@ -181,4 +200,16 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
     }
 
 
+    @Override
+    public void refreshData() {
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+                notifyDataSetChanged();
+                Debug.e(TAG, "notify data called");
+            }
+        };
+
+        handler.post(r);
+    }
 }

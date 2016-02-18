@@ -4,22 +4,22 @@
               android:layout_height="match_parent">
 
 	<TextView
-		android:id="@+id/txt_assignment_name"
+		android:id="@+id/txt_exam_name"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:gravity="center"
 		android:textStyle="bold"
 		android:text="Monthly Assignment"
-		android:textSize="18sp"/>
+		android:textSize="@dimen/sp14"/>
 
     <TextView
         android:id="@+id/txt_subject_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txt_assignment_name"
+        android:layout_below="@id/txt_exam_name"
         android:gravity="center"
         android:text="Science &amp; Technlogy"
-        android:textSize="16sp"/>
+        android:textSize="@dimen/sp12"/>
 
     <TextView
         android:id="@+id/txt_submitted_on"
@@ -28,5 +28,5 @@
         android:layout_below="@id/txt_subject_name"
         android:gravity="center"
         android:text="Jan 3, 2015"
-        android:textSize="15sp"/>
+        android:textSize="@dimen/sp11"/>
 </RelativeLayout>

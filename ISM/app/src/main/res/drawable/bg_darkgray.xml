@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners android:radius="2sp" />
+    <corners android:radius="@dimen/dp2" />
     <solid android:color="@color/bg_controller_left_dark" />
     <padding
-        android:bottom="2sp"
-        android:left="2sp"
-        android:right="2sp"
-        android:top="2sp" />
+        android:bottom="@dimen/dp2"
+        android:left="@dimen/dp2"
+        android:right="@dimen/dp2"
+        android:top="@dimen/dp2" />
 </shape>

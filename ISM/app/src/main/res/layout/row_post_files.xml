@@ -57,18 +57,17 @@
         android:layout_height="15sp"
         android:layout_alignRight="@+id/rl_image"
         android:layout_alignTop="@+id/rl_image"
-        android:background="@drawable/img_red_circle"
         android:gravity="center"
         android:src="@drawable/img_cancel"
         android:visibility="gone" />
-
+<!--        android:background="@drawable/img_red_circle"-->
     <ImageView
         android:id="@+id/img_edit"
         android:layout_width="20sp"
         android:layout_height="20sp"
         android:layout_alignBottom="@+id/rl_image"
         android:layout_alignRight="@+id/rl_image"
-        android:layout_margin="@dimen/d5dp"
+        android:layout_margin="@dimen/dp4"
         android:background="@drawable/img_edit"
         android:gravity="center"
         android:padding="5dp"

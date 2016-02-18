@@ -119,7 +119,7 @@ public class AddQuestionContainerFragment extends Fragment {
         try {
             getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, previewQuestionFragment).commit();
         } catch (Exception e) {
-            Debug.e(TAG, "loadFragment Exception : " + e.toString());
+            Debug.e(TAG, "loadFragmentInTeacherOffice Exception : " + e.toString());
         }
 
     }
@@ -237,7 +237,7 @@ public class AddQuestionContainerFragment extends Fragment {
         }
     }
 
-    private Bundle getBundleArguments() {
+    public Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }
 

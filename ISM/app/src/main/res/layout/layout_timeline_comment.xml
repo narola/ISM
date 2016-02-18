@@ -7,7 +7,7 @@
 		android:id="@+id/img_dp"
 		android:layout_width="@dimen/dp_size_timeline"
 		android:layout_height="@dimen/dp_size_timeline"
-		android:layout_marginRight="10dp"
+		android:layout_marginRight="@dimen/dp8"
 		android:src="@drawable/img_default_dp"/>
 
 	<TextView
@@ -16,7 +16,7 @@
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/img_dp"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="18sp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<TextView
 		android:id="@+id/txt_post"
@@ -26,7 +26,7 @@
 		android:layout_toRightOf="@id/img_dp"
 		android:layout_marginTop="5dp"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="18sp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<TextView
 		android:id="@+id/txt_time"
@@ -34,7 +34,7 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
 		android:textColor="@color/text_gray"
-		android:textSize="16sp"/>
+		android:textSize="@dimen/sp12"/>
 
 	<ImageView
 		android:id="@+id/img_like"
@@ -53,7 +53,7 @@
 		android:layout_toRightOf="@id/img_like"
 		android:textColor="@color/bg_app_dark"
 		android:visibility="gone"
-		android:textSize="18sp"/>
+		android:textSize="@dimen/sp14"/>
 
 	<TextView
 		android:id="@+id/txt_comment"
@@ -63,5 +63,5 @@
 		android:layout_toRightOf="@id/img_dp"
 		android:textColor="@color/bg_app_dark"
 		android:visibility="gone"
-		android:textSize="16sp"/>
+		android:textSize="@dimen/sp12"/>
 </RelativeLayout>

@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.object.Global;
 import com.ism.author.views.CircleImageView;
@@ -60,19 +60,15 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         try {
-            holder.tvAssignmentSubmittorName.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvAssignmentSubmittorRollno.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvAssignmentSubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvSubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvAssessmentStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                     holder.imgAssignmentSubmittorDp, ISMAuthor.options);
 
             holder.tvAssignmentSubmittorName.setText(arrListExamSubmittor.get(position).getStudentName());
             holder.tvAssignmentSubmittorRollno.setText(mContext.getString(R.string.strrollno) + " " + arrListExamSubmittor.get(position).getStudentId());/*this data set is left*/
-            holder.tvAssignmentSubmissionDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", arrListExamSubmittor.get(position).getSubmissionDate()));
+            if (arrListExamSubmittor.get(position).getSubmissionDate() != null) {
+                holder.tvAssignmentSubmissionDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", arrListExamSubmittor.get(position).getSubmissionDate()));
+            }
             if (arrListExamSubmittor.get(position).getExamStatus().equalsIgnoreCase("finished")) {
                 holder.tvAssessmentStatus.setText(arrListExamSubmittor.get(position).getExamStatus());
             } else {
@@ -154,6 +150,13 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
             tvStatus = (TextView) itemView.findViewById(R.id.tv_status);
 
             llAssignmentSubmittorContainer = (LinearLayout) itemView.findViewById(R.id.ll_assignment_submittor_container);
+
+            tvAssignmentSubmittorName.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvAssignmentSubmittorRollno.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvAssignmentSubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvSubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvAssessmentStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         }

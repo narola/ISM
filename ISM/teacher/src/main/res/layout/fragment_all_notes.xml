@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/d10dp"
             android:layout_weight="1"
-            android:padding="2dp">
+            android:padding="@dimen/d2dp">
 
             <EditText
                 android:id="@+id/et_assignment_startdate"
@@ -78,7 +78,7 @@
                 android:paddingLeft="@dimen/d10dp"
                 android:textColor="@color/color_black"
                 android:textColorHint="@color/color_text_hint"
-                android:textSize="@dimen/d15dp" />
+                android:textSize="@dimen/d15sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -91,17 +91,33 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_notes"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible" />
+        android:layout_height="@dimen/d2dp"
+        android:layout_marginTop="@dimen/d5dp"
+        android:background="#DADADA" />
 
-    <!--<TextView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:gravity="center"-->
-    <!--android:text="Teacher Note Home"-->
-    <!--android:textColor="@color/color_black"/>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_no_notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/no_notes_available"
+            android:textSize="@dimen/d22sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_notes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+    </RelativeLayout>
+
 
 </LinearLayout>

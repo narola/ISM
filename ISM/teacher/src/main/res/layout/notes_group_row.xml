@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:background="@color/notes_group_row_bg"
+    android:paddingBottom="@dimen/d15dp"
+    android:paddingLeft="@dimen/d5dp"
+    android:paddingTop="@dimen/d15dp">
+
+    <ImageView
+        android:id="@+id/img_chapter_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_chapter_title" />
+
+    <TextView
+        android:id="@+id/tv_lecture_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/d5dp"
+        android:layout_marginRight="@dimen/d10dp"
+        android:layout_toRightOf="@+id/img_chapter_icon"
+        android:layout_toLeftOf="@+id/img_icon"
+        android:gravity="center_vertical"
+        android:padding="@dimen/d5dp"
+        android:singleLine="true"
+        android:text="sdhajsdh adasdasdajdjandadn ajsdjasdansdjnasd akldlkadsasdasdas;/ asdkakls;dmals;dm"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/d16sp" />
+
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/d3dp"
+        android:layout_toLeftOf="@+id/img_indicator"
+        android:background="@drawable/ic_user"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/img_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/d3dp"
+        android:gravity="center_vertical" />
+</RelativeLayout>

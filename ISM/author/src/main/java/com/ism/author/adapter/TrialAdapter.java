@@ -9,14 +9,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
+import com.ism.author.utility.Debug;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.fragment.assessment.objectiveassessment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.Exams;
 
@@ -50,12 +50,6 @@ public class TrialAdapter extends RecyclerView.Adapter<TrialAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         try {
 
-            holder.tvExamBookName.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamType.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamNoofStudent.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamNoofStudentAvg.setTypeface(Global.myTypeFace.getRalewayRegular());
-            holder.tvExamNoofStudentAttempted.setTypeface(Global.myTypeFace.getRalewayBold());
-            holder.tvExamAttempted.setTypeface(Global.myTypeFace.getRalewayRegular());
 
             holder.tvExamBookName.setText(arrListExams.get(position).getBookName());
             holder.tvExamType.setText(arrListExams.get(position).getExamMode());
@@ -136,6 +130,14 @@ public class TrialAdapter extends RecyclerView.Adapter<TrialAdapter.ViewHolder> 
             tvExamNoofStudentAttempted = (TextView) itemView.findViewById(R.id.tv_exam_noof_student_attempted);
             tvExamAttempted = (TextView) itemView.findViewById(R.id.tv_exam_attempted);
             llExamEditOptions = (LinearLayout) itemView.findViewById(R.id.ll_exam_edit_options);
+
+            tvExamBookName.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvExamType.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvExamNoofStudent.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvExamNoofStudentAvg.setTypeface(Global.myTypeFace.getRalewayRegular());
+            tvExamNoofStudentAttempted.setTypeface(Global.myTypeFace.getRalewayBold());
+            tvExamAttempted.setTypeface(Global.myTypeFace.getRalewayRegular());
+
         }
     }
 
@@ -182,13 +184,13 @@ public class TrialAdapter extends RecyclerView.Adapter<TrialAdapter.ViewHolder> 
         tvScheduleExam.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvScheduleExam.setOnClickListener(itemClickListener);
 
-        TextView tvCopyExam = (TextView) view.findViewById(R.id.tv_copy_exam);
-        tvCopyExam.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvCopyExam.setOnClickListener(itemClickListener);
-
-        TextView tvEditExam = (TextView) view.findViewById(R.id.tv_edit_exam);
-        tvEditExam.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvEditExam.setOnClickListener(itemClickListener);
+//        TextView tvCopyExam = (TextView) view.findViewById(R.id.tv_copy_exam);
+//        tvCopyExam.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        tvCopyExam.setOnClickListener(itemClickListener);
+//
+//        TextView tvEditExam = (TextView) view.findViewById(R.id.tv_edit_exam);
+//        tvEditExam.setTypeface(Global.myTypeFace.getRalewayRegular());
+//        tvEditExam.setOnClickListener(itemClickListener);
 
         final PopupWindow popupExamOptions = new PopupWindow(view, 250, 350, true);
         popupExamOptions.setOutsideTouchable(true);
@@ -206,7 +208,7 @@ public class TrialAdapter extends RecyclerView.Adapter<TrialAdapter.ViewHolder> 
             public void onDismiss() {
             }
         });
-        popupExamOptions.showAsDropDown(v, 20, -90);
+        popupExamOptions.showAsDropDown(v, 20, -70);
     }
 
     View.OnClickListener itemClickListener = new View.OnClickListener() {
@@ -215,18 +217,18 @@ public class TrialAdapter extends RecyclerView.Adapter<TrialAdapter.ViewHolder> 
 
             switch (v.getId()) {
                 case R.id.tv_schedule_exam:
-
+                    openScheduleExamDialog();
                     break;
 
-                case R.id.tv_copy_exam:
-                    getBundleArguments().putBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY, true);
-                    setExamQuestions();
-                    break;
-
-                case R.id.tv_edit_exam:
-                    getBundleArguments().putBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY, false);
-                    setExamQuestions();
-                    break;
+//                case R.id.tv_copy_exam:
+//                    getBundleArguments().putBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY, true);
+//                    setExamQuestions();
+//                    break;
+//
+//                case R.id.tv_edit_exam:
+//                    getBundleArguments().putBoolean(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY, false);
+//                    setExamQuestions();
+//                    break;
 
             }
 
@@ -234,10 +236,33 @@ public class TrialAdapter extends RecyclerView.Adapter<TrialAdapter.ViewHolder> 
     };
 
 
-    private void setExamQuestions() {
+    public void openScheduleExamDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View dialogView = inflater.inflate(R.layout.dialog_schedule_exam, null);
+        builder.setView(dialogView);
+        AlertDialog dialogScheduleExam = builder.create();
+        dialogScheduleExam.show();
+
+
+        TextView tvScheduleDialogTitle = (TextView) dialogView.findViewById(R.id.tv_schedule_dialog_title);
+        tvScheduleDialogTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+        TextView tvExamClassroom = (TextView) dialogView.findViewById(R.id.tv_exam_classroom);
+        tvExamClassroom.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+        TextView tvExamStartDate = (TextView) dialogView.findViewById(R.id.tv_exam_start_date);
+        tvExamStartDate.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+        EditText etExamStartdate = (EditText) dialogView.findViewById(R.id.et_exam_startdate);
+        etExamStartdate.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+        TextView examEditSave = (TextView) dialogView.findViewById(R.id.exam_edit_save);
+        examEditSave.setTypeface(Global.myTypeFace.getRalewayRegular());
 
     }
-
 
     private Bundle getBundleArguments() {
         return ((AuthorHostActivity) mContext).getBundle();

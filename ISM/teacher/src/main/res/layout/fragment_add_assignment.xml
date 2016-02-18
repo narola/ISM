@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/strassignmentinfo"
-            android:textSize="@dimen/d20dp" />
+            android:textSize="@dimen/d20sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_activity_save"
+                android:id="@+id/tv_activity_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_save_assignment"
@@ -45,10 +45,10 @@
                 android:text="@string/strsave"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
             <Button
-                android:id="@+id/btn_activity_cancel"
+                android:id="@+id/tv_activity_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/d15dp"
@@ -60,7 +60,7 @@
                 android:text="@string/strcancel"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
 
         </LinearLayout>
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d10dp"
                     android:text="@string/strassignmentname"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <EditText
                     android:id="@+id/et_activity_assignmentname"
@@ -103,7 +103,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/d5dp"
                     android:background="@drawable/selector"
-                    android:padding="@dimen/d15sp"
+                    android:padding="@dimen/d15dp"
                     android:textColor="@color/color_black" />
             </LinearLayout>
 
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d10dp"
                     android:text="@string/strcoursename"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <EditText
                     android:id="@+id/et_activity_coursename"
@@ -128,7 +128,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/d5dp"
                     android:background="@drawable/selector"
-                    android:padding="@dimen/d15sp"
+                    android:padding="@dimen/d15dp"
                     android:textColor="@color/color_black" />
             </LinearLayout>
 
@@ -154,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d10dp"
                     android:text="@string/strclass"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <Spinner
                     android:id="@+id/sp_activity_class"
@@ -182,7 +182,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d10dp"
                     android:text="@string/strsubject"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <Spinner
                     android:id="@+id/sp_activity_subject"
@@ -210,7 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d10dp"
                     android:text="@string/strsubmissiondate"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <TextView
                     android:id="@+id/tv_activity_submissiondate_select"
@@ -218,7 +218,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/d5dp"
                     android:background="@drawable/selector"
-                    android:padding="@dimen/d15sp"
+                    android:padding="@dimen/d15dp"
                     android:textColor="@color/color_black" />
             </LinearLayout>
         </LinearLayout>

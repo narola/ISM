@@ -2,19 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/color_white"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/tv_schedule_dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/d15dp"
         android:text="@string/strscheduleexam"
         android:textColor="@color/bg_controller_top_medium"
-        android:textSize="@dimen/d20dp" />
+        android:textSize="@dimen/d22sp" />
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/d1dp"
         android:background="@color/news_feed_separator_color" />
 
     <LinearLayout
@@ -25,25 +27,24 @@
         android:orientation="horizontal"
         android:paddingLeft="@dimen/d20dp"
         android:paddingRight="@dimen/d20dp"
-        android:weightSum="3">
-
+        android:weightSum="2">
 
         <TextView
             android:id="@+id/tv_exam_classroom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/d15dp"
+            android:layout_weight="0.50"
+            android:padding="@dimen/d10dp"
             android:text="@string/strclassroom"
             android:textColor="@color/question_color"
-            android:textSize="@dimen/d20dp" />
+            android:textSize="@dimen/d20sp" />
 
         <Spinner
             android:id="@+id/sp_exam_classroom"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/d0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/d5dp"
-            android:layout_weight="2"
+            android:layout_weight="1.50"
             android:background="@drawable/spinner_selector"
             android:entries="@array/list"
             android:padding="@dimen/d20dp"
@@ -59,25 +60,25 @@
         android:orientation="horizontal"
         android:paddingLeft="@dimen/d20dp"
         android:paddingRight="@dimen/d20dp"
-        android:weightSum="3">
+        android:weightSum="2">
 
         <TextView
             android:id="@+id/tv_exam_start_date"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/d0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/d15dp"
+            android:layout_weight="0.50"
+            android:padding="@dimen/d10dp"
             android:text="@string/strstartdate"
             android:textColor="@color/question_color"
-            android:textSize="@dimen/d20dp" />
+            android:textSize="@dimen/d20sp" />
 
 
         <LinearLayout
             android:id="@+id/ll_exam_startdate"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/d0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/d5dp"
-            android:layout_weight="2"
+            android:layout_weight="1.50"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -93,14 +94,14 @@
                 android:paddingLeft="@dimen/d20dp"
                 android:textColor="@color/color_black"
                 android:textColorHint="@color/color_text_hint"
-                android:textSize="@dimen/d20dp" />
+                android:textSize="@dimen/d20sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="-8dp"
+                android:layout_marginLeft="@dimen/dMinus8dp"
                 android:background="@drawable/btn_calendar" />
         </LinearLayout>
 
@@ -112,9 +113,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/d25dp"
         android:layout_marginTop="@dimen/d25dp"
         android:background="@drawable/btn_blue"
+        android:paddingBottom="@dimen/d10dp"
+        android:paddingLeft="@dimen/d20dp"
+        android:paddingRight="@dimen/d20dp"
+        android:paddingTop="@dimen/d10dp"
         android:text="@string/strsave"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/d18sp" />
+        android:textSize="@dimen/d22sp" />
 </LinearLayout>

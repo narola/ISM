@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,6 @@ import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.NetworkStateListener;
 import com.ism.object.MyTypeFace;
-import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
@@ -105,7 +105,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			callApiGetAdminConfig();
 //			resumeApp();
 		} else {
-			PreferenceData.clearWholePreference(this);
+//			PreferenceData.clearWholePreference(this);
 			PreferenceData.setStringPrefs(PreferenceData.ACCESS_KEY, this, WebConstants.NO_USERNAME);
 			WebConstants.ACCESS_KEY = WebConstants.NO_USERNAME;
 			WebConstants.SECRET_KEY = null;
@@ -134,6 +134,10 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	}
 
 	private void initGlobal() {
+		Button button = new Button(this);
+		button.setSingleLine(true);
+button.setEllipsize(TextUtils.TruncateAt.END);
+
 		myTypeFace = new MyTypeFace(this);
 		btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
 		etPwd = (EditText) findViewById(R.id.et_pwd);
@@ -550,9 +554,9 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 							studentHelper.saveAdminConfig(adminConfig);
 						}
 						PreferenceData.setStringPrefs(PreferenceData.SYNC_DATE_ADMIN_CONFIG, LoginActivity.this,
-								Utility.formatDateMySql(Calendar.getInstance().getTime()));
-						isAdminConfigSet = true;
+								Utility.formatDate(Calendar.getInstance().getTime(), Utility.DATE_FORMAT_MY_SQL));
 					}
+					isAdminConfigSet = true;
 					resumeApp();
 
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
@@ -755,26 +759,31 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupName());
 						PreferenceData.setStringPrefs(PreferenceData.USER_NAME, this, etUserName.getText().toString().trim());
 
-//						if (responseHandler.getUser().get(0).getTutorialGroupId() == null) {
-//							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);
-//							launchWelcomeActivity();
-//						} else {
-//							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, true);
-//
-//							if (responseHandler.getUser().get(0).getTutorialGroupJoiningStatus().equals("1")) {
-						PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
-//
-//								if (responseHandler.getUser().get(0).getTutorialGroupComplete().equals("1")) {
+						saveUserDataToRealm(responseHandler.getUser());
+						
+						if (responseHandler.getUser().get(0).getTutorialGroupId() == null) {
+							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);
+							launchWelcomeActivity();
+						} else {
+							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, true);
+
+							if (responseHandler.getUser().get(0).getTutorialGroupJoiningStatus().equals("1")) {
+								PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
+
+								if (responseHandler.getUser().get(0).getTutorialGroupComplete().equals("1")) {
 									PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this, true);
 									launchHostActivity();
-//								} else {
-//									launchAcceptTutorialGroupActivity();
-//								}
-//							} else {
-//								PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, false);
-//								launchAcceptTutorialGroupActivity();
-//							}
-//						}
+								} else {
+									launchAcceptTutorialGroupActivity();
+								}
+							} else {
+								PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, false);
+								launchAcceptTutorialGroupActivity();
+							}
+						}
+						/*PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
+						PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this, true);
+						launchHostActivity();*/
 
 					}
 
@@ -789,7 +798,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		}
 	}
 
-    private void ParseAllData(ArrayList<User> user) {
+    private void saveUserDataToRealm(ArrayList<User> user) {
         try {
             model.User userData = new model.User();
             userData.setUserId(Integer.parseInt(user.get(0).getUserId()));
@@ -805,7 +814,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
             studentHelper.saveUser(userData);
 
         } catch (Exception e) {
-            Debug.i(TAG, "ParseAllData Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "saveUserDataToRealm Exception : " + e.getLocalizedMessage());
         }
     }
 

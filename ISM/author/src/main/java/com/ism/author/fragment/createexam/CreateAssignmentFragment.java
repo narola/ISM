@@ -9,16 +9,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.InputValidator;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.InputValidator;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
@@ -54,9 +52,8 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     }
 
     private TextView tvActivityTitle, tvActivityAssignmentname, tvActivityCoursename, tvActivityClass, tvActivitySubject,
-            tvActivitySubmissiondate, tvActivityTopic;
+            tvActivitySubmissiondate, tvActivityTopic, tvActivitySave, tvActivityCancel;
     private EditText etActivityAssignmentname, etActivityCoursename, etActivitySubmissionDate;
-    private Button btnActivitySave, btnActivityCancel;
     private Spinner spActivityClass, spActivitySubject, spActivityTopic;
     private ArrayList<Classrooms> arrListClassRooms;
     private ArrayList<Subjects> arrListSubject;
@@ -93,8 +90,8 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         etActivityAssignmentname = (EditText) view.findViewById(R.id.et_activity_assignmentname);
         etActivityCoursename = (EditText) view.findViewById(R.id.et_activity_coursename);
 
-        btnActivitySave = (Button) view.findViewById(R.id.btn_activity_save);
-        btnActivityCancel = (Button) view.findViewById(R.id.btn_activity_cancel);
+        tvActivitySave = (TextView) view.findViewById(R.id.tv_activity_save);
+        tvActivityCancel = (TextView) view.findViewById(R.id.tv_activity_cancel);
 
         spActivityClass = (Spinner) view.findViewById(R.id.sp_activity_class);
         spActivitySubject = (Spinner) view.findViewById(R.id.sp_activity_subject);
@@ -110,19 +107,19 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         etActivitySubmissionDate.setTypeface(Global.myTypeFace.getRalewayRegular());
         etActivityAssignmentname.setTypeface(Global.myTypeFace.getRalewayRegular());
         etActivityCoursename.setTypeface(Global.myTypeFace.getRalewayRegular());
-        btnActivitySave.setTypeface(Global.myTypeFace.getRalewayRegular());
-        btnActivityCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivitySave.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvActivityCancel.setTypeface(Global.myTypeFace.getRalewayRegular());
         tvActivityTopic.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
-        btnActivitySave.setOnClickListener(this);
-        btnActivityCancel.setOnClickListener(this);
+        tvActivitySave.setOnClickListener(this);
+        tvActivityCancel.setOnClickListener(this);
 
         etActivitySubmissionDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    strSubmissionDate = Utils.showDatePickerDob(getActivity(), etActivitySubmissionDate);
+                    strSubmissionDate = Utility.showDatePickerDob(getActivity(), etActivitySubmissionDate);
 
                 }
                 return true;
@@ -146,7 +143,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                         Utility.toastOffline(getActivity());
                     }
                 } else {
-                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
                 }
             }
 
@@ -158,13 +155,11 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
         arrListDefalt = new ArrayList<String>();
         arrListDefalt.add(getString(R.string.strtopic));
-        Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
+        Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
 
         callApiGetClassRooms();
         callApiGetSubjects();
-
-
     }
 
     private void callApiGetClassRooms() {
@@ -341,10 +336,10 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                         classrooms.add(classroom.getClassName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetClassrooms api Exception : " + error.toString());
@@ -370,9 +365,9 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                         subjects.add(subject.getSubjectName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
@@ -396,10 +391,10 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                         topics.add(topic.getTopicName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spActivityTopic, topics, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spActivityTopic, topics, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Global.myTypeFace.getRalewayRegular(), R.layout.simple_spinner);
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetTopics api Exception : " + error.toString());
@@ -416,9 +411,9 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     backToTrialScreen();
-                    Utils.showToast(getActivity().getString(R.string.msg_success_createassignment), getActivity());
+                    Utility.showToast(getActivity().getString(R.string.msg_success_createassignment), getActivity());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseCreateAssignment api Exception : " + error.toString());
@@ -436,11 +431,11 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     @Override
     public void onClick(View v) {
-        if (v == btnActivitySave) {
+        if (v == tvActivitySave) {
             if (isInputsValid()) {
                 callApiCreateAssignment();
             }
-        } else if (v == btnActivityCancel) {
+        } else if (v == tvActivityCancel) {
             backToTrialScreen();
         }
 

@@ -30,7 +30,6 @@ import com.ism.commonsource.utility.AESHelper;
 import com.ism.commonsource.view.ProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
-import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
@@ -282,8 +281,8 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                     calDob.set(Calendar.YEAR, year);
                     calDob.set(Calendar.MONTH, monthOfYear);
                     calDob.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    strDob = Utility.formatDateApi(calDob.getTime());
-                    etDob.setText(Utility.formatDateDisplay(calDob.getTime()));
+                    strDob = Utility.formatDate(calDob.getTime(), Utility.DATE_FORMAT_API);
+                    etDob.setText(Utility.formatDate(calDob.getTime(), Utility.DATE_FORMAT_DISPLAY));
                 }
             }, calDob.get(Calendar.YEAR), calDob.get(Calendar.MONTH), calDob.get(Calendar.DAY_OF_MONTH));
             datePickerDob.getDatePicker().setMaxDate(lngMaxDob);
@@ -491,7 +490,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 //            RequestObject requestObject = new RequestObject();
 //            requestObject.setUserId(id);
 //            requestObject.setFile(sourceFile);
-//            Debug.i(TAG, "FileName : " + requestObject.getFile());
+//            Log.e(TAG, "FileName : " + requestObject.getFile());
 //            new WebserviceWrapper(ProfileInformationActivity.this, requestObject, this).new WebserviceCaller()
 //                    .execute(WebConstants.UPLOAD_PROFILE_PIC);
 //

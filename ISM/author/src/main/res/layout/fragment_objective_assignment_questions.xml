@@ -22,7 +22,7 @@
             android:padding="@dimen/d10dp">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.25"
                 android:orientation="vertical">
@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/strbookname"
                     android:textColor="@color/color_gray"
-                    android:textSize="@dimen/d18dp" />
+                    android:textSize="@dimen/d18sp" />
 
                 <TextView
                     android:id="@+id/tv_objective_assignment_class"
@@ -42,11 +42,11 @@
                     android:layout_marginTop="@dimen/d5dp"
                     android:text="@string/strClass_colon"
                     android:textColor="@color/color_gray"
-                    android:textSize="@dimen/d18dp" />
+                    android:textSize="@dimen/d18sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/d15dp"
                 android:layout_weight="1.25"
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/strassignmentname"
                     android:textColor="@color/color_gray"
-                    android:textSize="@dimen/d18dp" />
+                    android:textSize="@dimen/d18sp" />
 
                 <TextView
                     android:id="@+id/tv_objective_assignment_title"
@@ -68,11 +68,11 @@
                     android:text="@string/strtest"
                     android:textAllCaps="true"
                     android:textColor="@color/color_red"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/d0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/d15dp"
                 android:layout_weight="0.55"
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/strassignmentdate"
                     android:textColor="@color/color_gray"
-                    android:textSize="@dimen/d18dp"
+                    android:textSize="@dimen/d18sp"
                     android:visibility="visible" />
 
                 <TextView
@@ -114,7 +114,7 @@
                     android:layout_marginTop="@dimen/d5dp"
                     android:text=""
                     android:textColor="@color/color_violet_assignment"
-                    android:textSize="@dimen/d18dp" />
+                    android:textSize="@dimen/d18sp" />
             </LinearLayout>
 
         </LinearLayout>

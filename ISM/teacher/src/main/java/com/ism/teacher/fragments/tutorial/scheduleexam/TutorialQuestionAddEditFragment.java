@@ -38,6 +38,7 @@ import com.ism.teacher.autocomplete.TokenCompleteTextView;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.dialog.AddQuestionTextDialog;
+import com.ism.teacher.fragments.tutorial.TutorialGroupFragment;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.model.HashTagsModel;
 import com.ism.teacher.object.Global;
@@ -51,6 +52,14 @@ import com.ism.teacher.ws.model.HashTags;
 import com.ism.teacher.ws.model.Questions;
 import com.ism.teacher.ws.model.Tags;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -76,7 +85,7 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
             tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank, tvAddquestionAdvance, tvAddquestionAnswer;
     private ImageView imgSelectImage, imgPlay, img_cancel, imgHelp, imageValidationQuestionType;
-    private EditText etAddquestionTitle, etEvaluationNote1, etEvaluationNote2;
+    private EditText etAddquestionTitle, etEvaluationNote1, etSolution;
     private Spinner spAddquestionType;
     private CheckBox chkAddquestionPreview;
     List<String> arrListQuestionType;
@@ -88,6 +97,9 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
     private Uri selectedUri = null;
     AddQuestionTextDialog addQuestionTextDialog;
     private final int SELECT_PHOTO = 1, SELECT_VIDEO = 2;
+
+    String htmlText, mediaType, richEditText;
+    ArrayList<String> imageSources = new ArrayList<String>();
 
 
     public TutorialQuestionAddEditFragment() {
@@ -151,12 +163,12 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
 
         etAddquestionTitle = (EditText) view.findViewById(R.id.et_addquestion_title);
         etEvaluationNote1 = (EditText) view.findViewById(R.id.et_evaluation_note1);
-        etEvaluationNote2 = (EditText) view.findViewById(R.id.et_evaluation_note2);
+        etSolution = (EditText) view.findViewById(R.id.et_solution);
 
 
         etAddquestionTitle.setTypeface(Global.myTypeFace.getRalewayRegular());
         etEvaluationNote1.setTypeface(Global.myTypeFace.getRalewayRegular());
-        etEvaluationNote2.setTypeface(Global.myTypeFace.getRalewayRegular());
+        etSolution.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
         spAddquestionType = (Spinner) view.findViewById(R.id.sp_addquestion_type);
@@ -180,29 +192,12 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
                 if (position == 1 || position == 2) {
                     llAddMcqanswer.setVisibility(View.GONE);
                     tvAddquestionAnswer.setVisibility(View.VISIBLE);
-//                    if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strsubjective))) {
-//                        chkAddquestionPreview.setEnabled(true);
-//                        chkAddquestionPreview.setChecked(true);
-//                    } else {
-//                        chkAddquestionPreview.setEnabled(false);
-//                        chkAddquestionPreview.setChecked(false);
-//                    }
 
 
                 } else if (position == 3) {
                     llAddMcqanswer.setVisibility(View.VISIBLE);
                     tvAddquestionAnswer.setVisibility(View.VISIBLE);
-//                    if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(getString(R.string.strobjective))) {
-//                        chkAddquestionPreview.setEnabled(true);
-//                        chkAddquestionPreview.setChecked(false);
-//                    } else {
-//                        chkAddquestionPreview.setEnabled(true);
-//                        chkAddquestionPreview.setChecked(true);
-//                    }
-
-
                 }
-
             }
 
             @Override
@@ -241,6 +236,7 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
                     if (mimeType.startsWith("image")) {
 
                         try {
+                            mediaType = AppConstant.MEDIATYPE_IMAGE;
                             if (addQuestionTextDialog != null && addQuestionTextDialog.isShowing()) {
 
                                 String imgPath = getRealPathFromURI(selectedUri);
@@ -258,6 +254,7 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
                     } else if (mimeType.startsWith("video")) {
 
                         try {
+                            mediaType = AppConstant.MEDIATYPE_VIDEO;
                             if (addQuestionTextDialog != null && addQuestionTextDialog.isShowing()) {
 
                                 String videoPath = getRealPathFromURI(selectedUri);
@@ -308,8 +305,8 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
 
 
     public void setViewForAddEditQuestion() {
-        if (getFragment().getIsSetQuestionData()) {
-            setQuestionData(getFragment().getQuestionData());
+        if (getScheduleTutorialExamContainerFragment().getIsSetQuestionData()) {
+            setQuestionData(getScheduleTutorialExamContainerFragment().getQuestionData());
         } else {
             clearViewsData();
         }
@@ -324,7 +321,7 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
             tagsView.clear();
         }
         etEvaluationNote1.setText("");
-        etEvaluationNote2.setText("");
+        etSolution.setText("");
         imgSelectImage.setImageDrawable(null);
         imgSelectImage.setImageBitmap(null);
         arrListAnswerChioces.clear();
@@ -335,7 +332,7 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
         chkAddquestionPreview.setEnabled(true);
         chkAddquestionPreview.setChecked(false);
 
-        spAddquestionType.setSelection(1);
+        spAddquestionType.setSelection(3);
         imageValidationQuestionType.setVisibility(View.GONE);
 
     }
@@ -473,7 +470,7 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
                 chkAddquestionPreview.setEnabled(false);
             }
             /*check that if user edit question then disable the formatting of question type.*/
-            if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+            if (getScheduleTutorialExamContainerFragment().getIsSetQuestionData() && !getScheduleTutorialExamContainerFragment().getIsCopy()) {
 
                 imageValidationQuestionType.setVisibility(View.VISIBLE);
 
@@ -490,7 +487,7 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
 
             if (questions.getEvaluationNotes() != null) {
                 etEvaluationNote1.setText(questions.getEvaluationNotes());
-                etEvaluationNote2.setText(questions.getEvaluationNotes());
+                etSolution.setText(questions.getEvaluationNotes());
             }
 
             if (questions.getQuestionImageLink() != null && !questions.getQuestionImageLink().equals("")) {
@@ -510,22 +507,22 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
     }
 
 
-    private void setSpinnerData(String questionType) {
-        if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
-            spAddquestionType.setSelection(3);
-            llAddMcqanswer.setVisibility(View.VISIBLE);
-            tvAddquestionAnswer.setVisibility(View.GONE);
-        } else if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatdescriptive))) {
-            spAddquestionType.setSelection(1);
-            llAddMcqanswer.setVisibility(View.GONE);
-            tvAddquestionAnswer.setVisibility(View.VISIBLE);
-        } else if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatfillups))) {
-            spAddquestionType.setSelection(2);
-            llAddMcqanswer.setVisibility(View.GONE);
-            tvAddquestionAnswer.setVisibility(View.VISIBLE);
-        }
-
-    }
+//    private void setSpinnerData(String questionType) {
+//        if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
+//            spAddquestionType.setSelection(3);
+//            llAddMcqanswer.setVisibility(View.VISIBLE);
+//            tvAddquestionAnswer.setVisibility(View.GONE);
+//        } else if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatdescriptive))) {
+//            spAddquestionType.setSelection(1);
+//            llAddMcqanswer.setVisibility(View.GONE);
+//            tvAddquestionAnswer.setVisibility(View.VISIBLE);
+//        } else if (questionType.equalsIgnoreCase(getString(R.string.strquestionformatfillups))) {
+//            spAddquestionType.setSelection(2);
+//            llAddMcqanswer.setVisibility(View.GONE);
+//            tvAddquestionAnswer.setVisibility(View.VISIBLE);
+//        }
+//
+//    }
 
 
     private void setMcqAnswers(Questions questions) {
@@ -553,11 +550,10 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
     private Boolean isInputsValid() {
 //        return inputValidator.validateStringPresence(etAddquestionTitle) & inputValidator.validateStringPresence(etEvaluationNote1)
 //                & inputValidator.validateStringPresence(tagsView)
-//                & inputValidator.validateStringPresence(etEvaluationNote2) && checkSpinnerDataValidation();
+//                & inputValidator.validateStringPresence(etSolution) && checkSpinnerDataValidation();
         return inputValidator.validateStringPresence(etAddquestionTitle) && checkSpinnerDataValidation();
 
     }
-
 
     private Boolean checkSpinnerDataValidation() {
         int spPosition = spAddquestionType.getSelectedItemPosition();
@@ -602,14 +598,14 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
 
             isAddMore = false;
             if (isInputsValid()) {
-                callApiCreateQuestion();
+                callApiTempCreateQuestion();
             }
 
         } else if (v == tvAddquestionSaveAddmore) {
 
             isAddMore = true;
             if (isInputsValid()) {
-                callApiCreateQuestion();
+                callApiTempCreateQuestion();
             }
 
         } else if (v == rlSelectImage) {
@@ -618,7 +614,7 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
             startActivityForResult(intent, AppConstant.REQUEST_CODE_PICK_FROM_GALLERY);
 
         } else if (v == tvAddquestionGotoquestionbank) {
-            getFragment().flipCard();
+            getScheduleTutorialExamContainerFragment().flipCard();
 
         } else if (v == img_cancel) {
             if (selectedUri != null) {
@@ -709,93 +705,241 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
 
     ArrayList<AnswerChoices> arrListAnswerChioces = new ArrayList<AnswerChoices>();
 
-    private void callApiCreateQuestion() {
+    private void callApiTempCreateQuestion() {
 
-        if (Utility.isConnected(getActivity())) {
-            try {
+        try {
+
+            if (Utility.isConnected(getActivity())) {
                 ((TeacherHostActivity) getActivity()).showProgress();
-
-                Debug.e(TAG, "The user id is::" + WebConstants.USER_ID_370);
-                Debug.e(TAG, "The question text is::" + etAddquestionTitle.getText().toString());
-                Debug.e(TAG, "The subject id is::" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID));
-                Debug.e(TAG, "The question score is::" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
-                Debug.e(TAG, "The question format is::" + getQuestionFormat());
-                Debug.e(TAG, "The evaluation notes is::" + etEvaluationNote1.getText().toString());
-                Debug.e(TAG, "The solution  is::" + etEvaluationNote2.getText().toString());
-                Debug.e(TAG, "The topic id  is::" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
-                Debug.e(TAG, "The classroom id  is::" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
-                Debug.e(TAG, "The book id  is::" + getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_BOOK_ID));
-
+//            try {
                 Attribute attribute = new Attribute();
-                attribute.setUserId(WebConstants.USER_ID_370);
-                if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
-                    /*for edit question*/
-                    Debug.e(TAG, "The question id is::" + getFragment().getQuestionData().getQuestionId());
-                    attribute.setQuestionid(getFragment().getQuestionData().getQuestionId());
 
+
+                MediaUploadAttribute userIdParam = new MediaUploadAttribute();
+                userIdParam.setParamName("user_id");
+                //userIdParam.setParamValue(Global.strUserId);
+                userIdParam.setParamValue(WebConstants.USER_ID_370);
+                Debug.e(TAG, "userid_tempcreate_question" + Global.strUserId);
+
+                MediaUploadAttribute questionIdParam = new MediaUploadAttribute();
+                questionIdParam.setParamName("question_id");
+
+                if (getScheduleTutorialExamContainerFragment().getIsSetQuestionData() && !getScheduleTutorialExamContainerFragment().getIsCopy()) {
+                    /*for edit question*/
+                    questionIdParam.setParamValue(getScheduleTutorialExamContainerFragment().getQuestionData().getQuestionId());
                 } else {
                     /*for add question*/
-                    Debug.e(TAG, "The question id is::" + "0");
-                    attribute.setQuestionid("0");
+                    questionIdParam.setParamValue("0");
                 }
-                attribute.setQuestionText(etAddquestionTitle.getText().toString());
-                attribute.setSubjectId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID));
-                attribute.setQuestionScore(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
-                attribute.setQuestionFormat(getQuestionFormat());
-                attribute.setEvaluationNotes(etEvaluationNote1.getText().toString());
-                attribute.setSolution(etEvaluationNote2.getText().toString());
-                attribute.setTopicId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
-                attribute.setClassroomId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
-                attribute.setBookId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_BOOK_ID));
 
-//                attribute.setTags(arrListTags);
+                MediaUploadAttribute questionTextParam = new MediaUploadAttribute();
+                questionTextParam.setParamName("question_text");
+                questionTextParam.setParamValue(getHtmlQuestionText());
+
+                MediaUploadAttribute subjectIdParam = new MediaUploadAttribute();
+                subjectIdParam.setParamName("subject_id");
+                subjectIdParam.setParamValue("0");
+
+                MediaUploadAttribute questionScoreParam = new MediaUploadAttribute();
+                questionScoreParam.setParamName("question_score");
+                questionScoreParam.setParamValue("1");
+
+
+                MediaUploadAttribute questionFormatParam = new MediaUploadAttribute();
+                questionFormatParam.setParamName("question_format");
+                questionFormatParam.setParamValue(getQuestionFormat());
+
+
+                MediaUploadAttribute evaluationNotesParam = new MediaUploadAttribute();
+                evaluationNotesParam.setParamName("evaluation_notes");
+                evaluationNotesParam.setParamValue(etEvaluationNote1.getText().toString());
+
+                MediaUploadAttribute solutionParam = new MediaUploadAttribute();
+                solutionParam.setParamName("solution");
+                solutionParam.setParamValue(etSolution.getText().toString());
+
+
+                MediaUploadAttribute topicIdParam = new MediaUploadAttribute();
+                topicIdParam.setParamName("topic_id");
+                topicIdParam.setParamValue(getScheduleTutorialExamContainerFragment().getBundleArguments().getString(TutorialGroupFragment.ARG_TUTORIAL_TOPIC_ID));
+
+
+                MediaUploadAttribute classroomIdParam = new MediaUploadAttribute();
+                classroomIdParam.setParamName("classroom_id");
+                classroomIdParam.setParamValue("0");
+
+
+                MediaUploadAttribute answerChoicesParam = new MediaUploadAttribute();
 
                 if (getQuestionFormat().equalsIgnoreCase(getString(R.string.strquestionformatmcq))) {
-                    arrListAnswerChioces.clear();
-                    for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
-                        View v = llAddMcqanswer.getChildAt(i);
-                        AnswerChoices answerChoices = new AnswerChoices();
-                        answerChoices.setChoiceText(((EditText) v.findViewById(R.id.et_add_mcq_answer)).getText().toString());
-                        answerChoices.setIsRight(getIsSelected((ImageView) v.findViewById(R.id.img_ans_radio)));
-                        arrListAnswerChioces.add(answerChoices);
+                    getMcqAnswers();
+
+                    answerChoicesParam.setParamName("answer_choices");
+
+                    JSONObject mcqJsonObject = new JSONObject();
+                    JSONArray jArray = new JSONArray();
+                    for (AnswerChoices answerChoices : arrListAnswerChioces) {
+                        JSONObject mcqJson = new JSONObject();
+                        mcqJson.put("choice_text", answerChoices.getChoiceText());
+                        mcqJson.put("is_right", answerChoices.getIsRight());
+                        jArray.put(mcqJson);
                     }
-                    attribute.setAnswerChoices(arrListAnswerChioces);
+                    mcqJsonObject.put("choices", jArray);
+
+                    Debug.e(TAG, "mcq answers" + mcqJsonObject.toString());
+                    answerChoicesParam.setParamValue(mcqJsonObject.toString());
+                    attribute.getArrListParam().add(answerChoicesParam);
                 }
 
-                StringBuilder sb = new StringBuilder();
-                List<HashTagsModel> list = tagsView.getObjects();
-                for (int i = 0; i < list.size(); i++) {
-                    sb.append(list.get(i).getTagName() + ":" + list.get(i).getTagId() + ":1");
-                    sb.append(",");
 
-                }
+                MediaUploadAttribute hashTagParam = new MediaUploadAttribute();
+                hashTagParam.setParamName("hashtag_data");
+                hashTagParam.setParamValue(getHashTagData());
 
-                if (listOfDeletedHashTag.size() > 0) {
-                    for (int i = 0; i < listOfDeletedHashTag.size(); i++) {
-                        sb.append(listOfDeletedHashTag.get(i).getTagName() + ":" + listOfDeletedHashTag.get(i).getTagId() + ":0");
-                        if (i < listOfDeletedHashTag.size() - 1) {
-                            sb.append(",");
-                        }
+
+                Debug.e(TAG, "The Question Text is::::" + getHtmlQuestionText());
+
+
+                MediaUploadAttribute htmlTextParam = new MediaUploadAttribute();
+                htmlTextParam.setParamName("html_text");
+                htmlTextParam.setParamValue(getHtmlQuestionText());
+
+
+                MediaUploadAttribute bookParam = new MediaUploadAttribute();
+                bookParam.setParamName("book_id");
+                bookParam.setParamValue("0");
+
+                attribute.getArrListParam().add(userIdParam);
+                attribute.getArrListParam().add(questionIdParam);
+                attribute.getArrListParam().add(questionTextParam);
+                attribute.getArrListParam().add(subjectIdParam);
+                attribute.getArrListParam().add(questionScoreParam);
+                attribute.getArrListParam().add(questionFormatParam);
+                attribute.getArrListParam().add(evaluationNotesParam);
+                attribute.getArrListParam().add(solutionParam);
+                attribute.getArrListParam().add(topicIdParam);
+                attribute.getArrListParam().add(classroomIdParam);
+                attribute.getArrListParam().add(hashTagParam);
+                attribute.getArrListParam().add(htmlTextParam);
+                attribute.getArrListParam().add(bookParam);
+
+
+                addImage();
+                if (imageSources.size() > 0) {
+                    for (int i = 0; i < imageSources.size(); i++) {
+                        MediaUploadAttribute mediaFileParam = new MediaUploadAttribute();
+                        mediaFileParam.setParamName("" + i);
+                        mediaFileParam.setFileName(imageSources.get(i));
+                        attribute.getArrListFile().add(mediaFileParam);
                     }
-
-                } else {
-                    sb.substring(0, sb.toString().length() - 1);
                 }
-                Debug.e(TAG, "The HashTags Are:::" + sb.toString());
 
-                //   Utility.showToast("The HashTags are::" + sb.toString(), getActivity());
+                MediaUploadAttribute numberOfImagesParam = new MediaUploadAttribute();
+                numberOfImagesParam.setParamName("number_of_images");
+                numberOfImagesParam.setParamValue(String.valueOf(imageSources.size()));
+                attribute.getArrListParam().add(numberOfImagesParam);
 
-
-                attribute.setHashtagData(sb.toString());
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.TEMP_CREATE_QUESTION);
 
-            } catch (Exception e) {
-                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            } else {
+                Utility.toastOffline(getActivity());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void addImage() {
+
+        Debug.e(TAG, "The RichEditText Is:::" + richEditText);
+
+        String richEditText;
+        imageSources.clear();
+        XmlPullParserFactory factory = null;
+        try {
+            factory = XmlPullParserFactory.newInstance();
+
+            XmlPullParser xpp = factory.newPullParser();
+            richEditText = getHtmlQuestionText().replace("&nbsp;", " ");
+            xpp.setInput(new StringReader(richEditText));
+            int eventType = xpp.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+
+                if (eventType == XmlPullParser.START_TAG && "img".equals(xpp.getName())) {
+                    //found an image start tag, extract the attribute 'src' from here..
+
+                    if (xpp.getAttributeValue(0).contains("file://")) {
+                        String path = xpp.getAttributeValue(0).replace("file://", "");
+                        imageSources.add(path);
+                    }
+                }
+                eventType = xpp.next();
+            }
+
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void getMcqAnswers() {
+        arrListAnswerChioces.clear();
+        for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
+            View v = llAddMcqanswer.getChildAt(i);
+            AnswerChoices answerChoices = new AnswerChoices();
+            answerChoices.setChoiceText(((EditText) v.findViewById(R.id.et_add_mcq_answer)).getText().toString());
+            answerChoices.setIsRight(getIsSelected((ImageView) v.findViewById(R.id.img_ans_radio)));
+            arrListAnswerChioces.add(answerChoices);
+        }
+    }
+
+    private String getHtmlQuestionText() {
+
+
+        Debug.e(TAG, "Original text of edittext is:::::" + Html.toHtml(etAddquestionTitle.getText()));
+
+        htmlText = Html.toHtml(etAddquestionTitle.getText());
+        htmlText = htmlText.replaceAll("<p dir=\"ltr\"><img", "<img");
+        htmlText = htmlText.replaceAll("<p dir=\"ltr\"", "<p");
+        htmlText = htmlText.replaceAll(".png\"></p>", ".png\">");
+        htmlText = htmlText.replaceAll(".jpeg\"></p>", ".jpeg\">");
+        htmlText = htmlText.replaceAll(".jpg\"></p>", ".jpg\">");
+        htmlText = htmlText.replaceAll(".png\"> </p>", ".png\">");
+        htmlText = htmlText.replaceAll(".jpeg\"> </p>", ".jpeg\">");
+        htmlText = htmlText.replaceAll(".jpg\"> </p>", ".jpg\">");
+
+        Debug.e(TAG, "Formatted text of edittext is:::::" + htmlText);
+
+        return htmlText;
+    }
+
+    private String getHashTagData() {
+        StringBuilder sb = new StringBuilder();
+        List<HashTagsModel> list = tagsView.getObjects();
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i).getTagName() + ":" + list.get(i).getTagId() + ":1");
+            sb.append(",");
+        }
+        if (listOfDeletedHashTag.size() > 0) {
+            for (int i = 0; i < listOfDeletedHashTag.size(); i++) {
+                sb.append(listOfDeletedHashTag.get(i).getTagName() + ":" + listOfDeletedHashTag.get(i).getTagId() + ":0");
+                if (i < listOfDeletedHashTag.size() - 1) {
+                    sb.append(",");
+                }
             }
         } else {
-            Utility.toastOffline(getActivity());
+            if (sb.length() > 0) {
+                sb.substring(0, sb.toString().length() - 1);
+            }
         }
+
+        Debug.e(TAG, "The HashTags Are:::" + sb.toString());
+        return sb.toString();
 
     }
 
@@ -826,7 +970,7 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
 
     }
 
-    private ScheduleTutorialExamContainerFragment getFragment() {
+    private ScheduleTutorialExamContainerFragment getScheduleTutorialExamContainerFragment() {
         return (ScheduleTutorialExamContainerFragment) mFragment;
     }
 
@@ -864,10 +1008,10 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
                     Utility.showToast(getString(R.string.msg_success_imgupload_question), getActivity());
 
 
-                    if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+                    if (getScheduleTutorialExamContainerFragment().getIsSetQuestionData() && !getScheduleTutorialExamContainerFragment().getIsCopy()) {
                         //  Utility.showToast(getString(R.string.question_edit_success), getActivity());
 //                        Utility.alert(getActivity(), null, getActivity().getResources().getString(R.string.question_edit_success));
-                        getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
+                        getScheduleTutorialExamContainerFragment().setQuestionDataAfterEditQuestion(getScheduleTutorialExamContainerFragment().getQuestionData(),
                                 makeQuestionData(responseHandler.getFileUploadResponse().getQuestion_id(), responseHandler.getFileUploadResponse().getImageLink()),
                                 chkAddquestionPreview.isChecked());
                     }
@@ -885,25 +1029,29 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
 
     private ArrayList<HashTags> arrListTags = new ArrayList<HashTags>();
 
+    ResponseHandler responseHandlerCreateQuestion;
+
     private void onReponseCreateQuestion(Object object, Exception error) {
 
         try {
             ((TeacherHostActivity) getActivity()).hideProgress();
             if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                responseHandlerCreateQuestion = (ResponseHandler) object;
+                if (responseHandlerCreateQuestion.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    Debug.e(TAG, "The Question Id Is::" + responseHandler.getQuestion().get(0).getQuestionId());
-                    if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+                    Debug.e(TAG, "The Question Id Is::" + responseHandlerCreateQuestion.getQuestion().get(0).getQuestionId());
+                    if (getScheduleTutorialExamContainerFragment().getIsSetQuestionData() && !getScheduleTutorialExamContainerFragment().getIsCopy()) {
 
                         Utility.showToast(getString(R.string.question_edit_success), getActivity());
-                        getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
-                                makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId(), ""),
+
+                        getScheduleTutorialExamContainerFragment().setQuestionDataAfterEditQuestion(getScheduleTutorialExamContainerFragment().getQuestionData(),
+                                makeQuestionData(responseHandlerCreateQuestion.getQuestion().get(0).getQuestionId(), ""),
                                 chkAddquestionPreview.isChecked());
                     } else {
 
                         Utility.showToast(getString(R.string.question_add_success), getActivity());
-                        getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId(), ""),
+
+                        getScheduleTutorialExamContainerFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandlerCreateQuestion.getQuestion().get(0).getQuestionId(), ""),
                                 chkAddquestionPreview.isChecked());
 
                     }
@@ -912,13 +1060,12 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
                     }
 
                     if (selectedUri != null) {
-                        Debug.e(TAG, "Thefile path is:" + getRealPathFromURI(selectedUri));
-                        callApiUploadMediaForQuestion(responseHandler.getQuestion().get(0).getQuestionId(), AppConstant.MEDIATYPE_IMAGE,
-                                getRealPathFromURI(selectedUri));
+                        Debug.e(TAG, "Thefile path is:" + Utility.getRealPathFromURI(selectedUri, getActivity()));
+                        callApiUploadMediaForQuestion(responseHandlerCreateQuestion.getQuestion().get(0).getQuestionId(), mediaType,
+                                Utility.getRealPathFromURI(selectedUri, getActivity()));
                     }
-                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utility.showToast(responseHandler.getMessage(), getActivity());
-
+                } else if (responseHandlerCreateQuestion.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utility.showToast(responseHandlerCreateQuestion.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseCreateQuestions api Exception : " + error.toString());
@@ -946,15 +1093,15 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
 
             }
             question.setEvaluationNotes(etEvaluationNote1.getText().toString());
-            question.setSolution(etEvaluationNote2.getText().toString());
+            question.setSolution(etSolution.getText().toString());
 
-            if (getBundleArguments() != null) {
-                question.setTopicId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
-                question.setSubjectId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID));
-                question.setSubjectName(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
-                question.setClassroomId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
-                question.setBookId(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_BOOK_ID));
-                question.setQuestionScore(getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
+            if (getScheduleTutorialExamContainerFragment().getBundleArguments() != null) {
+                question.setTopicId(getScheduleTutorialExamContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TOPIC_ID));
+                question.setSubjectId(getScheduleTutorialExamContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_ID));
+                question.setSubjectName(getScheduleTutorialExamContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_SUBJECT_NAME));
+                question.setClassroomId(getScheduleTutorialExamContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CLASSROOM_ID));
+                question.setBookId(getScheduleTutorialExamContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_BOOK_ID));
+                question.setQuestionScore(getScheduleTutorialExamContainerFragment().getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE));
             }
             ArrayList<Tags> arrListTags = new ArrayList<Tags>();
             List<HashTagsModel> list = tagsView.getObjects();
@@ -1083,7 +1230,5 @@ public class TutorialQuestionAddEditFragment extends Fragment implements TokenCo
 
     }
 
-    private Bundle getBundleArguments() {
-        return ((TeacherHostActivity) getActivity()).getBundle();
-    }
+
 }

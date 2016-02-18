@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.MyDeskAssignmentsAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.Global;
@@ -18,14 +19,15 @@ import com.ism.author.object.Global;
 /**
  * Created by c162 on 28/10/15.
  */
-public class MyDeskFragment extends Fragment  {
+public class MyDeskFragment extends Fragment {
 
     private static final String TAG = MyDeskFragment.class.getSimpleName();
 
     public static final int FRAGMENT_ABOUT_ME = 0;
     public static final int FRAGMENT_BOOKS = 1;
     public static final int FRAGMENT_ASSIGNMENTS = 2;
-    public static final int FRAGMENT_BOOKREFERENCE = 3;
+    public static final int FRAGMENT_BOOKASSIGNMENT = 3;
+
 
     private View view;
     private FragmentListener fragListener;
@@ -146,12 +148,13 @@ public class MyDeskFragment extends Fragment  {
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, myDeskAssignmentsFragment).commit();
                 break;
 
-            case FRAGMENT_BOOKREFERENCE:
+            case FRAGMENT_BOOKASSIGNMENT:
+
 
                 currentFragment = frag;
-                txtAdd.setVisibility(View.VISIBLE);
-                BookReferenceFragment bookReferenceFragment = BookReferenceFragment.newInstance(this);
-                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, bookReferenceFragment).commit();
+                txtAdd.setVisibility(View.GONE);
+                BookAssignmentsFragment bookAssignmentsFragment = BookAssignmentsFragment.newInstance(this);
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, bookAssignmentsFragment).commit();
                 break;
 
         }
@@ -187,10 +190,10 @@ public class MyDeskFragment extends Fragment  {
 
     public void onBackClick() {
 
-        if (currentFragment == FRAGMENT_BOOKREFERENCE) {
+        ((AuthorHostActivity) getActivity()).getBundle().remove(MyDeskAssignmentsAdapter.ARG_BOOK_ID);
 
+        if (currentFragment == FRAGMENT_BOOKASSIGNMENT) {
             loadFragment(FRAGMENT_ASSIGNMENTS);
-
         } else {
             ((AuthorHostActivity) getActivity()).handleBackClick(AppConstant.FRAGMENT_MYDESK);
         }
@@ -198,26 +201,4 @@ public class MyDeskFragment extends Fragment  {
 
     }
 
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.txt_about_me:
-//                loadFragment(FRAGMENT_ABOUT_ME);
-//
-//                break;
-//            case R.id.txt_books:
-//                loadFragment(FRAGMENT_BOOKS);
-//
-//                break;
-//            case R.id.txt_assignments:
-//                loadFragment(FRAGMENT_ASSIGNMENTS);
-//
-//                break;
-//            case R.id.txt_add:
-//                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADD_ASSIGNMENT);
-//
-//                break;
-//        }
-//        selected(v);
-//    }
 }

@@ -2,6 +2,7 @@ package com.ism.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.PastimesDetailsDialog;
 import com.ism.object.Global;
-import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.model.PastimeData;
 
@@ -62,7 +62,7 @@ public class SuggestedPastTimeAdapter extends RecyclerView.Adapter<SuggestedPast
                 @Override
                 public void onClick(View v) {
                     manageResourcesListner.onAddToFav(position);
-                    Debug.i(TAG, "onClickAddToFav : " + position);
+                    Log.e(TAG, "onClickAddToFav : " + position);
 
                 }
             });
@@ -74,7 +74,7 @@ public class SuggestedPastTimeAdapter extends RecyclerView.Adapter<SuggestedPast
                 }
             });
         } catch (Exception e) {
-            Debug.i(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
+            Log.e(TAG, "onBindViewHolder Exception : " + e.getLocalizedMessage());
         }
 
     }

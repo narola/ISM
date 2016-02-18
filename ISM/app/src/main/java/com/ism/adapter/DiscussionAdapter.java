@@ -127,6 +127,7 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 
 			imageLoader.displayImage(WebConstants.HOST_IMAGE_USER + arrListDiscussion.get(position).getSender().getProfilePicture(), holder.imgDp, ISMStudent.options);
 
+
 			if (userId !=arrListDiscussion.get(position).getSender().getUserId()) {
 //				Received Chats
 				holder.llChat.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
@@ -134,12 +135,23 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 				holder.txtTime.setGravity(Gravity.RIGHT);
 				holder.txtMessage.setBackgroundResource(R.drawable.bg_chat_received);
 			} else {
+//=======
+////			if (position % 2 == 0) {
+//			if (arrListDiscussion.get(position).getUserId().equals("555")) {
+//>>>>>>> adddedd0f52cebbf2708517d26e06ea1e3c5b94b
 //				Sent Chats
 				holder.llChat.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 				holder.txtUserName.setGravity(Gravity.RIGHT);
 				holder.txtTime.setGravity(Gravity.LEFT);
 				holder.txtMessage.setBackgroundResource(R.drawable.bg_chat_sent);
+//			} else {
+//				Received Chats
+//				holder.llChat.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+//				holder.txtUserName.setGravity(Gravity.LEFT);
+//				holder.txtTime.setGravity(Gravity.RIGHT);
+//				holder.txtMessage.setBackgroundResource(R.drawable.bg_chat_received);
 			}
+
 
 			if(arrListDiscussion.get(position).isShowDetails()) {
 
@@ -150,6 +162,11 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Vi
 			}
 
 			holder.txtMessage.setText(arrListDiscussion.get(position).getMessage());
+
+			//holder.txtTime.setText(Utility.formatMySqlDate(arrListDiscussion.get(position).getCommentTimestamp(), Utility.DATE_FORMAT_MMMDDYY_HHMMA));
+			//holder.txtUserName.setText(arrListDiscussion.get(position).getFullName());
+			//holder.txtMessage.setText(arrListDiscussion.get(position).getComment());
+
 		} catch (Exception e) {
 			Log.e(TAG, "onBindViewHolder Exception : " + e.toString());
 		}

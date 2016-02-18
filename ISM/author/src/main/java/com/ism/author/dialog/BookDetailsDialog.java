@@ -10,31 +10,25 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Utility;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.BookData;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
-import java.util.ArrayList;
 
 /**
  * Created by c162 on 30/11/15.
  */
 public class BookDetailsDialog extends Dialog implements View.OnClickListener {
-    private final int position;
     private Context mContext;
     private TextView tvDialogClose;
-    private ArrayList<BookData> arrayList;
+    private BookData bookData;
     private TextView txtDone;
 
-    public BookDetailsDialog(Context mContext, ArrayList<BookData>
-            arrayList, int position, ImageLoader imageLoader) {
+    public BookDetailsDialog(Context mContext, BookData
+            bookData) {
         super(mContext);
-
+        this.bookData = bookData;
         this.mContext = mContext;
-        this.arrayList = arrayList;
-        this.position = position;
         Window w = getWindow();
         getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -47,7 +41,6 @@ public class BookDetailsDialog extends Dialog implements View.OnClickListener {
     }
 
     private void initializeDialog() {
-        //imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         TextView txtBookDetails = (TextView) findViewById(R.id.txt_book_details);
         txtDone = (TextView) findViewById(R.id.txt_done);
         TextView txtBook = (TextView) findViewById(R.id.txt_book);
@@ -80,14 +73,15 @@ public class BookDetailsDialog extends Dialog implements View.OnClickListener {
         txtEbookLink.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 
-        txtAuthorName.setText(arrayList.get(position).getAuthorName());
-        txtPublisherName.setText(arrayList.get(position).getPublisherName());
-        txtPriceValue.setText(arrayList.get(position).getPrice());
-        txtDescDetails.setText(arrayList.get(position).getDescription());
-        txtBookName.setText(arrayList.get(position).getBookName());
-        txtEbookLink.setText(arrayList.get(position).getEbookLink());
-        Global.imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getFrontCoverImage(), imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
-        Global.imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getAuthorImage(), imgAuthor, ISMAuthor.options);
+        txtAuthorName.setText(bookData.getAuthorName());
+        txtPublisherName.setText(bookData.getPublisherName());
+        txtPriceValue.setText(bookData.getPrice());
+        txtDescDetails.setText(bookData.getDescription());
+        txtBookName.setText(bookData.getBookName());
+        txtEbookLink.setText(bookData.getEbookLink());
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES + bookData.getAuthorImage(), imgAuthor, ISMAuthor.options);
+        Global.imageLoader.displayImage(WebConstants.BOOKS_IMAGES + bookData.getFrontCoverImage(), imgBook,
+                Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
         txtDone.setOnClickListener(this);
 
     }

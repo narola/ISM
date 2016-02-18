@@ -11,10 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.PostFeedsAdapter;
 import com.ism.author.constant.WebConstants;
@@ -23,6 +24,8 @@ import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+
+import realmhelper.AuthorHelper;
 
 /**
  * Created by c162 on 26/10/15.
@@ -38,6 +41,8 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
     private PostFeedsAdapter adpPostFeeds;
     private RecyclerView recyclerPostFeeds;
     private LinearLayout llNewPost;
+    private TextView tvNoDataMsg;
+    private AuthorHelper authorHelper;
 
     public static MyFeedsFragment newInstance() {
         MyFeedsFragment fragBooks = new MyFeedsFragment();
@@ -58,9 +63,11 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
     }
 
     private void initGlobal() {
+
+        authorHelper = new AuthorHelper(getActivity());
         recyclerPostFeeds = (RecyclerView) view.findViewById(R.id.recycler_post);
         llNewPost = (LinearLayout) view.findViewById(R.id.rl_new_post);
-        adpPostFeeds = new PostFeedsAdapter(getActivity());
+        adpPostFeeds = new PostFeedsAdapter(getActivity(), authorHelper);
         recyclerPostFeeds.setAdapter(adpPostFeeds);
         recyclerPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
@@ -89,6 +96,10 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
 //              Start post activity
             }
         });
+
+        tvNoDataMsg = (TextView) view.findViewById(R.id.tv_no_data_msg);
+
+        setEmptyView(false);
     }
 
     @Override
@@ -139,12 +150,19 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Log.e(TAG, "onResponseGetMyFeeds success : "+responseHandler.getFeeds().size());
-                    adpPostFeeds.addAll(responseHandler.getFeeds());
+
+
+                    if (responseHandler.getFeeds().size() > 0) {
+//                        adpPostFeeds.addAll(responseHandler.getFeeds());
+                        setEmptyView(false);
+                    } else {
+                        setEmptyView(true);
+                    }
+
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetMyFeeds Failed : " + responseHandler.getMessage());
                 }
-            } else if(error != null) {
+            } else if (error != null) {
                 Log.e(TAG, "onResponseGetMyFeeds apiCall Exception : " + error.toString());
             }
         } catch (Exception e) {
@@ -163,5 +181,14 @@ public class MyFeedsFragment extends Fragment implements WebserviceWrapper.Webse
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());
         }
+    }
+
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setText(getString(R.string.no_user_post));
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        recyclerPostFeeds.setVisibility(isEnable ? View.GONE : View.VISIBLE);
     }
 }

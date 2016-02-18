@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="450sp"
-    android:layout_height="170sp"
+    android:layout_width="@dimen/dp338"
+    android:layout_height="@dimen/dp127"
 
     android:background="@drawable/bg_white_border_gray"
     android:orientation="horizontal">
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="7"
         android:orientation="vertical"
-        android:padding="@dimen/d10dp">
+        android:padding="@dimen/dp8">
 
         <com.ism.views.CircleImageView
             android:id="@+id/img_dp_post_creator"
@@ -27,7 +27,7 @@
             android:gravity="center"
             android:text="Adam Stanger"
             android:textColor="#7A7A7A"
-            android:textSize="@dimen/d15dp" />
+            android:textSize="@dimen/dp11" />
 
         <TextView
             android:id="@+id/txt_status"
@@ -36,16 +36,16 @@
             android:layout_gravity="center"
             android:text="Active Today"
             android:textColor="#78A270"
-            android:textSize="13sp" />
+            android:textSize="@dimen/sp10" />
     </LinearLayout>
 
     <TextView
         android:layout_width="1.5dp"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/d10dp"
-        android:layout_marginLeft="@dimen/d10dp"
-        android:layout_marginRight="@dimen/d10dp"
-        android:layout_marginTop="@dimen/d10dp"
+        android:layout_marginBottom="@dimen/dp8"
+        android:layout_marginLeft="@dimen/dp8"
+        android:layout_marginRight="@dimen/dp8"
+        android:layout_marginTop="@dimen/dp8"
 
         android:background="#EAEAEA" />
 
@@ -55,7 +55,7 @@
         android:layout_gravity="center"
         android:layout_weight="4"
         android:orientation="vertical"
-        android:padding="@dimen/d10dp">
+        android:padding="@dimen/dp8">
 
         <TextView
             android:id="@+id/txt_school"
@@ -64,10 +64,10 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="left"
-            android:padding="@dimen/d5dp"
+            android:padding="@dimen/dp4"
             android:text="SD. Public School"
             android:textColor="#5a5a5a"
-            android:textSize="@dimen/d20dp" />
+            android:textSize="@dimen/dp15" />
 
         <TextView
             android:id="@+id/txt_address"
@@ -77,9 +77,9 @@
             android:layout_marginBottom="5sp"
             android:layout_weight="1"
             android:gravity="left"
-            android:padding="@dimen/d5dp"
+            android:padding="@dimen/dp4"
             android:text="1665 US-45 BYP, Jackson, T8 3805, United States."
             android:textColor="#7b7b7b"
-            android:textSize="@dimen/d20dp" />
+            android:textSize="@dimen/dp15" />
     </LinearLayout>
 </LinearLayout>

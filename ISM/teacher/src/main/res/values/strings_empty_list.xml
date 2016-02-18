@@ -23,5 +23,9 @@
     <string name="no_preview_questions">No Questions added in preview!</string>
     <string name="no_group_members_assigned">No Group Members are assigned yet!</string>
     <string name="no_past_tutorials">No Past Tutorials!</string>
+    <string name="no_notes_available">No Notes Available!</string>
 
+    <!-- user profile(settings)-->
+    <string name="no_user_post">No post added by you,to start click on the post button!</string>
+    <string name="no_exams">No exams created yet!</string>
 </resources>

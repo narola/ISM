@@ -5,7 +5,7 @@
     android:background="@android:color/white" >
 
     <RelativeLayout
-        android:minHeight="2dp"
+        android:minHeight="@dimen/dp2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0sp"

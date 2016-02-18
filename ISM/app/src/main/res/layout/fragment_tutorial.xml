@@ -12,7 +12,7 @@
 		android:background="@color/bg_tutorial"
 		android:gravity="center"
 		android:textAllCaps="true"
-		android:textSize="12sp"
+		android:textSize="@dimen/sp9"
 		android:textColor="@android:color/white"/>
 
 	<LinearLayout
@@ -32,6 +32,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/monday"
+			android:textSize="@dimen/text_week_days"
 			android:textAllCaps="true"
 			android:textColor="@drawable/color_week_day_text"/>
 
@@ -45,6 +46,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/tuesday"
+			android:textSize="@dimen/text_week_days"
 			android:textAllCaps="true"
 			android:textColor="@drawable/color_week_day_text"/>
 
@@ -58,6 +60,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/wednesday"
+			android:textSize="@dimen/text_week_days"
 			android:textAllCaps="true"
 			android:textColor="@drawable/color_week_day_text"/>
 
@@ -71,6 +74,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/thursday"
+			android:textSize="@dimen/text_week_days"
 			android:textAllCaps="true"
 			android:textColor="@drawable/color_week_day_text"/>
 
@@ -84,6 +88,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/friday"
+			android:textSize="@dimen/text_week_days"
 			android:textAllCaps="true"
 			android:textColor="@drawable/color_week_day_text"/>
 
@@ -97,6 +102,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/saturday"
+			android:textSize="@dimen/text_week_days"
 			android:textAllCaps="true"
 			android:textColor="@drawable/color_week_day_text"/>
 
@@ -110,6 +116,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/sunday"
+			android:textSize="@dimen/text_week_days"
 			android:textAllCaps="true"
 			android:textColor="@drawable/color_week_day_text"/>
 	</LinearLayout>

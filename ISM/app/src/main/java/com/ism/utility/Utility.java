@@ -12,6 +12,9 @@ import android.net.Uri;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -59,9 +62,12 @@ public class Utility {
     public static final SimpleDateFormat DATE_FORMAT_DDMMMYY = new SimpleDateFormat("dd MMM yy", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_MMMDDYY_HHMMA = new SimpleDateFormat("MMM dd, yy  HH : mm aa", Locale.getDefault()); // Nov 25, 2015  7:10pm
     public static final SimpleDateFormat DATE_FORMAT_MMMDDYYYY = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+
     public static final SimpleDateFormat DATE_FORMAT_YYYYMMDDHHMMSS = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss +0000", Locale.getDefault());
 	private static StringBuilder mFormatBuilder = new StringBuilder();
 	private static Formatter mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
+
+
     private static InputMethodManager inputMethod;
 
     /**
@@ -224,82 +230,34 @@ public class Utility {
         dialog.show();
     }
 
-    /**
-     * Krunal Panchal
-     * Format date to pass in api.
-     *
-     * @param date
-     * @return String : formatted date to pass in api.
-     */
-    public static String formatDateApi(Date date) {
-        return DATE_FORMAT_API.format(date);
+	/**
+	 * Krunal Panchal
+	 * Get formatted date as String in required format.
+	 *
+	 * @param date
+	 * @param dateFormat
+	 * @return Formatted date as String
+	 */
+	public static String formatDate(Date date, SimpleDateFormat dateFormat) {
+        return dateFormat.format(date);
     }
 
-    /**
-     * Krunal Panchal
-     * Format date to pass in api with MySql format.
-     *
-     * @param date
-     * @return
-     */
-    public static String formatDateMySql(Date date) {
-        return DATE_FORMAT_MY_SQL.format(date);
-    }
-
-    /**
-     * Format date to display in app.
-     *
-     * @param date
-     * @return String : formatted date for display in app.
-     */
-    public static String formatDateDisplay(Date date) {
-        return DATE_FORMAT_DISPLAY.format(date);
-    }
-
-    /**
-     * Krunal Panchal
-     *
-     * @param strDate
-     * @return String : fromatted date. eg. : 6 jul 15
-     */
-    public static String formatPHPDateToDMY(String strDate) {
-        try {
-            return DATE_FORMAT_DDMMMYY.format(DATE_FORMAT_MY_SQL.parse(strDate));
-        } catch (ParseException e) {
-            Log.e(TAG, "formatPHPDateToDMY Exception : " + e.toString());
-            return null;
-        }
-    }
-
-    /**
-     * Krunal Panchal
-     *
-     * @param strDate
-     * @return String : fromatted date. eg. : Nov 25, 2015  7:10pm
-     */
-    public static String formatPHPDateToMMMDDYY_HHMMA(String strDate) {
-        try {
-            return DATE_FORMAT_MMMDDYY_HHMMA.format(DATE_FORMAT_MY_SQL.parse(strDate));
-        } catch (ParseException e) {
-            Log.e(TAG, "formatPHPDateToDMY Exception : " + e.toString());
-            return null;
-        }
-    }
-
-    /**
-     * Krunal Panchal
-     *
-     * @param strDate
-     * @return String : fromatted date. eg. : 6 jul 15
-     */
-    public static String formatMySqlDateToMMMDDYYYY(String strDate) {
-        try {
-            return DATE_FORMAT_MMMDDYYYY.format(DATE_FORMAT_MY_SQL.parse(strDate));
-        } catch (ParseException e) {
-            Log.e(TAG, "formatMySqlDateToMMMDDYYYY Exception : " + e.toString());
-            return null;
-        }
-    }
+	/**
+	 * Krunal Panchal
+	 * Formate MySql formatted date to required format.
+	 *
+	 * @param mySqlFormattedDate
+	 * @param dateFormat
+	 * @return Formatted String date.
+	 */
+	public static String formatMySqlDate(String mySqlFormattedDate, SimpleDateFormat dateFormat) {
+		try {
+			return dateFormat.format(DATE_FORMAT_MY_SQL.parse(mySqlFormattedDate));
+		} catch (ParseException e) {
+			Log.e(TAG, "formatMySqlDate Exception : " + e.toString());
+			return null;
+		}
+	}
 
     /**
      * return current date with format DATE_FORMAT_YYYYMMDDHHMMSS
@@ -353,11 +311,11 @@ public class Utility {
      */
     public static void sortPostedOnAsc(ArrayList<Notice> arrListData) {
         Collections.sort(arrListData, new Comparator<Notice>() {
-	        @Override
-	        public int compare(Notice lData, Notice rData) {
-		        int compare = lData.getPostedOn().compareTo(rData.getPostedOn());
-		        return compare;
-	        }
+            @Override
+            public int compare(Notice lData, Notice rData) {
+                int compare = lData.getPostedOn().compareTo(rData.getPostedOn());
+                return compare;
+            }
         });
     }
 
@@ -559,9 +517,23 @@ public class Utility {
         try {
             return curFormater.parse(date);
         } catch (ParseException e) {
-            Debug.i(TAG, "getDateFormateMySql ParseException : " + e.getLocalizedMessage());
+            Log.e(TAG, "getDateFormateMySql ParseException : " + e.getLocalizedMessage());
         }
         return null;
+    }
+
+    public static Date convertStringToDate(String strdate) {
+
+        SimpleDateFormat sourceFormat = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss z",Locale.US);
+        Date parsedDate = null;
+        try {
+            parsedDate = sourceFormat.parse(strdate);
+            System.out.println(strdate + " ---- > parsedDate =" + parsedDate.toString());
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        return parsedDate ;
+
     }
 
     /*
@@ -572,7 +544,7 @@ public class Utility {
         try {
             return curFormater.parse(date);
         } catch (ParseException e) {
-            Debug.i(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
+            Log.e(TAG, "getDateFormate ParseException : " + e.getLocalizedMessage());
         }
         return null;
     }
@@ -595,24 +567,98 @@ public class Utility {
 
     }
 
-	public static String stringForTime(int timeMs) {
-		int totalSeconds = timeMs / 1000;
+    public static String stringForTime(int timeMs) {
+        int totalSeconds = timeMs / 1000;
 
-		int seconds = totalSeconds % 60;
-		int minutes = (totalSeconds / 60) % 60;
-		int hours   = totalSeconds / 3600;
+        int seconds = totalSeconds % 60;
+        int minutes = (totalSeconds / 60) % 60;
+        int hours = totalSeconds / 3600;
 
-		mFormatBuilder.setLength(0);
-		if (hours > 0) {
-			return mFormatter.format("%d:%02d:%02d", hours, minutes, seconds).toString();
-		} else {
-			return mFormatter.format("%02d:%02d", minutes, seconds).toString();
-		}
-	}
+        mFormatBuilder.setLength(0);
+        if (hours > 0) {
+            return mFormatter.format("%d:%02d:%02d", hours, minutes, seconds).toString();
+        } else {
+            return mFormatter.format("%02d:%02d", minutes, seconds).toString();
+        }
+    }
 
-	public static String formatNumber(int number) {
-		mFormatBuilder.setLength(0);
-		return mFormatter.format("%02d", number).toString();
-	}
+    public static String formatNumber(int number) {
+        mFormatBuilder.setLength(0);
+        return mFormatter.format("%02d", number).toString();
+    }
 
+    /**
+     * get the file path from the URI
+     *
+     * @param contentURI
+     * @param mContext
+     * @return
+     */
+
+    public static String getRealPathFromURI(Uri contentURI, Context mContext) {
+        String result;
+        Cursor cursor = mContext.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
+    /**
+     * Arti Patel
+     * hide the view
+     *
+     * @param view
+     */
+    public static void hideView(View view) {
+        view.setVisibility(View.GONE);
+    }
+
+    /**
+     * Arti patel
+     *  show the view
+     *
+     * @param view
+     */
+    public static void showView(View view) {
+        view.setVisibility(View.VISIBLE);
+    }
+
+    public static SpannableString f;
+
+    /**
+     *
+     * @param spanString
+     * @param color
+     * @return
+     */
+    public static SpannableString getSpannableString(String spanString, Integer color) {
+
+        f = new SpannableString(spanString);
+        f.setSpan(new ForegroundColorSpan(color), 0,
+                spanString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return f;
+
+    }
+
+    /**
+     *
+     * @param original
+     * @param tobeChecked
+     * @param caseSensitive
+     * @return
+     */
+    public static boolean containsString(String original, String tobeChecked, boolean caseSensitive) {
+        if (caseSensitive) {
+            return original.contains(tobeChecked);
+        } else {
+            return original.toLowerCase().contains(tobeChecked.toLowerCase());
+        }
+
+    }
 }

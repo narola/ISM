@@ -3,10 +3,14 @@ package com.ism.author.activtiy;
 
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,13 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.PreferenceData;
-import com.ism.author.Utility.Utility;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
 import com.ism.author.adapter.ExamsAdapter;
+import com.ism.author.broadcastReceiver.AlarmReceiver;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.BooksFragment;
@@ -33,29 +36,34 @@ import com.ism.author.fragment.OfficeFragment;
 import com.ism.author.fragment.TrialFragment;
 import com.ism.author.fragment.assessment.AssignmentsSubmittorFragment;
 import com.ism.author.fragment.assessment.ExamsFragment;
+import com.ism.author.fragment.assessment.StudentAttemptedAssignmentFragment;
 import com.ism.author.fragment.assessment.objectiveassessment.ObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.fragment.createexam.CreateExamAssignmentContainerFragment;
 import com.ism.author.fragment.createexam.CreateExamFragment;
 import com.ism.author.fragment.createquestion.AddQuestionContainerFragment;
 import com.ism.author.fragment.gotrending.GoTrendingFragment;
-import com.ism.author.fragment.gotrending.PastFragment;
-import com.ism.author.fragment.mydesk.AddAssignmentFragment;
+import com.ism.author.fragment.gotrending.PastTrendingQuestionsFragment;
+import com.ism.author.fragment.gotrending.TrendingQuestionDetailFragment;
+import com.ism.author.fragment.mydesk.CreateAssignmentFragment;
 import com.ism.author.fragment.mydesk.MyDeskFragment;
 import com.ism.author.fragment.userprofile.AllMessageFragment;
 import com.ism.author.fragment.userprofile.AllNotificationFragment;
 import com.ism.author.fragment.userprofile.AllStudymateRequestFragment;
+import com.ism.author.fragment.userprofile.AuthorBooksFragment;
 import com.ism.author.fragment.userprofile.AuthorProfileFragment;
 import com.ism.author.fragment.userprofile.FollowersFragment;
 import com.ism.author.fragment.userprofile.HighScoreFragment;
 import com.ism.author.fragment.userprofile.MyActivityFragment;
 import com.ism.author.fragment.userprofile.MyFeedsFragment;
-import com.ism.author.fragment.userprofile.StudentAttemptedAssignmentFragment;
 import com.ism.author.fragment.userprofile.generalsetting.GeneralSettingsFragment;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.ControllerTopMenuItem;
 import com.ism.author.object.Global;
 import com.ism.author.object.MyTypeFace;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.PreferenceData;
+import com.ism.author.utility.Utility;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -116,8 +124,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_ALL_MESSAGE = 12;
     public static final int FRAGMENT_ALL_NOTIFICATION = 13;
     public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 14;
-    public static final int FRAGMENT_PAST = 15;
+    public static final int FRAGMENT_PAST_TRENDING_QUESTIONS = 15;
     public static final int FRAGMENT_ADD_ASSIGNMENT = 16;
+    public static final int FRAGMENT_TRENDING_QUESTION_DETAIL = 17;
+
     //these are the right side fragments
     public static final int FRAGMENT_PROFILE_CONTROLLER = 31;
     public static final int FRAGMENT_HIGHSCORE = 32;
@@ -126,6 +136,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_FOLLOWERS = 36;
     public static final int FRAGMENT_MY_ACTIVITY = 37;
     public static final int FRAGMENT_GENERAL_SETTING = 18;
+    public static final int FRAGMENT_MY_BOOKS = 19;
 
     public static int currentMainFragment;
     public static int currentRightFragment;
@@ -141,6 +152,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private ArrayList<NotificationSetting> arrayListNotificationSettings;
     private ArrayList<SMSAlert> arrayListSMSAlert;
     private Preferences preference;
+
+    private AuthorHelper authorHelper;
 
 
     public interface HostListenerProfileController {
@@ -217,8 +230,23 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author_host);
 
+        registerAlarmBroadCastReceiver();
         inigGlobal();
 
+    }
+
+    private int NO_OF_SECONDS = 30;
+    private int ALARM_TIME_INTERVAL = 1000 * NO_OF_SECONDS;
+
+    private void registerAlarmBroadCastReceiver() {
+
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+        boolean alarmRunning = (PendingIntent.getBroadcast(this, AppConstant.PENDING_INTENT_ID, alarmIntent, PendingIntent.FLAG_NO_CREATE) != null);
+        if (alarmRunning == false) {
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, AppConstant.PENDING_INTENT_ID, alarmIntent, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), ALARM_TIME_INTERVAL, pendingIntent);
+        }
     }
 
     private void inigGlobal() {
@@ -230,10 +258,11 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
         Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
         Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
+
 //        Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AuthorHostActivity.this);
 //        Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorHostActivity.this);
 //        Global.strProfilePic = WebConstants.USER_IMAGES + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AuthorHostActivity.this);
-        Global.authorHelper = new AuthorHelper(getActivity());
+        authorHelper = new AuthorHelper(getActivity());
 
 //        Global.strUserId = "52";
 //        Global.strFullName = "Chirag Mistry";
@@ -350,7 +379,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
                     setBackStackFragmentKey(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AddAssignmentFragment.newInstance(), AppConstant.FRAGMENT_ADD_ASSIGNMENT).commit();
+                            CreateAssignmentFragment.newInstance(), AppConstant.FRAGMENT_ADD_ASSIGNMENT).commit();
                     break;
 
                 case FRAGMENT_TRIAL:
@@ -366,11 +395,18 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
                             GoTrendingFragment.newInstance(), AppConstant.FRAGMENT_GOTRENDING).commit();
                     break;
-                case FRAGMENT_PAST:
+                case FRAGMENT_PAST_TRENDING_QUESTIONS:
 
-                    setBackStackFragmentKey(AppConstant.FRAGMENT_PAST);
+                    setBackStackFragmentKey(AppConstant.FRAGMENT_PAST_TRENDING_QUESTIONS);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            PastFragment.newInstance(), AppConstant.FRAGMENT_PAST).commit();
+                            PastTrendingQuestionsFragment.newInstance(), AppConstant.FRAGMENT_PAST_TRENDING_QUESTIONS).commit();
+                    break;
+
+                case FRAGMENT_TRENDING_QUESTION_DETAIL:
+
+                    setBackStackFragmentKey(AppConstant.FRAGMENT_TRENDING_QUESTION_DETAIL);
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            TrendingQuestionDetailFragment.newInstance(), AppConstant.FRAGMENT_TRENDING_QUESTION_DETAIL).commit();
                     break;
 
                 case FRAGMENT_ASSESSMENT:
@@ -442,6 +478,12 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                             MyActivityFragment.newInstance()).commit();
                     break;
 
+                case FRAGMENT_MY_BOOKS:
+
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AuthorBooksFragment.newInstance()).commit();
+                    break;
+
 
                 case FRAGMENT_ALL_NOTIFICATION:
 
@@ -459,6 +501,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                             AllStudymateRequestFragment.newInstance()).commit();
                     break;
             }
+
             currentMainFragment = fragment;
 
         } catch (Exception e) {
@@ -617,7 +660,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 //                    }
                     break;
 
-                case FRAGMENT_PAST:
+                case FRAGMENT_PAST_TRENDING_QUESTIONS:
                     setTopBarValues(fragment, getResources().getColor(R.color.bg_office), false, true, false, controllerTopSubMenuGoTrading, false);
 
                     llControllerLeft.setVisibility(View.VISIBLE);
@@ -749,6 +792,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
 
                 case FRAGMENT_GENERAL_SETTING:
+                case FRAGMENT_MY_BOOKS:
                 case FRAGMENT_MY_FEEDS:
                 case FRAGMENT_FOLLOWERS:
                 case FRAGMENT_MY_ACTIVITY:
@@ -826,7 +870,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     imgOffice.setActivated(true);
                     break;
 
-                case FRAGMENT_PAST:
+                case FRAGMENT_PAST_TRENDING_QUESTIONS:
                     imgOffice.setActivated(true);
                     break;
 
@@ -996,8 +1040,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 break;
 
             case FRAGMENT_ADD_ASSIGNMENT:
-                AddAssignmentFragment addAssignmentFragment = (AddAssignmentFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
-                addAssignmentFragment.onBackClick();
+                CreateAssignmentFragment createAssignmentFragment = (CreateAssignmentFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_ADD_ASSIGNMENT);
+                createAssignmentFragment.onBackClick();
                 break;
 
             case FRAGMENT_GOTRENDING:
@@ -1005,10 +1049,16 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 goTrendingFragment.onBackClick();
                 break;
 
-            case FRAGMENT_PAST:
-                PastFragment pastFragment = (PastFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_PAST);
-                pastFragment.onBackClick();
+            case FRAGMENT_PAST_TRENDING_QUESTIONS:
+                PastTrendingQuestionsFragment pastTrendingQuestionsFragment = (PastTrendingQuestionsFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_PAST_TRENDING_QUESTIONS);
+                pastTrendingQuestionsFragment.onBackClick();
                 break;
+
+            case FRAGMENT_TRENDING_QUESTION_DETAIL:
+                TrendingQuestionDetailFragment trendingQuestionDetailFragment = (TrendingQuestionDetailFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TRENDING_QUESTION_DETAIL);
+                trendingQuestionDetailFragment.onBackClick();
+                break;
+
 
             case FRAGMENT_TRIAL:
                 TrialFragment trialFragment = (TrialFragment) getFragmentManager().findFragmentByTag(AppConstant.FRAGMENT_TRIAL);
@@ -1067,7 +1117,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         } else if (currentMainFragment == FRAGMENT_ADDQUESTION_CONTAINER) {
 
         } else if (currentMainFragment == FRAGMENT_GOTRENDING) {
-            loadFragmentInMainContainer(FRAGMENT_PAST);
+            loadFragmentInMainContainer(FRAGMENT_PAST_TRENDING_QUESTIONS);
         }
 
 
@@ -1286,39 +1336,39 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         try {
             arrayListSMSAlert = arrayList.get(0).getSMSAlert();
             for (int j = 0; j < arrayListSMSAlert.size(); j++) {
-                preference=new Preferences();
+                preference = new Preferences();
                 preference.setPreferencesId(Integer.parseInt(arrayListSMSAlert.get(j).getId()));
                 preference.setDefaultValue(arrayListSMSAlert.get(j).getDefaultValue());
                 preference.setDisplayValue(arrayListSMSAlert.get(j).getDisplayValue());
                 preference.setPreferenceKey(arrayListSMSAlert.get(j).getPreferenceKey());
                 preference.setIsSync(0);
-                Global.authorHelper.saveAllPreferences(preference);
-               // PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
+                authorHelper.saveAllPreferences(preference);
+                // PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
                 //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
             }
             arrayListNotificationSettings = arrayList.get(0).getNotificationSettings();
             for (int j = 0; j < arrayListNotificationSettings.size(); j++) {
-                preference=new Preferences();
+                preference = new Preferences();
                 preference.setPreferencesId(Integer.parseInt(arrayListNotificationSettings.get(j).getId()));
                 preference.setDefaultValue(arrayListNotificationSettings.get(j).getDefaultValue());
                 preference.setDisplayValue(arrayListNotificationSettings.get(j).getDisplayValue());
                 preference.setPreferenceKey(arrayListNotificationSettings.get(j).getPreferenceKey());
                 preference.setIsSync(0);
-                Global.authorHelper.saveAllPreferences(preference);
-              //  PreferenceData.setStringPrefs(arrayListNotificationSettings.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotificationSettings.get(j).getId());
+                authorHelper.saveAllPreferences(preference);
+                //  PreferenceData.setStringPrefs(arrayListNotificationSettings.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotificationSettings.get(j).getId());
                 // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
             }
 
             arrayListPrivacySetting = arrayList.get(0).getPrivacySetting();
             for (int j = 0; j < arrayListPrivacySetting.size(); j++) {
-                preference=new Preferences();
+                preference = new Preferences();
                 preference.setPreferencesId(Integer.parseInt(arrayListPrivacySetting.get(j).getId()));
                 preference.setDefaultValue(arrayListPrivacySetting.get(j).getDefaultValue());
                 preference.setDisplayValue(arrayListPrivacySetting.get(j).getDisplayValue());
                 preference.setPreferenceKey(arrayListPrivacySetting.get(j).getPreferenceKey());
                 preference.setIsSync(0);
-                Global.authorHelper.saveAllPreferences(preference);
-               // PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
+                authorHelper.saveAllPreferences(preference);
+                // PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
                 // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
             }
 
@@ -1390,51 +1440,29 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     }
 
     private void removeBundleArguments() {
-
         getBundle().clear();
+    }
 
 
-//        if (getBundle().containsKey(AssignmentSubmittorAdapter.ARG_STUDENT_ID)) {
-//            Utils.showToast("VALUE IS THERE", getActivity());
-//        } else {
-//            Utils.showToast("VALUE IS NOT THERE", getActivity());
-//        }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        authorHelper.realm.close();
+        canclePendingIntent();
+    }
 
-//        getBundle().remove(CreateExamFragment.ARG_IS_CREATE_EXAM);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_ID);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_NAME);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_ID);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_BOOK_ID);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_BOOK_NAME);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_CATEGORY);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_MODE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_DURATION);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_ATTEMPT_COUNT);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_INSTRUCTIONS);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_RANDOM_QUESTION);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_NEGATIVE_MARKING);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_NEGATIVE_MARK_VALUE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_USE_QUESTION_SCORE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_CORRECT_ANSWER_SCORE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_IS_DECLARE_RESULTS);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_ASSESSOR);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_START_DATE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_START_TIME);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_CREATED_DATE);
-//        getBundle().remove(ExamsAdapter.ARG_EXAM_NO);
-//        getBundle().remove(ExamsAdapter.ARG_FRAGMENT_TYPE);
-//        getBundle().remove(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION);
-//        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_ID);
-//        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
-//        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC);
-//        getBundle().remove(AssignmentSubmittorAdapter.ARG_STUDENT_NAME);
-//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
-//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE);
-//        getBundle().remove(ObjectiveAssignmentQuestionsFragment.ARG_EXAM_ISCOPY);
-//        getBundle().remove(MyStudentListAdapter.ARG_ARR_LIST_STUDENTS);
+    private void canclePendingIntent() {
 
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                AppConstant.PENDING_INTENT_ID, alarmIntent, PendingIntent.FLAG_NO_CREATE);
+        if (pendingIntent != null) {
+            pendingIntent.cancel();
+            manager.cancel(pendingIntent);
 
+            Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
+        } else {
+        }
     }
 }

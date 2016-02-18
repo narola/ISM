@@ -15,11 +15,11 @@
     <com.ism.commonsource.view.ActionProcessButton
         android:id="@+id/prog_host"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="@dimen/dp4"
         android:visibility="invisible"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60sp"
+        android:layout_height="@dimen/dp45"
         android:background="@color/color_actionbar"
         android:orientation="horizontal">
 
@@ -29,10 +29,10 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_icon"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="@dimen/dp4"
             android:text="@string/strcancel"
             android:textColor="@color/white"
-            android:textSize="@dimen/d20sp" />
+            android:textSize="@dimen/sp15" />
 
         <TextView
             android:layout_width="match_parent"
@@ -47,17 +47,17 @@
             android:background="@drawable/bg_icon"
             android:drawableRight="@drawable/arrow"
             android:gravity="center"
-            android:paddingLeft="5dp"
-            android:paddingRight="@dimen/d20dp"
+            android:paddingLeft="@dimen/dp4"
+            android:paddingRight="@dimen/dp15"
             android:text="@string/strEdit"
             android:textColor="@color/green"
-            android:textSize="@dimen/d20sp" />
+            android:textSize="@dimen/sp15" />
 
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="670dp"
+        android:layout_height="@dimen/dp502"
         android:layout_weight="1"
         android:background="@color/white"
         android:orientation="horizontal">
@@ -67,9 +67,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:hint="Enter here"
+            android:hint="@string/strEnterHere"
             android:gravity="top"
-            android:padding="10dp" />
+            android:padding="@dimen/dp8" />
 
 
     </RelativeLayout>

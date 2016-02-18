@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
+import com.ism.author.utility.Debug;
 import com.ism.author.fragment.assessment.subjectiveassessment.SubjectiveAssignmentQuestionsContainerFragment;
 import com.ism.author.object.Global;
 import com.ism.author.ws.model.QuestionPalette;
@@ -48,8 +48,6 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
 
         try {
             holder.tvQuestionStatus.setText("" + (position + 1));
-            holder.tvQuestionStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
-
 
             setQuestionStatus(holder.tvQuestionStatus, getQuestionStatus(arrListQuestions.get(position).getQuestionId()));
 
@@ -132,6 +130,8 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
         public ViewHolder(View itemView) {
             super(itemView);
             tvQuestionStatus = (TextView) itemView.findViewById(R.id.tv_question_status);
+
+            tvQuestionStatus.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         }
     }

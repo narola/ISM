@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.PreferenceData;
-import com.ism.author.Utility.Utility;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.PreferenceData;
+import com.ism.author.utility.Utility;
 import com.ism.author.constant.WebConstants;
 import com.ism.commonsource.utility.AESHelper;
 
@@ -172,8 +172,8 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETQUESTIONBANK).execute(ResponseHandler.class, attribute);
                                 break;
 
-                            case WebConstants.GETALLASSIGNMENTS:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GETALLASSIGNMENTS).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GETASSIGNMENTBYBOOK:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_ASSIGNMENT_BY_BOOK).execute(ResponseHandler.class, attribute);
                                 break;
 
                             case WebConstants.GETEXAMEVALUATIONS:
@@ -227,7 +227,7 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_HASHTAG).execute(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.TEMPCREATEQUESTION:
-                                responseObject = new WebserviceConnector(WebConstants.URL_TEMPCREATEQUESTION).execute(ResponseHandler.class, attribute);
+                                responseObject = new WebserviceConnector(WebConstants.URL_TEMPCREATEQUESTION).uploadMedia(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.GET_BOOKS_FOR_USER:
                                 responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseHandler.class, attribute);
@@ -241,8 +241,8 @@ public class WebserviceWrapper {
                             case WebConstants.MANAGE_BOOK_LIBRARY:
                                 responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_BOOK_LIBRARY).execute(ResponseHandler.class, attribute);
                                 break;
-                            case WebConstants.GETBOOKSFORAUTHOR:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GETBOOKSFORAUTHOR).execute(ResponseHandler.class, attribute);
+                            case WebConstants.GETBOOKSBYAUTHOR:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GETBOOKSBYAUTHOR).execute(ResponseHandler.class, attribute);
                                 break;
                             case WebConstants.UPLOADMEDIAFORQUESTION:
                                 responseObject = new WebserviceConnector(WebConstants.URL_UPLOADMEDIAFORQUESTION).uploadMedia(ResponseHandler.class,
@@ -281,17 +281,33 @@ public class WebserviceWrapper {
                                 responseObject = new WebserviceConnector(WebConstants.URL_GETTRENDINGQUESTIONS).execute(ResponseHandler.class,
                                         attribute);
                                 break;
-                            case WebConstants.GET_PAST_QUESTIONS:
-                                responseObject = new WebserviceConnector(WebConstants.URL_GETPASTQUESTIONS).execute(ResponseHandler.class,
+                            case WebConstants.GET_PAST_TRENDING_QUESTION:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_PAST_TRENDING_QUESTION).execute(ResponseHandler.class,
                                         attribute);
                                 break;
                             case WebConstants.SUBMIT_TRENDING_ANSWER:
-                                responseObject = new WebserviceConnector(WebConstants.URL_SUBMIT_TRENDING_ANSWER).execute(ResponseHandler.class,
+                                responseObject = new WebserviceConnector(WebConstants.URL_SUBMIT_TRENDING_ANSWER).uploadMedia(ResponseHandler.class,
                                         attribute);
                                 break;
 
-                            case WebConstants.UPLOADSUBQUESTIONIMAGES:
-                                responseObject = new WebserviceConnector(WebConstants.URL_UPLOADSUBQUESTIONIMAGES).uploadMedia(ResponseHandler.class, attribute);
+                            case WebConstants.GETMYFOLLOWERS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GETMYFOLLOWERS).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+
+                            case WebConstants.GET_AUTHOR_BOOK_ASSIGNMENT:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_AUTHOR_BOOK_ASSIGNMENT).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+
+                            case WebConstants.GET_ALL_BOOKS:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BOOKS).execute(ResponseHandler.class,
+                                        attribute);
+                                break;
+
+                            case WebConstants.GET_TRENDING_QUESTION_DETAIL:
+                                responseObject = new WebserviceConnector(WebConstants.URL_GET_TRENDING_QUESTION_DETAIL).execute(ResponseHandler.class,
+                                        attribute);
                                 break;
                         }
                     }

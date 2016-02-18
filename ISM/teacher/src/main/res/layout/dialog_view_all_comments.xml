@@ -24,7 +24,7 @@
             android:paddingTop="@dimen/d10dp"
             android:text="@string/strcomments"
             android:textColor="@color/white"
-            android:textSize="@dimen/d40dp"
+            android:textSize="@dimen/d25sp"
             android:textStyle="bold" />
 
         <android.support.v7.widget.RecyclerView
@@ -44,7 +44,7 @@
             android:text="@string/strclose"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/d40dp"
+            android:textSize="@dimen/d25sp"
             android:textStyle="bold" />
 
     </LinearLayout>

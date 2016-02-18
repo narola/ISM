@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,18 +34,18 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     private static final String TAG = TeacherHomeFragment.class.getSimpleName();
 
+    //Views
     private View rootview;
     private RecyclerView recyclerviewPost;
     private FragmentListener fragListener;
     private TextView tvNoFeeds;
 
-    PostFeedsAdapter postFeedsAdapter;
-
     //to open new post
     LinearLayout llPost;
-    EditText etWritePost;
+
     View.OnClickListener onClickAttachFile;
 
+    PostFeedsAdapter postFeedsAdapter;
 
     public static TeacherHomeFragment newInstance() {
         TeacherHomeFragment fragTeacherHome = new TeacherHomeFragment();
@@ -84,9 +83,6 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
         Log.e(TAG, "called");
         llPost = (LinearLayout) rootview.findViewById(R.id.ll_post);
-        etWritePost = (EditText) rootview.findViewById(R.id.et_writePost);
-        etWritePost.setEnabled(true);
-
         onClickAttachFile = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,13 +91,12 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
             }
         };
 
-        etWritePost.setOnClickListener(onClickAttachFile);
         llPost.setOnClickListener(onClickAttachFile);
 
     }
 
     private void onAttachFileClick(View view) {
-        if (view == llPost || view == etWritePost) {
+        if (view == llPost) {
             Intent intent = new Intent(getActivity(), PostFeedActivity.class);
             startActivityForResult(intent, AppConstant.REQUEST_CODE_ADD_POST);
 
@@ -185,7 +180,6 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
                         tvNoFeeds.setVisibility(View.VISIBLE);
                     }
 
-
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
@@ -199,5 +193,6 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
     private Bundle getBundleArguments() {
         return ((TeacherHostActivity) getActivity()).getBundle();
     }
+
 
 }

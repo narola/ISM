@@ -12,9 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
+import com.ism.author.utility.Debug;
+import com.ism.author.utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.PreviewQuestionListAdapter;
@@ -87,9 +86,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
         tvPreviewTotalQuestionNo.setText("0");
         tvPreviewTotalScoreNo.setText("0");
-        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
-        tvNoDataMsg.setVisibility(View.GONE);
-        tvNoDataMsg.setText(getString(R.string.no_preview_questions));
 
 
         rvPreviewquestionlist = (RecyclerView) view.findViewById(R.id.rv_previewquestionlist);
@@ -115,6 +111,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 callApiFreezeQuestions();
             }
         });
+
+        setEmptyView(false);
     }
 
     public void setExamQuestions(ArrayList<Questions> arrListExamQuestions) {
@@ -141,10 +139,11 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     int totalScore = 0;
 
     public void UpdateQuestionInfo() {
+
         if (totalQuestions > 0) {
-            tvNoDataMsg.setVisibility(View.GONE);
+            setEmptyView(false);
         } else {
-            tvNoDataMsg.setVisibility(View.VISIBLE);
+            setEmptyView(true);
         }
 
         tvPreviewTotalQuestionNo.setText(String.valueOf(totalQuestions));
@@ -237,9 +236,9 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
             if (object != null) {
                 ResponseHandler responseObj = (ResponseHandler) object;
                 if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    Utils.showToast(getActivity().getString(R.string.str_success_setexamquestions), getActivity());
+                    Utility.showToast(getActivity().getString(R.string.str_success_setexamquestions), getActivity());
                 } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                    Utility.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseSetQuestionForExam api Exception : " + error.toString());
@@ -302,4 +301,13 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         return (AddQuestionContainerFragment) mFragment;
     }
 
+
+    private void setEmptyView(boolean isEnable) {
+
+        tvNoDataMsg.setText(getResources().getString(R.string.no_preview_questions));
+        tvNoDataMsg.setTypeface(Global.myTypeFace.getRalewayRegular());
+        tvNoDataMsg.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        rvPreviewquestionlist.setVisibility(isEnable ? View.GONE : View.VISIBLE);
+
+    }
 }

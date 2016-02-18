@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.Utility.Debug;
+import com.ism.author.utility.Debug;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.Global;
@@ -24,19 +24,13 @@ import java.util.ArrayList;
  * Created by c162 on 17/12/15.
  */
 public class QuestionsMostFollowAdapter extends RecyclerView.Adapter<QuestionsMostFollowAdapter.ViewHolder> {
+
+
     private static final String TAG = QuestionsMostFollowAdapter.class.getSimpleName();
-    public static final String ARG_TRENDING_ID = "questionId";
-    public static final String ARG_QUESTION_CREATOR_PROFILE_PIC = "creatorProfPic";
-    public static final String ARG_CREATOR_NAME = "questionCreatorName";
-    public static final String ARG_CREATOR_ID = "questionCreatorId";
-    public static final String ARG_DATE = "questionCreatedDate";
-    public static final String ARG_FOLLOWERS = "followers";
-    public static final String ARG_QUESTIONS = "questions";
     private final AuthorHostActivity.HostListenerTrending hostListenerTrending;
     Context context;
     ArrayList<TrendingQuestion> arrayList = new ArrayList<>();
     private LayoutInflater inflater;
-    private int selectedView = -1;
     boolean isFlag = false;
     private int lastPosition = -1;
 
@@ -63,10 +57,12 @@ public class QuestionsMostFollowAdapter extends RecyclerView.Adapter<QuestionsMo
                 hostListenerTrending.onViewSelect(position);
             }
             if (lastPosition == position) {
+
                 holder.llMain.setBackgroundColor(context.getResources().getColor(R.color.color_white));
             } else {
                 holder.llMain.setBackgroundColor(context.getResources().getColor(R.color.color_f2f2f2));
             }
+
             holder.txt_Creator_Name.setText(arrayList.get(position).getPostedByUsername());
             holder.txtDate.setText(Utility.DateFormat(arrayList.get(position).getPostedOn()));
             holder.txtFollowers.setText(arrayList.get(position).getFollowerCount() +
@@ -79,13 +75,11 @@ public class QuestionsMostFollowAdapter extends RecyclerView.Adapter<QuestionsMo
             holder.llMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     /*this is to select the current student*/
                     //setBundleArgument(position);
                     lastPosition = position;
                     hostListenerTrending.onViewSelect(position);
                     notifyDataSetChanged();
-                    //((AuthorHostActivity) context).loadStudentEvaluationData();
 
                 }
             });
@@ -126,27 +120,5 @@ public class QuestionsMostFollowAdapter extends RecyclerView.Adapter<QuestionsMo
 
         }
     }
-
-//    public void setBundleArgument(int position) {
-//        getBundleArguments().putString(QuestionsMostFollowAdapter.ARG_QUESTIONS, arrayList.get(position).getQuestionText());
-//        getBundleArguments().putString(QuestionsMostFollowAdapter.ARG_QUESTION_CREATOR_PROFILE_PIC,
-//                arrayList.get(position).getPostedByPic());
-//        getBundleArguments().putString(QuestionsMostFollowAdapter.ARG_CREATOR_NAME,
-//                arrayList.get(position).getPostedByUsername());
-//        getBundleArguments().putString(QuestionsMostFollowAdapter.ARG_CREATOR_ID,
-//                arrayList.get(position).getPostedByUserId());
-//        getBundleArguments().putString(QuestionsMostFollowAdapter.ARG_DATE,
-//                arrayList.get(position).getPostedOn());
-//        getBundleArguments().putString(QuestionsMostFollowAdapter.ARG_FOLLOWERS,
-//                arrayList.get(position).getQuestionText());
-//        getBundleArguments().putString(QuestionsMostFollowAdapter.ARG_TRENDING_ID,
-//                arrayList.get(position).getTrendingId());
-//
-//        notifyDataSetChanged();
-//    }
-//
-//    private Bundle getBundleArguments() {
-//        return ((AuthorHostActivity) context).getBundle();
-//    }
 
 }

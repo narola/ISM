@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="@dimen/d12dp"
         android:background="@drawable/bg_popup_message">
 
         <ListView
@@ -16,23 +16,23 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/btn_view_all"
             android:divider="@drawable/divider_gray_with_padding"
-            android:dividerHeight="2dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp"></ListView>
+            android:dividerHeight="@dimen/d2dp"
+            android:paddingBottom="@dimen/d2dp"
+            android:paddingTop="@dimen/d2dp"></ListView>
 
         <Button
             android:id="@+id/btn_view_all"
             android:layout_width="wrap_content"
-            android:layout_height="42dp"
+            android:layout_height="@dimen/d40dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/d15dp"
             android:background="@drawable/bg_button_blue"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
+            android:paddingLeft="@dimen/d40dp"
+            android:paddingRight="@dimen/d40dp"
             android:text="@string/strviewall"
             android:textColor="@color/bg_app_dark"
-            android:textSize="18sp" />
+            android:textSize="@dimen/d18sp" />
     </RelativeLayout>
 
     <TextView
@@ -45,9 +45,9 @@
         android:visibility="gone" />
 
     <View
-        android:layout_width="25dp"
-        android:layout_height="15dp"
+        android:layout_width="@dimen/d25dp"
+        android:layout_height="@dimen/d15dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="185dp"
+        android:layout_marginRight="@dimen/d185dp"
         android:background="@drawable/shape_triangle_popup" />
 </RelativeLayout>

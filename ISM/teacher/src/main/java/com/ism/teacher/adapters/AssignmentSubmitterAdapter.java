@@ -85,6 +85,17 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
             img_chat_with_student = (ImageView) itemView.findViewById(R.id.img_chat_with_student);
             img_message_student = (ImageView) itemView.findViewById(R.id.img_message_student);
             ll_parent_student_row = (LinearLayout) itemView.findViewById(R.id.ll_parent_student_row);
+
+            txt_roll_number_student.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txt_submission_date.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+            txt_submission_date.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txt_assessed_status.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txt_submission_date_label.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txt_assessed_status_label.setTypeface(Global.myTypeFace.getRalewayRegular());
+            txt_studentName.setTypeface(Global.myTypeFace.getRalewayRegular());
+
+
         }
     }
 
@@ -92,21 +103,24 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        holder.txt_studentName.setTypeface(Global.myTypeFace.getRalewayRegular());
-        holder.txt_roll_number_student.setTypeface(Global.myTypeFace.getRalewayRegular());
-        holder.txt_submission_date.setTypeface(Global.myTypeFace.getRalewayRegular());
-
-        holder.txt_submission_date.setTypeface(Global.myTypeFace.getRalewayRegular());
-        holder.txt_assessed_status.setTypeface(Global.myTypeFace.getRalewayRegular());
-        holder.txt_submission_date_label.setTypeface(Global.myTypeFace.getRalewayRegular());
-        holder.txt_assessed_status_label.setTypeface(Global.myTypeFace.getRalewayRegular());
-
-
         holder.txt_studentName.setText(arrListExamSubmittor.get(position).getStudentName());
-        holder.txt_submission_date.setText(Utility.getFormattedDate("dd-MMM-yyyy", arrListExamSubmittor.get(position).getSubmissionDate()));
-        holder.txt_assessed_status.setText(arrListExamSubmittor.get(position).getExamStatus());
+        // holder.txt_submission_date.setText(Utility.getFormattedDate("dd-MMM-yyyy", arrListExamSubmittor.get(position).getSubmissionDate()));
+        //holder.txt_assessed_status.setText(arrListExamSubmittor.get(position).getExamStatus());
 
         Global.imageLoader.displayImage(WebConstants.USER_IMAGES + "Users_Images/" + arrListExamSubmittor.get(position).getStudentProfilePic(), holder.img_student, ISMTeacher.options);
+
+
+        if (arrListExamSubmittor.get(position).getSubmissionDate() != null && !arrListExamSubmittor.get(position).getSubmissionDate().equals("")) {
+            holder.txt_submission_date.setText(Utility.getFormattedDate("dd-MMM-yyyy", arrListExamSubmittor.get(position).getSubmissionDate()));
+        } else {
+            holder.txt_submission_date.setText("--");
+        }
+
+        if (arrListExamSubmittor.get(position).getExamStatus().equalsIgnoreCase("finished")) {
+            holder.txt_assessed_status.setText(arrListExamSubmittor.get(position).getExamStatus());
+        } else {
+            holder.txt_assessed_status.setText(mContext.getResources().getString(R.string.strunasssessed));
+        }
 
 
         holder.ll_parent_student_row.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +133,7 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
                 getBundleArguments().putString(ARG_STUDENT_PROFILE_PIC, arrListExamSubmittor.get(position).getStudentProfilePic());
                 getBundleArguments().putString(ARG_STUDENT_NAME, arrListExamSubmittor.get(position).getStudentName());
                 getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_TYPE, getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_TYPE));
+                getBundleArguments().putString(AssignmentsAdapter.ARG_EXAM_ID, getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_ID));
 
                 getBundleArguments().putBoolean(AssignmentsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
 
@@ -131,7 +146,7 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
 
 //                    TeacherOfficeFragment.current_office_fragment = TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW;
                     TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
-                    teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW);
+                    teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_OBJECTIVE_QUESTIONS_VIEW);
                     //   fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, ObjectiveAssignmentQuestionsFragment.newInstance(getBundleArguments()), AppConstant.FRAGMENT_TAG_VIEW_ASSIGNMENT_QUESTION).commit();
                 }
 
@@ -144,7 +159,7 @@ public class AssignmentSubmitterAdapter extends RecyclerView.Adapter<AssignmentS
                 else if (getBundleArguments().getString(AssignmentsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(EXAM_SUBJECTIVE)) {
 
                     TeacherOfficeFragment teacherOfficeFragment = (TeacherOfficeFragment) fragmentManager.findFragmentByTag(AppConstant.FRAGMENT_TAG_TEACHER_OFFICE);
-                    teacherOfficeFragment.loadFragment(TeacherOfficeFragment.FRAGMENT_SUBJECTIVE_QUESTIONS);
+                    teacherOfficeFragment.loadFragmentInTeacherOffice(TeacherOfficeFragment.FRAGMENT_SUBJECTIVE_QUESTIONS);
 
                     //fragmentManager.beginTransaction().replace(R.id.fl_teacher_office_home, SubjectiveQuestionsContainerFragment.newInstance(getBundleArguments()),AppConstant.FRAGMENT_TAG_SUBJECTIVE_QUESTIONS).commit();
                 }

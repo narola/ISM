@@ -48,7 +48,7 @@
             android:checked="false"
             android:padding="@dimen/d10dp"
             android:textColor="@color/color_gray1"
-            android:textSize="@dimen/d18dp" />
+            android:textSize="@dimen/d18sp" />
 
     </RelativeLayout>
 

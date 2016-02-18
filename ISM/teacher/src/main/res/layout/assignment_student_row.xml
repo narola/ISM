@@ -4,11 +4,11 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="10dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginTop="10dp"
-    card_view:cardCornerRadius="3dp"
+    android:layout_marginBottom="@dimen/d10dp"
+    android:layout_marginLeft="@dimen/d5dp"
+    android:layout_marginRight="@dimen/d5dp"
+    android:layout_marginTop="@dimen/d10dp"
+    card_view:cardCornerRadius="@dimen/d3dp"
     card_view:cardElevation="0.01dp"
     card_view:cardUseCompatPadding="true">
 
@@ -26,7 +26,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="@dimen/d70dp"
                 android:background="@color/color_gray_assignment">
 
             </FrameLayout>
@@ -48,9 +48,9 @@
             </FrameLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_results"
+                android:id="@+id/rl_notes"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="@dimen/d70dp"
                 android:layout_toRightOf="@+id/frame_circle_class">
 
                 <RelativeLayout
@@ -69,9 +69,9 @@
                             android:id="@+id/txt_studentName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Adam Ross"
+                            android:text="@string/strtest"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/d18sp" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -99,8 +99,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="20dp"
-                        android:text="Roll No :1"
+                        android:layout_marginRight="@dimen/d20dp"
+                        android:text=""
                         android:textColor="@color/color_black" />
                 </RelativeLayout>
             </RelativeLayout>
@@ -116,7 +116,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="@dimen/d80dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -142,22 +142,23 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="29 Sep 2015"
+                                android:text="@string/strtest"
                                 android:textColor="@color/color_blue_past_assignment"
-                                android:textSize="@dimen/d18sp" />
+                                android:textSize="@dimen/d20sp" />
 
                             <TextView
                                 android:id="@+id/txt_submission_date_label"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="@dimen/d10dp"
                                 android:gravity="center"
-                                android:text="Submission Date" />
+                                android:text="@string/strsubmissiondate"
+                                android:textSize="@dimen/d15sp" />
 
                         </LinearLayout>
 
                         <View
-                            android:layout_width="1dp"
+                            android:layout_width="@dimen/d1dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:background="@color/color_shade_news_feed" />
@@ -182,17 +183,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Unassessed"
+                            android:text="@string/strtest"
                             android:textColor="@color/color_green_past_assignment"
-                            android:textSize="@dimen/d18sp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <TextView
                             android:id="@+id/txt_assessed_status_label"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="@dimen/d10dp"
                             android:gravity="center"
-                            android:text="Status" />
+                            android:text="@string/str_status"
+                            android:textSize="@dimen/d15sp" />
 
                     </LinearLayout>
 
