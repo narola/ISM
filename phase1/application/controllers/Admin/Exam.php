@@ -1,0 +1,667 @@
+<?php 
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Exam extends ADMIN_Controller {
+
+	public $data = array();
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->data['cur_url'] = $this->session->userdata('cur_url');
+		$this->data['prev_url'] = $this->session->userdata('prev_url');
+	}
+
+	// List all your items
+	public function index(){
+
+		$this->data['page_title'] = 'Exams';
+
+		if(!empty($_GET['exam_type']) || !empty($_GET['subject']) || !empty($_GET['q']) || !empty($_GET['order']) ){
+
+			$order = '';
+
+			if( !empty($_GET['exam_type']) ) { $exam_type = $this->input->get('exam_type'); }
+			if( !empty($_GET['subject']) ) { $subject = $this->input->get('subject'); }		
+			if( !empty($_GET['topic']) ) { $topic = $this->input->get('topic'); }		
+			if( !empty($_GET['q']) ) { $q = replace_invalid_chars($this->input->get('q')); }
+			if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }		
+
+			$str = '';  $where['where']=array();
+
+			if(!empty($exam_type)){ $where['where']['exam.exam_type']=$exam_type; $str.='&exam_type='.$exam_type; }
+			if(!empty($subject)){ $where['where']['exam.subject_id']=$subject; $str.='&subject='.$subject; }
+			if(!empty($q)){ 
+					$where['like']['exam.exam_name']=$q;  $str.='&q='.$q; 
+				}
+
+			if($order == 'name_asc'){ $order = "exam.exam_name asc"; $str.='&order='.$order;  }
+			if($order == 'name_desc'){ $order = "exam.exam_name desc"; $str.='&order='.$order; }
+			if($order == 'latest'){ $order = "exam.created_date desc"; $str.='&order='.$order; }
+			if($order == 'older'){ $order = "exam.created_date asc"; $str.='&order='.$order; }
+			
+			$str =  trim($str,'&');
+
+			$config['base_url']	 = base_url().'admin/exam/index?'.$str;
+			$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
+			$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
+		}else{
+			$order = '';
+			$where=null;
+			$where['where']['exam.is_delete']=0;
+			
+			$config['base_url']	 = base_url().'admin/exam/index';
+			$offset = $this->uri->segment(4);
+		}
+
+		$config['num_links'] = 5;
+		$config['total_rows'] = select(TBL_EXAMS." exam",
+	  									 "exam.id,exam.exam_name,exam.classroom_id,exam.subject_id,exam.exam_type,exam.exam_category,exam.exam_mode,
+	  									 exam.attempt_count,sub.subject_name",
+	  									 $where,
+	  									 array(	
+	  									 		'count'=>TRUE,
+	  									 		'join'=>array(
+	  									 					array(
+	  									 						'table'=>TBL_SUBJECTS." sub",
+	  									 						'condition'=>'sub.id=exam.subject_id'
+	  									 					)
+	  									 				)
+	  									 	)
+	  									 );
+		// p($config['total_rows'], true);
+		$config['per_page'] = 15;
+
+		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
+	  	$config['full_tag_close'] = '</ul>';
+
+	  	$config['num_tag_open'] = '<li>';
+	  	$config['num_tag_close'] = '</li>';
+
+	  	$config['first_link'] = 'First';
+	  	$config['first_tag_open'] = '<li>';
+	  	$config['first_tag_close'] = '</li>';
+
+	  	$config['cur_tag_open'] = '<li style="display:none"></li><li class="active"><a>';
+	  	$config['cur_tag_close'] = '</a></li><li style="display:none"></li>';
+
+	  	$config['prev_link'] = '&laquo;';
+	  	$config['prev_tag_open'] = '<li>';
+	  	$config['prev_tag_close'] = '</li>';
+
+		$config['next_link'] = '&raquo;';
+	  	$config['next_tag_open'] = '<li>';
+	  	$config['next_tag_close'] = '</li>';
+
+	  	$config['last_link'] = 'Last';
+	  	$config['last_tag_open'] = '<li>';
+	  	$config['last_tag_close'] = '</li>';
+
+	  	$this->pagination->initialize($config);
+
+	  	$this->data['all_exams'] = select(
+	  									 TBL_EXAMS." exam",
+	  									 "exam.id,exam.exam_name,exam.classroom_id,exam.subject_id,exam.exam_type,exam.exam_category,exam.exam_mode,
+	  									 exam.attempt_count ,sub.subject_name,sub.subject_image,class.class_name, count(user_id) as students_attempted",
+	  									 $where,
+	  									 array(
+	  									 		'order_by'=>$order,
+	  									 		'limit'=>$config['per_page'],
+	  									 		'offset'=>$offset,
+	  									 		'join'=>array(
+	  									 					array(
+	  									 						'table'=>TBL_SUBJECTS." sub",
+	  									 						'condition'=>'sub.id=exam.subject_id',
+	  									 					),
+	  									 					array(
+	  									 						'table'=>TBL_CLASSROOMS." class",
+	  									 						'condition'=>'class.id=exam.classroom_id',
+	  									 					),
+	  									 					array(
+	  									 						'table'=>TBL_STUDENT_EXAM_SCORE." exam_score",
+	  									 						'condition'=>'exam_score.exam_id=exam.id',
+	  									 						// 'join'=>'right'
+	  									 					)
+	  									 				),
+	  									 		'group_by'=>'exam_score.exam_id',
+	  									 	)
+	  									 );
+		// qry();
+	    // p($this->data['all_exams'],true);
+
+	  	$this->data['all_subjects'] = select(TBL_SUBJECTS); // Fetch All Subjects 
+	  	$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC); //Fetch All Topics
+
+		$this->template->load('Admin/default','admin/exam/view_exam',$this->data);
+	}
+
+	// Add a new item
+	public function add(){
+
+		$all_tutorial_topic_exam = select(TBL_TUTORIAL_TOPIC_EXAM);
+
+		$not_in =array();
+		foreach ($all_tutorial_topic_exam as $tutorial_topic_exam) {
+			array_push($not_in, $tutorial_topic_exam['tutorial_topic_id'])	;	
+		}
+
+		if($_POST){
+
+			$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+			
+			if(!empty($_POST['course_id'])){
+				$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>'0',
+											  'course_id'=>$_POST['course_id'])),null);
+			}else{
+				$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>'0')));
+			}
+			
+			if(!empty($_POST['classroom_id'])){
+
+				$this->data['all_subjects'] = select(TBL_CLASSROOM_SUBJECT,
+												 TBL_CLASSROOM_SUBJECT.'.subject_id as id,sub.subject_name ',
+												 array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$_POST['classroom_id'],
+												 					  'sub.is_delete'=>'0')),
+													array(
+														'join'=>array(
+																	array(
+														    				'table' => TBL_SUBJECTS.' sub',
+														    				'condition' => 'sub.id = '.TBL_CLASSROOM_SUBJECT.'.subject_id',
+																		)
+																	)
+														)
+											 	);
+			}else{
+				$this->data['all_subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>'0')));
+			}
+
+			if(!empty($_POST['subject_id'])){
+
+				$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+											   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+											   array(
+											   		'where'=>array('subject_id'=>$_POST['subject_id']),
+											   		'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
+											   		)
+											);
+			
+			}else{
+				$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+											   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+											   array(
+											   		'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
+											   		)
+											);
+			}
+
+		}else{
+
+			$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+			$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)));
+			$this->data['all_subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>FALSE)));
+			$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+											   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+											   array(
+											   		'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
+											   		)
+											);
+		}	
+
+		if(!empty($_GET['topic']) && !$_POST){
+			 
+			$this->data['get_topic'] = select(TBL_TUTORIAL_TOPIC,
+							    TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name,'.TBL_TUTORIAL_TOPIC.'.classroom_id,'.
+							    TBL_TUTORIAL_TOPIC.'.subject_id,'.TBL_CLASSROOMS.'.course_id',
+							    array(
+							   		'where'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$_GET['topic'])
+							   		),
+							    array(
+							    	'single'=>TRUE,
+							    	'join'=>array(
+							    			array(
+							    				'table'=>TBL_CLASSROOMS,
+							    				'condition'=>TBL_CLASSROOMS.'.id='.TBL_TUTORIAL_TOPIC.'.classroom_id'
+							    			)
+							    		)	
+							    	)
+							);
+			
+			if(empty($this->data['get_topic'])){
+				show_404();
+			}
+
+		
+			$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>'0',
+											  'course_id'=>$this->data['get_topic']['course_id'])),null);
+
+			$this->data['all_subjects'] = select(TBL_CLASSROOM_SUBJECT,
+												 TBL_CLASSROOM_SUBJECT.'.subject_id as id,sub.subject_name ',
+												 array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$this->data['get_topic']['classroom_id'],
+												 					  'sub.is_delete'=>'0')),
+													array(
+														'join'=>array(
+																	array(
+														    				'table' => TBL_SUBJECTS.' sub',
+														    				'condition' => 'sub.id = '.TBL_CLASSROOM_SUBJECT.'.subject_id',
+																		)
+																	)
+														)
+											 	);
+			$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+											   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+											   array(
+											   		'where'=>array('subject_id'=>$this->data['get_topic']['subject_id'],
+											   					   TBL_TUTORIAL_TOPIC.'.is_delete'=>'0'),
+											   		'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
+											   		)
+											);
+
+		}	
+
+		$this->form_validation->set_rules('exam_name', 'Exam Name', 'trim|required|is_unique['.TBL_EXAMS.'.exam_name]');
+		$this->form_validation->set_rules('course_id', 'Course Name', 'trim|required');
+		$this->form_validation->set_rules('subject_id', 'Subject Name', 'trim|required');
+		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required');
+		$this->form_validation->set_rules('pass_percentage', 'Passing Percentage', 'trim|required');
+		$this->form_validation->set_rules('exam_category', 'Exam Category', 'trim|required');
+		$this->form_validation->set_rules('duration', 'Exam duration', 'trim|required');
+		$this->form_validation->set_rules('attempt_count', 'Attempt Count', 'trim|required');
+		$this->form_validation->set_rules('start_date', 'Start Exam Date', 'trim|required|callback_valid_date');
+
+		if(!isset($_POST['exam_type'])){
+			//Form Validation Set For Topic Required
+			$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
+		}
+
+		if($this->form_validation->run() == FALSE){
+			$this->template->load('Admin/default','admin/exam/add_exam',$this->data);
+		}else{
+
+			if(isset($_POST['exam_type'])){
+				$exam_type = 'subject';
+			}else{	
+				$exam_type = 'topic';
+			}
+			
+			$button_type = $this->input->post('button_type');
+
+			$exam_data=array(
+					'exam_name'=>$this->input->post('exam_name'),
+					'classroom_id'=>$this->input->post('classroom_id'),
+					'subject_id'=>$this->input->post('subject_id'),
+					'exam_type'=>$exam_type,
+					'exam_category'=>$this->input->post('exam_category'),
+					'pass_percentage'=>$this->input->post('pass_percentage'),
+					'duration'=>$this->input->post('duration'),
+					'attempt_count'=>$this->input->post('attempt_count'),
+					'instructions' => htmlspecialchars($this->input->post('instructions')),
+					'negative_marking'=>$this->input->post('negative_marking'),
+					'random_question'=>$this->input->post('random_question'),
+					'declare_results'=>$this->input->post('declare_results'),
+					'created_by'=>$this->session->userdata('id')
+				);
+
+			$exam_id = insert(TBL_EXAMS,replace_invalid_chars($exam_data)); // Insert Data into database and return Inserted ID using common_model.php and cms_helper.php
+
+			$exam_schedule = array(
+					'exam_id'=>$exam_id,
+					'start_date'=>$this->input->post('start_date'),
+					'start_time'=>$this->input->post('start_time'),
+					'school_classroom_id'=>1
+				);
+
+			$id = insert(TBL_EXAM_SCHEDULE,replace_invalid_chars($exam_schedule));
+
+			//Code For Tutorial Exam Table Entry
+			if(!isset($_POST['exam_type'])){
+				$topic_id = $this->input->post('topic_id');
+				$tutoral_topic_data = array('tutorial_topic_id'=>$topic_id,'exam_id'=>$exam_id);
+				insert(TBL_TUTORIAL_TOPIC_EXAM,replace_invalid_chars($tutoral_topic_data));
+			}
+
+			if($button_type == 'set'){
+				redirect('admin/question/set?exam_id='.$exam_id);	
+			}else{
+				$this->session->set_flashdata('success', 'Exam has been Successfully Created');
+				redirect($this->data['prev_url']);	
+			}
+
+		}
+	}
+
+	//Update one item
+	public function update( $id = NULL ){
+
+		$copy = $this->uri->segment(3);
+
+		$all_tutorial_topic_exam = select(TBL_TUTORIAL_TOPIC_EXAM);
+		$not_in =array();
+		foreach ($all_tutorial_topic_exam as $tutorial_topic_exam) {
+			array_push($not_in, $tutorial_topic_exam['tutorial_topic_id'])	;	
+		}
+		
+		$this->data['not_in']=$not_in;
+
+		$this->data['exam']	= select(
+									 TBL_EXAMS.' exam',
+									 'exam.id,exam.exam_name,exam.exam_type,exam.exam_category,exam.classroom_id,exam.subject_id,classroom.course_id,exam.pass_percentage,exam.duration,
+									  exam.attempt_count,exam.instructions,exam.negative_marking,exam.random_question,exam.declare_results,tte.tutorial_topic_id as topic_id,
+									  '.TBL_EXAM_SCHEDULE.'.start_date,'.TBL_EXAM_SCHEDULE.'.start_time,'.TBL_EXAM_SCHEDULE.'.id as schedule_id',
+									 array('where'=>array('exam.id'=>$id)),
+									 array(
+									 		'single'=>TRUE,
+									 		'join'=>array(
+										 				array(
+										 						'table'=>TBL_EXAM_SCHEDULE,
+										 						'condition'=>TBL_EXAM_SCHEDULE.'.exam_id=exam.id'
+										 					),
+										 				array(
+										 						'table'=>TBL_CLASSROOMS.' as classroom',
+										 						'condition'=>'exam.classroom_id=classroom.id'
+										 					),
+										 				array(
+										 						'table'=>TBL_TUTORIAL_TOPIC_EXAM.' as tte',
+										 						'condition'=>'tte.exam_id=exam.id'
+										 					)
+									 			       )
+									 	  	)
+									);
+		// p($this->data['exam'],true);	
+
+		if(empty($this->data['exam'])){
+			redirect('admin/exam');
+		}
+
+		$this->data['exam_schedule'] = select(TBL_EXAM_SCHEDULE,FALSE,array('where'=>array('exam_id'=>$id)),array('single'=>TRUE));
+		
+		$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+		
+		$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE,'course_id'=>$this->data['exam']['course_id'])));		
+
+		$this->data['all_subjects'] = select(
+												TBL_SUBJECTS,
+												TBL_SUBJECTS.'.id,'.TBL_SUBJECTS.'.subject_name,'.TBL_CLASSROOM_SUBJECT.'.classroom_id',
+												array('where'=>array(
+																		TBL_SUBJECTS.'.is_delete'=>FALSE,
+																		TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$this->data['exam']['classroom_id'])
+																	),
+												array(
+													//'group_by'=>TBL_SUBJECTS.'.id',
+													'join'=>array(
+															array(
+																	'table'=>TBL_CLASSROOM_SUBJECT,
+																	'condition'=>TBL_SUBJECTS.'.id='.TBL_CLASSROOM_SUBJECT.'.subject_id'
+																)
+														)
+												)
+											);
+		// p($this->data['exam'],true);
+		if($copy != 'copy') {
+			$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+											   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+											   array(
+											   		'where'=>array('subject_id'=>$this->data['exam']['subject_id'])
+											   		)
+											);
+		}else{
+			$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+												   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+												   array(
+												   		'where'=>array('subject_id'=>$this->data['exam']['subject_id']),
+												   		'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
+												   		)
+												);
+		}
+		// qry();
+		// p($this->data['exam']);
+		// p($this->data['all_topics'],true);
+
+		if($_POST){
+			$exam_name = $this->input->post('exam_name');
+			if($copy == 'copy'){
+				$exam_validation = 'trim|required|is_unique['.TBL_EXAMS.'.exam_name]';
+			}else{
+				$exam_name == $this->data['exam']['exam_name']?$exam_validation = 'trim|required':$exam_validation = 'trim|required|is_unique['.TBL_EXAMS.'.exam_name]';
+			}
+		}else{
+			$exam_validation = 'trim|required';
+		}
+
+		$this->form_validation->set_rules('exam_name', 'Exam Name', $exam_validation );
+
+		if($copy == 'copy') {
+			$this->form_validation->set_rules('course_id', 'Course Name', 'trim|required');
+			$this->form_validation->set_rules('subject_id', 'Subject Name', 'trim|required');
+			$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required');
+		}	
+		$this->form_validation->set_rules('pass_percentage', 'Passing Percentage', 'trim|required');
+		$this->form_validation->set_rules('exam_category', 'Exam Category', 'trim|required');
+		$this->form_validation->set_rules('duration', 'Exam duration', 'trim|required');
+		$this->form_validation->set_rules('attempt_count', 'Attempt Count', 'trim|required');
+		$this->form_validation->set_rules('start_date', 'Start Exam Date', 'trim|required|callback_valid_date');
+
+		if(!isset($_POST['exam_type']) && $copy == 'copy' ){
+			//Form Validation Set For Topic Required
+			$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
+		}
+
+		if($this->form_validation->run() == FALSE){
+			$this->template->load('Admin/default','admin/exam/edit_exam',$this->data);
+		}else{
+			
+			if(isset($_POST['exam_type'])){
+				$exam_type = 'subject';
+			}else{	
+				$exam_type = 'topic';
+			}
+			
+			// $button_type = $this->input->post('button_type');
+
+			if($copy == 'copy'){
+
+				$exam_data=array(
+					'exam_name'=>$this->input->post('exam_name'),
+					'classroom_id'=>$this->input->post('classroom_id'),
+					'subject_id'=>$this->input->post('subject_id'),
+					'exam_type'=>$exam_type,
+					'exam_category'=>$this->input->post('exam_category'),
+					'pass_percentage'=>$this->input->post('pass_percentage'),
+					'duration'=>$this->input->post('duration'),
+					'attempt_count'=>$this->input->post('attempt_count'),
+					'instructions' => htmlspecialchars($this->input->post('instructions')),
+					'negative_marking'=>$this->input->post('negative_marking'),
+					'random_question'=>$this->input->post('random_question'),
+					'declare_results'=>$this->input->post('declare_results'),
+					'created_by'=>$this->session->userdata('id')
+				);
+				
+				$exam_id = insert(TBL_EXAMS,replace_invalid_chars($exam_data)); 
+
+				$exam_schedule = array(
+					'exam_id'=>$exam_id,
+					'start_date'=>$this->input->post('start_date'),
+					'start_time'=>$this->input->post('start_time'),
+					'school_classroom_id'=>'1'
+				);
+
+				$id = insert(TBL_EXAM_SCHEDULE,replace_invalid_chars($exam_schedule));
+
+				if(!isset($_POST['exam_type'])){
+					$topic_id = $this->input->post('topic_id');
+					$tutoral_topic_data = array('tutorial_topic_id'=>$topic_id,'exam_id'=>$exam_id);
+					insert(TBL_TUTORIAL_TOPIC_EXAM,replace_invalid_chars($tutoral_topic_data));
+				}
+				$this->session->set_flashdata('success', 'Exam has been Successfully Created.');
+
+			}else{
+
+				$exam_data=array(
+					'exam_name'=>$this->input->post('exam_name'),
+					'exam_type'=>$exam_type,
+					'exam_category'=>$this->input->post('exam_category'),
+					'pass_percentage'=>$this->input->post('pass_percentage'),
+					'duration'=>$this->input->post('duration'),
+					'attempt_count'=>$this->input->post('attempt_count'),
+					'instructions' => htmlspecialchars($this->input->post('instructions')),
+					'negative_marking'=>$this->input->post('negative_marking'),
+					'random_question'=>$this->input->post('random_question'),
+					'declare_results'=>$this->input->post('declare_results'),
+					'created_by'=>$this->session->userdata('id'),
+					'modified_date'=>date('Y-m-d H:i:s')
+				);
+				
+				$exam_id = update(TBL_EXAMS,$id,replace_invalid_chars($exam_data)); 
+				
+				$exam_schedule = array(
+					'exam_id'=>$this->data['exam']['id'],
+					'start_date'=>$this->input->post('start_date'),
+					'start_time'=>$this->input->post('start_time'),
+					'school_classroom_id'=>'1'	
+				);
+				
+				if(!empty($this->data['exam']['schedule_id'])){
+					$id = update(TBL_EXAM_SCHEDULE,$this->data['exam']['schedule_id'],replace_invalid_chars($exam_schedule));	
+				}else{
+					$id = insert(TBL_EXAM_SCHEDULE,replace_invalid_chars($exam_schedule));	
+				}
+				
+				$this->session->set_flashdata('success', 'Exam has been Successfully Updated.');
+			}
+
+			if($button_type == 'set'){
+				redirect('admin/question/set?exam='.$id);	
+			}else{
+				redirect($this->data['prev_url']);	
+			}
+		}
+
+	}
+
+	//Delete one item
+	public function delete( $id = NULL )
+	{
+
+	}
+
+	public function fetch_question(){
+	 
+		$eid = $this->input->post('eid');
+		
+		if(!empty($eid)) {
+
+			$where = array(TBL_EXAM_QUESTION.'.exam_id'=>$eid,TBL_EXAM_QUESTION.'.exam_id'=>$eid);	
+			$questions = select(TBL_QUESTIONS,
+									TBL_QUESTIONS.'.id,'.
+									TBL_QUESTIONS.'.question_text,'.
+									TBL_SUBJECTS.'.subject_name,'.
+									TBL_EXAM_QUESTION.'.id as exam_ques_id,'.
+									TBL_USERS.'.full_name',
+					array('where'=>$where),
+					array(
+						'group_by'=>TBL_QUESTIONS.'.id,',
+						'join'=>array(
+							array(
+			    				'table' => TBL_TUTORIAL_GROUP_QUESTION,
+			    				'condition' => TBL_QUESTIONS.'.id = '.TBL_TUTORIAL_GROUP_QUESTION.'.question_id',
+								),
+							array(
+			    				'table' => TBL_TUTORIAL_TOPIC,
+			    				'condition' => TBL_TUTORIAL_TOPIC.'.id = '.TBL_TUTORIAL_GROUP_QUESTION.'.tutorial_topic_id',
+								),
+							array(
+			    				'table' => TBL_SUBJECTS,
+			    				'condition' => TBL_SUBJECTS.'.id = '.TBL_TUTORIAL_TOPIC.'.subject_id',
+								),
+							array(
+			    				'table' => TBL_USERS,
+			    				'condition' => TBL_USERS.'.id = '.TBL_QUESTIONS.'.question_creator_id',
+								),
+							array(
+			    				'table' => TBL_EXAM_QUESTION,
+			    				'condition' => TBL_EXAM_QUESTION.'.question_id = '.TBL_QUESTIONS.'.id',
+								)
+							),
+						)
+					);
+
+				foreach ($questions as $key=>$question) {
+					$choices = select(TBL_ANSWER_CHOICES,
+									TBL_ANSWER_CHOICES.'.id,'.
+									TBL_ANSWER_CHOICES.'.choice_text,',
+									// TBL_ANSWER_CHOICES.'.question_id',
+									array('where'=>array(TBL_ANSWER_CHOICES.'.question_id'=>$question['id'])),
+									null
+									);
+
+					$questions[$key]['choices']=array_column($choices,'choice_text');
+
+					}
+
+					$this->data['questions'] = $questions;
+
+					$new_str = '';
+					$cnt = 1;
+					foreach( $questions as $question) {
+
+						$new_str.='<div class="question_wrapper" id="que_div_'.$cnt.'">
+		                    <div class="question_left">
+		                        <h5 class="txt_red">Question <span id="exam_quest_'.$cnt.'">'.$cnt.'</span></h5>                                        
+		                        <p class="ques">'.$question["question_text"].'</p>
+		                        <div class="answer_options_div">
+		                            <ol>';
+		                            	foreach($question['choices'] as $choice) {
+		                                	$new_str .='<li>'.$choice.'</li>';
+		                                }	
+
+		                     $new_str .='</ol>
+		                        </div>
+		                    </div>
+		                    <div class="notice_action">                                            
+		                        <a href="#" class="icon icon_hand" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Move"></a>
+		                        <a href="#" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
+		                        <a href="#" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
+		                        <a href="'.base_url().'admin/question/delete_question/'.$question['exam_ques_id'].'" onclick="delete_question(this.href,event,'.$cnt.')" 
+		                        class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
+		                    </div>
+		                    <div class="clearfix"></div>
+		                </div>';
+		                $cnt++;
+	            	}
+	            	
+	            if($new_str == ''){
+	            	echo '<div class="question_wrapper">
+		                    <div class="question_left">
+		                        <h5 class="txt_red"><span></span></h5>                                        
+		                        <p class="ques"> No Question Set For This Exm.</p>
+		                        <div class="answer_options_div">
+		                        </div>
+		                    </div>
+		                    <div class="clearfix"></div>
+		                </div>';
+	            }else{
+	            	echo json_encode(array('new_str'=>$new_str,'count'=>$cnt)); 
+	            }
+            }else{
+            	echo 'NO_EXAM_ID'; 
+           }       
+	}
+
+	public function valid_date($date){
+
+		if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$date))
+	    {
+	        return true;
+	    }else{
+	    	$this->form_validation->set_message('valid_date','The Start Exam date is not valid.');
+	        return false;
+	    }
+
+	}
+
+}
+
+/* End of file Exam.php */
+/* Location: ./application/controllers/Admin/Exam.php */
+
+
+ 

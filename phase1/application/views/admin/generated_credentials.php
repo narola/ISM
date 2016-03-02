@@ -1,0 +1,235 @@
+<!--main-->
+<div class="col-sm-7 main main2 general_cred mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="col-sm-12">
+    <div class="box gene_error">
+          
+        <form method="post" onsubmit="return success_credential()" >
+
+          <div class="box_header">
+            <h3>Generate Credentials</h3>
+          </div>
+
+          <div class="box_body">  
+              
+              <div class="form-group three_inputs select" >
+                  <label>School Grade</label>
+                  <select class="form-control " name="school_grade" 
+                  onchange="fetch_school_from_grade(this.value)" id="school_grade">
+                    <option selected value=""> Select School Grade</option>
+                      <option value="A" <?php echo set_select('school_grade', 'A'); ?>>A</option>
+                      <option value="B" <?php echo set_select('school_grade', 'B'); ?>>B</option>
+                      <option value="C" <?php echo set_select('school_grade', 'C'); ?>>C</option>
+                      <option value="D" <?php echo set_select('school_grade', 'D'); ?>>D</option>
+                      <option value="E" <?php echo set_select('school_grade', 'E'); ?>>E</option>
+                  </select>
+                  
+              </div>
+
+              <div class="form-group three_inputs select">
+                  <label>Select School </label>
+                  <select class="form-control js-example-basic-single" id="school_id" name="school_id" onchange="school_id_error()">
+                     <option  selected value=""> Select School</option>
+                      <?php 
+                          if(!empty($schools)) {
+                            foreach($schools as $school) { 
+                          ?>
+                          <option value="<?php echo $school['id']; ?>" <?php echo set_select('school_id', $school['id']); ?> >
+                                <?php echo $school['school_name']; ?>
+                          </option>
+                      <?php } }else{ ?>
+                          <option disabled > No Schools Found</option>  
+                      <?php } ?> 
+                  </select>
+                  <a href="admin/school/add" class="icon icon_add_small"></a>
+                  <?php echo form_error('school_id','<div class="alert alert-danger school_id_error">','</div>'); ?>
+              </div>
+
+              <div class="form-group three_inputs select" >
+                  <label>Role</label>
+                  <select class="form-control " name="role_id" id="role_id" onchange="role_id_error()" >
+                    <option selected disabled> Select Role</option>
+                      <?php 
+                          if(!empty($roles)) {
+                            foreach($roles as $role) { 
+                                if($role['id'] !='1'){
+                          ?>
+                          <option value="<?php echo $role['id']; ?>" <?php echo set_select('role_id', $role['id']); ?>>
+                               <?php echo ucfirst($role['role_name']); ?>
+                          </option>
+                      <?php } } } else { ?>
+                          <option disabled > No Roles Found</option>  
+                      <?php } ?>
+                  </select>
+                  <?php echo form_error('role_id','<div class="alert alert-danger role_id_error">','</div>'); // create custom helper function in cms_helper.php  ?> 
+              </div>
+              <div class="clearfix"></div>
+           </div>
+           
+           <div class="box_body">
+                <div class="form-group three_inputs select">
+                      <label>Course </label>
+                      <select class="form-control " name="course_id" id="course_id"
+                        onchange="fetch_classroom(this.value)" >
+                          <option selected disabled> Select Course</option>
+                          <?php 
+                              if(!empty($courses)) {
+                                foreach($courses as $course) { 
+                              ?>
+                              <option value="<?php echo $course['id']; ?>" <?php echo set_select('course_id', $course['id']); ?>>
+                                   <?php echo $course['course_name']; ?>
+                              </option>
+                          <?php } }else{ ?>
+                              <option disabled > No Course Found</option>  
+                          <?php } ?>      
+                      </select>
+                      <a href="admin/course/add_course" class="icon icon_add_small"></a>
+                      <?php echo form_error('course_id','<div class="alert alert-danger course_id_error">','</div>'); ?>
+                  </div>
+
+                  <div class="form-group three_inputs select">
+                      <label>Classroom</label>
+                      <select class="form-control" name="classroom_id" id="classroom_id" onchange="classroom_id_error()">
+                          <option selected disabled> Select Classroom</option>
+                          <?php 
+                              if(!empty($classrooms)) {
+                                foreach($classrooms as $classroom) { 
+                              ?>
+                              <option value="<?php echo $classroom['id']; ?>" <?php echo set_select('classroom_id', $classroom['id']); ?>>
+                                   <?php echo $classroom['class_name']; ?>
+                              </option>
+                          <?php } }else{ ?>
+                              <option disabled > No Classroom Found</option>  
+                          <?php } ?>
+                      </select>
+                      <a href="admin/classroom/add" class="icon icon_add_small"></a>
+                      <?php echo form_error('classroom_id','<div class="alert alert-danger classroom_id_error">','</div>'); ?>
+                  </div>
+
+                  <div class="form-group three_inputs select">
+                      <label>Year</label>
+                      <select class="form-control" name="year_id" id="year_id">
+                          <option value="<?php echo $cur_year; ?>"><?php echo $cur_year; ?></option>
+                          <option value="<?php echo $next_year; ?>"><?php echo $next_year; ?></option>
+                      </select>
+                  </div>
+                  <div class="clearfix"></div>
+           </div>
+
+          <div class="box_header">
+            <h3>How many users to generate for selected criteria?</h3>
+          </div>
+
+          <div class="box_body">  
+              <div class="form-group three_inputs noc">
+                <label>Enter Number of Users</label>
+                <input type="text" name="no_of_credentials" id="noc" value="<?php echo set_value('no_of_credentials'); ?>" 
+                       class="form-control" onkeyup="noc_error()">
+                <?php echo form_error('no_of_credentials','<div class="alert alert-danger noc_error">','</div>'); ?>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          
+          <div class="box_header">
+            <div class="confirmation">
+                <p id="dialog_box" class="hide">You have requested <span class="txt_red" id="noc_new">50</span> credentials for <span id="role_id_new" class="txt_blue">Students</span> of <span class="txt_blue" id="school_id_new">St. Xevier's School</span> belong to first academic year in <span class="txt_green" id="course_id_new">Computer Science Course</span></p>
+
+                <?php echo flashMessage(TRUE); ?>
+
+                <?php $success = $this->session->flashdata('success'); ?>
+                
+                <div class="alert alert-success <?php if(empty(strip_tags($success,''))){ echo 'hide';} ?>">
+                    <?php echo strip_tags($success) ; ?>
+                </div>
+
+                <button class="btn btn_red" type="submit">Confirm & Generate</button>
+                <button class="btn btn_black_normal" type="reset" onclick="reset_form()">Reset</button>
+
+            </div>
+          </div>
+        
+        </form>
+
+      </div>
+	  </div>
+</div>
+<!--//main-->
+
+<script type="text/javascript">
+    
+    //Error Hide on Select Dropdown value or on keyup of textbox
+    function school_id_error() {  $('.school_id_error').hide(); }
+    function role_id_error(){ $('.role_id_error').hide(); }
+    function classroom_id_error(){ $('.classroom_id_error').hide(); }
+    function noc_error(){ $('.noc_error').hide(); }
+
+    $(document).ready(function() { $(".js-example-basic-single").select2({ placeholder: "Select a school"}); });
+
+    function fetch_school_from_grade(school_grade){
+
+        $('#select2-chosen-1').html('Select School');
+        
+        $.ajax({
+            url:'<?php echo base_url()."common/fetch_school_from_grade"; ?>',
+            type:'POST',
+            data:{school_grade:school_grade},
+            success:function(data){
+                $('#school_id').html(data);
+            }
+        });
+    }
+
+    function fetch_classroom(course_id){
+        
+        $('.course_id_error').hide();
+
+        $.ajax({
+            url:'<?php echo base_url()."common/fetch_classroom"; ?>',
+            type:'POST',
+            data:{course_id:course_id},
+            success:function(data){
+                $('#classroom_id').html(data);
+            }
+        });
+    }
+
+    function reset_form(){
+        
+        $('#school_id option:first-child').attr("selected", "selected");
+        $('#select2-chosen-1').html('Select School');
+        $("div.alert").remove();
+    }
+
+    function success_credential(){
+        
+        var school_id = $('#school_id').val();
+        var noc = $('#noc').val();  
+        var course_id = $('#course_id').val();
+        var role_id = $('#role_id').val();
+        var year_id = $('#year_id').val();
+
+        var error_count = 0;
+
+        if(school_id == '' || $.isNumeric(school_id) == false){   error_count++; }
+        if(noc == '' || $.isNumeric(noc) == false){  error_count++; }
+        if(course_id == '' || $.isNumeric(course_id) == false){  error_count++; }
+        if(role_id == '' || $.isNumeric(role_id) == false){  error_count++; }
+        if(year_id == '' || $.isNumeric(year_id) == false){  error_count++; }
+
+        if(error_count == 0){
+
+            var school_name = $('#school_id option:selected').text();
+            var course_name = $('#course_id option:selected').text();
+            var role_name = $('#role_id option:selected').text();    
+            
+            $('#dialog_box').removeClass('hide');
+            $('#noc_new').html(noc);
+            $('#role_id_new').html(role_name);
+            $('#course_id_new').html(course_name);
+            $('#school_id_new').html(school_name);
+            $("div.alert").remove();
+
+        }
+        
+    }
+
+</script>
