@@ -109,7 +109,7 @@ define('TBL_COURSE_CATEGORY','course_category');
 define('TBL_CLASSROOM_SUBJECT','classroom_subject');
 define('TBL_COURSES','courses');
 define('TBL_DISTRICTS','districts');
-define('TBL_EXAM_SCHEDULE','exam_schedule');
+define('TBL_EXAM_SCHEDULE','exam_profile');
 define('TBL_EXAMS','exams');
 define('TBL_FEED_COMMENT','feed_comment');
 define('TBL_FEED_IMAGE','feed_image');

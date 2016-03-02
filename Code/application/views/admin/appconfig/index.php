@@ -74,6 +74,7 @@
         </ul>
       </div>
       <button name="author_btn" type="submit" class="btn btn_red">Save</button>
+      <button data-appuser="Author" type="button" data-toggle="modal" data-target="#myModal" class="upload_author_btn upload_btn btn btn_red">Upload Images</button>
     </form>
     </div>
     <div id="student" class="tab-pane fade <?php echo ($tab == 'student')  ? 'in active' : ''; ?>">
@@ -112,6 +113,7 @@
       </ul>
       </div>
       <button name="student_btn" type="submit" class="btn btn_red">Save</button>
+      <button data-appuser="Student" type="button" data-toggle="modal" data-target="#myModal" class="upload_student_btn upload_btn btn btn_red">Upload Images</button>
     </form>
     </div>
     <div id="teacher" class="tab-pane fade <?php echo ($tab == 'teacher')  ? 'in active' : ''; ?>">
@@ -149,6 +151,7 @@
       </ul>
       </div>
       <button name="teacher_btn" type="submit" class="btn btn_red">Save</button>
+      <button data-appuser="Teacher" type="button" data-toggle="modal" data-target="#myModal" class="upload_teacher_btn upload_btn btn btn_red">Upload Images</button>
     </form>
     </div>
     
@@ -157,9 +160,39 @@
   </div>
   </div>
 </div>
+<!-- Upload Images Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header notice_header text-center">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"> Upload Login Backgrounds for <span class="app_user"></span></h4>
+        <small>
+        </small>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="admin/appconfig/upload_images" enctype="multipart/form-data">
+          <input type="file" name="app_images[]" multiple="multiple"/>
+          <input type="hidden" name="app_user" value=""/>
+          <button type="submit">Save</button> 
+        </form>
+        <div class="clearfix"></div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    <!-- /Upload Images Modal-->
 <script type="text/javascript" src="assets/js/jquery.lightbox-0.5.min.js"></script>
   <script type="text/javascript">
   jQuery(document).ready(function($) {
+
+    $(".upload_btn").click(function(){
+      var appuser = $(this).data('appuser');
+      $("span.app_user").text(appuser);
+      $("input[name=app_user]").val(appuser);
+
+    })
     $("input.status").bootstrapSwitch();
     $('.bootstrap-switch-handle-on').text('Active');
     $('.bootstrap-switch-handle-off').text('Inactive');

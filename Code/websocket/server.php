@@ -20,6 +20,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 
 
     $datas = json_decode($message, true);
+    
     $datas['user_iddd'] = $Server->wsClients[$clientID][12];
     $datas['error'] = $datas['redirect'] = 'skip';
     $data = array_merge($datas, $Server->active_hours());

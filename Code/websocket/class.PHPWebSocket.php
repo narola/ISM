@@ -1458,7 +1458,7 @@ class PHPWebSocket {
                         . "VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, $score,'" . $data['message'] . "', '', '', $is_active, '', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '0', 'yes')";
                 $x = mysqli_query($link, $query);
                 $data['disscusion_id'] = mysqli_insert_id($link);
-
+                
                 // Update group score and student score.
                 if ($x) {
                     $add_to_group = 0;

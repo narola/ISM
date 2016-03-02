@@ -149,29 +149,27 @@ class Group extends ADMIN_Controller {
                         //     'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
                         //     'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'
                         // ),
-                         array(
-                            'table' => TBL_TUTORIAL_GROUP_MEMBER,
-                            'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
-                            //'join' => 'right'
-                        ),
-                        array(
-                            'table' => TBL_USERS,
-                            'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
-                        ),
-                        array(
-                            'table' => TBL_STUDENT_ACADEMIC_INFO,
-                            'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
-                        ),
+                        //  array(
+                        //     'table' => TBL_TUTORIAL_GROUP_MEMBER,
+                        //     'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
+                        //     //'join' => 'right'
+                        // ),
+                        // array(
+                        //     'table' => TBL_USERS,
+                        //     'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
+                        // ),
+                        // array(
+                        //     'table' => TBL_STUDENT_ACADEMIC_INFO,
+                        //     'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
+                        // ),
                        
                     )
                 )
         );
-        // qry();
-        // p($this->data['all_groups'], true);
-        // exit;
+      
         // fetch all data of group right joins with tutorial group members
         $this->data['all_groups_members'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUP_MEMBER . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.id as gid,' .
-                TBL_USERS . '.username,' . TBL_SCHOOLS . '.school_name,' . TBL_CLASSROOMS . '.class_name,' . TBL_USER_PROFILE_PICTURE . '.profile_link,' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id', FALSE, array(
+                TBL_USERS . '.username,' . TBL_SCHOOLS . '.school_name,' . TBL_CLASSROOMS . '.class_name,' . TBL_USERS . '.profile_pic as profile_link,' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id', FALSE, array(
                     'join' => array(
                         array(
                             'table' => TBL_TUTORIAL_GROUP_MEMBER,
@@ -192,14 +190,13 @@ class Group extends ADMIN_Controller {
                         array(
                             'table' => TBL_CLASSROOMS,
                             'condition' => TBL_CLASSROOMS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.classroom_id',
-                        ),
-                        array(
-                            'table' => TBL_USER_PROFILE_PICTURE,
-                            'condition' => TBL_USER_PROFILE_PICTURE . '.user_id=' . TBL_USERS . '.id'
                         )
                     )
                 )
         );
+        // qry();
+        // p($this->data['all_groups_members'], true);
+        // exit;
         
       //Initialize Codeigniter Pagination with $config
         $this->pagination->initialize($config);

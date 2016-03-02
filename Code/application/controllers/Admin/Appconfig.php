@@ -20,94 +20,130 @@ class Appconfig extends ADMIN_Controller {
 		$this->data['page_title'] = 'App Config';
 		$this->data['tab'] = 'author';
 
-		$author_where = $student_where = $teacher_where = array();
+		$app_array = array('author','student','teacher');
+		$where = array();
 
-		if(isset($_POST['author_status'])){
-			if($this->input->post('author_status') != '')
-				$author_where['where']['status'] = $this->input->post('author_status'); 
-			$this->data['author_status'] = $this->input->post('author_status');
-			$this->data['tab'] = 'author';
-		}
-		if(isset($_POST['student_status'])){
-			if($this->input->post('student_status') != '')
-				$student_where['where']['status'] = $this->input->post('student_status'); 
-			$this->data['student_status'] = $this->input->post('student_status');
-			$this->data['tab'] = 'student';
-		}
-		if(isset($_POST['teacher_status'])){
-			if($this->input->post('teacher_status') != '')
-				$teacher_where['where']['status'] = $this->input->post('teacher_status'); 
-			$this->data['teacher_status'] = $this->input->post('teacher_status');
-			$this->data['tab'] = 'teacher';
+		foreach ($app_array as $app_name) {
+			if(isset($_POST[$app_name.'_status'])){
+				if($this->input->post($app_name.'_status') != '')
+					$where['where']['status'] = $this->input->post($app_name.'_status'); 
+				$this->data[$app_name.'_status'] = $this->input->post($app_name.'_status');
+				$this->data['tab'] = $app_name;
+			}
+
+			$where['where']['is_delete'] = 0;
+			$where['where']['app_name'] = $app_name;
+			$this->data[$app_name.'_images'] = select(TBL_APP_IMAGES,'id,image_url, status', $where);
 		}
 
-		if(isset($_POST['author_btn'])){
-			$this->data['tab'] = 'author';
-			$author_selected_images = $this->input->post('author');
+		if( isset($_POST['author_btn']) || isset($_POST['student_btn']) || isset($_POST['teacher_btn']) ){
+
+			$tab='author';
+			$selected_images = array();
+			if(isset($_POST['author_btn'])){
+				$tab = 'author';
+				$selected_images = $this->input->post('author');
+			}elseif(isset($_POST['student_btn'])){
+				$tab = 'student';
+				$selected_images = $this->input->post('student');
+			}elseif(isset($_POST['teacher_btn'])){
+				$tab = 'teacher';
+				$selected_images = $this->input->post('teacher');
+			}
+
+			$this->data['tab'] = $tab;
 			$data = array(
 						'status'=>'archive'
 						);
-			update(TBL_APP_IMAGES, array('app_name'=>'Author'), $data);
 			
-			if(!empty($author_selected_images)){
-				foreach ($author_selected_images as $image) {
+			update(TBL_APP_IMAGES, array('app_name'=>$tab), $data);
+			
+			if(!empty($selected_images)){
+				foreach ($selected_images as $image) {
 					$data = array(
 						'status'=>'active'
 						);
 					update(TBL_APP_IMAGES, $image, replace_invalid_chars($data));
 				}
 			}
-		}
-		if(isset($_POST['student_btn'])){
-			$this->data['tab'] = 'student';
-			$student_selected_images = $this->input->post('student');
-			$data = array(
-						'status'=>'archive'
-						);
-			update(TBL_APP_IMAGES, array('app_name'=>'Student'), $data);
-			
-			if(!empty($student_selected_images)){
-				foreach ($student_selected_images as $image) {
-					$data = array(
-						'status'=>'active'
-						);
-					update(TBL_APP_IMAGES, $image, replace_invalid_chars($data));
-				}
-			}
-		}
-		if(isset($_POST['teacher_btn'])){
-			$this->data['tab'] = 'teacher';
-			$teacher_selected_images = $this->input->post('teacher');
-			$data = array(
-						'status'=>'archive'
-						);
-			update(TBL_APP_IMAGES, array('app_name'=>'Teacher'), $data);
-			
-			if(!empty($teacher_selected_images)){
-				foreach ($teacher_selected_images as $image) {
-					$data = array(
-						'status'=>'active'
-						);
-					update(TBL_APP_IMAGES, $image, replace_invalid_chars($data));
-				}
-			}
+
 		}
 
-		$author_where['where']['is_delete'] = 0;
-		$author_where['where']['app_name'] = 'Author';
-		$author_images = select(TBL_APP_IMAGES,'id,image_url, status', $author_where);
-
-		$student_where['where']['is_delete'] = 0;
-		$student_where['where']['app_name'] = 'Student';
-		$student_images = select(TBL_APP_IMAGES,'id,image_url, status', $student_where);
-
-		$teacher_where['where']['is_delete'] = 0;
-		$teacher_where['where']['app_name'] = 'Student';
-		$teacher_images = select(TBL_APP_IMAGES,'id,image_url, status', $teacher_where);
-
-		$this->data['author_images'] = $author_images;
-		$this->data['student_images'] = $student_images;
-		$this->data['teacher_images'] = $teacher_images;
 		$this->template->load('admin/default','admin/appconfig/index',$this->data);
+	}
+
+	public function upload_images(){
+		$app_user = strtolower($this->input->post('app_user'));
+
+		$path = "uploads/images/app_images/".$app_user;
+
+            // retrieve the number of images uploaded;
+    $number_of_files = sizeof($_FILES['app_images']['tmp_name']);
+    // considering that do_upload() accepts single files, we will have to do a small hack so that we can upload multiple files. For this we will have to keep the data of uploaded files in a variable, and redo the $_FILE.
+    $files = $_FILES['app_images'];
+    $errors = array();
+
+    // first make sure that there is no error in uploading the files
+    for($i=0;$i<$number_of_files;$i++)
+    {
+      if($files['error'][$i] != 0) $errors[$i][] = 'Couldn\'t upload file '.$files['name'][$i];
+    }
+    if(sizeof($errors)==0)
+    {
+      // now, taking into account that there can be more than one file, for each file we will have to do the upload
+      // we first load the upload library
+      $this->load->library('upload');
+      // next we pass the upload path for the images
+      $config['upload_path'] = $path;
+      // also, we make sure we allow only certain type of images
+      $config['allowed_types'] = 'gif|jpg|png';
+      $time = time();
+      for ($i = 0; $i < $number_of_files; $i++) {
+      	$time++;
+        $_FILES['app_image']['name'] = $files['name'][$i];
+        $_FILES['app_image']['type'] = $files['type'][$i];
+        $_FILES['app_image']['tmp_name'] = $files['tmp_name'][$i];
+        $_FILES['app_image']['error'] = $files['error'][$i];
+        $_FILES['app_image']['size'] = $files['size'][$i];
+
+        $ext = pathinfo($_FILES['app_image']['name'], PATHINFO_EXTENSION);
+        $name = str_replace('.'.$ext, '', '_dev_'.$app_user.'_'.$time).'.'.$ext;
+       	$config['file_name'] = $name;
+		
+        //now we initialize the upload library
+        $this->upload->initialize($config);
+
+        // we retrieve the number of files that were uploaded
+        if ($this->upload->do_upload('app_image'))
+        {
+          $data_app_image = array(
+				'app_name' => $this->input->post('app_user'),
+				'image_url'=>'app_images/'.$app_user.'/'.$name,
+				'status'=>'archive',
+				'is_testdata'=>'dev',
+				'created_date'=>date('Y-m-d H:i:s',time()),
+			 	'modified_date'=>date('Y-m-d H:i:s',time())
+			);
+			insert(TBL_APP_IMAGES,replace_invalid_chars($data_app_image));
+        }
+        else
+        {
+          $data['upload_errors'][$i] = $this->upload->display_errors();
+        }
+
+      }
+         $this->session->set_flashdata('msg', 'Images Successfully Uploaded.');
+   
+    }
+    else
+    {
+     	$this->session->set_flashdata('err', 'Something went wrong.');
+    }
+   	
+    redirect('admin/appconfig');
+	}
+
+	public function delete_all(){
+
 	}
 }

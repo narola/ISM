@@ -60,6 +60,7 @@ function toHHMMSS (sec) {
     if (seconds < 10) {seconds = "0"+seconds;}
     if (x < 10) {x = "0"+x;}
     var time  = x+':'+seconds;
+    
     return time;
 }
     </script>
@@ -207,7 +208,13 @@ function toHHMMSS (sec) {
                     ?>
                     <div class="tut_week">
                         <div class="tut_week_heading">
-                            <p>Week 1</p>                   
+                            <?php
+                                $year = date('Y', time());
+                                $date = new DateTime($year);
+                                $week = $date->format("W");
+                            ?>
+
+                            <p>Week <?php echo $week; ?></p>                   
                         </div>
                         <ul class="tut_weekdays">
                         <?php

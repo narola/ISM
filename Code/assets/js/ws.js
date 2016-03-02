@@ -1221,7 +1221,7 @@ function generate_comment(obj, i, k) {
     str += '</div>';
     str += '<div class="notification_txt">';
     str += '<p><a href="#" class="noti_username">' + obj.full_name + '</a>&nbsp;&nbsp;' + obj.message + '</p>';
-    str += '<span class="noti_time">' + obj.comment_date + '</span>';
+    str += '<span class="noti_time just_now">' + obj.comment_date + '</span>';
     str += '</div>';
     str += '<div class="clearfix"></div>';
     str += '</div>';
