@@ -353,7 +353,9 @@ if ("WebSocket" in window)
                 c.html(++count);
             }
 
-        } else if (obj.type == 'con') {
+        }else if (obj.type == 'chat_type') {
+            console.log('here in bbj type');
+         }else if (obj.type == 'con') {
             exam_time_to_start = obj.exam_time_to_start;
             exam_total_active_time = obj.exam_total_active_time;
             exam_total_deactive_time = obj.exam_total_deactive_time;
@@ -440,9 +442,9 @@ if ("WebSocket" in window)
                 $('.like_btn[data-id="' + obj.fid + '"] span:nth-of-type(2)').html(obj.like_cnt);
             }
         } else if (obj.type == "discussion-type") {
-            $('.box_footer[data-id="' + obj.type_id + '"]').html(obj.message);
+            $('.box_footer[data-id="' + obj.type_id + '"] p').html(obj.message);
             setTimeout(function () {
-                $('.box_footer[data-id="' + obj.type_id + '"]').html('Online');
+                $('.box_footer[data-id="' + obj.type_id + '"] p').html('Online');
             }, 2000);
 
         } else if (obj.type == "close_studymate") {
@@ -956,6 +958,7 @@ if ("WebSocket" in window)
 
 /* Send message for individual chat. */
 $(document).on('keypress', 'input[data-type="chat"]', function (e) {
+
     if (e.keyCode == 13 && this.value) {
         var request = {
             type: 'studymate',
@@ -966,6 +969,15 @@ $(document).on('keypress', 'input[data-type="chat"]', function (e) {
         $('.chat[data-id="' + wp + '"] .chat_loading').fadeIn(100);
         ws.send(JSON.stringify(request));
         $(this).val('');
+    }
+    if ($(this).val().length % 2 == 0) {
+
+        var request = {
+            type: 'chat_type',
+            to: $(this).data('id'),
+            message: 'Typing..'
+        };
+        ws.send(JSON.stringify(request));
     }
 });
 

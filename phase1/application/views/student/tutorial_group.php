@@ -45,16 +45,16 @@
                 	<div class="col-sm-12">
                     	<div class="mate_user_img">
                             <?php 
-                            $topic_img  =  UPLOAD_URL.'/'.$topic['profile_link'];
+                           /* $topic_img  =  UPLOAD_URL.'/'.$topic['profile_link'];
                                 if($topic['profile_link'] == ''){
                                     $topic_img = 'assets/images/avatar.png';
-                                }
+                                }*/
                             ?>
-                        	<img src="<?php echo $topic_img ; ?>">
+                        	<img src="<?php //echo $topic_img ; ?>">
                         </div>
                         <div class="admin_question">
-                        	<h4><?php echo $topic['full_name']; ?><span><?php echo date_format( date_create($topic['created_date']), 'M d, Y g:i a'); ?></span></h4>
-                            <div style="max-height: 100px;" class="mscroll_custom"><p><?php echo $topic['topic_description']; ?></p></div>
+                        	<h4><?php //echo $topic['full_name']; ?><span><?php //echo date_format( date_create($topic['created_date']), 'M d, Y g:i a'); ?></span></h4>
+                            <div style="max-height: 100px;" class="mscroll_custom"><p><?php //echo $topic['topic_description']; ?></p></div>
                         	<!-- <p><span><?php //echo $topic['topic_description']; ?></span></p> -->
                         </div>
                     </div>

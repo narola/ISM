@@ -45,9 +45,10 @@ class Tutorial extends ISM_Controller {
 			
 			$year = date("Y");
 			$if_allocated = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION, 'id', array('where'=>array('group_id'=>$this->session->userdata('user')['group_id'], 'week_no'=>$c_week,'YEAR(`created_date`)' => $year )), array('count'=>true));
-
+			$data['if_allocated'] = 1;
 			if($if_allocated == 0){
 				$c_week = $last_week;	
+				$data['if_allocated'] = 0;
 			}
 			$cnt = 0; $arr = array();
 			for($i=$c_week;$i>0;$i--){
