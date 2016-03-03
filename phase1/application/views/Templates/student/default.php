@@ -461,6 +461,7 @@ $url = uri_string();
 					?>
 
 				</div>
+				<span class="chat_typing"></span>
 				<img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">
 				<input type="text" class="chat_input" placeholder="Chat" data-type="chat" data-id="<?php echo $active_c['user']['id'] ?>">
 				<!-- <a href="#" class="icon icon_emoji"></a> -->

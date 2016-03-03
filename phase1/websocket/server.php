@@ -65,6 +65,9 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                 $Server->wsSend($id, json_encode($data));
             }
         }
+    } else if ($data['type'] == 'chat_type') {
+        $responce = $data;
+        //$Server->wsSend($data['to'], json_encode($data));
     } else if ($data['type'] == 'dictionary') {
         $responce = $Server->dictionary($data);
         $xml = new simpleXml2Array($responce['message'], null);
@@ -139,6 +142,13 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
             $Server->wsSend($clientID, json_encode($responce));
         } else {
             if ($responce['type'] == 'studymate') {
+                foreach ($Server->wsClients as $id => $client) {
+                    if ($responce['to'] == $Server->wsClients[$id][12]) {
+                        $Server->wsSend($id, json_encode($responce));
+                    }
+                }
+                $Server->wsSend($clientID, json_encode($responce));
+            } else if ($responce['type'] == 'chat_type') {
                 foreach ($Server->wsClients as $id => $client) {
                     if ($responce['to'] == $Server->wsClients[$id][12]) {
                         $Server->wsSend($id, json_encode($responce));

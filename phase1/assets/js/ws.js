@@ -354,7 +354,12 @@ if ("WebSocket" in window)
             }
 
         }else if (obj.type == 'chat_type') {
-            console.log('here in bbj type');
+            console.log(obj.message);
+            $("span.chat_typing").html(obj.message);
+            setTimeout(function () {
+               $("span.chat_typing").html('');
+            }, 4000);
+            
          }else if (obj.type == 'con') {
             exam_time_to_start = obj.exam_time_to_start;
             exam_total_active_time = obj.exam_total_active_time;
@@ -1069,6 +1074,7 @@ $(document).on('click', '#mate_list', function () {
 
 /* Send Feed Post */
 $(document).on('click', 'button[data-type="post"]', function () {
+
     if ($.trim($('#feed_post').val()) != '') {
         var request = {
             type: 'post',

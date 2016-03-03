@@ -4127,3 +4127,11 @@ img#blah_after{height: 220px;width:220px;}
 	font-weight: 600;
 }
 .discussion{ height: 600px;}
+.chat_typing{
+	color: #aaa;
+    font-size: 14px;
+    margin-bottom: 12px;
+    padding: 0 15px;
+    position: relative;
+    bottom: 24px;
+}
