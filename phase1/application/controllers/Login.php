@@ -198,9 +198,9 @@ class Login extends CI_Controller {
             
             //-- if request already send
             if(empty($chkdata['complete_date']) && $chkdata['token'] != '' && date('Y-m-d',strtotime($chkdata['created_date'])) == date('Y-m-d')){
-                $this->session->set_flashdata('error', 'Request alredy sended please check it');
+               $this->session->set_flashdata('error', 'Request alredy sended please check it');
                 redirect('login');  
-            }    
+            }
 
             $string =   'ABCDEFGHIJKLMNOPRSTUVWXYZabcdefghijklmnopqrstu1234567890'.time();
             $token  =   str_shuffle($string);
@@ -271,7 +271,7 @@ class Login extends CI_Controller {
                                 <tr>
                                     <td>
                                         <div style="background-color:#1bc4a3; text-align:center; padding: 12px; margin:15px 0; border-radius: 5px;">
-                                            <a href="http://ism/login/change?id='.$encoded_mail.'" style="color:#fff; text-decoration:none; font-weight:bold; text-transform:uppercase;">Reset Your Password</a>
+                                            <a href="'.base_url().'login/change?id='.$encoded_mail.'" style="color:#fff; text-decoration:none; font-weight:bold; text-transform:uppercase;">Reset Your Password</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -286,6 +286,7 @@ class Login extends CI_Controller {
                 </table>
             </body>';
             $msg .='</html>';
+            
             $this->email->subject('ISM - Reset Password');
             $this->email->message($msg);
             $this->email->send();
@@ -380,7 +381,7 @@ class Login extends CI_Controller {
         $this->load->library('email', $configs);
         $this->email->initialize($configs);
         $this->email->from($email_id, $name);
-        $this->email->to('kap.narola@narolainfotech.com');
+        $this->email->to('nav.narola@narolainfotech.com');
         // $encoded_mail = urlencode($token);
         $msg = '';
         $msg .='<html>';
