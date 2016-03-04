@@ -110,10 +110,10 @@
 		    ?>
 		    <div class="box feeds" data-id="<?php echo $value['fid']; ?>">
 			<div class="user_small_img">
-			    <img src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+			    <img style="cursor:pointer;" src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>" data-type="show-profile" data-id="<?php echo $value['feed_by']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
 			</div>
 			<div class="feed_text">
-			    <h4><?php echo $value['full_name']; ?></h4>
+			    <h4 style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['feed_by']; ?>"><?php echo $value['full_name']; ?></h4>
 			    <span data-id="<?php echo $value['fid']; ?>">
 				<?php
 				if (isset($value['tagged']) && sizeof($value['tagged']) > 0) {
