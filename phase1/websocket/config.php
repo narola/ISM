@@ -4,12 +4,12 @@
 
 
 $db = array(
-    'host' => '52.28.165.231',
+    'host' => 'localhost',
     /*'username' => 'ISM',
     'password' => '69NC52j07761uvw',
     'database' => 'ISM'*/
     'username' => 'root',
-    'password' => 'ism4all',
+    'password' => '',
     'database' => 'ism_v1'
 );
 
