@@ -4,7 +4,7 @@
 
 
 $db = array(
-    'host' => 'localhost',
+    'host' => '52.28.165.231',
     /*'username' => 'ISM',
     'password' => '69NC52j07761uvw',
     'database' => 'ISM'*/
