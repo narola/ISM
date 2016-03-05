@@ -1219,7 +1219,8 @@ textarea.post_input{
     padding-bottom: 50px;
 }
 .active .chat_header, .passive .chat_header {
-    padding: 5px 10px 1px;
+    /*padding: 5px 10px 1px;*/
+    padding: 1px 10px;
     background-color: #1bc4a3;
     position: relative;
 }
@@ -1227,24 +1228,24 @@ textarea.post_input{
 	background-color: #323941;
 }
 .chat.chat_3{
-    bottom: 62px;
+    bottom: 50px;
 	z-index:3;
 }
 .chat.chat_2{
-    bottom: 114px;
+    bottom: 100px;
 	z-index:2;	
 }
 .chat.chat_1{
-    bottom: 166px;
+    bottom: 150px;
 	z-index:1;
 }
 .chat.active{
 	z-index:10;
 }
 .chat_img_holder {
-    width: 45px;
+    width: 36px; /*45px;*/
     float: left;
-    height: 45px;
+    height: 36px; /*45px;*/
     border-radius: 50%;
     margin-right: 10px;
     overflow: hidden;
