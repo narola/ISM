@@ -1017,11 +1017,13 @@ class PHPWebSocket {
 	    $link = $this->db();
 	    $msg = mysqli_escape_string($link, $data['message']); // Feed or comment
 	    $query = "INSERT INTO `" . TBL_FEEDS . "`(`feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) "
+		    // . "VALUES ($user_id,'$msg','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
 		    . "VALUES ($user_id,'$msg','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,0,'yes')";
 	    $x = mysqli_query($link, $query);
 	    $data['post_id'] = mysqli_insert_id($link);
 	    $data['tot_like'] = 0;
 	    $data['tot_comment'] = 0;
+	    $data['to'] = 'self';
 	    if (!$x) {
 		$data['error'] = 'Unable to save message.! Please try again.';
 	    }
@@ -1151,7 +1153,8 @@ class PHPWebSocket {
 		$ID_in = implode(',', $this->class_mate_list($user_id));
 		$data['start'] += $limit;
 		$query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, `f`.`posted_on`,"
-			. " `u`.`full_name`,`u`.`id` , `l`.`is_delete` as my_like ,"
+			. " `u`.`full_name` , `l`.`is_delete` as my_like ,"
+			// . " `u`.`full_name`,`u`.`id` , `l`.`is_delete` as my_like ,"
 			. " (SELECT COUNT(*) FROM " . TBL_FEED_COMMENT . " WHERE feed_id = f.id AND `is_delete` = 0) AS tot_comment,"
 			. " (SELECT COUNT(*) FROM " . TBL_FEED_LIKE . " WHERE feed_id = f.id AND `is_delete` = 0) AS tot_like,"
 			. " `p`.`profile_link` FROM `" . TBL_FEEDS . "` `f` LEFT JOIN `" . TBL_USERS . "` `u` ON `u`.`id` = `f`.`feed_by`"
@@ -2984,6 +2987,7 @@ class PHPWebSocket {
 	    $data['already'] = 'yes';
 	}else{
 	    $data['already'] = 'no';
+	}
 	return $data;
     }
 
@@ -2998,4 +3002,4 @@ class PHPWebSocket {
 
 }
 
-}?>
+?>
