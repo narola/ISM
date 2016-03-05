@@ -272,9 +272,11 @@ $(document).ready(function () {
 /* Check wheather web socket is supported by browser. */
 if ("WebSocket" in window)
 {
+
     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
     // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
     // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+
 
     ws.onopen = function ()
     {
@@ -326,6 +328,7 @@ if ("WebSocket" in window)
 
 
         if (obj.type == 'studymate') {
+            
             if (wp == obj.from) {
                 $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
                 $('.chat[data-id="' + obj.to + '"] .chat_loading').fadeOut(300);
@@ -355,12 +358,15 @@ if ("WebSocket" in window)
             }
 
         }else if (obj.type == 'chat_type') {
-            console.log(obj.message);
-            $("span.chat_typing").html(obj.message);
-            setTimeout(function () {
-               $("span.chat_typing").html('');
-            }, 4000);
             
+           if(wp == obj.to){
+                var name = $("#chat_container .chat[data-id='"+obj.user_iddd+"']").find(".chat_name").html();
+                $("#chat_container .chat[data-id='"+obj.user_iddd+"']").find("span.chat_typing").html(name + ' is '+obj.message);
+                setTimeout(function () {
+                   $("span.chat_typing").html('');
+                }, 4000);
+            }
+
          }else if (obj.type == 'con') {
             exam_time_to_start = obj.exam_time_to_start;
             exam_total_active_time = obj.exam_total_active_time;
