@@ -103,10 +103,10 @@ class Home extends ISM_Controller {
 				);	
 			
 			$where 	= array('where'=>array('fc.is_delete'=> 0),'where_in'=> array('feed_id'=>$feed_ids));
-			$comment = select(TBL_FEED_COMMENT.' fc','feed_id,comment,fc.created_date,u.full_name,p.profile_link',$where,$options);
+			//$comment = select(TBL_FEED_COMMENT.' fc','feed_id,comment,fc.created_date,u.full_name,p.profile_link',$where,$options);
+			$comment = select(TBL_FEED_COMMENT.' fc','comment_by,feed_id,comment,fc.created_date,u.full_name,p.profile_link',$where,$options);
+			//----merge feeds and comment,tagged user in single array	
 
-			//----merge feeds and comment,tagged user in single array			
-			
 			$final_feed = array();
 			foreach ($data_array as $key => $value) {
 				$final_feed[$key] = $value;
@@ -117,7 +117,6 @@ class Home extends ISM_Controller {
 	                    $found_comment[] = $value1;
 	                } 
 				}
-
 				foreach ($tagged as $tag_key => $tag_value) {
 					if($tag_value['feed_id'] == $value['fid']){
 						$found_tagged[] = $tag_value;
@@ -127,9 +126,8 @@ class Home extends ISM_Controller {
 				$final_feed[$key]['comment'] = $found_comment;
 				$final_feed[$key]['tagged']  = $found_tagged;
 				$final_feed[$key]['images']  = array();
-
 			}
-			
+
 			$data['feed'] = $final_feed;
 
 			$feed_ids = array();

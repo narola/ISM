@@ -1177,7 +1177,12 @@ class PHPWebSocket {
 			    . 'WHERE `feed_id` IN(' . $feed_ids . ') AND `t`.`is_delete` = 0';
 		    $tag_row = mysqli_query($link, $query);
 
-		    $query = 'SELECT `feed_id` AS `to`, `comment` AS `message`, `u`.`full_name`, `p`.`profile_link`, fc.created_date'
+		    /*$query = 'SELECT `feed_id` AS `to`,`comment` AS `message`, `u`.`full_name`, `p`.`profile_link`, fc.created_date'
+			    . ' FROM `' . TBL_FEED_COMMENT . '` `fc` LEFT JOIN `' . TBL_USERS . '` `u` ON `u`.`id` = `fc`.`comment_by`'
+			    . ' LEFT JOIN `' . TBL_USER_PROFILE_PICTURE . '` `p` ON `u`.`id` = `p`.`user_id`'
+			    . ' WHERE `fc`.`is_delete` = 0 AND `feed_id` IN(' . $feed_ids . ')'; */
+
+			  $query = 'SELECT `feed_id` AS `to`, `comment_by`,`comment` AS `message`, `u`.`full_name`, `p`.`profile_link`, fc.created_date'
 			    . ' FROM `' . TBL_FEED_COMMENT . '` `fc` LEFT JOIN `' . TBL_USERS . '` `u` ON `u`.`id` = `fc`.`comment_by`'
 			    . ' LEFT JOIN `' . TBL_USER_PROFILE_PICTURE . '` `p` ON `u`.`id` = `p`.`user_id`'
 			    . ' WHERE `fc`.`is_delete` = 0 AND `feed_id` IN(' . $feed_ids . ')';

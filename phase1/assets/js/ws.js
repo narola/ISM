@@ -273,8 +273,8 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-    // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+    var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+    // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
     // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
@@ -1127,12 +1127,23 @@ function generate_post(obj, status) {
     if (obj.my_like != 0) {
         cls = '_0';
     }
+
+    /* feeder id when post or load more */
+    if(obj.type == "post")
+    {
+        var p_id = obj.id;
+    }else
+    {
+        var p_id = obj.feed_by;
+    }
+
+
     str = '<div class="box feeds" data-id="' + obj.post_id + '">';
     str += '<div class="user_small_img">';
-    str += '<img style="cursor:pointer;" onerror="this.src=\'assets/images/avatar.png\'" data-type="show-profile" data-id="' + obj.feed_by + '" src="uploads/' + obj.profile_link + '">';
+    str += '<img style="cursor:pointer;" onerror="this.src=\'assets/images/avatar.png\'" data-type="show-profile" data-id="' + p_id + '" src="uploads/' + obj.profile_link + '">';
     str += '</div>';
     str += '<div class="feed_text">';
-    str += '<h4 style="cursor:pointer;" data-type="show-profile" data-id="' + obj.feed_by + '">' + obj.full_name + '</h4>';
+    str += '<h4 style="cursor:pointer;" data-type="show-profile" data-id="' + p_id + '">' + obj.full_name + '</h4>';
 
     len = obj.tagged_detail.length;
     name = '';
@@ -1243,13 +1254,21 @@ function generate_post(obj, status) {
 
 
 /* Generate HTML block of feed comment. */
-function generate_comment(obj, i, k) {
-    
+function generate_comment(obj, i, k) { 
+
+/* commenter id for feed post and load more, else part sets commeter id when event on load more */
+
+    if(!obj.comment_by){
+       var commenter_id = obj.id;
+    }else
+    {
+         var commenter_id = obj.comment_by;
+    }
+
     str = "";
     var msg = obj.message;
     i = typeof i !== 'undefined' ? i : 0;
     k = typeof k !== 'undefined' ? k : false;
-
     if (parseInt(i) > 2) {
         display = 'display:none !important';
         first_three = '';
@@ -1260,10 +1279,10 @@ function generate_comment(obj, i, k) {
     }
     str += '<div class="comment" style="' + display + '" data-first="' + first_three + '" data-id="' + obj.to + '">';
     str += '<div class="user_small_img user_comment">';
-    str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ obj.uid +'" src="uploads/' + obj.profile_link + '" onerror="this.src=\'assets/images/avatar.png\'">';
+    str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'" src="uploads/' + obj.profile_link + '" onerror="this.src=\'assets/images/avatar.png\'">';
     str += '</div>';
     str += '<div class="notification_txt">';
-    str += '<p><a href="#" class="noti_username">' + obj.full_name + '</a>&nbsp;&nbsp;' + msg.replace(/\n/g,'<br/>') + '</p>';
+    str += '<p style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'"><a  class="noti_username">' + obj.full_name + '</a>&nbsp;&nbsp;' + msg.replace(/\n/g,'<br/>') + '</p>';
     str += '<span class="noti_time just_now">' + obj.comment_date + '</span>';
     str += '</div>';
     str += '<div class="clearfix"></div>';
