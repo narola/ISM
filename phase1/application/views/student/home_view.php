@@ -199,6 +199,8 @@
 			<!--comment-->
 			<div id="feed_comments">
 			    <?php
+
+			    print_r($value['comment']);
 			    $total_comments = sizeof($value['comment']);
 			    if ($total_comments > 0 && isset($value['comment'])) {
 				$i = 1;
@@ -216,11 +218,11 @@
 
 		    		    <div class="comment" data-first="<?php echo $first_three; ?>" data-id="<?php echo $value['fid']; ?>" style="display:<?php echo $display; ?>">
 		    			<div class="user_small_img user_comment">
-		    			    <img src="<?php echo UPLOAD_URL . '/' . $com['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+		    			    <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['feed_by']; ?>" src="<?php echo UPLOAD_URL . '/' . $com['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
 		    			</div>
 		    			<div class="notification_txt">
 
-		    			    <p><a href="#" class="noti_username"><?php echo $com['full_name']; ?></a> <?php echo $com['comment']; ?></p>
+		    			    <p style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['feed_by']; ?>"><a class="noti_username"><?php echo $com['full_name']; ?></a> <?php echo $com['comment']; ?></p>
 		    			    <span class="noti_time"><?php echo get_time_format($com['created_date']); ?></span>                            
 		    			</div>
 		    			<div class="clearfix"></div>

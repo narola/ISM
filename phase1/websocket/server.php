@@ -163,6 +163,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                     }
                 }
             } else if (in_array($responce['type'], $check)) {
+              
                 foreach ($Server->wsClients as $id => $client) {
                     if (in_array($Server->wsClients[$id][12], $responce['allStudyMate'])) {
                         $Server->wsSend($id, json_encode($responce));
@@ -234,8 +235,10 @@ $Server->bind('close', 'wsOnClose');
 
 // for other computers to connect, you will probably need to change this to your LAN IP or external IP,
 // alternatively use: gethostbyaddr(gethostbyname($_SERVER['SERVER_NAME']))
- $Server->wsStartServer('172.31.22.105', 9301);
+ $Server->wsStartServer('192.168.1.189', 9301); // pv
+ // $Server->wsStartServer('192.168.1.114', 9301); // nv
+  // $Server->wsStartServer('172.31.22.105', 9301); // Server
 
 // $Server->wsStartServer('123.201.110.194', 9300);
-// C:\wamp\bin\php\php5.5.12\php.exe -f "C:\wamp\www\ISM\Code\websocket\server.php"
+// C:\wamp\bin\php\php5.5.12\php.exe -f "C:\wamp\www\ism_phase1\phase1\websocket\server.php"
 ?>

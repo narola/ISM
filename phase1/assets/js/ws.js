@@ -272,8 +272,9 @@ $(document).ready(function () {
 /* Check wheather web socket is supported by browser. */
 if ("WebSocket" in window)
 {
-    var ws = new WebSocket("ws://52.28.165.231:9301");
-    // var ws = new WebSocket("ws://123.201.110.194:9300");
+    var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+    // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
     ws.onopen = function ()
     {
@@ -1122,10 +1123,10 @@ function generate_post(obj, status) {
     }
     str = '<div class="box feeds" data-id="' + obj.post_id + '">';
     str += '<div class="user_small_img">';
-    str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '">';
+    str += '<img style="cursor:pointer;" onerror="this.src=\'assets/images/avatar.png\'" data-type="show-profile" data-id="' + obj.feed_by + '" src="uploads/' + obj.profile_link + '">';
     str += '</div>';
     str += '<div class="feed_text">';
-    str += '<h4>' + obj.full_name + '</h4>';
+    str += '<h4 style="cursor:pointer;" data-type="show-profile" data-id="' + obj.feed_by + '">' + obj.full_name + '</h4>';
 
     len = obj.tagged_detail.length;
     name = '';
@@ -1253,7 +1254,7 @@ function generate_comment(obj, i, k) {
     }
     str += '<div class="comment" style="' + display + '" data-first="' + first_three + '" data-id="' + obj.to + '">';
     str += '<div class="user_small_img user_comment">';
-    str += '<img src="uploads/' + obj.profile_link + '" onerror="this.src=\'assets/images/avatar.png\'">';
+    str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ obj.uid +'" src="uploads/' + obj.profile_link + '" onerror="this.src=\'assets/images/avatar.png\'">';
     str += '</div>';
     str += '<div class="notification_txt">';
     str += '<p><a href="#" class="noti_username">' + obj.full_name + '</a>&nbsp;&nbsp;' + msg.replace(/\n/g,'<br/>') + '</p>';
