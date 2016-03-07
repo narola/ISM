@@ -842,13 +842,15 @@ if ("WebSocket" in window)
                 });
                 s = 0;
                 $.each(obj.result.my_studymate, function (index, list) {
+
                     str += '<div class="studymate_with">';
                     if (s == 0) {
                         str += '<h4 class="activity_heading">Became studymate with</h4>';
                     }
-                    str += '<span class="date">' + list.created_date + '</span>';
+                    var c_date = new Date(list.created_date);
+                    str += '<span class="date">' + date_to_day(c_date) + '</span>';
                     str += '<div class="study_mate">';
-                    str += '<div class="mate_user_img">';
+                    str += '<div class="mate_user_img">';   
                     str += '<img src="uploads/' + list.profile_link + '" class="mCS_img_loaded" onerror="this.src=\'assets/images/avatar.png\'">';
                     str += '</div>';
                     str += '<h4>' + list.full_name + '</h4>';
@@ -877,7 +879,13 @@ if ("WebSocket" in window)
                     str += '</div>';
                     str += '<div class="feed_text">';
                     str += '<h4>' + list.full_name + '</h4>';
-                    str += '<span class="date">' + list.created_date + '</span>'
+
+                    /* convert string date to date formate */
+                    var old = list.created_date;
+                    var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
+                    var d = new  Date(ndt);
+                    
+                    str += '<span class="date">' + date_to_day(d) + '</span>'
                     str += '<div class="clearfix"></div>';
                     str += '<p>' + list.feed_text + '</p>';
 
@@ -899,7 +907,13 @@ if ("WebSocket" in window)
                     str += '</div>';
                     str += '<div class="notification_txt">';
                     str += '<p><a href="javascript:void(0);" class="noti_username">' + obj.full_name + '</a>&nbsp;' + list.comment + '</p>';
-                    str += '<span class="noti_time">' + list.comment_date + '</span>';
+                         
+                         /* Convert string date formate to date formate */
+                         var old = list.created_date;
+                         var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
+                         var d = new  Date(ndt);
+                    
+                    str += '<span class="noti_time">' + date_to_day(d) + '</span>';
                     str += '</div>';
                     str += '<div class="clearfix"></div>';
                     str += '</div>';
@@ -912,7 +926,13 @@ if ("WebSocket" in window)
                     if (p == 0) {
                         str += '<h4 class="activity_heading">Status updated</h4>';
                     }
-                    str += '<span class="date">' + list.created_date + '</span>';
+                         /* Convert string date formate to date formate */
+                         var old = list.created_date;
+                         var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
+                         var d = new  Date(ndt);
+
+                    str += '<span class="date just_now">' + date_to_day(d) + '</span>';
+                     $(".just_now").timestatus();
                     str += '<div class="feed_text">                                               ';
                     str += '<p>' + list.feed_text + '</p>';
                     if (list.image_link != '' && list.image_link != null) {
@@ -1206,7 +1226,7 @@ function generate_post(obj, status) {
         options += '<option value="' + study_list.id + '">' + study_list.full_name + '</option>';
     });
 
-    str += '<span class="date">' + obj.posted_on + '</span>';
+    str += '<span class="date">' + date_to_day(obj.posted_on) + '</span>';
     str += '<div class="clearfix"></div>';
     str += '<p>' + obj.message + '</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="' + obj.post_id + '"><span class="icon icon_thumb' + cls + '"></span>' + obj.tot_like + '</a>';
@@ -1253,6 +1273,33 @@ function generate_post(obj, status) {
 }
 
 
+/* Function for today date into Today and yesterday  into yesterday */
+function date_to_day(post_date){
+    var cur_date = new Date(post_date);
+    var today = new Date();
+    var sys_pre_date = new Date();
+    sys_pre_date.setDate(today.getDate() - 1);
+    var cur_date1 = cur_date.toDateString();
+    var today1 = today.toDateString();
+    var sys_pre_date1 = sys_pre_date.toDateString();
+
+    var m_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+    if(cur_date1 == today1)
+    {
+        return "Today"
+    }else if(cur_date1 == sys_pre_date1)
+    {
+        return "Yesterday"
+    }else
+    {
+        var d = cur_date.getDate();
+        var m = cur_date.getMonth();
+        var y = cur_date.getFullYear();
+        return m_names[m] + "  " + d + ", " + y;
+   }
+}
+
+
 /* Generate HTML block of feed comment. */
 function generate_comment(obj, i, k) { 
 
@@ -1284,6 +1331,7 @@ function generate_comment(obj, i, k) {
     str += '<div class="notification_txt">';
     str += '<p style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'"><a  class="noti_username">' + obj.full_name + '</a>&nbsp;&nbsp;' + msg.replace(/\n/g,'<br/>') + '</p>';
     str += '<span class="noti_time just_now">' + obj.comment_date + '</span>';
+
     str += '</div>';
     str += '<div class="clearfix"></div>';
     str += '</div>';

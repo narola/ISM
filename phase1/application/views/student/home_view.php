@@ -151,9 +151,14 @@
 				}
 				?>
 			    </span>
-			    <span class="date"><?php
-				$old_date = strtotime($value['posted_on']);
-				echo date("M j, Y", $old_date);
+			    <span class="date">
+			    	<script type="text/javascript">
+			    		var dd = date_to_day('<?php echo $value['posted_on'] ?>');
+			    		document.write(dd);
+			    	</script>
+			 <?php
+				// $old_date = strtotime($value['posted_on']);
+				// echo date("M j, Y", $old_date);
 				?></span>
 			    <div class="clearfix"></div>
 			    <p><?php echo $value['feed_text']; ?></p>
