@@ -2515,6 +2515,11 @@ class PHPWebSocket {
 		$i = 0;
 
 		foreach ($data['tagged_id'] as $key => $value) {
+		    // $query = "SELECT * "
+			   //  . "FROM `" . TBL_FEEDS_TAGGED_USER . "` "
+			   //  . "WHERE `tagged_by` = " . $user_id . " "
+			   //  . "AND `user_id` = " . $value . " AND `feed_id` = " . $data['fid'] . " AND `is_delete` = 0";
+
 		    $query = "SELECT * "
 			    . "FROM `" . TBL_FEEDS_TAGGED_USER . "` "
 			    . "WHERE  `user_id` = " . $value . " AND `feed_id` = " . $data['fid'] . " AND `is_delete` = 0";
