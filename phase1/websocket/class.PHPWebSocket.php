@@ -1310,8 +1310,10 @@ class PHPWebSocket {
 			$data['message'] = 'like';
 		    }
 		} else {
-		    $query = "INSERT INTO `" . TBL_FEED_LIKE . "`(`id`, `like_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) "
-			    . "VALUES (NULL," . $user_id . "," . $data['fid'] . ",CURRENT_TIMESTAMP,NULL,0,'yes')";
+		    // $query = "INSERT INTO `" . TBL_FEED_LIKE . "`(`id`, `like_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) "
+			   //  . "VALUES (NULL," . $user_id . "," . $data['fid'] . ",CURRENT_TIMESTAMP,NULL,0,'yes')";
+		     $query = "INSERT INTO `" . TBL_FEED_LIKE . "`(`id`, `like_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) "
+			    . "VALUES (NULL," . $user_id . "," . $data['fid'] . ",CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,0,'yes')";
 		    $data['message'] = 'like';
 		}
 
