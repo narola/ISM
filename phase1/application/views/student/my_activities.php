@@ -78,10 +78,10 @@
                                         <h4 class="activity_heading">Commented on</h4>
                                         <div class="feeds">
                                             <div class="user_small_img">
-                                                <img src="<?php echo UPLOAD_URL.'/'.$comment_value['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                                <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $comment_value['feed_by']; ?>" src="<?php echo UPLOAD_URL.'/'.$comment_value['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                             </div>
                                             <div class="feed_text">
-                                                <h4><?php echo $comment_value['full_name'];?></h4>
+                                                <h4 style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $comment_value['feed_by']; ?>"><?php echo $comment_value['full_name'];?></h4>
                                                 <span class="date"><?php $old_date = strtotime($comment_value['created_date']);echo date("M j, Y",$old_date);?></span>
                                                 <div class="clearfix"></div>
                                                 <p><?php echo $comment_value['feed_text'];?></p>
@@ -108,7 +108,7 @@
                                                     <img src="<?php echo UPLOAD_URL.'/'.$this->session->userdata('user')['profile_pic'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                                 </div>
                                                 <div class="notification_txt">
-                                                    <p><a href="#" class="noti_username"><?php echo $this->session->userdata('user')['full_name'];?></a> <?php echo $comment_value['comment'];?></p>
+                                                    <p><a class="noti_username"><?php echo $this->session->userdata('user')['full_name'];?></a> <?php echo $comment_value['comment'];?></p>
                                                     <span class="noti_time"><?php echo get_time_format($comment_value['created_date']);?></span>                            
                                                 </div>
                                                 <div class="clearfix"></div>

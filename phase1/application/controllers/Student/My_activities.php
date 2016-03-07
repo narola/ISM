@@ -138,7 +138,8 @@ class My_activities extends ISM_Controller {
 						'order_by' => 'comment.created_date DESC',
 						'group_by' => 'comment_feed.id'
 					);
-		$select = 'u.full_name,u.id,comment_feed.feed_text,p.profile_link,fimage.image_link,comment.comment,comment.created_date,(SELECT COUNT(*) FROM feed_like WHERE feed_id = comment_feed.id) AS totlike,(select COUNT(*) FROM feed_comment WHERE feed_id = comment_feed.id AND comment_by = '.$user_id.') AS totcomment,comment_feed.id';
+		//$select = 'u.full_name,u.id,comment_feed.feed_text,p.profile_link,fimage.image_link,comment.comment,comment.created_date,(SELECT COUNT(*) FROM feed_like WHERE feed_id = comment_feed.id) AS totlike,(select COUNT(*) FROM feed_comment WHERE feed_id = comment_feed.id AND comment_by = '.$user_id.') AS totcomment,comment_feed.id';
+		$select = 'u.full_name,u.id,comment_feed.feed_by,comment.comment_by,comment_feed.feed_text,p.profile_link,fimage.image_link,comment.comment,comment.created_date,(SELECT COUNT(*) FROM feed_like WHERE feed_id = comment_feed.id) AS totlike,(select COUNT(*) FROM feed_comment WHERE feed_id = comment_feed.id AND comment_by = '.$user_id.') AS totcomment,comment_feed.id';
 		$data['my_activities']['comment'] = select(TBL_FEED_COMMENT.' comment',$select,$where,$options);
 
 		/*-------Get my post--------*/

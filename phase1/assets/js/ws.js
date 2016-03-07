@@ -496,7 +496,7 @@ if ("WebSocket" in window)
                 str += '<div class="user_small_img user_comment">';
                 str += '<img src="uploads/' + obj.profile + '" onerror="this.src=\'assets/images/avatar.png\'">';
                 str += '</div><div class="notification_txt">';
-                str += '<p><a href="#" class="noti_username">' + obj.name + '</a> ' + comment.comment + '</p>';
+                str += '<p><a class="noti_username">' + obj.name + '</a> ' + comment.comment + '</p>';
                 str += '<span class="noti_time">' + comment.date + '</span>';
                 str += '</div>';
                 str += '<div class="clearfix"></div>';
