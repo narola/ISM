@@ -44,12 +44,21 @@
                                         <?php if($s == 0) { ?>
                                             <h4 class="activity_heading">Became studymate with</h4>
                                         <?php } ?>
-                                        <span class="date"><?php $old_date = strtotime($studymate_value['created_date']);echo date("M j, Y",$old_date);?></span>
+                                        <span class="date">
+                                             <script type="text/javascript">
+                                                        var old =  '<?php echo $studymate_value['created_date']; ?>';
+                                                        var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
+                                                        var d = new  Date(ndt);
+                                                        var dd = date_to_day(d);
+                                                        document.write(dd);
+                                             </script>
+                                            <?php //$old_date = strtotime($studymate_value['created_date']);echo date("M j, Y",$old_date);?>
+                                        </span>
                                         <div class="study_mate">
                                             <div class="mate_user_img">
                                                 <img src="<?php echo UPLOAD_URL.'/'.$studymate_value['profile_link'];?>" class="mCS_img_loaded" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                             </div>
-                                            <h4><?php echo $studymate_value['full_name'];?></h4>
+                                            <h4><?php echo $studymate_value['full_name'];?>56</h4>
                                             <p><?php echo $studymate_value['school_name'];?></p>
                                             <p class="txt_grey"><?php echo $studymate_value['course_name'];?></p>
                                         </div>
@@ -82,7 +91,16 @@
                                             </div>
                                             <div class="feed_text">
                                                 <h4 style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $comment_value['feed_by']; ?>"><?php echo $comment_value['full_name'];?></h4>
-                                                <span class="date"><?php $old_date = strtotime($comment_value['created_date']);echo date("M j, Y",$old_date);?></span>
+                                                <span class="date">
+                                                    <script type="text/javascript">
+                                                        var old =  '<?php echo $comment_value['created_date']; ?>';
+                                                        var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
+                                                        var d = new  Date(ndt);
+                                                        var dd = date_to_day(d);
+                                                        document.write(dd);
+                                                    </script>
+                                                    <?php// echo $comment_value['created_date']; $old_date = strtotime($comment_value['created_date']);echo date("M j, Y",$old_date);?>
+                                                </span>
                                                 <div class="clearfix"></div>
                                                 <p><?php echo $comment_value['feed_text'];?></p>
                                                 <?php
@@ -126,7 +144,16 @@
                                         <?php if($p==0){ ?>
                                         <h4 class="activity_heading">Status updated</h4>
                                         <?php } ?>
-                                        <span class="date"><?php $old_date = strtotime($post_value['created_date']);echo date("M j, Y",$old_date);?></span>
+                                        <span class="date">
+                                                    <script type="text/javascript">
+                                                        var old =  '<?php echo $post_value['created_date']; ?>';
+                                                        var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
+                                                        var d = new  Date(ndt);
+                                                        var dd = date_to_day(d);
+                                                        document.write(dd);
+                                                    </script>
+                                            <?php// $old_date = strtotime($post_value['created_date']);echo date("M j, Y",$old_date);?>
+                                        </span>
                                         <div class="feed_text border_bottom">                                               
                                             <p><?php echo $post_value['feed_text'];?></p>
                                             <?php 

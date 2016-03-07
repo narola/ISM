@@ -1310,8 +1310,10 @@ class PHPWebSocket {
 			$data['message'] = 'like';
 		    }
 		} else {
-		    $query = "INSERT INTO `" . TBL_FEED_LIKE . "`(`id`, `like_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) "
-			    . "VALUES (NULL," . $user_id . "," . $data['fid'] . ",CURRENT_TIMESTAMP,NULL,0,'yes')";
+		    // $query = "INSERT INTO `" . TBL_FEED_LIKE . "`(`id`, `like_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) "
+			   //  . "VALUES (NULL," . $user_id . "," . $data['fid'] . ",CURRENT_TIMESTAMP,NULL,0,'yes')";
+		     $query = "INSERT INTO `" . TBL_FEED_LIKE . "`(`id`, `like_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) "
+			    . "VALUES (NULL," . $user_id . "," . $data['fid'] . ",CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,0,'yes')";
 		    $data['message'] = 'like';
 		}
 
@@ -2513,11 +2515,16 @@ class PHPWebSocket {
 		$i = 0;
 
 		foreach ($data['tagged_id'] as $key => $value) {
+		    // $query = "SELECT * "
+			   //  . "FROM `" . TBL_FEEDS_TAGGED_USER . "` "
+			   //  . "WHERE `tagged_by` = " . $user_id . " "
+			   //  . "AND `user_id` = " . $value . " AND `feed_id` = " . $data['fid'] . " AND `is_delete` = 0";
+
 		    $query = "SELECT * "
 			    . "FROM `" . TBL_FEEDS_TAGGED_USER . "` "
-			    . "WHERE `tagged_by` = " . $user_id . " "
-			    . "AND `user_id` = " . $value . " AND `feed_id` = " . $data['fid'] . " AND `is_delete` = 0";
+			    . "WHERE  `user_id` = " . $value . " AND `feed_id` = " . $data['fid'] . " AND `is_delete` = 0";
 		    $rows = mysqli_query($link, $query);
+
 		    if (mysqli_num_rows($rows) > 0) {
 			$already_tagged_array[] = $value;
 		    } else {
