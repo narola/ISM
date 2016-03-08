@@ -356,6 +356,7 @@ if ("WebSocket" in window)
                 }
                 c.html(++count);
             }
+            $('#mate_list[data-id="' + obj.from + '"]').click();
 
         }else if (obj.type == 'chat_type') {
             
