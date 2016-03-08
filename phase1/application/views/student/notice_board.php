@@ -49,9 +49,16 @@
                     <div class="col-sm-12 notice_description">
                         <p><?php echo $value['notice'];?></p>
                     </div>
-                    <div class="col-sm-12">
-                        <a href="javascript:void(0);" id="expand_notice" class="fa fa-angle-double-down"></a>                            
-                    </div>
+                    <?php
+                        if(strlen($value['notice']) > 390)
+                        { ?>
+                        <div class="col-sm-12">
+                         <a href="javascript:void(0);" id="expand_notice" class="fa fa-angle-double-down"></a>                            
+                        </div>
+
+                    <?php }
+                    ?>
+                    
                 </div>                            
                 <div class="clearfix"></div>
             </div>

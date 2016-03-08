@@ -170,7 +170,7 @@
 	<?php if ($value['srid'] != '') { ?>
 	    				<button class="btn btn_black_normal" data-type="studyment-request" data-id="<?php echo $value['user_id']; ?>" disabled>Request Already Sent</button>
 					<?php } else { ?>
-	    				<button class="btn btn_green" data-type="studyment-request" data-id="<?php echo $value['user_id']; ?>">Add Studymates</button>
+	    				<button class="btn btn_green" data-type="studyment-request" data-id="<?php echo $value['user_id']; ?>">Add Studymate</button>
 					<?php } ?>
 
 				    </div>

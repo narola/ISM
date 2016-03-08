@@ -12,9 +12,9 @@
 			<div class="study_mate" id="my_request" data-id="<?php echo $value['id']; ?>">
 			    <div class="col-lg-9 col-md-8 col-sm-7">
 				<div class="mate_user_img">
-				    <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>">
+				    <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['id']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>">
 				</div>
-				<h4><?php echo $value['full_name']; ?></h4>
+				<h4 style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['id']; ?>"><?php echo $value['full_name']; ?></h4>
 				<p><?php echo $value['school_name']; ?></p>
 				<p class="txt_green"><?php echo $value['course_name']; ?></p>
 			    </div>
@@ -78,7 +78,7 @@
 	<?php if ($value['srid'] != '') { ?>
 	    				<button class="btn btn_black_normal" data-type="studyment-request" data-id="<?php echo $value['user_id']; ?>" disabled>Request Already Sent</button>
 					<?php } else { ?>
-	    				<button class="btn btn_green" data-type="studyment-request" data-id="<?php echo $value['user_id']; ?>">Add Studymates</button>
+	    				<button class="btn btn_green" data-type="studyment-request" data-id="<?php echo $value['user_id']; ?>">Add Studymate</button>
 					<?php } ?>
 
 				    </div>
