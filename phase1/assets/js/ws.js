@@ -273,8 +273,8 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-    // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+    var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+    //var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
     // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
@@ -557,7 +557,7 @@ if ("WebSocket" in window)
                 str += '<div class="mate_descrip"><p class="mate_name">' + obj.full_name + '</p>';
                 str += '<p class="mate_following">Folowing 34 Authers</p>';
                 str += '<p>' + obj.school_name + '</p>';
-                str += '<p>' + obj.course_name + '</p><button class="btn btn_green" data-id="' + obj.studymate_id + '" data-type="studyment-request">Add Studymates</button></div></div>';
+                str += '<p>' + obj.course_name + '</p><button class="btn btn_green" data-id="' + obj.studymate_id + '" data-type="studyment-request">Add Studymate</button></div></div>';
                 $('.box_body #carousel-studymate .carousel-inner #active-recomonded').append(str);
                 if (obj.user_data.id == wp) {
                     cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() - 1;
@@ -789,7 +789,7 @@ if ("WebSocket" in window)
                 if (list.srid != '' && list.srid != null) {
                     str += ' <button class="btn btn_black_normal btn-block" data-type="studyment-request" data-id="' + list.user_id + '" disabled>Request Already Sent</button>';
                 } else {
-                    str += '<button class="btn btn_green btn-block" data-type="studyment-request" data-id="' + list.user_id + '">Add Studymates</button>';
+                    str += '<button class="btn btn_green btn-block" data-type="studyment-request" data-id="' + list.user_id + '">Add Studymate</button>';
                 }
                 str += ' </div>';
                 str += ' <div class="clearfix"></div>';
@@ -971,7 +971,7 @@ if ("WebSocket" in window)
                 if(obj.already == 'yes'){
                     $('#mate_or_not').html('<button class="btn btn_black_normal" disabled="" data-type="studyment-request">Request Already Sent</button>');
                 }else{
-                    $('#mate_or_not').html('<button class="btn btn_green" data-id="'+obj.result.id+'" data-type="studyment-request">Add Studymates</button>');
+                    $('#mate_or_not').html('<button class="btn btn_green" data-id="'+obj.result.id+'" data-type="studyment-request">Add Studymate</button>');
                 }
             }
 
@@ -1042,6 +1042,7 @@ function set_status(id, status) {
 
 
 $(document).on('click', '#mate_list', function () {
+
     $.cookie('active', $(this).attr('data-id'));
     var str = '';
     var id = $(this).data('id');
@@ -1096,7 +1097,7 @@ $(document).on('click', '#mate_list', function () {
         $(".chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
     }
     $(this).children('span').html('');
-
+   $('.chat_text').mCustomScrollbar('scrollTo', 'bottom');
 });
 
 /* Send Feed Post */
