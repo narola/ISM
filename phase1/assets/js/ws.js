@@ -227,7 +227,7 @@ $(document).ready(function () {
                         data: btoa(binaryString),
                         to: user
                     }
-                    if ($('#feed_post').length > 0) {
+                    if ($('#feed_post').length > 0) {                           
                         $('#feed_post').attr('readonly', 'readonly');
                         $('button[data-type="post"]').attr('disabled', 'disabled');
                     }
@@ -339,6 +339,7 @@ if ("WebSocket" in window)
             $('.chat_text').mCustomScrollbar('scrollTo', 'bottom');
 
             if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
+                myfunction(obj.from);
                 var request = {
                     type: 'set_unread',
                     to: 'none',
@@ -356,7 +357,7 @@ if ("WebSocket" in window)
                 }
                 c.html(++count);
             }
-            $('#mate_list[data-id="' + obj.from + '"]').click();
+
 
         }else if (obj.type == 'chat_type') {
             
@@ -989,6 +990,71 @@ if ("WebSocket" in window)
     };
 }
 
+function myfunction(from){
+    console.log(from);
+    if($("#chat_container .active[data-id='" + from + "']").is(":visible")){
+        console.log($(".chat.active").data('id'));
+        console.log('active');
+    }else{
+        console.log('passive');
+    }
+   /* $.cookie('active', $(this).attr('data-id'));
+    var str = '';
+    var id = $(this).data('id');
+    var len = $('.chat_container .chat').length;
+    var j = 3;
+    var is_needed = true;
+
+    for (var i = 1; i <= len; i++) {
+        if ($(".chat_container .chat:nth-child(" + i + ")").data('id') == id) {
+            is_needed = false;
+        }
+    }
+
+    if (len >= 4 && is_needed == true) {
+        $(".chat_container .chat_1").remove();
+    }
+
+    for (var i = 1; i <= len; i++) {
+        if ($(".chat_container .chat:nth-child(" + i + ")").data('id') != id && j > 0) {
+            $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
+            j--;
+        }
+
+    }
+
+    if (is_needed == true) {
+        str += '<div class="chat active" data-id="' + id + '">';
+        str += '<div class="chat_header"><div class="chat_img_holder" data-type="show-profile" data-id="'+id+'" style="cursor:pointer;">';
+        str += '<img src="' + $(this).children('div').children('img').attr('src') + '">';
+        str += '</div><p class="chat_name" data-type="show-profile" data-id="'+id+'" style="cursor:pointer;">' + $(this).children('p').html() + '</p>';
+        str += '<a href="javascript:void(0);" data-type="close" data-id="' + id + '"><span class="close" >x</span></a></div>';
+        str += '<div class="chat_text"></div>';
+        str += ' <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">';
+        str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="' + id + '">';
+        str += '<!--<a href="#" class="icon icon_emoji"></a> -->';
+        str += '<a href="#" class="icon icon_pin"></a>';
+        str += '<input type="file" id="chat_file_share" class="chat_pin" data-type="single_chat_file" data-id="16">';
+        str += '</div>';
+        $('#chat_container').append(str);
+        $("#chat_container .chat[data-id='" + id + "'] .chat_text")
+                .mCustomScrollbar({
+                    theme: "minimal-dark"
+                }).delay(300);
+        var request = {
+            type: 'get_latest_message',
+            to: 'self',
+            my_id: id
+        };
+
+        ws.send(JSON.stringify(request));
+    } else {
+        $(".chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
+    }
+    $(this).children('span').html('');
+
+}*/
+}
 /* Send message for individual chat. */
 $(document).on('keypress', 'input[data-type="chat"]', function (e) {
 
@@ -1043,6 +1109,7 @@ function set_status(id, status) {
 
 
 $(document).on('click', '#mate_list', function () {
+
     $.cookie('active', $(this).attr('data-id'));
     var str = '';
     var id = $(this).data('id');
