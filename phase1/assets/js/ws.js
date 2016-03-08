@@ -695,6 +695,7 @@ if ("WebSocket" in window)
                 location.href = irl + 'student/class_exam';
             }
         } else if (obj.type == 'tag-user-again') {
+
             var i = 0;
             var j = 0;
             var k = 0;
