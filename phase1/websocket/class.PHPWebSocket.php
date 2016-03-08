@@ -2513,7 +2513,6 @@ class PHPWebSocket {
 		$already_tagged_array = array();
 		$str = '';
 		$i = 0;
-		
 		foreach ($data['tagged_id'] as $key => $value) {
 		    // $query = "SELECT * "
 			   //  . "FROM `" . TBL_FEEDS_TAGGED_USER . "` "
