@@ -611,6 +611,8 @@ function get_highscore($classroom_id = NULL){
       $cls = "AND `e`.`classroom_id` = ".$classroom_id;
     }
     
+
+
     $sel = "`u`.`id`,`u`.`full_name`,`sh`.`school_name`,`p`.`profile_link` ,`ses`.`exam_id`,`e`.`exam_name`,`e`.`subject_id`,`s`.`subject_name`,SUM((`ses`.`correct_answers` * (SELECT `config_value` FROM `admin_config` WHERE `config_key` = 'correctAnswerScore' LIMIT 1))) AS `total_marks` ";
     $options = array( 'join' => 
                         array(
@@ -629,6 +631,7 @@ function get_highscore($classroom_id = NULL){
                                 'condition' => '`u`.`id` = `ses`.`user_id`',
                                 'join' => 'JOIN'
                             ),
+
                             array(
                                 'table' => TBL_STUDENT_ACADEMIC_INFO.' in',
                                 'condition' => 'in.user_id = u.id',
@@ -646,16 +649,25 @@ function get_highscore($classroom_id = NULL){
                         'group_by' => '`u`.`id`,`s`.`subject_name`',
                         'order_by' => '`s`.`subject_name` DESC,`total_marks` DESC'
                 );
-$high = select(TBL_STUDENT_EXAM_SCORE.' ses',$sel,null,$options);
+
+    $high = select(TBL_STUDENT_EXAM_SCORE.' ses',$sel,null,$options);
     $new = array();
     $sub_id = 0;
-    foreach ($high as $k => $v) {
-      if(!isset($new[$v['subject_name']])){
-        $new[$v['subject_name']] = array();
+    $CI =& get_instance();
+    $user_id = $CI->session->userdata('user')['id'];
+
+$study_mates = studymates($user_id);
+    foreach ($high as $k => $v) {  
+      if(in_array($v['id'],$study_mates)){
+           if(!isset($new[$v['subject_name']])){
+          $new[$v['subject_name']] = array();
+        }
+        if(count($new[$v['subject_name']]) < 1){
+          $new[$v['subject_name']][] = $v;
       }
-      if(count($new[$v['subject_name']]) < 1){
-        $new[$v['subject_name']][] = $v;
+
       }
+     
     }
 
    return  $new;
