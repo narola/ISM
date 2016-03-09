@@ -273,9 +273,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-    var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+    // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
     // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+    var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -993,26 +993,24 @@ if ("WebSocket" in window)
 }
 
 function myfunction(from){
-    console.log("from: "+from);
-   
-   
-    var str = '';
+    // console.log("from: "+from);
+   var str = '';
     var id = from;
     var len = $('.chat_container .chat').length;
-    console.log("len: "+len);
+    //console.log("len: "+len);
     var j = 3;
     var is_needed = true;
 
-        console.log("is_needed: "+is_needed);
+        //console.log("is_needed: "+is_needed);
     for (var i = 1; i <= len; i++) {
-        console.log("1st for i: "+i);
+        //console.log("1st for i: "+i);
         if ($(".chat_container .chat:nth-child(" + i + ")").data('id') == id) {
-            console.log("1if");
+           // console.log("1if");
             is_needed = false;
         }
-        console.log("1st for "+ i +" is_needed: "+is_needed);
+       // console.log("1st for "+ i +" is_needed: "+is_needed);
     }
-        console.log("after 1st for is_needed: "+is_needed);
+       // console.log("after 1st for is_needed: "+is_needed);
         if(len==1)
         j=3;
     else if(len==2)
@@ -1020,7 +1018,7 @@ function myfunction(from){
     else if(len==3)
         j=1;
     if (len >= 4 && is_needed == true) {
-        console.log("len if");
+        //console.log("len if");
         $(".chat_container .chat_1").remove();
         j=1;
     }
