@@ -46,11 +46,23 @@
                     <div class="col-md-12">
                         <h3><?php echo $value['notice_title'];?><span><?php $old_date = strtotime($value['created_date']);echo date("M j, Y",$old_date);?></span></h3>
                     </div>
-                    <div class="col-sm-12 notice_description">
+                    <?php
+                    if(strlen($value['notice']) > 390 && strlen(substr($value['notice'], 390)) > 390)
+                        { 
+                            $line = 4;
+                        }
+                        else
+                        {
+                             $line = ceil(strlen($value['notice'])/126);
+                        }
+                        $height =  $line * 20;
+                    ?>
+                    <input type="hidden" id="hd_height" value="<?php echo $height; ?>" />
+                    <div class="col-sm-12 notice_description" style="height:<?php echo  $height ?>px">
                         <p><?php echo $value['notice'];?></p>
                     </div>
                     <?php
-                        if(strlen($value['notice']) > 390)
+                        if(strlen($value['notice']) > 390 && strlen(substr($value['notice'], 390)) > 390)
                         { ?>
                         <div class="col-sm-12">
                          <a href="javascript:void(0);" id="expand_notice" class="fa fa-angle-double-down"></a>                            
@@ -101,9 +113,10 @@
                     $(this).addClass('fa-angle-double-up');
                 }
                 else{
+                    var ht = ($('#hd_height').val());
                     /*$(this).parent().parent('.notice_content').children('.notice_description').css('height','80px');*/
                     $(this).parent().parent('.notice_content').children('.notice_description').animate( 
-                        { height: "64px"}, 
+                        { height: ht}, 
                         { queue:false, duration:300 });
                     $(this).removeClass('fa-angle-double-up');
                     $(this).addClass('fa-angle-double-down');

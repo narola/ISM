@@ -197,7 +197,7 @@ class User_account extends CI_Controller {
 				$this->set_profile($uid);
 				// ----
 				set_session($this->session->userdata('user')['id']);
-				$this->session->set_flashdata('success','Record Updated');
+				$this->session->set_flashdata('success','Your Profile Updated');
 				redirect('student/home');
 
 			}
@@ -462,13 +462,15 @@ class User_account extends CI_Controller {
 	}
 /*---check first name is valid or not------*/
 	public function check_first_name(){
+
 		$first_name = $this->input->post('first_name',TRUE);
-		if(preg_match('/^[a-z0-9 .\-]+$/i', $first_name))
+		if(preg_match('/^[a-zA-Z -]+$/', $first_name))
 		{
 			return TRUE;	
 		}
 		else
 		{
+			
 			$this->form_validation->set_message('check_first_name', 'Invalid First Name');
 			return FALSE;	
 		}
@@ -476,9 +478,9 @@ class User_account extends CI_Controller {
 /*---check last name is valid or not------*/
 	public function check_last_name(){
 		$last_name = $this->input->post('last_name',TRUE);
-		if(preg_match('/^[a-z0-9 .\-]+$/i', $last_name))
+		if(preg_match('/^[a-zA-Z -]+$/', $last_name))
 		{
-			return TRUE;	
+			return TRUE;
 		}
 		else
 		{
