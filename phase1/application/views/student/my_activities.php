@@ -71,7 +71,7 @@
                                     foreach ($my_activities['like'] as $key => $like_value) {
                                 ?>
                                     <div class="status_like">
-                                        <h4 class="activity_heading">Liked status of <span class="txt_green"><?php echo $like_value['post_username'];?></span></h4>
+                                        <h4 class="activity_heading">Liked status of <span ><h4 class="txt_green" style="cursor:pointer;display: -webkit-inline-box;" data-type="show-profile" data-id="<?php echo $like_value['id']; ?>"><?php echo $like_value['post_username'];?></h4></span></h4>
                                         <div class="feed_text">                                               
                                             <p><?php echo $like_value['feed_text'];?></p>
                                         </div>
@@ -123,10 +123,10 @@
                                             <!--comment-->
                                             <div class="comment" data-id="<?php echo $comment_value['id'];?>">
                                                 <div class="user_small_img user_comment">
-                                                    <img src="<?php echo UPLOAD_URL.'/'.$this->session->userdata('user')['profile_pic'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                                    <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $comment_value['comment_by']; ?>" src="<?php echo UPLOAD_URL.'/'.$this->session->userdata('user')['profile_pic'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                                 </div>
                                                 <div class="notification_txt">
-                                                    <p><a class="noti_username"><?php echo $this->session->userdata('user')['full_name'];?></a> <?php echo $comment_value['comment'];?></p>
+                                                    <p><a class="noti_username" style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $comment_value['comment_by']; ?>"><?php echo $this->session->userdata('user')['full_name'];?></a> <?php echo $comment_value['comment'];?></p>
                                                     <span class="noti_time"><?php echo get_time_format($comment_value['created_date']);?></span>                            
                                                 </div>
                                                 <div class="clearfix"></div>

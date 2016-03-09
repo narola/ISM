@@ -2905,7 +2905,8 @@ class PHPWebSocket {
 	    $i++;
 	}
 	//  became studymate with
-	$query = "SELECT `u`.`full_name`, `sm`.`mate_of`, `sm2`.`mate_id`, DATE_FORMAT(sm.created_date,'%b %d %Y') as created_date, `s`.`school_name`, `p`.`profile_link`, `c`.`course_name` "
+	//$query = "SELECT `u`.`full_name`, `sm`.`mate_of`, `sm2`.`mate_id`, DATE_FORMAT(sm.created_date,'%b %d %Y') as created_date, `s`.`school_name`, `p`.`profile_link`, `c`.`course_name` "
+	$query = "SELECT `u`.`full_name`,`u`.`id`, `sm`.`mate_of`, `sm2`.`mate_id`, DATE_FORMAT(sm.created_date,'%b %d %Y') as created_date, `s`.`school_name`, `p`.`profile_link`, `c`.`course_name` "
 		. "FROM `" . TBL_USERS . "` `u` LEFT JOIN `studymates` `sm` ON `u`.`id` = `sm`.`mate_of` and `sm`.`mate_id` =$user_id "
 		. "LEFT JOIN `" . TBL_STUDYMATES . "` `sm2` ON `u`.`id` = `sm2`.`mate_id` and `sm2`.`mate_of` =$user_id "
 		. "LEFT JOIN `" . TBL_STUDENT_ACADEMIC_INFO . "` `in` ON `u`.`id` = `in`.`user_id` "
@@ -2920,7 +2921,8 @@ class PHPWebSocket {
 	    $i++;
 	}
 	// like feed
-	$query = "SELECT `upost`.`full_name` as `post_username`, `like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') AS created_date, (select count(*) "
+	//$query = "SELECT `upost`.`full_name` as `post_username`,`like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') AS created_date, (select count(*) "
+	$query = "SELECT `upost`.`full_name` as `post_username`,`upost`.`id` as `l_id`,`like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') AS created_date, (select count(*) "
 		. "FROM `" . TBL_FEED_LIKE . "` "
 		. "WHERE `feed_id` = `like_feed`.`id`) AS `totlike`, (SELECT COUNT(*) "
 		. "FROM `" . TBL_FEED_COMMENT . "` WHERE `feed_id` = `like_feed`.`id`) AS `totcomment` "
@@ -2935,7 +2937,8 @@ class PHPWebSocket {
 	    $i++;
 	}
 	// feed comment
-	$query = "SELECT `u`.`full_name`, `u`.`id`, `comment_feed`.`feed_text`, `p`.`profile_link`, `fimage`.`image_link`, `comment`.`comment`, `comment`.`created_date`, "
+	//$query = "SELECT `u`.`full_name`,`u`.`id` as `uid`, `u`.`id`, `comment_feed`.`feed_text`, `p`.`profile_link`, `fimage`.`image_link`, `comment`.`comment`, `comment`.`created_date`, "
+	$query = "SELECT `u`.`full_name`,`u`.`id` as `uid`, `u`.`id`, `comment_feed`.`feed_text`, `p`.`profile_link`, `fimage`.`image_link`, `comment`.`comment`,`comment`.`comment_by`, `comment`.`created_date`, "
 		. "(SELECT COUNT(*) FROM `" . TBL_FEED_LIKE . "` "
 		. "WHERE `feed_id` = `comment_feed`.`id` ) AS `totlike`, "
 		. "(SELECT COUNT(*) "
@@ -2998,6 +3001,7 @@ class PHPWebSocket {
 	    $data['already'] = 'yes';
 	}else{
 	    $data['already'] = 'no';
+	    $data['pv'] = "123";
 	}
 	return $data;
     }

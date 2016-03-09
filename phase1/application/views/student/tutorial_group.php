@@ -314,9 +314,9 @@
                                 }
 
                                 ?>
-                                <img src="<?php echo $imgs; ?>">
+                                <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $v['id']; ?>" src="<?php echo $imgs; ?>">
                             </div>
-                            <h4><?php echo $v['full_name']; ?></h4>
+                            <h4 style="cursor:pointer;" class="user_profile_hover" data-type="show-profile" data-id="<?php echo $v['id']; ?>"><?php echo $v['full_name']; ?></h4>
                             <p><?php echo $v['school_name']; ?></p>
                             <a data-toggle="tooltip" title="Notify" class="icon <?php echo in_array($v['id'], $online)? 'icon_call_user_disable': 'icon_call_user'; ?>"></a>
                         </div>
