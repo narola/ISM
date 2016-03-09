@@ -110,7 +110,7 @@ class My_activities extends ISM_Controller {
 						),
 						'order_by' => 'like.created_date DESC'
 					);
-		$select = 'upost.full_name AS post_username,like_feed.feed_text,like.created_date,(SELECT COUNT(*) FROM feed_like where feed_id = like_feed.id) AS totlike,(SELECT COUNT(*) FROM feed_comment WHERE feed_id = like_feed.id) AS totcomment';
+		$select = 'upost.full_name AS post_username,upost.id,like_feed.feed_text,like.created_date,(SELECT COUNT(*) FROM feed_like where feed_id = like_feed.id) AS totlike,(SELECT COUNT(*) FROM feed_comment WHERE feed_id = like_feed.id) AS totcomment';
 		$data['my_activities']['like'] = select(TBL_FEED_LIKE.' like',$select,$where,$options);		
 		
 		/*-------Get my comment----------*/

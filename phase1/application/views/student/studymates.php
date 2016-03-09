@@ -34,9 +34,9 @@
 				<div class="mate_user_img">
 				    <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>">
 				</div>
-				<h4><?php echo $value['full_name']; ?></h4>
+				<h4 class="no_hover1"><?php echo $value['full_name']; ?></h4>
 				<p>Student from <?php echo $value['school_name']; ?></p>
-				<p class="txt_green"><?php echo $value['course_name']; ?></p>
+				<p class="txt_green no_hover1"><?php echo $value['course_name']; ?></p>
 			    </div>
 			    <div class="col-lg-3 col-md-4 col-sm-5">
 				<button class="btn btn_green btn-block" data-type="show-profile" data-id="<?php echo $value['user_id']; ?>">View Profile</button>
@@ -99,13 +99,13 @@
 	                        </div>
 	                        <h4 style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id']; ?>"><?php echo $value['full_name']; ?></h4>
 	                        <p><?php echo $value['school_name']; ?></p>
-	                        <p class="txt_green"><?php echo $value['course_name']; ?></p>
+	                        <p class="txt_green no_hover1"><?php echo $value['course_name']; ?></p>
 	                    </div>
 	                    <div class="col-lg-3 col-md-4 col-sm-5">
 				<?php if ($value['srid'] != '') { ?>
 	                            <button class="btn btn_black_normal btn-block" data-type="studyment-request" data-id="<?php echo $value['user_id']; ?>" disabled>Request Already Sent</button>
 				<?php } else { ?>
-	                            <button class="btn btn_green btn-block" data-type="studyment-request" data-id="<?php echo $value['user_id']; ?>">Add Studymates</button>
+	                            <button class="btn btn_green btn-block" data-type="studyment-request" data-id="<?php echo $value['user_id']; ?>">Add Studymate</button>
 				<?php } ?>
 	                    </div>
 	                    <div class="clearfix"></div>
@@ -166,7 +166,7 @@
 	    echo $value['school_name'];
 	?> 
 					</p>
-					<p class="txt_green"><?php echo $value['course_name']; ?></p>
+					<p class="no_hover"><?php echo $value['course_name']; ?></p>
 	<?php if ($value['srid'] != '') { ?>
 	    				<button class="btn btn_black_normal" data-type="studyment-request" data-id="<?php echo $value['user_id']; ?>" disabled>Request Already Sent</button>
 					<?php } else { ?>

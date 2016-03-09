@@ -790,6 +790,10 @@ textarea.post_input{
     margin-top: 0;
 	float:left;
 }
+.feed_text h4:hover{
+    color: #1bc4a3;
+    text-decoration: underline;
+}
 .feed_text span.date{
 	float:right;
 	font-style:italic;
@@ -813,6 +817,16 @@ textarea.post_input{
 }
 .feed_text a:last-child{
 	margin:0;
+}
+.feed_text .activity_heading:hover
+{
+	text-decoration:none;
+	color:black;
+}
+.feed_text .activity_heading span:hover
+{
+	text-decoration:underline;
+	color:#1bc4a3;
 }
 .feeds .comment .user_comment{
 	width:5%;
@@ -1019,6 +1033,10 @@ textarea.post_input{
 	font-weight:600;
 	font-size:14px;
 }
+.score_descrip .score_name:hover{
+	 color: #1bc4a3;
+    text-decoration: underline;
+}
 .score_item p{
 	font-size:12px;
 	margin-bottom:0;
@@ -1069,6 +1087,13 @@ textarea.post_input{
 	font-size:14px;
 	margin:15px 0;
 }
+
+.mate_descrip .mate_name:hover{
+	color: #1bc4a3;
+    text-decoration: underline;
+}
+
+
 .mate_descrip .mate_following{
 	color:#1bc4a3;
 	margin-bottom:5px;
@@ -1356,7 +1381,7 @@ input.chat_input {
 }
 .noti_username:hover, .noti_username:focus{
 	color:#1bc4a3;
-	text-decoration:none;	
+	text-decoration:underline;	
 }
 
 /*Group Allocation*/
@@ -2080,6 +2105,11 @@ ul.tut_weekdays {
     padding: 25px 10px 10px;
 	position:relative;
 }
+.tut_group .box_body .user_profile_hover:hover
+{
+	text-decoration: underline;
+	color:#1bc4a3;
+}
 .tut_group .box_header h4{
 	text-transform:uppercase;
 	color:#fff;
@@ -2392,6 +2422,11 @@ ul.tut_weekdays {
 	max-height:484px;
 	padding:0;
 }
+.no_hover
+{
+	text-decoration: none;
+	color:#1bc4a3;
+}
 .study_mate{
 	padding: 15px;
 	border-bottom: 1px solid rgba(0,0,0,0.07);
@@ -2409,6 +2444,27 @@ ul.tut_weekdays {
 .box_body .study_mate h4{
 	margin-top:0
 }
+.box_body .study_mate h4:hover{
+	 color: #1bc4a3;
+    text-decoration: underline;
+}
+.box_body .study_mate .col-lg-9 .search_mate:hover{
+	 color: #1bc4a3;
+    text-decoration: underline;
+}
+.hover_search:hover
+{
+	color: #1bc4a3;
+    text-decoration: underline;
+}
+.box_body .study_mate .no_hover:hover{
+	 color: black;
+    text-decoration: none;
+}
+.box_body .study_mate .no_hover1:hover{
+    text-decoration: none;
+}
+
 .study_mate .form-group{
 	margin:10px 0 0;
 }
@@ -2642,6 +2698,10 @@ ul.tut_weekdays {
 }
 .txt_green{
 	color:#1bc4a3;
+}
+.txt_green:hover{
+	 color: #1bc4a3;
+    text-decoration: underline;
 }
 .status_like .feed_text{
 	width:100%;

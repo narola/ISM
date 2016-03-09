@@ -784,9 +784,9 @@ if ("WebSocket" in window)
                 str += '<div class="col-lg-9 col-md-8 col-sm-7">';
                 str += '<div class="mate_user_img">';
                 str += '<img style="cursor:pointer;" data-type="show-profile" data-id="' + list.user_id + '" onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + list.profile_link + '">';
-                str += '</div><h4 style="cursor:pointer;" data-type="show-profile" data-id="' + list.user_id + '">' + list.full_name + '</h4>';
+                str += '</div><h4 class="hover_search" class="search_mate" style="cursor:pointer;" data-type="show-profile" data-id="' + list.user_id + '">' + list.full_name + '</h4>';
                 str += '<p>' + list.school_name + '</p>';
-                str += '<p class="txt_green">' + list.course_name + '</p>';
+                str += '<p class="no_hover" class="txt_green">' + list.course_name + '</p>';
                 str += '</div>';
                 str += '<div class="col-lg-3 col-md-4 col-sm-5">';
                 if (list.srid != '' && list.srid != null) {
@@ -798,6 +798,7 @@ if ("WebSocket" in window)
                 str += ' <div class="clearfix"></div>';
                 str += '</div>';
                 i++;
+
             });
             if (obj.result.length >= 3) {
                 str += '<div class="text-center">';
@@ -853,10 +854,10 @@ if ("WebSocket" in window)
                     var c_date = new Date(list.created_date);
                     str += '<span class="date">' + date_to_day(c_date) + '</span>';
                     str += '<div class="study_mate">';
-                    str += '<div class="mate_user_img">';   
+                    str += '<div style="cursor:pointer;" data-type="show-profile" data-id="'+ list.mate_of +'" class="mate_user_img">';   
                     str += '<img src="uploads/' + list.profile_link + '" class="mCS_img_loaded" onerror="this.src=\'assets/images/avatar.png\'">';
                     str += '</div>';
-                    str += '<h4>' + list.full_name + '</h4>';
+                    str += '<h4 style="cursor:pointer;" data-type="show-profile" data-id="'+ list.mate_of +'">' + list.full_name + '</h4>';
                     str += '<p>' + list.school_name + '</p>';
                     str += '<p class="txt_grey">' + list.course_name + '</p>';
                     str += '</div>';
@@ -865,8 +866,8 @@ if ("WebSocket" in window)
                 });
                 $.each(obj.result.my_like, function (index, list) {
                     str += '<div class="status_like">';
-                    str += '<h4 class="activity_heading">Liked status of <span class="txt_green">' + list.post_username + '</span></h4>';
-                    str += '<div class="feed_text">                                               ';
+                    str += '<h4 class="activity_heading">Liked status of <span style="cursor:pointer;" data-type="show-profile" data-id="'+ list.l_id +'" class="txt_green">' + list.post_username + '</span></h4>';
+                    str += '<div class="feed_text">';
                     str += '<p>' + list.feed_text + '</p>';
                     str += '</div>';
                     str += '<div class="clearfix"></div>';
@@ -878,10 +879,10 @@ if ("WebSocket" in window)
                     str += '<h4 class="activity_heading">Commented on</h4>';
                     str += '<div class="feeds">';
                     str += '<div class="user_small_img">';
-                    str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + list.profile_link + '">';
+                    str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ list.uid +'" onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + list.profile_link + '">';
                     str += '</div>';
                     str += '<div class="feed_text">';
-                    str += '<h4>' + list.full_name + '</h4>';
+                    str += '<h4 class="activity_heading">Liked status of <span class="activity_heading no_hover" style="cursor:pointer;" data-type="show-profile" data-id="'+ list.uid +'">' + list.full_name + '</h4>';
 
                     /* convert string date to date formate */
                     var old = list.created_date;
@@ -906,10 +907,10 @@ if ("WebSocket" in window)
                     str += '<div class="clearfix"></div>';
                     str += '<div class="comment" data-id="' + list.id + '">';
                     str += '<div class="user_small_img user_comment">';
-                    str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '">';
+                    str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ list.comment_by +'"  onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '">';
                     str += '</div>';
                     str += '<div class="notification_txt">';
-                    str += '<p><a href="javascript:void(0);" class="noti_username">' + obj.full_name + '</a>&nbsp;' + list.comment + '</p>';
+                    str += '<p><a style="cursor:pointer;" data-type="show-profile" data-id="'+ list.comment_by +'"  href="javascript:void(0);" class="noti_username">' + obj.full_name + '</a>&nbsp;' + list.comment + '</p>';
                          
                          /* Convert string date formate to date formate */
                          var old = list.created_date;
@@ -1860,7 +1861,7 @@ $(document).on('click', 'a[data-type="load-activity-more"]', function () {
 
 });
 
-$(document).on('click', 'img[data-type="show-profile"],h4[data-type="show-profile"],p[data-type="show-profile"],button[data-type="show-profile"],div[data-type="show-profile"]', function () {
+$(document).on('click', 'span[data-type="show-profile"],a[data-type="show-profile"],img[data-type="show-profile"],h4[data-type="show-profile"],p[data-type="show-profile"],button[data-type="show-profile"],div[data-type="show-profile"]', function () {
     var request = {
         type: 'show_profile',
         to: 'self',
