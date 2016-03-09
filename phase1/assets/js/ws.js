@@ -274,7 +274,7 @@ if ("WebSocket" in window)
 {
 
     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    //var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+    // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
     // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
@@ -338,6 +338,7 @@ if ("WebSocket" in window)
             $('.just_now').timestatus();
             $('.chat_text').mCustomScrollbar('scrollTo', 'bottom');
 
+                
             if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
                 myfunction(obj.from);
                 var request = {
@@ -991,38 +992,87 @@ if ("WebSocket" in window)
 }
 
 function myfunction(from){
-    console.log(from);
-    if($("#chat_container .active[data-id='" + from + "']").is(":visible")){
-        console.log($(".chat.active").data('id'));
-        console.log('active');
-    }else{
-        console.log('passive');
-    }
-   /* $.cookie('active', $(this).attr('data-id'));
+    console.log("from: "+from);
+   
+   
     var str = '';
-    var id = $(this).data('id');
+    var id = from;
     var len = $('.chat_container .chat').length;
+    console.log("len: "+len);
     var j = 3;
     var is_needed = true;
 
+        console.log("is_needed: "+is_needed);
     for (var i = 1; i <= len; i++) {
+        console.log("1st for i: "+i);
         if ($(".chat_container .chat:nth-child(" + i + ")").data('id') == id) {
+            console.log("1if");
             is_needed = false;
         }
+        console.log("1st for "+ i +" is_needed: "+is_needed);
     }
-
+        console.log("after 1st for is_needed: "+is_needed);
+        if(len==1)
+        j=3;
+    else if(len==2)
+        j=2;
+    else if(len==3)
+        j=1;
     if (len >= 4 && is_needed == true) {
+        console.log("len if");
         $(".chat_container .chat_1").remove();
+        j=1;
     }
+var stm;
 
-    for (var i = 1; i <= len; i++) {
+    
+
+   /* for (var i = 1; i <= len; i++) {
+        console.log("2nd for i: "+i);
         if ($(".chat_container .chat:nth-child(" + i + ")").data('id') != id && j > 0) {
+        console.log("2if");
             $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
-            j--;
-        }
+        console.log("chat_"+j);
+        j--;
+}
+}*/
 
-    }
+        stm = $('#mate_list[data-id="' + id + '"]');
+            // console.log($(".chat_container .chat:nth-child(" + i + ")"));
+            if(len==0)
+                str += '<div class="chat active" data-id="' + id + '">';
+            else
+                str += '<div class="chat passive chat_' + j+'" data-id="' + id + '">';
 
+            str += '<div class="chat_header"><div class="chat_img_holder" data-type="show-profile" data-id="'+id+'" style="cursor:pointer;">';
+            str += '<img src="' + stm.children('div').children('img').attr('src') + '">';
+            str += '</div><p class="chat_name" data-type="show-profile" data-id="'+id+'" style="cursor:pointer;">' + stm.children('p').html() + '</p>';
+            str += '<a href="javascript:void(0);" data-type="close" data-id="' + id + '"><span class="close" >x</span></a></div>';
+            str += '<div class="chat_text"></div>';
+            str += ' <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">';
+            str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="' + id + '">';
+            str += '<!--<a href="#" class="icon icon_emoji"></a> -->';
+            str += '<a href="#" class="icon icon_pin"></a>';
+            str += '<input type="file" id="chat_file_share" class="chat_pin" data-type="single_chat_file" data-id="16">';
+            str += '</div>';
+            $('#chat_container').append(str);
+            $("#chat_container .chat[data-id='" + id + "'] .chat_text")
+                .mCustomScrollbar({
+                    theme: "minimal-dark"
+                }).delay(300);
+        var request = {
+            type: 'get_latest_message',
+            to: 'self',
+            my_id: id
+        };
+
+        ws.send(JSON.stringify(request));
+        
+         /*   j--;
+        }*/
+
+   // }
+/*
     if (is_needed == true) {
         str += '<div class="chat active" data-id="' + id + '">';
         str += '<div class="chat_header"><div class="chat_img_holder" data-type="show-profile" data-id="'+id+'" style="cursor:pointer;">';
