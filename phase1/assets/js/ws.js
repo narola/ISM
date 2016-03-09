@@ -881,7 +881,7 @@ if ("WebSocket" in window)
                     str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ list.uid +'" onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + list.profile_link + '">';
                     str += '</div>';
                     str += '<div class="feed_text">';
-                    str += '<h4 class="activity_heading no_hover" >Liked status of <span style="cursor:pointer;" data-type="show-profile" data-id="'+ list.uid +'">' + list.full_name + '</h4>';
+                    str += '<h4 class="activity_heading">Liked status of <span class="activity_heading no_hover" style="cursor:pointer;" data-type="show-profile" data-id="'+ list.uid +'">' + list.full_name + '</h4>';
 
                     /* convert string date to date formate */
                     var old = list.created_date;
