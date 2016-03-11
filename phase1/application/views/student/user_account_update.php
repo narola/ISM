@@ -94,21 +94,21 @@
                                 </div>
                             </div> -->
                             <!--//avatar-->
+                            
                             <div class="col-sm-8">
                                 <div class="form-group col-md-6 col-sm-12" style="padding-left: 0px;">
                                     <!-- <label>Full Name</label>
                                     <input type="text" class="form-control" placeholder="Full Name" name="full_name" value="<?php // echo isset($full_name)?$full_name : set_value('full_name');?>"> -->
                                     <label>First Name</label>
-                                    <input type="text" class="form-control" placeholder="First Name" name="first_name" value="<?php echo isset($first_name)?$first_name : set_value('first_name');?>">
-                                    <div class="alert alert-danger <?php if(empty(strip_tags(form_error('first_name'),''))){ echo 'hide';} ?>">
+                                    <input type="text" class="form-control" placeholder="First Name" name="first_name" id="first_name" value="<?php echo isset($first_name)?$first_name : set_value('first_name');?>">
+                                    <div id="first_name_error" class="alert alert-danger <?php if(empty(strip_tags(form_error('first_name'),''))){ echo 'hide';} ?>">
                                     <?php echo strip_tags(form_error('first_name'),'') ; ?>
                                 </div>
                                 </div>
-                                
                                 <div class="form-group col-md-6 col-sm-12"  style="padding-right: 0px;">
                                     <label>Last Name</label>
-                                    <input type="text" class="form-control" placeholder="Last Name" name="last_name" value="<?php echo isset($last_name)?$last_name : set_value('last_name');?>">
-                                <div class="alert alert-danger <?php if(empty(strip_tags(form_error('last_name'),''))){ echo 'hide';} ?>">
+                                    <input type="text" class="form-control" placeholder="Last Name" name="last_name"  id="last_name"  value="<?php echo isset($last_name)?$last_name : set_value('last_name');?>">
+                                <div id="last_name_error" class="alert alert-danger <?php if(empty(strip_tags(form_error('last_name'),''))){ echo 'hide';} ?>">
                                     <?php echo strip_tags(form_error('last_name'),'') ; ?>
                                 </div>
                                 </div>
@@ -119,9 +119,9 @@
 
                                 <div class="form-group">
                                     <label>Email Id</label>
-                                    <input type="email" class="form-control" placeholder="Email Address" name="email_id" value="<?php echo isset($email_id)?$email_id : set_value('email_id');?>">
+                                    <input type="email" class="form-control" placeholder="Email Address" name="email_id" id="email_id" value="<?php echo isset($email_id)?$email_id : set_value('email_id');?>">
                                 </div>
-                                <div class="alert alert-danger <?php if(empty(strip_tags(form_error('email_id'),''))){ echo 'hide';} ?>">
+                                <div id="email_error" class="alert alert-danger <?php if(empty(strip_tags(form_error('email_id'),''))){ echo 'hide';} ?>">
                                     <?php echo strip_tags(form_error('email_id'),'') ; ?>
                                 </div>
                                 <div class="form-group select">
@@ -154,7 +154,7 @@
                                     <label>Contact Number</label>
                                     <input id="contact_number" type="text" class="form-control" placeholder="(XXX) XXX-XXXX" data-masked-input="(999) 999-9999" name="contact_number" value="<?php echo isset($contact_number)?$contact_number:set_value('contact_number');?>">
                                 </div>
-                                <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('contact_number'),''))){ echo 'hide';} ?>">
+                                <div  id="contact_error" class=" alert alert-danger <?php if(empty(strip_tags(form_error('contact_number'),''))){ echo 'hide';} ?>">
                                         <?php echo strip_tags(form_error('contact_number'),''); ?>
                                 </div>
                                 <div class="form-group">
@@ -424,7 +424,68 @@
     <script src="assets/js/jquery-ui.min.js"></script> 
     <!-- // <script src="assets/js/bootstrap-datepicker.js"></script>  -->
     <script src="assets/js/jquery.masked-input.js"></script>
+     <script src="assets/js/jquery.validate"></script>
     <script type="text/javascript">
+
+    /**
+     * Function for inline validation   of form
+     *
+     * @param  -
+     * @return - 
+     * @author - Pankaj(pv)
+     */
+    
+    
+    $(document).ready( function()
+    {
+                $("#first_name").focusout(function (){
+                    var fname = $("#first_name").val();
+                        if(/^[a-zA-Z -]{1,16}$/i.test(fname)){
+                            $("#first_name_error").removeClass("show");
+                                $("#first_name_error").addClass("hide");
+                                }                            
+                            else
+                            {
+                                $("#first_name_error").removeClass("hide");
+                                $("#first_name_error").addClass("show");
+                                $("#first_name_error").html("Invalid First Name");
+                            }
+
+                         });
+
+                 $("#last_name").focusout(function (){
+                    var lname = $("#last_name").val();
+                            if(/^[a-zA-Z -]{1,16}$/i.test(lname)){
+                                $("#last_name_error").removeClass("show");
+                                $("#last_name_error").addClass("hide");
+                                }                            
+                            else
+                            {
+                                $("#last_name_error").removeClass("hide");
+                                $("#last_name_error").addClass("show");
+                                $("#last_name_error").html("Invalid Last Name");
+                            }
+
+                         });
+
+                 $("#email_id").focusout(function (){
+                    var email = $("#email_id").val();
+                            if(/^[a-zA-Z0-9-._]+@[a-zA-Z0-9-_]+\.[a-zA-Z]{1,}$/i.test(email)){
+                                $("#email_error").removeClass("show");
+                                $("#email_error").addClass("hide");
+                                }                            
+                            else
+                            {
+                                $("#email_error").removeClass("hide");
+                                $("#email_error").addClass("show");
+                                $("#email_error").html("The Email field must contain a valid email address.");
+                            }
+
+                         });
+    });
+
+
+
         function get_states(country_id){
             $.ajax({
                url:'<?php echo base_url()."student/user_account/ajax_get_states"; ?>',
@@ -552,6 +613,7 @@
                  $('#dis_cur_password').attr('type','password');
             }
         })
+
 </script>
 </body>
 </html>
