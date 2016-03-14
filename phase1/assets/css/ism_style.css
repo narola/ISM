@@ -4197,3 +4197,8 @@ img#blah_after{height: 220px;width:220px;}
     padding: 0 15px;
     position: relative;
 }
+.error.form-control {
+    border-color: #a94442 !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset !important;
+}
+label.error{ color:#a94442; }

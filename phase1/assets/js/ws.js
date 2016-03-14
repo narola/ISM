@@ -274,8 +274,8 @@ if ("WebSocket" in window)
 {
 
     // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-    var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+    var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -338,9 +338,10 @@ if ("WebSocket" in window)
             $('.just_now').timestatus();
             $('.chat_text').mCustomScrollbar('scrollTo', 'bottom');
 
-                
-            if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
+               if(wp != obj.from){ 
                 myfunction(obj.from);
+            }
+            if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
                 var request = {
                     type: 'set_unread',
                     to: 'none',
@@ -1446,7 +1447,7 @@ function generate_comment(obj, i, k) {
     str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'" src="uploads/' + obj.profile_link + '" onerror="this.src=\'assets/images/avatar.png\'">';
     str += '</div>';
     str += '<div class="notification_txt">';
-    str += '<p style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'"><a  class="noti_username">' + obj.full_name + '</a>&nbsp;&nbsp;' + msg.replace(/\n/g,'<br/>') + '</p>';
+    str += '<p style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'"><a  class="noti_username">' + obj.full_name + ' </a> ' + msg.replace(/\n/g,'<br/>') + '</p>';
     str += '<span class="noti_time just_now">' + obj.comment_date + '</span>';
 
     str += '</div>';
@@ -1842,7 +1843,28 @@ $(document).on('click', '#view_profile', function () {
 /* close chat window */
 $(document).on('click', 'a[data-type="close"]', function () {
     $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
-    $.removeCookie('active');
+     var len = $('#chat_container .chat').length;
+     j=len;
+    for (var i = 1; i <= len; i++) {
+        console.log("j: "+j);
+        console.log("i: "+i);
+        if (j > 0 && i != len) {
+            console.log("passive");
+           $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
+        }
+        if(i==len){
+            console.log("active");
+           $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat active');
+            
+        }
+        j--;
+    }
+
+
+
+
+    
+ //   $.removeCookie('active');
 });
 /*
  *   KAMLESH POKIYA (KAP).

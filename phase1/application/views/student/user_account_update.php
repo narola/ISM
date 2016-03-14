@@ -66,7 +66,7 @@
         </div>
         <div class="row reg_bg with_labels">
             <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
-                <form action="" method="post" enctype="multipart/form-data">
+                <form action="" id="user_account_frm" method="post" enctype="multipart/form-data">
                     <!--box1-->
                     <div class="box">
                         <div class="box_header">
@@ -116,7 +116,7 @@
                                     <?php // echo strip_tags(form_error('full_name'),'') ; ?>
                                 </div> -->
                                 
-
+                                <div class="clearfix"></div>
                                 <div class="form-group">
                                     <label>Email Id</label>
                                     <input type="email" class="form-control" placeholder="Email Address" name="email_id" id="email_id" value="<?php echo isset($email_id)?$email_id : set_value('email_id');?>">
@@ -424,7 +424,7 @@
     <script src="assets/js/jquery-ui.min.js"></script> 
     <!-- // <script src="assets/js/bootstrap-datepicker.js"></script>  -->
     <script src="assets/js/jquery.masked-input.js"></script>
-     <script src="assets/js/jquery.validate"></script>
+     <script src="assets/js/jquery.validate.js"></script>
     <script type="text/javascript">
 
     /**
@@ -438,7 +438,82 @@
     
     $(document).ready( function()
     {
-                $("#first_name").focusout(function (){
+        jQuery.validator.addMethod("accept", function(value, element, param) {
+          return value.match(new RegExp("." + param + "$"));
+        });
+
+        $("#user_account_frm").validate({
+            // Specify the validation rules
+             rules: {
+                "first_name": { 
+                    required: true,
+                    accept: "[a-zA-Z ]+" 
+                },
+                "last_name": { 
+                    required: true,
+                    accept: "[a-zA-Z ]+" 
+                },
+                "email_id": {
+                    required: true,
+                    email: true
+                },
+                "gender":"required",
+                "birthdate" : "required",
+                "contact_number" : "required",
+                "home_address" : "required",
+                "country_id" : "required",
+                "state_id" : "required",
+                "city_id" : "required",
+                "username" : "required"
+            },
+             messages: {
+                "first_name": {
+                    required: "Please provide First Name",
+                    accept: "Please enter alphabets only"
+                },
+                "last_name": {
+                    required: "Please provide Last Name",
+                    accept: "Please enter alphabets only"
+                },
+                "email_id": {
+                    required: "Please provide email address",
+                    email: "Invalid email address"
+                },
+                "gender":"Please select Gender",
+                "birthdate" : "Please select birth date",
+                "contact_number" : "Please provide contact number",
+                "home_address" : "Please provide home address",
+                "country_id" : "Please select country",
+                "state_id" : "Please select state",
+                "city_id" : "Please select city",
+                "username" : "Please provide Username"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+            /*errorElement: 'span',
+            errorClass: 'help-block',
+            rules: {
+                "data[Category][category_name]": "required"
+            },
+            messages: {
+                "data[Category][category_name]": "Please provide Category Name",
+            },
+            highlight: function(element) { // hightlight error inputs
+                $(element)
+                        .closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+            },
+            unhighlight: function(element) { // revert the change done by hightlight
+                $(element)
+                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }*/
+        });
+
+
+               /* $("#first_name").focusout(function (){
                     var fname = $("#first_name").val();
                         if(/^[a-zA-Z -]{1,16}$/i.test(fname)){
                             $("#first_name_error").removeClass("show");
@@ -451,9 +526,9 @@
                                 $("#first_name_error").html("Invalid First Name");
                             }
 
-                         });
+                         });*/
 
-                 $("#last_name").focusout(function (){
+                 /*$("#last_name").focusout(function (){
                     var lname = $("#last_name").val();
                             if(/^[a-zA-Z -]{1,16}$/i.test(lname)){
                                 $("#last_name_error").removeClass("show");
@@ -481,7 +556,7 @@
                                 $("#email_error").html("The Email field must contain a valid email address.");
                             }
 
-                         });
+                         });*/
     });
 
 
@@ -524,7 +599,7 @@
             altField: '#thealtdate',
              altFormat: 'yy-mm-dd'
           }).on("select", function(dateText) {
-              console.log("Selected date: " + dateText + "; input's current value: " + this.value);
+             // console.log("Selected date: " + dateText + "; input's current value: " + this.value);
             }).on("change", function() {
                 var dob = $("#thealtdate").val();
                 dob = new Date(dob);
@@ -539,7 +614,7 @@
 
       
             var dob = $("#thealtdate").val();
-            console.log(dob);
+            //console.log(dob);
             dob = new Date(dob);
             var today = new Date();
             var age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
