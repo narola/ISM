@@ -554,7 +554,6 @@
                                 $("#email_error").removeClass("hide");
                                 $("#email_error").addClass("show");
                                 $("#email_error").html("The Email field must contain a valid email address.");
-                            }
 
                          });*/
     });

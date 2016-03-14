@@ -1,5 +1,5 @@
 <script>
-    function showall(id) {
+	function showall(id) {
 	$('.post' + id).show();
     }
     $(document).on('click', 'a[data-type="showall"]', function() {
@@ -32,7 +32,6 @@
     });
 
     $(document).on('click', 'a[data-type="tag-again"]', function(e) {
-
 	show = $('#all_feed .box div[data-id="' + $(this).data('id') + '"]').is(":visible");
 
 	if (show)
@@ -40,7 +39,7 @@
 	else
 	    $('#all_feed .box div[data-id="' + $(this).data('id') + '"]').show();
     });
-
+    
     $('#element').popover('show');
 
 
@@ -49,7 +48,8 @@
     });
 
     $(document).on('click', '[data-toggle="popover2"]', function() {
-	$('[data-toggle="popover2"]').popover('show');
+    	var d_id = $(this).data("id");
+	$('[data-id="'+d_id+'"]').popover('show');
     });
 
     $(document).ready(function() {
@@ -141,7 +141,7 @@
 						$l = $t_count - 1;
 						$other_name .= $t_value['full_name'] . '<br>';
 						if ($k == $l) {
-						    echo 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-placement="bottom" data-trigger="focus" data-toggle="popover" title="Other Tagged" data-content="' . $other_name . '" onclick="$(\'[data-toggle="popover"]\').popover(\'show\');">' . $l . ' more</a></label>';
+						    echo 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-placement="bottom" data-trigger="focus" data-toggle="popover" title="Other Tagged" data-content="' . $other_name . '" >' . $l . ' more</a></label>';
 						}
 					    }
 					    $k++;
@@ -157,6 +157,12 @@
 			    		document.write(dd);
 			    	</script>
 			 <?php
+
+				 $tagged_users = array();
+				foreach ($value['tagged'] as $value1) {
+					array_push($tagged_users, $value1['id']);
+				}
+
 				// $old_date = strtotime($value['posted_on']);
 				// echo date("M j, Y", $old_date);
 				?></span>
@@ -179,8 +185,30 @@
 				<span><?php echo $value['tot_comment']; ?></span></a>
 			    <?php if ($value['tot_comment'] > 3) { ?>
 	    		    <a href="javascript:void(0);" data-type="showall" data-id="<?php echo $value['fid']; ?>">View All</a>
-	<?php } ?>
-			    <div class="dropdown tag_user" style="display: inline-block;">
+		<?php } ?>
+
+				<?php
+				/* Remove tag option after complete tagging */
+				$tot_count = 0;
+				if (!empty($my_studymates)) {
+				    foreach ($my_studymates as $list) {
+						if(!in_array($list['id'], $tagged_users)){
+							$tot_count = $tot_count + 1;
+						}
+				    }
+				}
+				?>
+
+				<?php 
+				if($tot_count == 0){
+				  	$tag_show = "none";
+				  }else{
+				  	$tag_show = "inline-block";
+				  }	
+				?>
+
+
+			    <div class="dropdown tag_user user_<?php echo $value['fid']; ?>"  style="display: <?php echo $tag_show;?>;">
 				<a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="<?php echo $value['fid']; ?>" aria-haspopup="true" aria-expanded="true"><span data-toggle="tooltip" title="Tag mates" class="icon icon_user_2"></span><span class="caret"></span></a>
 			    </div>
 			</div>
@@ -189,11 +217,13 @@
 				<?php
 				if (!empty($my_studymates)) {
 				    foreach ($my_studymates as $list) {
-					?>
-					<option value="<?php echo $list['id'] ?>">
-					<?php echo ucfirst($list['full_name']); ?>
-					</option> 
-				    <?php
+						if(!in_array($list['id'], $tagged_users)){ ?>
+						<option value="<?php echo $list['id'] ?>">
+							<?php echo ucfirst($list['full_name']); 
+							?>
+						</option> 
+			    		
+			    		<?php }
 				    }
 				}
 				?>
@@ -201,6 +231,8 @@
 			    <a href="javascript:void(0);" class="btn btn_black_normal" data-type="tag-user-again" data-id="<?php echo $value['fid']; ?>">Tag New</a>
 			</div>
 			<div class="clearfix"></div>
+
+
 			<!--comment-->
 			<div id="feed_comments">
 			    <?php
@@ -428,7 +460,7 @@
 		    <a id="mate_list" href="javascript:void(0);" data-id="<?php echo $value['id']; ?>">
 
 			<div class="stm_user_img">
-			    <img src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+			    <img src="/<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
 			</div>
 			<span class="badge message_badge"><?php if ($value['unread_msg'] > 0) echo $value['unread_msg']; ?></span>
 			<p><?php echo $value['full_name']; ?></p>
@@ -519,5 +551,6 @@
     $(document).ready(function() {
 	$(".js-example-basic-single").select2();
     });
+
 </script>
 
