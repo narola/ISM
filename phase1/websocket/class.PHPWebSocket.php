@@ -863,6 +863,14 @@ class PHPWebSocket {
 	if ($link != null) {
 	    mysqli_close($link);
 	}
+	$studymates = array();
+	foreach ($all as $value) {
+		if($value !== $user_id)
+		{
+			$studymates[] = $value;
+		}
+	}
+
 	return $all;
     }
 
@@ -1076,9 +1084,12 @@ class PHPWebSocket {
 			$i = 0;
 			$studymates_detail = array();
 			while ($row = mysqli_fetch_assoc($rows)) {
-			    $studymates_detail[$i]['full_name'] = $row['full_name'];
-			    $studymates_detail[$i]['id'] = $row['id'];
-			    $i++;
+				if($row['id'] <> $user_id)
+				{
+				    $studymates_detail[$i]['full_name'] = $row['full_name'];
+				    $studymates_detail[$i]['id'] = $row['id'];
+				    $i++;
+				}
 			}
 			$data['studymates_detail'] = $studymates_detail;
 		    }
@@ -1208,9 +1219,12 @@ class PHPWebSocket {
 		    $i = 0;
 		    $studymates_detail = array();
 		    while ($row = mysqli_fetch_assoc($rows)) {
-			$studymates_detail[$i]['full_name'] = $row['full_name'];
-			$studymates_detail[$i]['id'] = $row['id'];
-			$i++;
+		    	if($row['id'] <> $user_id)
+			    {
+					$studymates_detail[$i]['full_name'] = $row['full_name'];
+					$studymates_detail[$i]['id'] = $row['id'];
+					$i++;
+				}
 		    }
 
 		    $final_feed = array();
@@ -1245,6 +1259,7 @@ class PHPWebSocket {
 
 			$final_feed[$key]['comment'] = $found_comment;
 			$final_feed[$key]['tagged_detail'] = $found_tagged;
+			
 			$final_feed[$key]['studymates_detail'] = $studymates_detail;
 		    }
 		    $data['feed'] = $final_feed;
@@ -2613,7 +2628,9 @@ class PHPWebSocket {
 	    $data['error'] = 'Please don\'t modify data manually.';
 	}
 
-	return array_merge($data, $this->get_client_info($user_id));
+	return $data;
+
+	//array_merge($data, $this->get_client_info($user_id));
     }
 
     /**

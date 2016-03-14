@@ -273,9 +273,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-    // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
     // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-    var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+   // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -705,7 +705,7 @@ if ("WebSocket" in window)
             ids = '';
             other_name = '';
             notification_str = '';
-            len = obj.already_available_tagged_detail.length;
+             len = obj.already_available_tagged_detail.length;
             $.each(obj.already_available_tagged_detail, function (index, list) {
                 if (len == 1) {
                     str += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
@@ -1309,7 +1309,7 @@ function generate_post(obj, status) {
                     other_name += list.full_name + '<div class=\'clearfix\'></div>';
                     l = parseInt(len) - parseInt(1);
                     if (j == l) {
-                        name += '&nbsp;and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover2" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
+                        name += '&nbsp;and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-id="'+obj.post_id+'" data-trigger="focus" data-placement="bottom" data-toggle="popover2" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
                         name += '</label>';
                     }
                 }
@@ -1339,9 +1339,43 @@ function generate_post(obj, status) {
     str += '<span data-id="' + obj.post_id + '">' + name + '</span>';
 
     options = '';
+    
+    var result = new Array();
+    var result1 = new Array();
     $.each(obj.studymates_detail, function (index, study_list) {
-        options += '<option value="' + study_list.id + '">' + study_list.full_name + '</option>';
+       result.push({'id':study_list.id,'full_name':study_list.full_name});
     });
+
+
+    result1 = result;
+    tagged = obj.tagged_detail;
+    var ids = new Array();
+    for (var i = 0; i<result1.length; i++) {
+        var id = result1[i].id;
+        for (var j = 0; j<tagged.length; j++) {
+            var tagged_id = tagged[j].id;
+            if(id==tagged_id){
+                ids.push(id);
+            }
+        }
+        
+    }
+     
+    for(i=0;i<ids.length;i++){
+        for (var j = 0; j<result1.length; j++) {
+            if(ids[i]==result1[j].id){
+                result1.splice(j,1);
+            }
+        }
+    }
+    
+ 
+
+
+
+    for (var i = 0; i<result1.length; i++) {
+        options += '<option value="' + result1[i].id + '">' + result1[i].full_name + '</option>';
+    };
 
     str += '<span class="date">' + date_to_day(obj.posted_on) + '</span>';
     str += '<div class="clearfix"></div>';
@@ -1353,12 +1387,19 @@ function generate_post(obj, status) {
             str += '<a href="javascript:void(0);" data-type="showall" data-id="' + obj.post_id + '">View All</a>'
         }
     }
-    str += '<div class="dropdown tag_user" style="display: inline-block;">';
+
+    var show_tagged = "inline-block";
+    if(result1.length == 0)
+    {
+        show_tagged = "none";
+    }
+
+    str += '<div class="dropdown tag_user user_'+obj.post_id+'" style="display: '+show_tagged+';">';
     str += '<a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="' + obj.post_id + '" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>'
     str += '</div>';
     str += '</div>';
     str += '<div style="float:right;display:none;" id="show-again" data-id="' + obj.post_id + '">';
-    str += '<select style="width:200px;"name="all_users_again[]" id="' + obj.post_id + '" data-id="' + obj.post_id + '" class="js-example-basic-single form-control" multiple="multiple">';
+    str += '<select style="width:200px;" name="all_users_again[]" id="' + obj.post_id + '" data-id="' + obj.post_id + '" class="js-example-basic-single form-control" multiple="multiple">';
     str += options;
     str += '</select>';
     str += '<a href="javascript:void(0);" class="btn btn_black_normal" data-type="tag-user-again" data-id="' + obj.post_id + '">Tag New</a>';
@@ -1766,6 +1807,7 @@ $(document).on('click', 'button[data-type="class_exam_start_request"]', function
  *   Tag studymate post.
  */
 $(document).on('click', 'a[data-type="tag-user-again"]', function () {
+    var d_id = $(this).data("id");
     var request = {
         type: 'tag-user-again',
         to: 'all',
@@ -1773,9 +1815,47 @@ $(document).on('click', 'a[data-type="tag-user-again"]', function () {
         fid: $(this).data('id')
     }
     ws.send(JSON.stringify(request));
-    $(".js-example-basic-single").select2("val", "");
-    $("#show-again[data-id='" + $(this).data("id") + "']").hide();
+
+    var value = $("#select-tag-user-again").val();
+    var value1 = $("select[data-id='"+d_id+"']").val();
+   
+    if(value != null)
+        {  
+             for( var i in value ) {
+                    $("select[data-id='"+d_id+"'] option[value="+value[i]+"]").remove();
+                }
+                     var value5 = $("select[data-id='"+d_id+"'] option").size();
+                     var idp =  $(".box [data-id='"+d_id+"']").data("id");
+
+                    if(value5 == 0 && idp == d_id)
+                    {
+                        $(".user_"+d_id).css('display','none');
+                    }
+
+             $(".js-example-basic-single").select2("val", "");
+             $("#show-again[data-id='" + $(this).data("id") + "']").hide();
+        }else
+        { 
+          for( var i in value1 ) {
+                    $("select[data-id='"+d_id+"'] option[value="+value1[i]+"]").remove();
+                }
+
+
+                     var value5 = $("select[data-id='"+d_id+"'] option").size();                    
+                    if(value5 == 0)
+                    {
+                         $(".user_"+d_id).css('display','none');
+                    }   
+
+
+                
+             $(".js-example-basic-single").select2("val", "");
+             $("#show-again[data-id='" + $(this).data("id") + "']").hide();
+        }
+       
 });
+
+
 /*
  *   KAMLESH POKIYA (KAP).
  *   Find studymate with textbox.
