@@ -95,7 +95,7 @@
                                 <img src="<?php echo $imgs; ?>">
                                 </div>
                                 <div class="admin_question">
-                                    <h4><?php echo $v['full_name']; ?><span><?php echo date_format( date_create($v['created_date']), 'M d, Y g:i a'); ?></span></h4>
+                                    <h4><?php echo $v['full_name']; ?><span><?php echo date_format( date_create($v['created_date']), 'M d, Y, g:i a'); ?></span></h4>
                                     <p <?php echo ($v['is_active']==1) ? 'class="active"' : ''; ?>><?php 
                                       $check_type = array(
                                         'image/png',

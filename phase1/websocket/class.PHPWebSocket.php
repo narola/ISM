@@ -981,6 +981,7 @@ class PHPWebSocket {
 		'cdate' => $this->get_time_format($rows['created_date'])
 	    );
 	}
+
 	//  $result = array_reverse($result);
 	$html = array();
 
@@ -1525,7 +1526,7 @@ class PHPWebSocket {
 		$data['error'] = 'No topic allocated! or Discussion time is over!';
 	    }
 	}
-	$data['cdate'] = date_format(date_create($this->ctime()), 'M d, Y g:i a');
+	$data['cdate'] = date_format(date_create($this->ctime()), 'M d, Y, g:i a');
 	$data['allStudyMate'] = $this->class_mate_list($userId);
 	return array_merge($data, $this->get_client_info($userId));
     }
@@ -2119,7 +2120,7 @@ class PHPWebSocket {
 	}
 	$data['type'] = 'discussion';
 	$data['to'] = 'all';
-	$data['cdate'] = date_format(date_create(date("Y-m-d H:i:s")), 'M d, Y g:i a');
+	$data['cdate'] = date_format(date_create(date("Y-m-d H:i:s")), 'M d, Y, g:i a');
 	$data['allStudyMate'] = $this->class_mate_list($userId);
 	return array_merge($data, $this->get_client_info($userId));
     }
@@ -2798,9 +2799,11 @@ class PHPWebSocket {
 	$timeSecond = strtotime($row['ctime']);
 	$output = null;
 	$diff = $timeSecond - $timeFirst;
-	if ($diff < 60) {
-	    $output = 'Just Now';
-	} else if ($diff < 3600) {
+	 if($diff < 5){
+    $output = 'Just Now';
+  }else if($diff < 60){
+    $output = $diff. ' sec ago';
+  } else if ($diff < 3600) {
 	    $output = floor($diff / 60) . ' min ago';
 	} else if ($diff < 86400) {
 	    $output = floor($diff / 3600);
@@ -2812,7 +2815,7 @@ class PHPWebSocket {
 	} else if ($diff < 86400 * 2) {
 	    $output = 'yesterday';
 	} else {
-	    $output = date_format(date_create($t), 'M d, Y g:i a');
+	    $output = date_format(date_create($t), 'M d, Y, g:i a');
 	}
 	return $output;
     }

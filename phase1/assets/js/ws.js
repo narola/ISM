@@ -273,9 +273,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-     //var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
     // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-    var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+    //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -1369,10 +1369,6 @@ function generate_post(obj, status) {
         }
     }
     
- 
-
-
-
     for (var i = 0; i<result1.length; i++) {
         options += '<option value="' + result1[i].id + '">' + result1[i].full_name + '</option>';
     };
@@ -1421,7 +1417,6 @@ function generate_post(obj, status) {
     if (typeof (obj.comment) != 'undefined') {
         i = 0;
         $.each(obj.comment, function (index, comment_list) {
-            
             generate_comment(comment_list, i, true);
             i++;
         });
@@ -1489,13 +1484,11 @@ function generate_comment(obj, i, k) {
     str += '<div class="notification_txt">';
     str += '<p style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'"><a  class="noti_username">' + obj.full_name + ' </a> ' + msg.replace(/\n/g,'<br/>') + '</p>';
     str += '<span class="noti_time just_now">' + obj.comment_date + '</span>';
-
     str += '</div>';
     str += '<div class="clearfix"></div>';
     str += '</div>';
-    $(".just_now").timestatus();
     $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments').append(str);
-    
+    $(".just_now").timestatus(obj.comment_date);
     if (k != true) {
         $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments .comment:last-child').fadeOut(0).fadeIn(400);
     }
@@ -1984,11 +1977,35 @@ function saveImg(image) {
 }
 
 $.fn.timestatus = function (msg) {
+    console.log(msg);
     var x = 0;
+    var check_limit;
+    if(typeof(msg) != "undefined" )
+    {
+        var temp = msg.split(" ");
+        console.log(temp[0]);
+        if(temp[1] == "min")
+        {
+          x = x + (temp[0] * 60);
+        }else if(temp[1] == "sec")
+        {
+            x = x + parseInt(temp[0]);
+        }else if(temp[1] == "hours" || temp[1] == "hour")
+        {
+            x = x + (temp[0] * 3600);
+        }
+
+        if(temp[1] == "Now" && temp[1] != "hour" && temp[1] != "hour" && temp[1] != "hour" || temp[1] != "Now" && temp[1] != "hour" && temp[1] != "hour" && temp[1] != "hour")
+        {
+            check_limit = true;
+        }
+    }
+
     var id = Date.now();
     this.removeClass('just_now');
     this.addClass("" + id);
     var dis = '';
+    if(!check_limit){
     setInterval(function () {
         if (x > 7200) {
             dis = '2 hours ago';
@@ -2008,12 +2025,21 @@ $.fn.timestatus = function (msg) {
             dis = '30 sec ago';
         } else if (x > 15) {
             dis = '15 sec ago';
-        } else {
+        } else if (x > 10) {
+            dis = '10 sec ago';
+        }else if (x > 5) {
+            dis = '5 sec ago';
+        }else {
             dis = 'Just Now';
         }
         $('.' + id).html(dis);
         x++;
-    }, 1000, this);
+    }, 1000, this);}
+    else
+    {
+        dis = msg;
+         $('.' + id).html(dis); 
+    }
 
 };
 
