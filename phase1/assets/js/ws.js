@@ -1995,10 +1995,16 @@ $.fn.timestatus = function (msg) {
             x = x + (temp[0] * 3600);
         }
 
-        if(temp[1] == "Now" && temp[1] != "hour" && temp[1] != "hour" && temp[1] != "hour" || temp[1] != "Now" && temp[1] != "hour" && temp[1] != "hour" && temp[1] != "hour")
+        if(temp[1] != "Now" && temp[1] != "hours" && temp[1] != "hour" && temp[1] != "min" && temp[1] != "sec")
         {
             check_limit = true;
         }
+
+        if(temp[1] == "hours"  && parseInt(temp[0]) > 2)
+        {
+            check_limit = true; 
+        }
+
     }
 
     var id = Date.now();
