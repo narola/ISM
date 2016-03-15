@@ -338,10 +338,9 @@ if ("WebSocket" in window)
             $('.just_now').timestatus();
             $('.chat_text').mCustomScrollbar('scrollTo', 'bottom');
 
-               if(wp != obj.from){ 
-                myfunction(obj.from);
-            }
+               
             if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
+                myfunction(obj.from);
                 var request = {
                     type: 'set_unread',
                     to: 'none',
