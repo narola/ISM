@@ -273,9 +273,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+     //var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
     // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-   // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+    var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
