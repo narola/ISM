@@ -1094,7 +1094,7 @@ class PHPWebSocket {
 			}
 			$data['studymates_detail'] = $studymates_detail;
 		    }
-		    $data['posted_on'] = date("M j, Y", strtotime($this->ctime()));
+		    $data['posted_on'] = $this->get_time_format(date("M d, Y, g:i:s a", strtotime($this->ctime())));
 		} else {
 		    $data['to'] = 'self';
 		    $data['error'] = 'Unable to save message.! Please try again.';
@@ -1164,7 +1164,7 @@ class PHPWebSocket {
 		$limit = 4;
 		$ID_in = implode(',', $this->class_mate_list($user_id));
 		$data['start'] += $limit;
-		$query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, `f`.`posted_on`,"
+		$query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, `f`.`created_date` as `posted_on`,"
 			. " `u`.`full_name` , `l`.`is_delete` as my_like ,"
 			// . " `u`.`full_name`,`u`.`id` , `l`.`is_delete` as my_like ,"
 			. " (SELECT COUNT(*) FROM " . TBL_FEED_COMMENT . " WHERE feed_id = f.id AND `is_delete` = 0) AS tot_comment,"
@@ -1178,6 +1178,7 @@ class PHPWebSocket {
 		$all = array();
 		$feed_ids = array();
 		while ($rows = mysqli_fetch_assoc($row)) {
+			$rows['posted_on'] = $this->get_time_format(date("M d, Y, g:i:s a", strtotime($rows['posted_on'])));
 		    $all[] = $rows;
 		    $feed_ids[] = $rows['post_id'];
 		}
@@ -2719,7 +2720,7 @@ class PHPWebSocket {
 	    }
 	}
 
-	$data['posted_on'] = date("M j, Y", strtotime(date('Y-m-d')));
+	$data['posted_on'] = $this->get_time_format(date("M d, Y, g:i:s a", strtotime($this->ctime())));
 	$data['tagged_id'] = $data['tagged_detail'] = array();
 	//return $data;
 	return array_merge($data, $this->get_client_info($user_id));
@@ -2813,7 +2814,7 @@ class PHPWebSocket {
 		$output .= ' hours ago';
 	    }
 	} else if ($diff < 86400 * 2) {
-	    $output = 'yesterday';
+	    $output = 'Yesterday, '.date('H:i a',strtotime($t)); 
 	} else {
 	    $output = date_format(date_create($t), 'M d, Y, g:i a');
 	}

@@ -273,11 +273,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-
-      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
     // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-   // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
-
+    //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -1375,7 +1373,7 @@ function generate_post(obj, status) {
         options += '<option value="' + result1[i].id + '">' + result1[i].full_name + '</option>';
     };
 
-    str += '<span class="date">' + date_to_day(obj.posted_on) + '</span>';
+    str += '<span class="date noti_time just_now"></span>';
     str += '<div class="clearfix"></div>';
     str += '<p>' + obj.message + '</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="' + obj.post_id + '"><span class="icon icon_thumb' + cls + '"></span>' + obj.tot_like + '</a>';
@@ -1414,8 +1412,11 @@ function generate_post(obj, status) {
     } else {
         $("#all_feed").append(str);
     }
+   
+
     $("#" + obj.post_id).select2();
     $("#all_feed .box.feeds[data-id='" + obj.post_id + "']").fadeOut(0).fadeIn(1000);
+     $(".just_now").timestatus(obj.posted_on);
     if (typeof (obj.comment) != 'undefined') {
         i = 0;
         $.each(obj.comment, function (index, comment_list) {
@@ -1916,46 +1917,10 @@ $(document).on('click', '#view_profile', function () {
 });
 /* close chat window */
 $(document).on('click', 'a[data-type="close"]', function () {
-    if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass('active')){
     $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
-    var len = $('#chat_container .chat').length;
-    j=3;
-   
-    console.log("len",len);
-    if(len > 0){
-    // for (var i = len; i > 0; i--) {
+     var len = $('#chat_container .chat').length;
+     j=len;
     for (var i = 1; i <= len; i++) {
-        
-        
-        console.log("child ",i);
-        console.log("j",j);
-        //console.log($("#chat_container .chat:nth-child(" + i + ") p.chat_name").text());
-            if(i==1){
-                console.log("active");
-                 $("#chat_container .chat:nth-child(" + i + ")").attr('class', 'chat active');
-            }else{
-                console.log("chat_"+j);
-                 $("#chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
-            j--;
-            }
-            
-        }
-    }
-}else{
-    
-    $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
-    var len = $('#chat_container .chat.passive').length;
-    j=3;
-    
-    console.log("len",len);
-    if(len > 0){
-    // for (var i = len; i > 0; i--) {
-        for (var i = 1; i <= len; i++) {
-            $("#chat_container .chat.passive:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
-        }
-    }
-}
-   /* for (var i = 1; i <= len; i++) {
         console.log("j: "+j);
         console.log("i: "+i);
         if (j > 0 && i != len) {
@@ -1968,7 +1933,7 @@ $(document).on('click', 'a[data-type="close"]', function () {
             
         }
         j--;
-    }*/
+    }
 
 
 
@@ -2015,13 +1980,11 @@ function saveImg(image) {
 }
 
 $.fn.timestatus = function (msg) {
-    console.log(msg);
     var x = 0;
     var check_limit;
     if(typeof(msg) != "undefined" )
     {
         var temp = msg.split(" ");
-        console.log(temp[0]);
         if(temp[1] == "min")
         {
           x = x + (temp[0] * 60);
@@ -2031,6 +1994,8 @@ $.fn.timestatus = function (msg) {
         }else if(temp[1] == "hours" || temp[1] == "hour")
         {
             x = x + (temp[0] * 3600);
+            console.log(x);
+            console.log(msg);
         }
 
         if(temp[1] != "Now" && temp[1] != "hours" && temp[1] != "hour" && temp[1] != "min" && temp[1] != "sec")
@@ -2051,29 +2016,31 @@ $.fn.timestatus = function (msg) {
     var dis = '';
     if(!check_limit){
     setInterval(function () {
-        if (x > 7200) {
+        if (x >= 7200) {
             dis = '2 hours ago';
-        } else if (x > 3600) {
+        } else if (x >= 3600 && x < 7200) {
             dis = '1 hour ago';
-        } else if (x > 1800) {
+        } else if (x >= 1800 && x < 3600) {
             dis = '30 min ago';
-        } else if (x > 900) {
+        } else if (x >= 900 && x < 1800) {
             dis = '15 min ago';
-        } else if (x > 300) {
+        } else if (x >= 300 && x < 900) {
             dis = '5 min ago';
-        } else if (x > 120) {
+        } else if (x >= 120 && x < 300) {
             dis = '2 min ago';
-        } else if (x > 60) {
+        } else if (x >= 60 && x < 120) {
             dis = '1 min ago';
-        } else if (x > 30) {
+        } else if (x >= 30 && x < 60) {
             dis = '30 sec ago';
-        } else if (x > 15) {
+        } else if (x >= 15 && x < 30) {
             dis = '15 sec ago';
-        } else if (x > 10) {
+        } else if (x >= 10 && x < 15) {
             dis = '10 sec ago';
-        }else if (x > 5) {
+        }else if (x >= 5 && x < 10) {
             dis = '5 sec ago';
         }else {
+            console.log(msg);
+            console.log("matched");
             dis = 'Just Now';
         }
         $('.' + id).html(dis);

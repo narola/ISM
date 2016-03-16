@@ -460,12 +460,13 @@ $diff = $timeSecond - $timeFirst;
       $output .= ' hours ago';
     }
   }else if($diff < 86400*2){
-    $output = 'yesterday'; 
+    $output = 'Yesterday, '.date('H:i a',strtotime($t)); 
   }else{
     $output = date_format( date_create($t), 'M d, Y, g:i a');
   }
 return $output; 
 }
+
 
 function set_session($userid){
   $CI =& get_instance();
