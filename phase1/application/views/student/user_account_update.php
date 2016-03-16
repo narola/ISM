@@ -441,6 +441,10 @@
         jQuery.validator.addMethod("accept", function(value, element, param) {
           return value.match(new RegExp("." + param + "$"));
         });
+        jQuery.validator.addMethod("phoneNo", function(phone_number, element) {
+           return phone_number.match(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})?([ .-]?)([0-9]{4})/);
+        });
+       
 
         $("#user_account_frm").validate({
             // Specify the validation rules
@@ -459,7 +463,10 @@
                 },
                 "gender":"required",
                 "birthdate" : "required",
-                "contact_number" : "required",
+                "contact_number" : {
+                    required: true,
+                    phoneNo: true
+                },
                 "home_address" : "required",
                 "country_id" : "required",
                 "state_id" : "required",
@@ -481,7 +488,10 @@
                 },
                 "gender":"Please select Gender",
                 "birthdate" : "Please select birth date",
-                "contact_number" : "Please provide contact number",
+                "contact_number" : {
+                    required: "Please provide Contact Number",
+                    phoneNo: "Invalid Contact Number" 
+                },
                 "home_address" : "Please provide home address",
                 "country_id" : "Please select country",
                 "state_id" : "Please select state",
@@ -511,7 +521,14 @@
                 form.submit();
             }*/
         });
-
+            
+            $("#contact_number").blur(function (){
+                var cno = $("#contact_number").val();
+                if(cno=='(000) 000-0000'){
+                    $("#contact_number").addClass('error');
+                    $('<label id="contact_number-error" class="error" for="contact_number">Invalid Contact Number</label>').insertAfter($("#contact_number"));
+                }
+             });
 
                /* $("#first_name").focusout(function (){
                     var fname = $("#first_name").val();
