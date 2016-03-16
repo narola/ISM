@@ -446,8 +446,10 @@ $time = select('users','NOW() as ctime',null,array('limit' => 1,'single' => 1));
 $timeSecond = strtotime($time['ctime']);
 $output = null;
 $diff = $timeSecond - $timeFirst;
-  if($diff < 60){
+  if($diff < 5){
     $output = 'Just Now';
+  }else if($diff < 60){
+    $output = $diff. ' sec ago';
   }else if($diff < 3600){
     $output = floor($diff/60). ' min ago';
   }else if ($diff < 86400){
@@ -460,7 +462,7 @@ $diff = $timeSecond - $timeFirst;
   }else if($diff < 86400*2){
     $output = 'yesterday'; 
   }else{
-    $output = date_format( date_create($t), 'M d, Y g:i a');
+    $output = date_format( date_create($t), 'M d, Y, g:i a');
   }
 return $output; 
 }
