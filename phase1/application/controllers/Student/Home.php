@@ -71,14 +71,13 @@ class Home extends ISM_Controller {
 		$feed_ids = array();
 		foreach ($result_feed as $key => $value) {
 			$value['posted_on'] =get_time_format(date("M d, Y, g:i:s a", strtotime($value['posted_on'])));
-	
 			$feed_ids[] = $value['fid'];
 			$data_array[$key] = $value;
 		}	
 		if(sizeof($feed_ids)>0)
 		{	
 			//---find tagged user
-			
+		
 			$options = array(
 					'join' => array(
 						array(

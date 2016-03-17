@@ -2021,7 +2021,7 @@ $.fn.timestatus = function (msg) {
         x++;
     }, 1000, this);}
     else
-    {    console.log(dis);
+    {   
          dis = msg;
          this.removeClass('noti_time');
          $('.' + id).html(dis); 
