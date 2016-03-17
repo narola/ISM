@@ -44,16 +44,21 @@
                                         <?php if($s == 0) { ?>
                                             <h4 class="activity_heading">Became studymate with</h4>
                                         <?php } ?>
-                                        <span class="date">
+                                         <span class="date noti_time just_now">
+                                         <!--
                                              <script type="text/javascript">
-                                                        var old =  '<?php echo $studymate_value['created_date']; ?>';
+                                                        var old =  '<?php //echo $studymate_value['created_date']; ?>';
                                                         var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
                                                         var d = new  Date(ndt);
                                                         var dd = date_to_day(d);
                                                         document.write(dd);
                                              </script>
                                             <?php //$old_date = strtotime($studymate_value['created_date']);echo date("M j, Y",$old_date);?>
-                                        </span>
+                                       --> </span>
+                                         <script type="text/javascript">
+                                             $(".just_now").timestatus("<?php echo $studymate_value['created_date']; ?>");
+                                         </script>
+
                                         <div class="study_mate">
                                             <div class="mate_user_img">
                                                 <img src="<?php echo UPLOAD_URL.'/'.$studymate_value['profile_link'];?>" class="mCS_img_loaded" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
@@ -62,6 +67,7 @@
                                             <p><?php echo $studymate_value['school_name'];?></p>
                                             <p class="txt_grey"><?php echo $studymate_value['course_name'];?></p>
                                         </div>
+                                      
                                     </div>   
                                 <?php
                                     $s++;
@@ -72,10 +78,17 @@
                                 ?>
                                     <div class="status_like">
                                         <h4 class="activity_heading">Liked status of <span ><h4 class="txt_green" style="cursor:pointer;display: -webkit-inline-box;" data-type="show-profile" data-id="<?php echo $like_value['id']; ?>"><?php echo $like_value['post_username'];?></h4></span></h4>
+                                         <span class="date noti_time just_now">
+                                         </span>
+                                            <script type="text/javascript">
+                                             $(".just_now").timestatus("<?php echo $like_value['created_date']; ?>");
+                                            </script>  
+                                             <div class="clearfix"></div>
                                         <div class="feed_text">                                               
                                             <p><?php echo $like_value['feed_text'];?></p>
                                         </div>
                                         <div class="clearfix"></div>
+                                        
                                     </div>
                                 <?php
                                 }   
@@ -91,17 +104,13 @@
                                             </div>
                                             <div class="feed_text">
                                                 <h4 style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $comment_value['feed_by']; ?>"><?php echo $comment_value['full_name'];?></h4>
-                                                <span class="date">
-                                                    <script type="text/javascript">
-                                                        var old =  '<?php echo $comment_value['created_date']; ?>';
-                                                        var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
-                                                        var d = new  Date(ndt);
-                                                        var dd = date_to_day(d);
-                                                        document.write(dd);
-                                                    </script>
-                                                    <?php// echo $comment_value['created_date']; $old_date = strtotime($comment_value['created_date']);echo date("M j, Y",$old_date);?>
-                                                </span>
+                                                 <span class="date noti_time just_now">
+                                                 </span>
+                                                    
                                                 <div class="clearfix"></div>
+                                                    <script type="text/javascript">
+                                                     $(".just_now").timestatus("<?php echo $comment_value['created_date']; ?>");
+                                                    </script>  
                                                 <p><?php echo $comment_value['feed_text'];?></p>
                                                 <?php
                                                     if($comment_value['image_link'] != ''){
@@ -127,7 +136,10 @@
                                                 </div>
                                                 <div class="notification_txt">
                                                     <p><a class="noti_username" style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $comment_value['comment_by']; ?>"><?php echo $this->session->userdata('user')['full_name'];?></a> <?php echo $comment_value['comment'];?></p>
-                                                    <span class="noti_time"><?php echo get_time_format($comment_value['created_date']);?></span>                            
+                                                    <span class="noti_time just_now"></span>
+                                                    <script type="text/javascript">
+                                                        $(".just_now").timestatus("<?php echo $comment_value['created_date']; ?>");
+                                                    </script>                          
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
@@ -144,16 +156,11 @@
                                         <?php if($p==0){ ?>
                                         <h4 class="activity_heading">Status updated</h4>
                                         <?php } ?>
-                                        <span class="date">
+                                                 <span class="date noti_time just_now">
+                                                 </span>
                                                     <script type="text/javascript">
-                                                        var old =  '<?php echo $post_value['created_date']; ?>';
-                                                        var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
-                                                        var d = new  Date(ndt);
-                                                        var dd = date_to_day(d);
-                                                        document.write(dd);
-                                                    </script>
-                                            <?php// $old_date = strtotime($post_value['created_date']);echo date("M j, Y",$old_date);?>
-                                        </span>
+                                                     $(".just_now").timestatus("<?php echo $post_value['created_date']; ?>");
+                                                    </script>  
                                         <div class="feed_text border_bottom">                                               
                                             <p><?php echo $post_value['feed_text'];?></p>
                                             <?php 

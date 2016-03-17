@@ -851,8 +851,7 @@ if ("WebSocket" in window)
                     if (s == 0) {
                         str += '<h4 class="activity_heading">Became studymate with</h4>';
                     }
-                    var c_date = new Date(list.created_date);
-                    str += '<span class="date">' + date_to_day(c_date) + '</span>';
+                    str += '<span class="date">'+list.created_date+'</span>';
                     str += '<div class="study_mate">';
                     str += '<div style="cursor:pointer;" data-type="show-profile" data-id="'+ list.mate_of +'" class="mate_user_img">';   
                     str += '<img src="uploads/' + list.profile_link + '" class="mCS_img_loaded" onerror="this.src=\'assets/images/avatar.png\'">';
@@ -864,9 +863,12 @@ if ("WebSocket" in window)
                     str += '</div>';
                     s++;
                 });
+
+
                 $.each(obj.result.my_like, function (index, list) {
                     str += '<div class="status_like">';
                     str += '<h4 class="activity_heading">Liked status of <span style="cursor:pointer;" data-type="show-profile" data-id="'+ list.l_id +'" class="txt_green">' + list.post_username + '</span></h4>';
+                    str += '<span class="date">'+list.created_date+'</span>';
                     str += '<div class="feed_text">';
                     str += '<p>' + list.feed_text + '</p>';
                     str += '</div>';
@@ -882,14 +884,8 @@ if ("WebSocket" in window)
                     str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ list.uid +'" onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + list.profile_link + '">';
                     str += '</div>';
                     str += '<div class="feed_text">';
-                    str += '<h4 class="activity_heading">Liked status of <span class="activity_heading no_hover" style="cursor:pointer;" data-type="show-profile" data-id="'+ list.uid +'">' + list.full_name + '</h4>';
-
-                    /* convert string date to date formate */
-                    var old = list.created_date;
-                    var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
-                    var d = new  Date(ndt);
-                    
-                    str += '<span class="date">' + date_to_day(d) + '</span>'
+                    str += '<h4 style="cursor:pointer;" data-type="show-profile" data-id="'+ list.uid +'">' + list.full_name + '</h4>';
+                    str += '<span class="date">'+list.created_date+'</span>';
                     str += '<div class="clearfix"></div>';
                     str += '<p>' + list.feed_text + '</p>';
 
@@ -911,13 +907,7 @@ if ("WebSocket" in window)
                     str += '</div>';
                     str += '<div class="notification_txt">';
                     str += '<p><a style="cursor:pointer;" data-type="show-profile" data-id="'+ list.comment_by +'"  href="javascript:void(0);" class="noti_username">' + obj.full_name + '</a>&nbsp;' + list.comment + '</p>';
-                         
-                         /* Convert string date formate to date formate */
-                         var old = list.created_date;
-                         var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
-                         var d = new  Date(ndt);
-                    
-                    str += '<span class="noti_time">' + date_to_day(d) + '</span>';
+                    str += '<span class="noti_time">'+list.comment_date+'</span>';
                     str += '</div>';
                     str += '<div class="clearfix"></div>';
                     str += '</div>';
@@ -930,13 +920,7 @@ if ("WebSocket" in window)
                     if (p == 0) {
                         str += '<h4 class="activity_heading">Status updated</h4>';
                     }
-                         /* Convert string date formate to date formate */
-                         var old = list.created_date;
-                         var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
-                         var d = new  Date(ndt);
-
-                    str += '<span class="date just_now">' + date_to_day(d) + '</span>';
-                     $(".just_now").timestatus();
+                    str += '<span class="date">'+list.created_date+'</span>';
                     str += '<div class="feed_text">                                               ';
                     str += '<p>' + list.feed_text + '</p>';
                     if (list.image_link != '' && list.image_link != null) {
@@ -1980,6 +1964,7 @@ function saveImg(image) {
 }
 
 $.fn.timestatus = function (msg) {
+    //console.log(msg);
     var x = 0;
     var check_limit;
     if(typeof(msg) != "undefined" )
@@ -1994,8 +1979,6 @@ $.fn.timestatus = function (msg) {
         }else if(temp[1] == "hours" || temp[1] == "hour")
         {
             x = x + (temp[0] * 3600);
-            console.log(x);
-            console.log(msg);
         }
 
         if(temp[1] != "Now" && temp[1] != "hours" && temp[1] != "hour" && temp[1] != "min" && temp[1] != "sec")
@@ -2011,6 +1994,7 @@ $.fn.timestatus = function (msg) {
     }
 
     var id = Date.now();
+    if($(this).hasClass('just_now')){
     this.removeClass('just_now');
     this.addClass("" + id);
     var dis = '';
@@ -2030,28 +2014,19 @@ $.fn.timestatus = function (msg) {
             dis = '2 min ago';
         } else if (x >= 60 && x < 120) {
             dis = '1 min ago';
-        } else if (x >= 30 && x < 60) {
-            dis = '30 sec ago';
-        } else if (x >= 15 && x < 30) {
-            dis = '15 sec ago';
-        } else if (x >= 10 && x < 15) {
-            dis = '10 sec ago';
-        }else if (x >= 5 && x < 10) {
-            dis = '5 sec ago';
-        }else {
-            console.log(msg);
-            console.log("matched");
+        } else {
             dis = 'Just Now';
         }
         $('.' + id).html(dis);
         x++;
     }, 1000, this);}
     else
-    {
-        dis = msg;
+    {    console.log(dis);
+         dis = msg;
+         this.removeClass('noti_time');
          $('.' + id).html(dis); 
     }
-
+    }
 };
 
 $(document).ready(function () {
@@ -2075,7 +2050,3 @@ $(document).ready(function () {
     }
 
 });
-
-
-
-

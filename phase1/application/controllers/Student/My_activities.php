@@ -60,6 +60,11 @@ class My_activities extends ISM_Controller {
 		$select = 't.topic_name,ga.created_date,IF(topic_count.cnt IS NULL,0,topic_count.cnt) AS total_discussion,IF(s.score IS NULL,0,s.score) AS discussion_score,IF(TRUNCATE((st_s.correct_answers * 100)/eq.total_question,2) IS NULL,"0.00",TRUNCATE((st_s.correct_answers * 100)/eq.total_question,2)) AS per';
 		$data['my_activities']['topic_allcated'] = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' ga',$select,$where,$option);
 
+		/* Changed time formate */
+		for ($i=0; $i < count($data['my_activities']['topic_allcated']) ; $i++) { 
+			$data['my_activities']['topic_allcated'][$i]['created_date'] = get_time_format(date("M d, Y, g:i:s a", strtotime($data['my_activities']['topic_allcated'][$i]['created_date'])));
+		}
+
 		/*--------Get my studymates---------*/
 		$studymate = studymates($user_id,false);
 		$where = array('where' => array('u.is_delete' => 0),'where_in'=>array('u.id' => $studymate),'where_in' => array('date_format(sm.created_date,"%m")' => $month));
@@ -93,6 +98,12 @@ class My_activities extends ISM_Controller {
 				);
 		$select='u.full_name,sm.mate_of ,sm2.mate_id,if(sm.created_date is null,sm2.created_date,sm.created_date) as created_date,s.school_name,p.profile_link,c.course_name';
 		$data['my_activities']['studymates'] = select(TBL_USERS.' u',$select,$where,$option);
+		
+		/* Changed time formate */
+		for ($i=0; $i < count($data['my_activities']['studymates']) ; $i++) { 
+			$data['my_activities']['studymates'][$i]['created_date'] = get_time_format(date("M d, Y, g:i:s a", strtotime($data['my_activities']['studymates'][$i]['created_date'])));
+		}
+
 
 		/*--------Get my like feed----------*/
 		$where = array('where' => array('like.like_by' => $user_id,'like.is_delete' => 0),'where_in' => array('date_format(like.created_date,"%m")' => $month));
@@ -113,6 +124,13 @@ class My_activities extends ISM_Controller {
 		$select = 'upost.full_name AS post_username,upost.id,like_feed.feed_text,like.created_date,(SELECT COUNT(*) FROM feed_like where feed_id = like_feed.id) AS totlike,(SELECT COUNT(*) FROM feed_comment WHERE feed_id = like_feed.id) AS totcomment';
 		$data['my_activities']['like'] = select(TBL_FEED_LIKE.' like',$select,$where,$options);		
 		
+		/* Changed time formate */
+		for ($i=0; $i < count($data['my_activities']['like']) ; $i++) { 
+			$data['my_activities']['like'][$i]['created_date'] = get_time_format(date("M d, Y, g:i:s a", strtotime($data['my_activities']['like'][$i]['created_date'])));
+		}
+
+
+
 		/*-------Get my comment----------*/
 		$where = array('where' => array('comment.comment_by'=>$user_id,'comment.is_delete' => 0),'where_in' => array('date_format(comment.created_date,"%m")' => $month));
 		$options = array('join' =>
@@ -142,6 +160,12 @@ class My_activities extends ISM_Controller {
 		$select = 'u.full_name,u.id,comment_feed.feed_by,comment.comment_by,comment_feed.feed_text,p.profile_link,fimage.image_link,comment.comment,comment.created_date,(SELECT COUNT(*) FROM feed_like WHERE feed_id = comment_feed.id) AS totlike,(select COUNT(*) FROM feed_comment WHERE feed_id = comment_feed.id AND comment_by = '.$user_id.') AS totcomment,comment_feed.id';
 		$data['my_activities']['comment'] = select(TBL_FEED_COMMENT.' comment',$select,$where,$options);
 
+		/* Changed time formate */
+		for ($i=0; $i < count($data['my_activities']['comment']) ; $i++) { 
+			$data['my_activities']['comment'][$i]['created_date'] = get_time_format(date("M d, Y, g:i:s a", strtotime($data['my_activities']['comment'][$i]['created_date'])));
+		}
+
+
 		/*-------Get my post--------*/
 		$where = array('where' => array('post.feed_by' => $user_id,'post.is_delete' => 0),'where_in' => array('date_format(post.created_date,"%m")' => $month));
 		$options = array('join' =>
@@ -155,6 +179,12 @@ class My_activities extends ISM_Controller {
 				);
 		$select = 'fimage.image_link,post.feed_text,(SELECT COUNT(*) FROM feed_like WHERE feed_id = post.id) AS totlike,(SELECT COUNT(*) FROM feed_comment WHERE feed_id = post.id) AS totcomment,post.created_date';
 		$data['my_activities']['post'] = select(TBL_FEEDS.' post',$select,$where,$options);
+		/* Changed time formate */
+		for ($i=0; $i < count($data['my_activities']['post']) ; $i++) { 
+			$data['my_activities']['post'][$i]['created_date'] = get_time_format(date("M d, Y, g:i:s a", strtotime($data['my_activities']['post'][$i]['created_date'])));
+		}
+
+		
 		$data['my_month'] 		=	date('Y-m'); 
 		$data['new_my_month'] 	= 	date('Y-m',strtotime('-1 month',strtotime(date('Y-m'))));
 
