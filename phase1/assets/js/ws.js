@@ -274,8 +274,8 @@ if ("WebSocket" in window)
 {
 
 
-      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+      // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+    var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
@@ -1917,58 +1917,13 @@ $(document).on('click', '#view_profile', function () {
     $('#view_profile_model').modal('show');
 });
 /* close chat window */
+
+/* close chat window */
 $(document).on('click', 'a[data-type="close"]', function () {
-<<<<<<< HEAD
-    if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass('active')){
-        $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
-        var len = $('#chat_container .chat').length;
-        j=3;
-   
-    console.log("len",len);
-    if(len > 0){
-    // for (var i = len; i > 0; i--) {
-    for (var i = 1; i <= len; i++) {
-        
-        
-        console.log("child ",i);
-        console.log("j",j);
-        //console.log($("#chat_container .chat:nth-child(" + i + ") p.chat_name").text());
-            if(i==1){
-                console.log("active");
-                 $("#chat_container .chat:nth-child(" + i + ")").attr('class', 'chat active');
-            }else{
-                console.log("chat_"+j);
-                 $("#chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
-            j--;
-            }
-            
-        }
-    }
-}else{
-    
-    $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
-    var len = $('#chat_container .chat.passive').length;
-    j=3;
-    
-    console.log("len",len);
-    if(len > 0){
-    // for (var i = len; i > 0; i--) {
-        for (var i = 1; i <= len; i++) {
-            console.log('i',i);
-            console.log('chat_'+j);
-            console.log($("#chat_container .chat:nth-child(" + i + ")"));
-               // $("#chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
-            j--;
-        }
-    }
-}
-   /* for (var i = 1; i <= len; i++) {
-=======
     $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
      var len = $('#chat_container .chat').length;
      j=len;
     for (var i = 1; i <= len; i++) {
->>>>>>> 5d0a3695f5e74f9ea672e14c4d82487a8c048dac
         console.log("j: "+j);
         console.log("i: "+i);
         if (j > 0 && i != len) {
@@ -1982,6 +1937,8 @@ $(document).on('click', 'a[data-type="close"]', function () {
         }
         j--;
     }
+
+
 
 
 
@@ -2028,6 +1985,7 @@ function saveImg(image) {
 }
 
 $.fn.timestatus = function (msg) {
+    //console.log(msg);
     var x = 0;
     var check_limit;
     if(typeof(msg) != "undefined" )
@@ -2042,8 +2000,6 @@ $.fn.timestatus = function (msg) {
         }else if(temp[1] == "hours" || temp[1] == "hour")
         {
             x = x + (temp[0] * 3600);
-            console.log(x);
-            console.log(msg);
         }
 
         if(temp[1] != "Now" && temp[1] != "hours" && temp[1] != "hour" && temp[1] != "min" && temp[1] != "sec")
@@ -2059,6 +2015,7 @@ $.fn.timestatus = function (msg) {
     }
 
     var id = Date.now();
+    if($(this).hasClass('just_now')){
     this.removeClass('just_now');
     this.addClass("" + id);
     var dis = '';
@@ -2078,40 +2035,19 @@ $.fn.timestatus = function (msg) {
             dis = '2 min ago';
         } else if (x >= 60 && x < 120) {
             dis = '1 min ago';
-<<<<<<< HEAD
-        }else {
+        } else {
             dis = 'Just Now';
         }
-
-        /*else if (x > 30) {
-=======
-        } else if (x >= 30 && x < 60) {
->>>>>>> 5d0a3695f5e74f9ea672e14c4d82487a8c048dac
-            dis = '30 sec ago';
-        } else if (x >= 15 && x < 30) {
-            dis = '15 sec ago';
-        } else if (x >= 10 && x < 15) {
-            dis = '10 sec ago';
-        }else if (x >= 5 && x < 10) {
-            dis = '5 sec ago';
-<<<<<<< HEAD
-        }*/
-=======
-        }else {
-            console.log(msg);
-            console.log("matched");
-            dis = 'Just Now';
-        }
->>>>>>> 5d0a3695f5e74f9ea672e14c4d82487a8c048dac
         $('.' + id).html(dis);
         x++;
     }, 1000, this);}
     else
-    {
-        dis = msg;
+    {   
+         dis = msg;
+         this.removeClass('noti_time');
          $('.' + id).html(dis); 
     }
-
+    }
 };
 
 $(document).ready(function () {
