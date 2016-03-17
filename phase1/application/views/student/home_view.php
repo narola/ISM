@@ -151,13 +151,12 @@
 				}
 				?>
 			    </span>
-			    <span class="date">
-			    	<script type="text/javascript">
-			    		var dd = date_to_day('<?php echo $value['posted_on'] ?>');
-			    		document.write(dd);
-			    	</script>
-			 <?php
-			 	
+			    <span class="date noti_time just_now">
+				</span>
+				<script type="text/javascript">
+					 $(".just_now").timestatus('<?php echo $value['posted_on'] ?>');
+				</script>
+				 <?php
 				 $tagged_users = array();
 				foreach ($value['tagged'] as $value1) {
 					array_push($tagged_users, $value1['id']);
@@ -165,7 +164,7 @@
 
 				// $old_date = strtotime($value['posted_on']);
 				// echo date("M j, Y", $old_date);
-				?></span>
+				?>
 			    <div class="clearfix"></div>
 			    <p><?php echo $value['feed_text']; ?></p>
 			    <a href="javascript:void(0);" data-id="<?php echo $value['fid']; ?>" data-type="feed-like" class="like_btn">

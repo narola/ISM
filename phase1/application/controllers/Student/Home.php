@@ -64,12 +64,14 @@ class Home extends ISM_Controller {
 		if(empty($tagged_feed_id))
 			$tagged_feed_id = array(0);
 		$where = array('where'=>array('f.is_delete'=> 0),'where_in'=>array('f.feed_by'=>studymates($user_id)),'or_where_in'=>array('f.id'=>$tagged_feed_id));
-		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.posted_on,f.created_date,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link,l.is_delete as my_like',$where,$options);
+		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.created_date as posted_on,f.created_date,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link,l.is_delete as my_like',$where,$options);
 		// p($result_feed,true);
 		//---find feeds
 		// p($tagged_feed_id,TRUE);
 		$feed_ids = array();
 		foreach ($result_feed as $key => $value) {
+			$value['posted_on'] =get_time_format(date("M d, Y, g:i:s a", strtotime($value['posted_on'])));
+	
 			$feed_ids[] = $value['fid'];
 			$data_array[$key] = $value;
 		}	
