@@ -2600,6 +2600,32 @@ class PHPWebSocket {
 		    $i++;
 		}
 
+		/* Get notification on tag */
+		
+		$query = 'SELECT `u`.`id`,`u`.`full_name`,`f`.`created_date`,`p`.`profile_link` '
+			. 'FROM `' . TBL_FEEDS_TAGGED_USER . '` f ,'
+			. '`' . TBL_USERS . '` u, `'.TBL_USER_PROFILE_PICTURE.'` p '
+			. 'WHERE `u`.`id` = `f`.`tagged_by` and `f`.`feed_id` =' . $data['fid'] . " "
+			. "AND `f`.`tagged_by` =". $data['user_iddd'] . " and `f`.is_delete = 0 and `p`.`user_id` = `u`.`id`";
+		$rows = mysqli_query($link, $query);
+		//$data['notification_detail'] = mysqli_num_rows($rows);
+
+		$notification_for_tag = array();
+		$i = 0;
+
+		while ($row = mysqli_fetch_assoc($rows)) {
+		    $notification_for_tag[$i]['full_name'] = $row['full_name'];
+		    $notification_for_tag[$i]['id'] = $row['id'];
+		     $notification_for_tag[$i]['profile_link'] = $row['profile_link'];
+		    $notification_for_tag[$i]['created_date'] = $this->get_time_format($row['created_date']);
+		    $i++;
+		}
+
+		 $data['notification_detail'] = $notification_for_tag;
+		// select u.id,u.full_name,t.created_date
+		// from users u,feeds_tagged_user t
+		// where u.id = t.tagged_by and t.feed_id = '1089' and t.tagged_by = '138'; 
+
 
 		$data['already_tagged_id'] = $already_tagged_array;
 		$data['already_tagged_detail'] = $already_tagged_detail;
@@ -3000,7 +3026,7 @@ class PHPWebSocket {
 	for ($i=0; $i <count($data['result']['my_comment']) ; $i++) { 
 		$data['result']['my_comment'][$i]['created_date'] = $this->get_time_format($data['result']['my_comment'][$i]['created_date']);
 	}
-	
+
 
 
 	// my feed

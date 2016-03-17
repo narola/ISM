@@ -138,8 +138,9 @@
                                                     <p><a class="noti_username" style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $comment_value['comment_by']; ?>"><?php echo $this->session->userdata('user')['full_name'];?></a> <?php echo $comment_value['comment'];?></p>
                                                     <span class="noti_time just_now"></span>
                                                     <script type="text/javascript">
-                                                        $(".just_now").timestatus("<?php echo $comment_value['created_date']; ?>");
-                                                    </script>                          
+                                                        $(".just_now").timestatus("<?php echo $comment_value['created_date']; ?><?php echo $comment_value['comment'];?>");
+                                                   </script>    
+
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>

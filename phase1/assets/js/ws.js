@@ -699,6 +699,7 @@ if ("WebSocket" in window)
                 location.href = irl + 'student/class_exam';
             }
         } else if (obj.type == 'tag-user-again') {
+
             var i = 0;
             var j = 0;
             var k = 0;
@@ -738,17 +739,19 @@ if ("WebSocket" in window)
                     }
                     j++;
                 }
+
                 notification_str += '<li><a href="#">';
-                notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '"></div>';
+                notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.notification_detail[0]['profile_link'] + '"></div>';
                 notification_str += '<div class="notification_txt">';
-                notification_str += '<p><span class="noti_username">' + obj.full_name + '</span> tagged you in a post</p>';
-                notification_str += '<span class="noti_time just_noti">Just now</span></div>';
+                notification_str += '<p><span class="noti_username">' + obj.notification_detail[0]['full_name'] + '</span> tagged you in a post</p>';
+                notification_str += '<span class="noti_time just_noti just_now">Just now</span></div>';
                 notification_str += '<div class="clearfix"></div>';
                 notification_str += '</a></li>';
                 if (wp == list.id) {
                     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
                     $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
-                    $('.just_noti').timestatus();
+
+                    $('.just_now').timestatus(obj.notification_detail[0]['created_date']);
                     notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
                     if (notification_length == 0) {
                         notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">No more notification</div></li>');
@@ -1300,25 +1303,25 @@ function generate_post(obj, status) {
                 }
                 j++;
             }
-            notification_str += '<li><a href="#">';
-            notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '"></div>';
-            notification_str += '<div class="notification_txt">';
-            notification_str += '<p><span class="noti_username">' + obj.full_name + '</span> tagged you in a post</p>';
-            notification_str += '<span class="noti_time">Just now</span></div>';
-            notification_str += '<div class="clearfix"></div>';
-            notification_str += '</a></li>';
-            if (wp == list.id) {
-                $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
-                $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
-                notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
-                if (notification_length == 0) {
-                    notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">no more notification</div></li>');
-                    $('.mCSB_container .three_tabs .dropdown .badge').html(0);
-                }
-                else {
-                    $('.mCSB_container .three_tabs .dropdown .badge').html(notification_length);
-                }
-            }
+            // notification_str += '<li><a href="#">';
+            // notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '"></div>';
+            // notification_str += '<div class="notification_txt">';
+            // notification_str += '<p><span class="noti_username">' + obj.full_name + '</span> tagged you in a post</p>';
+            // notification_str += '<span class="noti_time">Just now</span></div>';
+            // notification_str += '<div class="clearfix"></div>';
+            // notification_str += '</a></li>';
+            // if (wp == list.id) {
+            //     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
+            //     $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
+            //     notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
+            //     if (notification_length == 0) {
+            //         notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">no more notification</div></li>');
+            //         $('.mCSB_container .three_tabs .dropdown .badge').html(0);
+            //     }
+            //     else {
+            //         $('.mCSB_container .three_tabs .dropdown .badge').html(notification_length);
+            //     }
+            // }
         });
     }
     str += '<span data-id="' + obj.post_id + '">' + name + '</span>';
