@@ -613,7 +613,8 @@
         $("#birthdate input").datepicker({
             dateFormat: 'dd-mm-yy',
             altField: '#thealtdate',
-             altFormat: 'yy-mm-dd'
+             altFormat: 'yy-mm-dd',
+             maxDate: '0'
           }).on("select", function(dateText) {
              // console.log("Selected date: " + dateText + "; input's current value: " + this.value);
             }).on("change", function() {

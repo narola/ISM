@@ -274,8 +274,8 @@ if ("WebSocket" in window)
 {
 
 
-      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+      // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+    var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
@@ -1917,9 +1917,9 @@ $(document).on('click', '#view_profile', function () {
 /* close chat window */
 $(document).on('click', 'a[data-type="close"]', function () {
     if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass('active')){
-    $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
-    var len = $('#chat_container .chat').length;
-    j=3;
+        $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
+        var len = $('#chat_container .chat').length;
+        j=3;
    
     console.log("len",len);
     if(len > 0){
@@ -1951,7 +1951,11 @@ $(document).on('click', 'a[data-type="close"]', function () {
     if(len > 0){
     // for (var i = len; i > 0; i--) {
         for (var i = 1; i <= len; i++) {
-            $("#chat_container .chat.passive:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
+            console.log('i',i);
+            console.log('chat_'+j);
+            console.log($("#chat_container .chat:nth-child(" + i + ")"));
+               // $("#chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
+            j--;
         }
     }
 }
@@ -2065,7 +2069,11 @@ $.fn.timestatus = function (msg) {
             dis = '2 min ago';
         } else if (x > 60) {
             dis = '1 min ago';
-        } else if (x > 30) {
+        }else {
+            dis = 'Just Now';
+        }
+
+        /*else if (x > 30) {
             dis = '30 sec ago';
         } else if (x > 15) {
             dis = '15 sec ago';
@@ -2073,9 +2081,7 @@ $.fn.timestatus = function (msg) {
             dis = '10 sec ago';
         }else if (x > 5) {
             dis = '5 sec ago';
-        }else {
-            dis = 'Just Now';
-        }
+        }*/
         $('.' + id).html(dis);
         x++;
     }, 1000, this);}
