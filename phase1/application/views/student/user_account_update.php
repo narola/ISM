@@ -86,7 +86,7 @@
                             <!--avatar-->
                             <!-- <div class="col-sm-4 text-center visible-xs">
                                 <div class="avatar">               
-                                    <img src="<?php echo base_url() ?>assets/images/avatar.png">
+                                    <img src="<?php //echo base_url() ?>assets/images/avatar.png">
                                 </div>
                                 <div class="upload">
                                     <input type="file" name="profile_image">

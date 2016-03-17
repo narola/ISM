@@ -278,6 +278,7 @@ if ("WebSocket" in window)
     //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
+
     ws.onopen = function ()
     {
         ws.send('{"type":"con","from":"' + wp + '","to":"self"}');
@@ -1900,6 +1901,8 @@ $(document).on('click', '#view_profile', function () {
     $('#view_profile_model').modal('show');
 });
 /* close chat window */
+
+/* close chat window */
 $(document).on('click', 'a[data-type="close"]', function () {
     $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
      var len = $('#chat_container .chat').length;
@@ -1918,6 +1921,8 @@ $(document).on('click', 'a[data-type="close"]', function () {
         }
         j--;
     }
+
+
 
 
 
