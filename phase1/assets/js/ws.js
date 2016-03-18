@@ -178,14 +178,18 @@ $(document).ready(function () {
         if ($(this).parent().hasClass('passive')) {
             if ($(this).parent().hasClass('chat_3')) {
                 $('.chat.active').removeClass('active').addClass('chat_3 passive');
+                clearInterval(chat_3);
             }
             if ($(this).parent().hasClass('chat_2')) {
                 $('.chat.active').removeClass('active').addClass('chat_2 passive');
+                clearInterval(chat_2);
             }
             if ($(this).parent().hasClass('chat_1')) {
                 $('.chat.active').removeClass('active').addClass('chat_1 passive');
+                clearInterval(chat_1);
             }
             $(this).parent().removeClass().addClass('active').addClass('chat');
+            $(this).removeClass('blink');
         }
     });
 
@@ -273,9 +277,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-    //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+      // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -992,8 +996,7 @@ function myfunction(from){
     for (var i = 1; i <= len; i++) {
         //console.log("1st for i: "+i);
         if ($(".chat_container .chat:nth-child(" + i + ")").data('id') == id) {
-           // console.log("1if");
-            is_needed = false;
+           is_needed = false;
         }
        // console.log("1st for "+ i +" is_needed: "+is_needed);
     }
@@ -1023,6 +1026,7 @@ var stm;
 }
 }*/
 
+    if(is_needed == true){
         stm = $('#mate_list[data-id="' + id + '"]');
             // console.log($(".chat_container .chat:nth-child(" + i + ")"));
             if(len==0)
@@ -1030,9 +1034,9 @@ var stm;
             else
                 str += '<div class="chat passive chat_' + j+'" data-id="' + id + '">';
 
-            str += '<div class="chat_header"><div class="chat_img_holder" data-type="show-profile" data-id="'+id+'" style="cursor:pointer;">';
+            str += '<div class="chat_header"><div class="chat_img_holder" data-id="'+id+'" style="cursor:pointer;">';
             str += '<img src="' + stm.children('div').children('img').attr('src') + '">';
-            str += '</div><p class="chat_name" data-type="show-profile" data-id="'+id+'" style="cursor:pointer;">' + stm.children('p').html() + '</p>';
+            str += '</div><p class="chat_name" data-id="'+id+'" style="cursor:pointer;">' + stm.children('p').html() + '</p>';
             str += '<a href="javascript:void(0);" data-type="close" data-id="' + id + '"><span class="close" >x</span></a></div>';
             str += '<div class="chat_text"></div>';
             str += ' <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">';
@@ -1051,9 +1055,9 @@ var stm;
             to: 'self',
             my_id: id
         };
-        blink(".chat_"+j+" .chat_header", -1, 1000);
+        blink(".chat_"+j+" .chat_header", 'chat_'+j, 1000);
         ws.send(JSON.stringify(request));
-        
+        }
          /*   j--;
         }*/
 
@@ -1173,9 +1177,9 @@ $(document).on('click', '#mate_list', function () {
 
     if (is_needed == true) {
         str += '<div class="chat active" data-id="' + id + '">';
-        str += '<div class="chat_header"><div class="chat_img_holder" data-type="show-profile" data-id="'+id+'" style="cursor:pointer;">';
+        str += '<div class="chat_header"><div class="chat_img_holder" data-id="'+id+'" style="cursor:pointer;">';
         str += '<img src="' + $(this).children('div').children('img').attr('src') + '">';
-        str += '</div><p class="chat_name" data-type="show-profile" data-id="'+id+'" style="cursor:pointer;">' + $(this).children('p').html() + '</p>';
+        str += '</div><p class="chat_name" data-id="'+id+'" style="cursor:pointer;">' + $(this).children('p').html() + '</p>';
         str += '<a href="javascript:void(0);" data-type="close" data-id="' + id + '"><span class="close" >x</span></a></div>';
         str += '<div class="chat_text"></div>';
         str += ' <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">';
@@ -1906,39 +1910,35 @@ $(document).on('click', '#view_profile', function () {
     
 $(document).on('click', 'a[data-type="close"]', function () {
     if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass('active')){
-        console.log('active');
         $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
         var len = $('#chat_container .chat').length;
-        j=len;
+        j=3;
         for (var i = 1; i <= len; i++) {
             if (j > 0 && i != len) {
                $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
+                j--;
             }
             if(i==len){
                $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat active');
                 
             }
-            j--;
         }
     }else{
-        console.log('passive');
         if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass("chat_3")){
-        console.log('chat_3');
         $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
             $("#chat_container .chat_2").attr('class', 'chat passive chat_3');
             $("#chat_container .chat_1").attr('class', 'chat passive chat_2');
         }
         if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass("chat_2")){
-        console.log('chat_2');
         $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
             $("#chat_container .chat_1").attr('class', 'chat passive chat_2');
         }
         if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass("chat_1")){
-        console.log('chat_1');
         $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
             //$("#chat_container .chat_1").attr('class', 'chat passive chat_2');
         }
     }
+    return false;
 });
 
 /* close chat window */
@@ -1981,13 +1981,30 @@ function saveImg(image) {
     ws.send(JSON.stringify(request));
 }
 
-
+    var chat_3,chat_2,chat_1;
     function blink(elem, times, speed) {
-    if (times > 0 || times < 0) {
+        if(times == 'chat_3'){
+            chat_3 = setInterval(function(){
+                            $(elem).toggleClass("blink");
+                        },speed);
+        }
+        if(times == 'chat_2'){
+            chat_2 = setInterval(function(){
+                            $(elem).toggleClass("blink");
+                        },speed);
+        }
+        if(times == 'chat_1'){
+            chat_1 = setInterval(function(){
+                            $(elem).toggleClass("blink");
+                        },speed);
+        }
+    }
+
+    /*if (times > 0 || times < 0) {
         if ($(elem).hasClass("blink")) $(elem).removeClass("blink");
         else $(elem).addClass("blink");
     }
-
+   
     clearTimeout(function () {
         blink(elem, times, speed);
     });
@@ -1997,8 +2014,10 @@ function saveImg(image) {
             blink(elem, times, speed);
         }, speed);
         times -= .5;
-    }
-}
+    }*/
+
+
+
 $.fn.timestatus = function (msg) {
     //console.log(msg);
     var x = 0;

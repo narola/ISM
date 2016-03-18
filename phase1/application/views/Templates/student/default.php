@@ -186,8 +186,8 @@ $url = uri_string();
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span data-toggle="tooltip" title="Notifications" class="icon icon_bell"></span>
 							<span class="badge bell_badge"><?php echo $this->noti_cnt; ?></span>
 						</a>
-
-						<ul class="dropdown-menu" id="notification-panel" style="max-height:400px;overflow:auto">
+						
+						<ul class="dropdown-menu mscroll_custom" id="notification-panel" style="max-height:400px;overflow:auto">
 							<?php
 							
 							if (sizeof($this->notification_list) > 0) {
@@ -422,9 +422,9 @@ $url = uri_string();
 		?>
 		<div class="chat active" data-id="<?php echo $active_c['user']['id'] ?>">
 			<div class="chat_header" data-id="<?php echo $active_c['user']['id'] ?>">
-				<div class="chat_img_holder" data-type="show-profile" data-id="<?php echo $active_c['user']['id'] ?>" style="cursor:pointer;">
+				<div class="chat_img_holder" data-id="<?php echo $active_c['user']['id'] ?>" style="cursor:pointer;">
 					<img src="<?php echo UPLOAD_URL . '/' . $active_c['user']['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'"></div>
-					<p class="chat_name" data-type="show-profile" data-id="<?php echo $active_c['user']['id'] ?>" style="cursor:pointer;"><?php echo $active_c['user']['full_name'] ?></p>
+					<p class="chat_name" data-id="<?php echo $active_c['user']['id'] ?>" style="cursor:pointer;"><?php echo $active_c['user']['full_name'] ?></p>
 					<a href="javascript:void(0);" data-type="close" data-id="<?php echo $active_c['user']['id'] ?>">
 						<span class="close">x</span>
 					</a>
@@ -555,6 +555,8 @@ jQuery(document).ready(function() {
 			}
 		}
 	});
+
+	$("#notification-panel").css('overflow','hidden');
 });
 
 </script>
