@@ -274,8 +274,8 @@ if ("WebSocket" in window)
 {
 
 
-      // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+    // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
@@ -1065,7 +1065,7 @@ var stm;
             to: 'self',
             my_id: id
         };
-
+        blink(".chat_"+j+" .chat_header", -1, 1000);
         ws.send(JSON.stringify(request));
         
          /*   j--;
@@ -1917,35 +1917,46 @@ $(document).on('click', '#view_profile', function () {
     $('#view_profile_model').modal('show');
 });
 /* close chat window */
+    
+$(document).on('click', 'a[data-type="close"]', function () {
+    if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass('active')){
+        console.log('active');
+        $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
+        var len = $('#chat_container .chat').length;
+        j=len;
+        for (var i = 1; i <= len; i++) {
+            if (j > 0 && i != len) {
+               $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
+            }
+            if(i==len){
+               $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat active');
+                
+            }
+            j--;
+        }
+    }else{
+        console.log('passive');
+        if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass("chat_3")){
+        console.log('chat_3');
+        $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
+            $("#chat_container .chat_2").attr('class', 'chat passive chat_3');
+            $("#chat_container .chat_1").attr('class', 'chat passive chat_2');
+        }
+        if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass("chat_2")){
+        console.log('chat_2');
+        $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
+            $("#chat_container .chat_1").attr('class', 'chat passive chat_2');
+        }
+        if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass("chat_1")){
+        console.log('chat_1');
+        $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
+            //$("#chat_container .chat_1").attr('class', 'chat passive chat_2');
+        }
+    }
+});
 
 /* close chat window */
-$(document).on('click', 'a[data-type="close"]', function () {
-    $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
-     var len = $('#chat_container .chat').length;
-     j=len;
-    for (var i = 1; i <= len; i++) {
-        console.log("j: "+j);
-        console.log("i: "+i);
-        if (j > 0 && i != len) {
-            console.log("passive");
-           $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
-        }
-        if(i==len){
-            console.log("active");
-           $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat active');
-            
-        }
-        j--;
-    }
 
-
-
-
-
-
-    
- //   $.removeCookie('active');
-});
 /*
  *   KAMLESH POKIYA (KAP).
  *   Find studymate with load more.
@@ -1984,6 +1995,24 @@ function saveImg(image) {
     ws.send(JSON.stringify(request));
 }
 
+
+    function blink(elem, times, speed) {
+    if (times > 0 || times < 0) {
+        if ($(elem).hasClass("blink")) $(elem).removeClass("blink");
+        else $(elem).addClass("blink");
+    }
+
+    clearTimeout(function () {
+        blink(elem, times, speed);
+    });
+
+    if (times > 0 || times < 0) {
+        setTimeout(function () {
+            blink(elem, times, speed);
+        }, speed);
+        times -= .5;
+    }
+}
 $.fn.timestatus = function (msg) {
     //console.log(msg);
     var x = 0;

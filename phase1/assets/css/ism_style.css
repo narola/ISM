@@ -4202,3 +4202,7 @@ img#blah_after{height: 220px;width:220px;}
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset !important;
 }
 label.error{ color:#a94442; }
+.passive .blink {
+    background: #ffba00 none repeat scroll 0 0 !important;
+    color: #fff !important;
+}
