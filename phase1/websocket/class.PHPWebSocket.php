@@ -2600,6 +2600,32 @@ class PHPWebSocket {
 		    $i++;
 		}
 
+		/* Get notification on tag */
+		
+		$query = 'SELECT `u`.`id`,`u`.`full_name`,`f`.`created_date`,`p`.`profile_link` '
+			. 'FROM `' . TBL_FEEDS_TAGGED_USER . '` f ,'
+			. '`' . TBL_USERS . '` u, `'.TBL_USER_PROFILE_PICTURE.'` p '
+			. 'WHERE `u`.`id` = `f`.`tagged_by` and `f`.`feed_id` =' . $data['fid'] . " "
+			. "AND `f`.`tagged_by` =". $data['user_iddd'] . " and `f`.is_delete = 0 and `p`.`user_id` = `u`.`id`";
+		$rows = mysqli_query($link, $query);
+		//$data['notification_detail'] = mysqli_num_rows($rows);
+
+		$notification_for_tag = array();
+		$i = 0;
+
+		while ($row = mysqli_fetch_assoc($rows)) {
+		    $notification_for_tag[$i]['full_name'] = $row['full_name'];
+		    $notification_for_tag[$i]['id'] = $row['id'];
+		     $notification_for_tag[$i]['profile_link'] = $row['profile_link'];
+		    $notification_for_tag[$i]['created_date'] = $this->get_time_format($row['created_date']);
+		    $i++;
+		}
+
+		 $data['notification_detail'] = $notification_for_tag;
+		// select u.id,u.full_name,t.created_date
+		// from users u,feeds_tagged_user t
+		// where u.id = t.tagged_by and t.feed_id = '1089' and t.tagged_by = '138'; 
+
 
 		$data['already_tagged_id'] = $already_tagged_array;
 		$data['already_tagged_detail'] = $already_tagged_detail;
@@ -2925,6 +2951,12 @@ class PHPWebSocket {
 	    $data['result']['my_topic'][$i] = $rows;
 	    $i++;
 	}
+
+	for ($i=0; $i <count($data['result']['my_topic']) ; $i++) { 
+		$data['result']['my_topic'][$i]['created_date'] = $this->get_time_format($data['result']['my_topic'][$i]['created_date']);
+	}
+
+
 	//  became studymate with
 	//$query = "SELECT `u`.`full_name`, `sm`.`mate_of`, `sm2`.`mate_id`, DATE_FORMAT(sm.created_date,'%b %d %Y') as created_date, `s`.`school_name`, `p`.`profile_link`, `c`.`course_name` "
 	$query = "SELECT `u`.`full_name`,`u`.`id`, `sm`.`mate_of`, `sm2`.`mate_id`, DATE_FORMAT(sm.created_date,'%b %d %Y') as created_date, `s`.`school_name`, `p`.`profile_link`, `c`.`course_name` "
@@ -2941,6 +2973,12 @@ class PHPWebSocket {
 	    $data['result']['my_studymate'][$i] = $rows;
 	    $i++;
 	}
+	for ($i=0; $i <count($data['result']['my_studymate']) ; $i++) { 
+		$data['result']['my_studymate'][$i]['created_date'] = $this->get_time_format($data['result']['my_studymate'][$i]['created_date']);
+	}
+
+
+
 	// like feed
 	//$query = "SELECT `upost`.`full_name` as `post_username`,`like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') AS created_date, (select count(*) "
 	$query = "SELECT `upost`.`full_name` as `post_username`,`upost`.`id` as `l_id`,`like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') AS created_date, (select count(*) "
@@ -2957,6 +2995,12 @@ class PHPWebSocket {
 	    $data['result']['my_like'][$i] = $rows;
 	    $i++;
 	}
+	for ($i=0; $i <count($data['result']['my_like']) ; $i++) { 
+		$data['result']['my_like'][$i]['created_date'] = $this->get_time_format($data['result']['my_like'][$i]['created_date']);
+	}
+
+
+
 	// feed comment
 	//$query = "SELECT `u`.`full_name`,`u`.`id` as `uid`, `u`.`id`, `comment_feed`.`feed_text`, `p`.`profile_link`, `fimage`.`image_link`, `comment`.`comment`, `comment`.`created_date`, "
 	$query = "SELECT `u`.`full_name`,`u`.`id` as `uid`, `u`.`id`, `comment_feed`.`feed_text`, `p`.`profile_link`, `fimage`.`image_link`, `comment`.`comment`,`comment`.`comment_by`, `comment`.`created_date`, "
@@ -2979,6 +3023,12 @@ class PHPWebSocket {
 	    $data['result']['my_comment'][$i]['comment_date'] = $this->get_time_format($rows['created_date']);
 	    $i++;
 	}
+	for ($i=0; $i <count($data['result']['my_comment']) ; $i++) { 
+		$data['result']['my_comment'][$i]['created_date'] = $this->get_time_format($data['result']['my_comment'][$i]['created_date']);
+	}
+
+
+
 	// my feed
 	$query = "SELECT `fimage`.`image_link`, `post`.`feed_text`, "
 		. "(SELECT COUNT(*) FROM `" . TBL_FEED_LIKE . "` "
@@ -2994,6 +3044,11 @@ class PHPWebSocket {
 	    $data['result']['my_post'][$i] = $rows;
 	    $i++;
 	}
+	for ($i=0; $i <count($data['result']['my_post']) ; $i++) { 
+		$data['result']['my_post'][$i]['created_date'] = $this->get_time_format($data['result']['my_post'][$i]['created_date']);
+	}
+
+
 	$data['format_month'] = date('F Y', strtotime($data['month']));
 	$data['new_month'] = date('Y-m', strtotime('-1 month', strtotime($data['month'])));
 	return array_merge($data, $this->get_client_info($user_id));

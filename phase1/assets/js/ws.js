@@ -273,10 +273,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-
-      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
     // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-   // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+    //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -699,6 +698,7 @@ if ("WebSocket" in window)
                 location.href = irl + 'student/class_exam';
             }
         } else if (obj.type == 'tag-user-again') {
+
             var i = 0;
             var j = 0;
             var k = 0;
@@ -738,17 +738,19 @@ if ("WebSocket" in window)
                     }
                     j++;
                 }
+
                 notification_str += '<li><a href="#">';
-                notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '"></div>';
+                notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.notification_detail[0]['profile_link'] + '"></div>';
                 notification_str += '<div class="notification_txt">';
-                notification_str += '<p><span class="noti_username">' + obj.full_name + '</span> tagged you in a post</p>';
-                notification_str += '<span class="noti_time just_noti">Just now</span></div>';
+                notification_str += '<p><span class="noti_username">' + obj.notification_detail[0]['full_name'] + '</span> tagged you in a post</p>';
+                notification_str += '<span class="noti_time just_noti just_now">Just now</span></div>';
                 notification_str += '<div class="clearfix"></div>';
                 notification_str += '</a></li>';
                 if (wp == list.id) {
                     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
                     $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
-                    $('.just_noti').timestatus();
+
+                    $('.just_now').timestatus(obj.notification_detail[0]['created_date']);
                     notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
                     if (notification_length == 0) {
                         notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">No more notification</div></li>');
@@ -852,8 +854,7 @@ if ("WebSocket" in window)
                     if (s == 0) {
                         str += '<h4 class="activity_heading">Became studymate with</h4>';
                     }
-                    var c_date = new Date(list.created_date);
-                    str += '<span class="date">' + date_to_day(c_date) + '</span>';
+                    str += '<span class="date">'+list.created_date+'</span>';
                     str += '<div class="study_mate">';
                     str += '<div style="cursor:pointer;" data-type="show-profile" data-id="'+ list.mate_of +'" class="mate_user_img">';   
                     str += '<img src="uploads/' + list.profile_link + '" class="mCS_img_loaded" onerror="this.src=\'assets/images/avatar.png\'">';
@@ -865,9 +866,12 @@ if ("WebSocket" in window)
                     str += '</div>';
                     s++;
                 });
+
+
                 $.each(obj.result.my_like, function (index, list) {
                     str += '<div class="status_like">';
                     str += '<h4 class="activity_heading">Liked status of <span style="cursor:pointer;" data-type="show-profile" data-id="'+ list.l_id +'" class="txt_green">' + list.post_username + '</span></h4>';
+                    str += '<span class="date">'+list.created_date+'</span>';
                     str += '<div class="feed_text">';
                     str += '<p>' + list.feed_text + '</p>';
                     str += '</div>';
@@ -883,14 +887,8 @@ if ("WebSocket" in window)
                     str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ list.uid +'" onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + list.profile_link + '">';
                     str += '</div>';
                     str += '<div class="feed_text">';
-                    str += '<h4 class="activity_heading">Liked status of <span class="activity_heading no_hover" style="cursor:pointer;" data-type="show-profile" data-id="'+ list.uid +'">' + list.full_name + '</h4>';
-
-                    /* convert string date to date formate */
-                    var old = list.created_date;
-                    var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
-                    var d = new  Date(ndt);
-                    
-                    str += '<span class="date">' + date_to_day(d) + '</span>'
+                    str += '<h4 style="cursor:pointer;" data-type="show-profile" data-id="'+ list.uid +'">' + list.full_name + '</h4>';
+                    str += '<span class="date">'+list.created_date+'</span>';
                     str += '<div class="clearfix"></div>';
                     str += '<p>' + list.feed_text + '</p>';
 
@@ -912,13 +910,7 @@ if ("WebSocket" in window)
                     str += '</div>';
                     str += '<div class="notification_txt">';
                     str += '<p><a style="cursor:pointer;" data-type="show-profile" data-id="'+ list.comment_by +'"  href="javascript:void(0);" class="noti_username">' + obj.full_name + '</a>&nbsp;' + list.comment + '</p>';
-                         
-                         /* Convert string date formate to date formate */
-                         var old = list.created_date;
-                         var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
-                         var d = new  Date(ndt);
-                    
-                    str += '<span class="noti_time">' + date_to_day(d) + '</span>';
+                    str += '<span class="noti_time">'+list.comment_date+'</span>';
                     str += '</div>';
                     str += '<div class="clearfix"></div>';
                     str += '</div>';
@@ -931,13 +923,7 @@ if ("WebSocket" in window)
                     if (p == 0) {
                         str += '<h4 class="activity_heading">Status updated</h4>';
                     }
-                         /* Convert string date formate to date formate */
-                         var old = list.created_date;
-                         var ndt =  old.substr(0, 4) + "/" + old.substr(5, 2) + "/" + old.substr(8, 2);
-                         var d = new  Date(ndt);
-
-                    str += '<span class="date just_now">' + date_to_day(d) + '</span>';
-                     $(".just_now").timestatus();
+                    str += '<span class="date">'+list.created_date+'</span>';
                     str += '<div class="feed_text">                                               ';
                     str += '<p>' + list.feed_text + '</p>';
                     if (list.image_link != '' && list.image_link != null) {
@@ -1316,25 +1302,25 @@ function generate_post(obj, status) {
                 }
                 j++;
             }
-            notification_str += '<li><a href="#">';
-            notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '"></div>';
-            notification_str += '<div class="notification_txt">';
-            notification_str += '<p><span class="noti_username">' + obj.full_name + '</span> tagged you in a post</p>';
-            notification_str += '<span class="noti_time">Just now</span></div>';
-            notification_str += '<div class="clearfix"></div>';
-            notification_str += '</a></li>';
-            if (wp == list.id) {
-                $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
-                $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
-                notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
-                if (notification_length == 0) {
-                    notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">no more notification</div></li>');
-                    $('.mCSB_container .three_tabs .dropdown .badge').html(0);
-                }
-                else {
-                    $('.mCSB_container .three_tabs .dropdown .badge').html(notification_length);
-                }
-            }
+            // notification_str += '<li><a href="#">';
+            // notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '"></div>';
+            // notification_str += '<div class="notification_txt">';
+            // notification_str += '<p><span class="noti_username">' + obj.full_name + '</span> tagged you in a post</p>';
+            // notification_str += '<span class="noti_time">Just now</span></div>';
+            // notification_str += '<div class="clearfix"></div>';
+            // notification_str += '</a></li>';
+            // if (wp == list.id) {
+            //     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
+            //     $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
+            //     notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
+            //     if (notification_length == 0) {
+            //         notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">no more notification</div></li>');
+            //         $('.mCSB_container .three_tabs .dropdown .badge').html(0);
+            //     }
+            //     else {
+            //         $('.mCSB_container .three_tabs .dropdown .badge').html(notification_length);
+            //     }
+            // }
         });
     }
     str += '<span data-id="' + obj.post_id + '">' + name + '</span>';
@@ -2100,7 +2086,3 @@ $(document).ready(function () {
     }
 
 });
-
-
-
-

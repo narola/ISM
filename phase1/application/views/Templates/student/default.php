@@ -186,7 +186,8 @@ $url = uri_string();
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span data-toggle="tooltip" title="Notifications" class="icon icon_bell"></span>
 							<span class="badge bell_badge"><?php echo $this->noti_cnt; ?></span>
 						</a>
-						<ul class="dropdown-menu" id="notification-panel">
+
+						<ul class="dropdown-menu" id="notification-panel" style="max-height:400px;overflow:auto">
 							<?php
 							
 							if (sizeof($this->notification_list) > 0) {
