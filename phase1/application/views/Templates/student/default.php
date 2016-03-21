@@ -309,6 +309,7 @@ $url = uri_string();
     					$class = studymates_info();
     					if (isset($class) > 0) {
     						foreach ($class as $key => $value) {
+    							
     							$u = 'offline';
     							?>
     							<div class="stm_item <?php echo $u; ?>" data-id="<?php echo $value['id']; ?>">

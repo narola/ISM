@@ -450,6 +450,7 @@
 	<?php
 	if (isset($my_studymates) > 0) {
 	    foreach ($classmates as $key => $value) {
+
 		$u = 'offline';
 		if (in_array($value['id'], $online)) {
 		    $u = 'online';
@@ -459,7 +460,7 @@
 		    <a id="mate_list" href="javascript:void(0);" data-id="<?php echo $value['id']; ?>">
 
 			<div class="stm_user_img">
-			    <img src="/<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+			    <img src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
 			</div>
 			<span class="badge message_badge"><?php if ($value['unread_msg'] > 0) echo $value['unread_msg']; ?></span>
 			<p><?php echo $value['full_name']; ?></p>

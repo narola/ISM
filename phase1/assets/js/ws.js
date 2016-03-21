@@ -179,6 +179,7 @@ $(document).ready(function () {
             if ($(this).parent().hasClass('chat_3')) {
                 $('.chat.active').removeClass('active').addClass('chat_3 passive');
                 clearInterval(chat_3);
+
             }
             if ($(this).parent().hasClass('chat_2')) {
                 $('.chat.active').removeClass('active').addClass('chat_2 passive');
@@ -189,7 +190,7 @@ $(document).ready(function () {
                 clearInterval(chat_1);
             }
             $(this).parent().removeClass().addClass('active').addClass('chat');
-            $(this).removeClass('blink');
+            $(this).removeClass("blinking");
         }
     });
 
@@ -278,7 +279,7 @@ if ("WebSocket" in window)
 {
 
       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-      // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
     // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
@@ -340,7 +341,7 @@ if ("WebSocket" in window)
                 $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
             }
             $('.just_now').timestatus();
-            $('.chat_text').mCustomScrollbar('scrollTo', 'bottom');
+            
 
                
             if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
@@ -362,8 +363,8 @@ if ("WebSocket" in window)
                 }
                 c.html(++count);
             }
-
-
+            $('.chat_text').mCustomScrollbar('update')
+            $('.chat_text').mCustomScrollbar('scrollTo', 500);
         }else if (obj.type == 'chat_type') {
             
            if(wp == obj.to){
@@ -984,23 +985,26 @@ if ("WebSocket" in window)
 }
 
 function myfunction(from){
-    // console.log("from: "+from);
-   var str = '';
+    var str = '';
     var id = from;
     var len = $('.chat_container .chat').length;
-    //console.log("len: "+len);
     var j = 3;
     var is_needed = true;
-
-        //console.log("is_needed: "+is_needed);
+    var cls;
     for (var i = 1; i <= len; i++) {
-        //console.log("1st for i: "+i);
         if ($(".chat_container .chat:nth-child(" + i + ")").data('id') == id) {
-           is_needed = false;
+            if($(".chat_container .chat[data-id="+id+"]").hasClass('chat_3'))
+                cls = 'chat_3';
+            if($(".chat_container .chat[data-id="+id+"]").hasClass('chat_2'))
+                cls = 'chat_2';
+            if($(".chat_container .chat[data-id="+id+"]").hasClass('chat_1'))
+                cls = 'chat_1';
+            $(".chat_container .chat[data-id="+id+"] .chat_header").addClass("blinking");
+            blink(".blinking", cls, 1000);
+            // blink(".chat_container .chat[data-id="+id+"] .chat_header", cls, 1000);
+            is_needed = false;
         }
-       // console.log("1st for "+ i +" is_needed: "+is_needed);
     }
-       // console.log("after 1st for is_needed: "+is_needed);
         if(len==1)
         j=3;
     else if(len==2)
@@ -1008,11 +1012,10 @@ function myfunction(from){
     else if(len==3)
         j=1;
     if (len >= 4 && is_needed == true) {
-        //console.log("len if");
         $(".chat_container .chat_1").remove();
         j=1;
     }
-var stm;
+    var stm;
 
     
 
@@ -1055,10 +1058,15 @@ var stm;
             to: 'self',
             my_id: id
         };
-        blink(".chat_"+j+" .chat_header", 'chat_'+j, 1000);
+
+        $(".chat_"+j+" .chat_header").addClass("blinking");
+        blink(".blinking", 'chat_'+j, 1000);
+        // blink(".chat_"+j+" .chat_header", 'chat_'+j, 1000);
         ws.send(JSON.stringify(request));
         }
+        
          /*   j--;
+        }
         }*/
 
    // }
@@ -1198,13 +1206,15 @@ $(document).on('click', '#mate_list', function () {
             to: 'self',
             my_id: id
         };
-
         ws.send(JSON.stringify(request));
     } else {
-        $(".chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
+        $("#chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
     }
     $(this).children('span').html('');
-   $('.chat_text').mCustomScrollbar('scrollTo', 'bottom');
+    $(".chat_input").focus();
+    $('.chat_text').mCustomScrollbar('update');
+    $('.chat_text').mCustomScrollbar('scrollTo', 500);
+    //console.log($('.chat_text').mCustomScrollbar('scrollTo', 'bottom'));
 });
 
 /* Send Feed Post */
@@ -1214,6 +1224,7 @@ $(document).on('click', 'button[data-type="post"]', function () {
         var request = {
             type: 'post',
             to: 'all',
+            test: 'test',
             tagged_id: $('#tagged-users-id').val(),
             message: $('#feed_post').val()
         };
@@ -1249,7 +1260,7 @@ $(document).on('keypress', '#all_feed .box.feeds .write_comment input[data-type=
     }
 });
 
-/* Generate HTML clock of Feed Post. */
+/* Generate HTML block of Feed Post. */
 function generate_post(obj, status) {
     var cls = '';
     if (obj.my_like != 0) {
@@ -1306,25 +1317,6 @@ function generate_post(obj, status) {
                 }
                 j++;
             }
-            // notification_str += '<li><a href="#">';
-            // notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '"></div>';
-            // notification_str += '<div class="notification_txt">';
-            // notification_str += '<p><span class="noti_username">' + obj.full_name + '</span> tagged you in a post</p>';
-            // notification_str += '<span class="noti_time">Just now</span></div>';
-            // notification_str += '<div class="clearfix"></div>';
-            // notification_str += '</a></li>';
-            // if (wp == list.id) {
-            //     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
-            //     $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
-            //     notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
-            //     if (notification_length == 0) {
-            //         notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">no more notification</div></li>');
-            //         $('.mCSB_container .three_tabs .dropdown .badge').html(0);
-            //     }
-            //     else {
-            //         $('.mCSB_container .three_tabs .dropdown .badge').html(notification_length);
-            //     }
-            // }
         });
     }
     str += '<span data-id="' + obj.post_id + '">' + name + '</span>';
@@ -1913,16 +1905,21 @@ $(document).on('click', 'a[data-type="close"]', function () {
         $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
         var len = $('#chat_container .chat').length;
         j=3;
-        for (var i = 1; i <= len; i++) {
-            if (j > 0 && i != len) {
-               $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
-                j--;
+            
+            if(len > 0){
+                for (var i = 1; i <= len; i++) {
+                    if (j > 0 && i != len) {
+                       $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
+                        j--;
+                    }
+                    if(i==len){
+                        $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat active');
+                        $.cookie('active', $(".chat_container .chat:nth-child(" + i + ")").attr('data-id'));
+                    }
+                }
+            }else{
+                $.removeCookie('active');
             }
-            if(i==len){
-               $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat active');
-                
-            }
-        }
     }else{
         if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass("chat_3")){
         $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
