@@ -191,6 +191,7 @@ $(document).ready(function () {
             }
             $(this).parent().removeClass().addClass('active').addClass('chat');
             $(this).removeClass("blinking");
+            $(this).removeClass("blink");
         }
     });
 
@@ -1081,6 +1082,13 @@ function myfunction(from){
         ws.send(JSON.stringify(request));
         }
         
+        setTimeout(function(){
+            $(".chat_input").focus();
+            $('.chat_text').mCustomScrollbar('update');
+            $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+        }, 300);
+    
+        
          /*   j--;
         }
         }*/
@@ -1172,6 +1180,7 @@ function set_status(id, status) {
 }
 
 
+
 $(document).on('click', '#mate_list', function () {
 
     $.cookie('active', $(this).attr('data-id'));
@@ -1227,9 +1236,14 @@ $(document).on('click', '#mate_list', function () {
         $("#chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
     }
     $(this).children('span').html('');
-    $(".chat_input").focus();
-    $('.chat_text').mCustomScrollbar('update');
-    $('.chat_text').mCustomScrollbar('scrollTo', 500);
+    setTimeout(function(){
+        $(".chat_input").focus();
+        $('.chat_text').mCustomScrollbar('update');
+        $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+    }, 300);
+        // $('.chat_text').html('');
+    
+
     //console.log($('.chat_text').mCustomScrollbar('scrollTo', 'bottom'));
 });
 
