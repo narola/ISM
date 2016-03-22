@@ -182,7 +182,7 @@
 				<span><?php echo $value['tot_like']; ?></span></a>
 			    <a href="javascript:void(0);" class="comment_btn" data-id="<?php echo $value['fid']; ?>"><span data-toggle="tooltip" title="Comment" class="icon icon_comment"></span>
 				<span><?php echo $value['tot_comment']; ?></span></a>
-			    <?php if ($value['tot_comment'] > 3) { ?>
+			    <?php if ($value['tot_comment'] > 4) { ?>
 	    		    <a href="javascript:void(0);" data-type="showall" data-id="<?php echo $value['fid']; ?>">View All</a>
 		<?php } ?>
 
@@ -233,7 +233,7 @@
 
 
 			<!--comment-->
-			<div id="feed_comments">
+			<div id="feed_comments" data-id="<?php echo $value['fid']; ?>">
 			    <?php
 			    $total_comments = sizeof($value['comment']);
 			    if ($total_comments > 0 && isset($value['comment'])) {
@@ -254,11 +254,15 @@
 		    			    <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>" src="<?php echo UPLOAD_URL . '/' . $com['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
 		    			</div>
 		    			<div class="notification_txt">
-
 		    			    <p style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>"><a class="noti_username"><?php echo $com['full_name']; ?></a> <?php echo $com['comment']; ?></p>
-		    			    <span class="noti_time"><?php echo get_time_format($com['created_date']); ?></span>                            
+		    			    <span class="noti_time just_now1"></span>     
+		    			    <script type="text/javascript">
+		    			    	 $(".just_now1").timestatus1('<?php echo get_time_format($com['created_date']); ?>');
+							</script>
+
 		    			</div>
 		    			<div class="clearfix"></div>
+		    			
 		    		    </div>
 
 					<?php
@@ -270,7 +274,6 @@
 			</div>
 			<div class="write_comment box_body">
 			    <input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="<?php echo $value['fid']; ?>">                  
-
 			</div>
 		    </div>
 		    <?php

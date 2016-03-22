@@ -156,15 +156,25 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                 }
                 $Server->wsSend($clientID, json_encode($responce));
             } else if ($responce['type'] == 'post') {
+
+                //$classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
+
                 $classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
-                
+
                 foreach ($Server->wsClients as $id => $client) {
-                    if (in_array($Server->wsClients[$id][12], $classmates)) {
+                    if (in_array($Server->wsClients[$id][12], $responce['studymate_list'])) {
                         $Server->wsSend($id, json_encode($responce));
                     }
                 }
-            } else if (in_array($responce['type'], $check)) {
-              
+            }else if ($responce['type'] == 'like') {
+                //$classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
+                foreach ($Server->wsClients as $id => $client) {
+                    if (in_array($Server->wsClients[$id][12], $responce['allStudyMate'])) {
+                        $Server->wsSend($id, json_encode($responce));
+                    }
+                }
+            } 
+            else if (in_array($responce['type'], $check)) {
                 foreach ($Server->wsClients as $id => $client) {
                     if (in_array($Server->wsClients[$id][12], $responce['allStudyMate'])) {
                         $Server->wsSend($id, json_encode($responce));
@@ -194,7 +204,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                 $Server->wsSend($clientID, json_encode($responce));
             } else if ($responce['type'] == 'tag-user-again') {
                 foreach ($Server->wsClients as $id => $client) {
-                    if (in_array($Server->wsClients[$id][12], $responce['tagged_id'])) {
+                    if (in_array($Server->wsClients[$id][12], $responce['studymate_list'])) {
                         $Server->wsSend($id, json_encode($responce));
                     }
                 }
@@ -203,6 +213,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         }
     }
 }
+
 
 // when a client connects
 function wsOnOpen($clientID) {
@@ -229,7 +240,6 @@ function wsOnClose($clientID, $status) {
 
 // start the server
 $Server = new PHPWebSocket();
-
 $Server->bind('message', 'wsOnMessage');
 $Server->bind('open', 'wsOnOpen');
 $Server->bind('close', 'wsOnClose');

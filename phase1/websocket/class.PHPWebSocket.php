@@ -1022,6 +1022,7 @@ class PHPWebSocket {
     function classmate_post($user_id, $data = null) {
 
 	$studymate_id = $this->class_mate_list($user_id);
+	$data['studymate_list'] = $studymate_id;
 	if (is_array($data) && !empty($data)) {
 	    $link = $this->db();
 	    $msg = mysqli_escape_string($link, $data['message']); // Feed or comment
@@ -1032,6 +1033,9 @@ class PHPWebSocket {
 	    $data['post_id'] = mysqli_insert_id($link);
 	    $data['tot_like'] = 0;
 	    $data['tot_comment'] = 0;
+
+	    $data['to'] = 'all';
+
 	    if (!$x) {
 		$data['error'] = 'Unable to save message.! Please try again.';
 	    }
@@ -2519,6 +2523,7 @@ class PHPWebSocket {
     function tag_again($user_id, $data) {
 	$link = $this->db();
 	$studymate_id = $this->class_mate_list($user_id);
+	$data['studymate_list'] = $studymate_id;
 	$query = "select * from feeds where id=" . $data['fid'];
 	$rows = mysqli_query($link, $query);
 	if (mysqli_num_rows($rows) > 0) {
@@ -2600,24 +2605,22 @@ class PHPWebSocket {
 
 		/* Get notification on tag */
 		
-		$query = 'SELECT `u`.`id`,`u`.`full_name`,`f`.`created_date`,`p`.`profile_link` '
-			. 'FROM `' . TBL_FEEDS_TAGGED_USER . '` f ,'
-			. '`' . TBL_USERS . '` u, `'.TBL_USER_PROFILE_PICTURE.'` p '
-			. 'WHERE `u`.`id` = `f`.`tagged_by` and `f`.`feed_id` =' . $data['fid'] . " "
-			. "AND `f`.`tagged_by` =". $data['user_iddd'] . " and `f`.is_delete = 0 and `p`.`user_id` = `u`.`id`";
+		$query = 'SELECT `u`.`id`,`u`.`full_name`,`p`.`profile_link` '
+			. 'FROM `' . TBL_USERS . '` u, `'.TBL_USER_PROFILE_PICTURE.'` p '
+			. 'WHERE `p`.`user_id` = `u`.`id` and `u`.`id` = ' .$data['user_iddd']. '';
 		$rows = mysqli_query($link, $query);
 		//$data['notification_detail'] = mysqli_num_rows($rows);
 
 		$notification_for_tag = array();
 		$i = 0;
-
 		while ($row = mysqli_fetch_assoc($rows)) {
 		    $notification_for_tag[$i]['full_name'] = $row['full_name'];
 		    $notification_for_tag[$i]['id'] = $row['id'];
 		     $notification_for_tag[$i]['profile_link'] = $row['profile_link'];
-		    $notification_for_tag[$i]['created_date'] = $this->get_time_format($row['created_date']);
+		    $notification_for_tag[$i]['created_date'] = $this->get_time_format(date("M d, Y, g:i:s a", strtotime($this->ctime())));
 		    $i++;
 		}
+
 
 		 $data['notification_detail'] = $notification_for_tag;
 		// select u.id,u.full_name,t.created_date
