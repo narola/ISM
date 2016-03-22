@@ -2080,11 +2080,14 @@ $.fn.timestatus = function (msg) {
     else
     {   
          dis = msg;
-         this.removeClass('noti_time');
+        //this.removeClass('noti_time');
          $('.' + id).html(dis); 
     }
     }
 };
+
+/* Function for time counter for the comment's */
+/* msg is time comes from. e.g : 5 min ago, 17 hours ago */
 
 $.fn.timestatus1 = function (msg) {
 
@@ -2151,6 +2154,8 @@ $.fn.timestatus1 = function (msg) {
          $('.' + id).html(dis); 
     }
     }
+
+
 };
 
 
