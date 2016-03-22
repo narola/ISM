@@ -278,6 +278,7 @@ if ("WebSocket" in window)
     //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
+
     ws.onopen = function ()
     {
         ws.send('{"type":"con","from":"' + wp + '","to":"self"}');
@@ -444,6 +445,7 @@ if ("WebSocket" in window)
             }
             generate_cm(obj);
         } else if (obj.type == 'like') {
+
             if (wp == obj.id) {
                 if (obj.message == 'like') {
                     $('.like_btn[data-id="' + obj.fid + '"]').html('<span data-toggle="tooltip" title="Unlike" class="icon icon_thumb"></span>' + obj.like_cnt);
@@ -454,7 +456,9 @@ if ("WebSocket" in window)
                 // $('.icon').tooltip();
             }
             else {
-                $('.like_btn[data-id="' + obj.fid + '"] span:nth-of-type(2)').html(obj.like_cnt);
+                var btn_like_class = $('.like_btn[data-id="' + obj.fid + '"] span').attr('class');
+                $('.like_btn[data-id="' + obj.fid + '"]').html('<span title="Like" class="'+btn_like_class+'"></span>' + obj.like_cnt);
+                //$('.like_btn[data-id="' + obj.fid + '"] span:nth-of-type(2)').html(obj.like_cnt);
             }
         } else if (obj.type == "discussion-type") {
             $('.box_footer[data-id="' + obj.type_id + '"] p').html(obj.message);
@@ -698,7 +702,7 @@ if ("WebSocket" in window)
                 location.href = irl + 'student/class_exam';
             }
         } else if (obj.type == 'tag-user-again') {
-
+            console.log(obj);
             var i = 0;
             var j = 0;
             var k = 0;
@@ -739,6 +743,10 @@ if ("WebSocket" in window)
                     j++;
                 }
 
+
+            });
+
+
                 notification_str += '<li><a href="#">';
                 notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.notification_detail[0]['profile_link'] + '"></div>';
                 notification_str += '<div class="notification_txt">';
@@ -746,7 +754,11 @@ if ("WebSocket" in window)
                 notification_str += '<span class="noti_time just_noti just_now">Just now</span></div>';
                 notification_str += '<div class="clearfix"></div>';
                 notification_str += '</a></li>';
-                if (wp == list.id) {
+                
+                if (wp != obj.user_iddd) {
+
+                    console.log(wp + "user_iddd" + obj.user_iddd);
+
                     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
                     $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
 
@@ -760,7 +772,9 @@ if ("WebSocket" in window)
                         $('.mCSB_container .three_tabs .dropdown .badge').html(notification_length);
                     }
                 }
-            });
+
+        
+
             $('#all_feed div.box.feeds[data-id="' + obj.fid + '"] .feed_text span[data-id="' + obj.fid + '"]').html(str);
 
 
@@ -1051,7 +1065,7 @@ var stm;
             to: 'self',
             my_id: id
         };
-        blink(".chat_"+j+" .chat_header", -1, 1000);
+
         ws.send(JSON.stringify(request));
         
          /*   j--;
@@ -1363,12 +1377,15 @@ function generate_post(obj, status) {
     str += '<span class="date noti_time just_now"></span>';
     str += '<div class="clearfix"></div>';
     str += '<p>' + obj.message + '</p>';
-    str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="' + obj.post_id + '"><span class="icon icon_thumb' + cls + '"></span>' + obj.tot_like + '</a>';
-    str += '<a href="javascript:void(0);" class="comment_btn"><span class="icon icon_comment"></span>' + obj.tot_comment + '</a>';
+    str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="' + obj.post_id + '"><span title="Like" class="icon icon_thumb' + cls + '"></span>' + obj.tot_like + '</a>';
+    str += '<a href="javascript:void(0);" data-id="' + obj.post_id + '" class="comment_btn"><span class="icon icon_comment" title="Comment"></span>' + obj.tot_comment + '</a>';
     if (typeof (obj.comment) != 'undefined') {
         if (obj.comment.length > 2) {
             str += '<a href="javascript:void(0);" data-type="showall" data-id="' + obj.post_id + '">View All</a>'
         }
+    }else
+    {
+             str += '<a href="javascript:void(0);" class="comment_showall" data-type="showall" data-id="' + obj.post_id + '" style="display:none">View All</a>'
     }
 
     var show_tagged = "inline-block";
@@ -1388,7 +1405,7 @@ function generate_post(obj, status) {
     str += '<a href="javascript:void(0);" class="btn btn_black_normal" data-type="tag-user-again" data-id="' + obj.post_id + '">Tag New</a>';
     str += '</div>';
     str += '<div class="clearfix"></div>';
-    str += '<div id="feed_comments"></div>';
+    str += '<div id="feed_comments" data-id="' + obj.post_id + '"></div>';
     str += '<div class="write_comment box_body">';
     str += '<input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="' + obj.post_id + '">';
     str += '</div>';
@@ -1446,8 +1463,9 @@ function date_to_day(post_date){
 /* Generate HTML block of feed comment. */
 function generate_comment(obj, i, k) { 
 
+    console.log(i);
 /* commenter id for feed post and load more, else part sets commeter id when event on load more */
-
+     
     if(!obj.comment_by){
        var commenter_id = obj.id;
     }else
@@ -1459,7 +1477,7 @@ function generate_comment(obj, i, k) {
     var msg = obj.message;
     i = typeof i !== 'undefined' ? i : 0;
     k = typeof k !== 'undefined' ? k : false;
-    if (parseInt(i) > 2) {
+    if (parseInt(i) > 3) {
         display = 'display:none !important';
         first_three = '';
     }
@@ -1467,6 +1485,7 @@ function generate_comment(obj, i, k) {
         display = '';
         first_three = 'true';
     }
+
     str += '<div class="comment" style="' + display + '" data-first="' + first_three + '" data-id="' + obj.to + '">';
     str += '<div class="user_small_img user_comment">';
     str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'" src="uploads/' + obj.profile_link + '" onerror="this.src=\'assets/images/avatar.png\'">';
@@ -1482,7 +1501,23 @@ function generate_comment(obj, i, k) {
     if (k != true) {
         $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments .comment:last-child').fadeOut(0).fadeIn(400);
     }
+    
+    if(k == false)
+    {
+    var comment_cols = $('#feed_comments[data-id="'+ obj.to +'"]').children().size();
+    //var comment_cols2 = $('#feed_comments').children('.comment[data-id="'+obj.to+'"]').size();
+    console.log(comment_cols);
+    if(comment_cols > 4)
+            {   var n_th = comment_cols - 4;
+                console.log(comment_cols + "inner");
+                $('#feed_comments[data-id="'+ obj.to +'"]').children().eq(n_th).css( "display", "none" );
+                $('#feed_comments[data-id="'+ obj.to +'"]').children().eq(n_th).attr("data-first","");
+                $('.comment_showall[data-id="' + obj.to + '"]').css("display", "");
+            }
 
+    $('.comment_btn[data-id="' + obj.to + '"]').html("");
+    $('.comment_btn[data-id="' + obj.to + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
+    }
 }
 
 /* load more feeds. */
@@ -1567,7 +1602,7 @@ $(document).on('click', 'a[data-type="feed-like"]', function (e) {
     var request = {
         type: 'like',
         fid: $(this).data('id'),
-        to: '',
+        to: 'all',
         message: '',
     };
     ws.send(JSON.stringify(request));
@@ -1790,21 +1825,26 @@ $(document).on('click', 'button[data-type="class_exam_start_request"]', function
  *   Tag studymate post.
  */
 $(document).on('click', 'a[data-type="tag-user-again"]', function () {
-    var d_id = $(this).data("id");
-    var request = {
-        type: 'tag-user-again',
-        to: 'all',
-        tagged_id: $('.js-example-basic-single[data-id="' + $(this).data('id') + '"]').val(),
-        fid: $(this).data('id')
-    }
-    ws.send(JSON.stringify(request));
+    
+     var d_id = $(this).data("id");
+                var request = {
+                    type: 'tag-user-again',
+                    to: "all",
+                    tagged_id: $('.js-example-basic-single[data-id="' + $(this).data('id') + '"]').val(),
+                    fid: $(this).data('id') 
+                 }
+                 ws.send(JSON.stringify(request));
+
 
     var value = $("#select-tag-user-again").val();
     var value1 = $("select[data-id='"+d_id+"']").val();
-   
+
+ 
     if(value != null)
         {  
              for( var i in value ) {
+                    
+
                     $("select[data-id='"+d_id+"'] option[value="+value[i]+"]").remove();
                 }
                      var value5 = $("select[data-id='"+d_id+"'] option").size();
@@ -1903,46 +1943,35 @@ $(document).on('click', '#view_profile', function () {
     $('#view_profile_model').modal('show');
 });
 /* close chat window */
-    
-$(document).on('click', 'a[data-type="close"]', function () {
-    if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass('active')){
-        console.log('active');
-        $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
-        var len = $('#chat_container .chat').length;
-        j=len;
-        for (var i = 1; i <= len; i++) {
-            if (j > 0 && i != len) {
-               $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
-            }
-            if(i==len){
-               $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat active');
-                
-            }
-            j--;
-        }
-    }else{
-        console.log('passive');
-        if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass("chat_3")){
-        console.log('chat_3');
-        $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
-            $("#chat_container .chat_2").attr('class', 'chat passive chat_3');
-            $("#chat_container .chat_1").attr('class', 'chat passive chat_2');
-        }
-        if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass("chat_2")){
-        console.log('chat_2');
-        $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
-            $("#chat_container .chat_1").attr('class', 'chat passive chat_2');
-        }
-        if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass("chat_1")){
-        console.log('chat_1');
-        $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
-            //$("#chat_container .chat_1").attr('class', 'chat passive chat_2');
-        }
-    }
-});
 
 /* close chat window */
+$(document).on('click', 'a[data-type="close"]', function () {
+    $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
+     var len = $('#chat_container .chat').length;
+     j=len;
+    for (var i = 1; i <= len; i++) {
+        console.log("j: "+j);
+        console.log("i: "+i);
+        if (j > 0 && i != len) {
+            console.log("passive");
+           $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
+        }
+        if(i==len){
+            console.log("active");
+           $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat active');
+            
+        }
+        j--;
+    }
 
+
+
+
+
+
+    
+ //   $.removeCookie('active');
+});
 /*
  *   KAMLESH POKIYA (KAP).
  *   Find studymate with load more.
@@ -1981,24 +2010,6 @@ function saveImg(image) {
     ws.send(JSON.stringify(request));
 }
 
-
-    function blink(elem, times, speed) {
-    if (times > 0 || times < 0) {
-        if ($(elem).hasClass("blink")) $(elem).removeClass("blink");
-        else $(elem).addClass("blink");
-    }
-
-    clearTimeout(function () {
-        blink(elem, times, speed);
-    });
-
-    if (times > 0 || times < 0) {
-        setTimeout(function () {
-            blink(elem, times, speed);
-        }, speed);
-        times -= .5;
-    }
-}
 $.fn.timestatus = function (msg) {
     //console.log(msg);
     var x = 0;
@@ -2032,6 +2043,72 @@ $.fn.timestatus = function (msg) {
     var id = Date.now();
     if($(this).hasClass('just_now')){
     this.removeClass('just_now');
+    this.addClass("" + id);
+    var dis = '';
+    if(!check_limit){
+    setInterval(function () {
+        if (x >= 7200) {
+            dis = '2 hours ago';
+        } else if (x >= 3600 && x < 7200) {
+            dis = '1 hour ago';
+        } else if (x >= 1800 && x < 3600) {
+            dis = '30 min ago';
+        } else if (x >= 900 && x < 1800) {
+            dis = '15 min ago';
+        } else if (x >= 300 && x < 900) {
+            dis = '5 min ago';
+        } else if (x >= 120 && x < 300) {
+            dis = '2 min ago';
+        } else if (x >= 60 && x < 120) {
+            dis = '1 min ago';
+        } else {
+            dis = 'Just Now';
+        }
+        $('.' + id).html(dis);
+        x++;
+    }, 1000, this);}
+    else
+    {   
+         dis = msg;
+         this.removeClass('noti_time');
+         $('.' + id).html(dis); 
+    }
+    }
+};
+
+$.fn.timestatus1 = function (msg) {
+    //console.log(msg);
+    var x = 0;
+    var check_limit;
+    if(typeof(msg) != "undefined" )
+    {
+        var temp = msg.split(" ");
+        if(temp[1] == "min")
+        {
+          x = x + (temp[0] * 60);
+        }else if(temp[1] == "sec")
+        {
+            x = x + parseInt(temp[0]);
+        }else if(temp[1] == "hours" || temp[1] == "hour")
+        {
+            x = x + (temp[0] * 3600);
+        }
+
+        if(temp[1] != "Now" && temp[1] != "hours" && temp[1] != "hour" && temp[1] != "min" && temp[1] != "sec")
+        {
+            check_limit = true;
+        }
+
+        if(temp[1] == "hours"  && parseInt(temp[0]) > 2)
+        {
+            check_limit = true; 
+        }
+
+    }
+
+    var id = Date.now();
+    if($(this).hasClass('just_now1')){
+    this.removeClass('just_now1');
     this.addClass("" + id);
     var dis = '';
     if(!check_limit){

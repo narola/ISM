@@ -156,14 +156,21 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                 }
                 $Server->wsSend($clientID, json_encode($responce));
             } else if ($responce['type'] == 'post') {
-                $classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
+                //$classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
                 foreach ($Server->wsClients as $id => $client) {
-                    if (in_array($Server->wsClients[$id][12], $classmates)) {
+                    if (in_array($Server->wsClients[$id][12], $responce['studymate_list'])) {
                         $Server->wsSend($id, json_encode($responce));
                     }
                 }
-            } else if (in_array($responce['type'], $check)) {
-              
+            }else if ($responce['type'] == 'like') {
+                //$classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
+                foreach ($Server->wsClients as $id => $client) {
+                    if (in_array($Server->wsClients[$id][12], $responce['allStudyMate'])) {
+                        $Server->wsSend($id, json_encode($responce));
+                    }
+                }
+            } 
+            else if (in_array($responce['type'], $check)) {
                 foreach ($Server->wsClients as $id => $client) {
                     if (in_array($Server->wsClients[$id][12], $responce['allStudyMate'])) {
                         $Server->wsSend($id, json_encode($responce));
@@ -193,7 +200,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                 $Server->wsSend($clientID, json_encode($responce));
             } else if ($responce['type'] == 'tag-user-again') {
                 foreach ($Server->wsClients as $id => $client) {
-                    if (in_array($Server->wsClients[$id][12], $responce['tagged_id'])) {
+                    if (in_array($Server->wsClients[$id][12], $responce['studymate_list'])) {
                         $Server->wsSend($id, json_encode($responce));
                     }
                 }
@@ -202,6 +209,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         }
     }
 }
+
 
 // when a client connects
 function wsOnOpen($clientID) {
@@ -228,7 +236,6 @@ function wsOnClose($clientID, $status) {
 
 // start the server
 $Server = new PHPWebSocket();
-
 $Server->bind('message', 'wsOnMessage');
 $Server->bind('open', 'wsOnOpen');
 $Server->bind('close', 'wsOnClose');
@@ -236,8 +243,8 @@ $Server->bind('close', 'wsOnClose');
 // for other computers to connect, you will probably need to change this to your LAN IP or external IP,
 // alternatively use: gethostbyaddr(gethostbyname($_SERVER['SERVER_NAME']))
 
- $Server->wsStartServer('192.168.1.114', 9301); // nv
- // $Server->wsStartServer('192.168.1.189', 9301); // pv
+ // $Server->wsStartServer('192.168.1.114', 9301); // nv
+ $Server->wsStartServer('192.168.1.189', 9301); // pv
  // $Server->wsStartServer('172.31.22.105', 9301); // server
 
 

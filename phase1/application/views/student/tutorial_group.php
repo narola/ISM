@@ -23,7 +23,8 @@
 .wPaint-theme-classic .wPaint-menu-icon { float: left; height: 30px; margin: 0 3px !important; width: 30px;}
 .wPaint-menu { left: 0 !important; position: relative !important; top: -130px !important; width: auto !important;}
 .wPaint-menu-holder { height: auto; display: inline-block; padding: 8px ;}
-
+.gsib_a{padding : 0px !important;}
+.gsc-search-button{height: 23px;width: 30px;padding: 6px;}
 </style>
 <div class="col-sm-7 main main_tut tut_dis"><!--mCustomScrollbar" data-mcs-theme="minimal-dark-->
     <?php 	if(isset($topic) && !empty($topic)){ ?>
@@ -249,7 +250,16 @@
     s.parentNode.insertBefore(gcse, s);
   })();
 </script>
+
+
 <gcse:search></gcse:search>
+
+<script type="text/javascript">
+
+    $( document ).ready(function() {
+        $('.gsib_a').css("padding":"0px");
+});
+</script>
                 </div>
                 <!--//Explore-->
                 <!--dictionary-->

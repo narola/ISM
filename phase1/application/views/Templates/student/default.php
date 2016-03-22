@@ -265,7 +265,13 @@ $url = uri_string();
     										$active = 'class="active"';
     									}
 
-    									echo '<li><a ' . $d . ' href="' . $redirect_url . '" ' . $active . '>' . $value . '</a></li>';
+    									if($current_weekday >= 3)
+    									{
+    										echo '<li><a ' . $d . ' ' . $active . '>' . $value . '</a></li>';
+    									}else
+    									{
+    										echo '<li><a ' . $d . ' href="' . $redirect_url . '" ' . $active . '>' . $value . '</a></li>';
+    									}
     								}
     							}
     							?> 

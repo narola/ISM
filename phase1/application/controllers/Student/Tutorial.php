@@ -14,7 +14,6 @@ class Tutorial extends ISM_Controller {
 	}
 	
 	public function index(){
-
 			$data = array();
 			$data['timing'] = active_hours();
 			$data['hide_right_bar'] = true;	
@@ -247,7 +246,7 @@ if(empty($data['topic'])){
 			);
 
 	   if($data['exam']['group_status'] != 'active'){
-	   		redirect('student/home');
+	   		//redirect('student/home');
 
 	   }
 	    $current_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
