@@ -154,8 +154,8 @@ class User_account extends CI_Controller {
 				$city_id = $this->input->post("city_id");
 
 			
-			$fname = $this->input->post("first_name");
-			$lname = $this->input->post("last_name");
+			$fname = ucfirst(strtolower($this->input->post("first_name")));
+			$lname = ucfirst(strtolower($this->input->post("last_name")));
 			
 			$full_name = $fname.' '.$lname;
 

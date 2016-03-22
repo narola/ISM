@@ -137,7 +137,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     $check = array('feed_comment', 'like');
     if (isset($responce)) {
         // $responce = replace_invalid_chars($responce);
-        pr($responce, 1);
+        pr($responce);
         if ($responce['to'] == 'self') {
             $Server->wsSend($clientID, json_encode($responce));
         } else {
@@ -156,7 +156,11 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                 }
                 $Server->wsSend($clientID, json_encode($responce));
             } else if ($responce['type'] == 'post') {
+
                 //$classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
+
+                $classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
+
                 foreach ($Server->wsClients as $id => $client) {
                     if (in_array($Server->wsClients[$id][12], $responce['studymate_list'])) {
                         $Server->wsSend($id, json_encode($responce));
@@ -249,5 +253,6 @@ $Server->bind('close', 'wsOnClose');
 
 
 // $Server->wsStartServer('123.201.110.194', 9300);
-// C:\wamp\bin\php\php5.5.12\php.exe -f "C:\wamp\www\ism_phase1\phase1\websocket\server.php"
+// C:\wamp\bin\php\php5.5.12\php.exe -f "C:\wamp\www\ism_phase1\phase1\websocket\server.php" //pv
+// C:\wamp\bin\php\php5.5.12\php.exe -f "C:\wamp\www\ISM\phase1\websocket\server.php" //nv
 ?>

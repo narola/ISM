@@ -1033,7 +1033,9 @@ class PHPWebSocket {
 	    $data['post_id'] = mysqli_insert_id($link);
 	    $data['tot_like'] = 0;
 	    $data['tot_comment'] = 0;
+
 	    $data['to'] = 'all';
+
 	    if (!$x) {
 		$data['error'] = 'Unable to save message.! Please try again.';
 	    }
@@ -1097,7 +1099,6 @@ class PHPWebSocket {
 		    }
 		    $data['posted_on'] = $this->get_time_format(date("M d, Y, g:i:s a", strtotime($this->ctime())));
 		} else {
-		    $data['to'] = 'self';
 		    $data['error'] = 'Unable to save message.! Please try again.';
 		}
 	    }
@@ -1124,7 +1125,7 @@ class PHPWebSocket {
 	if (mysqli_num_rows($row) == 1) {
 	    $rows = mysqli_fetch_assoc($row);
 
-	    echo $query = "SELECT * FROM " . TBL_FEEDS_TAGGED_USER . " WHERE user_id = " . $user_id . " AND feed_id =" . $data['to'];
+	    $query = "SELECT * FROM " . TBL_FEEDS_TAGGED_USER . " WHERE user_id = " . $user_id . " AND feed_id =" . $data['to'];
 	    $row = mysqli_query($link, $query);
 	    $data['allStudyMate'] = $this->class_mate_list($rows['feed_by']);
 	    if (mysqli_num_rows($row) > 0) {

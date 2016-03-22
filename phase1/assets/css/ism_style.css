@@ -4203,6 +4203,9 @@ img#blah_after{height: 220px;width:220px;}
 }
 label.error{ color:#a94442; }
 .passive .blink {
-    background: #ffba00 none repeat scroll 0 0 !important;
-    color: #fff !important;
+    background: #1bc4a3 none repeat scroll 0 0 !important;
+    color: #000 !important;
+}
+.chat_header.blink .chat_name {
+	color: #000 !important;
 }
