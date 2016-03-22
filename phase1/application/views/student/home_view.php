@@ -254,7 +254,6 @@
 		    			    <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>" src="<?php echo UPLOAD_URL . '/' . $com['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
 		    			</div>
 		    			<div class="notification_txt">
-
 		    			    <p style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>"><a class="noti_username"><?php echo $com['full_name']; ?></a> <?php echo $com['comment']; ?></p>
 		    			    <span class="noti_time just_now1"></span>     
 		    			    <script type="text/javascript">
@@ -263,6 +262,7 @@
 
 		    			</div>
 		    			<div class="clearfix"></div>
+		    			
 		    		    </div>
 
 					<?php
@@ -274,7 +274,6 @@
 			</div>
 			<div class="write_comment box_body">
 			    <input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="<?php echo $value['fid']; ?>">                  
-
 			</div>
 		    </div>
 		    <?php
