@@ -37,6 +37,14 @@
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
+                if (!input.files[0].name.match(/\.(jpg|jpeg|png|gif)$/)){
+                    alert("not image");
+                }else
+                {
+                    alert("image");
+                }
+
+
                 reader.onload = function (e) {
                     $('#blah')
                         .attr('src', e.target.result)
@@ -250,6 +258,26 @@
                         </div>
                     </div>
                     <!--//box1-->
+                    <!-- model for image errors -->
+                    
+                    
+                    <div class="modal fade in" id="image_upload_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display:block">
+                    <div class="modal-dialog" role="document" style="width:600px;margin-top:120px;">
+                        <div class="modal-content">
+                            <div class="modal-header notice_header text-center">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="close_model()"><span aria-hidden="true">×</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Invalid uploading</h4>
+                            </div>
+                            <div class="modal-body">
+                                Your image couldn't be uploaded. Photo should be saved as JPG, PNG, GIF or TIFF
+                                <div class="basic_info">
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                     <!--box1-->
                     <div class="box">
                         <div class="box_header">
@@ -650,6 +678,12 @@
             e.preventDefault();
             return false;
         });
+
+        function close_model()
+        {  
+             $('#image_upload_model').removeClass('in');
+        }
+
        function send_email(){
 
             email = $('#request_email').val();

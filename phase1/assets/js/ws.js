@@ -233,7 +233,7 @@ $(document).ready(function () {
                         data: btoa(binaryString),
                         to: user
                     }
-                    if ($('#feed_post').length > 0) {                           
+                    if ($('#feed_post').length > 0) {
                         $('#feed_post').attr('readonly', 'readonly');
                         $('button[data-type="post"]').attr('disabled', 'disabled');
                     }
@@ -2032,9 +2032,7 @@ function saveImg(image) {
     ws.send(JSON.stringify(request));
 }
 
-
 $.fn.timestatus = function (msg) {
-
     //console.log(msg);
     var x = 0;
     var check_limit;
@@ -2100,8 +2098,10 @@ $.fn.timestatus = function (msg) {
     }
 };
 
+
 /* Function for time counter for the comment's */
 /* msg is time comes from. e.g : 5 min ago, 17 hours ago */
+
 
 $.fn.timestatus1 = function (msg) {
 
