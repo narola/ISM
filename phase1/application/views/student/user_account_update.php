@@ -36,31 +36,27 @@
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-
                 if (!input.files[0].name.match(/\.(jpg|jpeg|png|gif)$/)){
-                    alert("not image");
+                        $('#image_upload_model').addClass('in',{duration:500});
+                        $('#image_upload_model').css("display","block");
+                        input.files[0].value = input.files[0].defaultValue;
                 }else
                 {
-                    alert("image");
+                         reader.onload = function (e) {
+                                $('#blah')
+                                    .attr('src', e.target.result)
+                                    // .attr('style','heigth:162px;width:220px;');
+                                    // .attr('style','border-radius:50%;width:220px;height:220px;');
+                                $('#blah_after')
+                                    .attr('src', e.target.result)
+                                    // .attr('style','height:162px;width:220px;');
+                                    // .attr('style','border-radius:50%;width:220px;height:220px;');
+                                $('#aftr_select').show();
+                                $('#before_select').hide();
+                            };
+                       reader.readAsDataURL(input.files[0]);
                 }
-
-
-                reader.onload = function (e) {
-                    $('#blah')
-                        .attr('src', e.target.result)
-                        // .attr('style','heigth:162px;width:220px;');
-                        // .attr('style','border-radius:50%;width:220px;height:220px;');
-                    $('#blah_after')
-                        .attr('src', e.target.result)
-                        // .attr('style','height:162px;width:220px;');
-                        // .attr('style','border-radius:50%;width:220px;height:220px;');
-                    $('#aftr_select').show();
-                    $('#before_select').hide();
-                };
-
-                reader.readAsDataURL(input.files[0]);
             }
-            
         }
     </script>
 </head>
@@ -261,7 +257,7 @@
                     <!-- model for image errors -->
                     
                     
-                    <div class="modal fade in" id="image_upload_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display:block">
+                    <div class="modal fade" id="image_upload_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display:none">
                     <div class="modal-dialog" role="document" style="width:600px;margin-top:120px;">
                         <div class="modal-content">
                             <div class="modal-header notice_header text-center">
@@ -682,6 +678,7 @@
         function close_model()
         {  
              $('#image_upload_model').removeClass('in');
+            $('#image_upload_model').css("display","none");
         }
 
        function send_email(){
