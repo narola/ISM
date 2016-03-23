@@ -1518,17 +1518,18 @@ function generate_comment(obj, i, k) {
     {
     var comment_cols = $('#feed_comments[data-id="'+ obj.to +'"]').children().size();
     //var comment_cols2 = $('#feed_comments').children('.comment[data-id="'+obj.to+'"]').size();
-    console.log(comment_cols);
     if(comment_cols > 4)
             {   var n_th = comment_cols - 4;
-                console.log(comment_cols + "inner");
                 $('#feed_comments[data-id="'+ obj.to +'"]').children().eq(n_th).css( "display", "none" );
                 $('#feed_comments[data-id="'+ obj.to +'"]').children().eq(n_th).attr("data-first","");
+                $('.comment_btn[data-id="'+ obj.to +'"]').html("").fadeOut(0);
+                $('.comment_btn[data-id="'+ obj.to +'"]').html('<span class="icon icon_comment" title="Comment"></span>' + '4 of ' + comment_cols).fadeOut(0).fadeIn(400);
                 $('.comment_showall[data-id="' + obj.to + '"]').css("display", "");
+            }else
+            {
+                $('.comment_btn[data-id="' + obj.to + '"]').html("");
+                $('.comment_btn[data-id="' + obj.to + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'').fadeOut(0).fadeIn(400);
             }
-
-    $('.comment_btn[data-id="' + obj.to + '"]').html("");
-    $('.comment_btn[data-id="' + obj.to + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
     }
 }
 
