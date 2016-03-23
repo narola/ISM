@@ -151,8 +151,7 @@
 				}
 				?>
 			    </span>
-			    <span class="date noti_time just_now">
-				</span>
+			    <span class="date noti_time just_now"><?php echo $value['posted_on'] ?></span>
 				<script type="text/javascript">
 					 $(".just_now").timestatus('<?php echo $value['posted_on'] ?>');
 				</script>
@@ -255,9 +254,9 @@
 		    			</div>
 		    			<div class="notification_txt">
 		    			    <p style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>"><a class="noti_username"><?php echo $com['full_name']; ?></a> <?php echo $com['comment']; ?></p>
-		    			    <span class="noti_time just_now1"></span>     
+		    			    <span class="noti_time just_now"><?php echo get_time_format($com['created_date']); ?></span>     
 		    			    <script type="text/javascript">
-		    			    	 $(".just_now1").timestatus1('<?php echo get_time_format($com['created_date']); ?>');
+		    			    	 $(".just_now").timestatus('<?php echo get_time_format($com['created_date']); ?>');
 							</script>
 
 		    			</div>

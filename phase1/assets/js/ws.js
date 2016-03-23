@@ -233,7 +233,7 @@ $(document).ready(function () {
                         data: btoa(binaryString),
                         to: user
                     }
-                    if ($('#feed_post').length > 0) {                           
+                    if ($('#feed_post').length > 0) {
                         $('#feed_post').attr('readonly', 'readonly');
                         $('button[data-type="post"]').attr('disabled', 'disabled');
                     }
@@ -2032,9 +2032,7 @@ function saveImg(image) {
     ws.send(JSON.stringify(request));
 }
 
-
 $.fn.timestatus = function (msg) {
-
     //console.log(msg);
     var x = 0;
     var check_limit;
@@ -2095,6 +2093,74 @@ $.fn.timestatus = function (msg) {
     {   
          dis = msg;
          this.removeClass('noti_time');
+         $('.' + id).html(dis); 
+    }
+    }
+};
+
+
+$.fn.timestatus2 = function (msg) {
+
+    //console.log(msg);
+    var x = 0;
+    var check_limit;
+    if(typeof(msg) != "undefined" )
+    {
+        var temp = msg.split(" ");
+        if(temp[1] == "min")
+        {
+          x = x + (temp[0] * 60);
+        }else if(temp[1] == "sec")
+        {
+            x = x + parseInt(temp[0]);
+        }else if(temp[1] == "hours" || temp[1] == "hour")
+        {
+            x = x + (temp[0] * 3600);
+        }
+
+        if(temp[1] != "Now" && temp[1] != "hours" && temp[1] != "hour" && temp[1] != "min" && temp[1] != "sec")
+        {
+            check_limit = true;
+        }
+
+        if(temp[1] == "hours"  && parseInt(temp[0]) > 2)
+        {
+            check_limit = true; 
+        }
+
+    }
+
+    var id = Date.now();
+    if($(this).hasClass('just_now')){
+    this.removeClass('just_now');
+    this.addClass("" + id);
+    var dis = '';
+    if(!check_limit){
+    setInterval(function () {
+        if (x >= 7200) {
+            dis = '2 hours ago';
+        } else if (x >= 3600 && x < 7200) {
+            dis = '1 hour ago';
+        } else if (x >= 1800 && x < 3600) {
+            dis = '30 min ago';
+        } else if (x >= 900 && x < 1800) {
+            dis = '15 min ago';
+        } else if (x >= 300 && x < 900) {
+            dis = '5 min ago';
+        } else if (x >= 120 && x < 300) {
+            dis = '2 min ago';
+        } else if (x >= 60 && x < 120) {
+            dis = '1 min ago';
+        } else {
+            dis = 'Just Now';
+        }
+        $('.' + id).html(dis);
+        x++;
+    }, 1000, this);}
+    else
+    {   
+         dis = msg;
+         //this.removeClass('noti_time');
          $('.' + id).html(dis); 
     }
     }
