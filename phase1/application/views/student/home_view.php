@@ -8,14 +8,14 @@
 	{
 	    $('#feed_comments div[data-id="' + $(this).data('id') + '"]').hide();
 	    $('#feed_comments div[data-first="true"]').show();
-	    $('.comment_btn[data-id="'+ $(this).data('id')  +'"]').html("").fadeOut(0);
-        $('.comment_btn[data-id="'+ $(this).data('id')  +'"]').html('<span class="icon icon_comment" title="Comment"></span>' + '4 of ' + comment_cols).fadeOut(0).fadeIn(400);
+	    $('.comment_btn[data-id="'+ $(this).data('id')  +'"]').html("");
+        $('.comment_btn[data-id="'+ $(this).data('id')  +'"]').html('<span class="icon icon_comment" title="Comment"></span>' + '4 of ' + comment_cols);
 	    $(this).html('View All');
 
 	} else {
 	    $('#feed_comments div[data-id="' + $(this).data('id') + '"]').show();
 	    $('.comment_btn[data-id="' + $(this).data('id') + '"]').html("");
-        $('.comment_btn[data-id="' + $(this).data('id') + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'').fadeOut(0).fadeIn(400);
+        $('.comment_btn[data-id="' + $(this).data('id') + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
           
 	    $(this).html('Hide');
 	}
@@ -41,9 +41,9 @@
 	show = $('#all_feed .box div[data-id="' + $(this).data('id') + '"]').is(":visible");
 
 	if (show)
-	    $('#all_feed .box div[data-id="' + $(this).data('id') + '"]').hide();
+		$('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').show();
 	else
-	    $('#all_feed .box div[data-id="' + $(this).data('id') + '"]').show();
+	    $('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').hide();
     });
     
     $('#element').popover('show');
