@@ -371,6 +371,37 @@ class User_account extends CI_Controller {
 
 	}
 
+
+	/**
+	 * Function for Update tagged user notification  
+	 *
+	 * @param  - integer $user_id
+	 * @return - No return
+	 * @author - Pankaj(pv)
+	 */
+	
+	public function tagged_notification($id)
+		{
+			update(TBL_FEEDS_TAGGED_USER,array('user_id'=>$id),array('is_seen'=>1));
+			redirect('student/home');
+		}
+	
+	/**
+	 * Function for Update freind request  notification  
+	 *
+	 * @param  - integer $user_id
+	 * @return - No return
+	 * @author - Pankaj(pv)
+	 */
+	
+	public function freind_request_notification($id)
+		{
+			update(TBL_STUDYMATES_REQUEST,array('request_from_mate_id'=>$id),array('is_seen'=>1));
+			redirect('student/home','refresh');
+		}
+	
+
+
 	/*--get state country wise-----------------*/
 	public function ajax_get_states(){
 		

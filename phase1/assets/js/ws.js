@@ -545,7 +545,7 @@ if ("WebSocket" in window)
                 $('.stm_list #mCSB_5 #mCSB_5_container').append(str);
 
                 if (wp == obj.studymate_id) {
-                    notification_str += '<li><a href="#">';
+                    notification_str += '<li><a href="Student/User_account/freind_request_notification/'+wp+'">';
                     notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.user_data.profile_link + '"></div>';
                     notification_str += '<div class="notification_txt">';
                     notification_str += '<p><span class="noti_username">' + obj.user_data.full_name + '</span> accepted your friend request</p>';
@@ -763,7 +763,7 @@ if ("WebSocket" in window)
             });
 
 
-                notification_str += '<li><a href="#">';
+                notification_str += '<li><a href="Student/User_account/tagged_notification/'+wp+'">';
                 notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.notification_detail[0]['profile_link'] + '"></div>';
                 notification_str += '<div class="notification_txt">';
                 notification_str += '<p><span class="noti_username">' + obj.notification_detail[0]['full_name'] + '</span> tagged you in a post</p>';
