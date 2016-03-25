@@ -719,7 +719,6 @@ if ("WebSocket" in window)
                 location.href = irl + 'student/class_exam';
             }
         } else if (obj.type == 'tag-user-again') {
-            console.log(obj);
             var i = 0;
             var j = 0;
             var k = 0;
@@ -771,11 +770,17 @@ if ("WebSocket" in window)
                 notification_str += '<span class="noti_time just_noti just_now">Just now</span></div>';
                 notification_str += '<div class="clearfix"></div>';
                 notification_str += '</a></li>';
+                var is_notify="";
+
+                $.each(obj.tagged_id, function (index, list) {
+                    if(wp == list)
+                    {
+                      is_notify = "true"
+                    }
+                });
+
                 
-                if (wp != obj.user_iddd) {
-
-                    console.log(wp + "user_iddd" + obj.user_iddd);
-
+                if (is_notify == "true"){
                     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
                     $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
 
@@ -1396,15 +1401,26 @@ function generate_post(obj, status) {
         }
     }
     
+    console.log("hi");
     for (var i = 0; i<result1.length; i++) {
         options += '<option value="' + result1[i].id + '">' + result1[i].full_name + '</option>';
     };
 
+    var total_comment="";
     str += '<span class="date noti_time just_now"></span>';
     str += '<div class="clearfix"></div>';
     str += '<p>' + obj.message + '</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="' + obj.post_id + '"><span title="Like" class="icon icon_thumb' + cls + '"></span>' + obj.tot_like + '</a>';
-    str += '<a href="javascript:void(0);" data-id="' + obj.post_id + '" class="comment_btn"><span class="icon icon_comment" title="Comment"></span>' + obj.tot_comment + '</a>';
+        if(obj.tot_comment > 4)
+        {
+            total_comment = "4";
+            str += '<a href="javascript:void(0);" data-id="' + obj.post_id + '" class="comment_btn"><span class="icon icon_comment" title="Comment"></span><span>' + total_comment + '</span> of ' + obj.tot_comment +'</a>';
+        }else
+        {
+             total_comment = obj.tot_comment;
+             str += '<a href="javascript:void(0);" data-id="' + obj.post_id + '" class="comment_btn"><span class="icon icon_comment" title="Comment"></span>' + total_comment +'</a>';
+        }
+    
     if (typeof (obj.comment) != 'undefined') {
         if (obj.comment.length > 2) {
             str += '<a href="javascript:void(0);" data-type="showall" data-id="' + obj.post_id + '">View All</a>'
@@ -1431,7 +1447,7 @@ function generate_post(obj, status) {
     str += '<a href="javascript:void(0);" class="btn btn_black_normal" data-type="tag-user-again" data-id="' + obj.post_id + '">Tag New</a>';
     str += '</div>';
     str += '<div class="clearfix"></div>';
-    str += '<div id="feed_comments" data-id="' + obj.post_id + '" data-type="instance_post"></div>';
+    str += '<div id="feed_comments" data-id="' + obj.post_id + '" data-type="instance_post1"></div>';
     str += '<div class="write_comment box_body">';
     str += '<input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="' + obj.post_id + '">';
     str += '</div>';
@@ -1488,11 +1504,8 @@ function date_to_day(post_date){
 
 /* Generate HTML block of feed comment. */
 function generate_comment(obj, i, k) { 
-
-    console.log(i);
 /* commenter id for feed post and load more, else part sets commeter id when event on load more */
-     
-    if(!obj.comment_by){
+     if(!obj.comment_by){
        var commenter_id = obj.id;
     }else
     {
@@ -1532,13 +1545,14 @@ function generate_comment(obj, i, k) {
     {
     var comment_cols = $('#feed_comments[data-id="'+ obj.to +'"]').children().size();
     var is_instance_post = $('#feed_comments[data-id="'+ obj.to +'"]').attr('data-type');
-   // alert(is_instance_post);
     //var comment_cols2 = $('#feed_comments').children('.comment[data-id="'+obj.to+'"]').size();
+
     if(comment_cols < 4)
     {
         $('#feed_comments[data-id="'+ obj.to +'"]').attr('data-type','instance_post');
     }
-    if(comment_cols > 4 && !is_instance_post)
+
+    if(comment_cols > 4 && !is_instance_post && is_instance_post != "instance_post1")
             {   
                 var n_th = comment_cols - 4;
                 var shown_comment = parseInt($('.comment_btn[data-id="'+ obj.to +'"] span:nth-child('+'2'+')').text());
@@ -1548,15 +1562,27 @@ function generate_comment(obj, i, k) {
                         }
                 $('.comment_btn[data-id="'+ obj.to +'"]').html('<span class="icon icon_comment" title="Comment"></span><span>' + shown_comment + '</span> of ' + comment_cols);
                 $('.comment_showall[data-id="' + obj.to + '"]').css("display", "");
-            }else
-            {
-                $('.comment_btn[data-id="' + obj.to + '"]').html("");
-                $('.comment_btn[data-id="' + obj.to + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
             }
-    }else
+            else if(comment_cols > 4 && is_instance_post == "instance_post1")
+                {
+                var shown_comment = parseInt($('.comment_btn[data-id="'+ obj.to +'"] span:nth-child('+'2'+')').text());
+                if(!shown_comment)
+                        {
+                            shown_comment = 4;
+                        }
+                    shown_comment++;
+                $('.comment_btn[data-id="'+ obj.to +'"]').html('<span class="icon icon_comment" title="Comment"></span><span>' + shown_comment + '</span> of ' + comment_cols);
+                $('.comment_showall[data-id="' + obj.to + '"]').css("display", "");
+                    
+                } else
+                {
+                    $('.comment_btn[data-id="' + obj.to + '"]').html("");
+                    $('.comment_btn[data-id="' + obj.to + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
+                }
+    }
+    else
     {
-        $('.comment_btn[data-id="' + obj.to + '"]').html("");
-        $('.comment_btn[data-id="' + obj.to + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
+
     }
 }
 

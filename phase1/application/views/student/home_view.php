@@ -6,18 +6,21 @@
     	var comment_cols = $('#feed_comments[data-id="'+ $(this).data('id')  +'"]').children().size();
 	if ($(this).html() == 'Hide')
 	{
-	    $('#feed_comments div[data-id="' + $(this).data('id') + '"]').hide();
-	    $('#feed_comments div[data-first="true"]').show();
+	    //$('#feed_comments div[data-id="' + $(this).data('id') + '"]').hide();
+	    //$('#feed_comments div[data-first="true"]').show();
 	    $('.comment_btn[data-id="'+ $(this).data('id')  +'"]').html("");
         $('.comment_btn[data-id="'+ $(this).data('id')  +'"]').html('<span class="icon icon_comment" title="Comment"></span>' + '4 of ' + comment_cols);
 	    $(this).html('View All');
+
+	    	for (var i = comment_cols - 4; i >= 1; i--) {
+	    		$('#feed_comments[data-id="' + $(this).data('id') + '"] .comment:nth-child('+ i +')').css("display", "none");
+	    	};
 
 	} else {
 	    $('#feed_comments div[data-id="' + $(this).data('id') + '"]').show();
 	    $('.comment_btn[data-id="' + $(this).data('id') + '"]').html("");
         $('.comment_btn[data-id="' + $(this).data('id') + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
-          
-	    $(this).html('Hide');
+        $(this).html('Hide');
 	}
     });
     $(document).ready(function() {
@@ -271,7 +274,7 @@
 		    			    <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>" src="<?php echo UPLOAD_URL . '/' . $com['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
 		    			</div>
 		    			<div class="notification_txt">
-		    			    <p style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>"><a class="noti_username"><?php echo $com['full_name']; ?></a> <?php echo $com['comment']; ?></p>
+		    			    <p><a class="noti_username"  style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>"><?php echo $com['full_name']; ?></a> <?php echo $com['comment']; ?></p>
 
 		    			    <span class="noti_time"><?php echo get_time_format($com['created_date']); ?></span>   
 		    			
