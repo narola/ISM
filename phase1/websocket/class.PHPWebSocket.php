@@ -874,6 +874,55 @@ class PHPWebSocket {
 	return $all;
     }
 
+
+/**
+     * Get array of all study mates in detail.
+     * @param int $user_id
+     * @return string
+     * @author pankaj vasava
+     */
+    function class_mate_list_detail($user_id, $status = true) {
+
+	$link = $this->db();
+	// $query = "SELECT `mate_id`, `mate_of` "
+	// 	. "FROM `" . TBL_STUDYMATES . "` "
+	// 	. "WHERE ( `mate_id` = $user_id OR `mate_of` = $user_id ) AND is_delete = 0";
+	$query = "SELECT `s`.`mate_id`, `s`.`mate_of`,`u`.`id` ,`u`.`full_name` "
+		. "FROM `" . TBL_STUDYMATES . "` `s`, `" . TBL_USERS . "` `u`  "
+		. "WHERE ( (`s`.`mate_id` = $user_id and `s`.`mate_of` = `u`.`id`) OR ( `s`.`mate_of` = $user_id and `s`.`mate_id` = `u`.`id`) ) AND `s`.is_delete = 0";
+
+	$row = mysqli_query($link, $query);
+	$all = array();
+	$i = 0;
+	while ($rows = mysqli_fetch_assoc($row)) {
+	    if ($rows['mate_id'] !== $user_id) {
+		$all[$i]['id'] = $rows['mate_id'];
+		$all[$i]['full_name'] = $rows['full_name'];
+	    }
+	    if ($rows['mate_of'] !== $user_id) {
+		$all[$i]['id'] = $rows['mate_of'];
+		$all[$i]['full_name'] = $rows['full_name'];
+	    }$i++;
+	}
+
+	if ($status) {
+	    $all[] = $user_id;
+	}
+	if ($link != null) {
+	    mysqli_close($link);
+	}
+	$studymates = array();
+	foreach ($all as $value) {
+		if($value !== $user_id)
+		{
+			$studymates[] = $value;
+		}
+	}
+	return $all;
+    }
+
+
+
     /**
      * Get list of group member.
      * @param type $userID
@@ -1020,8 +1069,7 @@ class PHPWebSocket {
      * @author Sandip Gopani (SAG)
      */
     function classmate_post($user_id, $data = null) {
-
-	$studymate_id = $this->class_mate_list($user_id);
+	$studymate_id = $this->class_mate_list($user_id);	
 	$data['studymate_list'] = $studymate_id;
 	if (is_array($data) && !empty($data)) {
 	    $link = $this->db();
@@ -1033,9 +1081,7 @@ class PHPWebSocket {
 	    $data['post_id'] = mysqli_insert_id($link);
 	    $data['tot_like'] = 0;
 	    $data['tot_comment'] = 0;
-
 	    $data['to'] = 'all';
-
 	    if (!$x) {
 		$data['error'] = 'Unable to save message.! Please try again.';
 	    }
@@ -1057,25 +1103,36 @@ class PHPWebSocket {
 			}
 		    }
 
-		    $query = "INSERT INTO `" . TBL_FEEDS_TAGGED_USER . "`(`id`, `user_id`, `feed_id`,`tagged_by`, `created_date`, `is_delete`, `is_testdata`) "
-			    . "VALUES $str";
-		    $x = mysqli_query($link, $query);
-		    if (is_array($tagged_array))
-			$t = implode(',', $tagged_array);
-		    else
-			$t = '0';
-		    $query = "SELECT `id`,`full_name` "
-			    . "FROM `" . TBL_USERS . "` "
-			    . "WHERE `id` in(" . $t . ") "
-			    . "AND is_delete = 0";
-		    $rows = mysqli_query($link, $query);
-		    $tagged_detail = array();
-		    $i = 0;
-		    while ($row = mysqli_fetch_assoc($rows)) {
-			$tagged_detail[$i]['full_name'] = $row['full_name'];
-			$tagged_detail[$i]['id'] = $row['id'];
-			$i++;
-		    }
+		    if($str != "")
+		    {
+			    $query = "INSERT INTO `" . TBL_FEEDS_TAGGED_USER . "`(`id`, `user_id`, `feed_id`,`tagged_by`, `created_date`, `is_delete`, `is_testdata`)"."VALUES $str";
+			      $data['str'] = $str; 
+				  $data['qry'] = $query; 
+			    $x = mysqli_query($link, $query);
+			
+
+			    if (is_array($tagged_array))
+				$t = implode(',', $tagged_array);
+			    else
+				$t = '0';
+			    $query = "SELECT `id`,`full_name` "
+				    . "FROM `" . TBL_USERS . "` "
+				    . "WHERE `id` in(" . $t . ") "
+				    . "AND is_delete = 0";
+			    $rows = mysqli_query($link, $query);
+			    $tagged_detail = array();
+			    $i = 0;
+
+			    while ($row = mysqli_fetch_assoc($rows)) {
+				$tagged_detail[$i]['full_name'] = $row['full_name'];
+				$tagged_detail[$i]['id'] = $row['id'];
+				$i++;
+			    }
+			}else
+			{
+				$tagged_detail="";
+			}
+
 		    $data['tagged_id'] = $tagged_array;
 		    $data['tagged_detail'] = $tagged_detail;
 		    $studymates = $this->class_mate_list($user_id);

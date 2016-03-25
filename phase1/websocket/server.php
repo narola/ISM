@@ -137,7 +137,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     $check = array('feed_comment', 'like');
     if (isset($responce)) {
         // $responce = replace_invalid_chars($responce);
-        pr($responce);
+         pr($responce, 1);
         if ($responce['to'] == 'self') {
             $Server->wsSend($clientID, json_encode($responce));
         } else {
@@ -160,11 +160,22 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                 //$classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
 
                 $classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
-
+                $studymates = $responce['studymate_list'];
+                $i = 0;
                 foreach ($Server->wsClients as $id => $client) {
-                    if (in_array($Server->wsClients[$id][12], $responce['studymate_list'])) {
+                    if (in_array($Server->wsClients[$id][12], $studymates)) {
+                        $classmates = $Server->class_mate_list_detail($Server->wsClients[$id][12]);
+                            $studymate = array();
+                            foreach ($classmates as  $value) {
+                                   if($value !== $Server->wsClients[$id][12])
+                                   {
+                                        $studymate[] = $value;
+                                   }
+                            }
+                        $responce['studymates_detail'] = $studymate;
                         $Server->wsSend($id, json_encode($responce));
                     }
+                    $i++;
                 }
             }else if ($responce['type'] == 'like') {
                 //$classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
@@ -248,8 +259,8 @@ $Server->bind('close', 'wsOnClose');
 // alternatively use: gethostbyaddr(gethostbyname($_SERVER['SERVER_NAME']))
 
 
-  $Server->wsStartServer('192.168.1.114', 9301); // nv
- //$Server->wsStartServer('192.168.1.189', 9301); // pv
+ //$Server->wsStartServer('192.168.1.114', 9301); // nv
+ $Server->wsStartServer('192.168.1.189', 9301); // pv
  //$Server->wsStartServer('172.31.22.105', 9301); // server
 
 // $Server->wsStartServer('123.201.110.194', 9300);
