@@ -590,6 +590,7 @@ class User_account extends CI_Controller {
     }
 
     public function set_profile($uid){
+
 		$userdata = 	$this->session->userdata('user');
 		$profile_pic = $userdata['profile_pic'];
     	$path = "uploads/user_".$uid;

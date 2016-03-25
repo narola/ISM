@@ -36,23 +36,27 @@
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#blah')
-                        .attr('src', e.target.result)
-                        // .attr('style','heigth:162px;width:220px;');
-                        // .attr('style','border-radius:50%;width:220px;height:220px;');
-                    $('#blah_after')
-                        .attr('src', e.target.result)
-                        // .attr('style','height:162px;width:220px;');
-                        // .attr('style','border-radius:50%;width:220px;height:220px;');
-                    $('#aftr_select').show();
-                    $('#before_select').hide();
-                };
-
-                reader.readAsDataURL(input.files[0]);
+                if (!input.files[0].name.match(/\.(jpg|jpeg|png|gif)$/)){
+                        $('#image_upload_model').addClass('in',{duration:500});
+                        $('#image_upload_model').css("display","block");
+                        input.files[0].value = input.files[0].defaultValue;
+                }else
+                {
+                         reader.onload = function (e) {
+                                $('#blah')
+                                    .attr('src', e.target.result)
+                                    // .attr('style','heigth:162px;width:220px;');
+                                    // .attr('style','border-radius:50%;width:220px;height:220px;');
+                                $('#blah_after')
+                                    .attr('src', e.target.result)
+                                    // .attr('style','height:162px;width:220px;');
+                                    // .attr('style','border-radius:50%;width:220px;height:220px;');
+                                $('#aftr_select').show();
+                                $('#before_select').hide();
+                            };
+                       reader.readAsDataURL(input.files[0]);
+                }
             }
-            
         }
     </script>
 </head>
@@ -250,6 +254,26 @@
                         </div>
                     </div>
                     <!--//box1-->
+                    <!-- model for image errors -->
+                    
+                    
+                    <div class="modal fade" id="image_upload_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display:none">
+                    <div class="modal-dialog" role="document" style="width:600px;margin-top:120px;">
+                        <div class="modal-content">
+                            <div class="modal-header notice_header text-center">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="close_model()"><span aria-hidden="true">×</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Invalid uploading</h4>
+                            </div>
+                            <div class="modal-body">
+                                Your image couldn't be uploaded. Photo should be saved as JPG, PNG, GIF or TIFF
+                                <div class="basic_info">
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                     <!--box1-->
                     <div class="box">
                         <div class="box_header">
@@ -650,6 +674,13 @@
             e.preventDefault();
             return false;
         });
+
+        function close_model()
+        {  
+             $('#image_upload_model').removeClass('in');
+            $('#image_upload_model').css("display","none");
+        }
+
        function send_email(){
 
             email = $('#request_email').val();

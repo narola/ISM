@@ -3,14 +3,20 @@
 	$('.post' + id).show();
     }
     $(document).on('click', 'a[data-type="showall"]', function() {
+    	var comment_cols = $('#feed_comments[data-id="'+ $(this).data('id')  +'"]').children().size();
 	if ($(this).html() == 'Hide')
 	{
 	    $('#feed_comments div[data-id="' + $(this).data('id') + '"]').hide();
 	    $('#feed_comments div[data-first="true"]').show();
+	    $('.comment_btn[data-id="'+ $(this).data('id')  +'"]').html("");
+        $('.comment_btn[data-id="'+ $(this).data('id')  +'"]').html('<span class="icon icon_comment" title="Comment"></span>' + '4 of ' + comment_cols);
 	    $(this).html('View All');
 
 	} else {
 	    $('#feed_comments div[data-id="' + $(this).data('id') + '"]').show();
+	    $('.comment_btn[data-id="' + $(this).data('id') + '"]').html("");
+        $('.comment_btn[data-id="' + $(this).data('id') + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
+          
 	    $(this).html('Hide');
 	}
     });
@@ -35,9 +41,9 @@
 	show = $('#all_feed .box div[data-id="' + $(this).data('id') + '"]').is(":visible");
 
 	if (show)
-	    $('#all_feed .box div[data-id="' + $(this).data('id') + '"]').hide();
+		$('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').show();
 	else
-	    $('#all_feed .box div[data-id="' + $(this).data('id') + '"]').show();
+	    $('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').hide();
     });
     
     $('#element').popover('show');
@@ -180,12 +186,24 @@
 				?>    
 				<span><?php echo $value['tot_like']; ?></span></a>
 			    <a href="javascript:void(0);" class="comment_btn" data-id="<?php echo $value['fid']; ?>"><span data-toggle="tooltip" title="Comment" class="icon icon_comment"></span>
-				<span><?php echo $value['tot_comment']; ?></span></a>
+					<span>
+							<?php
+							if($value['tot_comment'] > 4)
+							{
+							 echo "4 of " . $value['tot_comment'];
+							}else
+							{
+							 echo $value['tot_comment'];
+							}
+							 ?>
+					</span>
+				</a>
 			    <?php if ($value['tot_comment'] > 4) { ?>
-	    		    <a href="javascript:void(0);" data-type="showall" data-id="<?php echo $value['fid']; ?>">View All</a>
-		<?php } ?>
-
+	    		    <a href="javascript:void(0);" class="comment_showall" data-type="showall" data-id="<?php echo $value['fid']; ?>">View All</a>
+				<?php }else{ ?>
+					<a href="javascript:void(0);" class="comment_showall" style="display:none" data-type="showall" data-id="<?php echo $value['fid']; ?>">View All</a>
 				<?php
+			}
 				/* Remove tag option after complete tagging */
 				$tot_count = 0;
 				if (!empty($my_studymates)) {
@@ -254,11 +272,9 @@
 		    			</div>
 		    			<div class="notification_txt">
 		    			    <p style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>"><a class="noti_username"><?php echo $com['full_name']; ?></a> <?php echo $com['comment']; ?></p>
-		    			    <span class="noti_time just_now"><?php echo get_time_format($com['created_date']); ?></span>     
-		    			    <script type="text/javascript">
-		    			    	 $(".just_now").timestatus('<?php echo get_time_format($com['created_date']); ?>');
-							</script>
 
+		    			    <span class="noti_time"><?php echo get_time_format($com['created_date']); ?></span>   
+		    			
 		    			</div>
 		    			<div class="clearfix"></div>
 		    			

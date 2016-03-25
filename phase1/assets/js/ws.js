@@ -280,8 +280,8 @@ if ("WebSocket" in window)
 {
 
       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+      //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
@@ -1428,7 +1428,7 @@ function generate_post(obj, status) {
     str += '<a href="javascript:void(0);" class="btn btn_black_normal" data-type="tag-user-again" data-id="' + obj.post_id + '">Tag New</a>';
     str += '</div>';
     str += '<div class="clearfix"></div>';
-    str += '<div id="feed_comments" data-id="' + obj.post_id + '"></div>';
+    str += '<div id="feed_comments" data-id="' + obj.post_id + '" data-type="instance_post"></div>';
     str += '<div class="write_comment box_body">';
     str += '<input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="' + obj.post_id + '">';
     str += '</div>';
@@ -1528,18 +1528,32 @@ function generate_comment(obj, i, k) {
     if(k == false)
     {
     var comment_cols = $('#feed_comments[data-id="'+ obj.to +'"]').children().size();
+    var is_instance_post = $('#feed_comments[data-id="'+ obj.to +'"]').attr('data-type');
+   // alert(is_instance_post);
     //var comment_cols2 = $('#feed_comments').children('.comment[data-id="'+obj.to+'"]').size();
-    console.log(comment_cols);
-    if(comment_cols > 4)
-            {   var n_th = comment_cols - 4;
-                console.log(comment_cols + "inner");
-                $('#feed_comments[data-id="'+ obj.to +'"]').children().eq(n_th).css( "display", "none" );
-                $('#feed_comments[data-id="'+ obj.to +'"]').children().eq(n_th).attr("data-first","");
+    if(comment_cols < 4)
+    {
+        $('#feed_comments[data-id="'+ obj.to +'"]').attr('data-type','instance_post');
+    }
+    if(comment_cols > 4 && !is_instance_post)
+            {   
+                var n_th = comment_cols - 4;
+                var shown_comment = parseInt($('.comment_btn[data-id="'+ obj.to +'"] span:nth-child('+'2'+')').text());
+                if(!shown_comment)
+                        {
+                            shown_comment = 4;
+                        }
+                $('.comment_btn[data-id="'+ obj.to +'"]').html('<span class="icon icon_comment" title="Comment"></span><span>' + shown_comment + '</span> of ' + comment_cols);
                 $('.comment_showall[data-id="' + obj.to + '"]').css("display", "");
+            }else
+            {
+                $('.comment_btn[data-id="' + obj.to + '"]').html("");
+                $('.comment_btn[data-id="' + obj.to + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
             }
-
-    $('.comment_btn[data-id="' + obj.to + '"]').html("");
-    $('.comment_btn[data-id="' + obj.to + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
+    }else
+    {
+        $('.comment_btn[data-id="' + obj.to + '"]').html("");
+        $('.comment_btn[data-id="' + obj.to + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
     }
 }
 
