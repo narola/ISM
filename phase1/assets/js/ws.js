@@ -176,6 +176,8 @@ $(document).ready(function () {
     /* Handle multiple chat window. */
     $(document).on('click', '.chat .chat_header', function () {
         if ($(this).parent().hasClass('passive')) {
+            $(this).removeClass("blinking");
+            $(this).removeClass("blink");
             if ($(this).parent().hasClass('chat_3')) {
                 $('.chat.active').removeClass('active').addClass('chat_3 passive');
                 clearInterval(chat_3);
@@ -190,8 +192,7 @@ $(document).ready(function () {
                 clearInterval(chat_1);
             }
             $(this).parent().removeClass().addClass('active').addClass('chat');
-            $(this).removeClass("blinking");
-            $(this).removeClass("blink");
+            
         }
     });
 
@@ -281,7 +282,7 @@ if ("WebSocket" in window)
 
       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
@@ -322,7 +323,7 @@ if ("WebSocket" in window)
         }
 
         if (obj.redirect != 'skip') {
-            console.log(obj);
+            // console.log(obj);
             location.href = obj.redirect;
         }
 
@@ -1025,6 +1026,7 @@ function myfunction(from){
             if($(".chat_container .chat[data-id="+id+"]").hasClass('chat_1'))
                 cls = 'chat_1';
             $(".chat_container .chat[data-id="+id+"] .chat_header").addClass("blinking");
+            $(".chat_header").removeClass("blink");
             blink(".blinking", cls, 1000);
             // blink(".chat_container .chat[data-id="+id+"] .chat_header", cls, 1000);
             is_needed = false;
@@ -1087,6 +1089,7 @@ function myfunction(from){
         ws.send(JSON.stringify(request));
 
         $(".chat_"+j+" .chat_header").addClass("blinking");
+        $(".chat_header").removeClass("blink");
         blink(".blinking", 'chat_'+j, 1000);
         // blink(".chat_"+j+" .chat_header", 'chat_'+j, 1000);
 
