@@ -335,14 +335,18 @@ if ("WebSocket" in window)
 
 
         if (obj.type == 'studymate') {
-            
             if (wp == obj.from) {
                 $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
                 $('.chat[data-id="' + obj.to + '"] .chat_loading').fadeOut(300);
-            } else {
-                $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
-            }
-            $('.just_now').timestatus();
+            } 
+            /*else {
+                console.log("here");
+                console.log(obj);
+                // setTimeout(function () {
+                    $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
+                // }, 400);
+            }*/
+            
             
 
                
@@ -365,8 +369,14 @@ if ("WebSocket" in window)
                 }
                 c.html(++count);
             }
-            $('.chat_text').mCustomScrollbar('update')
-            $('.chat_text').mCustomScrollbar('scrollTo', 500);
+            if (wp != obj.from) {
+                if($(".chat_text").is(":visible")){
+                    console.log($('#chat_container .chat[data-id="' + obj.from + '"] .chat_text'));
+                    $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
+                }
+            }
+            $('.just_now').timestatus();
+            $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
         }else if (obj.type == 'chat_type') {
             
            if(wp == obj.to){
@@ -1079,6 +1089,7 @@ function myfunction(from){
             my_id: id
         };
 
+        ws.send(JSON.stringify(request));
 
         $(".chat_"+j+" .chat_header").addClass("blinking");
         blink(".blinking", 'chat_'+j, 1000);
@@ -2071,6 +2082,25 @@ function saveImg(image) {
     $('.upload_loader_whiteboard').fadeIn(300);
     ws.send(JSON.stringify(request));
 }
+
+var chat_3,chat_2,chat_1;
+    function blink(elem, times, speed) {
+        if(times == 'chat_3'){
+            chat_3 = setInterval(function(){
+                            $(elem).toggleClass("blink");
+                        },speed);
+        }
+        if(times == 'chat_2'){
+            chat_2 = setInterval(function(){
+                            $(elem).toggleClass("blink");
+                        },speed);
+        }
+        if(times == 'chat_1'){
+            chat_1 = setInterval(function(){
+                            $(elem).toggleClass("blink");
+                        },speed);
+        }
+    }
 
 $.fn.timestatus = function (msg) {
     //console.log(msg);
