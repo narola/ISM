@@ -93,7 +93,7 @@
 
                                 ?>
 
-                                <img src="<?php echo $imgs; ?>">
+                                <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo $imgs; ?>">
                                 </div>
                                 <div class="admin_question">
                                     <h4><?php echo $v['full_name']; ?><span><?php echo date_format( date_create($v['created_date']), 'M d, Y, g:i a'); ?></span></h4>
@@ -324,7 +324,7 @@
                                 }
 
                                 ?>
-                                <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $v['id']; ?>" src="<?php echo $imgs; ?>">
+                                <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $v['id']; ?>" src="<?php echo $imgs; ?>">
                             </div>
                             <h4 style="cursor:pointer;" class="user_profile_hover" data-type="show-profile" data-id="<?php echo $v['id']; ?>"><?php echo $v['full_name']; ?></h4>
                             <p><?php echo $v['school_name']; ?></p>

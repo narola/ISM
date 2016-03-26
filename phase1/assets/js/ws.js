@@ -278,9 +278,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-      // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
@@ -1268,7 +1268,6 @@ $(document).on('click', '#mate_list', function () {
 
 /* Send Feed Post */
 $(document).on('click', 'button[data-type="post"]', function () {
-
     if ($.trim($('#feed_post').val()) != '') {
         var request = {
             type: 'post',
@@ -1401,15 +1400,16 @@ function generate_post(obj, status) {
         }
     }
     
-    console.log("hi");
+    //console.log("hi");
     for (var i = 0; i<result1.length; i++) {
         options += '<option value="' + result1[i].id + '">' + result1[i].full_name + '</option>';
     };
-
+    var feed_msg = obj.message;
+     
     var total_comment="";
     str += '<span class="date noti_time just_now"></span>';
     str += '<div class="clearfix"></div>';
-    str += '<p>' + obj.message + '</p>';
+    str += '<p>' + feed_msg.replace(/\n/g,"<br>") + '</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="' + obj.post_id + '"><span title="Like" class="icon icon_thumb' + cls + '"></span>' + obj.tot_like + '</a>';
         if(obj.tot_comment > 4)
         {
@@ -1437,8 +1437,11 @@ function generate_post(obj, status) {
     }
 
     str += '<div class="dropdown tag_user user_'+obj.post_id+'" style="display: '+show_tagged+';">';
-    str += '<a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="' + obj.post_id + '" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>'
+    str += '<a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="' + obj.post_id + '" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>';
     str += '</div>';
+    if(wp == p_id){ 
+        str += '<a data-feed="'+obj.post_id+'" class="edit_post_icon"><i title="Edit Post" class="fa fa-pencil-square-o"></i></a>';
+    }
     str += '</div>';
     str += '<div style="float:right;display:none;" id="show-again" data-id="' + obj.post_id + '">';
     str += '<select style="width:200px;" name="all_users_again[]" id="' + obj.post_id + '" data-id="' + obj.post_id + '" class="js-example-basic-single form-control" multiple="multiple">';
@@ -1596,7 +1599,15 @@ $(document).on('click', 'button[data-type="load_more"]', function () {
         message: ''
     };
     ws.send(JSON.stringify(request));
-})
+});
+
+// edit post
+$(document).on('click', 'a.edit_post_icon', function () {
+    var feed_id = $(this).data('feed');
+    console.log(feed_id);
+
+});
+
 
 /* Submit group discussion comment. */
 $(document).on('click', '.option_bar[data-type="discussion-submit"]', function () {

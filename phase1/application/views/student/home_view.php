@@ -174,7 +174,7 @@
 				// echo date("M j, Y", $old_date);
 				?>
 			    <div class="clearfix"></div>
-			    <p><?php echo $value['feed_text']; ?></p>
+			    <p><?php echo nl2br($value['feed_text']); ?></p>
 			    <a href="javascript:void(0);" data-id="<?php echo $value['fid']; ?>" data-type="feed-like" class="like_btn">
 				<?php
 				if ($value['my_like'] == 1 || $value['my_like'] == '') {
@@ -230,6 +230,10 @@
 			    <div class="dropdown tag_user user_<?php echo $value['fid']; ?>"  style="display: <?php echo $tag_show;?>;">
 				<a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="<?php echo $value['fid']; ?>" aria-haspopup="true" aria-expanded="true"><span data-toggle="tooltip" title="Tag mates" class="icon icon_user_2"></span><span class="caret"></span></a>
 			    </div>
+				<?php if($this->session->userdata('user')['id'] == $value['feed_by']){ ?>
+			    <a data-feed="<?php echo $value['fid']; ?>" class="edit_post_icon"><i title="Edit Post" class="fa fa-pencil-square-o"></i></a>
+			    <?php } ?>
+
 			</div>
 			<div style="float:right;display:none;" id="show-again" data-id="<?php echo $value['fid']; ?>">
 			    <select style="width:200px;"name="all_users_again[]" id="select-tag-user-again" data-id="<?php echo $value['fid']; ?>" class="js-example-basic-single form-control" multiple="multiple">

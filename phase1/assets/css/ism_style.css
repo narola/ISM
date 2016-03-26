@@ -4212,3 +4212,10 @@ label.error{ color:#a94442; }
 .chat_header.blink .chat_name {
 	color: #000 !important;
 }
+.edit_post_icon{
+	color: #1bc4a3;
+    font-size: 18px;
+    margin: 0 12px 0 0 !important;
+    padding: 1px;
+    float: right;
+}
