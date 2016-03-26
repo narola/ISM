@@ -278,9 +278,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-      // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
@@ -1273,7 +1273,7 @@ $(document).on('click', 'button[data-type="post"]', function () {
         var request = {
             type: 'post',
             to: 'all',
-            test: 'test',
+            feed: 'normal',
             tagged_id: $('#tagged-users-id').val(),
             message: $('#feed_post').val()
         };
@@ -1366,6 +1366,35 @@ function generate_post(obj, status) {
                 }
                 j++;
             }
+
+            if(obj.feed == "normal" && list.id == wp)
+                {
+                   
+
+                notification_str += '<li><a href="Student/User_account/tagged_notification/'+wp+'">';
+                notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '"></div>';
+                notification_str += '<div class="notification_txt">';
+                notification_str += '<p><span class="noti_username">' + obj.full_name + '</span> tagged you in a post</p>';
+                notification_str += '<span class="noti_time just_noti just_now">Just now</span></div>';
+                notification_str += '<div class="clearfix"></div>';
+                notification_str += '</a></li>';
+
+                    $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
+                    $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
+
+                    $('.just_now').timestatus(obj.posted_on);
+                    notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
+                    if (notification_length == 0) {
+                        notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">No more notification</div></li>');
+                        $('.mCSB_container .three_tabs .dropdown .badge').html(0);
+                    }
+                    else {
+                        $('.mCSB_container .three_tabs .dropdown .badge').html(notification_length);
+                    }
+
+                }
+
+
         });
     }
     str += '<span data-id="' + obj.post_id + '">' + name + '</span>';
