@@ -379,7 +379,7 @@
         </div>
         <footer class="row reg_footer">
             <div class="col-sm-12">
-                <p>©2015 ISM. All Rights Reserved.</p>
+              <center> <p>©2015 ISM. All Rights Reserved.</p></center> 
             </div>
         </footer>
     </div>
