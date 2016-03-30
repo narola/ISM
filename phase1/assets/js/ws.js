@@ -280,7 +280,7 @@ if ("WebSocket" in window)
 
        var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
@@ -440,6 +440,10 @@ if ("WebSocket" in window)
                 $('.alert_notification p').html("New feed from <b>" + obj.full_name + "</b>").show();
             }
             generate_post(obj, true);
+
+            $("#tagged-users-id").val("");
+            $("#tag_or_not").val("");
+
         } else if (obj.type == 'feed_comment') {
             generate_comment(obj);
         } else if (obj.type == 'load_more_feed') {
