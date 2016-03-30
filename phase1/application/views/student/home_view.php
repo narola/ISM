@@ -133,22 +133,22 @@
 				    $t_count = count($value['tagged']);
 				    foreach ($value['tagged'] as $t_key => $t_value) {
 					if ($t_count == 1) {
-					    echo '&nbsp;tagged : <label class="label label_name">' . $t_value['full_name'] . '</label>';
+					    echo '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id="'. $t_value['id'] .'" class="label label_name">' . $t_value['full_name'] . '</label>';
 					}
 					if ($t_count == 2) {
 					    if ($t_j == 0) {
-						echo '&nbsp;tagged : <label class="label label_name">' . $t_value['full_name'] . '</label>';
+						echo '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id="'. $t_value['id'] .'" class="label label_name">' . $t_value['full_name'] . '</label>';
 					    } else {
-						echo 'and <label class="label label_name">' . $t_value['full_name'] . '</label>';
+						echo 'and <label style="cursor:pointer;" data-type="show-profile" data-id="'. $t_value['id'] .'" class="label label_name">' . $t_value['full_name'] . '</label>';
 					    }
 					    $t_j++;
 					}
 					if ($t_count > 2) {
 					    if ($t_i == 0) {
-						echo '&nbsp;tagged : <label class="label label_name">' . $t_value['full_name'] . '</label>';
+						echo '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id="'. $t_value['id'] .'" class="label label_name">' . $t_value['full_name'] . '</label>';
 					    } else {
 						$l = $t_count - 1;
-						$other_name .= $t_value['full_name'] . '<br>';
+						$other_name .="<label style='cursor:pointer;' data-type='show-profile' data-id=". $t_value['id'] ." class='label_name'>" . $t_value['full_name'] . '</label><br>';
 						if ($k == $l) {
 						    echo 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-placement="bottom" data-trigger="focus" data-toggle="popover" title="Other Tagged" data-content="' . $other_name . '" >' . $l . ' more</a></label>';
 						}
