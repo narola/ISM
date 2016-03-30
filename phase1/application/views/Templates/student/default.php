@@ -174,7 +174,7 @@ $url = uri_string();
 						<!--notification-->
 						<ul class="three_tabs">
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span data-toggle="tooltip" title="Notifications" class="icon icon_bell"></span>
+								<a href="#" class="dropdown-toggle" onClick="update_notification()" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span data-toggle="tooltip" title="Notifications" class="icon icon_bell"></span>
 								<span class="badge bell_badge"><?php echo $this->noti_cnt; ?></span>
 							</a>
 							
@@ -184,13 +184,14 @@ $url = uri_string();
 								if (sizeof($this->notification_list) > 0) {
 										$notification_for = "tagged_notification";
 									foreach ($this->notification_list as $key => $value) {
-										if(substr($value['msg'],0,9) == " accepted")
-											{
-												$notification_for = "freind_request_notification";
-											}
+										// if(substr($value['msg'],0,9) == " accepted")
+										// 	{
+										// 		$notification_for = "freind_request_notification";
+										// 	}
 								?>
 								<li>
-									<a href="Student/User_account/<?php echo $notification_for; ?>/<?php echo $this->session->userdata['user']['id']; ?>">
+									 <a href="#">
+									<!-- <a href="Student/User_account/<?php// echo $notification_for; ?>/<?php // echo $this->session->userdata['user']['id']; ?>"> -->
 										<div class="user_small_img">
 											<img onerror="this.src='assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>">
 										</div>
@@ -534,6 +535,22 @@ jQuery(document).ready(function() {
 	});
 	$("#notification-panel").css('overflow','hidden');
 });
+
+function update_notification()
+{	
+	var dataString = 'id='+ wp;
+	  $.ajax({
+                  type: "POST",
+                  url: "Student/User_account/tagged_notification",
+                  data: dataString,
+                  cache: false,
+                  success: function(result){
+                    $('.bell_badge').html("0");
+                  }
+            }); 
+
+}
+
 </script>
 </body>
 </html>
