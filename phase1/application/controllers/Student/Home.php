@@ -130,7 +130,7 @@ class Home extends ISM_Controller {
 			}
 
 			$data['feed'] = $final_feed;
-
+			
 			$feed_ids = array();
 			foreach ($data['feed'] as $key => $value) {
 				$feed_ids[] = $value['fid'];
