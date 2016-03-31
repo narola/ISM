@@ -99,14 +99,17 @@
                                         $percentage = '';
                                     }
                         ?>
-                            <li><a href="<?php echo $url;?>"><?php echo $is_running_cls; ?>
+                            <li class="exam_class"><a href="<?php echo $url;?>"><?php echo $is_running_cls; ?>
                                 <?php 
                                     if(strlen($exam_value['exam_name']) > 29)
                                         echo substr($exam_value['exam_name'],0, 29).'.....';
                                     else
                                         echo $exam_value['exam_name'];
                                 ?>
-                                <span class="result"><?php if($percentage != '')echo $percentage.'%';?></span>
+                                <div class="clearfix"></div>
+                                <span class="result exam_type pull-left"><?php echo $exam_value['exam_type'].' exam'; ?></span>
+                                <span class="result exam_type_per pull-right"><?php if($percentage != '')echo $percentage.'%';?></span>
+                                <div class="clearfix"></div>
                             </a></li>
                         <?php 
                                 }

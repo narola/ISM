@@ -4221,3 +4221,18 @@ label.error{ color:#a94442; }
     padding: 1px;
     float: right;
 }
+.exams_holder li .exam_type,.exams_holder li .exam_type_per {
+    color: #1bc4a3;
+    font-weight: 700;
+    position: relative;
+    right: 0;
+}
+ul.exams_holder li.exam_class a:after{
+	top:10px;
+}
+.result.exam_type_per.pull-right {
+    padding-right: 25px;
+}
+ul.exams_holder li.exam_class{
+	position: relative;
+}

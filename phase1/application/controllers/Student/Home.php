@@ -339,5 +339,9 @@ class Home extends ISM_Controller {
 		    		);
 		$this->load->view('student/group_allocation',$data);
 	}
+
+	public function tagged_feed($feed_id){
+		
+	}
 	
 }

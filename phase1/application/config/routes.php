@@ -90,6 +90,7 @@ $route['student/class-exam-instruction/(:any)'] = "Student/My_classroom_exam/exa
 $route['student/exam'] = "Student/tutorial/exam_start";
 $route['student/class_exam'] = "Student/My_classroom_exam/exam_start";
 $route['student/group_allocation'] = "Student/home/group_allocation";
+$route['student/tagged_feed/(:any)'] = "Student/home/tagged_feed/$1";
 $route['student/(:any)'] = "Student/$1";
 $route['student/(:any)/(:any)'] = "Student/$1/$2";
 $route['student/(:any)/(:any)/(:any)'] = "Student/$1/$2/$3";

@@ -22,6 +22,9 @@ $url = uri_string();
 		<!-- Select2 CSS Start -->
 		<link href="assets/css/select2-bootstrap.css" rel="stylesheet">
 		<link href="assets/css/select2.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="assets/css/jquery.fancybox.css?v=2.1.5" media="screen" />
+		
+	
 		<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -84,6 +87,7 @@ $url = uri_string();
 		<script src="assets/js/jquery-1.11.3.min.js"></script>
 		<!-- Include all compiled plugins (below), or include individual files as needed -->
 		<script src="assets/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="assets/js/jquery.fancybox.js?v=2.1.5"></script>
 		<script src="assets/js/circle-progress.js"></script>
 		<!--scroll-->
 		<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
@@ -96,6 +100,7 @@ $url = uri_string();
 		<script src="assets/js/jquery.cookie.js"></script>
 		<script src="assets/js/select2.min.js"></script> <!-- Select2 JS -->
 		<script src="assets/js/ws.js"></script>
+
 		<script>
 		/*----show all comment[student]----*/
 		function showall(id) {
@@ -167,7 +172,8 @@ $url = uri_string();
 						<!--side left-->
 						<div class="sidebar_left_container text-center mscroll_custom"><!-- scrollbar" id="style-3-->
 						<div class="user_profile_img">
-							<img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $this->session->userdata['user']['profile_pic']; ?>">
+						<a href="<?php echo UPLOAD_URL . '/' . $this->session->userdata['user']['profile_pic']; ?>" class="fancybox">
+							<img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $this->session->userdata['user']['profile_pic']; ?>"></a>
 						</div>
 						<h4><?php echo $this->session->userdata['user']['full_name']; ?></h4>
 						<a href="student/user_account">View Profile</a>
@@ -217,7 +223,7 @@ $url = uri_string();
 							</ul>
 						</li>
 						<!--  <li><a href="#">
-							<span class="icon icon_message"></span>
+								<span class="icon icon_message"></span>
 							<span class="badge message_badge" id="my_message_cnt">0</span></a></li> -->
 							<li><a href="/student/studymates_request"><span data-toggle="tooltip" title="Requests" class="icon icon_request"></span>
 							<?php
@@ -325,7 +331,7 @@ $url = uri_string();
 					?>
 				</div>
 				<!-- <div class="text-center">
-					<button class="btn_find_studymates btn btn_blue">Find more Studymates</button>
+						<button class="btn_find_studymates btn btn_blue">Find more Studymates</button>
 				</div> -->
 			</div>
 			<!--//STM-->
@@ -433,7 +439,7 @@ if (isset($active_c) && !empty($active_c) && $this->session->userdata('user')['i
 				$mess = $value['message'];
 				if ($mess == null || $mess == '') {
 					if (in_array($value['media_type'], $check_type)) {
-						$mess = '<a href="uploads/' . $value['media_link'] . '"  target="_BLANK"><img src="uploads/' . $value['media_link'] . '" width="50" height="50" /></a>';
+						$mess = '<a href="uploads/' . $value['media_link'] . '"  class="fancybox"><img src="uploads/' . $value['media_link'] . '" width="50" height="50" /></a>';
 					} else {
 						$mess = '<a href="uploads/' . $value['media_link'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50" /></a>';
 					}
@@ -521,6 +527,7 @@ $(".js-example-basic-single").select2();
 <!--//body-->
 <script>
 jQuery(document).ready(function() {
+	$(".fancybox").fancybox();
 	$('.chat_text').mCustomScrollbar({
 		theme: "minimal-dark",
 		callbacks: {

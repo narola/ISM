@@ -106,7 +106,7 @@
                                     );
                                       if($v['message'] == '' || $v['message'] == null){
                                         if (in_array($v['media_type'], $check_type)) {
-                                     echo '<a href="uploads/' . $v['media_link'] . '"  target="_BLANK"><img src="uploads/' . $v['media_link'] . '" width="50" height="50"></a>';
+                                     echo '<a href="uploads/' . $v['media_link'] . '"  class="fancybox"><img src="uploads/' . $v['media_link'] . '" width="50" height="50"></a>';
                                     } else {
                                         echo '<a href="uploads/' . $v['media_link'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50"></a>';
                                         }
