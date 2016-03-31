@@ -2264,11 +2264,9 @@ ul.tut_weekdays {
 	position: fixed;
     z-index: 2;
     bottom: 400px;
-
     /*bottom: 5px;*/
     left: 600px;
     /*right: 30px;*/
-    
 	width:320px;
     background-color: #baede3;
     border: 1px solid #1bc4a3;
