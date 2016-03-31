@@ -2770,9 +2770,9 @@ class PHPWebSocket {
 	$data['studymate_list'] = $studymate_id;
 
 	if (is_array($data) && !empty($data)) {
-	//    if (in_array($data['data_type'], $check_type)) {
+	    if (in_array($data['data_type'], $check_type)) {
 		$query = "INSERT INTO `" . TBL_FEEDS . "`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) "
-			. "VALUES (NULL,$user_id,'','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,0,'yes')";
+			. "VALUES (NULL,$user_id,'','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
 		$x = mysqli_query($link, $query);
 		$data['post_id'] = mysqli_insert_id($link);
 		$data['tot_like'] = 0;
@@ -2785,11 +2785,7 @@ class PHPWebSocket {
 			    . "VALUES(NULL,  " . $data['post_id'] . ", '" . $data['webpath'] . "', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '0', 'yes')";
 		    $y = mysqli_query($link, $query);
 		    if ($y) {
-		    if (in_array($data['data_type'], $check_type)) {	
 			$data['message'] = '<a href="uploads/' . $data['webpath'] . '"  class="fancybox"><img src="uploads/' . $data['webpath'] . '" width="100" height="70"></a>';
-			}else{
-				$data['message'] = '<a href="uploads/' . $data['webpath'] . '" target="_BLANK"><img src="assets/images/default_chat.png" width="100" height="70"></a>';
-			}
 		    } else {
 			$data['to'] = 'self';
 			$data['error'] = 'Unable to save image data! Please try again!';
@@ -2803,10 +2799,10 @@ class PHPWebSocket {
 		if (isset($data['data'])) {
 		    unset($data['data']);
 		}
-	    /*} else {
+	    } else {
 		$data['to'] = 'self';
 		$data['error'] = 'Please select only Image!';
-	    }*/
+	    }
 	}
 
 	$data['posted_on'] = $this->get_time_format(date("M d, Y, g:i:s a", strtotime($this->ctime())));

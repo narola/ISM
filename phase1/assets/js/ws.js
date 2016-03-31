@@ -207,12 +207,12 @@ $(document).ready(function () {
         var type_of_data = this.files[0].type;
         var file_name = this.files[0].name;
 
-        if (types == 'feed_file_share') {
+        /*if (types == 'feed_file_share') {
             if (type_of_data != 'image/png' && type_of_data != 'image/gif' && type_of_data != 'image/jpg' && type_of_data != 'image/jpeg') {
                 alert('You can upload only images in feed!');
                 return;
             }
-        }
+        }*/
 
 
 
@@ -279,9 +279,9 @@ if ("WebSocket" in window)
 {
 
 
-       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-      // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+    // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+    var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
@@ -340,16 +340,7 @@ if ("WebSocket" in window)
                 $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
                 $('.chat[data-id="' + obj.to + '"] .chat_loading').fadeOut(300);
             } 
-            /*else {
-                console.log("here");
-                console.log(obj);
-                // setTimeout(function () {
-                    $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
-                // }, 400);
-            }*/
             
-            
-
                
             if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
                 myfunction(obj.from);
@@ -424,7 +415,7 @@ if ("WebSocket" in window)
             $.each(obj.message, function (index, list) {
                 var my_msg = '';
                 if (list.is_text == 0) {
-                    my_msg = '<a href="uploads/' + list.a_link + '"  target="_BLANK"><img src="' + list.img_link + '" width="50" height="50" /></a>';
+                    my_msg = '<a class="fancybox" href="uploads/' + list.a_link + '"  target="_BLANK"><img src="' + list.img_link + '" width="50" height="50" /></a>';
                 } else {
                     my_msg = list.text;
                 }
@@ -1270,6 +1261,7 @@ $(document).on('click', '#mate_list', function () {
 
 /* Send Feed Post */
 $(document).on('click', 'button[data-type="post"]', function () {
+    
     if ($.trim($('#feed_post').val()) != '') {
         var request = {
             type: 'post',
