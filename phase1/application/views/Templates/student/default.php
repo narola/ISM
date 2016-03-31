@@ -22,9 +22,6 @@ $url = uri_string();
 		<!-- Select2 CSS Start -->
 		<link href="assets/css/select2-bootstrap.css" rel="stylesheet">
 		<link href="assets/css/select2.css" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="assets/css/jquery.fancybox.css?v=2.1.5" media="screen" />
-		
-	
 		<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -87,20 +84,17 @@ $url = uri_string();
 		<script src="assets/js/jquery-1.11.3.min.js"></script>
 		<!-- Include all compiled plugins (below), or include individual files as needed -->
 		<script src="assets/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="assets/js/jquery.fancybox.js?v=2.1.5"></script>
+		<!-- bootsrap-notify plugggin -->
+		<script src="assets/bootstrap-notify-3.1.3/bootstrap-notify.js"></script> 
+	 	<script src="assets/bootstrap-notify-3.1.3/bootstrap-notify.min.js"></script>
 		<script src="assets/js/circle-progress.js"></script>
 		<!--scroll-->
 		<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-		<?php flashMessage($this->session->flashdata('success'), $this->session->flashdata('error')); ?>
-		<script>setTimeout(
-			function() {
-				$(".alert-dismissible").hide(500);
-			}, 3000);
-		</script>
+
+
 		<script src="assets/js/jquery.cookie.js"></script>
 		<script src="assets/js/select2.min.js"></script> <!-- Select2 JS -->
 		<script src="assets/js/ws.js"></script>
-
 		<script>
 		/*----show all comment[student]----*/
 		function showall(id) {
@@ -108,6 +102,7 @@ $url = uri_string();
 		}
 		</script>
 		<script>
+
 		/*---noticeboard filter[student]---*/
 		function search_noticeboard() {
 			txt_value = $('#txt_search').val();
@@ -125,6 +120,28 @@ $url = uri_string();
 		</script>
 	</head>
 	<body>
+
+		<?php
+			if($this->session->flashdata('success'))
+			{ ?>
+				<script type="text/javascript">
+					$.notify({
+								icon: '<?php echo UPLOAD_URL . '/' . $this->session->userdata['user']['profile_pic']; ?>',
+								title: '<strong>Notification:</strong> ',
+								message: '<?php echo $this->session->flashdata("success"); ?>'
+							},{
+								type: 'minimalist',
+								delay: 5000,
+								icon_type: 'image',
+								template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+									'<img data-notify="icon" class="img-circle pull-left">' +
+									'<span data-notify="title">{1}</span>' +
+									'<span data-notify="message">{2}</span>' +
+								'</div>'
+							});
+				</script>
+		<?php } ?>
+		
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container-fluid">
 				<!-- Brand and toggle get grouped for better mobile display -->
@@ -172,8 +189,7 @@ $url = uri_string();
 						<!--side left-->
 						<div class="sidebar_left_container text-center mscroll_custom"><!-- scrollbar" id="style-3-->
 						<div class="user_profile_img">
-						<a href="<?php echo UPLOAD_URL . '/' . $this->session->userdata['user']['profile_pic']; ?>" class="fancybox">
-							<img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $this->session->userdata['user']['profile_pic']; ?>"></a>
+							<img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $this->session->userdata['user']['profile_pic']; ?>">
 						</div>
 						<h4><?php echo $this->session->userdata['user']['full_name']; ?></h4>
 						<a href="student/user_account">View Profile</a>
@@ -223,7 +239,7 @@ $url = uri_string();
 							</ul>
 						</li>
 						<!--  <li><a href="#">
-								<span class="icon icon_message"></span>
+							<span class="icon icon_message"></span>
 							<span class="badge message_badge" id="my_message_cnt">0</span></a></li> -->
 							<li><a href="/student/studymates_request"><span data-toggle="tooltip" title="Requests" class="icon icon_request"></span>
 							<?php
@@ -331,7 +347,7 @@ $url = uri_string();
 					?>
 				</div>
 				<!-- <div class="text-center">
-						<button class="btn_find_studymates btn btn_blue">Find more Studymates</button>
+					<button class="btn_find_studymates btn btn_blue">Find more Studymates</button>
 				</div> -->
 			</div>
 			<!--//STM-->
@@ -439,7 +455,7 @@ if (isset($active_c) && !empty($active_c) && $this->session->userdata('user')['i
 				$mess = $value['message'];
 				if ($mess == null || $mess == '') {
 					if (in_array($value['media_type'], $check_type)) {
-						$mess = '<a href="uploads/' . $value['media_link'] . '"  class="fancybox"><img src="uploads/' . $value['media_link'] . '" width="50" height="50" /></a>';
+						$mess = '<a href="uploads/' . $value['media_link'] . '"  target="_BLANK"><img src="uploads/' . $value['media_link'] . '" width="50" height="50" /></a>';
 					} else {
 						$mess = '<a href="uploads/' . $value['media_link'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50" /></a>';
 					}
@@ -527,7 +543,6 @@ $(".js-example-basic-single").select2();
 <!--//body-->
 <script>
 jQuery(document).ready(function() {
-	$(".fancybox").fancybox();
 	$('.chat_text').mCustomScrollbar({
 		theme: "minimal-dark",
 		callbacks: {

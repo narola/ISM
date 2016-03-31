@@ -2259,14 +2259,38 @@ ul.tut_weekdays {
 	background-color:#333;
 }
 
+/* css for the bootstrap-notification with image to show */
+
+.alert-minimalist {
+	background-color: #1bc4a3;
+	border-color: rgba(149, 149, 149, 0.3);
+	border-radius: 3px;
+	color: white;
+	padding: 10px;
+}
+.alert-minimalist > [data-notify="icon"] {
+	height: 50px;
+	margin-right: 12px;
+}
+.alert-minimalist > [data-notify="title"] {
+	color: rgb(51, 51, 51);
+	display: block;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+.alert-minimalist > [data-notify="message"] {
+	font-size: 100%;
+}
 
 .alert_notification{
 	position: fixed;
     z-index: 2;
     bottom: 400px;
+
     /*bottom: 5px;*/
     left: 600px;
     /*right: 30px;*/
+
 	width:320px;
     background-color: #baede3;
     border: 1px solid #1bc4a3;
@@ -4218,19 +4242,4 @@ label.error{ color:#a94442; }
     margin: 0 12px 0 0 !important;
     padding: 1px;
     float: right;
-}
-.exams_holder li .exam_type,.exams_holder li .exam_type_per {
-    color: #1bc4a3;
-    font-weight: 700;
-    position: relative;
-    right: 0;
-}
-ul.exams_holder li.exam_class a:after{
-	top:10px;
-}
-.result.exam_type_per.pull-right {
-    padding-right: 25px;
-}
-ul.exams_holder li.exam_class{
-	position: relative;
 }

@@ -398,8 +398,8 @@ if ("WebSocket" in window)
 {
 
 
-      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-      // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
        //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
@@ -892,7 +892,7 @@ if ("WebSocket" in window)
                         str += '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +'  class="label label_name">' + list.full_name + '</label>';
                         ids += list.id;
                     } else {
-                        str += 'and <label class="label label_name" style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +' >' + list.full_name + '</label>';
+                        str += 'and <label class="label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +'  label_name">' + list.full_name + '</label>';
                         ids += ',' + list.id;
                     }
                     i++;
@@ -903,7 +903,7 @@ if ("WebSocket" in window)
                         ids += list.id;
                     } else {
                         //"<label style='cursor:pointer;' data-type='show-profile' data-id=" +  list.id + " class='label_name'>" + list.full_name + '</label><div class=\'clearfix\'></div>';
-                        other_name += "<label style='cursor:pointer;' data-type='show-profile' data-id=" +  list.id + " class='label label_name'>" + list.full_name + '</label><div class=\'clearfix\'></div>';
+                        other_name += "<label style='cursor:pointer;' data-type='show-profile' data-id=" +  list.id + " class='label_name'>" + list.full_name + '</label><div class=\'clearfix\'></div>';
                         l = parseInt(len) - parseInt(1);
                         if (j == l) {
                             str += 'and <label class="label label_name">';
