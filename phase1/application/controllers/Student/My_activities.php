@@ -66,17 +66,50 @@ class My_activities extends ISM_Controller {
 		}
 
 		/*--------Get my studymates---------*/
+
+		// $studymate = studymates($user_id,false);
+		// $where = array('where' => array('u.is_delete' => 0),'where_in'=>array('u.id' => $studymate),'where_in' => array('date_format(sm.created_date,"%m")' => $month));
+		// $option = array('join'=>
+		// 			array(
+		// 				array(
+		// 					'table' => TBL_STUDYMATES.' sm',
+		// 					'condition' => 'u.id = sm.mate_of and sm.mate_id ='.$user_id
+		// 				),
+		// 				array(
+		// 					'table' => TBL_STUDYMATES.' sm2',
+		// 					'condition' => 'u.id = sm2.mate_id and sm2.mate_of ='.$user_id
+		// 				),
+		// 				array(
+		// 					'table' => TBL_STUDENT_ACADEMIC_INFO.' in',
+		// 					'condition' => 'u.id = in.user_id'
+		// 				),
+		// 				array(
+		// 					'table' => TBL_SCHOOLS.' s',
+		// 					'condition' => 's.id = in.school_id'
+		// 				),
+		// 				array(
+		// 					'table' => TBL_USER_PROFILE_PICTURE.' p',
+		// 					'condition' => 'u.id = p.user_id'
+		// 				),
+		// 				array(
+		// 					'table' => TBL_COURSES.' c',
+		// 					'condition' => 'c.id = in.course_id'
+		// 				)
+		// 			),
+		// 		);
+
 		$studymate = studymates($user_id,false);
-		$where = array('where' => array('u.is_delete' => 0),'where_in'=>array('u.id' => $studymate),'where_in' => array('date_format(sm.created_date,"%m")' => $month));
+		$where = array('where_in' => array('date_format(sm.created_date,"%m")' => $month),'or_where_in' => array('date_format(sm2.created_date,"%m")' => $month),'where' => array('u.is_delete' => 0));
+
 		$option = array('join'=>
 					array(
 						array(
 							'table' => TBL_STUDYMATES.' sm',
-							'condition' => 'u.id = sm.mate_of and sm.mate_id ='.$user_id
+							'condition' => 'u.id = sm.mate_of and sm.is_delete = 0 and sm.mate_id ='.$user_id 
 						),
 						array(
 							'table' => TBL_STUDYMATES.' sm2',
-							'condition' => 'u.id = sm2.mate_id and sm2.mate_of ='.$user_id
+							'condition' => 'u.id = sm2.mate_id and sm2.is_delete = 0 and sm2.mate_of ='.$user_id
 						),
 						array(
 							'table' => TBL_STUDENT_ACADEMIC_INFO.' in',
@@ -96,9 +129,10 @@ class My_activities extends ISM_Controller {
 						)
 					),
 				);
-		$select='u.full_name,sm.mate_of ,sm2.mate_id,if(sm.created_date is null,sm2.created_date,sm.created_date) as created_date,s.school_name,p.profile_link,c.course_name';
-		$data['my_activities']['studymates'] = select(TBL_USERS.' u',$select,$where,$option);
 		
+		$select ='u.full_name,sm.mate_of,sm2.mate_id,if(sm.created_date is null,sm2.created_date,sm.created_date) as created_date,s.school_name,p.profile_link,c.course_name';
+		$data['my_activities']['studymates'] = select(TBL_USERS.' u',$select,$where,$option);
+
 		/* Changed time formate */
 		for ($i=0; $i < count($data['my_activities']['studymates']) ; $i++) { 
 			$data['my_activities']['studymates'][$i]['created_date'] = get_time_format(date("M d, Y, g:i:s a", strtotime($data['my_activities']['studymates'][$i]['created_date'])));

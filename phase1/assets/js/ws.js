@@ -279,9 +279,10 @@ if ("WebSocket" in window)
 {
 
 
-    // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+      // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+       //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+
 
 
 
@@ -433,6 +434,10 @@ if ("WebSocket" in window)
                 $('.alert_notification p').html("New feed from <b>" + obj.full_name + "</b>").show();
             }
             generate_post(obj, true);
+
+            $("#tagged-users-id").val("");
+            $("#tag_or_not").val("");
+
         } else if (obj.type == 'feed_comment') {
             generate_comment(obj);
         } else if (obj.type == 'load_more_feed') {
@@ -536,7 +541,7 @@ if ("WebSocket" in window)
                 $('.stm_list #mCSB_5 #mCSB_5_container').append(str);
 
                 if (wp == obj.studymate_id) {
-                    notification_str += '<li><a href="Student/User_account/freind_request_notification/'+wp+'">';
+                    notification_str += '<li><a href="#">';
                     notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.user_data.profile_link + '"></div>';
                     notification_str += '<div class="notification_txt">';
                     notification_str += '<p><span class="noti_username">' + obj.user_data.full_name + '</span> accepted your friend request</p>';
@@ -722,25 +727,26 @@ if ("WebSocket" in window)
              len = obj.already_available_tagged_detail.length;
             $.each(obj.already_available_tagged_detail, function (index, list) {
                 if (len == 1) {
-                    str += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
+                    str += '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +' class="label label_name">' + list.full_name + '</label>';
                     ids += list.id;
                 }
                 else if (len == 2) {
                     if (i == 0) {
-                        str += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
+                        str += '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +'  class="label label_name">' + list.full_name + '</label>';
                         ids += list.id;
                     } else {
-                        str += 'and <label class="label label_name">' + list.full_name + '</label>';
+                        str += 'and <label class="label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +'  label_name">' + list.full_name + '</label>';
                         ids += ',' + list.id;
                     }
                     i++;
                 }
                 else if (len > 2) {
                     if (j == 0) {
-                        str += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
+                        str += '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +'  class="label label_name">' + list.full_name + '</label>';
                         ids += list.id;
                     } else {
-                        other_name += list.full_name + '<div class=\'clearfix\'></div>';
+                        //"<label style='cursor:pointer;' data-type='show-profile' data-id=" +  list.id + " class='label_name'>" + list.full_name + '</label><div class=\'clearfix\'></div>';
+                        other_name += "<label style='cursor:pointer;' data-type='show-profile' data-id=" +  list.id + " class='label_name'>" + list.full_name + '</label><div class=\'clearfix\'></div>';
                         l = parseInt(len) - parseInt(1);
                         if (j == l) {
                             str += 'and <label class="label label_name">';
@@ -756,7 +762,7 @@ if ("WebSocket" in window)
             });
 
 
-                notification_str += '<li><a href="Student/User_account/tagged_notification/'+wp+'">';
+                notification_str += '<li><a href="#">';
                 notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.notification_detail[0]['profile_link'] + '"></div>';
                 notification_str += '<div class="notification_txt">';
                 notification_str += '<p><span class="noti_username">' + obj.notification_detail[0]['full_name'] + '</span> tagged you in a post</p>';
@@ -1336,21 +1342,21 @@ function generate_post(obj, status) {
         notification_str = '';
         $.each(obj.tagged_detail, function (index, list) {
             if (len == 1) {
-                name += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
+                name += '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +' class="label label_name">' + list.full_name + '</label>';
             }
             else if (len == 2) {
                 if (i == 0) {
-                    name += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
+                    name += '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +'  class="label label_name">' + list.full_name + '</label>';
                 } else {
-                    name += '&nbsp;and : <label class="label label_name">' + list.full_name + '</label>';
+                    name += '&nbsp;and : <label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +'  class="label label_name">' + list.full_name + '</label>';
                 }
                 i++;
             }
             else if (len > 2) {
                 if (j == 0) {
-                    name += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
+                    name += '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +'  class="label label_name">' + list.full_name + '</label>';
                 } else {
-                    other_name += list.full_name + '<div class=\'clearfix\'></div>';
+                    other_name += "<label style='cursor:pointer;' data-type='show-profile' data-id=" +  list.id + " class='label_name'>" + list.full_name + '</label><div class=\'clearfix\'></div>';
                     l = parseInt(len) - parseInt(1);
                     if (j == l) {
                         name += '&nbsp;and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-id="'+obj.post_id+'" data-trigger="focus" data-placement="bottom" data-toggle="popover2" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
@@ -1364,7 +1370,7 @@ function generate_post(obj, status) {
                 {
                    
 
-                notification_str += '<li><a href="Student/User_account/tagged_notification/'+wp+'">';
+                notification_str += '<li><a href="#">';
                 notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '"></div>';
                 notification_str += '<div class="notification_txt">';
                 notification_str += '<p><span class="noti_username">' + obj.full_name + '</span> tagged you in a post</p>';
@@ -2097,7 +2103,7 @@ $(document).on('click', 'a[data-type="load-activity-more"]', function () {
 
 });
 
-$(document).on('click', 'span[data-type="show-profile"],a[data-type="show-profile"],img[data-type="show-profile"],h4[data-type="show-profile"],p[data-type="show-profile"],button[data-type="show-profile"],div[data-type="show-profile"]', function () {
+$(document).on('click', 'label[data-type="show-profile"],span[data-type="show-profile"],a[data-type="show-profile"],img[data-type="show-profile"],h4[data-type="show-profile"],p[data-type="show-profile"],button[data-type="show-profile"],div[data-type="show-profile"]', function () {
     var request = {
         type: 'show_profile',
         to: 'self',

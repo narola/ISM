@@ -380,10 +380,12 @@ class User_account extends CI_Controller {
 	 * @author - Pankaj(pv)
 	 */
 	
-	public function tagged_notification($id)
+	public function tagged_notification()
 		{
+			$id = $this->input->post('id');
 			update(TBL_FEEDS_TAGGED_USER,array('user_id'=>$id),array('is_seen'=>1));
-			redirect('student/home');
+			update(TBL_STUDYMATES_REQUEST,array('request_from_mate_id'=>$id),array('is_seen'=>1));
+			
 		}
 	
 	/**

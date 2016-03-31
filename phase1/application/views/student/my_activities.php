@@ -63,7 +63,7 @@
                                             <div class="mate_user_img">
                                                 <img src="<?php echo UPLOAD_URL.'/'.$studymate_value['profile_link'];?>" class="mCS_img_loaded" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                             </div>
-                                            <h4><?php echo $studymate_value['full_name'];?>56</h4>
+                                            <h4><?php echo $studymate_value['full_name'];?></h4>
                                             <p><?php echo $studymate_value['school_name'];?></p>
                                             <p class="txt_grey"><?php echo $studymate_value['course_name'];?></p>
                                         </div>
@@ -77,27 +77,57 @@
                                     foreach ($my_activities['like'] as $key => $like_value) {
                                 ?>
                                     <div class="status_like">
-                                        <h4 class="activity_heading">Liked status of <span ><h4 class="txt_green" style="cursor:pointer;display: -webkit-inline-box;" data-type="show-profile" data-id="<?php echo $like_value['id']; ?>"><?php echo $like_value['post_username'];?></h4></span></h4>
-                                         <span class="date noti_time just_now">
-                                         </span>
-                                            <script type="text/javascript">
-                                             $(".just_now").timestatus("<?php echo $like_value['created_date']; ?>");
-                                            </script>  
-                                             <div class="clearfix"></div>
-                                        <div class="feed_text">                                               
-                                            <p><?php echo $like_value['feed_text'];?></p>
-                                        </div>
-                                        <div class="clearfix"></div>
+                                        <?php
+                                            if($like_value['id'] == $this->session->userdata['user']['id'])
+                                            { ?>
+
+                                               <h4 class="activity_heading"> <span ><h4 class="txt_green" style="cursor:pointer;display: -webkit-inline-box;" data-type="show-profile" data-id="<?php echo $like_value['id']; ?>"><?php echo $like_value['post_username'];?></h4></span> Liked his own status</h4>
+                                                 <span class="date noti_time just_now">
+                                                 </span>
+                                                    <script type="text/javascript">
+                                                     $(".just_now").timestatus("<?php echo $like_value['created_date']; ?>");
+                                                    </script>  
+                                                     <div class="clearfix"></div>
+                                                <div class="feed_text">                                               
+                                                    <p><?php echo $like_value['feed_text'];?></p>
+                                                </div>
+                                                <div class="clearfix"></div>   
+
+                                        <?php }else{ ?>
+
+                                             <h4 class="activity_heading">Liked status of <span ><h4 class="txt_green" style="cursor:pointer;display: -webkit-inline-box;" data-type="show-profile" data-id="<?php echo $like_value['id']; ?>"><?php echo $like_value['post_username'];?></h4></span></h4>
+                                                 <span class="date noti_time just_now">
+                                                 </span>
+                                                    <script type="text/javascript">
+                                                     $(".just_now").timestatus("<?php echo $like_value['created_date']; ?>");
+                                                    </script>  
+                                                     <div class="clearfix"></div>
+                                                <div class="feed_text">                                               
+                                                    <p><?php echo $like_value['feed_text'];?></p>
+                                                </div>
+                                                <div class="clearfix"></div> 
+                                       <?php }
+                                        ?>
                                         
                                     </div>
                                 <?php
                                 }   
                             }
+
                             if(isset($my_activities['comment']) && sizeof($my_activities['comment'])>0){
                                     foreach ($my_activities['comment'] as $key => $comment_value) {
                                 ?>
                                     <div class="commented_on">
-                                        <h4 class="activity_heading">Commented on</h4>
+                                          <?php
+                                            if($comment_value['feed_by'] == $this->session->userdata['user']['id'])
+                                            { ?>
+                                                 <h4 class="activity_heading">Commented on his own post</h4>
+                                            <?php 
+                                              }else{
+                                               ?>
+                                                 <h4 class="activity_heading">Commented on</h4>
+                                            <?php } ?>
+
                                         <div class="feeds">
                                             <div class="user_small_img">
                                                 <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $comment_value['feed_by']; ?>" src="<?php echo UPLOAD_URL.'/'.$comment_value['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
