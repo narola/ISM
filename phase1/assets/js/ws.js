@@ -34,20 +34,53 @@ function exam_started_timer()
         }
     }
     if (exam_time_to_left == 900) {
-        $(".alert_notification p").html("Exam time will <b>finish</b> within <b>15 minutes.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+
+        //$(".alert_notification p").html("Exam time will <b>finish</b> within <b>15 minutes.</b>");
+        //$(".alert_notification").show().delay(7000).fadeOut();
+
+        $.notify({
+            title: '<strong>Hurry up!</strong>',
+            message: 'Exam time will <b>finish</b> within <b>15 minutes.</b>.'
+        },{
+            type: 'warning'
+        });
+
     } else if (exam_time_to_left == 300) {
         //console.log("5 minutes notification.");
-        $(".alert_notification p").html("Exam time will <b>finish</b> within <b>5 minutes.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+        //$(".alert_notification p").html("Exam time will <b>finish</b> within <b>5 minutes.</b>");
+        //$(".alert_notification").show().delay(7000).fadeOut();
+
+          $.notify({
+            title: '<strong>Hurry up!</strong>',
+            message: 'Exam time will <b>finish</b> within <b>5 minutes.</b>.'
+        },{
+            type: 'warning'
+        });
+
     } else if (exam_time_to_left == 60) {
        // console.log("1 minutes notification.");
-        $(".alert_notification p").html("Exam time will <b>finish</b> within <b>1 minute.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+        //$(".alert_notification p").html("Exam time will <b>finish</b> within <b>1 minute.</b>");
+       // $(".alert_notification").show().delay(7000).fadeOut();
+
+         $.notify({
+            title: '<strong>Hurry up!</strong>',
+            message: 'Exam time will <b>finish</b> within <b>1 minutes.</b>.'
+        },{
+            type: 'warning'
+        });
+
     } else if (exam_time_to_left <= 0)
     {
-        $(".alert_notification p").html("<b>Exam time finished..</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+       // $(".alert_notification p").html("<b>Exam time finished..</b>");
+       // $(".alert_notification").show().delay(7000).fadeOut();
+           $.notify({
+            title: '<strong>Stop now!</strong>',
+            message: '<b>Exam time finished..</b>.'
+        },{
+            type: 'warning'
+        });   
+
+
         exam_time_to_start = exam_total_deactive_time;
         exam_will_start = setInterval(exam_will_start_timer, 1000);
         clearInterval(exam_started);
@@ -71,21 +104,50 @@ function exam_will_start_timer()
     }
 
     if (exam_time_to_start == 900) {
-        $(".alert_notification p").html("Exam time will <b>start</b> within <b>15 minutes.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+       // $(".alert_notification p").html("Exam time will <b>start</b> within <b>15 minutes.</b>");
+       // $(".alert_notification").show().delay(7000).fadeOut();
+
+          $.notify({
+            title: '<strong>Wait !</strong>',
+            message: 'Exam time will <b>start</b> within <b>15 minutes.</b>.'
+        },{
+            type: 'warning'
+        });
+
+
     } else if (exam_time_to_start == 300) {
         //console.log("5 minutes notification.");
-        $(".alert_notification p").html("Exam time will <b>start</b> within <b>5 minutes.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+        //$(".alert_notification p").html("Exam time will <b>start</b> within <b>5 minutes.</b>");
+        //$(".alert_notification").show().delay(7000).fadeOut();
+          $.notify({
+            title: '<strong>Wait !</strong>',
+            message: 'Exam time will <b>start</b> within <b>5 minutes.</b>.'
+        },{
+            type: 'warning'
+        });
+
     } else if (exam_time_to_start == 60) {
        // console.log("1 minutes notification.");
-        $(".alert_notification p").html("Exam time will <b>start</b> within <b>1 minute.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+        //$(".alert_notification p").html("Exam time will <b>start</b> within <b>1 minute.</b>");
+        //$(".alert_notification").show().delay(7000).fadeOut();
+         $.notify({
+            title: '<strong>Wait !</strong>',
+            message: 'Exam time will <b>start</b> within <b>1 minutes.</b>.'
+        },{
+            type: 'warning'
+        });
+
     } else if (exam_time_to_start <= 0)
     {
         $('button[data-type="exam_start_request"]').removeAttr('disabled');
-        $(".alert_notification p").html("<b>Exam time Started..</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+        //$(".alert_notification p").html("<b>Exam time Started..</b>");
+        //$(".alert_notification").show().delay(7000).fadeOut();
+         $.notify({
+            title: '<strong>Started !</strong>',
+            message: '<b>Exam time Started..</b>.'
+        },{
+            type: 'warning'
+        });
 
         exam_time_to_left = exam_total_active_time;
         exam_started = setInterval(exam_started_timer, 1000);
@@ -105,20 +167,48 @@ function remainning_time_timer()
     remainning_time = remainning_time - 1;
    // console.log("Remainnig Seconds to complete: " + remainning_time);
     if (remainning_time == 900) {
-        $(".alert_notification p").html("Active hours will <b>finish</b> within <b>15 minutes.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+        //$(".alert_notification p").html("Active hours will <b>finish</b> within <b>15 minutes.</b>");
+        //$(".alert_notification").show().delay(7000).fadeOut();
+         $.notify({
+            title: '<strong>Get ready !</strong>',
+            message: 'Active hours will <b>finish</b> within <b>15 minutes.</b>.'
+        },{
+            type: 'warning'
+        });
+
+
     } else if (remainning_time == 300) {
         // console.log("5 minutes notification.");
-        $(".alert_notification p").html("Active hours will <b>finish</b> within <b>5 minutes.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+        //$(".alert_notification p").html("Active hours will <b>finish</b> within <b>5 minutes.</b>");
+        //$(".alert_notification").show().delay(7000).fadeOut();
+         $.notify({
+            title: '<strong>Get ready !</strong>',
+            message: 'Active hours will <b>finish</b> within <b>5 minutes.</b>.'
+        },{
+            type: 'warning'
+        });
+
     } else if (remainning_time == 60) {
         // console.log("1 minutes notification.");
-        $(".alert_notification p").html("Active hours will <b>finish</b> within <b>1 minute.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+        //$(".alert_notification p").html("Active hours will <b>finish</b> within <b>1 minute.</b>");
+        //$(".alert_notification").show().delay(7000).fadeOut();
+         $.notify({
+            title: '<strong>Get ready !</strong>',
+            message: 'Active hours will <b>finish</b> within <b>1 minute.</b>.'
+        },{
+            type: 'warning'
+        });
+
     } else if (remainning_time <= 0)
     {
-        $(".alert_notification p").html("Active hours <b>finished.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+        //$(".alert_notification p").html("Active hours <b>finished.</b>");
+        //$(".alert_notification").show().delay(7000).fadeOut();
+         $.notify({
+            title: '<strong>Thank you !</strong>',
+            message: 'Active hours <b>finished.</b>.'
+        },{
+            type: 'warning'
+        });
 
         clearInterval(remainning_counter);
         return;
@@ -135,24 +225,53 @@ function timeout_timer()
     // console.log("Remainnig Seconds :" + time_count_out);
     if (time_count_out == 900) {
         console.log("15 minutes notification.");
-        $(".alert_notification p").html("Active hours will start within <b>15 minutes.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+        //$(".alert_notification p").html("Active hours will start within <b>15 minutes.</b>");
+        //$(".alert_notification").show().delay(7000).fadeOut();
+
+          $.notify({
+            title: '<strong>Wait !</strong>',
+            message: 'Active hours will start within <b>15 minutes.</b>.'
+        },{
+            type: 'warning'
+        });
+
+
     } else if (time_count_out == 300) {
         console.log("5 minutes notification.");
-        $(".alert_notification p").html("Active hours will start within <b>5 minutes.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+        //$(".alert_notification p").html("Active hours will start within <b>5 minutes.</b>");
+        //$(".alert_notification").show().delay(7000).fadeOut();
+         $.notify({
+            title: '<strong>Wait !</strong>',
+            message: 'Active hours will start within <b>5 minutes.</b>.'
+        },{
+            type: 'warning'
+        });
+
     } else if (time_count_out == 60) {
-        console.log("1 minutes notification.");
-        $(".alert_notification p").html("Active hours will start within <b>1 minute.</b>");
-        $(".alert_notification").show().delay(7000).fadeOut();
+        //$(".alert_notification p").html("Active hours will start within <b>1 minute.</b>");
+        //$(".alert_notification").show().delay(7000).fadeOut();
+          $.notify({
+            title: '<strong>Wait !</strong>',
+            message: 'Active hours will start within <b>1 minutes.</b>.'
+        },{
+            type: 'warning'
+        });
+
     } else if (time_count_out <= 0)
     {
         if (start_timer == true) {
             console.log("Timer Started...");
             ws.send('{"type":"time_request","from":"' + wp + '","to":"self","error":""}');
         } else {
-            $(".alert_notification p").html("Active hours started.");
-            $(".alert_notification").show().delay(7000).fadeOut();
+            //$(".alert_notification p").html("Active hours started.");
+            //$(".alert_notification").show().delay(7000).fadeOut();
+              $.notify({
+            title: '<strong>Now,</strong>',
+            message: 'Active hours started.</b>.'
+        },{
+            type: 'warning'
+        });
+
         }
 
         clearInterval(counter_out);
@@ -207,12 +326,12 @@ $(document).ready(function () {
         var type_of_data = this.files[0].type;
         var file_name = this.files[0].name;
 
-        /*if (types == 'feed_file_share') {
+        if (types == 'feed_file_share') {
             if (type_of_data != 'image/png' && type_of_data != 'image/gif' && type_of_data != 'image/jpg' && type_of_data != 'image/jpeg') {
                 alert('You can upload only images in feed!');
                 return;
             }
-        }*/
+        }
 
 
 
@@ -279,10 +398,9 @@ if ("WebSocket" in window)
 {
 
 
-      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-      // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
        //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
-
 
 
 
@@ -341,7 +459,16 @@ if ("WebSocket" in window)
                 $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
                 $('.chat[data-id="' + obj.to + '"] .chat_loading').fadeOut(300);
             } 
+            /*else {
+                console.log("here");
+                console.log(obj);
+                // setTimeout(function () {
+                    $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
+                // }, 400);
+            }*/
             
+            
+
                
             if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
                 myfunction(obj.from);
@@ -416,7 +543,7 @@ if ("WebSocket" in window)
             $.each(obj.message, function (index, list) {
                 var my_msg = '';
                 if (list.is_text == 0) {
-                    my_msg = '<a class="fancybox" href="uploads/' + list.a_link + '"  target="_BLANK"><img src="' + list.img_link + '" width="50" height="50" /></a>';
+                    my_msg = '<a href="uploads/' + list.a_link + '"  target="_BLANK"><img src="' + list.img_link + '" width="50" height="50" /></a>';
                 } else {
                     my_msg = list.text;
                 }
@@ -431,7 +558,37 @@ if ("WebSocket" in window)
 
         } else if (obj.type == 'post') {
             if (obj.id != wp) {
-                $('.alert_notification p').html("New feed from <b>" + obj.full_name + "</b>").show();
+
+                    $.notify({
+                                icon: 'uploads/' + obj.profile_link + '',
+                                title: '<strong>New post</strong> ',
+                                message: 'From ' + obj.full_name + ' : <span style="font-size:12px">' + obj.message.substr(0,100) + '...</span>'
+                            },{
+                                type: 'minimalist',
+                                delay: 5000,
+                                icon_type: 'image',
+                                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                                    '<img data-notify="icon" class="img-circle pull-left">' +
+                                    '<span data-notify="title">{1}</span>' +
+                                    '<span data-notify="message">{2}</span>' +
+                                '</div>'
+                            });
+
+                                    // $.notify({
+                    //             icon: '' + obj.profile_link + '',
+                    //             title: '<strong>New post:</strong> ',
+                    //             message: 'From <strong>' + obj.full_name + '</strong>: ' + obj.message + '...'; 
+                    //         },{
+                    //             type: 'minimalist',
+                    //             delay: 5000,
+                    //             icon_type: 'image',
+                    //             template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                    //                 '<img data-notify="icon" class="img-circle pull-left">' +
+                    //                 '<span data-notify="title">{1}</span>' +
+                    //                 '<span data-notify="message">{2}</span>' +
+                    //             '</div>'
+                    //         });
+               // $('.alert_notification p').html("New feed from <b>" + obj.full_name + "</b>").show();
             }
             generate_post(obj, true);
 
@@ -780,6 +937,25 @@ if ("WebSocket" in window)
 
                 
                 if (is_notify == "true"){
+
+                    /* notification for the tagged user */
+
+                        $.notify({
+                                icon: 'uploads/' + obj.notification_detail[0]['profile_link'] + '',
+                                title: '<strong>You tagged in post</strong> ',
+                                message: 'Tagged by ' + obj.notification_detail[0]['full_name'] + ' '
+                            },{
+                                type: 'minimalist',
+                                delay: 5000,
+                                icon_type: 'image',
+                                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                                    '<img data-notify="icon" class="img-circle pull-left">' +
+                                    '<span data-notify="title">{1}</span>' +
+                                    '<span data-notify="message">{2}</span>' +
+                                '</div>'
+                            });
+
+
                     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
                     $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
 
@@ -1267,7 +1443,6 @@ $(document).on('click', '#mate_list', function () {
 
 /* Send Feed Post */
 $(document).on('click', 'button[data-type="post"]', function () {
-    
     if ($.trim($('#feed_post').val()) != '') {
         var request = {
             type: 'post',
