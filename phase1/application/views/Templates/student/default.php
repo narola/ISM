@@ -373,9 +373,9 @@ $url = uri_string();
 	<?php } ?>
 </div>
 </div>
-<div class="alert alert_notification alert-dismissible" role="alert" style="display: none;">
+<div class="alert alert_notification alert-dismissible" role="alert" style="display: block;">
 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-<p></p>
+<p>this is sample notification</p>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="view_profile_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
