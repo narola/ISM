@@ -341,8 +341,38 @@ class Home extends ISM_Controller {
 	}
 
 	public function tagged_feed($feed_id){
-		echo $feed_id;
-		exit;
+		
+		$user_data = $this->session->userdata('user');
+		$user_id = $user_data['id'];
+		// Get Post feed with comment 
+		$options =	array(
+						'join'	=>	array(
+							array(
+								'table' => TBL_USERS.' u',
+								'condition' => 'u.id = f.feed_by'
+							),
+							array(
+								'table' => TBL_USER_PROFILE_PICTURE.' p',
+								'condition' => 'u.id = p.user_id'	
+							),
+							array(
+								'table' => TBL_FEED_LIKE.' l',
+								'condition' => 'l.feed_id = f.id and l.like_by ='.$user_id
+							)
+
+						),
+						'limit'=>4,
+						'offset'=>0,
+						'order_by' => 'f.id DESC'
+
+					);  
+
+		
+		$where = array('where'=>array('f.is_delete'=> 0,'f.id'=>$feed_id),'where_in'=>array('f.feed_by'=>studymates($user_id)));
+		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.created_date as posted_on,f.created_date,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link,l.is_delete as my_like',$where,$options);
+		$data['result_feed'] = $result_feed;
+		// p($result_feed, true);
+		$this->template->load('student/default','student/tagged_view',$data);
 	}
 	
 }
