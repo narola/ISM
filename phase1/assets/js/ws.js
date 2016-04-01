@@ -902,7 +902,7 @@ if ("WebSocket" in window)
                         ids += list.id;
                     } else {
                         //"<label style='cursor:pointer;' data-type='show-profile' data-id=" +  list.id + " class='label_name'>" + list.full_name + '</label><div class=\'clearfix\'></div>';
-                        other_name += "<label style='cursor:pointer;' data-type='show-profile' data-id=" +  list.id + " class='label_name'>" + list.full_name + '</label><div class=\'clearfix\'></div>';
+                        other_name += "<label style='cursor:pointer;' data-type='show-profile' data-id='" +  list.id + "' class='label label_name'>" + list.full_name + '</label><div class=\'clearfix\'></div>';
                         l = parseInt(len) - parseInt(1);
                         if (j == l) {
                             str += 'and <label class="label label_name">';
@@ -1080,7 +1080,13 @@ if ("WebSocket" in window)
 
                 $.each(obj.result.my_like, function (index, list) {
                     str += '<div class="status_like">';
-                    str += '<h4 class="activity_heading">Liked status of <span style="cursor:pointer;" data-type="show-profile" data-id="'+ list.l_id +'" class="txt_green">' + list.post_username + '</span></h4>';
+                    if(wp == list.l_id)
+                        {
+                           str += '<h4 class="activity_heading"><span style="cursor:pointer;" data-type="show-profile" data-id="'+ list.l_id +'" class="txt_green">' + list.post_username + '</span> Liked his own status.</h4>';
+                        }else
+                        {
+                             str += '<h4 class="activity_heading">Liked status of <span style="cursor:pointer;" data-type="show-profile" data-id="'+ list.l_id +'" class="txt_green">' + list.post_username + '</span></h4>';
+                        }
                     str += '<span class="date">'+list.created_date+'</span>';
                     str += '<div class="feed_text">';
                     str += '<p>' + list.feed_text + '</p>';
@@ -1091,7 +1097,13 @@ if ("WebSocket" in window)
                 // display my comment
                 $.each(obj.result.my_comment, function (index, list) {
                     str += '<div class="commented_on">';
-                    str += '<h4 class="activity_heading">Commented on</h4>';
+                    if(wp == list.uid)
+                    {
+                        str += '<h4 class="activity_heading">Commented on his own post</h4>';
+                    }else
+                    {
+                        str += '<h4 class="activity_heading">Commented on</h4>';
+                    }
                     str += '<div class="feeds">';
                     str += '<div class="user_small_img">';
                     str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ list.uid +'" onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + list.profile_link + '">';

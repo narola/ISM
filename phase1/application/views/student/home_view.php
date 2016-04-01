@@ -161,7 +161,7 @@
 						echo '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id="'. $t_value['id'] .'" class="label label_name">' . $t_value['full_name'] . '</label>';
 					    } else {
 						$l = $t_count - 1;
-						$other_name .="<label style='cursor:pointer;' data-type='show-profile' data-id=". $t_value['id'] ." class='label_name'>" . $t_value['full_name'] . '</label><br>';
+						$other_name .="<label style='cursor:pointer;' data-type='show-profile' data-id='". $t_value['id'] ."' class='label label_name'>" . $t_value["full_name"] . "</label><br>";
 						if ($k == $l) {
 						    echo 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-placement="bottom" data-trigger="focus" data-toggle="popover" title="Other Tagged" data-content="' . $other_name . '" >' . $l . ' more</a></label>';
 						}

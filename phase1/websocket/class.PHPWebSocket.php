@@ -3023,14 +3023,16 @@ class PHPWebSocket {
 	//  became studymate with
 	//$query = "SELECT `u`.`full_name`, `sm`.`mate_of`, `sm2`.`mate_id`, DATE_FORMAT(sm.created_date,'%b %d %Y') as created_date, `s`.`school_name`, `p`.`profile_link`, `c`.`course_name` "
 	$query = "SELECT `u`.`full_name`,`u`.`id`, `sm`.`mate_of`, `sm2`.`mate_id`, DATE_FORMAT(sm.created_date,'%b %d %Y') as created_date, `s`.`school_name`, `p`.`profile_link`, `c`.`course_name` "
-		. "FROM `" . TBL_USERS . "` `u` LEFT JOIN `studymates` `sm` ON `u`.`id` = `sm`.`mate_of` and `sm`.`mate_id` =$user_id "
-		. "LEFT JOIN `" . TBL_STUDYMATES . "` `sm2` ON `u`.`id` = `sm2`.`mate_id` and `sm2`.`mate_of` =$user_id "
+		. "FROM `" . TBL_USERS . "` `u` LEFT JOIN `studymates` `sm` ON `u`.`id` = `sm`.`mate_of` and `sm`.`is_delete` = 0 and `sm`.`mate_id` =$user_id "
+		. "LEFT JOIN `" . TBL_STUDYMATES . "` `sm2` ON `u`.`id` = `sm2`.`mate_id` and `sm2`.`is_delete` = 0 and `sm2`.`mate_of` =$user_id "
 		. "LEFT JOIN `" . TBL_STUDENT_ACADEMIC_INFO . "` `in` ON `u`.`id` = `in`.`user_id` "
 		. "LEFT JOIN `" . TBL_SCHOOLS . "` `s` ON `s`.`id` = `in`.`school_id` "
 		. "LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `p` ON `u`.`id` = `p`.`user_id` "
 		. "LEFT JOIN `" . TBL_COURSES . "` `c` ON `c`.`id` = `in`.`course_id` "
-		. "WHERE date_format(sm.created_date,'%m') IN($m) AND `u`.`is_delete` = 0";
+		. "WHERE date_format(sm.created_date,'%m') IN($m) AND  `u`.`is_delete` = 0 or date_format(sm2.created_date,'%m') IN($m) AND  `u`.`is_delete` = 0";
 	$row = mysqli_query($link, $query);
+	$data['qry'] = $query;
+
 	$i = 0;
 	while ($rows = mysqli_fetch_assoc($row)) {
 	    $data['result']['my_studymate'][$i] = $rows;
