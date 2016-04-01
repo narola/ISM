@@ -81,7 +81,7 @@
                                             if($like_value['id'] == $this->session->userdata['user']['id'])
                                             { ?>
 
-                                               <h4 class="activity_heading"> <span ><h4 class="txt_green" style="cursor:pointer;display: -webkit-inline-box;" data-type="show-profile" data-id="<?php echo $like_value['id']; ?>"><?php echo $like_value['post_username'];?></h4></span> Liked his own status</h4>
+                                               <h4 class="activity_heading"> <span class="txt_green" style="cursor:pointer;display: -webkit-inline-box;" data-type="show-profile" data-id="<?php echo $like_value['id']; ?>"><?php echo $like_value['post_username'];?></span> Liked his own status</h4>
                                                  <span class="date noti_time just_now">
                                                  </span>
                                                     <script type="text/javascript">
@@ -95,7 +95,7 @@
 
                                         <?php }else{ ?>
 
-                                             <h4 class="activity_heading">Liked status of <span ><h4 class="txt_green" style="cursor:pointer;display: -webkit-inline-box;" data-type="show-profile" data-id="<?php echo $like_value['id']; ?>"><?php echo $like_value['post_username'];?></h4></span></h4>
+                                             <h4 class="activity_heading">Liked status of <span style="cursor:pointer;display: -webkit-inline-box;" data-type="show-profile" data-id="<?php echo $like_value['id']; ?>" class="txt_green"><?php echo $like_value['post_username'];?></span></h4>
                                                  <span class="date noti_time just_now">
                                                  </span>
                                                     <script type="text/javascript">

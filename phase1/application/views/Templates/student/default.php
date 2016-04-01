@@ -128,19 +128,28 @@ $url = uri_string();
 			{ ?>
 				<script type="text/javascript">
 					$.notify({
-								icon: '<?php echo UPLOAD_URL . '/' . $this->session->userdata['user']['profile_pic']; ?>',
+								icon: '<?php echo UPLOAD_URL . '/' . $this->session->userdata["user"]["profile_pic"]; ?>',
 								title: '<strong>Notification:</strong> ',
 								message: '<?php echo $this->session->flashdata("success"); ?>'
 							},{
-								type: 'minimalist',
+								type: 'pastel-info',
 								delay: 5000,
+								placement: {
+										from: 'top',
+										align: 'center'
+									},
 								icon_type: 'image',
+								animate: {
+											enter: 'animated fadeInDown',
+											exit: 'animated fadeOutUp'
+										},
 								template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
 									'<img data-notify="icon" class="img-circle pull-left">' +
 									'<span data-notify="title">{1}</span>' +
 									'<span data-notify="message">{2}</span>' +
 								'</div>'
 							});
+
 				</script>
 		<?php } ?>
 		
