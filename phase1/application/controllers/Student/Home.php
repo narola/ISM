@@ -341,7 +341,8 @@ class Home extends ISM_Controller {
 	}
 
 	public function tagged_feed($feed_id){
-		
+		echo $feed_id;
+		exit;
 	}
 	
 }

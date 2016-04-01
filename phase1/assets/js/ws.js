@@ -325,12 +325,12 @@ $(document).ready(function () {
         var type_of_data = this.files[0].type;
         var file_name = this.files[0].name;
 
-        if (types == 'feed_file_share') {
+       /* if (types == 'feed_file_share') {
             if (type_of_data != 'image/png' && type_of_data != 'image/gif' && type_of_data != 'image/jpg' && type_of_data != 'image/jpeg') {
                 alert('You can upload only images in feed!');
                 return;
             }
-        }
+        }*/
 
 
 
@@ -397,9 +397,9 @@ if ("WebSocket" in window)
 {
 
 
-       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+       var ws = new WebSocket("ws://192./168.1.189:9301"); // pv
        // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-       //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+       // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
