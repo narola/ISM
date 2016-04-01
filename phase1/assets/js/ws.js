@@ -891,7 +891,7 @@ if ("WebSocket" in window)
                         str += '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +'  class="label label_name">' + list.full_name + '</label>';
                         ids += list.id;
                     } else {
-                        str += 'and <label class="label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +'  label_name">' + list.full_name + '</label>';
+                        str += 'and <label style="cursor:pointer;" data-type="show-profile" data-id='+ list.id +'  class="label label_name">' + list.full_name + '</label>';
                         ids += ',' + list.id;
                     }
                     i++;

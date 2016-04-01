@@ -81,6 +81,7 @@
 		<div id="selection-box">
 		    <select name="all_users[]" id="select-tag-user" class="js-example-basic-single form-control" multiple="multiple">
 			<?php
+				
 			if (!empty($my_studymates)) {
 			    foreach ($my_studymates as $list) {
 				?>
@@ -110,12 +111,24 @@
 	    <?php
 	    if (isset($feed)) {
 		$j = 1;
-		foreach ($feed as $key => $value) {
-		    if (count($value['images']) > 0) {
-			foreach ($value['images'] as $v) {
-			    $value['feed_text'] .= '<a href="' . base_url() . 'uploads/' . $v . '"  target="_BLANK"><img src="uploads/' . $v . '" width="100" height="70"></a>';
-			}
-		    }
+		$check_type = array(
+			'image/png',
+			'image/jpg',
+			'image/jpeg',
+			'image/gif'
+			);
+				foreach ($feed as $key => $value) {
+				if (count($value['images']) > 0) {
+					foreach ($value['images'] as $v) {
+						if (in_array(mime_content_type('uploads/'.$v), $check_type)) {
+							$value['feed_text'] .= '<a href="' . base_url() . 'uploads/' . $v . '" class="fancybox"><img src="uploads/' . $v . '" width="100" height="70"></a>';
+						} else {
+							$value['feed_text'] .= '<a href="' . base_url() . 'uploads/' . $v . '" target="_BLANK"><img src="assets/images/default_chat.png" width="100" height="70"></a>';
+						}
+						}
+					/*$value['feed_text'] .= '<a class="fancybox" href="' . base_url() . 'uploads/' . $v . '" ><img src="uploads/' . $v . '" width="100" height="70"></a>';
+					}*/
+				}
 		    ?>
 		    <div class="box feeds" data-id="<?php echo $value['fid']; ?>">
 			<div class="user_small_img">
