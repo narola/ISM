@@ -170,7 +170,7 @@ function remainning_time_timer()
         //$(".alert_notification p").html("Active hours will <b>finish</b> within <b>15 minutes.</b>");
         //$(".alert_notification").show().delay(7000).fadeOut();
          $.notify({
-            title: '<strong>Get ready !</strong>',
+            title: '<strong>Keep in mind !</strong>',
             message: 'Active hours will <b>finish</b> within <b>15 minutes.</b>.'
         },{
             type: 'warning'
@@ -182,7 +182,7 @@ function remainning_time_timer()
         //$(".alert_notification p").html("Active hours will <b>finish</b> within <b>5 minutes.</b>");
         //$(".alert_notification").show().delay(7000).fadeOut();
          $.notify({
-            title: '<strong>Get ready !</strong>',
+            title: '<strong>Keep in mind !</strong>',
             message: 'Active hours will <b>finish</b> within <b>5 minutes.</b>.'
         },{
             type: 'warning'
@@ -193,7 +193,7 @@ function remainning_time_timer()
         //$(".alert_notification p").html("Active hours will <b>finish</b> within <b>1 minute.</b>");
         //$(".alert_notification").show().delay(7000).fadeOut();
          $.notify({
-            title: '<strong>Get ready !</strong>',
+            title: '<strong>Keep in mind !</strong>',
             message: 'Active hours will <b>finish</b> within <b>1 minute.</b>.'
         },{
             type: 'warning'
@@ -314,7 +314,6 @@ $(document).ready(function () {
             
         }
     });
-
 
     /* Validate length of selected file. */
     var handleFileSelect = function (evt) {
