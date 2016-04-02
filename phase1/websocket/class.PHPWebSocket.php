@@ -1164,6 +1164,29 @@ class PHPWebSocket {
 	return array_merge($data, $this->get_client_info($user_id));
     }
 
+
+    /**
+     * Edit feed post 
+     *
+     * @param  - $user id as integer and $data as array
+     * @return - array
+     * @author - Pankaj(pv)
+     */
+    function classmate_edit_post($user_id, $data = null) {
+    	if (is_array($data) && !empty($data)) {
+    		echo $data['message'] . $data['feed_id'];
+	    $link = $this->db();
+	    $msg = mysqli_escape_string($link, $data['message']); 
+	    $query = "UPDATE " . TBL_FEEDS . " SET `feed_text` = '". $data['message'] ."' "
+				. "WHERE `id` = " . $data['feed_id'] . " ";
+	    $x = mysqli_query($link, $query);
+	     // if (!$x) {
+	     // 	echo "not inserted";
+	     // }
+		}
+    }
+    
+
     /**
      * Save feed comment
      * @param int $user_id
