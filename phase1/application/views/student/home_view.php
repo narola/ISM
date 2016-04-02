@@ -40,6 +40,24 @@
 
     });
 
+  	/* Edit post activation */
+    
+     $(document).on('click', '.edit_post_icon', function(e) {
+     	var a = $(this).attr("data-feed");
+        $('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').css("display","");
+     	$('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').focus();
+     	$('#all_feed .box div#save_edited_feed[data-id="' + a + '"]').css("display","");
+    	$('#all_feed .box[data-id="' + a + '"] .feed_text p').css("display","none");
+     });
+
+ 	/* Edit post deactive */
+     $(document).on('click', '.btn_black_normal[data-type="cancel-edited-feed"]', function(e) {
+     	 var a = $(this).attr("data-id");
+ 	 	$('#all_feed .box[data-id="' + a + '"] .feed_text p').css("display","");
+ 	 	$('#all_feed .box div#save_edited_feed[data-id="' + a + '"]').css("display","none");
+ 	 	$('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').css("display","none");
+     });	
+
     $(document).on('click', 'a[data-type="tag-again"]', function(e) {
 	show = $('#all_feed .box div[data-id="' + $(this).data('id') + '"]').is(":visible");
 
@@ -187,6 +205,12 @@
 				// echo date("M j, Y", $old_date);
 				?>
 			    <div class="clearfix"></div>
+			    <textarea id="edit_feed_post" type="text" data-feed="<?php echo $value['fid']; ?>" class="form-control post_input" style="display:none" placeholder="SAY IT"><?php echo nl2br($value['feed_text']); ?></textarea>
+			    <div style="float:right;display:none;color:white; margin-top:5px;" id="save_edited_feed" data-id="<?php echo $value['fid']; ?>">
+					<a style="color:white" href="javascript:void(0);" class="btn btn-xs btn_black_normal" data-type="cancel-edited-feed" data-id="<?php echo $value['fid']; ?>">Cancel</a>
+				    <a style="color:white" href="javascript:void(0);" class="btn btn-xs btn_green" data-type="save-edited-feed" data-id="<?php echo $value['fid']; ?>">Save</a>
+				</div>
+				 <div class="clearfix"></div>
 			    <p><?php echo nl2br($value['feed_text']); ?></p>
 			    <a href="javascript:void(0);" data-id="<?php echo $value['fid']; ?>" data-type="feed-like" class="like_btn">
 				<?php
@@ -239,15 +263,28 @@
 				  }	
 				?>
 
+				<?php 
+					$arr_posted_on = explode(' ',trim($value['posted_on']));
+					$is_editable = "";
+					
+				if($this->session->userdata('user')['id'] == $value['feed_by'] && preg_match("/[0-9]+/", $arr_posted_on[0]) || $this->session->userdata('user')['id'] == $value['feed_by'] && $arr_posted_on[0] == 'Just'){
+						$is_editable = "yes";
+				}
+
+				?>
 
 			    <div class="dropdown tag_user user_<?php echo $value['fid']; ?>"  style="display: <?php echo $tag_show;?>;">
 				<a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="<?php echo $value['fid']; ?>" aria-haspopup="true" aria-expanded="true"><span data-toggle="tooltip" title="Tag mates" class="icon icon_user_2"></span><span class="caret"></span></a>
 			    </div>
-				<?php if($this->session->userdata('user')['id'] == $value['feed_by']){ ?>
-			    <a data-feed="<?php echo $value['fid']; ?>" class="edit_post_icon"><i title="Edit Post" class="fa fa-pencil-square-o"></i></a>
+				<?php if($is_editable == "yes"){ ?>
+			    <a href="javascript:void(0);" data-feed="<?php echo $value['fid']; ?>" class="edit_post_icon"><i title="Edit Post" class="fa fa-pencil-square-o"></i></a>
 			    <?php } ?>
 
 			</div>
+
+			<!-- Edit post save optino -->
+			
+
 			<div style="float:right;display:none;" id="show-again" data-id="<?php echo $value['fid']; ?>">
 			    <select style="width:200px;"name="all_users_again[]" id="select-tag-user-again" data-id="<?php echo $value['fid']; ?>" class="js-example-basic-single form-control" multiple="multiple">
 				<?php
@@ -265,7 +302,10 @@
 				?>
 			    </select>
 			    <a href="javascript:void(0);" class="btn btn_black_normal" data-type="tag-user-again" data-id="<?php echo $value['fid']; ?>">Tag New</a>
+			    <span> &nbsp;</span>
 			</div>
+
+
 			<div class="clearfix"></div>
 
 

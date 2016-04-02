@@ -397,9 +397,9 @@ if ("WebSocket" in window)
 {
 
 
-       var ws = new WebSocket("ws://192./168.1.189:9301"); // pv
+       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
        // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-       // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+       //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
@@ -1471,6 +1471,30 @@ $(document).on('click', 'button[data-type="post"]', function () {
     }
 });
 
+/* Edit post */
+
+$(document).on('click', '.btn_green[data-type="save-edited-feed"]', function () {
+     var a = $(this).attr("data-id");
+     var feed = $('#edit_feed_post[data-feed="' + a + '"]').val();
+    if ($.trim($('#edit_feed_post').val()) != '') {
+        var request = {
+            type: 'edit_post',
+            to: 'all',
+            feed: 'normal',
+            feed_id: a,
+            message: feed
+        };
+        ws.send(JSON.stringify(request));
+        $('#all_feed .box[data-id="' + a + '"] .feed_text p').css("display","");
+        $('#all_feed .box div#save_edited_feed[data-id="' + a + '"]').css("display","none");
+        $('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').css("display","none");
+        $('#all_feed .box[data-id="' + a + '"] .feed_text p').text(feed);
+    }
+
+
+});
+
+
 /* Send comment */
 $(document).on('keypress', '#all_feed .box.feeds .write_comment input[data-type="feed_comment"]', function (e) {
 
@@ -1624,6 +1648,12 @@ function generate_post(obj, status) {
     var total_comment="";
     str += '<span class="date noti_time just_now"></span>';
     str += '<div class="clearfix"></div>';
+    str += '<textarea id="edit_feed_post" type="text" data-feed="' + obj.post_id + '" class="form-control post_input" style="display:none" placeholder="SAY IT">' + feed_msg + '</textarea>';
+    str += '<div style="float:right;display:none;margin-top:5px;" id="save_edited_feed" data-id="' + obj.post_id + '">';       
+    str += '<a style="color:white" href="javascript:void(0);" class="btn btn-xs btn_black_normal" data-type="cancel-edited-feed" data-id="' + obj.post_id + '">Cancel</a><span> &nbsp; </span>';
+    str += '<a  style="color:white" href="javascript:void(0);" class="btn btn-xs btn_green" data-type="save-edited-feed" data-id="' + obj.post_id + '">Save</a>';
+    str += '</div>';
+    str += '<div class="clearfix"></div>';
     str += '<p>' + feed_msg.replace(/\n/g,"<br>") + '</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="' + obj.post_id + '"><span title="Like" class="icon icon_thumb' + cls + '"></span>' + obj.tot_like + '</a>';
         if(obj.tot_comment > 4)
@@ -1655,7 +1685,7 @@ function generate_post(obj, status) {
     str += '<a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="' + obj.post_id + '" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>';
     str += '</div>';
     if(wp == p_id){ 
-        str += '<a data-feed="'+obj.post_id+'" class="edit_post_icon"><i title="Edit Post" class="fa fa-pencil-square-o"></i></a>';
+        str += '<a href="javascript:void(0);" data-feed="'+obj.post_id+'" class="edit_post_icon"><i title="Edit Post" class="fa fa-pencil-square-o"></i></a>';
     }
     str += '</div>';
     str += '<div style="float:right;display:none;" id="show-again" data-id="' + obj.post_id + '">';
@@ -2169,6 +2199,8 @@ $(document).on('click', 'a[data-type="tag-user-again"]', function () {
         }
        
 });
+
+
 
 
 /*
