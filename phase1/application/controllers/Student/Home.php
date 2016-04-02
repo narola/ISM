@@ -346,6 +346,7 @@ class Home extends ISM_Controller {
 		$user_id = $user_data['id'];
 		// Get Post feed with comment 
 		$options =	array(
+				'single'=>true,
 						'join'	=>	array(
 							array(
 								'table' => TBL_USERS.' u',
@@ -371,7 +372,43 @@ class Home extends ISM_Controller {
 		$where = array('where'=>array('f.is_delete'=> 0,'f.id'=>$feed_id),'where_in'=>array('f.feed_by'=>studymates($user_id)));
 		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.created_date as posted_on,f.created_date,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link,l.is_delete as my_like',$where,$options);
 		$data['result_feed'] = $result_feed;
-		// p($result_feed, true);
+
+		$options = array(
+					'join' => array(
+						array(
+							'table' => TBL_USERS.' u', 
+							'condition'=>'u.id = fc.comment_by'
+						),
+						array(
+								'table'=>TBL_USER_PROFILE_PICTURE.' p',
+								'condition' => 'u.id = p.user_id'	
+						)
+					)
+				);	
+			
+			$where 	= array('where'=>array('fc.is_delete'=> 0, 'feed_id'=>$feed_id));
+			//$comment = select(TBL_FEED_COMMENT.' fc','feed_id,comment,fc.created_date,u.full_name,p.profile_link',$where,$options);
+			$comment = select(TBL_FEED_COMMENT.' fc','comment_by,feed_id,comment,fc.created_date,u.full_name,p.profile_link',$where,$options);
+			//----merge feeds and comment,tagged user in single array	
+
+			/*foreach ($data_array as $key => $value) {
+				$final_feed[$key] = $value;
+				$found_comment = $found_tagged = array();
+
+				foreach ($comment as $key1 => $value1) {
+					if($value1['feed_id'] == $value['fid']){
+	                    $found_comment[] = $value1;
+	                } 
+				}
+				foreach ($tagged as $tag_key => $tag_value) {
+					if($tag_value['feed_id'] == $value['fid']){
+						$found_tagged[] = $tag_value;
+					}
+				}*/
+
+				// $final_feed[$key]['comment'] = $found_comment;
+		// p($comment, true);
+		$data['comment'] = $comment;
 		$this->template->load('student/default','student/tagged_view',$data);
 	}
 	
