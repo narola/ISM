@@ -179,7 +179,7 @@
 						echo '&nbsp;tagged : <label style="cursor:pointer;" data-type="show-profile" data-id="'. $t_value['id'] .'" class="label label_name">' . $t_value['full_name'] . '</label>';
 					    } else {
 						$l = $t_count - 1;
-						$other_name .="<label style='cursor:pointer;' data-type='show-profile' data-id='". $t_value['id'] ."' class='label label_name'>" . $t_value["full_name"] . "</label><br>";
+						$other_name .="<label style='cursor:pointer;' data-type='show-profile' data-id='". $t_value['id'] ."' class='label label_name'>" . $t_value["full_name"] . "</label><br/>";
 						if ($k == $l) {
 						    echo 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-placement="bottom" data-trigger="focus" data-toggle="popover" title="Other Tagged" data-content="' . $other_name . '" >' . $l . ' more</a></label>';
 						}
@@ -205,7 +205,7 @@
 				// echo date("M j, Y", $old_date);
 				?>
 			    <div class="clearfix"></div>
-			    <textarea id="edit_feed_post" type="text" data-feed="<?php echo $value['fid']; ?>" class="form-control post_input" style="display:none" placeholder="SAY IT"><?php echo nl2br($value['feed_text']); ?></textarea>
+			    <textarea id="edit_feed_post" type="text" data-feed="<?php echo $value['fid']; ?>" class="form-control post_input" style="display:none" placeholder="SAY IT"><?php echo $value['feed_text']; ?></textarea>
 			    <div style="float:right;display:none;color:white; margin-top:5px;" id="save_edited_feed" data-id="<?php echo $value['fid']; ?>">
 					<a style="color:white" href="javascript:void(0);" class="btn btn-xs btn_black_normal" data-type="cancel-edited-feed" data-id="<?php echo $value['fid']; ?>">Cancel</a>
 				    <a style="color:white" href="javascript:void(0);" class="btn btn-xs btn_green" data-type="save-edited-feed" data-id="<?php echo $value['fid']; ?>">Save</a>
