@@ -263,7 +263,7 @@ function active_chat($user_id){
 				)
 			);
 		$where = array('where' => array('tg.is_delete'=>0,'tg.is_seen'=> 0,'tg.user_id'=>$user_id));
-		$tagged_notification = select(TBL_FEEDS_TAGGED_USER.' tg','u.id,u.full_name,\' tagged you in a post \' as msg,p.profile_link,tg.created_date',$where,$options);
+		$tagged_notification = select(TBL_FEEDS_TAGGED_USER.' tg','u.id,u.full_name,\' tagged you in a post \' as msg,p.profile_link,tg.created_date,tg.feed_id',$where,$options);
 
 		$options = array('join' =>
 				array(

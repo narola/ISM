@@ -215,13 +215,14 @@ $url = uri_string();
 								if (sizeof($this->notification_list) > 0) {
 										$notification_for = "tagged_notification";
 									foreach ($this->notification_list as $key => $value) {
+
 										// if(substr($value['msg'],0,9) == " accepted")
 										// 	{
 										// 		$notification_for = "freind_request_notification";
 										// 	}
 								?>
 								<li>
-									 <a href="#">
+									 <a href="student/tagged_feed/<?php echo $value['feed_id']; ?>">
 									<!-- <a href="Student/User_account/<?php// echo $notification_for; ?>/<?php // echo $this->session->userdata['user']['id']; ?>"> -->
 										<div class="user_small_img">
 											<img onerror="this.src='assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>">
