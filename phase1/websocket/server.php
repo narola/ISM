@@ -49,6 +49,8 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->get_latest_msg($data, $Server->wsClients[$clientID][12]);
     } else if ($data['type'] == 'post') {
         $responce = $Server->classmate_post($Server->wsClients[$clientID][12], $data);
+    } else if ($data['type'] == 'edit_post') {
+        $responce = $Server->classmate_edit_post($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'feed_comment') {
         $responce = $Server->classmate_comment($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'load_more_feed') {
@@ -259,8 +261,8 @@ $Server->bind('close', 'wsOnClose');
 // alternatively use: gethostbyaddr(gethostbyname($_SERVER['SERVER_NAME']))
 
 
- $Server->wsStartServer('192.168.1.114', 9301); // nv
- // $Server->wsStartServer('192.168.1.189', 9301); // pv
+ //$Server->wsStartServer('192.168.1.114', 9301); // nv
+  $Server->wsStartServer('192.168.1.189', 9301); // pv
  //$Server->wsStartServer('172.31.22.105', 9301); // server
 
 // $Server->wsStartServer('123.201.110.194', 9300);

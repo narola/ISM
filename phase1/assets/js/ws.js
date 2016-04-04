@@ -396,7 +396,8 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-        var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+
+          var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
        // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
        //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
@@ -915,9 +916,9 @@ if ("WebSocket" in window)
 
 
             });
+ 
 
-
-                notification_str += '<li><a href="#">';
+                notification_str += '<li><a href="student/tagged_feed/"'+obj.notification_detail[0]['id']+'>';
                 notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.notification_detail[0]['profile_link'] + '"></div>';
                 notification_str += '<div class="notification_txt">';
                 notification_str += '<p><span class="noti_username">' + obj.notification_detail[0]['full_name'] + '</span> tagged you in a post</p>';
@@ -1532,7 +1533,6 @@ function generate_post(obj, status) {
     {
         var p_id = obj.feed_by;
     }
-
 
     str = '<div class="box feeds" data-id="' + obj.post_id + '">';
     str += '<div class="user_small_img">';
