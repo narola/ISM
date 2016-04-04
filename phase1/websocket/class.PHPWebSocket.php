@@ -1174,7 +1174,6 @@ class PHPWebSocket {
      */
     function classmate_edit_post($user_id, $data = null) {
     	if (is_array($data) && !empty($data)) {
-    		echo $data['message'] . $data['feed_id'];
 	    $link = $this->db();
 	    $msg = mysqli_escape_string($link, $data['message']); 
 	    $query = "UPDATE " . TBL_FEEDS . " SET `feed_text` = '". $data['message'] ."' "
@@ -1245,7 +1244,13 @@ class PHPWebSocket {
 	    if (!empty($data['start']) && is_numeric($data['start'])) {
 		$limit = 4;
 		$ID_in = implode(',', $this->class_mate_list($user_id));
-		$data['start'] += $limit;
+			if($data['start'] == $data['start'])
+			{
+				$data['start'] = $limit;
+			}else
+			{
+				$data['start'] += $limit;
+			}
 		$query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, `f`.`created_date` as `posted_on`,"
 			. " `u`.`full_name` , `l`.`is_delete` as my_like ,"
 			// . " `u`.`full_name`,`u`.`id` , `l`.`is_delete` as my_like ,"
@@ -1350,7 +1355,8 @@ class PHPWebSocket {
 		    foreach ($data['feed'] as $key => $value) {
 			foreach ($feed_images as $k => $v) {
 			    if ($v['fid'] == $value['post_id']) {
-				$data['feed'][$key]['message'] .= '<a href="/uploads/' . $v['image_link'] . '"  class="fancybox"><img src="uploads/' . $v['image_link'] . '" width="100" height="70"></a>';
+			    $data['feed'][$key]['feed_type'] = 'media';
+				$data['feed'][$key]['message'] .= '<a href="uploads/' . $v['image_link'] . '"  class="fancybox"><img src="uploads/' . $v['image_link'] . '" width="100" height="70"></a>';
 				unset($feed_images[$k]);
 			    }
 			}
@@ -2810,6 +2816,7 @@ class PHPWebSocket {
 		    if ($y) {
 		    if (in_array($data['data_type'], $check_type)) {	
 			$data['message'] = '<a href="uploads/' . $data['webpath'] . '"  class="fancybox"><img src="uploads/' . $data['webpath'] . '" width="100" height="70"></a>';
+			$data['feed_type'] = 'media'; 
 			}else{
 				$data['message'] = '<a href="uploads/' . $data['webpath'] . '" target="_BLANK"><img src="assets/images/default_chat.png" width="100" height="70"></a>';
 			}
