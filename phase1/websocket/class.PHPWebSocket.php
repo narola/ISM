@@ -1244,13 +1244,15 @@ class PHPWebSocket {
 	    if (!empty($data['start']) && is_numeric($data['start'])) {
 		$limit = 4;
 		$ID_in = implode(',', $this->class_mate_list($user_id));
-			if($data['start'] == $data['start'])
-			{
-				$data['start'] = $limit;
-			}else
-			{
-				$data['start'] += $limit;
-			}
+			
+		//$data['start'] += $limit;
+
+		var_dump($data);
+		if($data['start'] == "4")
+		{
+			$data['start'] = 4;
+		}
+			
 		$query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, `f`.`created_date` as `posted_on`,"
 			. " `u`.`full_name` , `l`.`is_delete` as my_like ,"
 			// . " `u`.`full_name`,`u`.`id` , `l`.`is_delete` as my_like ,"
@@ -1362,6 +1364,8 @@ class PHPWebSocket {
 			}
 		    }
 		}
+	    
+		$data['start'] += $limit;
 	    }
 	}
 	return $data;
