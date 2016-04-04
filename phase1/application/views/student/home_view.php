@@ -135,6 +135,8 @@
 			'image/jpeg',
 			'image/gif'
 			);
+
+
 				foreach ($feed as $key => $value) {
 				if (count($value['images']) > 0) {
 					foreach ($value['images'] as $v) {
@@ -269,7 +271,11 @@
 					
 				if($this->session->userdata('user')['id'] == $value['feed_by'] && preg_match("/[0-9]+/", $arr_posted_on[0]) || $this->session->userdata('user')['id'] == $value['feed_by'] && $arr_posted_on[0] == 'Just'){
 						$is_editable = "yes";
-				}
+						if (count($value['images']) > 0)
+							{
+								$is_editable = "";
+							}
+						}
 
 				?>
 

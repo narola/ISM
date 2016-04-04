@@ -2294,7 +2294,7 @@ ul.tut_weekdays {
 	background-color:  rgb(255, 255, 238);;
 	border-color: rgba(149, 149, 149, 0.3);
 	border-radius: 3px;
-	color: white;
+	color: black;
 	padding: 10px;
 }
 .alert-minimalist > [data-notify="icon"] {

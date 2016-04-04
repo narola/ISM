@@ -397,9 +397,9 @@ if ("WebSocket" in window)
 {
 
 
-          var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+        var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
        // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-       //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+       // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
@@ -1491,7 +1491,6 @@ $(document).on('click', '.btn_green[data-type="save-edited-feed"]', function () 
         $('#all_feed .box[data-id="' + a + '"] .feed_text p').text(feed);
     }
 
-
 });
 
 
@@ -1690,6 +1689,10 @@ function generate_post(obj, status) {
      if(/^[0-9]+$/.test(arr_posted_on[0]) && wp == p_id ||  arr_posted_on[0] == "Just" && wp == p_id)
      {
        is_editable = "yes";
+        if(obj.feed_type == 'media')
+            {
+                 is_editable = "";
+            }
      }
 
 
