@@ -397,9 +397,9 @@ if ("WebSocket" in window)
 {
 
 
-       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-        //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+      // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+      var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
@@ -1050,7 +1050,10 @@ if ("WebSocket" in window)
                 str += '</div>';
                 str += '<div class="clearfix"></div>';
                 t = 0;
+
                 $.each(obj.result.my_topic, function (index, list) {
+                    if(list.topic_name != null)
+                    {
                     str += '<div class="topic_allocated">';
                     if (t == 0) {
                         str += '<h4 class="activity_heading">Topic Allocated</h4>';
@@ -1066,6 +1069,7 @@ if ("WebSocket" in window)
                     str += '</div>';
                     str += '</div>';
                     t++;
+                  }
                 });
                 s = 0;
                 $.each(obj.result.my_studymate, function (index, list) {
@@ -1107,8 +1111,9 @@ if ("WebSocket" in window)
                     str += '<p>' + list.feed_text + '</p>';
                     if (list.image_link != '' && list.image_link != null) {
                         str += '<div class="shared_images">';
-                        str += '<div><img src="uploads/' + list.image_link + '"></div>';
-                        str += '</div>';
+                        str += '<div>';
+                        str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                        str += '</div></div>';
                     }
                     str += '</div>';
                     str += '<div class="clearfix"></div>';
@@ -1142,8 +1147,9 @@ if ("WebSocket" in window)
 
                     if (list.image_link != '' && list.image_link != null) {
                         str += '<div class="shared_images">';
-                        str += '<div><img src="uploads/' + list.image_link + '"></div>';
-                        str += '</div>';
+                        str += '<div>';
+                        str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                        str += '</div></div>';
                     }
                     str += '<div class="clearfix"></div>';
 
@@ -1177,8 +1183,9 @@ if ("WebSocket" in window)
                   
                     if (list.image_link != '' && list.image_link != null) {
                         str += '<div class="shared_images">';
-                        str += '<div><img src="uploads/' + list.image_link + '"></div>';
-                        str += '</div>';
+                        str += '<div>';
+                        str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                        str += '</div></div>';
                     }
                     str += '</div>';
                     str += '</div>';

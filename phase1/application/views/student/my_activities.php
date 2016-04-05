@@ -114,7 +114,9 @@
                                                             if($like_value['image_link'] != ''){
                                                         ?>
                                                         <div class="shared_images">
-                                                            <div><img src="<?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" class="mCS_img_loaded"></div>
+                                                            <div>
+                                                               <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" class="fancybox"> <img src="<?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" width="100" height="70" class="mCS_img_loaded"></a>
+                                                            </div>
                                                         </div>
                                                         <?php } ?>
                                                 </div>
@@ -135,7 +137,9 @@
                                                             if($like_value['image_link'] != ''){
                                                         ?>
                                                         <div class="shared_images">
-                                                            <div><img src="<?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" class="mCS_img_loaded"></div>
+                                                            <div>
+                                                                 <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" class="fancybox"> <img src="<?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" width="100" height="70" class="mCS_img_loaded"></a>
+                                                            </div>
                                                         </div>
                                                         <?php } ?>
                                                 </div>
@@ -190,7 +194,9 @@
                                                     if($comment_value['image_link'] != ''){
                                                 ?>
                                                 <div class="shared_images">
-                                                    <div><img src="<?php echo UPLOAD_URL.'/'.$comment_value['image_link'];?>"></div>
+                                                    <div>
+                                                         <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$comment_value['image_link'];?>" class="fancybox"> <img src="<?php echo UPLOAD_URL.'/'.$comment_value['image_link'];?>" width="100" height="70" class="mCS_img_loaded"></a>
+                                                    </div>
                                                 </div>
                                                 <?php } ?>
                                                 <div class="clearfix"></div>
@@ -247,7 +253,9 @@
                                                 if($post_value['image_link'] != ''){
                                             ?>
                                             <div class="shared_images">
-                                                <div><img src="<?php echo UPLOAD_URL.'/'.$post_value['image_link'];?>" class="mCS_img_loaded"></div>
+                                                <div>
+                                                    <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$post_value['image_link'];?>" class="fancybox"> <img src="<?php echo UPLOAD_URL.'/'.$post_value['image_link'];?>" width="100" height="70" class="mCS_img_loaded"></a>
+                                                </div>
                                             </div>
                                             <?php } ?>
                                         </div> 
