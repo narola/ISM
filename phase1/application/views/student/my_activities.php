@@ -5,6 +5,16 @@
             <div class="box_body" data-type="activity-body">
                 <div class="col-sm-12 border-left" data-type="activity-sub-body">
                     <?php
+                        
+                      $gender = "";
+                        if(strtolower($this->session->userdata['user']['gender']) =="male")
+                        {
+                            $gender = "his";
+                        }else
+                        {
+                            $gender = "her";
+                        }
+
                         if(isset($my_month)){
                             ?>
                             <div class="divide_discussion">                    
@@ -19,7 +29,7 @@
                                 ?>
                                     <div class="topic_allocated">
                                         <?php if($t == 0) { ?>
-                                            <h4 class="activity_heading">Topic Allocated</h4>
+                                            <h4 class="activity_heading box_header">Topic Allocated</h4>
                                         <?php } ?>
                                         <div class="topic_div">
                                             <h4><?php echo $topic_allcated_value['topic_name'];?></h4>
@@ -42,7 +52,7 @@
                                 ?>
                                     <div class="studymate_with">
                                         <?php if($s == 0) { ?>
-                                            <h4 class="activity_heading">Became studymate with</h4>
+                                            <h4 class="box_header">Became studymate with</h4>
                                         <?php } ?>
                                          <span class="date noti_time just_now">
                                          <!--
@@ -69,19 +79,29 @@
                                         </div>
                                       
                                     </div>   
+                                    
                                 <?php
                                     $s++;
                                 }
                             }
+
+                            ?>
+                            <div class="status_like">
+                            <?php 
                             if(isset($my_activities['like']) && sizeof($my_activities['like']) > 0){
-                                    foreach ($my_activities['like'] as $key => $like_value) {
+                                ?>
+                                <h4 class="box_header">Status liked</h4>
+                                <?php 
+
+                                foreach ($my_activities['like'] as $key => $like_value) {
                                 ?>
                                     <div class="status_like">
                                         <?php
+                                           
                                             if($like_value['id'] == $this->session->userdata['user']['id'])
                                             { ?>
 
-                                               <h4 class="activity_heading"> <span class="txt_green" style="cursor:pointer;display: -webkit-inline-box;" data-type="show-profile" data-id="<?php echo $like_value['id']; ?>"><?php echo $like_value['post_username'];?></span> Liked his own status</h4>
+                                               <h4 class="activity_heading"> <span class="txt_green" style="cursor:pointer;display: -webkit-inline-box;" data-type="show-profile" data-id="<?php echo $like_value['id']; ?>"><?php echo $like_value['post_username'];?></span> Liked <?php echo $gender;?> own status</h4>
                                                  <span class="date noti_time just_now">
                                                  </span>
                                                     <script type="text/javascript">
@@ -114,14 +134,24 @@
                                 }   
                             }
 
+                            ?>
+                        </div>
+                            <div class="commented_on">
+                               
+                            <?php
+
                             if(isset($my_activities['comment']) && sizeof($my_activities['comment'])>0){
+                                ?>
+                                     <h4 class="box_header">Commented on</h4>
+                                <?php
                                     foreach ($my_activities['comment'] as $key => $comment_value) {
+
                                 ?>
                                     <div class="commented_on">
                                           <?php
                                             if($comment_value['feed_by'] == $this->session->userdata['user']['id'])
                                             { ?>
-                                                 <h4 class="activity_heading">Commented on his own post</h4>
+                                                 <h4 class="activity_heading">Commented on <?php echo $gender; ?> own post</h4>
                                             <?php 
                                               }else{
                                                ?>
@@ -179,21 +209,25 @@
                                 <?php
                                 }
                             }
+                            ?>
+                            </div>
+                            <?php
                             if(isset($my_activities['post']) && sizeof($my_activities['post'])>0){
                                 $p = 0;
                                 foreach ($my_activities['post'] as $key => $post_value) {
                                 ?>
                                     <div class="status_like">
                                         <?php if($p==0){ ?>
-                                        <h4 class="activity_heading">Status updated</h4>
+                                        <h4 class="box_header">Status updated</h4>
                                         <?php } ?>
                                                  <span class="date noti_time just_now">
                                                  </span>
                                                     <script type="text/javascript">
                                                      $(".just_now").timestatus("<?php echo $post_value['created_date']; ?>");
                                                     </script>  
-                                        <div class="feed_text border_bottom">                                               
-                                            <p><?php echo $post_value['feed_text'];?></p>
+                                        <div class="feed_text border_bottom"> 
+
+                                            <p><a class="noti_username" style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $this->session->userdata['user']['id'];?>"><?php echo $this->session->userdata['user']['full_name'];?></a><strong>updated <?php echo $gender; ?> status: </strong><?php echo $post_value['feed_text'];?></p>
                                             <?php 
                                                 if($post_value['image_link'] != ''){
                                             ?>

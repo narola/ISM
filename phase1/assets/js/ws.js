@@ -1032,6 +1032,15 @@ if ("WebSocket" in window)
                 $('.search_studymate  div[data-type="search_result"]').html(str);
             }
         } else if (obj.type == "load-activity-more") {
+            var gender = "";
+                if(obj.gender.toLowerCase() == "male")
+                {
+                    gender = "his";
+                }else
+                {
+                    gender = "her";
+                }
+
             str = '';
             if (obj.result.my_like.length > 0 || obj.result.my_comment.length > 0 || obj.result.my_studymate.length > 0 || obj.result.my_post.length > 0 || obj.result.my_topic.length > 0)
             {
@@ -1063,7 +1072,7 @@ if ("WebSocket" in window)
 
                     str += '<div class="studymate_with">';
                     if (s == 0) {
-                        str += '<h4 class="activity_heading">Became studymate with</h4>';
+                        str += '<h4 class="box_header">Became studymate with</h4>';
                     }
                     str += '<span class="date">'+list.created_date+'</span>';
                     str += '<div class="study_mate">';
@@ -1078,12 +1087,17 @@ if ("WebSocket" in window)
                     s++;
                 });
 
-
+                var cnt_like = 0;
                 $.each(obj.result.my_like, function (index, list) {
                     str += '<div class="status_like">';
+                        if(cnt_like == 0)
+                        {
+                           str +='<h4 class="box_header">Status liked</h4>'
+                        }
+                        cnt_like++;
                     if(wp == list.l_id)
                         {
-                           str += '<h4 class="activity_heading"><span style="cursor:pointer;" data-type="show-profile" data-id="'+ list.l_id +'" class="txt_green">' + list.post_username + '</span> Liked his own status.</h4>';
+                           str += '<h4 class="activity_heading"><span style="cursor:pointer;" data-type="show-profile" data-id="'+ list.l_id +'" class="txt_green">' + list.post_username + '</span> Liked '+ gender +' own status.</h4>';
                         }else
                         {
                              str += '<h4 class="activity_heading">Liked status of <span style="cursor:pointer;" data-type="show-profile" data-id="'+ list.l_id +'" class="txt_green">' + list.post_username + '</span></h4>';
@@ -1096,11 +1110,17 @@ if ("WebSocket" in window)
                     str += '</div>';
                 });
                 // display my comment
+                var cnt_comment = 0;
                 $.each(obj.result.my_comment, function (index, list) {
                     str += '<div class="commented_on">';
+                    if(cnt_comment == 0)
+                    {
+                       str +='<h4 class="box_header">Commented on</h4>'
+                    }
+                    cnt_comment++;
                     if(wp == list.uid)
                     {
-                        str += '<h4 class="activity_heading">Commented on his own post</h4>';
+                        str += '<h4 class="activity_heading">Commented on '+gender+' own post</h4>';
                     }else
                     {
                         str += '<h4 class="activity_heading">Commented on</h4>';
@@ -1147,7 +1167,8 @@ if ("WebSocket" in window)
                         str += '<h4 class="activity_heading">Status updated</h4>';
                     }
                     str += '<span class="date">'+list.created_date+'</span>';
-                    str += '<div class="feed_text">                                               ';
+                    str += '<div class="feed_text">';
+                    str += '<p><a class="noti_username" style="cursor:pointer;" data-type="show-profile" data-id="' + obj.id + '">' + obj.full_name + '</a><strong>updated ' + gender + ' status: </strong>' + list.feed_text + '</p>';
                     str += '<p>' + list.feed_text + '</p>';
                     if (list.image_link != '' && list.image_link != null) {
                         str += '<div class="shared_images">';

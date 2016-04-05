@@ -222,7 +222,7 @@ $url = uri_string();
 										// 	}
 								?>
 								<li>
-									 <a href="student/tagged_feed/<?php echo $value['feed_id']; ?>">
+									 <a>
 									<!-- <a href="Student/User_account/<?php// echo $notification_for; ?>/<?php // echo $this->session->userdata['user']['id']; ?>"> -->
 										<div class="user_small_img">
 											<img onerror="this.src='assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>">
@@ -496,6 +496,7 @@ if (isset($active_c) && !empty($active_c) && $this->session->userdata('user')['i
 <?php } ?>
 <?php if (isset($menu) && $menu == 'week') { ?>
 <script type="text/javascript">
+
 $(document).ready(function() {
 	$('.calc_header a').click(function() {
 		if (!$('.calc_header a').hasClass('collapsed')) {
@@ -506,7 +507,6 @@ $(document).ready(function() {
 			$('.calc_header a span').addClass('fa-angle-up');
 			$('.calc_header a span').removeClass('fa-angle-down');
 		}
-		;
 	});
 	$('#calc_tab').click(function() {
 		$(this).addClass('active');
