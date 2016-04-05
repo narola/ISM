@@ -341,10 +341,138 @@ class Home extends ISM_Controller {
 	}
 
 	public function tagged_feed($feed_id){
-		
 		$user_data = $this->session->userdata('user');
 		$user_id = $user_data['id'];
+
+		$tagged = select(TBL_FEEDS_TAGGED_USER,'feed_id',array('where'=>array('is_delete' => 0, 'feed_id'=>$feed_id)),array('order_by' => 'id DESC'));
+		$tagged_feed_id = array();
+		foreach ($tagged as $key => $value) {
+			$tagged_feed_id[] = $value['feed_id'];
+		}
+		
 		// Get Post feed with comment 
+		$options =	array(
+						'join'	=>	array(
+							array(
+								'table' => TBL_USERS.' u',
+								'condition' => 'u.id = f.feed_by'
+							),
+							array(
+								'table' => TBL_USER_PROFILE_PICTURE.' p',
+								'condition' => 'u.id = p.user_id'	
+							),
+							array(
+								'table' => TBL_FEED_LIKE.' l',
+								'condition' => 'l.feed_id = f.id and l.like_by ='.$user_id
+							)
+
+						),
+						'limit'=>4,
+						'offset'=>0,
+						'order_by' => 'f.id DESC'
+
+					);  
+
+		if(empty($tagged_feed_id))
+			$tagged_feed_id = array(0);
+		$where = array('where'=>array('f.is_delete'=> 0,'f.id'=>$tagged_feed_id[0]),'where_in'=>array('f.feed_by'=>studymates($user_id)));
+		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.created_date as posted_on,f.created_date,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link,l.is_delete as my_like',$where,$options);
+		// p($result_feed,true);
+		//---find feeds
+		// p($tagged_feed_id,TRUE);
+		$feed_ids = array();
+		foreach ($result_feed as $key => $value) {
+			$value['posted_on'] =get_time_format(date("M d, Y, g:i:s a", strtotime($value['posted_on'])));
+			$feed_ids[] = $value['fid'];
+			$data_array[$key] = $value;
+		}	
+		if(sizeof($feed_ids)>0)
+		{	
+			//---find tagged user
+		
+			$options = array(
+					'join' => array(
+						array(
+							'table' => TBL_USERS.' u',
+							'condition' => 'u.id = t.user_id'
+						)
+					)
+				);
+			$tagged = select(TBL_FEEDS_TAGGED_USER.' t','u.id,u.full_name,t.feed_id',array('where_in'=>array('feed_id'=>$feed_ids)),$options);
+			
+			//---find feeds commentss
+			
+			$options = array(
+					'join' => array(
+						array(
+							'table' => TBL_USERS.' u', 
+							'condition'=>'u.id = fc.comment_by'
+						),
+						array(
+								'table'=>TBL_USER_PROFILE_PICTURE.' p',
+								'condition' => 'u.id = p.user_id'	
+						)
+					)
+				);	
+			
+			$where 	= array('where'=>array('fc.is_delete'=> 0),'where_in'=> array('feed_id'=>$feed_ids));
+			//$comment = select(TBL_FEED_COMMENT.' fc','feed_id,comment,fc.created_date,u.full_name,p.profile_link',$where,$options);
+			$comment = select(TBL_FEED_COMMENT.' fc','comment_by,feed_id,comment,fc.created_date,u.full_name,p.profile_link',$where,$options);
+			//----merge feeds and comment,tagged user in single array	
+
+			$final_feed = array();
+			foreach ($data_array as $key => $value) {
+				$final_feed[$key] = $value;
+				$found_comment = $found_tagged = array();
+
+				foreach ($comment as $key1 => $value1) {
+					if($value1['feed_id'] == $value['fid']){
+	                    $found_comment[] = $value1;
+	                } 
+				}
+				foreach ($tagged as $tag_key => $tag_value) {
+					if($tag_value['feed_id'] == $value['fid']){
+						$found_tagged[] = $tag_value;
+					}
+				}
+
+				$final_feed[$key]['comment'] = $found_comment;
+				$final_feed[$key]['tagged']  = $found_tagged;
+				$final_feed[$key]['images']  = array();
+			}
+
+			$data['feed'] = $final_feed;
+			
+			$feed_ids = array();
+			foreach ($data['feed'] as $key => $value) {
+				$feed_ids[] = $value['fid'];
+			}
+
+
+			$data['feed_images'] = select(
+				TBL_FEED_IMAGE,
+				'feed_id, image_link',
+				array(
+					'where_in' => array( 'feed_id' => $feed_ids)
+					)
+				);
+
+			foreach ($data['feed'] as $key => $value) {
+					foreach($data['feed_images'] as $k => $v){
+						if($v['feed_id'] == $value['fid']){
+							$data['feed'][$key]['images'][] = $v['image_link'];
+							unset($data['feed_images'][$k]);
+						}
+					}
+			}
+}
+
+	// p($data,1);
+
+
+
+		
+		/*// Get Post feed with comment 
 		$options =	array(
 				'single'=>true,
 						'join'	=>	array(
@@ -371,7 +499,7 @@ class Home extends ISM_Controller {
 		
 		$where = array('where'=>array('f.is_delete'=> 0,'f.id'=>$feed_id),'where_in'=>array('f.feed_by'=>studymates($user_id)));
 		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.created_date as posted_on,f.created_date,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link,l.is_delete as my_like',$where,$options);
-		$data['result_feed'] = $result_feed;
+		$data['result_feed'] = $result_feed;*/
 
 		$options = array(
 					'join' => array(

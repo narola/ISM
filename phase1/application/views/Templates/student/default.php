@@ -579,6 +579,7 @@ function update_notification()
                   cache: false,
                   success: function(result){
                     $('.bell_badge').html("0");
+                   
                   }
             }); 
 
