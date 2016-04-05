@@ -958,7 +958,7 @@ class PHPWebSocket {
      */
     function get_client_info($id) {
 	$link = $this->db();
-	$query = "SELECT `u`.`id`,`u`.`full_name`, `upp`.`profile_link`, `u`.`created_date` "
+	$query = "SELECT `u`.`id`,`u`.`gender`,`u`.`full_name`, `upp`.`profile_link`, `u`.`created_date` "
 		. "FROM `" . TBL_USERS . "` `u` "
 		. "LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `upp` ON `upp`.`user_id` = `u`.`id` "
 		. "WHERE `u`.`id` = $id AND `u`.`is_delete` = 0 LIMIT 1";
@@ -969,6 +969,7 @@ class PHPWebSocket {
 	if ($count == 1) {
 	    return array(
 		'id' => $rows['id'],
+		'gender' => $rows['gender'],
 		'full_name' => $rows['full_name'],
 		'profile_link' => $rows['profile_link'],
 		'user_created_date' => $rows['created_date']
@@ -3065,7 +3066,6 @@ class PHPWebSocket {
 		. "LEFT JOIN `" . TBL_COURSES . "` `c` ON `c`.`id` = `in`.`course_id` "
 		. "WHERE date_format(sm.created_date,'%m') IN($m) AND  `u`.`is_delete` = 0 or date_format(sm2.created_date,'%m') IN($m) AND  `u`.`is_delete` = 0";
 	$row = mysqli_query($link, $query);
-	$data['qry'] = $query;
 
 	$i = 0;
 	while ($rows = mysqli_fetch_assoc($row)) {
@@ -3080,12 +3080,13 @@ class PHPWebSocket {
 
 	// like feed
 	//$query = "SELECT `upost`.`full_name` as `post_username`,`like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') AS created_date, (select count(*) "
-	$query = "SELECT `upost`.`full_name` as `post_username`,`upost`.`id` as `l_id`,`like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') AS created_date, (select count(*) "
+	$query = "SELECT `upost`.`full_name` as `post_username`,`fimage`.`image_link`,`upost`.`id` as `l_id`,`like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') AS created_date, (select count(*) "
 		. "FROM `" . TBL_FEED_LIKE . "` "
 		. "WHERE `feed_id` = `like_feed`.`id`) AS `totlike`, (SELECT COUNT(*) "
 		. "FROM `" . TBL_FEED_COMMENT . "` WHERE `feed_id` = `like_feed`.`id`) AS `totcomment` "
 		. "FROM `" . TBL_FEED_LIKE . "` `like` LEFT JOIN `feeds` `like_feed` ON `like_feed`.`id` = `like`.`feed_id` "
 		. "LEFT JOIN `" . TBL_USERS . "` `upost` ON `upost`.`id` = `like_feed`.`feed_by` "
+		. "LEFT JOIN `" . TBL_FEED_IMAGE . "` `fimage` ON `fimage`.`feed_id` = `like_feed`.`id` "
 		. "WHERE `like`.`like_by` = $user_id "
 		. "AND date_format(like.created_date,'%m') IN($m) ORDER BY `like`.`created_date` DESC";
 	$row = mysqli_query($link, $query);
