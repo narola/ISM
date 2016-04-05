@@ -3080,12 +3080,13 @@ class PHPWebSocket {
 
 	// like feed
 	//$query = "SELECT `upost`.`full_name` as `post_username`,`like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') AS created_date, (select count(*) "
-	$query = "SELECT `upost`.`full_name` as `post_username`,`upost`.`id` as `l_id`,`like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') AS created_date, (select count(*) "
+	$query = "SELECT `upost`.`full_name` as `post_username`,`fimage`.`image_link`,`upost`.`id` as `l_id`,`like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') AS created_date, (select count(*) "
 		. "FROM `" . TBL_FEED_LIKE . "` "
 		. "WHERE `feed_id` = `like_feed`.`id`) AS `totlike`, (SELECT COUNT(*) "
 		. "FROM `" . TBL_FEED_COMMENT . "` WHERE `feed_id` = `like_feed`.`id`) AS `totcomment` "
 		. "FROM `" . TBL_FEED_LIKE . "` `like` LEFT JOIN `feeds` `like_feed` ON `like_feed`.`id` = `like`.`feed_id` "
 		. "LEFT JOIN `" . TBL_USERS . "` `upost` ON `upost`.`id` = `like_feed`.`feed_by` "
+		. "LEFT JOIN `" . TBL_FEED_IMAGE . "` `fimage` ON `fimage`.`feed_id` = `like_feed`.`id` "
 		. "WHERE `like`.`like_by` = $user_id "
 		. "AND date_format(like.created_date,'%m') IN($m) ORDER BY `like`.`created_date` DESC";
 	$row = mysqli_query($link, $query);
