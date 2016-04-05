@@ -45,7 +45,10 @@
      $(document).on('click', '.edit_post_icon', function(e) {
      	var a = $(this).attr("data-feed");
         $('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').css("display","");
-     	$('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').focus();
+        var feed_post_text = $('#all_feed .box[data-id="' + a + '"] .feed_text p').html();
+        $('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').focus();
+        $('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').val("");
+ 	 	$('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').val(feed_post_text);
      	$('#all_feed .box div#save_edited_feed[data-id="' + a + '"]').css("display","");
     	$('#all_feed .box[data-id="' + a + '"] .feed_text p').css("display","none");
      });
@@ -58,7 +61,7 @@
  	 	$('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').css("display","none");
  	 	var feed_post_text = $('#all_feed .box[data-id="' + a + '"] .feed_text p').html();
  	 	$('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').val("");
- 	 	$('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').val(feed_post_text);
+ 	 	$('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').val(feed_post_text).focus();
      });	
      
 
@@ -69,6 +72,10 @@
 		$('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').show();
 	else
 	    $('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').hide();
+    });
+
+    $(document).on('click', function(){
+    	
     });
     
     $('#element').popover('show');
