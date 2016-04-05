@@ -399,7 +399,7 @@ if ("WebSocket" in window)
 
        var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
        // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-       // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+        //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
@@ -1105,6 +1105,11 @@ if ("WebSocket" in window)
                     str += '<span class="date">'+list.created_date+'</span>';
                     str += '<div class="feed_text">';
                     str += '<p>' + list.feed_text + '</p>';
+                    if (list.image_link != '' && list.image_link != null) {
+                        str += '<div class="shared_images">';
+                        str += '<div><img src="uploads/' + list.image_link + '"></div>';
+                        str += '</div>';
+                    }
                     str += '</div>';
                     str += '<div class="clearfix"></div>';
                     str += '</div>';
@@ -1169,7 +1174,7 @@ if ("WebSocket" in window)
                     str += '<span class="date">'+list.created_date+'</span>';
                     str += '<div class="feed_text">';
                     str += '<p><a class="noti_username" style="cursor:pointer;" data-type="show-profile" data-id="' + obj.id + '">' + obj.full_name + '</a><strong>updated ' + gender + ' status: </strong>' + list.feed_text + '</p>';
-                    str += '<p>' + list.feed_text + '</p>';
+                  
                     if (list.image_link != '' && list.image_link != null) {
                         str += '<div class="shared_images">';
                         str += '<div><img src="uploads/' + list.image_link + '"></div>';

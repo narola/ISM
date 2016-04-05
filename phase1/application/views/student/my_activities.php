@@ -110,6 +110,13 @@
                                                      <div class="clearfix"></div>
                                                 <div class="feed_text">                                               
                                                     <p><?php echo $like_value['feed_text'];?></p>
+                                                       <?php 
+                                                            if($like_value['image_link'] != ''){
+                                                        ?>
+                                                        <div class="shared_images">
+                                                            <div><img src="<?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" class="mCS_img_loaded"></div>
+                                                        </div>
+                                                        <?php } ?>
                                                 </div>
                                                 <div class="clearfix"></div>   
 
@@ -124,6 +131,13 @@
                                                      <div class="clearfix"></div>
                                                 <div class="feed_text">                                               
                                                     <p><?php echo $like_value['feed_text'];?></p>
+                                                      <?php 
+                                                            if($like_value['image_link'] != ''){
+                                                        ?>
+                                                        <div class="shared_images">
+                                                            <div><img src="<?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" class="mCS_img_loaded"></div>
+                                                        </div>
+                                                        <?php } ?>
                                                 </div>
                                                 <div class="clearfix"></div> 
                                        <?php }
@@ -215,6 +229,7 @@
                             if(isset($my_activities['post']) && sizeof($my_activities['post'])>0){
                                 $p = 0;
                                 foreach ($my_activities['post'] as $key => $post_value) {
+
                                 ?>
                                     <div class="status_like">
                                         <?php if($p==0){ ?>
@@ -247,7 +262,7 @@
                 <div class="clearfix"></div>
                 <div class="text-center" data-type="no-more">
                     <input type="hidden" name="load_more" value="<?php echo isset($value)?$value:'';?>"> 
-                    <a href="javascript:void(0);" data-month="<?php echo isset($new_my_month)?$new_my_month:'';?>" class="search_result_label" data-type="load-activity-more">View More</a>
+                    <a style="color:white" href="javascript:void(0);" data-month="<?php echo isset($new_my_month)?$new_my_month:'';?>" class="btn btn_green no-margin" data-type="load-activity-more">View More</a>
                 </div>
             </div>
         </div>
