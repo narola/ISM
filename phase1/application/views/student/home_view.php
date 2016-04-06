@@ -65,18 +65,71 @@
      });	
      
 
+      $(document).on('click', function(){
+      	//var is_data_open = $('').hasAttr('data-open');
+    	//$('#all_feed .box div#show-again[data-type="tag-open"]').hide();
+
+    	var feed_id = $('#show-again[data-type="tag-open"]').attr('data-id');
+    	if ($('#show-again[data-type="tag-open"]').attr('data-open') !== undefined) {
+		    $('#show-again[data-type="tag-open"]').removeAttr('data-open');
+		} else {
+
+			var value = $("#select-tag-user-again[data-id='" + feed_id + "']").val();
+			if(value == null)
+			{
+			 value = $("#" + feed_id + "[data-id='" + feed_id + "']").val();
+			}
+			//alert(feed_id);
+			if(value == null)
+       		 {  
+		   		 $('#all_feed .box div#show-again[data-type="tag-open"]').hide();
+		   		 $('#show-again[data-type="tag-open"]').removeAttr('data-type');
+		   	 }
+		}
+
+   	  });
+
+/* tag user and toggle the tag option */
+
     $(document).on('click', 'a[data-type="tag-again"]', function(e) {
-	show = $('#all_feed .box div[data-id="' + $(this).data('id') + '"]').is(":visible");
 
-	if (show)
-		$('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').show();
-	else
-	    $('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').hide();
+	    var feed_id = $('#show-again[data-type="tag-open"]').attr("data-id");
+	    var value = $("#select-tag-user-again[data-id='" + feed_id + "']").val();
+	  //  alert(feed_id);
+	  //alert(value);
+			if(value == null)
+			{
+			 value = $("#" + feed_id + "[data-id='" + feed_id + "']").val();
+			}
+
+
+	    if(value == null && typeof feed_id != 'undefined')
+	       	{ 
+	     $('#all_feed .box div#show-again[data-type="tag-open"]').hide();
+	     $('#show-again[data-type="tag-open"]').removeAttr('data-open');
+	     $('#show-again[data-type="tag-open"]').removeAttr('data-type');
+	 		}
+
+		 show = $('#all_feed .box div[data-id="' + $(this).data('id') + '"]').is(":visible");
+
+		if (show)
+		{
+			if(value == null)
+			{
+				$('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').show();
+				$('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').attr('data-type', 'tag-open');
+				$('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').attr('data-open', 'first');
+			}
+		}
+		else
+		{
+		    $('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').hide();
+		    $('#all_feed .box div#show-again[data-id="' + $(this).data('id') + '"]').removeAttr('data-type');
+		}
+	
     });
 
-    $(document).on('click', function(){
-    	
-    });
+   
     
     $('#element').popover('show');
 
