@@ -397,9 +397,9 @@ if ("WebSocket" in window)
 {
 
 
-      // var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
@@ -2008,7 +2008,8 @@ $(document).on('click', 'button[data-type="close-studymate"]', function (e) {
         to: 'self',
         studymate_id: $(this).attr('data-id')
     };
-    ws.send(JSON.stringify(request));
+   ws.send(JSON.stringify(request));
+    window.location.reload(window.location.pathname);
     $('#mCSB_2 #mCSB_2_container div[data-id="' + $(this).attr('data-id') + '"]').remove().html();
     $('#mCSB_6 #mCSB_6_container div[data-id="' + $(this).attr('data-id') + '"]').remove().html();
     if ($('#mCSB_2 #mCSB_2_container .my_studymates .box.general_cred .study_mate').length == 0) {

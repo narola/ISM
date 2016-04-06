@@ -257,7 +257,7 @@
 <script type="text/javascript">
 
     $( document ).ready(function() {
-        $('.gsib_a').css("padding":"0px");
+        $('.gsib_a').css("padding","0px");
 });
 </script>
                 </div>
