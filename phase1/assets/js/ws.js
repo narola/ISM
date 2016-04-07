@@ -1112,7 +1112,13 @@ if ("WebSocket" in window)
                     if (list.image_link != '' && list.image_link != null) {
                         str += '<div class="shared_images">';
                         str += '<div>';
-                        str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                        if(list.feed_type == "doc")
+                        {
+                         str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img width="100" height="70" src="assets/images/default_chat.png" class="mCS_img_loaded"></a>';
+                        }else
+                        {
+                            str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                        }
                         str += '</div></div>';
                     }
                     str += '</div>';
@@ -1148,7 +1154,13 @@ if ("WebSocket" in window)
                     if (list.image_link != '' && list.image_link != null) {
                         str += '<div class="shared_images">';
                         str += '<div>';
-                        str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                         if(list.feed_type == "doc")
+                        {
+                         str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img width="100" height="70" src="assets/images/default_chat.png" class="mCS_img_loaded"></a>';
+                        }else
+                        {
+                            str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                        }
                         str += '</div></div>';
                     }
                     str += '<div class="clearfix"></div>';
@@ -1184,7 +1196,13 @@ if ("WebSocket" in window)
                     if (list.image_link != '' && list.image_link != null) {
                         str += '<div class="shared_images">';
                         str += '<div>';
-                        str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                         if(list.feed_type == "doc")
+                        {
+                         str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img width="100" height="70" src="assets/images/default_chat.png" class="mCS_img_loaded"></a>';
+                        }else
+                        {
+                            str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                        }
                         str += '</div></div>';
                     }
                     str += '</div>';

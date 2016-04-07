@@ -89,6 +89,12 @@
                             <div class="status_like">
                             <?php 
                             if(isset($my_activities['like']) && sizeof($my_activities['like']) > 0){
+                                $check_type = array(
+                                        'image/png',
+                                        'image/jpg',
+                                        'image/jpeg',
+                                        'image/gif'
+                                        );
                                 ?>
                                 <h4 class="box_header">Status liked</h4>
                                 <?php 
@@ -115,7 +121,18 @@
                                                         ?>
                                                         <div class="shared_images">
                                                             <div>
-                                                               <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" class="fancybox"> <img src="<?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" width="100" height="70" class="mCS_img_loaded"></a>
+                                                               <?php
+                                                               if (in_array(mime_content_type(UPLOAD_URL.'/'.$like_value['image_link']), $check_type)) {
+                                                                   ?>
+                                                                     <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" class="fancybox"> 
+                                                                        <img src="<?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" width="100" height="70" class="mCS_img_loaded">
+                                                                     </a>
+                                                                   <?php
+                                                                } else { ?>
+                                                                    <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" class="fancybox"> 
+                                                                        <img src="assets/images/default_chat.png" width="100" height="70">
+                                                                     </a>
+                                                              <?php  } ?>
                                                             </div>
                                                         </div>
                                                         <?php } ?>
@@ -159,6 +176,12 @@
                             <?php
 
                             if(isset($my_activities['comment']) && sizeof($my_activities['comment'])>0){
+                                 $check_type = array(
+                                        'image/png',
+                                        'image/jpg',
+                                        'image/jpeg',
+                                        'image/gif'
+                                        );
                                 ?>
                                      <h4 class="box_header">Commented on</h4>
                                 <?php
@@ -195,7 +218,18 @@
                                                 ?>
                                                 <div class="shared_images">
                                                     <div>
-                                                         <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$comment_value['image_link'];?>" class="fancybox"> <img src="<?php echo UPLOAD_URL.'/'.$comment_value['image_link'];?>" width="100" height="70" class="mCS_img_loaded"></a>
+                                                       <?php
+                                                       if (in_array(mime_content_type(UPLOAD_URL.'/'.$comment_value['image_link']), $check_type)) {
+                                                           ?>
+                                                             <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$comment_value['image_link'];?>" class="fancybox"> 
+                                                                <img src="<?php echo UPLOAD_URL.'/'.$comment_value['image_link'];?>" width="100" height="70" class="mCS_img_loaded">
+                                                             </a>
+                                                           <?php
+                                                        } else { ?>
+                                                            <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$comment_value['image_link'];?>" class="fancybox"> 
+                                                                <img src="assets/images/default_chat.png" width="100" height="70">
+                                                             </a>
+                                                      <?php  } ?>
                                                     </div>
                                                 </div>
                                                 <?php } ?>
@@ -233,6 +267,12 @@
                             </div>
                             <?php
                             if(isset($my_activities['post']) && sizeof($my_activities['post'])>0){
+                                $check_type = array(
+                                        'image/png',
+                                        'image/jpg',
+                                        'image/jpeg',
+                                        'image/gif'
+                                        );
                                 $p = 0;
                                 foreach ($my_activities['post'] as $key => $post_value) {
 
@@ -253,9 +293,20 @@
                                                 if($post_value['image_link'] != ''){
                                             ?>
                                             <div class="shared_images">
-                                                <div>
-                                                    <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$post_value['image_link'];?>" class="fancybox"> <img src="<?php echo UPLOAD_URL.'/'.$post_value['image_link'];?>" width="100" height="70" class="mCS_img_loaded"></a>
-                                                </div>
+                                               <div>
+                                                       <?php
+                                                       if (in_array(mime_content_type(UPLOAD_URL.'/'.$post_value['image_link']), $check_type)) {
+                                                           ?>
+                                                             <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$post_value['image_link'];?>" class="fancybox"> 
+                                                                <img src="<?php echo UPLOAD_URL.'/'.$post_value['image_link'];?>" width="100" height="70" class="mCS_img_loaded">
+                                                             </a>
+                                                           <?php
+                                                        } else { ?>
+                                                            <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$post_value['image_link'];?>" class="fancybox"> 
+                                                                <img src="assets/images/default_chat.png" width="100" height="70">
+                                                             </a>
+                                                      <?php  } ?>
+                                                    </div>
                                             </div>
                                             <?php } ?>
                                         </div> 
