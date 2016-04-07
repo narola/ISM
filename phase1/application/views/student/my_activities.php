@@ -129,7 +129,7 @@
                                                                      </a>
                                                                    <?php
                                                                 } else { ?>
-                                                                    <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" class="fancybox"> 
+                                                                    <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" target="_BLANK" class="fancybox"> 
                                                                         <img src="assets/images/default_chat.png" width="100" height="70">
                                                                      </a>
                                                               <?php  } ?>
@@ -154,8 +154,19 @@
                                                             if($like_value['image_link'] != ''){
                                                         ?>
                                                         <div class="shared_images">
-                                                            <div>
-                                                                 <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" class="fancybox"> <img src="<?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" width="100" height="70" class="mCS_img_loaded"></a>
+                                                             <div>
+                                                               <?php
+                                                               if (in_array(mime_content_type(UPLOAD_URL.'/'.$like_value['image_link']), $check_type)) {
+                                                                   ?>
+                                                                     <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" class="fancybox"> 
+                                                                        <img src="<?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" width="100" height="70" class="mCS_img_loaded">
+                                                                     </a>
+                                                                   <?php
+                                                                } else { ?>
+                                                                    <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$like_value['image_link'];?>" target="_BLANK" class="fancybox"> 
+                                                                        <img src="assets/images/default_chat.png" width="100" height="70">
+                                                                     </a>
+                                                              <?php  } ?>
                                                             </div>
                                                         </div>
                                                         <?php } ?>
@@ -226,7 +237,7 @@
                                                              </a>
                                                            <?php
                                                         } else { ?>
-                                                            <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$comment_value['image_link'];?>" class="fancybox"> 
+                                                            <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$comment_value['image_link'];?>" target="_BLANK" class="fancybox"> 
                                                                 <img src="assets/images/default_chat.png" width="100" height="70">
                                                              </a>
                                                       <?php  } ?>
@@ -302,7 +313,7 @@
                                                              </a>
                                                            <?php
                                                         } else { ?>
-                                                            <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$post_value['image_link'];?>" class="fancybox"> 
+                                                            <a href="<?php echo base_url(); ?><?php echo UPLOAD_URL.'/'.$post_value['image_link'];?>" target="_BLANK" class="fancybox"> 
                                                                 <img src="assets/images/default_chat.png" width="100" height="70">
                                                              </a>
                                                       <?php  } ?>

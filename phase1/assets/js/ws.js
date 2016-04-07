@@ -399,7 +399,7 @@ if ("WebSocket" in window)
 
       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
 
@@ -1115,7 +1115,7 @@ if ("WebSocket" in window)
                         str += '<div>';
                         if(list.feed_type == "doc")
                         {
-                         str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img width="100" height="70" src="assets/images/default_chat.png" class="mCS_img_loaded"></a>';
+                         str += '<a href="uploads/' + list.image_link + '" target="_BLANK" class="fancybox"> <img width="100" height="70" src="assets/images/default_chat.png" class="mCS_img_loaded"></a>';
                         }else
                         {
                             str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
@@ -1157,7 +1157,7 @@ if ("WebSocket" in window)
                         str += '<div>';
                          if(list.feed_type == "doc")
                         {
-                         str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img width="100" height="70" src="assets/images/default_chat.png" class="mCS_img_loaded"></a>';
+                         str += '<a href="uploads/' + list.image_link + '" target="_BLANK" class="fancybox"> <img width="100" height="70" src="assets/images/default_chat.png" class="mCS_img_loaded"></a>';
                         }else
                         {
                             str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
@@ -1199,7 +1199,7 @@ if ("WebSocket" in window)
                         str += '<div>';
                          if(list.feed_type == "doc")
                         {
-                         str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img width="100" height="70" src="assets/images/default_chat.png" class="mCS_img_loaded"></a>';
+                         str += '<a href="uploads/' + list.image_link + '" target="_BLANK" class="fancybox"> <img width="100" height="70" src="assets/images/default_chat.png" class="mCS_img_loaded"></a>';
                         }else
                         {
                             str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
