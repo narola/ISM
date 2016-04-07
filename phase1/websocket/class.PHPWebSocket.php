@@ -1005,12 +1005,23 @@ class PHPWebSocket {
      */
     function get_latest_msg($data = null, $userID) {
 
-	$query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message`,`uc`.`media_link`,`uc`.`media_type`,`uc`.`created_date` "
+	// $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message`,`uc`.`media_link`,`uc`.`media_type`,`uc`.`created_date` "
+	// 	. "FROM `" . TBL_USER_CHAT . "` `uc` "
+	// 	. "WHERE (`uc`.`sender_id` = " . $data['my_id'] . " "
+	// 	. "AND `uc`.`receiver_id` = $userID) OR (`uc`.`sender_id` = $userID AND `uc`.`receiver_id` = " . $data['my_id'] . ") "
+	// 	. "AND `uc`.`is_delete` = 0 "
+	// 	. "ORDER BY `uc`.`id` ASC LIMIT 10";
+
+	 $query = "SELECT `temp`.`id`, `temp`.`sender_id`, `temp`.`receiver_id`, `temp`.`message`,`temp`.`media_link`,`temp`.`media_type`,`temp`.`created_date` FROM( "
+	    . "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message`,`uc`.`media_link`,`uc`.`media_type`,`uc`.`created_date` "
 		. "FROM `" . TBL_USER_CHAT . "` `uc` "
 		. "WHERE (`uc`.`sender_id` = " . $data['my_id'] . " "
 		. "AND `uc`.`receiver_id` = $userID) OR (`uc`.`sender_id` = $userID AND `uc`.`receiver_id` = " . $data['my_id'] . ") "
 		. "AND `uc`.`is_delete` = 0 "
-		. "ORDER BY `uc`.`id` ASC LIMIT 10";
+		. "ORDER BY `uc`.`id` DESC LIMIT 10) temp"
+		. " ORDER BY temp.`id` ASC";
+
+		
 	$link = $this->db();
 	mysqli_query($link, "UPDATE `" . TBL_USER_CHAT . "` `uc` SET  `uc`.`received_status` = 1  WHERE `uc`.`received_status` = 0 AND `uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` =" . $userID);
 	$row = mysqli_query($link, $query);

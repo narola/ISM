@@ -404,6 +404,7 @@ if ("WebSocket" in window)
 
 
 
+
     ws.onopen = function ()
     {
         ws.send('{"type":"con","from":"' + wp + '","to":"self"}');
@@ -2008,7 +2009,8 @@ $(document).on('click', 'button[data-type="close-studymate"]', function (e) {
         to: 'self',
         studymate_id: $(this).attr('data-id')
     };
-    ws.send(JSON.stringify(request));
+   ws.send(JSON.stringify(request));
+    window.location.reload(window.location.pathname);
     $('#mCSB_2 #mCSB_2_container div[data-id="' + $(this).attr('data-id') + '"]').remove().html();
     $('#mCSB_6 #mCSB_6_container div[data-id="' + $(this).attr('data-id') + '"]').remove().html();
     if ($('#mCSB_2 #mCSB_2_container .my_studymates .box.general_cred .study_mate').length == 0) {
