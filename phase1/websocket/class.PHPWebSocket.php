@@ -2849,6 +2849,7 @@ class PHPWebSocket {
 			$data['feed_type'] = 'media'; 
 			}else{
 				$data['message'] = '<a href="uploads/' . $data['webpath'] . '" target="_BLANK"><img src="assets/images/default_chat.png" width="100" height="70"></a>';
+				$data['feed_type'] = 'doc'; 
 			}
 		    } else {
 			$data['to'] = 'self';

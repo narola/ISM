@@ -1743,7 +1743,7 @@ function generate_post(obj, status) {
      if(/^[0-9]+$/.test(arr_posted_on[0]) && wp == p_id ||  arr_posted_on[0] == "Just" && wp == p_id)
      {
        is_editable = "yes";
-        if(obj.feed_type == 'media')
+        if(obj.feed_type == 'media' || obj.feed_type == 'doc')
             {
                  is_editable = "";
             }
