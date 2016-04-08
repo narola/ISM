@@ -156,7 +156,29 @@ class Login extends CI_Controller {
     *   Forgot password - student
     */
     public function forgot_password()
-    {
+    {   
+        $school_grade = $this->input->post('school_grade');
+
+        if(empty($school_grade) || !$_POST){
+            $this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0)),array('order_by'=>TBL_SCHOOLS.'.school_name'));
+        }else{
+            $this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0,'school_grade'=>$school_grade)),array('order_by'=>TBL_SCHOOLS.'.school_name'));
+        }
+
+        $this->data['roles'] = select(TBL_ROLES,false,array('where'=>array('is_delete'=>0,'role_name !='=>'school')));
+        $this->data['courses'] = select(TBL_COURSES,false,array('where'=>array('is_delete'=>0)));
+
+        $course_id = $this->input->post('course_id');
+
+        if(!$_POST && empty($course_id)){
+            $this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>0)),array('order_by'=>TBL_CLASSROOMS.'.class_name'));
+        }else{
+            $this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>0,'course_id'=>$course_id)),array('order_by'=>TBL_CLASSROOMS.'.class_name'));
+        }
+
+        $this->data['cur_year'] = date('Y');
+        $this->data['next_year'] = date('Y')+1;
+        
         $this->form_validation->set_rules('emailid', 'Email', 'trim|required|valid_email|callback_check_email');
         if($this->form_validation->run() == FALSE){
             $this->load->view('login/forgot_password');
@@ -437,4 +459,6 @@ class Login extends CI_Controller {
         $data['username'] = $this->session->userdata('user')['full_name'];
         $this->load->view('student/welcome', $data);
     }
+
+
 }
