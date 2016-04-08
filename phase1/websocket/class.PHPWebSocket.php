@@ -1366,13 +1366,27 @@ class PHPWebSocket {
 			$final_feed[$key]['studymates_detail'] = $studymates_detail;
 		    }
 		    $data['feed'] = $final_feed;
+		  
 		    foreach ($data['feed'] as $key => $value) {
 			foreach ($feed_images as $k => $v) {
-			    if ($v['fid'] == $value['post_id']) {
-			    $data['feed'][$key]['feed_type'] = 'media';
-				$data['feed'][$key]['message'] .= '<a href="uploads/' . $v['image_link'] . '"  class="fancybox"><img src="uploads/' . $v['image_link'] . '" width="100" height="70"></a>';
-				unset($feed_images[$k]);
+
+			    if ($v['fid'] == $value['post_id'] && $v['image_link'] != "") {
+			    	 $ext = pathinfo($v['image_link'], PATHINFO_EXTENSION);
+			    	if( $ext == 'jpeg' || $ext == 'gif' || $ext == 'png' || $ext == 'jpg' ) {
+					    $data['feed'][$key]['feed_type'] = 'media';
+						$data['feed'][$key]['message'] .= '<a href="uploads/' . $v['image_link'] . '"  class="fancybox"><img src="uploads/' . $v['image_link'] . '" width="100" height="70"></a>';
+						unset($feed_images[$k]);
+					}else
+					{
+						$data['feed'][$key]['feed_type'] = 'media';
+						$data['feed'][$key]['message'] .= '<a href="uploads/' . $v['image_link'] . '" target="_BLANK"  class="fancybox"><img src="assets/images/default_chat.png" width="100" height="70"></a>';
+						unset($feed_images[$k]);
+					}
+
+
 			    }
+
+
 			}
 		    }
 		}
@@ -2835,6 +2849,7 @@ class PHPWebSocket {
 			$data['feed_type'] = 'media'; 
 			}else{
 				$data['message'] = '<a href="uploads/' . $data['webpath'] . '" target="_BLANK"><img src="assets/images/default_chat.png" width="100" height="70"></a>';
+				$data['feed_type'] = 'doc'; 
 			}
 		    } else {
 			$data['to'] = 'self';
@@ -3103,6 +3118,21 @@ class PHPWebSocket {
 	$row = mysqli_query($link, $query);
 	$i = 0;
 	while ($rows = mysqli_fetch_assoc($row)) {
+
+		if($rows["image_link"] != null)
+		{
+			$ext = pathinfo($rows["image_link"], PATHINFO_EXTENSION);
+			 if( $ext == 'jpeg' || $ext == 'gif' || $ext == 'png' || $ext == 'jpg' ){
+			 		$rows['feed_type'] = "media";
+			 }else
+			 {
+			 	$rows['feed_type'] = "doc";
+			 }
+		}else
+		{
+			$rows['feed_type'] = "text";
+		}
+
 	    $data['result']['my_like'][$i] = $rows;
 	    $i++;
 	}
@@ -3130,6 +3160,21 @@ class PHPWebSocket {
 	$row = mysqli_query($link, $query);
 	$i = 0;
 	while ($rows = mysqli_fetch_assoc($row)) {
+
+		if($rows["image_link"] != null)
+		{
+			$ext = pathinfo($rows["image_link"], PATHINFO_EXTENSION);
+			 if( $ext == 'jpeg' || $ext == 'gif' || $ext == 'png' || $ext == 'jpg' ){
+			 		$rows['feed_type'] = "media";
+			 }else
+			 {
+			 	$rows['feed_type'] = "doc";
+			 }
+		}else
+		{
+			$rows['feed_type'] = "text";
+		}
+
 	    $data['result']['my_comment'][$i] = $rows;
 	    $data['result']['my_comment'][$i]['comment_date'] = $this->get_time_format($rows['created_date']);
 	    $i++;
@@ -3152,6 +3197,20 @@ class PHPWebSocket {
 	$row = mysqli_query($link, $query);
 	$i = 0;
 	while ($rows = mysqli_fetch_assoc($row)) {
+		if($rows["image_link"] != null)
+		{
+			$ext = pathinfo($rows["image_link"], PATHINFO_EXTENSION);
+			 if( $ext == 'jpeg' || $ext == 'gif' || $ext == 'png' || $ext == 'jpg' ){
+			 		$rows['feed_type'] = "media";
+			 }else
+			 {
+			 	$rows['feed_type'] = "doc";
+			 }
+		}else
+		{
+			$rows['feed_type'] = "text";
+		}
+
 	    $data['result']['my_post'][$i] = $rows;
 	    $i++;
 	}

@@ -317,7 +317,6 @@ $(document).ready(function () {
 
     /* Validate length of selected file. */
     var handleFileSelect = function (evt) {
-
         var files = evt.target.files;
         var file = files[0];
         var user = $(this).data('id');
@@ -369,18 +368,22 @@ $(document).ready(function () {
                 reader.readAsBinaryString(file);
             }
         } else {
-            alert('Max file upload limit 10MB!');
+             $('#image_upload_model').addClass('in',{duration:500});
+             $('#image_upload_model').css("display","block");
+             this.files[0].value = this.files[0].defaultValue;
         }
     };
 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
-
         if ($('#chat_file_share').length > 0) {
             document.getElementById('chat_file_share').addEventListener('change', handleFileSelect, false);
         }
+
         if ($('#feed_file_share').length > 0) {
             document.getElementById('feed_file_share').addEventListener('change', handleFileSelect, false);
+            
         }
+
         if ($('#group_file_share').length > 0) {
             document.getElementById('group_file_share').addEventListener('change', handleFileSelect, false);
         }
@@ -396,14 +399,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-
-      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+        var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
-
-
-
-
+      //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
     ws.onopen = function ()
     {
@@ -1113,7 +1111,13 @@ if ("WebSocket" in window)
                     if (list.image_link != '' && list.image_link != null) {
                         str += '<div class="shared_images">';
                         str += '<div>';
-                        str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                        if(list.feed_type == "doc")
+                        {
+                         str += '<a href="uploads/' + list.image_link + '" target="_BLANK" class="fancybox"> <img width="100" height="70" src="assets/images/default_chat.png" class="mCS_img_loaded"></a>';
+                        }else
+                        {
+                            str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                        }
                         str += '</div></div>';
                     }
                     str += '</div>';
@@ -1149,7 +1153,13 @@ if ("WebSocket" in window)
                     if (list.image_link != '' && list.image_link != null) {
                         str += '<div class="shared_images">';
                         str += '<div>';
-                        str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                         if(list.feed_type == "doc")
+                        {
+                         str += '<a href="uploads/' + list.image_link + '" target="_BLANK" class="fancybox"> <img width="100" height="70" src="assets/images/default_chat.png" class="mCS_img_loaded"></a>';
+                        }else
+                        {
+                            str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                        }
                         str += '</div></div>';
                     }
                     str += '<div class="clearfix"></div>';
@@ -1185,7 +1195,13 @@ if ("WebSocket" in window)
                     if (list.image_link != '' && list.image_link != null) {
                         str += '<div class="shared_images">';
                         str += '<div>';
-                        str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                         if(list.feed_type == "doc")
+                        {
+                         str += '<a href="uploads/' + list.image_link + '" target="_BLANK" class="fancybox"> <img width="100" height="70" src="assets/images/default_chat.png" class="mCS_img_loaded"></a>';
+                        }else
+                        {
+                            str += '<a href="uploads/' + list.image_link + '" class="fancybox"> <img src="uploads/' + list.image_link + '" width="100" height="70" class="mCS_img_loaded"></a>';
+                        }
                         str += '</div></div>';
                     }
                     str += '</div>';
@@ -1471,9 +1487,11 @@ $(document).on('click', '#mate_list', function () {
             to: 'self',
             my_id: id
         };
+        $('.chat_input').focus();
         ws.send(JSON.stringify(request));
     } else {
         $("#chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
+        $('.chat_input').focus();
     }
     $(this).children('span').html('');
     setTimeout(function(){
@@ -1725,7 +1743,7 @@ function generate_post(obj, status) {
      if(/^[0-9]+$/.test(arr_posted_on[0]) && wp == p_id ||  arr_posted_on[0] == "Just" && wp == p_id)
      {
        is_editable = "yes";
-        if(obj.feed_type == 'media')
+        if(obj.feed_type == 'media' || obj.feed_type == 'doc')
             {
                  is_editable = "";
             }

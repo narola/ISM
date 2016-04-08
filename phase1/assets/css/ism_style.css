@@ -31,6 +31,18 @@ pre{
 option{
 	padding:5px 12px;
 }
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
+select::-ms-expand {
+    display: none;
+}
+input::-ms-clear {
+    display: none;
+}
 .btn{
 	outline:none;
 }
@@ -1240,9 +1252,9 @@ textarea.post_input{
     height: 300px;
     width: 250px;
     background-color: #fff;
-    /* border: 1px solid rgba(0,0,0,0.1); */
+     border: 1px solid rgba(0,0,0,0.2); 
     position: fixed;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
     bottom: 0;
     border-radius: 2px;
     padding-bottom: 50px;
@@ -1622,7 +1634,7 @@ ul.exams_holder li a:after{
 	-o-transform:rotate(-90deg);
 	transform: rotate(-90deg);	
     top: 450px;
-    left: -10px;
+    left: -14px;
 }
 ul.tut_weekdays {
     width:88%;
@@ -1833,7 +1845,7 @@ ul.tut_weekdays {
 .filter .form-group{
 	position:relative;
 }
-.filter .form-group:before {
+/*.filter .form-group:before {
     content: "";
     height: 34px;
     width: 34px;
@@ -1854,6 +1866,11 @@ ul.tut_weekdays {
     z-index: 0;
     right: 13px;
     position: absolute;
+}*/
+.filter .form-group select{
+	background-image: url(../images/ismdd.png);
+    background-repeat: no-repeat;
+    background-position: right;
 }
 .filter .btn-default:hover, .filter .btn-default:focus, .filter .btn-default:active{
 	background-color:#fff;
@@ -4287,4 +4304,31 @@ ul.exams_holder li.exam_class a:after{
 }
 ul.exams_holder li.exam_class{
 	position: relative;
+}
+
+.gsc-search-button{
+	position: relative;
+}
+input.gsc-search-button.gsc-search-button-v2 {
+    background-color: #1bc4a3;
+    border: none;
+    border-radius: 3px;
+    margin: 3px 0 0 0;
+    height: 26px;
+    background-image: url('../images/gls-search.png');
+    opacity: 0.9;
+    transition:all ease 0.2s;
+}
+input.gsc-search-button.gsc-search-button-v2:hover,
+input.gsc-search-button.gsc-search-button-v2:focus,
+input.gsc-search-button.gsc-search-button-v2:active{	
+    background-image: url('../images/gls-search.png');
+    opacity: 1;
+}
+.gsc-option-menu-container .gsc-selected-option-container{
+	width: 75px !important;
+}
+
+.calculator html.widget div.center{
+	min-width:216px !important;
 }
