@@ -165,7 +165,7 @@
                 </div>
 
                 <div class="calculator row" id="accordian_calc">
-                     <iframe  height="575" src="http://web2.0calc.com/widgets/vertical/?options=%7B%22angular%22%3A%22deg%22%2C%22options%22%3A%22show%22%2C%22menu%22%3A%22show%22%7D" scrolling="no" style="border: 1px solid silver;position:absolute;clip:rect(37px,1100px,800px,0px);"> 
+                     <iframe width="100%" height="575" src="http://web2.0calc.com/widgets/vertical/?options=%7B%22angular%22%3A%22deg%22%2C%22options%22%3A%22show%22%2C%22menu%22%3A%22show%22%7D" scrolling="no" style="border: 1px solid silver;position:absolute;clip:rect(37px,1100px,800px,0px); max-width:100%;"> 
                     </iframe>
 
                 </div>
@@ -394,4 +394,9 @@ $(document).ready(function(){
         }
     });
 });
+</script>
+<script type="text/javascript">
+    $(document).ready(funnction(){
+        $('html.widget div.center').css('min-width',"216px !important");
+    });
 </script>

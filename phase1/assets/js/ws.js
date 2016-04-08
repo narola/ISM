@@ -317,7 +317,6 @@ $(document).ready(function () {
 
     /* Validate length of selected file. */
     var handleFileSelect = function (evt) {
-
         var files = evt.target.files;
         var file = files[0];
         var user = $(this).data('id');
@@ -369,18 +368,22 @@ $(document).ready(function () {
                 reader.readAsBinaryString(file);
             }
         } else {
-            alert('Max file upload limit 10MB!');
+             $('#image_upload_model').addClass('in',{duration:500});
+             $('#image_upload_model').css("display","block");
+             this.files[0].value = this.files[0].defaultValue;
         }
     };
 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
-
         if ($('#chat_file_share').length > 0) {
             document.getElementById('chat_file_share').addEventListener('change', handleFileSelect, false);
         }
+
         if ($('#feed_file_share').length > 0) {
             document.getElementById('feed_file_share').addEventListener('change', handleFileSelect, false);
+            
         }
+
         if ($('#group_file_share').length > 0) {
             document.getElementById('group_file_share').addEventListener('change', handleFileSelect, false);
         }
@@ -396,14 +399,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-
-      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+        var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
       //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
-
-
-
-
 
     ws.onopen = function ()
     {
@@ -1489,9 +1487,11 @@ $(document).on('click', '#mate_list', function () {
             to: 'self',
             my_id: id
         };
+        $('.chat_input').focus();
         ws.send(JSON.stringify(request));
     } else {
         $("#chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
+        $('.chat_input').focus();
     }
     $(this).children('span').html('');
     setTimeout(function(){
