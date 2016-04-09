@@ -143,7 +143,7 @@
                             <button class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
                         </div> 
                     	<textarea placeholder="SAY IT" data-type="discussion" class="mscroll_custom"></textarea>
-                        <div class="upload_loader" style="top:58px"></div>
+                        <div class="upload_loader"></div>
                         <!-- <a href="#" class="icon icon_emoji"></a> -->
                                              
                     </div>
@@ -277,7 +277,7 @@
                 <!--tabs-->
                 <div class="toolkit_tabs">
                     <ul>
-                        <li id="calc_tab" class="active"><a href="javascript:void(0);">Calculator</a></li>
+                        <li id="calc_tab"><a href="javascript:void(0);">Calculator</a></li>
                         <li id="white_board_tab"><a href="javascript:void(0);">White board</a></li>
                         <li id="explore_tab"><a href="javascript:void(0);">Explore</a></li>
                         <li id="dictionary_tab"><a href="javascript:void(0);">Dictionary</a></li>
@@ -394,9 +394,4 @@ $(document).ready(function(){
         }
     });
 });
-</script>
-<script type="text/javascript">
-    $(document).ready(funnction(){
-        $('html.widget div.center').css('min-width',"216px !important");
-    });
 </script>

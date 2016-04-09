@@ -73,6 +73,8 @@ $route['admin/notifications'] = "Admin/topic/next_phase";
 $route['admin/messages'] = "Admin/topic/next_phase";
 $route['admin/user/performance'] = "Admin/topic/next_phase";
 $route['admin/book'] = "Admin/topic/next_phase";
+$route['admin/year_upgradation'] = "Admin/upgrade";
+
 
 /* Route Set For Copy Functionality for Exam and Notices */
 

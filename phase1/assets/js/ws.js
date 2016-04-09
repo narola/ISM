@@ -349,6 +349,7 @@ $(document).ready(function () {
                         data: btoa(binaryString),
                         to: user
                     }
+
                     if ($('#feed_post').length > 0) {
                         $('#feed_post').attr('readonly', 'readonly');
                         $('button[data-type="post"]').attr('disabled', 'disabled');
@@ -358,7 +359,7 @@ $(document).ready(function () {
                         $('textarea[data-type="discussion"]').attr('readonly', 'readonly');
                         $('div[data-type="discussion-submit"] button').attr('disabled', 'disabled');
                     }
-                    if ($('.upload_loader').length > 0) {
+                    if ($('.upload_loader').length > 0 && types != "chat") {
                         $('.upload_loader').fadeIn(400);
                     }
 
@@ -376,7 +377,7 @@ $(document).ready(function () {
 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         if ($('#chat_file_share').length > 0) {
-            document.getElementById('chat_file_share').addEventListener('change', handleFileSelect, false);
+            //document.getElementById('chat_file_share').addEventListener('change', handleFileSelect, false);
         }
 
         if ($('#feed_file_share').length > 0) {
@@ -399,9 +400,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-        var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+      //var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
     ws.onopen = function ()
     {
@@ -489,12 +490,17 @@ if ("WebSocket" in window)
             }
             if (wp != obj.from) {
                 if($(".chat_text").is(":visible")){
-                    console.log($('#chat_container .chat[data-id="' + obj.from + '"] .chat_text'));
                     $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
                 }
             }
             $('.just_now').timestatus();
-            $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+          
+              setTimeout(function(){
+               // $(".chat_input").focus();
+                $('.chat_text').mCustomScrollbar('update');
+                $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+               }, 300); 
+
         }else if (obj.type == 'chat_type') {
             
            if(wp == obj.to){
@@ -553,6 +559,12 @@ if ("WebSocket" in window)
                 $('.chat[data-id="' + obj.my_id + '"] .chat_text .mCustomScrollBox .mCSB_container').append(my_msg);
             });
 
+
+              setTimeout(function(){
+               // $(".chat_input").focus();
+                $('.chat_text').mCustomScrollbar('update');
+                $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+          }, 300);
 
         } else if (obj.type == 'post') {
             if (obj.id != wp) {
@@ -1311,6 +1323,7 @@ function myfunction(from){
             str += '</div><p class="chat_name" data-id="'+id+'" style="cursor:pointer;">' + stm.children('p').html() + '</p>';
             str += '<a href="javascript:void(0);" data-type="close" data-id="' + id + '"><span class="close" >x</span></a></div>';
             str += '<div class="chat_text"></div>';
+            str += '<span class="chat_typing"></span>';
             str += ' <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">';
             str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="' + id + '">';
             str += '<!--<a href="#" class="icon icon_emoji"></a> -->';
@@ -1328,6 +1341,7 @@ function myfunction(from){
             my_id: id
         };
 
+
         ws.send(JSON.stringify(request));
 
         $(".chat_"+j+" .chat_header").addClass("blinking");
@@ -1338,13 +1352,8 @@ function myfunction(from){
         ws.send(JSON.stringify(request));
         }
         
-        setTimeout(function(){
-            $(".chat_input").focus();
-            $('.chat_text').mCustomScrollbar('update');
-            $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
-        }, 300);
-    
         
+    
          /*   j--;
         }
         }*/
@@ -1408,8 +1417,42 @@ $(document).on('keypress', 'input[data-type="chat"]', function (e) {
     }
 });
 
-/* Check user is online or not */
+/*chat file upload */
+$(document).on("change", "#chat_file_share", function(evt)
+{
+        var files = evt.target.files;
+        var file = files[0];
+        var user = $(this).data('id');
+        var types = $(this).data('type');
+        var type_of_data = this.files[0].type;
+        var file_name = this.files[0].name;
 
+        if (this.files[0].size <= 1024 * 1024 * 10) {
+            $('.chat[data-id="' + user + '"] .chat_loading').fadeIn(300);
+            if (files && file) {
+                var reader = new FileReader();
+                reader.onload = function (readerEvt) {
+                    var binaryString = readerEvt.target.result;
+                    var request = {
+                        type: types,
+                        name: file_name,
+                        data_type: type_of_data,
+                        data: btoa(binaryString),
+                        to: user
+                    }
+                    ws.send(JSON.stringify(request));
+                };
+                reader.readAsBinaryString(file);
+            }
+        } else {
+             $('#image_upload_model').addClass('in',{duration:500});
+             $('#image_upload_model').css("display","block");
+             this.files[0].value = this.files[0].defaultValue;
+        }
+    
+});
+
+/* Check user is online or not */
 function set_status(id, status) {
 
     var ac = $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="' + id + '"]');
@@ -1434,8 +1477,6 @@ function set_status(id, status) {
         }
     }
 }
-
-
 
 $(document).on('click', '#mate_list', function () {
 
@@ -1471,11 +1512,12 @@ $(document).on('click', '#mate_list', function () {
         str += '</div><p class="chat_name" data-id="'+id+'" style="cursor:pointer;">' + $(this).children('p').html() + '</p>';
         str += '<a href="javascript:void(0);" data-type="close" data-id="' + id + '"><span class="close" >x</span></a></div>';
         str += '<div class="chat_text"></div>';
+        str += '<span class="chat_typing"></span>';
         str += ' <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">';
         str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="' + id + '">';
         str += '<!--<a href="#" class="icon icon_emoji"></a> -->';
         str += '<a href="#" class="icon icon_pin"></a>';
-        str += '<input type="file" id="chat_file_share" class="chat_pin" data-type="single_chat_file" data-id="16">';
+        str += '<input type="file" data-toggle="tooltip" title="Attach file" id="chat_file_share" class="chat_pin" data-type="single_chat_file" data-id="'+id+'">';
         str += '</div>';
         $('#chat_container').append(str);
         $("#chat_container .chat[data-id='" + id + "'] .chat_text")
@@ -1489,19 +1531,18 @@ $(document).on('click', '#mate_list', function () {
         };
         $('.chat_input').focus();
         ws.send(JSON.stringify(request));
+
     } else {
         $("#chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
-        $('.chat_input').focus();
+        $("#chat_container .chat[data-id='" + id + "'] .chat_input").focus();
     }
     $(this).children('span').html('');
     setTimeout(function(){
-        $(".chat_input").focus();
+       // $(".chat_input").focus();
         $('.chat_text').mCustomScrollbar('update');
         $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
     }, 300);
         // $('.chat_text').html('');
-    
-
     //console.log($('.chat_text').mCustomScrollbar('scrollTo', 'bottom'));
 });
 

@@ -269,6 +269,14 @@ $url = uri_string();
                         ?>" >
                             <a href="admin/auto_generated_credentials"><span class="icon icon_credencial"></span>Generate Credentials</a>
                         </li>
+                         <li class="<?php
+                        if (in_array($url, array('admin/year_upgradation'))) {
+                            echo 'active';
+                        }
+                        ?>" >
+                            <a href="admin/year_upgradation"><span class="icon icon_credencial"></span>Year upgradation</a>
+                        </li>
+
 
                     </ul>
                     <a href="admin/logout" class="logout"><span class="icon icon_logout"></span>LogOut</a>

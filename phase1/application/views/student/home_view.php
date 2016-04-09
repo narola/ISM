@@ -188,32 +188,6 @@
 	    </div>
 	</div>
 
-	<!-- FEED UPLOAD VALIDATION ERROR -->
-	 <div class="modal fade" id="image_upload_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display:none">
-        <div class="modal-dialog" role="document" style="width:600px;margin-top:120px;">
-            <div class="modal-content">
-                <div class="modal-header notice_header text-center">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="close_model()"><span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Invalid uploading</h4>
-                </div>
-                <div class="modal-body">
-                    Your content couldn't be uploaded. Max upload limit is 10MB.
-                    <div class="basic_info">
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script type="text/javascript">
-   /* clossing validation model. */
-     function close_model()
-        {  
-             $('#image_upload_model').removeClass('in');
-            $('#image_upload_model').css("display","none");
-        }
-    </script>
 
 	<!--feed box-->
 	<div id="all_feed">
