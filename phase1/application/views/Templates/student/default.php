@@ -322,6 +322,36 @@ $url = uri_string();
 				<a href="login/logout" class="logout"><span class="icon icon_logout"></span>LogOut</a>
 				<p class="copyright">©2015 ISM | All Rights Reserved.</p>
 			</div>
+
+
+							<!-- FEED UPLOAD VALIDATION ERROR -->
+				 <div class="modal fade" id="image_upload_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display:none">
+			        <div class="modal-dialog" role="document" style="width:600px;margin-top:120px;">
+			            <div class="modal-content">
+			                <div class="modal-header notice_header text-center" style="background-image:none;background-color:#1bc4a3">
+			                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="close_model()"><span aria-hidden="true">×</span></button>
+			                    <h4 class="modal-title" id="myModalLabel">Invalid uploading</h4>
+			                </div>
+			                <div class="modal-body">
+			                    Your content couldn't be uploaded. Max upload limit is 10MB.
+			                    <div class="basic_info">
+			                        <div class="clearfix"></div>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+
+			    <script type="text/javascript">
+			   /* clossing validation model. */
+			     function close_model()
+			        {  
+			             $('#image_upload_model').removeClass('in');
+			            $('#image_upload_model').css("display","none");
+			        }
+			    </script>
+
+			
 			<!--//side left-->
 			<?php } echo $body; ?>
 			<?php if (!isset($hide_right_bar)) { ?>
@@ -361,6 +391,7 @@ $url = uri_string();
 					<button class="btn_find_studymates btn btn_blue">Find more Studymates</button>
 				</div> -->
 			</div>
+
 			<!--//STM-->
 			<!--high score board-->
 			<div class="score box">
@@ -533,6 +564,40 @@ $(document).ready(function() {
 		$('.dictionary').css('display', 'block');
 		$('.white_board, .calculator, .explore').css('display', 'none');
 	});
+	if($(window).width()<1575){		
+		$('#calc_tab').click(function() {
+			$(this).addClass('active');
+			$('#white_board_tab, #explore_tab, #dictionary_tab').removeClass();
+			$('.calculator').addClass('addwidth');
+			$('.calculator').removeClass('removewidth');
+			$('.white_board, .explore, .dictionary').addClass('removewidth');
+			$('.white_board, .explore, .dictionary').removeClass('addwidth');
+		});
+		$('#white_board_tab').click(function() {
+			$(this).addClass('active');
+			$('#calc_tab, #explore_tab, #dictionary_tab').removeClass();
+			$('.white_board').addClass('addwidth');
+			$('.white_board').removeClass('removewidth');
+			$('.calculator, .explore, .dictionary').addClass('removewidth');
+			$('.calculator, .explore, .dictionary').removeClass('addwidth');
+		});
+		$('#explore_tab').click(function() {
+			$(this).addClass('active');
+			$('#white_board_tab, #calc_tab, #dictionary_tab').removeClass();
+			$('.explore').addClass('addwidth');
+			$('.explore').removeClass('removewidth');
+			$('.white_board, .calculator, .dictionary').addClass('removewidth');
+			$('.white_board, .calculator, .dictionary').removeClass('addwidth');
+		});
+		$('#dictionary_tab').click(function() {
+			$(this).addClass('active');
+			$('#white_board_tab, #calc_tab, #explore_tab').removeClass();
+			$('.dictionary').addClass('addwidth');
+			$('.dictionary').removeClass('removewidth');
+			$('.white_board, .calculator, .explore').addClass('removewidth');
+			$('.white_board, .calculator, .explore').removeClass('addwidth');
+		});
+	}
 	$('.board_tools>li>a').mouseover(function() {
 		$(this).parent().css('background-color', '#f2f2f2');
 	});

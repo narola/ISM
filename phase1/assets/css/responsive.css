@@ -10,6 +10,61 @@
 		/*width: 72%;*/
 	}
 }
+@media (max-width:1575px){
+	.toolkit_tabs ul>li:first-child{
+		background-image: url(../images/tab.png);
+	}
+	.toolkit_tabs ul>li.active:first-child{
+	    background-image: url(../images/tab_active.png);
+		z-index:9;
+	}
+	.toolkit_header h3 span{
+		display: none;
+	}
+	.toolkit_header h3{
+		min-height: 40px;
+	}
+	.calculator, .white_board, .explore, .dictionary{
+		position: fixed;
+	    right: 21%;
+	    z-index: 10;
+	    height: 600px;
+	    border-radius: 5px;
+	    box-shadow: -1px 1px 2px 0px rgba(0,0,0,0.15);
+	    transition:all ease .3s;
+	    width: 0;
+	    display: block;
+	    /*display: none;*/
+	}
+	.addwidth{
+	    width: 330px;	
+	    /*display: block;	*/
+	}
+	.removewidth{
+		width: 0;
+	}
+	.calculator{
+	    background-color: transparent; 	
+	    box-shadow: none;
+	    margin-top: -37px;
+    	border: none;
+	}
+	.toolkit {	    
+	    width: 5%;
+	}
+	.main_tut{
+		width: 65%;	
+	}
+	.main {
+    	z-index: 0;
+	}
+	.fixed_comment {
+	    width: 64.8%;
+	}	
+	.calculator iframe{
+		border: none;
+	}
+}
 @media (max-width:1366px){
 	.box_body .age{
 		width: 26.5%;
@@ -32,9 +87,9 @@
 	.add_exam{
 		height:215px;
 	}
-	.fixed_comment{
+	/*.fixed_comment{
 		width: 46.8%;
-	}
+	}*/
 	/*change*/
 	/*.input{
 		width:100%;	
@@ -45,9 +100,9 @@
 	.item_chart:after, .item_chart:before{
 		left:8px;
 	}
-	.calculator, .white_board, .explore, .dictionary{
+	/*.calculator, .white_board, .explore, .dictionary{
 		width:81%;
-	}
+	}*/
 	.board_tools > li{
 		padding: 5px 4.6%;
 	}
@@ -218,9 +273,9 @@
 	.admin_question{
 		width:82%;
 	}
-	.calculator, .white_board, .explore, .dictionary{
+	/*.calculator, .white_board, .explore, .dictionary{
 		width:80%;
-	}
+	}*/
 	.calc_btns .btn{
 		width: 19.6%;
 	}
@@ -230,9 +285,9 @@
 	.basic_btns .btn_0 {
     	width: 49.6%;
 	}
-	.fixed_comment {
+	/*.fixed_comment {
     	width: 46.8%;
-	}
+	}*/
 	.item_chart:after, .item_chart:before{
 		left:4px;
 	}
@@ -327,9 +382,9 @@
 	.admin_question {
     	width: 81%;
 	}
-	.calculator, .white_board, .explore, .dictionary {
+	/*.calculator, .white_board, .explore, .dictionary {
  	   width: 79%;
-	}
+	}*/
 	#wPaint {
     	width: 208px !important;
 	}
@@ -488,19 +543,19 @@
     	left: -15px;
 		top:370px;
 	}
-	.main_tut{
+	/*.main_tut{
 		width:40%;
-	}
+	}*/
 	/*.input{
 		width:39.9%;
 	}*/
 	.toolkit{
 		right: 21%;
-    	width: 25%;
+    	/*width: 25%;*/
 	}
-	.calculator, .white_board, .explore, .dictionary {
+	/*.calculator, .white_board, .explore, .dictionary {
     	width: 78%;
-	}
+	}*/
 	.toolkit_tabs ul > li{
 		z-index:5;
 	}
@@ -570,9 +625,9 @@
 	.studymate_recom .mate_descrip p:first-child, .studymate_recom .mate_descrip p:nth-last-child(2){
 		display:block;
 	}
-	.fixed_comment {
+	/*.fixed_comment {
     	width: 39.8%;
-	}
+	}*/
 	.search_bar .form-control {
     	width: 58%;
 	}
@@ -857,9 +912,9 @@
 		padding-left: 10px;
 		width: 25%;
 	}
-	.calculator, .white_board, .explore, .dictionary {
+	/*.calculator, .white_board, .explore, .dictionary {
     	width: 77.5%;
-	}
+	}*/
 	.mark_scored h4 {
     	margin: 32px 0;
 	}
@@ -1073,9 +1128,9 @@
 	.discussion {
 		/*margin-top: 300px;*/
 	}
-	.calculator, .white_board, .explore, .dictionary {
+	/*.calculator, .white_board, .explore, .dictionary {
     	width: 72%;
-	}
+	}*/
 	.tut_group .box_body p, .tut_group .box_footer p {
     	margin: 0;
 	}
@@ -1167,9 +1222,9 @@
 	.general_cred #replacing_div3 input.form-control {
     	width: 78%;
 	}
-	.calculator, .white_board, .explore, .dictionary {
+	/*.calculator, .white_board, .explore, .dictionary {
     	width: 71%;
-	}
+	}*/
 	#circle_process{
 		-o-transform: scale(0.9) translateX(-20px);
 		-ms-transform: scale(0.9) translateX(-20px);
