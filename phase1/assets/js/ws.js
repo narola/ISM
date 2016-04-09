@@ -400,9 +400,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+      //var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
     ws.onopen = function ()
     {
@@ -490,12 +490,17 @@ if ("WebSocket" in window)
             }
             if (wp != obj.from) {
                 if($(".chat_text").is(":visible")){
-                    console.log($('#chat_container .chat[data-id="' + obj.from + '"] .chat_text'));
                     $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
                 }
             }
             $('.just_now').timestatus();
-            $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+          
+              setTimeout(function(){
+               // $(".chat_input").focus();
+                $('.chat_text').mCustomScrollbar('update');
+                $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+               }, 300); 
+
         }else if (obj.type == 'chat_type') {
             
            if(wp == obj.to){
@@ -554,6 +559,12 @@ if ("WebSocket" in window)
                 $('.chat[data-id="' + obj.my_id + '"] .chat_text .mCustomScrollBox .mCSB_container').append(my_msg);
             });
 
+
+              setTimeout(function(){
+               // $(".chat_input").focus();
+                $('.chat_text').mCustomScrollbar('update');
+                $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+          }, 300);
 
         } else if (obj.type == 'post') {
             if (obj.id != wp) {
@@ -1312,6 +1323,7 @@ function myfunction(from){
             str += '</div><p class="chat_name" data-id="'+id+'" style="cursor:pointer;">' + stm.children('p').html() + '</p>';
             str += '<a href="javascript:void(0);" data-type="close" data-id="' + id + '"><span class="close" >x</span></a></div>';
             str += '<div class="chat_text"></div>';
+            str += '<span class="chat_typing"></span>';
             str += ' <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">';
             str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="' + id + '">';
             str += '<!--<a href="#" class="icon icon_emoji"></a> -->';
@@ -1340,13 +1352,8 @@ function myfunction(from){
         ws.send(JSON.stringify(request));
         }
         
-        setTimeout(function(){
-            $(".chat_input").focus();
-            $('.chat_text').mCustomScrollbar('update');
-            $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
-        }, 300);
-    
         
+    
          /*   j--;
         }
         }*/
@@ -1505,6 +1512,7 @@ $(document).on('click', '#mate_list', function () {
         str += '</div><p class="chat_name" data-id="'+id+'" style="cursor:pointer;">' + $(this).children('p').html() + '</p>';
         str += '<a href="javascript:void(0);" data-type="close" data-id="' + id + '"><span class="close" >x</span></a></div>';
         str += '<div class="chat_text"></div>';
+        str += '<span class="chat_typing"></span>';
         str += ' <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">';
         str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="' + id + '">';
         str += '<!--<a href="#" class="icon icon_emoji"></a> -->';
