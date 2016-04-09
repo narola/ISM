@@ -181,7 +181,7 @@ class Login extends CI_Controller {
         
         $this->form_validation->set_rules('emailid', 'Email', 'trim|required|valid_email|callback_check_email');
         if($this->form_validation->run() == FALSE){
-            $this->load->view('login/forgot_password');
+            $this->load->view('login/forgot_password', $this->data);
         }
         else
         {
@@ -190,6 +190,22 @@ class Login extends CI_Controller {
         }
     }
 
+    /*
+    function to send request for new credentials when unregistered and forgot credentials.
+    */
+    public function send_request(){
+        $request_data = array(
+            'school_id' => $this->input->post('school_id'),
+            'course_id' => $this->input->post('course_id'),
+            'classroom_id' => $this->input->post('classroom_id'),
+            'academic_year' => $this->input->post('year_id'),
+            'created_time' => date('Y-m-d H:i:s'),
+            'name' => $this->input->post('request_name'),
+            'email' => $this->input->post('request_email')
+        );
+        insert('request_credentials',$request_data);
+    }
+    
     /*
     *   check student email is valid or not,
     *   if email is valid then send varification link for reset password

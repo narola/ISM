@@ -220,10 +220,11 @@ $url = uri_string();
 										// 	{
 										// 		$notification_for = "freind_request_notification";
 										// 	}
+								
 								?>
 								<li>
-									 <a href="student/tagged_feed/<?php echo $value['feed_id']; ?>">
-									 
+									 <!-- <a href="student/tagged_feed/<?php echo $value['feed_id']; ?>"> -->
+									 <a>
 									<!-- <a href="Student/User_account/<?php// echo $notification_for; ?>/<?php // echo $this->session->userdata['user']['id']; ?>"> -->
 										<div class="user_small_img">
 											<img onerror="this.src='assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>">

@@ -58,12 +58,12 @@
                         <small><?php echo date("d F Y",strtotime(date('Y-m-d')));?></small>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal" action="" onsubmit="return send_email();" method="post">
+                        <form class="form-horizontal" action="send_request" method="post">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Name :</label>
+                                <label class="col-sm-3 control-label">Name :</label>
                                 <div class="col-sm-7">
                                     <input type="text" required class="form-control" id="request_name" name="request_name" placeholder="Name">
-                                    <br>
+                                    
                                     <div class="alert alert-danger" style="display:none" id="err3">
                                         Name field is required
                                     </div>
@@ -73,51 +73,54 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Email :</label>
+                                <label class="col-sm-3 control-label">Email :</label>
                                 <div class="col-sm-7">
                                     <input type="email" required class="form-control" id="request_email" name="request_email" placeholder="Email">
-                                    <br>
+                                    
                                     <div class="alert alert-danger" style="display:none" id="err1">
                                         Email field is required
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group three_inputs select" >
-                  <label>School Grade</label>
-                  <select class="form-control " name="school_grade" 
-                  onchange="fetch_school_from_grade(this.value)" id="school_grade">
-                    <option selected value=""> Select School Grade</option>
-                      <option value="A" <?php echo set_select('school_grade', 'A'); ?>>A</option>
-                      <option value="B" <?php echo set_select('school_grade', 'B'); ?>>B</option>
-                      <option value="C" <?php echo set_select('school_grade', 'C'); ?>>C</option>
-                      <option value="D" <?php echo set_select('school_grade', 'D'); ?>>D</option>
-                      <option value="E" <?php echo set_select('school_grade', 'E'); ?>>E</option>
-                  </select>
-                  
-              </div>
+                              <label class="col-sm-3 control-label">School Grade :</label>
+                              <div class="col-sm-7">
+                              <select class="form-control" name="school_grade" 
+                                  onchange="fetch_school_from_grade(this.value)" id="school_grade">
+                                    <option selected value=""> Select School Grade</option>
+                                      <option value="A" <?php echo set_select('school_grade', 'A'); ?>>A</option>
+                                      <option value="B" <?php echo set_select('school_grade', 'B'); ?>>B</option>
+                                      <option value="C" <?php echo set_select('school_grade', 'C'); ?>>C</option>
+                                      <option value="D" <?php echo set_select('school_grade', 'D'); ?>>D</option>
+                                      <option value="E" <?php echo set_select('school_grade', 'E'); ?>>E</option>
+                                  </select>
+                                </div>
+                            </div>
 
-              <div class="form-group three_inputs select">
-                  <label>Select School </label>
-                  <select class="form-control js-example-basic-single" id="school_id" name="school_id" onchange="school_id_error()">
-                     <option  selected value=""> Select School</option>
-                      <?php 
-                          if(!empty($schools)) {
-                            foreach($schools as $school) { 
-                          ?>
-                          <option value="<?php echo $school['id']; ?>" <?php echo set_select('school_id', $school['id']); ?> >
-                                <?php echo $school['school_name']; ?>
-                          </option>
-                      <?php } }else{ ?>
-                          <option disabled > No Schools Found</option>  
-                      <?php } ?> 
-                  </select>
-                  <a href="admin/school/add" class="icon icon_add_small"></a>
-                  <?php echo form_error('school_id','<div class="alert alert-danger school_id_error">','</div>'); ?>
-              </div>
+                          <div class="form-group three_inputs select">
+                              <label class="col-sm-3 control-label">Select School :</label>
+                              <div class="col-sm-7">
+                              <select class="form-control js-example-basic-single" id="school_id" name="school_id" onchange="school_id_error()">
+                                 <option  selected value=""> Select School</option>
+                                  <?php 
+                                      if(!empty($schools)) {
+                                        foreach($schools as $school) { 
+                                      ?>
+                                      <option value="<?php echo $school['id']; ?>" <?php echo set_select('school_id', $school['id']); ?> >
+                                            <?php echo $school['school_name']; ?>
+                                      </option>
+                                  <?php } }else{ ?>
+                                      <option disabled > No Schools Found</option>  
+                                  <?php } ?> 
+                              </select>
+                              </div>
+                              <?php echo form_error('school_id','<div class="alert alert-danger school_id_error">','</div>'); ?>
+                          </div>
 
-              <div class="box_body">
+              
                 <div class="form-group three_inputs select">
-                      <label>Course </label>
+                      <label class="col-sm-3 control-label">Course :</label>
+                      <div class="col-sm-7">
                       <select class="form-control " name="course_id" id="course_id"
                         onchange="fetch_classroom(this.value)" >
                           <option selected disabled> Select Course</option>
@@ -132,12 +135,13 @@
                               <option disabled > No Course Found</option>  
                           <?php } ?>      
                       </select>
-                      <a href="admin/course/add_course" class="icon icon_add_small"></a>
+                      </div>
                       <?php echo form_error('course_id','<div class="alert alert-danger course_id_error">','</div>'); ?>
                   </div>
 
                   <div class="form-group three_inputs select">
-                      <label>Classroom</label>
+                      <label class="col-sm-3 control-label">Classroom :</label>
+                      <div class="col-sm-7">
                       <select class="form-control" name="classroom_id" id="classroom_id" onchange="classroom_id_error()">
                           <option selected disabled> Select Classroom</option>
                           <?php 
@@ -151,25 +155,27 @@
                               <option disabled > No Classroom Found</option>  
                           <?php } ?>
                       </select>
-                      <a href="admin/classroom/add" class="icon icon_add_small"></a>
+                      </div>
                       <?php echo form_error('classroom_id','<div class="alert alert-danger classroom_id_error">','</div>'); ?>
                   </div>
 
                   <div class="form-group three_inputs select">
-                      <label>Year</label>
+                      <label class="col-sm-3 control-label">Year :</label>
+                      <div class="col-sm-7">
                       <select class="form-control" name="year_id" id="year_id">
                           <option value="<?php echo $cur_year; ?>"><?php echo $cur_year; ?></option>
                           <option value="<?php echo $next_year; ?>"><?php echo $next_year; ?></option>
                       </select>
+                      </div>
                   </div>
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <input type="hidden" name="send_request" value="change">
+                                <div class="col-sm-offset-3 col-sm-10">
+                                    <input type="hidden" name="send_request" value="new_credentials">
                                     <input type="submit" class="btn btn_black_normal" value="SEND REQUEST">
                                 </div>
                             </div>
                         </form>
-                        <h4 class="notice_by">ISM Admin<span></span></h4>
+                        
                         <div class="clearfix"></div>
                   </div>
                 </div>
