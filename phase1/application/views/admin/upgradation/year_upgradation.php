@@ -77,11 +77,11 @@
       <form method="post" action="<?php echo base_url().'admin/user/send_messages'; ?>">  <!-- Form Start -->
         <div class="div_buttons">
           <div class="col-sm-6 text-left">
-              <input type="checkbox" id="checkAll"> Check all
+              <input squaredThree type="checkbox" id="checkAll"> Check all
           </div>
-          <div class="col-sm-6 text-right">
+         <!--  <div class="col-sm-6 text-right">
               <a href="javascript:void(0);" class="btn btn_green" data-toggle="modal" data-target="#year_updradation">Upgrade to next year</a>
-            </div>
+          </div> -->
         </div>
         <!--//button-div-->
         <!--row table-->
@@ -146,11 +146,15 @@
                     </table>
                 </div>
 
-                 <nav  class="text-center">
-       
-                   <?php  echo $this->pagination->create_links();  ?>
+          <div class="div_buttons">
+           <!--  <div class="col-sm-6 text-left">
+                <input type="checkbox" id="checkAll"> Check all
+            </div> -->
+            <div class="col-sm-12 text-right">
+                <a href="javascript:void(0);" class="btn btn_green" data-toggle="modal" data-target="#year_updradation">Upgrade to next year</a>
+            </div>
+          </div>
 
-                </nav>
             </div>
         </div>
 
