@@ -8,6 +8,7 @@ var exam_will_start;
 var time_status = 1;
 var time_spent_per_question = 0;
 var time_spent = setInterval(time_spent_counter, 1000);
+var typing_timer = null;
 function time_spent_counter()
 {
     $('#time_spent').html(toHHMMSS(time_spent_per_question++));
@@ -310,7 +311,16 @@ $(document).ready(function () {
                 $('.chat.active').removeClass('active').addClass('chat_1 passive');
                 clearInterval(chat_1);
             }
+
             $(this).parent().removeClass().addClass('active').addClass('chat');
+            $('#mate_list .badge').html("");
+            var chat_id = $('.chat_container .active').attr('data-id');
+             var request = {
+                                type: 'get_latest_message',
+                                to: 'self',
+                                my_id: chat_id
+                            };
+                                ws.send(JSON.stringify(request));
             
         }
     });
@@ -400,9 +410,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-      //var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+        var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      // ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
     ws.onopen = function ()
     {
@@ -458,6 +468,7 @@ if ("WebSocket" in window)
                 $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
                 $('.chat[data-id="' + obj.to + '"] .chat_loading').fadeOut(300);
             } 
+
             /*else {
                 console.log("here");
                 console.log(obj);
@@ -471,12 +482,7 @@ if ("WebSocket" in window)
                
             if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
                 myfunction(obj.from);
-                var request = {
-                    type: 'set_unread',
-                    to: 'none',
-                    insert_id: obj.insert_id
-                };
-                ws.send(JSON.stringify(request));
+              
                 var ac = $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="' + obj.from + '"]');
                 $('.stm_list .mCustomScrollBox .mCSB_container').prepend('<div class="' + ac.attr('class') + '" data-id="' + obj.from + '">' + ac.remove().html() + '</div>');
 
@@ -486,7 +492,17 @@ if ("WebSocket" in window)
                 if (count == '' || count == 0 || count == 'undefined') {
                     count = 0;
                 }
-                c.html(++count);
+                if($('#chat_container .chat.active').data('id') != obj.from)
+                {   
+                      var request = {
+                            type: 'set_unread',
+                            to: 'none',
+                            insert_id: obj.insert_id
+                        };
+                     ws.send(JSON.stringify(request));
+                    c.html(++count);
+                }
+                
             }
             if (wp != obj.from) {
                 if($(".chat_text").is(":visible")){
@@ -504,9 +520,13 @@ if ("WebSocket" in window)
         }else if (obj.type == 'chat_type') {
             
            if(wp == obj.to){
+                clearTimeout(typing_timer);
                 var name = $("#chat_container .chat[data-id='"+obj.user_iddd+"']").find(".chat_name").html();
+                $("span.chat_typing").html('');
                 $("#chat_container .chat[data-id='"+obj.user_iddd+"']").find("span.chat_typing").html(name + ' is '+obj.message);
-                setTimeout(function () {
+               // $("span.chat_typing").html();
+                //alert($("span.chat_typing").html());
+               typing_timer =  setTimeout(function () {
                    $("span.chat_typing").html('');
                 }, 4000);
             }
@@ -1340,8 +1360,6 @@ function myfunction(from){
             to: 'self',
             my_id: id
         };
-
-
         ws.send(JSON.stringify(request));
 
         $(".chat_"+j+" .chat_header").addClass("blinking");
@@ -1535,6 +1553,13 @@ $(document).on('click', '#mate_list', function () {
     } else {
         $("#chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
         $("#chat_container .chat[data-id='" + id + "'] .chat_input").focus();
+          var request = {
+            type: 'get_latest_message',
+            to: 'self',
+            my_id: id
+        };
+        ws.send(JSON.stringify(request));
+
     }
     $(this).children('span').html('');
     setTimeout(function(){
@@ -2391,6 +2416,12 @@ $(document).on('click', 'a[data-type="close"]', function () {
                     }
                     if(i==len){
                         $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat active');
+                         var request = {
+                            type: 'get_latest_message',
+                            to: 'self',
+                            my_id: id
+                        };
+                        ws.send(JSON.stringify(request));
                         $.cookie('active', $(".chat_container .chat:nth-child(" + i + ")").attr('data-id'));
                     }
                 }
