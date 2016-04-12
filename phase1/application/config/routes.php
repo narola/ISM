@@ -58,6 +58,7 @@ $route['default_controller'] = 'login';
 $route['admin'] = "Admin/dashboard";
 $route['admin/dashboard'] = "Admin/dashboard/dashboard";
 $route['admin/auto_generated_credentials'] = "Admin/dashboard/auto_generated_credentials";
+$route['admin/credential_requests'] = "Admin/dashboard/credential_requests";
 $route['admin/logout'] = "Admin/dashboard/logout"; 
 
 //routs for next phase

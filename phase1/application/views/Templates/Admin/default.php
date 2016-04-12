@@ -158,7 +158,16 @@ $url = uri_string();
                         if (in_array($url, array('admin/report'))) {
                             echo 'active';
                         }
-                        ?>"><a href="admin/report"><span class="icon icon_menu_report"></span> Reports</a></li>
+                        ?>"><a href="admin/report"><span class="icon icon_menu_report"></span> Reports</a>
+                        </li>
+<li class="<?php
+                        if (in_array($url, array('admin/credential_requests'))) {
+                            echo 'active';
+                        }
+                        ?>"><a href="admin/credential_requests"><span class="icon icon_credencial" style="margin-right: 5px; vertical-align: bottom; width: 33px; float: none;"></span> Credential Requests</a>
+                        </li>
+
+                        
                     </ul>
                     <!-- <ul class="nav navbar-nav navbar-right">
                         <li><a class="" href="#"><span class="icon icon_search"></span></a></li>
@@ -276,6 +285,7 @@ $url = uri_string();
                         ?>" >
                             <a href="admin/year_upgradation"><span class="icon icon_credencial"></span>Year upgradation</a>
                         </li>
+                        
 
 
                     </ul>

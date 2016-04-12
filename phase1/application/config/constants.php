@@ -138,6 +138,7 @@ define('TBL_PROMO_CODES','promo_codes');
 define('TBL_QUESTION_RATINGS','question_ratings');
 define('TBL_QUESTIONS','questions');
 define('TBL_REPORTED_CONTENT','reported_content');
+define('TBL_REQUEST_CREDENTIALS','request_credentials');
 define('TBL_ROLES','roles');
 define('TBL_SCHOOL_CLASSROOM','school_classroom');
 define('TBL_SCHOOL_COURSE','school_course');
