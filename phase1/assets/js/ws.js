@@ -410,9 +410,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-        var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+      //var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      // ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
     ws.onopen = function ()
     {
@@ -521,14 +521,17 @@ if ("WebSocket" in window)
             
            if(wp == obj.to){
                 clearTimeout(typing_timer);
-                var name = $("#chat_container .chat[data-id='"+obj.user_iddd+"']").find(".chat_name").html();
-                $("span.chat_typing").html('');
-                $("#chat_container .chat[data-id='"+obj.user_iddd+"']").find("span.chat_typing").html(name + ' is '+obj.message);
-               // $("span.chat_typing").html();
-                //alert($("span.chat_typing").html());
-               typing_timer =  setTimeout(function () {
-                   $("span.chat_typing").html('');
-                }, 4000);
+                var is_active_window = $("#chat_container .chat[data-id='"+obj.user_iddd+"']").hasClass('active');
+                if(is_active_window){
+                        var name = $("#chat_container .chat[data-id='"+obj.user_iddd+"']").find(".chat_name").html();
+                        $("span.chat_typing").html('');
+                        $("#chat_container .chat[data-id='"+obj.user_iddd+"']").find("span.chat_typing").html(name + ' is '+obj.message);
+                       // $("span.chat_typing").html();
+                        //alert($("span.chat_typing").html());
+                       typing_timer =  setTimeout(function () {
+                           $("span.chat_typing").html('');
+                        }, 4000);
+                    }
             }
 
          }else if (obj.type == 'con') {
@@ -1350,6 +1353,7 @@ function myfunction(from){
             str += '<a href="#" class="icon icon_pin"></a>';
             str += '<input type="file" id="chat_file_share" class="chat_pin" data-type="single_chat_file" data-id="16">';
             str += '</div>';
+
             $('#chat_container').append(str);
             $("#chat_container .chat[data-id='" + id + "'] .chat_text")
                 .mCustomScrollbar({
@@ -1424,7 +1428,7 @@ $(document).on('keypress', 'input[data-type="chat"]', function (e) {
         ws.send(JSON.stringify(request));
         $(this).val('');
     }
-    if ($(this).val().length % 2 == 0) {
+    if ($(this).val().length % 2 == 0 && e.keyCode != 13) {
 
         var request = {
             type: 'chat_type',
