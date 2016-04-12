@@ -2,7 +2,6 @@
     $(document).on('change', 'select[data-type="exam-type"]', function(){
         val = $(this).val();
         if(val != ''){
-
             $('#frm_class_exam').submit();
         }
     });
