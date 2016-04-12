@@ -100,17 +100,17 @@
                             <!--//avatar-->
                             
                             <div class="col-sm-8">
-                                <div class="form-group col-md-6 col-sm-12" style="padding-left: 0px;">
+                                <div class="form-group col-md-6 col-sm-12" class="" style="padding-left: 0px;">
                                     <!-- <label>Full Name</label>
                                     <input type="text" class="form-control" placeholder="Full Name" name="full_name" value="<?php // echo isset($full_name)?$full_name : set_value('full_name');?>"> -->
-                                    <label>First Name</label>
+                                    <label>First Name<span class="required">*</span></label>
                                     <input type="text" class="form-control" placeholder="First Name" name="first_name" id="first_name" value="<?php echo isset($first_name)?$first_name : set_value('first_name');?>">
                                     <div id="first_name_error" class="alert alert-danger <?php if(empty(strip_tags(form_error('first_name'),''))){ echo 'hide';} ?>">
                                     <?php echo strip_tags(form_error('first_name'),'') ; ?>
                                 </div>
                                 </div>
                                 <div class="form-group col-md-6 col-sm-12"  style="padding-right: 0px;">
-                                    <label>Last Name</label>
+                                    <label>Last Name<span class="required">*</span></label>
                                     <input type="text" class="form-control" placeholder="Last Name" name="last_name"  id="last_name"  value="<?php echo isset($last_name)?$last_name : set_value('last_name');?>">
                                 <div id="last_name_error" class="alert alert-danger <?php if(empty(strip_tags(form_error('last_name'),''))){ echo 'hide';} ?>">
                                     <?php echo strip_tags(form_error('last_name'),'') ; ?>
@@ -122,14 +122,14 @@
                                 
                                 <div class="clearfix"></div>
                                 <div class="form-group">
-                                    <label>Email Id</label>
+                                    <label>Email Id<span class="required">*</span></label>
                                     <input type="email" class="form-control" placeholder="Email Address" name="email_id" id="email_id" value="<?php echo isset($email_id)?$email_id : set_value('email_id');?>">
                                 </div>
                                 <div id="email_error" class="alert alert-danger <?php if(empty(strip_tags(form_error('email_id'),''))){ echo 'hide';} ?>">
                                     <?php echo strip_tags(form_error('email_id'),'') ; ?>
                                 </div>
                                 <div class="form-group select">
-                                    <label>Gender</label>
+                                    <label>Gender<span class="required">*</span></label>
                                     <select class="form-control" name="gender" id="gender">
                                         <option value="">Gender</option>
                                         <option value="male">Male</option>
@@ -141,28 +141,28 @@
                                     document.getElementById('gender').value = '<?= $gender; ?>';
                                 </script>    
                                 <div class="form-group dob">
-                                    <label>Date of Birth</label>
+                                    <label>Date of Birth<span class="required">*</span></label>
                                     <div class="input-append date" id="birthdate" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
                                         <input type="text" class="form-control" placeholder="dd-mm-yyyy" data-masked-input="99-99-9999" name="birthdate" id='dp' value="<?php echo isset($birthdate)? $birthdate:set_value('birthdate');?>">
                                         <input id="thealtdate" name="thealtdate" type="hidden" value="<?php echo (isset($birthdate)) ? date("Y-m-d", strtotime($birthdate)) : ''; ?>" />
                                     </div>
                                 </div>
                                 <div class="form-group age">
-                                    <label>Age</label>
+                                    <label>Age<span class="required">*</span></label>
                                     <input type="text" class="form-control" placeholder="Age" disabled >
                                 </div>
                                 <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('birthdate'),''))){ echo 'hide';} ?>">
                                         <?php echo strip_tags(form_error('birthdate'),''); ?>
                                 </div>
                                 <div class="form-group">
-                                    <label>Contact Number</label>
+                                    <label>Contact Number<span class="required">*</span></label>
                                     <input id="contact_number" type="text" class="form-control" placeholder="(XXX) XXX-XXXX" data-masked-input="(999) 999-9999" name="contact_number" value="<?php echo isset($contact_number)?$contact_number:set_value('contact_number');?>">
                                 </div>
                                 <div  id="contact_error" class=" alert alert-danger <?php if(empty(strip_tags(form_error('contact_number'),''))){ echo 'hide';} ?>">
                                         <?php echo strip_tags(form_error('contact_number'),''); ?>
                                 </div>
                                 <div class="form-group">
-                                    <label>Home Address</label>
+                                    <label>Home Address<span class="required">*</span></label>
                                     <textarea class="form-control" placeholder="Home Address" name="home_address"><?php echo isset($home_address)?$home_address:set_value('home_address');?></textarea>
                                 </div>                         
                             </div>
@@ -196,7 +196,7 @@
                             <!--//avatar-->
                             <div class="col-sm-12"> 
                                        <div class="form-group small_input select">
-                                       <label>Country</label>
+                                       <label>Country<span class="required">*</span></label>
                                     <select class="form-control" name="country_id" onchange="get_states(this.value)" id="country_id" >
                                         <option selected value="">Select Country</option> 
                                         <?php 
@@ -211,7 +211,7 @@
                                 </div>
                                         
                                 <div class="form-group small_input select">
-                                    <label>State</label>
+                                    <label>State<span class="required">*</span></label>
                                     <select name="state_id" id="state_id" onchange="get_cities(this.value)" class="form-control">
                                         <option selected value="">Select State</option>
                                         <?php 
@@ -226,7 +226,7 @@
                                 </div>
                                 
                                 <div class="form-group small_input select">
-                                    <label>City</label>
+                                    <label>City<span class="required">*</span></label>
                                     <select name="city_id" id="city_id" class="form-control">
                                         <option selected value="">Select City</option>
                                         <?php 
@@ -324,7 +324,7 @@
                         <div class="box_body">
                             <div class="col-sm-8">  
                                 <div class="form-group">
-                                    <label>Username</label>
+                                    <label>Username<span class="required">*</span></label>
                                     <input type="text" class="form-control" placeholder="Username" name="username" value="<?php echo isset($username)?$username:set_value('username');?>">
                                 </div>
                                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('username'),''))){ echo 'hide';} ?>">
@@ -332,13 +332,13 @@
                                 </div>
                                 <?php if (isset($this->session->userdata('user')['id'])){ ?>
                                     <div class="form-group">
-                                        <label>Current Password</label><span class="pull-right txt_grey"><input type="checkbox" id="show_password"> Show password</span>
+                                        <label>Current Password<span class="required">*</span></label><span class="pull-right txt_grey"><input type="checkbox" id="show_password"> Show password</span>
                                         <input type="password" class="form-control" placeholder="Current Password" name="dis_cur_password" id="dis_cur_password" value="<?php echo isset($password)?$password:set_value('cur_password');?>" disabled>
                                         <input type="hidden" name="cur_password" value="<?php echo isset($password)?$password:set_value('cur_password');?>">
                                     </div>
                                 <?php }else{ ?>
                                 <div class="form-group">
-                                    <label>Current Password</label>
+                                    <label>Current Password<span class="required">*</span></label>
                                     <input type="password" class="form-control" placeholder="Current Password" name="cur_password" value="<?php echo isset($password)?$password:set_value('cur_password');?>">
                                 </div>
                                 <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('cur_password'),''))){ echo 'hide';} ?>">
@@ -346,14 +346,14 @@
                                 </div>
                                 <?php } ?>
                                 <div class="form-group">
-                                    <label>New Password</label>
+                                    <label>New Password<span class="required">*</span></label>
                                     <input type="password" class="form-control" placeholder="New Password" name="new_password" value="<?php echo set_value('new_password');?>">
                                 </div>
                                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('new_password'),''))){ echo 'hide';}?>">
                                     <?php echo strip_tags(form_error('new_password'),'') ; ?>
                                 </div>  
                                 <div class="form-group">
-                                    <label>Confirm Password</label>
+                                    <label>Confirm Password<span class="required">*</span></label>
                                     <input type="password" class="form-control" placeholder="Confirm Password" name="con_password" value="<?php echo set_value('con_password');?>">
                                 </div>
                                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('con_password'),''))){ echo 'hide';} ?>">

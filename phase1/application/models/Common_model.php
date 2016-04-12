@@ -17,6 +17,7 @@ class Common_model extends CI_Model {
 	}
 	
 	public function update($table,$id = null,$data){
+
             if(is_array($id)){
             	$this->db->where($id);
             }else{

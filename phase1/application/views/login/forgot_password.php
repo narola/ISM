@@ -28,7 +28,7 @@
                 	<img src="<?php echo base_url();?>assets/images/logo.png" class="logo">
                     <form class="login_form" method="post">
                     	<div class="form-group">
-                    		<input placeholder="Enter Your Email" class="form-control" type="email" name="emailid">
+                    		<input placeholder="Enter Your Email" class="form-control" type="email" id="emailid" name="emailid">
                         </div>
                         <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('emailid'),''))){ echo 'hide';} ?>">
                             <?php echo strip_tags(form_error('emailid'),''); ?>
@@ -72,6 +72,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Email :</label>
                                 <div class="col-sm-7">
@@ -82,7 +83,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group three_inputs select" >
+
+                            <div class="form-group" >
                               <label class="col-sm-3 control-label">School Grade :</label>
                               <div class="col-sm-7">
                               <select class="form-control" name="school_grade" 
@@ -97,7 +99,7 @@
                                 </div>
                             </div>
 
-                          <div class="form-group three_inputs select">
+                          <div class="form-group">
                               <label class="col-sm-3 control-label">Select School :</label>
                               <div class="col-sm-7">
                               <select class="form-control js-example-basic-single" id="school_id" name="school_id" onchange="school_id_error()">
@@ -118,7 +120,7 @@
                           </div>
 
               
-                <div class="form-group three_inputs select">
+                <div class="form-group">
                       <label class="col-sm-3 control-label">Course :</label>
                       <div class="col-sm-7">
                       <select class="form-control " name="course_id" id="course_id"
@@ -139,7 +141,7 @@
                       <?php echo form_error('course_id','<div class="alert alert-danger course_id_error">','</div>'); ?>
                   </div>
 
-                  <div class="form-group three_inputs select">
+                  <div class="form-group">
                       <label class="col-sm-3 control-label">Classroom :</label>
                       <div class="col-sm-7">
                       <select class="form-control" name="classroom_id" id="classroom_id" onchange="classroom_id_error()">
@@ -159,7 +161,7 @@
                       <?php echo form_error('classroom_id','<div class="alert alert-danger classroom_id_error">','</div>'); ?>
                   </div>
 
-                  <div class="form-group three_inputs select">
+                  <div class="form-group">
                       <label class="col-sm-3 control-label">Year :</label>
                       <div class="col-sm-7">
                       <select class="form-control" name="year_id" id="year_id">
@@ -186,5 +188,12 @@
     <script src="<?php echo base_url();?>assets/js/jquery-1.11.3.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script> 
+    <script type="text/javascript">
+
+     $( "#emailid" ).click(function() {
+          $('.alert').addClass("hide");
+      });
+
+    </script>
 </body>
 </html>

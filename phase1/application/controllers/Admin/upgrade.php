@@ -32,9 +32,35 @@ class Upgrade extends CI_Controller {
 	 
 	public function index() {
 		
-		if($this->input->post('email',TRUE) != ''){
-			$this->send_invitation();
+
+		/* Update user curent year to next year */
+		
+		if(!empty($_POST['user_ids']))
+		{
+			$i = 0;
+			foreach ($_POST['user_ids'] as  $value) {
+				$ids = array(
+					'user_id'=>$value);
+
+				$new_ac_y = array();
+				$new_ac_y = explode("-",$_POST['ac_years'][$i]);
+				$temp_array = array();
+				foreach ($new_ac_y as  $new_ac_y_value) {
+					//$new_ac_y_value = $new_ac_y_value + 1;
+					$temp_array[] = $new_ac_y_value + 1;
+				}
+
+				$final_academic_year = implode("-", $temp_array);
+				$data = array(
+					'academic_year' => $final_academic_year);
+
+				update(TBL_STUDENT_ACADEMIC_INFO,$ids,$data);
+				update(TBL_STUDENT_ACADEMIC_DET,$ids,$data);
+			}
+			
+			
 		}
+
 
 		$this->data['page_title'] = 'Year upgradation';
 		$order = '';
@@ -44,6 +70,7 @@ class Upgrade extends CI_Controller {
 			!empty($_GET['classroom']) || !empty($_GET['q']) || !empty($_GET['order']) ){
 			
 			if( !empty($_GET['role']) ) { $role = $this->input->get('role'); }	
+			if( !empty($_GET['acadamic_year']) ) { $academic_year = $this->input->get('acadamic_year'); }	
 			if( !empty($_GET['course'])){ $course  = $this->input->get('course'); }
 			if( !empty($_GET['school'])){ $school = $this->input->get('school'); }
 			if( !empty($_GET['year']) ) { $year = $this->input->get('year'); }
@@ -54,7 +81,8 @@ class Upgrade extends CI_Controller {
 
 			$str = '';
 
-			if(!empty($role)){ $where['where']['role_id'] = $role ; $str .= '&role='.$role; }	
+			if(!empty($role)){ $where['where']['role_id'] = $role ; $str .= '&role='.$role; }
+			if(!empty($academic_year)){ $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.academic_year'] = $academic_year ; $str .= '&acadamic_year='.$academic_year; }	
 			if(!empty($course)){  $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.course_id'] = $course; $str .='&course='.$course; }
 			if(!empty($school)){  $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.school_id'] = $school; $str .='&school='.$school; }
 			if(!empty($classroom)){ $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.classroom_id'] = $classroom; $str .= '&classroom='.$classroom;  }
@@ -118,7 +146,7 @@ class Upgrade extends CI_Controller {
 		$this->data['all_users'] =   select(TBL_USERS,
 											TBL_USERS.'.id,'.TBL_USERS.'.user_status,'.TBL_USERS.'.username,'.TBL_CITIES.'.city_name,'.TBL_STATES.'.state_name,
 											'.TBL_USERS.'.role_id,'.TBL_ROLES.'.role_name,'.TBL_STUDENT_ACADEMIC_INFO.'.course_id,'.TBL_COURSES.'.course_name,
-											'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link,'.TBL_USERS.'.profile_pic',
+											'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link,,'.TBL_STUDENT_ACADEMIC_INFO.'.academic_year,'.TBL_USERS.'.profile_pic',
 											$where,
 											array(
 												'order_by'=>$order,
@@ -149,6 +177,10 @@ class Upgrade extends CI_Controller {
 											    				'condition'=>TBL_STUDENT_ACADEMIC_INFO.'.course_id='.TBL_COURSES.'.id'	
 											    				),
 											    			array(
+											    				'table'=>TBL_STUDENT_ACADEMIC_DET,
+											    				'condition'=>TBL_STUDENT_ACADEMIC_INFO.'.user_id='.TBL_STUDENT_ACADEMIC_DET.'.user_id'	
+											    				),
+											    			array(
 											    				'table'=>TBL_CLASSROOMS,
 											    				'condition'=>TBL_STUDENT_ACADEMIC_INFO.'.classroom_id='.TBL_CLASSROOMS.'.id'	
 											    				),
@@ -167,6 +199,10 @@ class Upgrade extends CI_Controller {
 		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
 		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)));
 		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)));
+		$select = TBL_STUDENT_ACADEMIC_DET.".academic_year";
+		$option = array(
+			'group_by' => TBL_STUDENT_ACADEMIC_DET.'.academic_year');
+		$this->data['academic_years'] = select(TBL_STUDENT_ACADEMIC_DET,$select,NULL,$option);
 
 		$this->template->load('Admin/default','admin/upgradation/year_upgradation',$this->data);
 	}

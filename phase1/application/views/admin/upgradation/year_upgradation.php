@@ -52,6 +52,18 @@
                         </select>
 	                </div>
 
+                    <div class="form-group">
+                      <select class="form-control" name="acadamic_year" id="acadamic_year" onchange="filter_data()">
+                            <option value="">Select Year</option>
+                            <?php 
+                              if(!empty($academic_years)){ 
+                                foreach($academic_years as $academic_year) {
+                                ?>
+                                <option value="<?php echo $academic_year['academic_year']; ?>"><?php echo $academic_year['academic_year']; ?></option>  
+                            <?php }  } ?>
+                        </select>
+                  </div>
+
              
                     
 	           </div>
@@ -97,6 +109,7 @@
                                 <th>Course</th>
                                 <th>City</th>
                                 <th>Role</th>
+                                <th>Acadamic year</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -108,7 +121,7 @@
                           <tr>
                               <td class="checkbox_td">
                                 <div class="squaredThree">
-                                    <input type="checkbox" value="<?php echo $user['id']; ?>" id="squaredThree_<?php echo $user['id']; ?>" name="users[]"> 
+                                    <input type="checkbox" data-name="<?php echo $user['username']; ?>" data-class="<?php echo $user['class_name']; ?>" data-course="<?php echo $user['course_name']; ?>" data-year="<?php echo $user['academic_year']; ?>" value="<?php echo $user['id']; ?>" id="squaredThree_<?php echo $user['id']; ?>" name="users[]"> 
                                     <label for="squaredThree_<?php echo $user['id']; ?>"></label>
                                 </div>
                               </td>
@@ -136,6 +149,7 @@
                               <td> <?php echo ucfirst($user['course_name']); ?> </td>
                               <td> <?php echo ucfirst($user['city_name']); ?> </td>
                               <td><?php echo ucfirst($user['role_name']); ?></td>
+                              <td><?php echo ucfirst($user['academic_year']); ?></td>
                             </tr>
                             <?php } }else{ ?>
 							
@@ -151,7 +165,7 @@
                 <input type="checkbox" id="checkAll"> Check all
             </div> -->
             <div class="col-sm-12 text-right">
-                <a href="javascript:void(0);" class="btn btn_green" data-toggle="modal" data-target="#year_updradation">Upgrade to next year</a>
+                <a href="javascript:void(0);" id="upgrade_next" class="btn btn_green" data-toggle="modal" data-target="#year_updradation">Upgrade to next year</a>
             </div>
           </div>
 
@@ -171,13 +185,30 @@
                     <small><?php echo date("d F Y",strtotime(date('Y-m-d')));?></small>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post">
-                        <div class="form-group">
-                            <h1>Content</h1>
-                        </div>
+                   
+
+                      <form action="" method="post">
+                        <div class="tabel_view">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table_user">
+                                <thead>
+                                      <tr>
+                                          <th style="width: 240px;">Username</th>
+                                          <th>Class</th>
+                                          <th>Course</th>
+                                          <th>Acadamic year</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                  </tbody>
+                              </table>
+                          </div>
+                    </div>
                         <button type="submit" class="btn btn_red" data-type="close-studymate" style="float:right;">Upgrade</button></h4>
                         <div class="clearfix"></div>
                     </form>
+
+
                 </div>
             </div>
         </div>
@@ -188,7 +219,61 @@
     //   $('select').select2();
     // });
       $("#checkAll").change(function () {
-        $("input:checkbox").prop('checked', $(this).prop("checked"));
+       // alert($(this).is(':checked'));
+       var is_check = null;
+       if($(this).attr('checked')) {
+            is_check = 1;
+            $(this).removeAttr("checked");
+        } else {
+            is_check = 0;
+            $(this).attr("checked", "checked");
+        }
+
+        if(is_check == 1){
+          $('input[name="users[]"]').each(function(i){
+             // $('input[name="users[]"]').removeAttr("checked");
+              $('input[name="users[]"]').prop('checked', false);
+              $('.modal-content .modal-content').html("<h3 style='color:red'>Select atleast one user to upgrade next year !</h3>");
+             // $('.modal-content .modal-body').html("<h3 style='color:red'>Select user to upgrade next year !</h3>");
+            });
+
+        }else
+        {
+           $('input[name="users[]"]').each(function(i){
+             // $('input[name="users[]"]').attr("checked", "checked");
+             $('input[name="users[]"]').prop('checked', true);
+            });
+        }
+           // $("input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+
+    $("#upgrade_next").click(function(){
+      var str;
+
+      var len = $('input[name="users[]"]:checked').length;
+      
+      if(len != 0){
+        
+        $('input[name="users[]"]:checked').each(function(i){
+            str += '<tr>';
+            str += '<input type="hidden" name="user_ids[]" value='+ parseInt($(this).val()) +' >';
+            str += '<input type="hidden" name="ac_years[]" value="'+ $(this).attr("data-year") +'" >';
+            str += '<td>'+ $(this).attr("data-name") +'</td>';
+            str += '<td>'+ $(this).attr("data-class") +'</td>';
+            str += '<td>'+ $(this).attr("data-course") +'</td>';
+            str += '<td>'+ $(this).attr("data-year") +'</td>';
+            str += '</tr>';
+        });
+       $('.modal-content .table_user tbody').html(str);
+       $('button[data-type="close-studymate"]').show();
+      }else
+      {
+       $('.modal-content .table_user tbody').html("<tr><td colspan='4'><h3 style='color:red'>Select atleast one user to upgrade next year !</h3></td></tr>");
+       $('button[data-type="close-studymate"]').hide();
+      }
+       
+    
+
     });
 
     function block_user(href,event){
@@ -224,10 +309,12 @@
     	var school = $('#school').val();
     	var course = $('#course').val();
     	var classroom = $('#classroom').val();
+      var acadamic_year = $('#acadamic_year').val();
         var q = $('#q').val();
         var order = $('#order').val();
 
         if(role == '' ){ $('#role').removeAttr('name'); }
+        if(acadamic_year == '' ){ $('#acadamic_year').removeAttr('name'); }
     	if(school == '' ){ $('#school').removeAttr('name'); }
     	if(course == '' ){ $('#course').removeAttr('name'); }
     	if(classroom == ''){ $('#classroom').removeAttr('name'); }
@@ -261,6 +348,9 @@
 	<?php if(!empty($_GET['role'])) { ?>
 		$('#role').val('<?php echo $_GET["role"];?>');	
 	<?php } ?>
+  <?php if(!empty($_GET['acadamic_year'])) { ?>
+    $('#acadamic_year').val('<?php echo $_GET["acadamic_year"];?>');  
+  <?php } ?>
 
 	<?php if(!empty($_GET['school'])) { ?>
 		$('#school').val('<?php echo $_GET["school"];?>');	
