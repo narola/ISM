@@ -410,9 +410,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-      //var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-      // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+      //var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+      //ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
     ws.onopen = function ()
     {
@@ -953,7 +953,7 @@ if ("WebSocket" in window)
  
 
                 notification_str += '<li><a href="student/tagged_feed/'+obj.notification_detail[0]['id']+'">';
-                notification_str += '<span>hi</span>';
+                //notification_str += '<span> hello</span>';
                 notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.notification_detail[0]['profile_link'] + '"></div>';
                 notification_str += '<div class="notification_txt">';
                 notification_str += '<p><span class="noti_username">' + obj.notification_detail[0]['full_name'] + '</span> tagged you in a post</p>';
@@ -1595,6 +1595,7 @@ $(document).on('click', 'button[data-type="post"]', function () {
     }
 });
 
+
 /* Edit post */
 
 $(document).on('click', '.btn_green[data-type="save-edited-feed"]', function () {
@@ -1703,7 +1704,7 @@ function generate_post(obj, status) {
                    
 
                 notification_str += '<li><a href="student/tagged_feed/'+obj.notification_detail[0]['id']+'">';
-                notification_str += '<span>hello</span>';
+               // notification_str += '<span>hello</span>';
                 notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '"></div>';
                 notification_str += '<div class="notification_txt">';
                 notification_str += '<p><span class="noti_username">' + obj.full_name + '</span> tagged you in a post</p>';

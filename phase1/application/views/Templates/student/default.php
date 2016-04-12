@@ -223,7 +223,7 @@ $url = uri_string();
 								
 								?>
 								<li>
-									 <!-- <a href="student/tagged_feed/<?php echo $value['feed_id']; ?>"> -->
+									 <!-- <a href="student/tagged_feed/<?php //echo $value['feed_id']; ?>"> -->
 									 <a>
 									<!-- <a href="Student/User_account/<?php// echo $notification_for; ?>/<?php // echo $this->session->userdata['user']['id']; ?>"> -->
 										<div class="user_small_img">
@@ -638,6 +638,10 @@ jQuery(document).ready(function() {
 
 function update_notification()
 {	
+	if($('.bell_badge').attr("data-first") == "yes")
+	{
+		$('.mCSB_container .three_tabs #notification-panel').html('<li><div class="notification_txt">No more notification</div></li>');
+	}
 	var dataString = 'id='+ wp;
 	  $.ajax({
                   type: "POST",
@@ -646,9 +650,9 @@ function update_notification()
                   cache: false,
                   success: function(result){
                     $('.bell_badge').html("0");
-                   
                   }
             }); 
+	  $('.bell_badge').attr("data-first","yes");
 
 }
 
