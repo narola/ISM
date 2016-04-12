@@ -87,8 +87,7 @@
                     
 	           </div>
 	        </div>
-            
-    	</form>	
+      </form>	
 
     	<?php $success = $this->session->flashdata('success'); ?>
   
@@ -197,7 +196,7 @@
                             </tr>
                             <?php } }else{ ?>
 							
-							<tr> <td colspan="7" class="text-center"><strong>No Data Found. </strong> </td> </tr>		
+							<tr><td colspan="7" class="text-center"><strong>No Data Found. </strong> </td> </tr>		
 							
                             <?php } ?>
                         </tbody>

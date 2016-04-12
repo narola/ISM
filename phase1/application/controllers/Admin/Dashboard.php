@@ -629,6 +629,29 @@ class Dashboard extends ADMIN_Controller {
     		}    	
     	}
     }
+
+    public function credential_requests(){
+    	$this->data['requests'] = select(TBL_REQUEST_CREDENTIALS,TBL_REQUEST_CREDENTIALS.'.*,'.TBL_SCHOOLS.'.school_name,'.TBL_COURSES.'.course_name,'.TBL_CLASSROOMS.'.class_name',FALSE,
+    		array(
+				'join' =>  array(
+					array(
+	    				'table'=>TBL_SCHOOLS,
+	    				'condition'=>TBL_REQUEST_CREDENTIALS.'.school_id='.TBL_SCHOOLS.'.id'	
+	    				),
+	    			array(
+	    				'table'=>TBL_COURSES,
+	    				'condition'=>TBL_REQUEST_CREDENTIALS.'.course_id='.TBL_COURSES.'.id'	
+	    				),
+	    			array(
+	    				'table'=>TBL_CLASSROOMS,
+	    				'condition'=>TBL_REQUEST_CREDENTIALS.'.classroom_id='.TBL_CLASSROOMS.'.id'	
+	    				)			
+		    		)
+				)
+    		);
+    	// p($this->data, true);
+    	$this->template->load('Admin/default','admin/request_credentials',$this->data); 
+    }
 }
 
 /* End of file Admin.php */
