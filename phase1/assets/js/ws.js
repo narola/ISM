@@ -381,7 +381,7 @@ $(document).ready(function () {
         } else {
              $('#image_upload_model').addClass('in',{duration:500});
              $('#image_upload_model').css("display","block");
-             this.files[0].value = this.files[0].defaultValue;
+            $(this).val('').clone(true);
         }
     };
 
@@ -1467,9 +1467,10 @@ $(document).on("change", "#chat_file_share", function(evt)
                 reader.readAsBinaryString(file);
             }
         } else {
+
              $('#image_upload_model').addClass('in',{duration:500});
              $('#image_upload_model').css("display","block");
-             this.files[0].value = this.files[0].defaultValue;
+             $('#chat_file_share').val('').clone(true);
         }
     
 });
