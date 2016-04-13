@@ -203,7 +203,15 @@ class Login extends CI_Controller {
             'name' => $this->input->post('request_name'),
             'email' => $this->input->post('request_email')
         );
-        insert('request_credentials',$request_data);
+        
+        $if_exists = select(TBL_REQUEST_CREDENTIALS, 'id', array('where'=>array('email'=>$this->input->post('request_email'), 'is_created'=>0)), array('count'=>true));
+        if($if_exists > 0){
+            $this->session->set_flashdata('error', 'Request using this email has already been done. You will soon get response.');
+        }else{
+            insert('request_credentials',$request_data);
+            $this->session->set_flashdata('success', 'Your request has been sent. You will soon get your credentials soon.');
+        }   
+        redirect('login');
     }
     
     /*

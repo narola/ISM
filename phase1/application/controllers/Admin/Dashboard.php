@@ -649,7 +649,148 @@ class Dashboard extends ADMIN_Controller {
 		    		)
 				)
     		);
+    	if(empty($school_grade) || !$_POST){
+			$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0)),array('order_by'=>TBL_SCHOOLS.'.school_name'));
+		}else{
+			$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0,'school_grade'=>$school_grade)),array('order_by'=>TBL_SCHOOLS.'.school_name'));
+		}
+
+		$this->data['roles'] = select(TBL_ROLES,false,array('where'=>array('is_delete'=>0,'role_name !='=>'school')));
+		$this->data['courses'] = select(TBL_COURSES,false,array('where'=>array('is_delete'=>0)));
+
+		$course_id = $this->input->post('course_id');
+
+		if(!$_POST && empty($course_id)){
+			$this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>0)),array('order_by'=>TBL_CLASSROOMS.'.class_name'));
+		}else{
+			$this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>0,'course_id'=>$course_id)),array('order_by'=>TBL_CLASSROOMS.'.class_name'));
+		}
+
+		$this->data['cur_year'] = date('Y');
+		$this->data['next_year'] = date('Y')+1;
     	// p($this->data, true);
+
+			if(isset($_POST['generate'])){
+				// p($_POST, true);
+			$school_id = $this->input->post('school_id');
+			$role_id = 2;
+			$course_id = $this->input->post('course_id');
+			$classroom_id = $this->input->post('classroom_id');
+			$year_id = $this->input->post('year_id');
+			$next_year = $year_id+1;
+			$year = "$year_id-$next_year";
+			$no_of_credentials	=	1;
+
+			// Fetch role name,course name,classroom name,school name from diffetent table using cms_helper.php and common_model.php
+			$role_name = select(TBL_ROLES,'role_name',array('where'=>array('id'=>$role_id)),array('single'=>TRUE));
+			$course_name = select(TBL_COURSES,'course_name',array('where'=>array('id'=>$course_id)),array('single'=>TRUE));
+			$class_name = select(TBL_CLASSROOMS,'class_name',array('where'=>array('id'=>$classroom_id)),array('single'=>TRUE));
+			$school_name = select(TBL_SCHOOLS,'school_name',array('where'=>array('id'=>$school_id)),array('single'=>TRUE));
+
+			
+
+			//load our new PHPExcel library
+			$this->load->library('excel');
+			ob_clean();
+			//activate worksheet number 1
+			$this->excel->setActiveSheetIndex(0);
+			//name the worksheet
+			$this->excel->getActiveSheet()->setTitle('test worksheet');
+			//set cell A1 content with some text
+			$this->excel->getActiveSheet()->setCellValue('A1', 'Number');
+			//set cell A1 content with some text
+			$this->excel->getActiveSheet()->setCellValue('B1', 'Username');
+			//set cell A1 content with some text
+			$this->excel->getActiveSheet()->setCellValue('C1', 'Passowrd');
+
+			$this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+			$this->excel->getActiveSheet()->getStyle('B1')->getFont()->setBold(true);
+			$this->excel->getActiveSheet()->getStyle('C1')->getFont()->setBold(true);
+
+			$this->excel->getActiveSheet()->getStyle("A1:C1")->getFont()->setSize(14);
+			
+			$this->excel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+			$this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+			$this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+
+			$this->excel->getActiveSheet()->freezePane('A2'); //Freeze panel Above of A2 row
+
+			$this->excel->getActiveSheet()->getStyle('A1:C1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+			$this->excel->getActiveSheet()->getRowDimension('1')->setRowHeight(20);
+			$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(100);
+			
+			$cnt = 2;
+
+			//No of Credentials loop will run if that username does not exist in users.username table.field
+			for ($i=0; $i < $no_of_credentials; $i++) { 
+
+				$usrename_str 	= 	'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+				$username 		=	substr(str_shuffle($usrename_str),0,10);
+				$password_str 	=	'abcdefghijklmnopqrstuvwxyz1234567890';
+				$pass_generated = 	 substr(str_shuffle($password_str),0,8);
+				$password 		=	$this->encrypt->encode($pass_generated);
+				
+				$data = array('username'=>$username);
+				
+				$find_credentials = select(TBL_AUTO_GENERATED_CREDENTIAL,FALSE,array('where'=>$data));
+
+				$find_user = select(TBL_USERS,FALSE,array('where'=>$data));
+
+				if(sizeof($find_credentials)>0 || sizeof($find_user) > 0){
+					//if data found in users or auto_generated_credentials table then it will decrease $i value and continue 
+					$i--;
+					$cnt--;
+					continue;
+					
+				}else{
+
+					$data = array(
+							'username'=>$username,
+							'password'=>$password,
+							'school_id'=>$school_id,
+							'role_id'=>$role_id,
+							'status'=>'1',
+							'classroom_id'=> $classroom_id,
+							'course_id'=> $course_id,
+							'academic_year'=>$year
+						);
+
+					insert(TBL_AUTO_GENERATED_CREDENTIAL,$data); // insert data into database using common_model.php and cms_helper.php
+
+					$created_cred = array(
+						'username'=>$username,
+						'password'=>$password,
+						'modified_time'=>date('Y-m-d h:m:s'),
+						'is_created'=>1
+						);
+					$request_id = $this->input->post('request_id');
+					update(TBL_REQUEST_CREDENTIALS,$request_id,$created_cred);
+
+					$this->excel->getActiveSheet()->setCellValue('A'.$cnt, $cnt-1);
+					$this->excel->getActiveSheet()->setCellValue('B'.$cnt, $username);
+					$this->excel->getActiveSheet()->setCellValue('C'.$cnt, $pass_generated);
+					$this->excel->getActiveSheet()->getStyle('A'.$cnt.':C'.$cnt)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+					$this->excel->getActiveSheet()->getRowDimension($cnt)->setRowHeight(17); //set Height After first Row
+					$cnt++;
+
+ 				}
+			} // End Of For Loop	
+
+			$filename=$school_name['school_name'].'-'.$class_name['class_name'].'.xls'; //save our workbook as this file name
+			
+			header('Content-Type: application/vnd.ms-excel'); //mime type
+            header('Content-Disposition: attachment;filename="' . $filename . '"'); //tell browser what's the file name
+            header('Cache-Control: max-age=0'); //no cache
+            $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+            $objWriter->save('php://output');
+
+            redirect('admin/credential_requests');
+			}
+
+
+
+
     	$this->template->load('Admin/default','admin/request_credentials',$this->data); 
     }
 }

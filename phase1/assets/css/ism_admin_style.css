@@ -821,10 +821,12 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     margin-right: 10px;
 }
 .confirmation p{
-	font-size:18px;	
+	font-size:18
+	px;	
 	line-height:1.6;
 	max-width:700px;
 	margin:0 auto 20px;
+	color: slategray;
 }
 .confirmation{
 	padding:15px;
@@ -2336,4 +2338,24 @@ td p.active {
 }
 input.form-control.smallinput {
     width: 92% !important;
+}
+
+*::after, *::before {
+    box-sizing: border-box;
+}
+*::after, *::before {
+    box-sizing: border-box;
+}
+.request_cred .box_header {
+    background-color: #f2f2f2;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 12px 15px;
+    text-align: center;
+    color: #000;
+}
+.request_cred.general_cred .box_body .three_inputs.select:after{
+    right: 45px;
+}
+.request_cred .three_inputs{
+	margin-right: 0px;
 }
