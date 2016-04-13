@@ -203,7 +203,6 @@ class Upgrade extends CI_Controller {
 		$option = array(
 			'group_by' => TBL_STUDENT_ACADEMIC_DET.'.academic_year');
 		$this->data['academic_years'] = select(TBL_STUDENT_ACADEMIC_DET,$select,NULL,$option);
-
 		$this->template->load('Admin/default','admin/upgradation/year_upgradation',$this->data);
 	}
 
