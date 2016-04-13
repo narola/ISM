@@ -410,7 +410,7 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+    var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       //var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
       //ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
@@ -1613,7 +1613,7 @@ $(document).on('click', '.btn_green[data-type="save-edited-feed"]', function () 
         $('#all_feed .box[data-id="' + a + '"] .feed_text p').css("display","");
         $('#all_feed .box div#save_edited_feed[data-id="' + a + '"]').css("display","none");
         $('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').css("display","none");
-        $('#all_feed .box[data-id="' + a + '"] .feed_text p').text(feed);
+        $('#all_feed .box[data-id="' + a + '"] .feed_text p').html(feed.replace(/\n/g, "<br />"));
     }
 
 });
@@ -1778,7 +1778,7 @@ function generate_post(obj, status) {
     str += '<a  style="color:white" href="javascript:void(0);" class="btn btn-xs btn_green" data-type="save-edited-feed" data-id="' + obj.post_id + '">Save</a>';
     str += '</div>';
     str += '<div class="clearfix"></div>';
-    str += '<p>' + feed_msg.replace(/\n/g,"<br>") + '</p>';
+    str += '<p>' + feed_msg.replace(/(\n)/g, "<br>") + '</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="' + obj.post_id + '"><span title="Like" class="icon icon_thumb' + cls + '"></span>' + obj.tot_like + '</a>';
         if(obj.tot_comment > 4)
         {
