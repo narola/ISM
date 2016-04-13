@@ -1,4 +1,5 @@
 <script>
+
 	function showall(id) {
 	$('.post' + id).show();
     }
@@ -40,17 +41,34 @@
 
     });
 
-  	/* Edit post activation */
+    /* Change textarea size based on content */
     
+    $(document).on('keyup', '#all_feed .box .feed_text #edit_feed_post', function() {
+
+
+    		enteredText = $(this).val();
+			numberOfLineBreaks = (enteredText.match(/\n/g)||[]).length;
+    		var a = $(this).attr("data-feed");
+    		$(this).css('resize','auto');
+    		$(this).css('overflow','hidden');
+    		$(this).animate({
+         			 height: 24 * numberOfLineBreaks
+        		},20);
+    	});
+
+  	/* Edit post activation */
      $(document).on('click', '.edit_post_icon', function(e) {
      	var a = $(this).attr("data-feed");
         $('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').css("display","");
+       	var p_height = ($('#all_feed .box[data-id="' + a + '"] .feed_text p').height());
         var feed_post_text = $('#all_feed .box[data-id="' + a + '"] .feed_text p').html();
         $('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').focus();
         $('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').val("");
- 	 	$('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').val(feed_post_text);
+ 	 	$('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').val(feed_post_text.replace(/<br\s*\/?>/mg,"\n"));
+ 	 	$('#all_feed .box .feed_text #edit_feed_post[data-feed="' + a + '"]').height(p_height + 20);
      	$('#all_feed .box div#save_edited_feed[data-id="' + a + '"]').css("display","");
     	$('#all_feed .box[data-id="' + a + '"] .feed_text p').css("display","none");
+
      });
 
  	/* Edit post deactive */
@@ -272,13 +290,13 @@
 				// echo date("M j, Y", $old_date);
 				?>
 			    <div class="clearfix"></div>
-			    <textarea id="edit_feed_post" type="text" data-feed="<?php echo $value['fid']; ?>" class="form-control post_input" style="display:none" placeholder="SAY IT"><?php echo $value['feed_text']; ?></textarea>
+			    <textarea id="edit_feed_post" type="text" data-feed="<?php echo $value['fid']; ?>" class="form-control post_input" style="display:none;overflow:hidden" placeholder="SAY IT"><?php echo $value['feed_text']; ?></textarea>
 			    <div style="float:right;display:none;color:white; margin-top:5px;" id="save_edited_feed" data-id="<?php echo $value['fid']; ?>">
 					<a style="color:white" href="javascript:void(0);" class="btn btn-xs btn_black_normal" data-type="cancel-edited-feed" data-id="<?php echo $value['fid']; ?>">Cancel</a>
 				    <a style="color:white" href="javascript:void(0);" class="btn btn-xs btn_green" data-type="save-edited-feed" data-id="<?php echo $value['fid']; ?>">Save</a>
 				</div>
 				 <div class="clearfix"></div>
-			    <p><?php echo nl2br($value['feed_text']); ?></p>
+			    <p><?php echo str_replace(array("\n", "\r"), '<br>', $value['feed_text']); ?></p>
 			    <a href="javascript:void(0);" data-id="<?php echo $value['fid']; ?>" data-type="feed-like" class="like_btn">
 				<?php
 				if ($value['my_like'] == 1 || $value['my_like'] == '') {

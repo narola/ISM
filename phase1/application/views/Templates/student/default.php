@@ -324,17 +324,13 @@ $url = uri_string();
 				<p class="copyright">©2015 ISM | All Rights Reserved.</p>
 			</div>
 
-
 							<!-- FEED UPLOAD VALIDATION ERROR -->
 				 <div class="modal fade" id="image_upload_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display:none">
 			        <div class="modal-dialog" role="document" style="width:600px;margin-top:120px;">
-			            <div class="modal-content">
-			                <div class="modal-header notice_header text-center" style="background-image:none;background-color:#1bc4a3">
-			                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="close_model()"><span aria-hidden="true">×</span></button>
-			                    <h4 class="modal-title" id="myModalLabel">Invalid uploading</h4>
-			                </div>
-			                <div class="modal-body">
-			                    Your content couldn't be uploaded. Max upload limit is 10MB.
+			            <div class="modal-content" style="width:490px;box-shadow: none;">
+			                <div class="modal-body" style="background-color:#ebccd1;color:#a94442">
+			                	<button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="close_model()"><span aria-hidden="true">×</span></button>
+			                    <b>Your content couldn't be uploaded. Max upload limit is 10MB.</b>
 			                    <div class="basic_info">
 			                        <div class="clearfix"></div>
 			                    </div>

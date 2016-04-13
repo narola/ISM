@@ -259,13 +259,10 @@
                     
                     <div class="modal fade" id="image_upload_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display:none">
                     <div class="modal-dialog" role="document" style="width:600px;margin-top:120px;">
-                        <div class="modal-content">
-                            <div class="modal-header notice_header text-center">
+                        <div class="modal-content" style="width:490px;box-shadow: none;">
+                            <div class="modal-body"  style="background-color:#ebccd1;color:#a94442" >
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="close_model()"><span aria-hidden="true">×</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Invalid uploading</h4>
-                            </div>
-                            <div class="modal-body">
-                                Your image couldn't be uploaded. Photo should be saved as JPG, PNG, GIF or TIFF
+                                <b>Your image couldn't be uploaded. Photo should be saved as JPG, PNG, GIF or TIFF</b>
                                 <div class="basic_info">
                                     <div class="clearfix"></div>
                                 </div>
