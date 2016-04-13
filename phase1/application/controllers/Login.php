@@ -195,6 +195,7 @@ class Login extends CI_Controller {
     */
     public function send_request(){
         $request_data = array(
+            'school_grade' => $this->input->post('school_grade'),
             'school_id' => $this->input->post('school_id'),
             'course_id' => $this->input->post('course_id'),
             'classroom_id' => $this->input->post('classroom_id'),
