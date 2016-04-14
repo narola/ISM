@@ -501,11 +501,33 @@ if (isset($active_c) && !empty($active_c) && $this->session->userdata('user')['i
 				}
 				if ($value['sender_id'] == $active_c['user']['id']) {
 		?>
-		<div class="from"><p><?php echo $mess; ?></p><div><?php echo get_time_format($value['created_date']); ?></div></div>
+		<div class="from">
+			<p><?php echo $mess; ?></p>
+			<?php 
+				$randomString = md5(time());
+			?>
+			<div>
+				<span class="noti_time just_now_<?php echo $randomString; ?>"></span>
+				<script type="text/javascript">
+					$(".just_now_<?php echo $randomString; ?>").timestatus2('<?php echo get_time_format($value['created_date']); ?>',"just_now_<?php echo $randomString; ?>");
+				</script>
+			</div>
+		</div>
 		<?php
 		} else {
 		?>
-		<div class="to"><p><?php echo $mess; ?></p><div><?php echo get_time_format($value['created_date']); ?></div></div>
+		<div class="to">
+			<p><?php echo $mess; ?></p>
+			<?php 
+				$randomString = md5(time());
+			?>
+			<div>
+				<span class="noti_time just_now_<?php echo $randomString; ?>"></span>
+				<script type="text/javascript">
+					$(".just_now_<?php echo $randomString; ?>").timestatus2('<?php echo get_time_format($value['created_date']); ?>',"just_now_<?php echo $randomString; ?>");
+				</script>
+			</div>
+		</div>
 		<?php
 		}
 		}

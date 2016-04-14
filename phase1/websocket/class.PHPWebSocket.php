@@ -1023,6 +1023,11 @@ class PHPWebSocket {
 
 		
 	$link = $this->db();
+	if($data['active_chat'])
+	{
+		mysqli_query($link, "UPDATE `" . TBL_USER_CHAT . "` `uc` SET  `uc`.`received_status` = 1  WHERE `uc`.`received_status` = 0 AND `uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` =" . $userID);
+	}else
+	{
 	mysqli_query($link, "UPDATE `" . TBL_USER_CHAT . "` `uc` SET  `uc`.`received_status` = 1  WHERE `uc`.`received_status` = 0 AND `uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` =" . $userID);
 	$row = mysqli_query($link, $query);
 	$result = array();
@@ -1070,6 +1075,7 @@ class PHPWebSocket {
 	    $html[] = $in_h;
 	}
 	$data['message'] = $html;
+	}
 	return $data;
     }
 

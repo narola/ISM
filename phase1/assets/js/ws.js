@@ -75,7 +75,7 @@ function exam_started_timer()
        // $(".alert_notification p").html("<b>Exam time finished..</b>");
        // $(".alert_notification").show().delay(7000).fadeOut();
            $.notify({
-            title: '<strong>Stop now!</strong>',
+            title: '<strong></strong>',
             message: '<b>Exam time finished..</b>.'
         },{
             type: 'warning'
@@ -109,7 +109,7 @@ function exam_will_start_timer()
        // $(".alert_notification").show().delay(7000).fadeOut();
 
           $.notify({
-            title: '<strong>Wait !</strong>',
+            title: '<strong></strong>',
             message: 'Exam time will <b>start</b> within <b>15 minutes.</b>.'
         },{
             type: 'warning'
@@ -121,7 +121,7 @@ function exam_will_start_timer()
         //$(".alert_notification p").html("Exam time will <b>start</b> within <b>5 minutes.</b>");
         //$(".alert_notification").show().delay(7000).fadeOut();
           $.notify({
-            title: '<strong>Wait !</strong>',
+            title: '<strong></strong>',
             message: 'Exam time will <b>start</b> within <b>5 minutes.</b>.'
         },{
             type: 'warning'
@@ -132,7 +132,7 @@ function exam_will_start_timer()
         //$(".alert_notification p").html("Exam time will <b>start</b> within <b>1 minute.</b>");
         //$(".alert_notification").show().delay(7000).fadeOut();
          $.notify({
-            title: '<strong>Wait !</strong>',
+            title: '<strong></strong>',
             message: 'Exam time will <b>start</b> within <b>1 minutes.</b>.'
         },{
             type: 'warning'
@@ -144,7 +144,7 @@ function exam_will_start_timer()
         //$(".alert_notification p").html("<b>Exam time Started..</b>");
         //$(".alert_notification").show().delay(7000).fadeOut();
          $.notify({
-            title: '<strong>Started !</strong>',
+            title: '<strong></strong>',
             message: '<b>Exam time Started..</b>.'
         },{
             type: 'warning'
@@ -171,7 +171,7 @@ function remainning_time_timer()
         //$(".alert_notification p").html("Active hours will <b>finish</b> within <b>15 minutes.</b>");
         //$(".alert_notification").show().delay(7000).fadeOut();
          $.notify({
-            title: '<strong>Keep in mind !</strong>',
+            title: '<strong></strong>',
             message: 'Active hours will <b>finish</b> within <b>15 minutes.</b>.'
         },{
             type: 'warning'
@@ -183,7 +183,7 @@ function remainning_time_timer()
         //$(".alert_notification p").html("Active hours will <b>finish</b> within <b>5 minutes.</b>");
         //$(".alert_notification").show().delay(7000).fadeOut();
          $.notify({
-            title: '<strong>Keep in mind !</strong>',
+            title: '<strong></strong>',
             message: 'Active hours will <b>finish</b> within <b>5 minutes.</b>.'
         },{
             type: 'warning'
@@ -194,7 +194,7 @@ function remainning_time_timer()
         //$(".alert_notification p").html("Active hours will <b>finish</b> within <b>1 minute.</b>");
         //$(".alert_notification").show().delay(7000).fadeOut();
          $.notify({
-            title: '<strong>Keep in mind !</strong>',
+            title: '<strong></strong>',
             message: 'Active hours will <b>finish</b> within <b>1 minute.</b>.'
         },{
             type: 'warning'
@@ -230,7 +230,7 @@ function timeout_timer()
         //$(".alert_notification").show().delay(7000).fadeOut();
 
           $.notify({
-            title: '<strong>Wait !</strong>',
+            title: '<strong></strong>',
             message: 'Active hours will start within <b>15 minutes.</b>.'
         },{
             type: 'warning'
@@ -242,7 +242,7 @@ function timeout_timer()
         //$(".alert_notification p").html("Active hours will start within <b>5 minutes.</b>");
         //$(".alert_notification").show().delay(7000).fadeOut();
          $.notify({
-            title: '<strong>Wait !</strong>',
+            title: '<strong></strong>',
             message: 'Active hours will start within <b>5 minutes.</b>.'
         },{
             type: 'warning'
@@ -252,7 +252,7 @@ function timeout_timer()
         //$(".alert_notification p").html("Active hours will start within <b>1 minute.</b>");
         //$(".alert_notification").show().delay(7000).fadeOut();
           $.notify({
-            title: '<strong>Wait !</strong>',
+            title: '<strong></strong>',
             message: 'Active hours will start within <b>1 minutes.</b>.'
         },{
             type: 'warning'
@@ -318,6 +318,7 @@ $(document).ready(function () {
              var request = {
                                 type: 'get_latest_message',
                                 to: 'self',
+                                active_chat: 1,
                                 my_id: chat_id
                             };
                                 ws.send(JSON.stringify(request));
@@ -410,9 +411,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-    var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+      var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
       //var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-      //ws = new WebSocket("ws://52.28.165.231:9301"); // server
+      // ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
     ws.onopen = function ()
     {
@@ -568,6 +569,15 @@ if ("WebSocket" in window)
             set_status(obj.user_id, obj.live_status);
         } else if (obj.type == 'get_latest_message') {
             $.each(obj.message, function (index, list) {
+
+                /* Randome strig for genration class */
+                var text = ""
+                 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                 for( var i=0; i < 5; i++ )
+                    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+
+                var noti_class = 'just_now_' + text;
                 var my_msg = '';
                 if (list.is_text == 0) {
                     my_msg = '<a href="uploads/' + list.a_link + '"  target="_BLANK"><img src="' + list.img_link + '" width="50" height="50" /></a>';
@@ -575,11 +585,16 @@ if ("WebSocket" in window)
                     my_msg = list.text;
                 }
                 if (list.to == 1) {
-                    my_msg = '<div class="to"><p>' + my_msg + '</p><div>' + list.cdate + '</div></div>';
+                    my_msg = '<div class="to"><p>' + my_msg + '</p><div><span class="noti_time '+ noti_class +'"></span></div>';
+                    my_msg += '</div>';
+                    
                 } else {
-                    my_msg = '<div class="from"><p>' + my_msg + '</p><div>' + list.cdate + '</div></div>';
+                    my_msg = '<div class="from"><p>' + my_msg + '</p><div><span class="noti_time '+ noti_class +'"></span></div>';
+                    my_msg += '</div>';
+                   
                 }
                 $('.chat[data-id="' + obj.my_id + '"] .chat_text .mCustomScrollBox .mCSB_container').append(my_msg);
+                 $("." + noti_class).timestatus2("" + list.cdate + "",noti_class);
             });
 
 
@@ -1506,6 +1521,13 @@ $(document).on('click', '#mate_list', function () {
     $.cookie('active', $(this).attr('data-id'));
     var str = '';
     var id = $(this).data('id');
+
+    var active_chat = $("#chat_container .chat[data-id='" + id + "']").hasClass('active');
+    if(active_chat == false)
+    {
+      var active_chat = $("#chat_container .chat[data-id='" + id + "']").hasClass('passive');        
+    }
+
     var len = $('.chat_container .chat').length;
     var j = 3;
     var is_needed = true;
@@ -1547,23 +1569,52 @@ $(document).on('click', '#mate_list', function () {
                 .mCustomScrollbar({
                     theme: "minimal-dark"
                 }).delay(300);
-        var request = {
-            type: 'get_latest_message',
-            to: 'self',
-            my_id: id
-        };
-        $('.chat_input').focus();
-        ws.send(JSON.stringify(request));
 
+        if(active_chat == false){
+            var request = {
+                type: 'get_latest_message',
+                to: 'self',
+                my_id: id
+            };
+             $('.chat_input').focus();
+            ws.send(JSON.stringify(request));
+
+        }else
+        {
+            var request = {
+                type: 'get_latest_message',
+                to: 'self',
+                active_chat:active_chat,
+                my_id: id
+            };
+             $('.chat_input').focus();
+            ws.send(JSON.stringify(request));
+        }
+       
     } else {
         $("#chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
         $("#chat_container .chat[data-id='" + id + "'] .chat_input").focus();
-          var request = {
-            type: 'get_latest_message',
-            to: 'self',
-            my_id: id
-        };
-        ws.send(JSON.stringify(request));
+         
+             if(active_chat == false){
+            var request = {
+                type: 'get_latest_message',
+                to: 'self',
+                my_id: id
+            };
+             $('.chat_input').focus();
+            ws.send(JSON.stringify(request));
+
+        }else
+        {
+           var request = {
+                type: 'get_latest_message',
+                to: 'self',
+                active_chat:active_chat,
+                my_id: id
+            };
+             $('.chat_input').focus();
+            ws.send(JSON.stringify(request));
+        }
 
     }
     $(this).children('span').html('');
@@ -1584,7 +1635,7 @@ $(document).on('click', 'button[data-type="post"]', function () {
             to: 'all',
             feed: 'normal',
             tagged_id: $('#tagged-users-id').val(),
-            message: $('#feed_post').val()
+            message: $.trim($('#feed_post').val())
         };
         ws.send(JSON.stringify(request));
         $('#feed_post').val('');
@@ -1601,6 +1652,7 @@ $(document).on('click', 'button[data-type="post"]', function () {
 $(document).on('click', '.btn_green[data-type="save-edited-feed"]', function () {
      var a = $(this).attr("data-id");
      var feed = $('#edit_feed_post[data-feed="' + a + '"]').val();
+     feed = $.trim(feed);
     if ($.trim($('#edit_feed_post').val()) != '') {
         var request = {
             type: 'edit_post',
@@ -1644,6 +1696,9 @@ $(document).on('keypress', '#all_feed .box.feeds .write_comment input[data-type=
 
 /* Generate HTML block of Feed Post. */
 function generate_post(obj, status) {
+
+    $('button[data-type="load_more"]').html('View more');
+
     var cls = '';
     if (obj.my_like != 0) {
         cls = '_0';
@@ -1974,7 +2029,7 @@ function generate_comment(obj, i, k) {
 
 /* load more feeds. */
 $(document).on('click', 'button[data-type="load_more"]', function () {
-    $('button[data-type="load_more"]').prop('disabled', true);
+     $(this).html('<img src="assets/images/spinner.gif">');
     var request = {
         type: 'load_more_feed',
         to: 'self',
@@ -2412,6 +2467,7 @@ $(document).on('click', 'a[data-type="close"]', function () {
     if($('#chat_container .chat[data-id="' + $(this).data('id') + '"]').hasClass('active')){
         $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
         var len = $('#chat_container .chat').length;
+        var id = $(this).data('id');
         j=3;
             
             if(len > 0){
@@ -2424,6 +2480,7 @@ $(document).on('click', 'a[data-type="close"]', function () {
                         $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat active');
                          var request = {
                             type: 'get_latest_message',
+                            active_chat: 1,
                             to: 'self',
                             my_id: id
                         };
@@ -2537,8 +2594,14 @@ $.fn.timestatus = function (msg) {
         }
 
     }
+            var text = ""
+                 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                 for( var i=0; i < 5; i++ )
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+            var id = Date.now();
 
-    var id = Date.now();
+
+        id +=text;
     if($(this).hasClass('just_now')){
     this.removeClass('just_now');
     this.addClass("" + id);
@@ -2610,7 +2673,14 @@ $.fn.timestatus1 = function (msg) {
 
     }
 
+     var text = ""
+                 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                 for( var i=0; i < 5; i++ )
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+
     var id = Date.now();
+        id +=text;
+
     if($(this).hasClass('just_now1')){
     this.removeClass('just_now1');
     this.addClass("" + id);
@@ -2648,6 +2718,82 @@ $.fn.timestatus1 = function (msg) {
 
 };
 
+
+$.fn.timestatus2 = function (msg,ele_class) {
+    //console.log(msg);
+    var x = 0;
+    var check_limit;
+    if(typeof(msg) != "undefined" )
+    {
+        var temp = msg.split(" ");
+        if(temp[1] == "min")
+        {
+          x = x + (temp[0] * 60);
+        }else if(temp[1] == "sec")
+        {
+            x = x + parseInt(temp[0]);
+        }else if(temp[1] == "hours" || temp[1] == "hour")
+        {
+            x = x + (temp[0] * 3600);
+        }
+
+        if(temp[1] != "Now" && temp[1] != "hours" && temp[1] != "hour" && temp[1] != "min" && temp[1] != "sec")
+        {
+            check_limit = true;
+        }
+
+        if(temp[1] == "hours"  && parseInt(temp[0]) > 2)
+        {
+            check_limit = true; 
+        }
+
+    }
+
+                 var text = ""
+                 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                 for( var i=0; i < 5; i++ )
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+
+
+    var id = Date.now();
+    id += text;
+    if($(this).hasClass(ele_class)){
+    this.removeClass(ele_class);
+    this.addClass("" + id);
+    var dis = '';
+    if(!check_limit){
+    setInterval(function () {
+        if (x >= 7200) {
+            dis = '2 hours ago';
+        } else if (x >= 3600 && x < 7200) {
+            dis = '1 hour ago';
+        } else if (x >= 1800 && x < 3600) {
+            dis = '30 min ago';
+        } else if (x >= 900 && x < 1800) {
+            dis = '15 min ago';
+        } else if (x >= 300 && x < 900) {
+            dis = '5 min ago';
+        } else if (x >= 120 && x < 300) {
+            dis = '2 min ago';
+        } else if (x >= 60 && x < 120) {
+            dis = '1 min ago';
+        } else {
+            dis = 'Just Now';
+        }
+        $('.' + id).html(dis);
+        x++;
+    }, 1000, this);}
+    else
+    {   
+         dis = msg;
+         this.removeClass('noti_time');
+         $('.' + id).html(dis); 
+    }
+    }
+
+
+};
 
 $(document).ready(function () {
 
