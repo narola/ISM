@@ -121,7 +121,7 @@
                           <tr>
                               <td class="checkbox_td">
                                 <div class="squaredThree">
-                                    <input type="checkbox" data-name="<?php echo $user['username']; ?>" data-class="<?php echo $user['class_name']; ?>" data-course="<?php echo $user['course_name']; ?>" data-year="<?php echo $user['academic_year']; ?>" value="<?php echo $user['id']; ?>" id="squaredThree_<?php echo $user['id']; ?>" name="users[]"> 
+                                    <input type="checkbox" data-name="<?php echo $user['username']; ?>" data-classid="<?php echo $user['class_id']; ?>" data-class="<?php echo $user['class_name']; ?>" data-course="<?php echo $user['course_name']; ?>" data-year="<?php echo $user['academic_year']; ?>" value="<?php echo $user['id']; ?>" id="squaredThree_<?php echo $user['id']; ?>" name="users[]"> 
                                     <label for="squaredThree_<?php echo $user['id']; ?>"></label>
                                 </div>
                               </td>
@@ -166,6 +166,7 @@
             </div> -->
             <div class="col-sm-12 text-right">
                 <a href="javascript:void(0);" id="upgrade_next" class="btn btn_green" data-toggle="modal" data-target="#year_updradation">Upgrade to next year</a>
+                <a href="javascript:void(0);" id="failed" class="btn btn_red" data-toggle="modal" data-target="#fail_student">Fail student</a>
             </div>
           </div>
 
@@ -176,6 +177,8 @@
         <!--//row table-->
     </div>
     <!--//main-->
+
+    <!-- model for upgrade -->
     <div class="modal fade" id="year_updradation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document" style="width:600px;margin-top:220px;">
             <div class="modal-content">
@@ -213,6 +216,50 @@
             </div>
         </div>
     </div>
+
+
+    <!-- model for fail -->
+    
+     <div class="modal fade" id="fail_student" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:600px;margin-top:220px;">
+            <div class="modal-content">
+                <div class="modal-header notice_header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Failed students</h4>
+                    <small><?php echo date("d F Y",strtotime(date('Y-m-d')));?></small>
+                </div>
+                <div class="modal-body">
+                   
+
+                      <form action="" method="post">
+                        <div class="tabel_view">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table_user">
+                                <thead>
+                                      <tr>
+                                          <th style="width: 240px;">Username</th>
+                                          <th>Class</th>
+                                          <th>Course</th>
+                                          <th>Acadamic year</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                  </tbody>
+                              </table>
+                          </div>
+                    </div>
+                        <button type="submit" class="btn btn_red" data-type="close-studymate" style="float:right;">Fail</button></h4>
+                        <input type="hidden" name="fail" value="yes"/>
+                        <div class="clearfix"></div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 <script type="text/javascript">
     
     // $(document).ready(function(){
@@ -247,6 +294,7 @@
            // $("input:checkbox").prop('checked', $(this).prop("checked"));
     });
 
+    /* Model for the selected student and error messag if not selected any student */
     $("#upgrade_next").click(function(){
       var str;
 
@@ -271,10 +319,37 @@
        $('.modal-content .table_user tbody').html("<tr><td colspan='4'><h3 style='color:red'>Select atleast one user to upgrade next year !</h3></td></tr>");
        $('button[data-type="close-studymate"]').hide();
       }
-       
-    
-
     });
+
+ /* Model for the selected student and error messag if not selected any student for failed student */
+    $("#failed").click(function(){
+      var str;
+
+      var len = $('input[name="users[]"]:checked').length;
+      
+      if(len != 0){
+        
+        $('input[name="users[]"]:checked').each(function(i){
+            str += '<tr>';
+            str += '<input type="hidden" name="user_ids[]" value='+ parseInt($(this).val()) +' >';
+            str += '<input type="hidden" name="ac_years[]" value="'+ $(this).attr("data-year") +'" >';
+            str += '<input type="hidden" name="class_ids[]" value="'+ $(this).attr("data-classid") +'" >';
+            str += '<td>'+ $(this).attr("data-name") +'</td>';
+            str += '<td>'+ $(this).attr("data-class") +'</td>';
+            str += '<td>'+ $(this).attr("data-course") +'</td>';
+            str += '<td>'+ $(this).attr("data-year") +'</td>';
+            str += '</tr>';
+        });
+       $('.modal-content .table_user tbody').html(str);
+       $('button[data-type="close-studymate"]').show();
+      }else
+      {
+       $('.modal-content .table_user tbody').html("<tr><td colspan='4'><h3 style='color:red'>Select atleast one user to procced!</h3></td></tr>");
+       $('button[data-type="close-studymate"]').hide();
+      }
+    });
+
+
 
     function block_user(href,event){
          event.preventDefault();
