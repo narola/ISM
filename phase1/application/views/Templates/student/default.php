@@ -7,7 +7,8 @@ $url = uri_string();
 		<title><?php if (isset($title)) echo $title; ?></title>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1"><title>Login</title>
+		<meta name="viewport" content="initial-scale=1.0,width=device-width,user-scalable=0, minimal-ui" />
+		<title>Login</title>
 		<base href="<?php echo base_url(); ?>" >
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 		<!--custom css-->
@@ -169,7 +170,7 @@ $url = uri_string();
 							$data['current_weekday'] = getdate()['wday'];
 							$v = "student/tutorial";
 							$data['current_weekday'] = 2;
-							if ($data['current_weekday'] >= 3) {
+							if ($data['current_weekday'] <= 3) {
 								$v = "student/exam-instruction";
 							}
 						}

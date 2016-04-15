@@ -4346,3 +4346,10 @@ input.gsc-search-button.gsc-search-button-v2:active{
 .calculator html.widget div.center{
 	min-width:216px !important;
 }
+#image_upload_model .close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+}
+	.main-no-scroll.main2{overflow: hidden;}
+	.exams_wrapper{width: 100%;  margin-left: 0;}

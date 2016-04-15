@@ -487,7 +487,10 @@
 	}
 	.main2{
 		width: 64%;
+
 	}
+	.main-no-scroll.main2{overflow: hidden;}
+	.exams_wrapper{width: 100%;  margin-left: 0;}
 	.sidebar_right_container2{
 		width:22%;
 	}
@@ -550,7 +553,7 @@
 		width:39.9%;
 	}*/
 	.toolkit{
-		right: 21%;
+		right: 22%;
     	/*width: 25%;*/
 	}
 	/*.calculator, .white_board, .explore, .dictionary {
@@ -776,10 +779,13 @@
 	}
 }
 @media (max-width:1024px){
-	img#blah_after{height: 162px;width:180px;}
+	img#blah_after{    height: 100%; width: auto;}
+    .avatar{ height: 180px; width: 180px;}
 	.exams_holder li .result { right: 35px;}
 	ul.exams_holder li a {font-size: 12px;}
 	.stm_item.online p, .stm_item.offline p {font-size: 12px;}
+	.navbar-nav li>.dropdown-menu{min-width: 153px;}
+		.calculator, .white_board, .explore, .dictionary{right: 27%;}
 	
 }
 @media (max-width:980px){
@@ -1240,6 +1246,12 @@
 	}
 	img#blah_after{height: 162px;width:175px;}
 	.discussion{ height: 865px;}
+	.toolkit{right: 24%;}
+	.calculator, .white_board, .explore, .dictionary{border-right:none;right: 29%;}
+	.fixed_comment {   width: 56.8%;}
+	ul.tut_weekdays {  width: 77%;	}
+	.tut_week_heading{    width: 23%;}
+	.admin_question { 	width: 78%;	}
 }
 @media (max-width:767px){
 	.login_background {

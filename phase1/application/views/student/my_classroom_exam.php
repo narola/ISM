@@ -7,7 +7,7 @@
     });
 </script>
 <!--main-->
-<div class="col-sm-7 main main2 mscroll_custom">
+<div class="col-sm-7 main main2 main-no-scroll">
     <!--banner-->
      <div class="exam_banner">
         <div class="col-sm-12 text-center">
@@ -58,7 +58,7 @@
      <!--//filetr-->
      <!--exams-->
      <div  class="">
-        <div class="col-sm-12 exams_wrapper">
+        <div class="col-sm-12 main exams_wrapper mscroll_custom">
             <?php
                 if(isset($my_subject)){
                     foreach ($my_subject as $key => $value) {
