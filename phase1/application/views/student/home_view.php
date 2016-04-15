@@ -43,18 +43,23 @@
 
     /* Change textarea size based on content */
     
-    $(document).on('keyup', '#all_feed .box .feed_text #edit_feed_post', function() {
-
-
+    $(document).on('keyup', '#all_feed .box .feed_text #edit_feed_post', function(e) {
+    		$(this).focus();
     		enteredText = $(this).val();
 			numberOfLineBreaks = (enteredText.match(/\n/g)||[]).length;
     		var a = $(this).attr("data-feed");
     		$(this).css('resize','auto');
     		$(this).css('overflow','hidden');
+    		$(this).css('min-height','100px');
+    		
+    		var scrollHeight = $(this)[0].scrollHeight
     		$(this).animate({
-         			 height: 24 * numberOfLineBreaks
+         			 height: scrollHeight
         		},20);
+    		$(this).focus();
+    		
     	});
+
 
   	/* Edit post activation */
      $(document).on('click', '.edit_post_icon', function(e) {
@@ -276,7 +281,7 @@
 				}
 				?>
 			    </span>
-			    <span class="date noti_time just_now"><?php echo $value['posted_on'] ?></span>
+			    <span class="date noti_time just_now"></span>
 				<script type="text/javascript">
 					 $(".just_now").timestatus('<?php echo $value['posted_on'] ?>');
 				</script>
@@ -421,9 +426,11 @@
 		    			</div>
 		    			<div class="notification_txt">
 		    			    <p><a class="noti_username"  style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>"><?php echo $com['full_name']; ?></a> <?php echo $com['comment']; ?></p>
-
-		    			    <span class="noti_time"><?php echo get_time_format($com['created_date']); ?></span>   
-		    			
+  
+		    				<span class="noti_time just_now"></span>
+								<script type="text/javascript">
+									 $(".just_now").timestatus('<?php echo get_time_format($com['created_date']); ?>');
+								</script>
 		    			</div>
 		    			<div class="clearfix"></div>
 		    			

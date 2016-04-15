@@ -34,8 +34,7 @@ class Upgrade extends CI_Controller {
 		
 
 		/* Update user curent year to next year */
-		
-		if(!empty($_POST['user_ids']))
+		if(!empty($_POST['user_ids']) && empty($_POST['fail']) )
 		{
 			$i = 0;
 			foreach ($_POST['user_ids'] as  $value) {
@@ -57,7 +56,31 @@ class Upgrade extends CI_Controller {
 				update(TBL_STUDENT_ACADEMIC_INFO,$ids,$data);
 				update(TBL_STUDENT_ACADEMIC_DET,$ids,$data);
 			}
+		}
+
+		if(!empty($_POST['user_ids']) && !empty($_POST['fail']))
+		{
+			$i = 0;
+			foreach ($_POST['user_ids'] as  $value) {
+				$ids = array(
+					'user_id'=>$value);
+
+				$data=array(
+				 "user_id"=>$value,				
+				 "classroom_id"=>$_POST['class_ids'][$i],
+				 "academic_year"=>$_POST['ac_years'][$i],
+				 "failed_count"=>1,
+				 "created_date"=>date('Y-m-d H:i:s'),
+				 "modified_date"=>date('Y-m-d H:i:s'),
+				 "is_delete"=>0				 				
+				);
 			
+			insert('failed_student',replace_invalid_chars($data));
+			$data1 = array(
+					'failed_ever' => "yes");
+			update(TBL_STUDENT_ACADEMIC_INFO,$ids,$data1);
+			$i++;
+			}
 			
 		}
 
@@ -65,7 +88,7 @@ class Upgrade extends CI_Controller {
 		$this->data['page_title'] = 'Year upgradation';
 		$order = '';
 		$where['where'][TBL_USERS.'.is_delete']=FALSE;
-
+		$where['where'][TBL_STUDENT_ACADEMIC_INFO.'.failed_ever'] = "No";
 		if(!empty($_GET['role']) || !empty($_GET['course']) || !empty($_GET['school']) || 
 			!empty($_GET['classroom']) || !empty($_GET['q']) || !empty($_GET['order']) ){
 			
@@ -146,7 +169,7 @@ class Upgrade extends CI_Controller {
 		$this->data['all_users'] =   select(TBL_USERS,
 											TBL_USERS.'.id,'.TBL_USERS.'.user_status,'.TBL_USERS.'.username,'.TBL_CITIES.'.city_name,'.TBL_STATES.'.state_name,
 											'.TBL_USERS.'.role_id,'.TBL_ROLES.'.role_name,'.TBL_STUDENT_ACADEMIC_INFO.'.course_id,'.TBL_COURSES.'.course_name,
-											'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link,,'.TBL_STUDENT_ACADEMIC_INFO.'.academic_year,'.TBL_USERS.'.profile_pic',
+											'.TBL_CLASSROOMS.'.class_name,'.TBL_CLASSROOMS.'.id as class_id,'.TBL_USER_PROFILE_PICTURE.'.profile_link,,'.TBL_STUDENT_ACADEMIC_INFO.'.academic_year,'.TBL_USERS.'.profile_pic',
 											$where,
 											array(
 												'order_by'=>$order,
