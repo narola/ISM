@@ -1745,6 +1745,7 @@ ul.tut_weekdays {
 .me .admin_question p{
 	text-align:right;
 	background-color:#d0f2ec;
+
 }
 .admin_question p:before{
 	content:"";
@@ -1785,6 +1786,9 @@ ul.tut_weekdays {
 	left:auto;
     top: 11px;
     right: -10px;
+}
+.me .admin_question{
+	float: right;
 }
 .discussion .col-sm-12{
 	margin-top:15px;
@@ -2844,6 +2848,7 @@ ul.tut_weekdays {
     bottom: 40px;
     z-index: 1;
     width: 100%;
+    left:0;
 }
 .option_bar input[type="file"] {
     opacity: 0;

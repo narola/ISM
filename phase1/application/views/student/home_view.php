@@ -44,7 +44,7 @@
     /* Change textarea size based on content */
     
     $(document).on('keyup', '#all_feed .box .feed_text #edit_feed_post', function(e) {
-    		$(this).focus();
+    		//$(this).focus();
     		enteredText = $(this).val();
 			numberOfLineBreaks = (enteredText.match(/\n/g)||[]).length;
     		var a = $(this).attr("data-feed");
@@ -52,13 +52,17 @@
     		$(this).css('overflow','hidden');
     		$(this).css('min-height','100px');
     		
-    		var scrollHeight = $(this)[0].scrollHeight
+    		 $(this).css('height', 'auto' );
+    		 $(this).height( this.scrollHeight );
+
     		$(this).animate({
          			 height: scrollHeight
         		},20);
-    		$(this).focus();
+    		
     		
     	});
+
+    $('#all_feed .box .feed_text #edit_feed_post').find( 'textarea' ).keydown();
 
 
   	/* Edit post activation */
