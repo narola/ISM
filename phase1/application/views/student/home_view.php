@@ -159,10 +159,13 @@
    
     
     $('#element').popover('show');
+    //$('#element').popover1('show');
 
 
     $(document).on('click', '[data-toggle="popover1"]', function() {
-	$('[data-toggle="popover1"]').popover('show');
+	//$('[data-toggle="popover1"]').popover('show');
+	var d_id = $(this).data("id");
+	$('[data-id="'+d_id+'"]').popover('show');
     });
 
     $(document).on('click', '[data-toggle="popover2"]', function() {

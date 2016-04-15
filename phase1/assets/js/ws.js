@@ -963,7 +963,7 @@ if ("WebSocket" in window)
                         l = parseInt(len) - parseInt(1);
                         if (j == l) {
                             str += 'and <label class="label label_name">';
-                            str += '<a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover1" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
+                            str += '<a href="javascript:void(0);" data-html="true" data-trigger="focus" data-id="'+ obj.fid +'"" data-placement="bottom" data-toggle="popover1" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
                             str += '</label>';
                         }
                         ids += ',' + list.id;
