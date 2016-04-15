@@ -646,7 +646,8 @@ class Dashboard extends ADMIN_Controller {
 	    				'table'=>TBL_CLASSROOMS,
 	    				'condition'=>TBL_REQUEST_CREDENTIALS.'.classroom_id='.TBL_CLASSROOMS.'.id'	
 	    				)			
-		    		)
+		    		),
+				'order_by'=>TBL_REQUEST_CREDENTIALS.'.id desc'	
 				)
     		);
     	if(empty($school_grade) || !$_POST){

@@ -8,20 +8,7 @@
                   <li><a style="text-decoration: none;">Request Credentials</a></li>
                 </ol>
         
-                <div class="form-group search_input col-sm-offset-3 col-sm-3 no-padding">
-                    <input type="text" name="q" id="q" class="form-control" placeholder="Type Name." >
-                    
-
-                    <?php if(!empty($_GET['q'])) { ?>
-                        <a onclick="filter_data_reverse()" style="cursor:pointer">X</a>
-                    <?php }else { ?>
-                        <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
-                    <?php } ?>
-                    
-                    
-                    <!-- <a class="icon_clear" onclick="filter_data()" style="cursor:pointer"></a> -->
-
-                </div>
+                
             </div>
         </div>
         <!--//breadcrumb-->
