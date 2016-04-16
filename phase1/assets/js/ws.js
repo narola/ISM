@@ -520,11 +520,11 @@ if ("WebSocket" in window)
             }
             $('.just_now').timestatus();
           
-              // setTimeout(function(){
-              //  // $(".chat_input").focus();
-              //   $('.chat_text').mCustomScrollbar('update');
-              //   $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
-              //  }, 300); 
+              setTimeout(function(){
+               // $(".chat_input").focus();
+                $('.chat_text').mCustomScrollbar('update');
+                $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+               }, 300); 
 
         }else if (obj.type == 'chat_type') {
             
@@ -605,12 +605,12 @@ if ("WebSocket" in window)
             });
 
 
-          //     setTimeout(function(){
-          //      // $(".chat_input").focus();
-          //       $('.chat_text').mCustomScrollbar('update');
-          //       $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+              setTimeout(function(){
+               // $(".chat_input").focus();
+                $('.chat_text').mCustomScrollbar('update');
+                $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
 
-          // }, 300);
+          }, 300);
 
         } else if (obj.type == 'post') {
             if (obj.id != wp) {
