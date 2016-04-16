@@ -561,10 +561,18 @@ $(document).ready(function() {
 		}
 	});
 	$('#calc_tab').click(function() {
-		$(this).addClass('active');
-		$('#white_board_tab, #explore_tab, #dictionary_tab').removeClass();
-		$('.calculator').css('display', 'block');
-		$('.white_board, .explore, .dictionary').css('display', 'none');
+		
+		if($(this).hasClass('active'))
+		{
+			$(this).removeClass('active');
+			$('#accordian_calc').css('display', 'none');
+		}else
+		{
+			$(this).addClass('active');
+			$('#white_board_tab, #explore_tab, #dictionary_tab').removeClass();
+			$('.calculator').css('display', 'block');
+			$('.white_board, .explore, .dictionary').css('display', 'none');
+		}
 	});
 	$('#white_board_tab').click(function() {
 		$(this).addClass('active');
