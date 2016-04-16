@@ -412,7 +412,7 @@ if ("WebSocket" in window)
 {
 
     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+    //var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
     //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
@@ -426,18 +426,8 @@ if ("WebSocket" in window)
         var obj = $.parseJSON(evt.data);
         
         if (obj.error != 'skip') {
-
-             $.notify({
-                title: '<strong></strong>',
-                    message: '<b>' + obj.error +'</b>.'
-                },{
-                    type: 'warning'
-                });
-
-            // $(".alert_notification p").html(obj.error);
-            // $(".alert_notification").show().delay(7000).fadeOut();
-
-
+            $(".alert_notification p").html(obj.error);
+            $(".alert_notification").show().delay(7000).fadeOut();
         }
 
         if (obj.reload == 'yes') {
@@ -520,11 +510,11 @@ if ("WebSocket" in window)
             }
             $('.just_now').timestatus();
           
-              // setTimeout(function(){
-              //  // $(".chat_input").focus();
-              //   $('.chat_text').mCustomScrollbar('update');
-              //   $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
-              //  }, 300); 
+              setTimeout(function(){
+               // $(".chat_input").focus();
+                $('.chat_text').mCustomScrollbar('update');
+                $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+               }, 300); 
 
         }else if (obj.type == 'chat_type') {
             
@@ -577,14 +567,15 @@ if ("WebSocket" in window)
             set_status(obj.user_id, obj.live_status);
         } else if (obj.type == 'get_latest_message') {
             $.each(obj.message, function (index, list) {
+
                 /* Randome strig for genration class */
-                var text1 = ""
+                var text = ""
                  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
                  for( var i=0; i < 5; i++ )
-                    text1 += possible.charAt(Math.floor(Math.random() * possible.length));
+                    text += possible.charAt(Math.floor(Math.random() * possible.length));
 
 
-                var noti_class = 'just_now_' + text1;
+                var noti_class = 'just_now_' + text;
                 var my_msg = '';
                 if (list.is_text == 0) {
                     my_msg = '<a href="uploads/' + list.a_link + '"  target="_BLANK"><img src="' + list.img_link + '" width="50" height="50" /></a>';
@@ -605,12 +596,11 @@ if ("WebSocket" in window)
             });
 
 
-          //     setTimeout(function(){
-          //      // $(".chat_input").focus();
-          //       $('.chat_text').mCustomScrollbar('update');
-          //       $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
-
-          // }, 300);
+              setTimeout(function(){
+               // $(".chat_input").focus();
+                $('.chat_text').mCustomScrollbar('update');
+                $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+          }, 300);
 
         } else if (obj.type == 'post') {
             if (obj.id != wp) {
@@ -963,7 +953,7 @@ if ("WebSocket" in window)
                         l = parseInt(len) - parseInt(1);
                         if (j == l) {
                             str += 'and <label class="label label_name">';
-                            str += '<a href="javascript:void(0);" data-html="true" data-trigger="focus" data-id="'+ obj.fid +'"" data-placement="bottom" data-toggle="popover1" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
+                            str += '<a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-id="'+ obj.fid +'" data-toggle="popover1" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
                             str += '</label>';
                         }
                         ids += ',' + list.id;
@@ -1266,7 +1256,7 @@ if ("WebSocket" in window)
                     str += '</div>';
                     p++;
                 });
-                $('a[data-type="load-activity-more"]').html('View More');
+                $('a[data-type="load-activity-more"]').html('load more');
                 $('div[data-type="activity-main"] div[data-type="activity-sub-main"] div[data-type="activity"] div[data-type="activity-body"] div[data-type="activity-sub-body"]').append(str);
                 $('a[data-type="load-activity-more"]').attr('data-month', obj.new_month);
             }
@@ -1626,7 +1616,6 @@ $(document).on('click', '#mate_list', function () {
 
     }
     $(this).children('span').html('');
-
     setTimeout(function(){
        // $(".chat_input").focus();
         $('.chat_text').mCustomScrollbar('update');
@@ -1706,7 +1695,7 @@ $(document).on('keypress', '#all_feed .box.feeds .write_comment input[data-type=
 /* Generate HTML block of Feed Post. */
 function generate_post(obj, status) {
 
-    $('button[data-type="load_more"]').html('load more');
+    $('button[data-type="load_more"]').html('View more');
 
     var cls = '';
     if (obj.my_like != 0) {
