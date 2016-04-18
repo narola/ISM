@@ -45,19 +45,23 @@
                        <!-- <a href="#" class="icon icon_expand"></a> -->
 
                     </div>
+                    <?php if(!empty($current_topic)){ ?>
                     <div class="col-sm-1 col-md-1 notice_content">
     
                         <a class="help_tutorial" data-toggle="popover" data-placement="bottom" data-html="true" title="Sub Topics" data-content="<p>General Views</p><hr class='hr_topic'><p>Definitions</p><hr class='hr_topic'><p>Mechanisms</p><hr class='hr_topic'><p>Applications</p><hr class='hr_topic'><p>Importance</p>"><i aria-hidden="true" class="fa fa-question-circle"></i></a>
                         
                         <a href="javascript:void(0);" id="expand_topic" class="fa fa-angle-double-down"></a>                            
                     </div>
+                    <?php } ?>
                 </div>
+                <?php if(!empty($current_topic)){ ?>
                 <div class="top_question">
                 	<div class="col-sm-12">
+        
                     	<div class="mate_user_img">
                             <?php 
-                            $topic_img  =  UPLOAD_URL.'/'.$current_topic['profile_link'];
-                                if($current_topic['profile_link'] == ''){
+                            $topic_img  =  (!empty($current_topic && $current_topic['profile_link'] != '')) ? UPLOAD_URL.'/'.$current_topic['profile_link'] : '';
+                                if($topic_img == ''){
                                     $topic_img = 'assets/images/avatar.png';
                                 }
                             ?>
@@ -72,6 +76,7 @@
                         <?php } ?>
                     </div>
                 </div>
+                <?php } ?>
             </div>
                 <div class="discussion" data-mcs-theme="minimal-dark">
                     <div id="inner_x">

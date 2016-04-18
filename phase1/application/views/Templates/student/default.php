@@ -169,7 +169,7 @@ $url = uri_string();
 						if($this->session->userdata('is_completed')==1){
 							$data['current_weekday'] = getdate()['wday'];
 							$v = "student/tutorial";
-							$data['current_weekday'] = 2;
+							// $data['current_weekday'] = 2;
 							if ($data['current_weekday'] <= 3) {
 								$v = "student/exam-instruction";
 							}

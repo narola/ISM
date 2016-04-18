@@ -412,8 +412,8 @@ if ("WebSocket" in window)
 {
 
     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    //var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-    //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+    // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -2071,38 +2071,48 @@ $(document).on('keypress', 'textarea[data-type="discussion"]', function () {
 
 /* Generate html block of group disscussion  comment */
 function generate_cm(obj) {
-    var cl_me = "";
-    if (wp == obj.id)
-        cl_me = "me";
-    var pclass="";
-    if(obj.in_active==1){
-        pclass='class="active"';
-    }
-    str = "";
-    str += '<div class="col-sm-12 ' + cl_me + '" data-id="' + obj.disscusion_id + '">';
-    str += '<div class="mate_user_img">';
-    str += '<img src="/uploads/' + obj.profile_link + '">';
-    str += '</div>';
-    str += '<div class="admin_question">';
-    str += '<h4>' + obj.full_name + '<span>' + obj.cdate + '</span></h4>';
-    str += '<p '+ pclass +'>' + obj.message + '</p>';
-    str += '</div>';
-    str += '</div>';
-    if (obj.active_count != 'skip') {
-        $('#active_comment_count').html(obj.active_count);
-    }
+    console.log('obj', obj);
+    if(obj.error != 'skip'){
+        $.notify({
+            title: '<strong></strong>',
+            message: '<b>'+obj.error+'</b>.'
+        },{
+            type: 'warning'
+        });
+    }else{
+        var cl_me = "";
+        if (wp == obj.id)
+            cl_me = "me";
+        var pclass="";
+        if(obj.in_active==1){
+            pclass='class="active"';
+        }
+        str = "";
+        str += '<div class="col-sm-12 ' + cl_me + '" data-id="' + obj.disscusion_id + '">';
+        str += '<div class="mate_user_img">';
+        str += '<img src="uploads/' + obj.profile_link + '">';
+        str += '</div>';
+        str += '<div class="admin_question">';
+        str += '<h4>' + obj.full_name + '<span>' + obj.cdate + '</span></h4>';
+        str += '<p '+ pclass +'>' + obj.message + '</p>';
+        str += '</div>';
+        str += '</div>';
+        if (obj.active_count != 'skip') {
+            $('#active_comment_count').html(obj.active_count);
+        }
 
-    if (obj.group_score != 'skip') {
-        $('#group_score_count').html(obj.group_score);
-    }
+        if (obj.group_score != 'skip') {
+            $('#group_score_count').html(obj.group_score);
+        }
 
-    if (obj.my_score != 'skip') {
-        $('#my_score_count').html(obj.my_score);
-    }
+        if (obj.my_score != 'skip') {
+            $('#my_score_count').html(obj.my_score);
+        }
 
-    $('textarea[data-type="discussion"]').val('');
-    $('.discussion #inner_x').append(str);
-    $('.discussion #inner_x div[data-id="' + obj.disscusion_id + '"]').fadeOut(0).fadeIn(400);
+        $('textarea[data-type="discussion"]').val('');
+        $('.discussion #inner_x').append(str);
+        $('.discussion #inner_x div[data-id="' + obj.disscusion_id + '"]').fadeOut(0).fadeIn(400);
+    }
 }
 
 

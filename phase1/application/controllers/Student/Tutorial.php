@@ -28,7 +28,7 @@ class Tutorial extends ISM_Controller {
 		}
 		// Get Current week no.
 		$data['current_weekday'] = getdate()['wday'];
-		$data['current_weekday']=2;
+		// $data['current_weekday']=2;
 		if($data['current_weekday'] >= 4){
 			redirect('student/exam-instruction');
 			exit;
@@ -238,7 +238,7 @@ class Tutorial extends ISM_Controller {
 		$date = new DateTime(date("Y-m-d H:i:s"));
 		$c_week = $date->format("W");
 		$year = date("Y");
-		$data['current_weekday'] = 2;
+		// $data['current_weekday'] = 2;
 		// Check week day is thursday, friday or saturday
 		if($data['current_weekday'] <= 3){
 			redirect('student/tutorial');
