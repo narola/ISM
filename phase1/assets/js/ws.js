@@ -413,7 +413,8 @@ if ("WebSocket" in window)
 
     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
     // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-     //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+
 
 
     ws.onopen = function ()
@@ -2075,9 +2076,15 @@ $(document).on('keypress', 'textarea[data-type="discussion"]', function () {
 
 /* Generate html block of group disscussion  comment */
 function generate_cm(obj) {
-    // console.log('obj', obj);
+
     if(obj.error != 'skip'){
-        return false;
+        $.notify({
+            title: '<strong></strong>',
+            message: '<b>'+obj.error+'</b>.'
+        },{
+            type: 'warning'
+        });
+
     }else{
         var cl_me = "";
         if (wp == obj.id)
