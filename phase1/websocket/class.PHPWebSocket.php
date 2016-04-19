@@ -1021,7 +1021,7 @@ class PHPWebSocket {
 		. "ORDER BY `uc`.`id` DESC LIMIT 10) temp"
 		. " ORDER BY temp.`id` ASC";
 
-	if($data['active_chat'])
+	if(!empty($data['active_chat']))
 	{
 		 $query = "SELECT `temp`.`id`, `temp`.`sender_id`, `temp`.`receiver_id`, `temp`.`message`,`temp`.`media_link`,`temp`.`media_type`,`temp`.`created_date` FROM( "
 	    . "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message`,`uc`.`media_link`,`uc`.`media_type`,`uc`.`created_date` "
@@ -1082,7 +1082,6 @@ class PHPWebSocket {
 	    $html[] = $in_h;
 	}
 	$data['message'] = $html;
-	
 	return $data;
     }
 

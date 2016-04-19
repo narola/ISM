@@ -412,8 +412,8 @@ if ("WebSocket" in window)
 {
 
     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    //var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-    //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+    // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+     //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -426,8 +426,14 @@ if ("WebSocket" in window)
         var obj = $.parseJSON(evt.data);
         
         if (obj.error != 'skip') {
-            $(".alert_notification p").html(obj.error);
-            $(".alert_notification").show().delay(7000).fadeOut();
+            $.notify({
+            title: '<strong></strong>',
+            message: '<b>'+obj.error+'</b>.'
+        },{
+            type: 'warning'
+        });
+            // $(".alert_notification p").html(obj.error);
+            // $(".alert_notification").show().delay(7000).fadeOut();
         }
 
         if (obj.reload == 'yes') {
@@ -481,6 +487,10 @@ if ("WebSocket" in window)
             
             if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
                 myfunction(obj.from);
+                 setTimeout(function(){
+                    $('.chat_text').mCustomScrollbar('update');
+                    $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+                 }, 300);
               
                 var ac = $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="' + obj.from + '"]');
                 $('.stm_list .mCustomScrollBox .mCSB_container').prepend('<div class="' + ac.attr('class') + '" data-id="' + obj.from + '">' + ac.remove().html() + '</div>');
@@ -503,18 +513,14 @@ if ("WebSocket" in window)
                 }
                 
             }
-            if (wp != obj.from) {
+            if (wp != obj.from && !c) {
                 if($(".chat_text").is(":visible")){
                     $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
                 }
             }
             $('.just_now').timestatus();
           
-              setTimeout(function(){
-               // $(".chat_input").focus();
-                $('.chat_text').mCustomScrollbar('update');
-                $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
-               }, 300); 
+             
 
         }else if (obj.type == 'chat_type') {
             
@@ -595,12 +601,6 @@ if ("WebSocket" in window)
                  $("." + noti_class).timestatus2("" + list.cdate + "",noti_class);
             });
 
-
-              setTimeout(function(){
-               // $(".chat_input").focus();
-                $('.chat_text').mCustomScrollbar('update');
-                $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
-          }, 300);
 
         } else if (obj.type == 'post') {
             if (obj.id != wp) {
@@ -1256,7 +1256,7 @@ if ("WebSocket" in window)
                     str += '</div>';
                     p++;
                 });
-                $('a[data-type="load-activity-more"]').html('load more');
+                $('a[data-type="load-activity-more"]').html('Load More');
                 $('div[data-type="activity-main"] div[data-type="activity-sub-main"] div[data-type="activity"] div[data-type="activity-body"] div[data-type="activity-sub-body"]').append(str);
                 $('a[data-type="load-activity-more"]').attr('data-month', obj.new_month);
             }
@@ -1366,25 +1366,26 @@ function myfunction(from){
             str += '<a href="#" class="icon icon_pin"></a>';
             str += '<input type="file" id="chat_file_share" class="chat_pin" data-type="single_chat_file" data-id="16">';
             str += '</div>';
-
             $('#chat_container').append(str);
             $("#chat_container .chat[data-id='" + id + "'] .chat_text")
                 .mCustomScrollbar({
                     theme: "minimal-dark"
                 }).delay(300);
+
+
         var request = {
             type: 'get_latest_message',
             to: 'self',
             my_id: id
         };
-        ws.send(JSON.stringify(request));
+        //ws.send(JSON.stringify(request));
 
         $(".chat_"+j+" .chat_header").addClass("blinking");
         $(".chat_header").removeClass("blink");
         blink(".blinking", 'chat_'+j, 2000);
         // blink(".chat_"+j+" .chat_header", 'chat_'+j, 1000);
 
-        ws.send(JSON.stringify(request));
+         ws.send(JSON.stringify(request));
         }
         
         
@@ -1588,6 +1589,9 @@ $(document).on('click', '#mate_list', function () {
              $('.chat_input').focus();
             ws.send(JSON.stringify(request));
         }
+
+
+        
        
     } else {
         $("#chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
@@ -1695,7 +1699,7 @@ $(document).on('keypress', '#all_feed .box.feeds .write_comment input[data-type=
 /* Generate HTML block of Feed Post. */
 function generate_post(obj, status) {
 
-    $('button[data-type="load_more"]').html('View more');
+    $('button[data-type="load_more"]').html('Load More');
 
     var cls = '';
     if (obj.my_like != 0) {
@@ -2071,38 +2075,43 @@ $(document).on('keypress', 'textarea[data-type="discussion"]', function () {
 
 /* Generate html block of group disscussion  comment */
 function generate_cm(obj) {
-    var cl_me = "";
-    if (wp == obj.id)
-        cl_me = "me";
-    var pclass="";
-    if(obj.in_active==1){
-        pclass='class="active"';
-    }
-    str = "";
-    str += '<div class="col-sm-12 ' + cl_me + '" data-id="' + obj.disscusion_id + '">';
-    str += '<div class="mate_user_img">';
-    str += '<img src="/uploads/' + obj.profile_link + '">';
-    str += '</div>';
-    str += '<div class="admin_question">';
-    str += '<h4>' + obj.full_name + '<span>' + obj.cdate + '</span></h4>';
-    str += '<p '+ pclass +'>' + obj.message + '</p>';
-    str += '</div>';
-    str += '</div>';
-    if (obj.active_count != 'skip') {
-        $('#active_comment_count').html(obj.active_count);
-    }
+    // console.log('obj', obj);
+    if(obj.error != 'skip'){
+        return false;
+    }else{
+        var cl_me = "";
+        if (wp == obj.id)
+            cl_me = "me";
+        var pclass="";
+        if(obj.in_active==1){
+            pclass='class="active"';
+        }
+        str = "";
+        str += '<div class="col-sm-12 ' + cl_me + '" data-id="' + obj.disscusion_id + '">';
+        str += '<div class="mate_user_img">';
+        str += '<img src="uploads/' + obj.profile_link + '">';
+        str += '</div>';
+        str += '<div class="admin_question">';
+        str += '<h4>' + obj.full_name + '<span>' + obj.cdate + '</span></h4>';
+        str += '<p '+ pclass +'>' + obj.message + '</p>';
+        str += '</div>';
+        str += '</div>';
+        if (obj.active_count != 'skip') {
+            $('#active_comment_count').html(obj.active_count);
+        }
 
-    if (obj.group_score != 'skip') {
-        $('#group_score_count').html(obj.group_score);
-    }
+        if (obj.group_score != 'skip') {
+            $('#group_score_count').html(obj.group_score);
+        }
 
-    if (obj.my_score != 'skip') {
-        $('#my_score_count').html(obj.my_score);
-    }
+        if (obj.my_score != 'skip') {
+            $('#my_score_count').html(obj.my_score);
+        }
 
-    $('textarea[data-type="discussion"]').val('');
-    $('.discussion #inner_x').append(str);
-    $('.discussion #inner_x div[data-id="' + obj.disscusion_id + '"]').fadeOut(0).fadeIn(400);
+        $('textarea[data-type="discussion"]').val('');
+        $('.discussion #inner_x').append(str);
+        $('.discussion #inner_x div[data-id="' + obj.disscusion_id + '"]').fadeOut(0).fadeIn(400);
+    }
 }
 
 

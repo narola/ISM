@@ -332,8 +332,7 @@
                 <div class="clearfix"></div>
                 <div class="text-center" data-type="no-more">
                     <input type="hidden" name="load_more" value="<?php echo isset($value)?$value:'';?>"> 
-                    <a style="color:white" href="javascript:void(0);" data-month="<?php echo isset($new_my_month)?$new_my_month:'';?>" class="btn btn_green no-margin" data-type="load-activity-more">Load more</a>
-                </div>
+ <a style="color:white; padding: 3px 9px; font-weight: 500;  font-size: 12px;" href="javascript:void(0);" data-month="<?php echo isset($new_my_month)?$new_my_month:'';?>" class="btn btn_green no-margin" data-type="load-activity-more">Load More</a>                </div>
             </div>
         </div>
 	</div>
