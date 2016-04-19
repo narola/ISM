@@ -3769,6 +3769,19 @@ ul.ques_numbers {
     left: 48%;
     z-index:999;
 }
+
+.upload_loader_chat{
+	display: none;
+	background-image: url(../images/spinner.gif);
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    top: 50%;
+    background-repeat: no-repeat;
+    left: 48%;
+    z-index:999;
+}
+
 .label_name_default{
 	background-color: rgba(0,0,0,0.05);
     font-weight: 500;
@@ -4351,5 +4364,16 @@ input.gsc-search-button.gsc-search-button-v2:active{
     right: 15px;
     top: 10px;
 }
-	.main-no-scroll.main2{overflow: hidden;}
-	.exams_wrapper{width: 100%;  margin-left: 0;}
+.main-no-scroll.main2{overflow: hidden;}
+.exams_wrapper{width: 100%;  margin-left: 0;}
+
+.help_tutorial{
+ 	color: #666;
+    cursor: pointer;
+    font-size: 21px;
+    right: 40px;
+}
+.hr_topic{
+	margin-bottom: 0px;
+	margin-top: 0px;
+}

@@ -28,7 +28,7 @@ class Tutorial extends ISM_Controller {
 		}
 		// Get Current week no.
 		$data['current_weekday'] = getdate()['wday'];
-		$data['current_weekday']=2;
+		// $data['current_weekday']=2;
 		if($data['current_weekday'] >= 4){
 			redirect('student/exam-instruction');
 			exit;
@@ -40,7 +40,7 @@ class Tutorial extends ISM_Controller {
 		$last_week = $c_week - 1;
 		// echo '<br/>last week<br/>';
 		// p($last_week);
-		
+		$data['current_topic'] = array();
 		$year = date("Y");
 		$if_allocated = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION, 'id', array('where'=>array('group_id'=>$this->session->userdata('user')['group_id'], 'week_no'=>$c_week,'YEAR(`created_date`)' => $year )), array('count'=>true));
 		// echo '<br/>if_allocated <br/>';
@@ -49,6 +49,42 @@ class Tutorial extends ISM_Controller {
 		if($if_allocated == 0){
 				$c_week = $last_week;
 			$data['if_allocated'] = 0;
+		}else{
+			$data['current_topic'] = select(
+			TBL_TUTORIAL_TOPIC.' t',
+			't.id,
+			t.topic_name,
+			t.topic_description,
+			t.created_date,
+			tg.group_status,
+			ta.week_no,
+			up.profile_link,
+			u.full_name',
+			array('where' => array('ta.group_id' => $this->session->userdata('user')['group_id'],'YEAR(`ta`.`created_date`)' => $year),
+				'where_in'=> array('ta.week_no' => $c_week )
+				),
+			array('join' => array(
+				array(
+					'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' ta',
+					'condition' => 'ta.topic_id = t.id'
+					),
+				array(
+					'table' => TBL_TUTORIAL_GROUPS.' tg',
+					'condition' => 'tg.id = ta.group_id'
+					),
+				array(
+					'table' => TBL_USERS.' u',
+					'condition' => 'u.id = t.created_by'
+					),
+				array(
+					'table' => TBL_USER_PROFILE_PICTURE.' up',
+					'condition' => 'up.user_id = u.id'
+					)
+				),
+			'single'=>true
+			));
+
+			// p($data['current_topic'], true);
 		}
 		$cnt = 0; $arr = array();
 		for($i=$c_week;$i>0;$i--){
@@ -71,6 +107,7 @@ class Tutorial extends ISM_Controller {
 			t.created_date,
 			tg.group_status,
 			ts.score as my_score,
+			ta.week_no,
 			(SELECT SUM(group_score) FROM '.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' WHERE group_id = tm.group_id) as group_score,
 			up.profile_link,
 			u.full_name',
@@ -107,7 +144,7 @@ class Tutorial extends ISM_Controller {
 			)
 		);
 		// echo '<br/>topic<br/>';
-	// p($data['topic']);
+	// p($data['topic'], true);
 	$ids = array_column($data['topic'], 'id');
 	if(empty($data['topic'])){
 		$this->session->set_flashdata('error','Topic is not allocated yet.');
@@ -201,7 +238,7 @@ class Tutorial extends ISM_Controller {
 		$date = new DateTime(date("Y-m-d H:i:s"));
 		$c_week = $date->format("W");
 		$year = date("Y");
-		$data['current_weekday'] = 2;
+		// $data['current_weekday'] = 2;
 		// Check week day is thursday, friday or saturday
 		if($data['current_weekday'] <= 3){
 			redirect('student/tutorial');
@@ -271,7 +308,7 @@ class Tutorial extends ISM_Controller {
 	return $data;
 	}
 	/**
-			*	Attempt exam (Exam instruction).
+	*	Attempt exam (Exam instruction).
 	*   @autor Sandip Gopani
 	*/
 	public function exam(){

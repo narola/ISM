@@ -411,10 +411,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-    var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+   var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
     // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
-
+    //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -488,10 +487,6 @@ if ("WebSocket" in window)
             
             if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
                 myfunction(obj.from);
-                 setTimeout(function(){
-                    $('.chat_text').mCustomScrollbar('update');
-                    $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
-                 }, 300);
               
                 var ac = $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="' + obj.from + '"]');
                 $('.stm_list .mCustomScrollBox .mCSB_container').prepend('<div class="' + ac.attr('class') + '" data-id="' + obj.from + '">' + ac.remove().html() + '</div>');
@@ -514,14 +509,18 @@ if ("WebSocket" in window)
                 }
                 
             }
-            if (wp != obj.from && !c) {
+            if (wp != obj.from) {
                 if($(".chat_text").is(":visible")){
                     $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
                 }
             }
             $('.just_now').timestatus();
-          
-             
+               
+              setTimeout(function(){
+               // $(".chat_input").focus();
+                $('.chat_text').mCustomScrollbar('update');
+                $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+               }, 1100); 
 
         }else if (obj.type == 'chat_type') {
             
@@ -602,6 +601,12 @@ if ("WebSocket" in window)
                  $("." + noti_class).timestatus2("" + list.cdate + "",noti_class);
             });
 
+           
+              setTimeout(function(){
+               // $(".chat_input").focus();
+                $('.chat_text').mCustomScrollbar('update');
+                $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
+          }, 1100);
 
         } else if (obj.type == 'post') {
             if (obj.id != wp) {
@@ -1367,26 +1372,25 @@ function myfunction(from){
             str += '<a href="#" class="icon icon_pin"></a>';
             str += '<input type="file" id="chat_file_share" class="chat_pin" data-type="single_chat_file" data-id="16">';
             str += '</div>';
+
             $('#chat_container').append(str);
             $("#chat_container .chat[data-id='" + id + "'] .chat_text")
                 .mCustomScrollbar({
                     theme: "minimal-dark"
                 }).delay(300);
-
-
         var request = {
             type: 'get_latest_message',
             to: 'self',
             my_id: id
         };
-        //ws.send(JSON.stringify(request));
+        ws.send(JSON.stringify(request));
 
         $(".chat_"+j+" .chat_header").addClass("blinking");
         $(".chat_header").removeClass("blink");
         blink(".blinking", 'chat_'+j, 2000);
         // blink(".chat_"+j+" .chat_header", 'chat_'+j, 1000);
 
-         ws.send(JSON.stringify(request));
+        ws.send(JSON.stringify(request));
         }
         
         
@@ -1557,6 +1561,7 @@ $(document).on('click', '#mate_list', function () {
         str += '</div><p class="chat_name" data-id="'+id+'" style="cursor:pointer;">' + $(this).children('p').html() + '</p>';
         str += '<a href="javascript:void(0);" data-type="close" data-id="' + id + '"><span class="close" >x</span></a></div>';
         str += '<div class="chat_text"></div>';
+         str += '<div class="upload_loader_chat"></div>';
         str += '<span class="chat_typing"></span>';
         str += ' <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">';
         str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="' + id + '">';
@@ -1590,9 +1595,6 @@ $(document).on('click', '#mate_list', function () {
              $('.chat_input').focus();
             ws.send(JSON.stringify(request));
         }
-
-
-        
        
     } else {
         $("#chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
@@ -1621,11 +1623,19 @@ $(document).on('click', '#mate_list', function () {
 
     }
     $(this).children('span').html('');
+
+    if (is_needed == true){
+    $('.chat .upload_loader_chat').fadeIn(100);
+     $('.chat_text').hide();
+     }
     setTimeout(function(){
        // $(".chat_input").focus();
+        $('.chat_text').show();
         $('.chat_text').mCustomScrollbar('update');
         $('.chat_text').mCustomScrollbar('scrollTo', "bottom");
-    }, 300);
+        if (is_needed == true)
+        $('.chat .upload_loader_chat').fadeOut(100);
+    }, 1100);
         // $('.chat_text').html('');
     //console.log($('.chat_text').mCustomScrollbar('scrollTo', 'bottom'));
 });
@@ -2076,15 +2086,9 @@ $(document).on('keypress', 'textarea[data-type="discussion"]', function () {
 
 /* Generate html block of group disscussion  comment */
 function generate_cm(obj) {
-
+    // console.log('obj', obj);
     if(obj.error != 'skip'){
-        $.notify({
-            title: '<strong></strong>',
-            message: '<b>'+obj.error+'</b>.'
-        },{
-            type: 'warning'
-        });
-
+        return false;
     }else{
         var cl_me = "";
         if (wp == obj.id)

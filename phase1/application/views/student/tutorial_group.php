@@ -31,35 +31,52 @@
             <div class="fixed_comment">
                 <div class="discussion_header">
                 	<div class="col-sm-10 col-md-11">
-                        <h3><span>Topic - </span><?php //echo $topic['topic_name']; ?></h3>
+                        <h3>
+                            <?php if(!empty($current_topic)){ ?>
+                        <span>Topic - </span><?php echo $current_topic['topic_name']; ?>
+                            <?php }else{ ?>
+                        <span>Topic for this week has not yet allocated </span>
+                            <?php } ?>
+                        </h3>
+                            
 
                         <!-- <a href="javascript:void(0);" class="icon icon_expand" id="expand_q"></a> -->
 
                        <!-- <a href="#" class="icon icon_expand"></a> -->
 
                     </div>
+                    <?php if(!empty($current_topic)){ ?>
                     <div class="col-sm-1 col-md-1 notice_content">
+    
+                        <a class="help_tutorial" data-toggle="popover" data-placement="bottom" data-html="true" title="Sub Topics" data-content="<p>General Views</p><hr class='hr_topic'><p>Definitions</p><hr class='hr_topic'><p>Mechanisms</p><hr class='hr_topic'><p>Applications</p><hr class='hr_topic'><p>Importance</p>"><i aria-hidden="true" class="fa fa-question-circle"></i></a>
+                        
                         <a href="javascript:void(0);" id="expand_topic" class="fa fa-angle-double-down"></a>                            
                     </div>
+                    <?php } ?>
                 </div>
+                <?php if(!empty($current_topic)){ ?>
                 <div class="top_question">
                 	<div class="col-sm-12">
+        
                     	<div class="mate_user_img">
                             <?php 
-                           /* $topic_img  =  UPLOAD_URL.'/'.$topic['profile_link'];
-                                if($topic['profile_link'] == ''){
+                            $topic_img  =  (!empty($current_topic && $current_topic['profile_link'] != '')) ? UPLOAD_URL.'/'.$current_topic['profile_link'] : '';
+                                if($topic_img == ''){
                                     $topic_img = 'assets/images/avatar.png';
-                                }*/
+                                }
                             ?>
-                        	<img src="<?php //echo $topic_img ; ?>">
+                        	 <img src="<?php echo $topic_img ; ?>">
                         </div>
+                        <?php if(!empty($current_topic)){ ?>
                         <div class="admin_question">
-                        	<h4><?php //echo $topic['full_name']; ?><span><?php //echo date_format( date_create($topic['created_date']), 'M d, Y g:i a'); ?></span></h4>
-                            <div style="max-height: 100px;" class="mscroll_custom"><p><?php //echo $topic['topic_description']; ?></p></div>
-                        	<!-- <p><span><?php //echo $topic['topic_description']; ?></span></p> -->
+                        	<h4><?php echo $current_topic['full_name']; ?><span><?php echo date_format( date_create($current_topic['created_date']), 'M d, Y g:i a'); ?></span></h4>
+                            <div style="max-height: 100px;" class="mscroll_custom"><p><?php echo $current_topic['topic_description']; ?></p></div>
+                        	 <!-- <p><span><?php // echo $topic['topic_description']; ?></span></p> -->
                         </div>
+                        <?php } ?>
                     </div>
                 </div>
+                <?php } ?>
             </div>
                 <div class="discussion" data-mcs-theme="minimal-dark">
                     <div id="inner_x">
@@ -381,7 +398,7 @@ $(document).ready(function(){
     var ih = $('.input').height();
     var height = h - (fh + ih);
     $('.discussion').css('height',height) ;*/
-    
+     $('[data-toggle="popover"]').popover();
     $(".top_question").hide();
     $('.notice_content #expand_topic').click(function(){
         $( ".top_question" ).slideToggle( "slow" );
