@@ -85,7 +85,17 @@
                 if(isset($discussion) && count($discussion) > 0){
                     $i = 0;
                     $week = null;
+                foreach ($topic as $key => $topic) { ?>
+                    
+                    <div class="divide_discussion col-sm-12 box_header" id="<?php echo $topic['id']; ?>">                    
+                        <div class="clearfix"></div>                    
+                        <h3>Topic : <?php echo $topic['topic_name']; ?></h3>
+                    </div>
+                    <?php
                     foreach($discussion as $k => $v){
+
+                     if($topic['id'] == $v['topic_id']){
+
                        $clss_me = '';
                        if($v['sender_id'] == $user_id)
                         $clss_me = 'me';
@@ -138,7 +148,7 @@
                             <?php
                           //  }
                         $i++;
-                    }
+                   } }}
                 }
                 ?> 
                 </div>
@@ -310,7 +320,7 @@
                                 <h2 id="time_counter">00:00:00</h2>
                                 <span id="remain_id" style="display:none">Remaining</span>
                                 <div id="circle_process"></div>
-                                <h4 class="group_score">Group Score : <span id="group_score_count" ><?php echo $topic[0]['group_score']; ?></span></h4>
+                                <h4 class="group_score">Group Score : <span id="group_score_count" ><?php echo $topic['group_score']; ?></span></h4>
                             </div>
                         </div>
                     </div>

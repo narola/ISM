@@ -222,6 +222,9 @@ class Tutorial extends ISM_Controller {
 					)
 				)
 						);
+
+		// var_dump($data);
+		// exit;
 		$this->template->load('student/default','student/tutorial_group',$data);
 	}
 		

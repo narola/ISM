@@ -558,18 +558,10 @@ $(document).ready(function() {
 		}
 	});
 	$('#calc_tab').click(function() {
-		
-		if($(this).hasClass('active'))
-		{
-			$(this).removeClass('active');
-			$('#accordian_calc').css('display', 'none');
-		}else
-		{
 			$(this).addClass('active');
 			$('#white_board_tab, #explore_tab, #dictionary_tab').removeClass();
 			$('.calculator').css('display', 'block');
 			$('.white_board, .explore, .dictionary').css('display', 'none');
-		}
 	});
 	$('#white_board_tab').click(function() {
 		$(this).addClass('active');
@@ -589,38 +581,64 @@ $(document).ready(function() {
 		$('.dictionary').css('display', 'block');
 		$('.white_board, .calculator, .explore').css('display', 'none');
 	});
-	if($(window).width()<1575){		
+	if($(window).width()<1575){	
+		$('.calculator, .white_board, .explore, .dictionary').addClass('removewidth');	
 		$('#calc_tab').click(function() {
-			$(this).addClass('active');
-			$('#white_board_tab, #explore_tab, #dictionary_tab').removeClass();
-			$('.calculator').addClass('addwidth');
-			$('.calculator').removeClass('removewidth');
-			$('.white_board, .explore, .dictionary').addClass('removewidth');
-			$('.white_board, .explore, .dictionary').removeClass('addwidth');
+			if($('.calculator').hasClass('removewidth')){
+				$(this).addClass('active');
+				$('#white_board_tab, #explore_tab, #dictionary_tab').removeClass();
+				$('.calculator').addClass('addwidth');
+				$('.calculator').removeClass('removewidth');
+				$('.white_board, .explore, .dictionary').addClass('removewidth');
+				$('.white_board, .explore, .dictionary').removeClass('addwidth');
+			}
+			else{
+				$('.calculator').removeClass('addwidth');
+				$('.calculator').addClass('removewidth');
+			}
+			
 		});
 		$('#white_board_tab').click(function() {
-			$(this).addClass('active');
-			$('#calc_tab, #explore_tab, #dictionary_tab').removeClass();
-			$('.white_board').addClass('addwidth');
-			$('.white_board').removeClass('removewidth');
-			$('.calculator, .explore, .dictionary').addClass('removewidth');
-			$('.calculator, .explore, .dictionary').removeClass('addwidth');
+			if($('.white_board').hasClass('removewidth')){
+				$(this).addClass('active');
+				$('#calc_tab, #explore_tab, #dictionary_tab').removeClass();
+				$('.white_board').addClass('addwidth');
+				$('.white_board').removeClass('removewidth');
+				$('.calculator, .explore, .dictionary').addClass('removewidth');
+				$('.calculator, .explore, .dictionary').removeClass('addwidth');
+			}
+			else{
+				$('.white_board').removeClass('addwidth');
+				$('.white_board').addClass('removewidth');
+
+			}
 		});
 		$('#explore_tab').click(function() {
+			if($('.explore').hasClass('removewidth')){
 			$(this).addClass('active');
 			$('#white_board_tab, #calc_tab, #dictionary_tab').removeClass();
 			$('.explore').addClass('addwidth');
 			$('.explore').removeClass('removewidth');
 			$('.white_board, .calculator, .dictionary').addClass('removewidth');
 			$('.white_board, .calculator, .dictionary').removeClass('addwidth');
+		}else{
+				$('.explore').removeClass('addwidth');
+				$('.explore').addClass('removewidth');
+			}
 		});
 		$('#dictionary_tab').click(function() {
-			$(this).addClass('active');
-			$('#white_board_tab, #calc_tab, #explore_tab').removeClass();
-			$('.dictionary').addClass('addwidth');
-			$('.dictionary').removeClass('removewidth');
-			$('.white_board, .calculator, .explore').addClass('removewidth');
-			$('.white_board, .calculator, .explore').removeClass('addwidth');
+			if($('.dictionary').hasClass('removewidth')){
+				$(this).addClass('active');
+				$('#white_board_tab, #calc_tab, #explore_tab').removeClass();
+				$('.dictionary').addClass('addwidth');
+				$('.dictionary').removeClass('removewidth');
+				$('.white_board, .calculator, .explore').addClass('removewidth');
+				$('.white_board, .calculator, .explore').removeClass('addwidth');
+			}
+			else{
+				$('.dictionary').removeClass('addwidth');
+				$('.dictionary').addClass('removewidth');
+			}
 		});
 	}
 	$('.board_tools>li>a').mouseover(function() {

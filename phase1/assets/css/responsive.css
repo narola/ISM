@@ -781,11 +781,12 @@
 @media (max-width:1024px){
 	img#blah_after{    height: 100%; width: auto;}
     .avatar{ height: 180px; width: 180px;}
-	.exams_holder li .result { right: 35px;}
+	.exams_holder li .result { right: 0px;}
 	ul.exams_holder li a {font-size: 12px;}
 	.stm_item.online p, .stm_item.offline p {font-size: 12px;}
 	.navbar-nav li>.dropdown-menu{min-width: 153px;}
-		.calculator, .white_board, .explore, .dictionary{right: 27%;}
+	.calculator, .white_board, .explore, .dictionary{right: 27%;}
+	.main_tut {width: 57%;}
 	
 }
 @media (max-width:980px){

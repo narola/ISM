@@ -4288,7 +4288,7 @@ img#blah_after{height: 220px;width:220px;}
 	color: dodgerblue;
 	font-weight: 600;
 }
-.discussion{ height: 600px;}
+.discussion{ height: 600px;margin-top:40px;}
 .chat_typing{
 	 bottom: 22px;
     color: #1bc4ab;
