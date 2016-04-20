@@ -284,19 +284,25 @@ $url = uri_string();
 								$active = '';
 								if ($key + 1 <= 3) {
 									$d = 'data-type="s"';
-									$redirect_url = '#' . $value;
+									$redirect_url = '#' . $value . "123";
 								} else {
 									$redirect_url = "student/exam-instruction";
 								}
 								if ($key + 1 == $current_weekday) {
 									$active = 'class="active"';
 								}
-								if($current_weekday >= 3)
+								if($current_weekday > 3)
 								{
 									echo '<li><a ' . $d . ' ' . $active . '>' . $value . '</a></li>';
 								}else
 								{
-									echo '<li><a ' . $d . ' href="' . $redirect_url . '" ' . $active . '>' . $value . '</a></li>';
+									if($key + 1 <= 3)
+									{
+										echo '<li><a ' . $d . ' href="' . $redirect_url . '" ' . $active . '>' . $value . '</a></li>';
+									}else
+									{
+										echo '<li><a ' . $d . ' ' . $active . '>' . $value . '</a></li>';
+									}
 								}
 							}
 						}
@@ -595,6 +601,7 @@ $(document).ready(function() {
 			else{
 				$('.calculator').removeClass('addwidth');
 				$('.calculator').addClass('removewidth');
+				$(this).removeClass('active');
 			}
 			
 		});
@@ -610,6 +617,7 @@ $(document).ready(function() {
 			else{
 				$('.white_board').removeClass('addwidth');
 				$('.white_board').addClass('removewidth');
+				$(this).removeClass('active');
 
 			}
 		});
@@ -624,6 +632,7 @@ $(document).ready(function() {
 		}else{
 				$('.explore').removeClass('addwidth');
 				$('.explore').addClass('removewidth');
+				$(this).removeClass('active');
 			}
 		});
 		$('#dictionary_tab').click(function() {
@@ -638,6 +647,7 @@ $(document).ready(function() {
 			else{
 				$('.dictionary').removeClass('addwidth');
 				$('.dictionary').addClass('removewidth');
+				$(this).removeClass('active');
 			}
 		});
 	}

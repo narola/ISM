@@ -12,6 +12,7 @@ class Tutorial extends ISM_Controller {
 	}
 	
 	public function index(){
+		
 		$data = array();
 		$data['timing'] = active_hours();
 		$data['hide_right_bar'] = true;
@@ -105,8 +106,8 @@ class Tutorial extends ISM_Controller {
 			t.topic_name,
 			t.topic_description,
 			t.created_date,
-			tg.group_status,
-			ts.score as my_score,
+			tg.group_status,tg.id as group_id,
+			(SELECT SUM(score) FROM '.TBL_TUTORIAL_GROUP_MEMBER_SCORE.' WHERE member_id = tm.id) as my_score,
 			ta.week_no,
 			(SELECT SUM(group_score) FROM '.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' WHERE group_id = tm.group_id) as group_score,
 			up.profile_link,
@@ -140,15 +141,19 @@ class Tutorial extends ISM_Controller {
 					'condition' => 'tg.id = ta.group_id'
 					)
 				),
-			'group_by'=> 'ta.topic_id'
+			'group_by'=> 'ta.topic_id','order_by' => 't.id desc'
 			)
 		);
+
+		foreach ($data['topic'] as $key => $value) {
+			$data['my_score'] = $value['my_score'];
+		}
 		// echo '<br/>topic<br/>';
 	// p($data['topic'], true);
 	$ids = array_column($data['topic'], 'id');
 	if(empty($data['topic'])){
 		$this->session->set_flashdata('error','Topic is not allocated yet.');
-		redirect('/student/home');
+		//redirect('/student/home');
 	}
 	if($this->session->userdata('user')['group_status'] != 'active'){
 		redirect('/student/home');
@@ -172,6 +177,33 @@ class Tutorial extends ISM_Controller {
 					td.is_active,
 					td.topic_id',
 					array('where_in' => array('td.topic_id' => $ids)),
+					array('join' => array(
+						array(
+							'table' => TBL_USERS.' u',
+							'condition' => 'td.sender_id = u.id'
+							),
+						array(
+							'table' => TBL_USER_PROFILE_PICTURE. ' up',
+							'condition' => 'up.user_id = u.id'
+							)
+						)
+					)
+				);
+
+			if(!empty($data['current_topic']))
+			{
+				$active_topic = $data['current_topic']['id'];
+			}else
+			{
+				$active_topic = 0;
+			}
+
+			$data['active_text'] = select(
+					TBL_TUTORIAL_GROUP_DISCUSSION.' td',
+					'td.in_active_hours,
+					td.is_active,
+					td.topic_id',
+					array('where' => array('td.topic_id' => $active_topic)),
 					array('join' => array(
 						array(
 							'table' => TBL_USERS.' u',

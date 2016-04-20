@@ -1620,6 +1620,8 @@ class PHPWebSocket {
 			mysqli_query($link, $query);
 		    }
 
+		  
+
 		    // Update user score.
 		    $query = "UPDATE `" . TBL_TUTORIAL_GROUP_MEMBER_SCORE . "` "
 			    . "SET `score` = `score` + $score "
@@ -1632,13 +1634,29 @@ class PHPWebSocket {
 		}
 
 		// Select latest user score and group score.
-		$query = "SELECT if(`ts`.`score`>0, `ts`.`score` ,0) AS `my_score`,(SELECT SUM(group_score) "
+		// $query = "SELECT if(`ts`.`score`>0, `ts`.`score` ,0) AS `my_score`,(SELECT SUM(group_score)  "
+		// 	. "FROM " . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . " "
+		// 	. "WHERE group_id = " . $rows['group_id'] . ") AS group_score,(SELECT COUNT(`td`.`id`) "
+		// 	. "FROM `" . TBL_TUTORIAL_GROUP_DISCUSSION . "` `td` "
+		// 	. "WHERE `td`.`group_id` = " . $rows['group_id'] . " "
+		// 	. "AND `td`.`topic_id` = " . $rows['topic_id'] . " "
+		// 	. "AND in_active_hours = 1) AS active_count  "
+		// 	. "FROM `" . TBL_TUTORIAL_TOPIC . "` `t` "
+		// 	. "LEFT JOIN `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `ta` ON `ta`.`topic_id` = `t`.`id` "
+		// 	. "LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER . "` `tm` ON `tm`.`group_id` = `ta`.`group_id` "
+		// 	. "LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER_SCORE . "` `ts` ON `ts`.`member_id` = `tm`.`id` and `ts`.`topic_id` = `ta`.`topic_id` "
+		// 	. "LEFT JOIN `" . TBL_USERS . "` `u` ON `u`.`id` = `t`.`created_by` "
+		// 	. "LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `up` ON `up`.`user_id` = `u`.`id` "
+		// 	. "WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' "
+		// 	. "AND `ta`.`week_no` = $c_week AND YEAR(`ta`.`created_date`) = '$year'  AND  `tm`.`user_id` = '$userId' AND `t`.`is_delete` = 0";
+		$discussion_topic_id = 36;
+		$query = "SELECT (SELECT SUM(score)"
+			." FROM ". TBL_TUTORIAL_GROUP_MEMBER_SCORE . " WHERE member_id = `tm`.`id`) AS `my_score`,(SELECT SUM(group_score) "
 			. "FROM " . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . " "
 			. "WHERE group_id = " . $rows['group_id'] . ") AS group_score,(SELECT COUNT(`td`.`id`) "
 			. "FROM `" . TBL_TUTORIAL_GROUP_DISCUSSION . "` `td` "
 			. "WHERE `td`.`group_id` = " . $rows['group_id'] . " "
-			. "AND `td`.`topic_id` = " . $rows['topic_id'] . " "
-			. "AND in_active_hours = 1) AS active_count  "
+			. "AND in_active_hours = 1 and `td`.`topic_id` = " . $discussion_topic_id .") AS active_count  "
 			. "FROM `" . TBL_TUTORIAL_TOPIC . "` `t` "
 			. "LEFT JOIN `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `ta` ON `ta`.`topic_id` = `t`.`id` "
 			. "LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER . "` `tm` ON `tm`.`group_id` = `ta`.`group_id` "
@@ -1647,17 +1665,17 @@ class PHPWebSocket {
 			. "LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `up` ON `up`.`user_id` = `u`.`id` "
 			. "WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' "
 			. "AND `ta`.`week_no` = $c_week AND YEAR(`ta`.`created_date`) = '$year'  AND  `tm`.`user_id` = '$userId' AND `t`.`is_delete` = 0";
+		
 		$row = mysqli_query($link, $query);
 		$rows = mysqli_fetch_assoc($row);
-
 		foreach ($rows as $k => $v) {
 		    $data[$k] = $v;
-		}
+		}	
 	    } else {
 		$data['error'] = 'No topic allocated! or Discussion time is over!';
 	    }
 	}
-	$data['cdate'] = date_format(date_create($this->ctime()), 'M d, Y, g:i a');
+	$data['cdate'] = $this->get_time_format($this->ctime());
 	$data['allStudyMate'] = $this->class_mate_list($userId);
 	return array_merge($data, $this->get_client_info($userId));
     }
@@ -2251,7 +2269,8 @@ class PHPWebSocket {
 	}
 	$data['type'] = 'discussion';
 	$data['to'] = 'all';
-	$data['cdate'] = date_format(date_create(date("Y-m-d H:i:s")), 'M d, Y, g:i a');
+
+	$data['cdate'] = $this->get_time_format(date("M d, Y, g:i:s a", strtotime($this->ctime()))); 
 	$data['allStudyMate'] = $this->class_mate_list($userId);
 	return array_merge($data, $this->get_client_info($userId));
     }

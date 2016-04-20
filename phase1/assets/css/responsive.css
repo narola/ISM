@@ -1,5 +1,11 @@
 @charset "utf-8";
 /* CSS Document */
+@media(min-width:768px){
+	.col-sm-1.col-md-1.notice_content{
+  		position: absolute;
+  		right: 75px;
+	}
+}
 @media (max-width:1920px){
 	.add_question_wrapper .select .form-control {
 		/*width: 77%;*/

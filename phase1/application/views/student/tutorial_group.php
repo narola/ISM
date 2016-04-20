@@ -85,25 +85,45 @@
                 if(isset($discussion) && count($discussion) > 0){
                     $i = 0;
                     $week = null;
-                foreach ($topic as $key => $topic) { ?>
+                     $active_topic = "";
+
+                if(empty($current_topic)){
+                    foreach ($topic as $key => $topic_1) { 
+                         $active_topic = $topic_1['id'];
+                    }
+
+                }else
+                    {
+                        $active_topic = $current_topic['id'];
+                    }
                     
-                    <div class="divide_discussion col-sm-12 box_header" id="<?php echo $topic['id']; ?>">                    
+
+
+                foreach ($topic as $key => $topic_val) { 
+                    ?>
+                    
+
+                    <div class="divide_discussion col-sm-12 box_header" style="background-color: #666;font-size: 16px;" id="<?php echo $topic_val['id']; ?>">                    
                         <div class="clearfix"></div>                    
-                        <h3>Topic : <?php echo $topic['topic_name']; ?></h3>
+                        <h3>Topic : <?php echo $topic_val['topic_name']; ?></h3>
                     </div>
                     <?php
                     foreach($discussion as $k => $v){
 
-                     if($topic['id'] == $v['topic_id']){
+                     if($topic_val['id'] == $v['topic_id']){
 
                        $clss_me = '';
                        if($v['sender_id'] == $user_id)
                         $clss_me = 'me';
                       // if($v['week_day'] <= 2){
+                            if($topic_val['id'] == $active_topic)
+                            {
+                                 $active_topic = "123";
+                            }
                             if($week !== $v['week_day']){
                                 $week = $v['week_day'];
                             ?>
-                            <div class="divide_discussion col-sm-12" id="<?php echo $weekday[$v['week_day']-1]; ?>">                    
+                            <div class="divide_discussion col-sm-12" id="<?php echo $weekday[$v['week_day']-1] . $active_topic ?>">                    
                                 <div class="clearfix"></div>                    
                                 <hr><h4><?php echo $weekday[$v['week_day']-1]; ?></h4>
                             </div>
@@ -123,7 +143,13 @@
                                 <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo $imgs; ?>">
                                 </div>
                                 <div class="admin_question">
-                                    <h4><?php echo $v['full_name']; ?><span><?php echo date_format( date_create($v['created_date']), 'M d, Y, g:i a'); ?></span></h4>
+                                    <h4><?php echo $v['full_name']; ?>
+                                    <span class="noti_time just_now"></span>
+                                    <script type="text/javascript">
+                                         $('.just_now').timestatus('<?php echo get_time_format($v["created_date"]); ?>');
+                                    </script>
+                                    </h4>
+                                    
                                     <p <?php echo ($v['is_active']==1) ? 'class="active"' : ''; ?>><?php 
                                       $check_type = array(
                                         'image/png',
@@ -179,9 +205,19 @@
                 <?php 
                 }
                  }else{ 
-?>
-<h1>No topic allocated for this week!</h1>
-<?php
+                    ?>
+                       <div class="fixed_comment">
+                            <div class="discussion_header">
+                                <div class="col-sm-10 col-md-11">
+                                    <h3>
+                                        <span>No more topic still assigned </span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                            
+
+                    <?php
                 } ?>  
             </div>
             <div class="toolkit">
@@ -320,18 +356,45 @@
                                 <h2 id="time_counter">00:00:00</h2>
                                 <span id="remain_id" style="display:none">Remaining</span>
                                 <div id="circle_process"></div>
-                                <h4 class="group_score">Group Score : <span id="group_score_count" ><?php echo $topic['group_score']; ?></span></h4>
+                                <?php 
+                                    $i = -1;
+                                    $g_score = 0;
+                                    foreach ($topic as $key => $value) {
+                                       $i++;
+                                    }
+
+                                    if(empty($topic[$i]['group_score']))
+                                    {
+                                        $g_score = 00;
+                                    }else
+                                    {
+                                         $g_score = $topic[$i]['group_score'];   
+                                    }
+                                ?>
+                                <h4 class="group_score">Group Score : <span id="group_score_count" ><?php echo $g_score; ?></span></h4>
                             </div>
                         </div>
                     </div>
                     <div class="box">
                         <div class="box_body">
-                            <h5>Active Comments : <span id="active_comment_count"><?php echo $active_comment; ?></span></h5>
+                            <?php 
+                                /* Count total active comment  */
+                                $active_count = 0;
+                                foreach ($active_text as $key => $value) {
+                                    if($value['in_active_hours'] == 1)
+                                    {
+                                        $active_count++;
+                                    }
+                                }
+                                
+
+                            ?>
+                            <h5>Active Comments : <span id="active_comment_count"><?php echo $active_count; ?></span></h5>
                         </div>
                     </div>                    
                     <div class="box">
                         <div class="box_body">
-                            <h5>My Score : <span id="my_score_count" ><?php echo '0';//$topic['my_score']; ?></span></h5>
+                            <h5>My Score : <span id="my_score_count" ><?php echo $my_score; ?></span></h5>
                         </div>
                     </div>
                     <!--group-->
@@ -421,4 +484,14 @@ $(document).ready(function(){
         }
     });
 });
+
+
+$( '.tut_weekdays li a[data-type="s"]' ).click(function() {
+    
+    $( '.tut_weekdays li a[data-type="s"]' ).removeClass('active');
+    $(this).addClass('active');
+
+});
+
+
 </script>

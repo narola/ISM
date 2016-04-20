@@ -413,7 +413,7 @@ if ("WebSocket" in window)
 
     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
     // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-    //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+  //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -2103,7 +2103,7 @@ function generate_cm(obj) {
         str += '<img src="uploads/' + obj.profile_link + '">';
         str += '</div>';
         str += '<div class="admin_question">';
-        str += '<h4>' + obj.full_name + '<span>' + obj.cdate + '</span></h4>';
+        str += '<h4>' + obj.full_name + '<span clas="noti_time just_now">' + obj.cdate + '</span></h4>';
         str += '<p '+ pclass +'>' + obj.message + '</p>';
         str += '</div>';
         str += '</div>';
@@ -2121,6 +2121,7 @@ function generate_cm(obj) {
 
         $('textarea[data-type="discussion"]').val('');
         $('.discussion #inner_x').append(str);
+         $('.just_now').timestatus();
         $('.discussion #inner_x div[data-id="' + obj.disscusion_id + '"]').fadeOut(0).fadeIn(400);
     }
 }
