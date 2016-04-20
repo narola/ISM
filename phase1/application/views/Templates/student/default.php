@@ -170,7 +170,7 @@ $url = uri_string();
 							$data['current_weekday'] = getdate()['wday'];
 							$v = "student/tutorial";
 							// $data['current_weekday'] = 2;
-							if ($data['current_weekday'] >= 3) {
+							if ($data['current_weekday'] >=4) {
 								$v = "student/exam-instruction";
 							}
 						}
@@ -204,6 +204,7 @@ $url = uri_string();
 						<h4><?php echo $this->session->userdata['user']['full_name']; ?></h4>
 						<a href="student/user_account">View Profile</a>
 						<!--notification-->
+
 						<ul class="three_tabs">
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" onClick="update_notification()" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span data-toggle="tooltip" title="Notifications" class="icon icon_bell"></span>
@@ -215,18 +216,14 @@ $url = uri_string();
 								
 								if (sizeof($this->notification_list) > 0) {
 										$notification_for = "tagged_notification";
+										
 									foreach ($this->notification_list as $key => $value) {
-
-										// if(substr($value['msg'],0,9) == " accepted")
-										// 	{
-										// 		$notification_for = "freind_request_notification";
-										// 	}
-								
 								?>
+
 								<li>
 									 <!-- <a href="student/tagged_feed/<?php //echo $value['feed_id']; ?>"> -->
-									 <a>
 									<!-- <a href="Student/User_account/<?php// echo $notification_for; ?>/<?php // echo $this->session->userdata['user']['id']; ?>"> -->
+									 <a href="student/tagged_feed/<?php echo $value['feed_id']; ?>">
 										<div class="user_small_img">
 											<img onerror="this.src='assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>">
 										</div>
