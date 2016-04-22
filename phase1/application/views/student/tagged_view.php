@@ -1,3 +1,70 @@
+<script>
+
+	function showall(id) {
+	$('.post' + id).show();
+    }
+    $(document).on('click', 'a[data-type="showall"]', function() {
+    	var comment_cols = $('#feed_comments[data-id="'+ $(this).data('id')  +'"]').children().size();
+	if ($(this).html() == 'Hide')
+	{
+	    //$('#feed_comments div[data-id="' + $(this).data('id') + '"]').hide();
+	    //$('#feed_comments div[data-first="true"]').show();
+	    $('.comment_btn[data-id="'+ $(this).data('id')  +'"]').html("");
+        $('.comment_btn[data-id="'+ $(this).data('id')  +'"]').html('<span class="icon icon_comment" title="Comment"></span>' + '4 of ' + comment_cols);
+	    $(this).html('View All');
+
+	    	for (var i = comment_cols - 4; i >= 1; i--) {
+	    		$('#feed_comments[data-id="' + $(this).data('id') + '"] .comment:nth-child('+ i +')').css("display", "none");
+	    	};
+
+	} else {
+	    $('#feed_comments div[data-id="' + $(this).data('id') + '"]').show();
+	    $('.comment_btn[data-id="' + $(this).data('id') + '"]').html("");
+        $('.comment_btn[data-id="' + $(this).data('id') + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
+        $(this).html('Hide');
+	}
+    });
+    $(document).ready(function() {
+	$('#selection-box').css("display", "none");
+    });
+    
+    $(document).on('click', '#show-tag-user', function() {
+	val = $('#tag_or_not').val();
+	if (val == 'yes') {
+	    $('#selection-box').css("display", "none");
+	    $('#tag_or_not').val('no');
+	}
+	else {
+	    $('#selection-box').css("display", "block");
+	    $('#tag_or_not').val('yes');
+	}
+
+    });
+
+  
+
+   
+    
+    $('#element').popover('show');
+    //$('#element').popover1('show');
+
+
+    $(document).on('click', '[data-toggle="popover1"]', function() {
+	//$('[data-toggle="popover1"]').popover('show');
+	var d_id = $(this).data("id");
+	$('[data-id="'+d_id+'"]').popover('show');
+    });
+
+    $(document).on('click', '[data-toggle="popover2"]', function() {
+    	var d_id = $(this).data("id");
+	$('[data-id="'+d_id+'"]').popover('show');
+    });
+
+    $(document).ready(function() {
+	$('[data-toggle="popover"]').popover();
+    });
+
+</script>
 <!--feed box-->
 <div class="col-md-7 main main2">
 	<div class="all_feed">
@@ -191,7 +258,7 @@
 
 
 			<!--comment-->
-			<div id="feed_comments" data-id="<?php echo $value['fid']; ?>">
+			<div id="feed_comments" data-for="comment" data-type="tagged_view_comment" data-id="<?php echo $value['fid']; ?>">
 			    <?php
 			    $total_comments = sizeof($value['comment']);
 			    if ($total_comments > 0 && isset($value['comment'])) {
@@ -229,7 +296,7 @@
 			    ?>
 			</div>
 			<div class="write_comment box_body">
-			    <input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="<?php echo $value['fid']; ?>">                  
+			    <input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment2" data-id="<?php echo $value['fid']; ?>">                  
 			</div>
 		    </div>
 		    <?php
@@ -241,4 +308,6 @@
 		
 	</div>
 </div>
+
+
 <!--//feed box-->

@@ -1152,6 +1152,31 @@ class PHPWebSocket {
 				$tagged_detail[$i]['id'] = $row['id'];
 				$i++;
 			    }
+
+			    	/* Get notification on tag */
+		
+				$query = 'SELECT `u`.`id`,`u`.`full_name`,`p`.`profile_link` '
+					. 'FROM `' . TBL_USERS . '` u, `'.TBL_USER_PROFILE_PICTURE.'` p '
+					. 'WHERE `p`.`user_id` = `u`.`id` and `u`.`id` = ' .$data['user_iddd']. '';
+				$rows = mysqli_query($link, $query);
+				//$data['notification_detail'] = mysqli_num_rows($rows);
+
+				$notification_for_tag = array();
+				$i = 0;
+				while ($row = mysqli_fetch_assoc($rows)) {
+				    $notification_for_tag[$i]['full_name'] = $row['full_name'];
+				    $notification_for_tag[$i]['id'] = $row['id'];
+				     $notification_for_tag[$i]['profile_link'] = $row['profile_link'];
+				    $notification_for_tag[$i]['created_date'] = $this->get_time_format(date("M d, Y, g:i:s a", strtotime($this->ctime())));
+				    $i++;
+				}
+
+
+				 $data['notification_detail'] = $notification_for_tag;
+				// select u.id,u.full_name,t.created_date
+				// from users u,feeds_tagged_user t
+				// where u.id = t.tagged_by and t.feed_id = '1089' and t.tagged_by = '138'; 
+
 			}else
 			{
 				$tagged_detail="";
@@ -1167,6 +1192,8 @@ class PHPWebSocket {
 				. 'WHERE u.id in(' . $studymates . ') AND `u`.`is_delete` = 0';
 			$rows = mysqli_query($link, $query);
 			$i = 0;
+
+
 			$studymates_detail = array();
 			while ($row = mysqli_fetch_assoc($rows)) {
 				if($row['id'] <> $user_id)

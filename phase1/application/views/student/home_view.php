@@ -26,6 +26,7 @@
     });
     $(document).ready(function() {
 	$('#selection-box').css("display", "none");
+	$('#mCSB_3_scrollbar_vertical').css("margin-top", "10%");
     });
     
     $(document).on('click', '#show-tag-user', function() {

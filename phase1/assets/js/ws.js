@@ -411,9 +411,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-    var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
     // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-  //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -572,6 +572,13 @@ if ("WebSocket" in window)
         } else if (obj.type == 'notification') {
             set_status(obj.user_id, obj.live_status);
         } else if (obj.type == 'get_latest_message') {
+
+            if(obj.message.length >= 4)
+            {
+             $('.chat .upload_loader_chat').fadeIn(100);
+            }
+            
+
             $.each(obj.message, function (index, list) {
 
                 /* Randome strig for genration class */
@@ -649,6 +656,8 @@ if ("WebSocket" in window)
 
         } else if (obj.type == 'feed_comment') {
             generate_comment(obj);
+        } else if (obj.type == 'feed_comment2') {
+            generate_comment2(obj);
         } else if (obj.type == 'load_more_feed') {
             $.each(obj.feed, function (index, jsonObject) {
                 generate_post(jsonObject, false);
@@ -1625,7 +1634,6 @@ $(document).on('click', '#mate_list', function () {
     $(this).children('span').html('');
 
     if (is_needed == true){
-    $('.chat .upload_loader_chat').fadeIn(100);
      $('.chat_text').hide();
      }
     setTimeout(function(){
@@ -1685,7 +1693,7 @@ $(document).on('click', '.btn_green[data-type="save-edited-feed"]', function () 
 
 
 /* Send comment */
-$(document).on('keypress', '#all_feed .box.feeds .write_comment input[data-type="feed_comment"]', function (e) {
+$(document).on('keypress', '.write_comment input[data-type="feed_comment"]', function (e) {
 
     var myTextareaVal = $(this).val();
     var myComment = myTextareaVal.replace(/\s\s+/g, '\n\n');
@@ -1706,6 +1714,32 @@ $(document).on('keypress', '#all_feed .box.feeds .write_comment input[data-type=
         // }
     }
 });
+
+/* Send comment */
+$(document).on('keypress', '.write_comment input[data-type="feed_comment2"]', function (e) {
+
+    var myTextareaVal = $(this).val();
+    var myComment = myTextareaVal.replace(/\s\s+/g, '\n\n');
+   
+    if (e.keyCode == 13 && $.trim($(this).val()) != '') {
+        var request = {
+            type: 'feed_comment2',
+            to: $(this).data('id'),
+            message :myComment
+            // message :myComment
+        };
+        ws.send(JSON.stringify(request));
+        $(this).val('');
+        // alert(wp +'=='+ $(this).data('id'));
+        // if(wp == $(this).data('id')){
+
+        cnt = $('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)').html();
+        $('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)').html(parseInt(cnt) + 1);
+
+        // }
+    }
+});
+
 
 /* Generate HTML block of Feed Post. */
 function generate_post(obj, status) {
@@ -1769,9 +1803,8 @@ function generate_post(obj, status) {
 
             if(obj.feed == "normal" && list.id == wp)
                 {
-                   
-
-                notification_str += '<li><a href="student/tagged_feed/'+obj.notification_detail[0]['id']+'">';
+                   console.log(obj.notification_detail[0]['id']);
+                notification_str += '<li><a href="student/tagged_feed/'+obj.post_id+'">';
                // notification_str += '<span>hello</span>';
                 notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '"></div>';
                 notification_str += '<div class="notification_txt">';
@@ -1991,8 +2024,11 @@ function generate_comment(obj, i, k) {
     str += '</div>';
     $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments').append(str);
     $(".just_now").timestatus(obj.comment_date);
+
     if (k != true) {
-        $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments .comment:last-child').fadeOut(0).fadeIn(400);
+        if(obj.user_iddd == wp){
+            $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments .comment:last-child').fadeOut(0).fadeIn(400);
+        }
     }
     
     if(k == false)
@@ -2038,6 +2074,129 @@ function generate_comment(obj, i, k) {
     {
 
     }
+
+}
+
+
+
+
+/* Generate HTML block of feed comment FOR tagged view. */
+function generate_comment2(obj, i, k) {
+
+
+// /* commenter id for feed post and load more, else part sets commeter id when event on load more */
+     if(!obj.comment_by){
+       var commenter_id = obj.id;
+    }else
+    {
+         var commenter_id = obj.comment_by;
+    }
+
+   var  str1 = "";
+    var msg = obj.message;
+    i = typeof i !== 'undefined' ? i : 0;
+    k = typeof k !== 'undefined' ? k : false;
+    if (parseInt(i) > 3) {
+        display = 'display:none !important';
+        first_three = '';
+    }
+    else {
+
+        if(obj.user_iddd == wp)
+        {
+            display = '';
+        }else
+        {
+            display = 'display:none !important';
+        }
+        first_three = 'true';
+    }
+
+    if(obj.user_iddd != wp)
+    {
+        str1 += '<div class="comment" data-first="' + first_three + '" data-id="' + obj.to + '" style="display:none">';
+       
+        
+    }else
+    {
+        str1 += '<div class="comment" data-first="' + first_three + '" data-id="' + obj.to + '" >';
+    }
+     
+    
+    str1 += '<div class="user_small_img user_comment">';
+    str1 += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'" src="uploads/' + obj.profile_link + '" onerror="this.src=\'assets/images/avatar.png\'">';
+    str1 += '</div>';
+    str1 += '<div class="notification_txt">';
+    str1 += '<p style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'"><a  class="noti_username">' + obj.full_name + ' </a> ' + msg.replace(/\n/g,'<br/>') + '</p>';
+    str1 += '<span class="noti_time just_now">' + obj.comment_date + '</span>';
+    str1 += '</div>';
+    str1 += '<div class="clearfix"></div>';
+    str1 += '</div>';
+
+    $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments').append(str1);
+    $('#feed_comments[data-for="comment"]').append(str1);
+
+
+
+    $(".just_now").timestatus(obj.comment_date);
+    if (k != true) {
+        if(obj.user_iddd == wp){
+        $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments .comment:last-child').fadeOut(0).fadeIn(400);
+        }
+    }
+
+
+    
+    if(k == false)
+    {
+    var comment_cols = $('#feed_comments[data-id="'+ obj.to +'"]').children().size();
+    var is_instance_post = $('#feed_comments[data-id="'+ obj.to +'"]').attr('data-type');
+    //var comment_cols2 = $('#feed_comments').children('.comment[data-id="'+obj.to+'"]').size();
+   
+    if(is_instance_post == "tagged_view_comment")
+    {
+        is_instance_post = '';
+    }
+
+
+    if(comment_cols < 4)
+    {
+        $('#feed_comments[data-id="'+ obj.to +'"]').attr('data-type','instance_post');
+    }
+
+    if(comment_cols > 4 && !is_instance_post && is_instance_post != "instance_post1")
+            {   
+                var n_th = comment_cols - 4;
+                var shown_comment = parseInt($('.comment_btn[data-id="'+ obj.to +'"] span:nth-child('+'2'+')').text());
+                if(!shown_comment)
+                        {
+                            shown_comment = 4;
+                        }
+                $('.comment_btn[data-id="'+ obj.to +'"]').html('<span class="icon icon_comment" title="Comment"></span><span>' + shown_comment + '</span> of ' + comment_cols);
+                $('.comment_showall[data-id="' + obj.to + '"]').css("display", "");
+            }
+            else if(comment_cols > 4 && is_instance_post == "instance_post1")
+                {
+                var shown_comment = parseInt($('.comment_btn[data-id="'+ obj.to +'"] span:nth-child('+'2'+')').text());
+                if(!shown_comment)
+                        {
+                            shown_comment = 4;
+                        }
+                    shown_comment++;
+                $('.comment_btn[data-id="'+ obj.to +'"]').html('<span class="icon icon_comment" title="Comment"></span><span>' + shown_comment + '</span> of ' + comment_cols);
+                $('.comment_showall[data-id="' + obj.to + '"]').css("display", "");
+                    
+                } else
+                {
+                    $('.comment_btn[data-id="' + obj.to + '"]').html("");
+                    $('.comment_btn[data-id="' + obj.to + '"]').append('<span class="icon icon_comment" title="Comment"></span>'+comment_cols+'');
+                }
+    }
+    else
+    {
+
+    }
+
 }
 
 /* load more feeds. */
