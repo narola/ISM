@@ -49,7 +49,7 @@
     		enteredText = $(this).val();
 			numberOfLineBreaks = (enteredText.match(/\n/g)||[]).length;
     		var a = $(this).attr("data-feed");
-    		$(this).css('resize','auto');
+    		$(this).css('resize','auto');	
     		$(this).css('overflow','hidden');
     		$(this).css('min-height','100px');
     		
@@ -93,9 +93,16 @@
      });	
      
 
-      $(document).on('click', function(){
+      $(document).on('click', function(e){
+
       	//var is_data_open = $('').hasAttr('data-open');
     	//$('#all_feed .box div#show-again[data-type="tag-open"]').hide();
+    	$('[data-toggle=popover]').each(function () {
+        // hide any open popovers when the anywhere else in the body is clicked
+        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+            $(this).popover('hide');
+        }
+    });
 
     	var feed_id = $('#show-again[data-type="tag-open"]').attr('data-id');
     	if ($('#show-again[data-type="tag-open"]').attr('data-open') !== undefined) {
@@ -158,25 +165,54 @@
     });
 
    
-    
-    $('#element').popover('show');
-    //$('#element').popover1('show');
-
+   
 
     $(document).on('click', '[data-toggle="popover1"]', function() {
 	//$('[data-toggle="popover1"]').popover('show');
-	var d_id = $(this).data("id");
-	$('[data-id="'+d_id+'"]').popover('show');
+		var d_id = $(this).data("id");
+		var is_open = $(this).next().hasClass('in');
+		if(is_open)
+		{
+			$('[data-id="'+d_id+'"]').popover('hide');
+		}else
+		{
+			$('[data-id="'+d_id+'"]').popover('show');
+		}
     });
+
+
+
+    $(document).on('click', '[data-toggle="popover"]', function() {
+	//$('[data-toggle="popover1"]').popover('show');
+	var d_id = $(this).data("id");
+	var is_open = $(this).next().hasClass('in')
+
+		if(is_open)
+		{
+			$('[data-id="'+d_id+'"]').popover('hide');
+		}else
+		{
+			$('[data-id="'+d_id+'"]').popover('show');
+		}
+
+    });
+
 
     $(document).on('click', '[data-toggle="popover2"]', function() {
+
     	var d_id = $(this).data("id");
-	$('[data-id="'+d_id+'"]').popover('show');
+    	var is_open = $(this).next().hasClass('in')
+
+		if(is_open)
+		{
+			$('[data-id="'+d_id+'"]').popover('hide');
+		}else
+		{
+			$('[data-id="'+d_id+'"]').popover('show');
+		}
     });
 
-    $(document).ready(function() {
-	$('[data-toggle="popover"]').popover();
-    });
+    
 
 </script>
 <!--main-->
@@ -251,7 +287,7 @@
 			    <img style="cursor:pointer;" src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>" data-type="show-profile" data-id="<?php echo $value['feed_by']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
 			</div>
 			<div class="feed_text">
-			    <h4 style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['feed_by']; ?>"><?php echo $value['full_name']; ?></h4>
+			    <h4  style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['feed_by']; ?>"><?php echo $value['full_name']; ?></h4>
 			    <span data-id="<?php echo $value['fid']; ?>">
 				<?php
 				if (isset($value['tagged']) && sizeof($value['tagged']) > 0) {
@@ -279,7 +315,7 @@
 						$l = $t_count - 1;
 						$other_name .="<label style='cursor:pointer;' data-type='show-profile' data-id='". $t_value['id'] ."' class='label label_name'>" . $t_value["full_name"] . "</label><br/>";
 						if ($k == $l) {
-						    echo 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-placement="bottom" data-trigger="focus" data-toggle="popover" title="Other Tagged" data-content="' . $other_name . '" >' . $l . ' more</a></label>';
+						    echo 'and <label style="cursor:pointer;"  class="label label_name"  data-id="' . $value['fid'] . '" data-html="true" data-placement="bottom" data-trigger="focus" data-toggle="popover" title="Other Tagged" data-content="' . $other_name . '"><a>' . $l . ' more</a></label>';
 						}
 					    }
 					    $k++;

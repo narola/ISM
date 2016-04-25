@@ -65,7 +65,7 @@ function exam_started_timer()
 
          $.notify({
             title: '<strong>Hurry up!</strong>',
-            message: 'Exam time will <b>finish</b> within <b>1 minutes.</b>.'
+            message: 'Exam time will <b>finish</b> within <b>1 minute.</b>.'
         },{
             type: 'warning'
         });
@@ -133,7 +133,7 @@ function exam_will_start_timer()
         //$(".alert_notification").show().delay(7000).fadeOut();
          $.notify({
             title: '<strong></strong>',
-            message: 'Exam time will <b>start</b> within <b>1 minutes.</b>.'
+            message: 'Exam time will <b>start</b> within <b>1 minute.</b>.'
         },{
             type: 'warning'
         });
@@ -253,7 +253,7 @@ function timeout_timer()
         //$(".alert_notification").show().delay(7000).fadeOut();
           $.notify({
             title: '<strong></strong>',
-            message: 'Active hours will start within <b>1 minutes.</b>.'
+            message: 'Active hours will start within <b>1 minute.</b>.'
         },{
             type: 'warning'
         });
@@ -411,9 +411,9 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-       var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
-    // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
-    // var ws = new WebSocket("ws://52.28.165.231:9301"); // server
+   var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+     // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
+     //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
 
     ws.onopen = function ()
@@ -847,8 +847,8 @@ if ("WebSocket" in window)
                         l = parseInt(len) - parseInt(1);
                         if (j == l) {
 
-                            str += 'and <label class="label label_name">';
-                            str += '<a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover1" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
+                            str += 'and <label style="cursor:pointer;" class="label label_name"  data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover" title="Other Tagged" data-content="' + other_name + '">';
+                            str += '<a>' + l + ' more</a>';
                             str += '</label>';
                         }
                         ids += ',' + list.id;
@@ -967,8 +967,8 @@ if ("WebSocket" in window)
                         other_name += "<label style='cursor:pointer;' data-type='show-profile' data-id='" +  list.id + "' class='label label_name'>" + list.full_name + '</label><div class=\'clearfix\'></div>';
                         l = parseInt(len) - parseInt(1);
                         if (j == l) {
-                            str += 'and <label class="label label_name">';
-                            str += '<a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-id="'+ obj.fid +'" data-toggle="popover1" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
+                            str += 'and <label style="cursor:pointer;" class="label label_name" data-html="true" data-trigger="focus" data-placement="bottom" data-id="'+ obj.fid +'" data-toggle="popover" title="Other Tagged" data-content="' + other_name + '">';
+                            str += '<a  >' + l + ' more</a>';
                             str += '</label>';
                         }
                         ids += ',' + list.id;
@@ -1078,7 +1078,7 @@ if ("WebSocket" in window)
             });
             if (obj.result.length >= 3) {
                 str += '<div class="text-center">';
-                str += '<a href="javascript:void(0);" data-start="' + obj.limit + '" data-type="load-studymate-more" class="search_result_label">';
+                str += '<a href="javascript:void(0);" data-start="' + obj.limit + '" data-type="load-studymate-more" class="btn btn-xs btn_green no-margin">';
                 str += 'View More</a>';
                 str += '</div>';
             }
@@ -1794,7 +1794,7 @@ function generate_post(obj, status) {
                     other_name += "<label style='cursor:pointer;' data-type='show-profile' data-id=" +  list.id + " class='label_name'>" + list.full_name + '</label><div class=\'clearfix\'></div>';
                     l = parseInt(len) - parseInt(1);
                     if (j == l) {
-                        name += '&nbsp;and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-id="'+obj.post_id+'" data-trigger="focus" data-placement="bottom" data-toggle="popover2" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
+                        name += '&nbsp;and <label style="cursor:pointer;" data-html="true" data-id="'+obj.post_id+'" data-trigger="focus" data-placement="bottom" data-toggle="popover" title="Other Tagged" data-content="' + other_name + '" class="label label_name"><a>' + l + ' more</a>';
                         name += '</label>';
                     }
                 }
@@ -2017,7 +2017,7 @@ function generate_comment(obj, i, k) {
     str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'" src="uploads/' + obj.profile_link + '" onerror="this.src=\'assets/images/avatar.png\'">';
     str += '</div>';
     str += '<div class="notification_txt">';
-    str += '<p style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'"><a  class="noti_username">' + obj.full_name + ' </a> ' + msg.replace(/\n/g,'<br/>') + '</p>';
+    str += '<p><a  style="cursor:pointer;" data-type="show-profile" data-id="'+ commenter_id +'" class="noti_username">' + obj.full_name + ' </a> ' + msg.replace(/\n/g,'<br/>') + '</p>';
     str += '<span class="noti_time just_now">' + obj.comment_date + '</span>';
     str += '</div>';
     str += '<div class="clearfix"></div>';

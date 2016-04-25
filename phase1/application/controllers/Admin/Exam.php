@@ -269,6 +269,8 @@ class Exam extends ADMIN_Controller {
 		$this->form_validation->set_rules('start_date', 'Start Exam Date', 'trim|required|callback_valid_date');
 
 		if(!isset($_POST['exam_type'])){
+
+
 			//Form Validation Set For Topic Required
 			$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
 		}
@@ -321,12 +323,80 @@ class Exam extends ADMIN_Controller {
 
 			if($button_type == 'set'){
 				redirect('admin/question/set?exam_id='.$exam_id);	
-			}else{
+			}else if($button_type == 'auto')
+			{
+				/* auto questions assigning based on number of question they want */
+				 $no_of_question = $this->input->post('no_of_question');
+				 $topic_id = $this->input->post('topic_id');
+				 $classroom_id = $this->input->post('classroom_id');
+				 $subject_id= $this->input->post('subject_id');
+				
+				$genarated_question = array();
+				$genarated_question = select(TBL_QUESTIONS,TBL_QUESTIONS.'.id', array(
+											   		'where'=>array(TBL_QUESTIONS.'.subject_id'=>$subject_id,
+											   					   TBL_QUESTIONS.'.topic_id'=>$topic_id)
+											   		),
+													array('order_by' => TBL_QUESTIONS . '.id','limit' => $no_of_question));
+				//var_dump($genarated_question);
+				foreach ($genarated_question as  $value) {
+					//var_dump($value);
+					$this->set_question($value['id'],$exam_id);
+				}
+				$this->session->set_flashdata('success', 'Exam and question has been Successfully Created');
+				redirect('admin/exam/');	
+			}
+			else{
 				$this->session->set_flashdata('success', 'Exam has been Successfully Created');
 				redirect($this->data['prev_url']);	
 			}
 
 		}
+	}
+
+
+	/**
+	 * Function for adding auto genrated question to database
+	 *
+	 * @param  -$qid as integer and $eid as integer
+	 * @return - no return
+	 * @author - Pankaj(pv)
+	 */
+	
+	
+	public function set_question($qid,$eid){
+		
+		$fetch_data = select(TBL_EXAM_QUESTION,FALSE,array('where'=>array('exam_id'=>$eid,'question_id'=>$qid)));
+		if(empty($fetch_data)){
+			$data = array(
+				'exam_id'=>$eid,
+				'question_id'=>$qid
+			);
+			insert(TBL_EXAM_QUESTION,replace_invalid_chars($data));
+		}
+	}
+
+
+
+	/**
+	 * Count nuber of question based on topic id and subject id and classroom
+	 *
+	 * @param  -no param
+	 * @return - no return
+	 * @author - Pankaj(pv)
+	 */
+	
+	public function topic_count()
+	{
+
+		 $topic_id = $this->input->post('topic_id');
+		 $classroom_id = $this->input->post('classroom_id');
+		 $subject_id= $this->input->post('subject_id');
+		 $genarated_question = select(TBL_QUESTIONS,TBL_QUESTIONS.'.id', array(
+									   		'where'=>array(TBL_QUESTIONS.'.subject_id'=>$subject_id,
+											   					   TBL_QUESTIONS.'.topic_id'=>$topic_id)
+											   		)  
+									 );
+		echo count($genarated_question);
 	}
 
 	//Update one item

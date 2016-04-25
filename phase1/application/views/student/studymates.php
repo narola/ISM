@@ -11,6 +11,12 @@
 			$("div.search_bar input").attr("placeholder", "Type here to search your studymate by course");
 		}
     });
+
+
+    $(document).ready(function() {
+	$('#mCSB_3_scrollbar_vertical').css("margin-top", "10%");
+    });
+    
 </script>
 <!--main-->
 <div class="col-sm-7 main main2 stydymates mscroll_custom"> 
@@ -115,7 +121,7 @@
 		    }
 		    ?>
                     <div class="text-center">
-                        <a href="javascript:void(0);" data-start="4" data-type="load-studymate-more" class="search_result_label">View More</a>
+                        <a href="javascript:void(0);" data-start="4" data-type="load-studymate-more"  style="color:white;" class="btn btn-xs btn_green no-margin">View More</a>
                     </div>
 		    <?php
 		}

@@ -221,9 +221,15 @@ $url = uri_string();
 								?>
 
 								<li>
+									<?php if(!empty($value['feed_id'])){
+										$notification_url = "student/tagged_feed/" . $value['feed_id']; 
+									}else
+									{
+										$notification_url = "student/studymates";
+									} ?>
 									 <!-- <a href="student/tagged_feed/<?php //echo $value['feed_id']; ?>"> -->
 									<!-- <a href="Student/User_account/<?php// echo $notification_for; ?>/<?php // echo $this->session->userdata['user']['id']; ?>"> -->
-									 <a href="student/tagged_feed/<?php echo $value['feed_id']; ?>">
+									 <a href="<?php echo $notification_url; ?>">
 										<div class="user_small_img">
 											<img onerror="this.src='assets/images/avatar.png'" src="<?php echo UPLOAD_URL . '/' . $value['profile_link']; ?>">
 										</div>

@@ -69,6 +69,7 @@
                                              $(".just_now").timestatus("<?php echo $studymate_value['created_date']; ?>");
                                          </script>
                                       </div>  
+                                       <div class="clearfix"></div>
                                         <div class="study_mate">
                                             <div class="mate_user_img">
                                                 <img src="<?php echo UPLOAD_URL.'/'.$studymate_value['profile_link'];?>" class="mCS_img_loaded" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">

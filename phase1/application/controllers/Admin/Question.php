@@ -843,7 +843,6 @@ class Question extends ADMIN_Controller {
 	// ------------------------------------------------------------------------
 
 	public function set_question(){
-
 		
 		$qid = $this->input->post('qid');
 		$eid = $this->input->post('eid');

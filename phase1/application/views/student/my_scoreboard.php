@@ -22,10 +22,10 @@
         <div class="col-sm-12 col-md-6 col-md-offset-3">
             <div class="box">
                 <div>
-                    <p>Correnct Answers :  <span class="txt_green"><?php echo $my_scoreboard['correct_answers'];?></span></p>
+                    <p>Correct Answers :  <span class="txt_green"><?php echo $my_scoreboard['correct_answers'];?></span></p>
                 </div>
                 <div>
-                    <p>Incorrenct Answers :  <span class="txt_brightred"><?php echo $my_scoreboard['incorrect_answers'];?></span></p>
+                    <p>Incorrect Answers :  <span class="txt_brightred"><?php echo $my_scoreboard['incorrect_answers'];?></span></p>
                 </div>
                 <div>
                     <p>Unattempted Questions :  <span class="txt_yellow"><?php echo $my_scoreboard['unattampt'];?></span></p>

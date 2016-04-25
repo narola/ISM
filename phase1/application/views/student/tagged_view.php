@@ -44,25 +44,51 @@
   
 
    
-    
-    $('#element').popover('show');
-    //$('#element').popover1('show');
+        $(document).on('click', '[data-toggle="popover1"]', function() {
+	//$('[data-toggle="popover1"]').popover('show');
+		var d_id = $(this).data("id");
+		var is_open = $(this).next().hasClass('in');
+		if(is_open)
+		{
+			$('[data-id="'+d_id+'"]').popover('hide');
+		}else
+		{
+			$('[data-id="'+d_id+'"]').popover('show');
+		}
+    });
 
 
-    $(document).on('click', '[data-toggle="popover1"]', function() {
+
+    $(document).on('click', '[data-toggle="popover"]', function() {
 	//$('[data-toggle="popover1"]').popover('show');
 	var d_id = $(this).data("id");
-	$('[data-id="'+d_id+'"]').popover('show');
+	var is_open = $(this).next().hasClass('in')
+
+		if(is_open)
+		{
+			$('[data-id="'+d_id+'"]').popover('hide');
+		}else
+		{
+			$('[data-id="'+d_id+'"]').popover('show');
+		}
+
     });
+
 
     $(document).on('click', '[data-toggle="popover2"]', function() {
+
     	var d_id = $(this).data("id");
-	$('[data-id="'+d_id+'"]').popover('show');
+    	var is_open = $(this).next().hasClass('in')
+
+		if(is_open)
+		{
+			$('[data-id="'+d_id+'"]').popover('hide');
+		}else
+		{
+			$('[data-id="'+d_id+'"]').popover('show');
+		}
     });
 
-    $(document).ready(function() {
-	$('[data-toggle="popover"]').popover();
-    });
 
 </script>
 <!--feed box-->
@@ -125,7 +151,7 @@
 						$l = $t_count - 1;
 						$other_name .="<label style='cursor:pointer;' data-type='show-profile' data-id='". $t_value['id'] ."' class='label label_name'>" . $t_value["full_name"] . "</label><br/>";
 						if ($k == $l) {
-						    echo 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-placement="bottom" data-trigger="focus" data-toggle="popover" title="Other Tagged" data-content="' . $other_name . '" >' . $l . ' more</a></label>';
+						    echo 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-placement="bottom" data-trigger="focus" data-toggle="popover" data-id="' . $value['fid'] . '" title="Other Tagged" data-content="' . $other_name . '" >' . $l . ' more</a></label>';
 						}
 					    }
 					    $k++;
@@ -222,10 +248,13 @@
 				?>
 
 			    <div class="dropdown tag_user user_<?php echo $value['fid']; ?>"  style="display: <?php echo $tag_show;?>;">
-				<a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="<?php echo $value['fid']; ?>" aria-haspopup="true" aria-expanded="true"><span data-toggle="tooltip" title="Tag mates" class="icon icon_user_2"></span><span class="caret"></span></a>
+					<a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="<?php echo $value['fid']; ?>" aria-haspopup="true" aria-expanded="true"><span data-toggle="tooltip" title="Tag mates" class="icon icon_user_2"></span><span class="caret"></span></a>
 			    </div>
+
+			  <!-- Edit option -->
+			  
 				<?php if($is_editable == "yes"){ ?>
-			    <a href="javascript:void(0);" data-feed="<?php echo $value['fid']; ?>" class="edit_post_icon"><i title="Edit Post" class="fa fa-pencil-square-o"></i></a>
+			    <!-- <a href="javascript:void(0);" data-feed="<?php //echo $value['fid']; ?>" class="edit_post_icon"><i title="Edit Post" class="fa fa-pencil-square-o"></i></a> -->
 			    <?php } ?>
 
 			</div>
@@ -281,8 +310,10 @@
 		    			<div class="notification_txt">
 		    			    <p><a class="noti_username"  style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>"><?php echo $com['full_name']; ?></a> <?php echo $com['comment']; ?></p>
 
-		    			    <span class="noti_time"><?php echo get_time_format($com['created_date']); ?></span>   
-		    			
+		    			    <span class="noti_time just_now"></span>   
+		    				<script type="text/javascript">
+		    				$('.just_now').timestatus('<?php echo get_time_format($com["created_date"]); ?>');
+		    				</script>
 		    			</div>
 		    			<div class="clearfix"></div>
 		    			

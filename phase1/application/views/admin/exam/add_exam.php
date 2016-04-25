@@ -1,4 +1,5 @@
 <!--main-->
+<form method="post"> 
 <div class="col-sm-7 main main2 general_cred mCustomScrollbar" data-mcs-theme="minimal-dark">
 	<!--breadcrumb-->
 		<div class="page_header">
@@ -22,8 +23,7 @@
         <div class="alert alert-danger<?php if(empty(strip_tags(validation_errors(),''))){ echo ' hide';} ?> ">
             <?php echo validation_errors('',''); ?>
         </div>
-
-        <form method="post">    
+   
             <div class="box_body">
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-8 padding_r15_">
@@ -221,25 +221,98 @@
                     <input type="hidden" value="save" id="button_type" name="button_type">
                 	<button class="btn btn_green" onclick="set_hidden('save')" >Save</button>
                 	<button class="btn btn_red" onclick="set_hidden('set_ques')">Save & Set Question</button>
+                    
+                    <a onclick="validate_questions()" href="javascript:void(0);" class="btn btn_red" data-toggle="modal" data-target="#auto_question_set">Auto question generation</a>
+                    <!-- <button class="btn btn_red" auto_question_set onclick="set_hidden('auto')">Auto question generation</button> -->
                 	<a href="<?php echo $prev_url; ?>" class="btn btn_black_normal">Cancel</a>
                 </div>
                 <div class="clearfix"></div>
             </div>
-        </form>
+
+       
     </div>
 	</div>
     <!--//exam box-->
 </div>
+
+        <div class="modal fade" id="auto_question_set" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document" style="width:600px;margin-top:220px;">
+                    <div class="modal-content">
+                        <div class="modal-header notice_header text-center">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Set questions</h4>
+                            <small><?php echo date("d F Y",strtotime(date('Y-m-d')));?></small>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="post">
+                                <div class="form-group">
+                                    <label for="no_of_question">How many question you want to generate ?: (You have maximum  <strong id="allowed_question"></strong> Questions)</strong></label>
+                                    <input type="text" class="form-control" id="no_of_question" name="no_of_question" >
+                                </div>
+                                 <div class="form-group">
+                                    <label id="max_que_error" style="color:red"></label>
+                                </div>
+                                <button type="submit" onclick="return set_hidden('auto')" class="btn btn_green pull-right no-margin"  >Save</button>
+                                <button type="submit" onclick="return set_hidden('close')" class="btn btn_red pull-right" >Cancel</button>
+                            </h4>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</form>
 <!--//main-->
 <script src="assets/ckeditor_std/ckeditor.js"></script>
 
 <script type="text/javascript">
 
+    function validate_questions()
+    {
+        
+      var clssroom = $('#classroom_id').val();
+      var subject_id =  $('#subject_id').val();
+      var topic_id = $('#topic_id').val();
+
+    //  console.log(clssroom + " | " + subject_id + " | " + topic_id );
+
+      var dataString  = "classroom_id="+clssroom+"&subject_id="+subject_id+"&topic_id="+topic_id;
+        //alert(dataString);
+       $.ajax({
+            url:'<?php echo base_url()."admin/exam/topic_count"; ?>',
+            type:'POST',
+            data:dataString,
+            //data:"classroom_id="+clssroom,
+            success:function(data){
+               $("#allowed_question").text(data);
+            }
+        });
+
+    }
+
     function set_hidden(button_data){
 
         if(button_data == 'save'){
             $('#button_type').val('save');
-        }else{
+        }else if(button_data == 'auto')
+        {
+
+            $('#button_type').val('auto');
+            var max_que  =  parseInt($('#allowed_question').text());
+            var input_que = parseInt($('#no_of_question').val());
+        
+             if(input_que > max_que) 
+             {
+                 $('#max_que_error').text('Maximum question not there in question bank, update question bank !');
+                return false;
+             }
+                
+        }else if(button_data == 'close')
+        {
+            window.location="<?php echo base_url()."admin/exam/"; ?>"
+            return false;
+        }
+        else{
             $('#button_type').val('set');
         }
     }
