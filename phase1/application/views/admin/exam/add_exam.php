@@ -1,6 +1,6 @@
 <!--main-->
 <form method="post"> 
-<div class="col-sm-7 main main2 general_cred mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div id="jump"  class="col-sm-7 main main2 general_cred mCustomScrollbar" data-mcs-theme="minimal-dark">
 	<!--breadcrumb-->
 		<div class="page_header">
     	<div class="col-sm-12">
@@ -20,7 +20,7 @@
             <h3><span class="icon icon_info"></span>Exam Details</h3>
         </div>
 
-        <div class="alert alert-danger<?php if(empty(strip_tags(validation_errors(),''))){ echo ' hide';} ?> ">
+        <div id="bootstrap_alert" class="alert alert-danger<?php if(empty(strip_tags(validation_errors(),''))){ echo ' hide';} ?> ">
             <?php echo validation_errors('',''); ?>
         </div>
    
@@ -28,7 +28,7 @@
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-8 padding_r15_">
 					<label>Exam Name</label>
-                    <input type="text" class="form-control" name="exam_name" value="<?php echo set_value('exam_name'); ?>" placeholder="Exam Name">
+                    <input type="text" class="form-control" id="exam_name" name="exam_name" value="<?php echo set_value('exam_name'); ?>" placeholder="Exam Name">
                 </div>                     
 				<div class="form-group col-sm-12 col-md-6 col-lg-4 btn_switch no-padding">
                     <label>Exam Type : </label>
@@ -221,8 +221,7 @@
                     <input type="hidden" value="save" id="button_type" name="button_type">
                 	<button class="btn btn_green" onclick="set_hidden('save')" >Save</button>
                 	<button class="btn btn_red" onclick="set_hidden('set_ques')">Save & Set Question</button>
-                    
-                    <a onclick="validate_questions()" href="javascript:void(0);" class="btn btn_red" data-toggle="modal" data-target="#auto_question_set">Auto question generation</a>
+                    <a id="auto_que_model" onclick="return form_filled()" class="btn btn_red disabled" data-toggle="modal" >Generate Automatic Question</a>
                     <!-- <button class="btn btn_red" auto_question_set onclick="set_hidden('auto')">Auto question generation</button> -->
                 	<a href="<?php echo $prev_url; ?>" class="btn btn_black_normal">Cancel</a>
                 </div>
@@ -254,10 +253,25 @@
                                 </div>
                                 <button type="submit" onclick="return set_hidden('auto')" class="btn btn_green pull-right no-margin"  >Save</button>
                                 <button type="submit" onclick="return set_hidden('close')" class="btn btn_red pull-right" >Cancel</button>
-                            </h4>
                                 <div class="clearfix"></div>
                             </form>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+
+               <div class="modal fade" id="form_error_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document" style="width:600px;margin-top:220px;">
+                       <div class="modal-content">
+                         <div class="modal-header text-center">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                          <div class="modal-body">
+                                 <div class="form-group">
+                                    <H3><label id="max_que_error" style="color:red">Please Fill Up The Exam Details !</label></H3>
+                                </div>
+                         </div>
                     </div>
                 </div>
             </div>
@@ -267,9 +281,36 @@
 
 <script type="text/javascript">
 
+    /* This function validated form, if success open model*/
+    
+    function  form_filled() {
+       // data-target="#auto_question_set"
+        var clssroom = $('#classroom_id').val();
+        var subject_id =  $('#subject_id').val();
+        var topic_id = $('#topic_id').val();
+        var exam_name = $('#exam_name').val();
+        var exam_type = $('#exam_type').val();
+        var course_id = $('#course_id').val();
+        var exam_category = $('#exam_category').val();
+        var start_date = $('#start_date').val();
+        var timepicker1 = $('#timepicker1').val();
+
+        if(clssroom == '' || subject_id == '' || topic_id == '' || exam_name == '' || course_id == '' || exam_category == '' || start_date == '' || timepicker1 == '00:00')
+        {
+           //$('#form_error_model').modal('show');
+           $('#bootstrap_alert').removeClass('hide');
+           $('#bootstrap_alert').text("Please Fill Up The Exam Details !");
+            $('.main2').mCustomScrollbar('scrollTo', "top");
+        }else
+        {
+            validate_questions();
+        }
+      // console.log(clssroom + " | " + subject_id + " | " + topic_id + " | " +exam_name + " | " +exam_type + " | " + course_id+ " | " +exam_category+ " | " +start_date+" | " +timepicker1);
+    }
+
     function validate_questions()
     {
-        
+      $('#auto_question_set').modal('show');
       var clssroom = $('#classroom_id').val();
       var subject_id =  $('#subject_id').val();
       var topic_id = $('#topic_id').val();
@@ -321,6 +362,7 @@
 
         $(".myselect").select2();
 
+
          $('#timepicker1').timepicker({ 
             defaultTime: 'value',
             minuteStep: 1,
@@ -328,6 +370,16 @@
             template: 'dropdown',
             showMeridian:false    
          });
+         
+         var v = $('input[name="exam_type"]').bootstrapSwitch('state');
+            if(v == true)
+            {
+                 $('#auto_que_model').addClass('disabled');
+            }else
+            {
+                 $('#auto_que_model').removeClass('disabled');
+            }
+
 
         $("[name='exam_type']").bootstrapSwitch();
         $('.bootstrap-switch-handle-on').text('Subject');
@@ -336,19 +388,17 @@
        $('input[name="exam_type"]').on('switchChange.bootstrapSwitch', function(event, state) {
           // console.log(this); // DOM element
           // console.log(event); // jQuery event
-          console.log(state); // true | false
+          //console.log(state); // true | false
 
             if(state == true){
-                
+                $('#auto_que_model').addClass('disabled');
                 $('.tutorial_topic').addClass('hide');
-
                 $("#exam_category option[value='Tutorial']").each(function() {
                     $(this).remove();
                 });
             }else{
-
                 $('.tutorial_topic').removeClass('hide');
-
+                $('#auto_que_model').removeClass('disabled');
                 $('#exam_category').append($('<option>', {
                     value: 'Tutorial',
                     text: 'Tutorial'

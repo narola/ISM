@@ -332,14 +332,14 @@ class Exam extends ADMIN_Controller {
 				 $subject_id= $this->input->post('subject_id');
 				
 				$genarated_question = array();
+				//,TBL_QUESTIONS.'.topic_id'=>$topic_id
 				$genarated_question = select(TBL_QUESTIONS,TBL_QUESTIONS.'.id', array(
-											   		'where'=>array(TBL_QUESTIONS.'.subject_id'=>$subject_id,
-											   					   TBL_QUESTIONS.'.topic_id'=>$topic_id)
+											   		'where'=>array(TBL_QUESTIONS.'.subject_id'=>$subject_id)
 											   		),
-													array('order_by' => TBL_QUESTIONS . '.id','limit' => $no_of_question));
+													array('order_by' =>'rand('.TBL_QUESTIONS . '.id)','limit' => $no_of_question));
 				//var_dump($genarated_question);
 				foreach ($genarated_question as  $value) {
-					//var_dump($value);
+					
 					$this->set_question($value['id'],$exam_id);
 				}
 				$this->session->set_flashdata('success', 'Exam and question has been Successfully Created');
@@ -361,8 +361,6 @@ class Exam extends ADMIN_Controller {
 	 * @return - no return
 	 * @author - Pankaj(pv)
 	 */
-	
-	
 	public function set_question($qid,$eid){
 		
 		$fetch_data = select(TBL_EXAM_QUESTION,FALSE,array('where'=>array('exam_id'=>$eid,'question_id'=>$qid)));
@@ -375,25 +373,20 @@ class Exam extends ADMIN_Controller {
 		}
 	}
 
-
-
 	/**
-	 * Count nuber of question based on topic id and subject id and classroom
+	 * Count nuber of question based on subject id
 	 *
 	 * @param  -no param
-	 * @return - no return
+	 * @return - number of question counted
 	 * @author - Pankaj(pv)
 	 */
-	
 	public function topic_count()
 	{
-
 		 $topic_id = $this->input->post('topic_id');
 		 $classroom_id = $this->input->post('classroom_id');
 		 $subject_id= $this->input->post('subject_id');
 		 $genarated_question = select(TBL_QUESTIONS,TBL_QUESTIONS.'.id', array(
-									   		'where'=>array(TBL_QUESTIONS.'.subject_id'=>$subject_id,
-											   					   TBL_QUESTIONS.'.topic_id'=>$topic_id)
+									   		'where'=>array(TBL_QUESTIONS.'.subject_id'=>$subject_id)
 											   		)  
 									 );
 		echo count($genarated_question);
