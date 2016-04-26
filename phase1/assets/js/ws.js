@@ -92,7 +92,7 @@ function exam_started_timer()
 function exam_will_start_timer()
 {
     exam_time_to_start = exam_time_to_start - 1;
-   // console.log("Exam will start: " + exam_time_to_start);
+  //console.log("Exam will start: " + exam_time_to_start);
     if (exam_time_to_start >= 0 && $('#exam_status').length > 0) {
 
         $('#exam_status h4[data-type="exam_sts_msg"] span:nth-child(1)').html('Exam will start within : ');
@@ -411,7 +411,7 @@ $(document).ready(function () {
 if ("WebSocket" in window)
 {
 
-   var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
+     var ws = new WebSocket("ws://192.168.1.189:9301"); // pv
      // var ws = new WebSocket("ws://192.168.1.114:9301"); // nv
      //var ws = new WebSocket("ws://52.28.165.231:9301"); // server
 
@@ -1386,7 +1386,7 @@ function myfunction(from){
             $("#chat_container .chat[data-id='" + id + "'] .chat_text")
                 .mCustomScrollbar({
                     theme: "minimal-dark"
-                }).delay(300);
+                });
         var request = {
             type: 'get_latest_message',
             to: 'self',
@@ -1582,7 +1582,7 @@ $(document).on('click', '#mate_list', function () {
         $("#chat_container .chat[data-id='" + id + "'] .chat_text")
                 .mCustomScrollbar({
                     theme: "minimal-dark"
-                }).delay(300);
+                });
 
         if(active_chat == false){
             var request = {
@@ -2972,6 +2972,15 @@ $.fn.timestatus2 = function (msg,ele_class) {
 
 
 };
+
+    (function($){
+        $(window).load(function(){
+            $('.mscroll_custom').mCustomScrollbar({
+        theme: "minimal-dark"
+    });
+        });
+    })(jQuery);
+
 
 $(document).ready(function () {
 

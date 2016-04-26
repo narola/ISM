@@ -29,14 +29,16 @@ $url = uri_string();
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		<link rel="icon" type="image/png" href="assets/images/graduate.png" sizes="32x32" />
-		<!--<script>
+		<script>
 		(function($){
 			$(window).load(function(){
 			$(".sidebar_right_container").mCustomScrollbar();
 			});
 		})(jQuery);
-		</script>-->
+		</script>
 		<script>
+
+
 		var wp = "<?php echo $this->session->userdata('user')['id']; ?>";
 		var exam_choice = 0;
 		var start_timer = false;
@@ -120,6 +122,7 @@ $url = uri_string();
 				return false;
 			}
 		}
+
 		</script>
 	</head>
 	<body>
@@ -142,8 +145,8 @@ $url = uri_string();
 								icon_type: 'image',
 								template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
 									'<img data-notify="icon" class="img-circle pull-left">' +
-									'<span data-notify="title">{1}</span>' +
-									'<span data-notify="message">{2}</span>' +
+									'<div><span data-notify="title" class="pull-left">{1}</span>' +
+									'<span data-notify="message" class="pull-left" >{2}</span></div>' +
 								'</div>'
 							});
 

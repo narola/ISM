@@ -465,18 +465,17 @@
 					?>
 
 		    		    <div class="comment" data-first="<?php echo $first_three; ?>" data-id="<?php echo $value['fid']; ?>" style="display:<?php echo $display; ?>">
-		    			<div class="user_small_img user_comment">
-		    			    <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>" src="<?php echo UPLOAD_URL . '/' . $com['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
-		    			</div>
-		    			<div class="notification_txt">
-		    			    <p><a class="noti_username"  style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>"><?php echo $com['full_name']; ?></a> <?php echo $com['comment']; ?></p>
-  
-		    				<span class="noti_time just_now"></span>
-								<script type="text/javascript">
-									 $(".just_now").timestatus('<?php echo get_time_format($com['created_date']); ?>');
-								</script>
-		    			</div>
-		    			<div class="clearfix"></div>
+			    			<div class="user_small_img user_comment">
+			    			    <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>" src="<?php echo UPLOAD_URL . '/' . $com['profile_link']; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+			    			</div>
+			    			<div class="notification_txt">
+			    			    <p><a class="noti_username"  style="cursor:pointer;" data-type="show-profile" data-id="<?php echo /*$value['feed_by'];*/ $com['comment_by']; ?>"><?php echo $com['full_name']; ?></a> <?php echo $com['comment']; ?></p>
+			    				<span class="noti_time just_now"></span>
+									<script type="text/javascript">
+										 $(".just_now").timestatus('<?php echo get_time_format($com['created_date']); ?>');
+									</script>
+			    			</div>
+			    			<div class="clearfix"></div>
 		    			
 		    		    </div>
 
@@ -567,12 +566,12 @@
 	    ?>
 	    <!-- Controls -->
 	    <a class="left carousel-control" href="#carousel-noticeboard" role="button" data-slide="prev">
-		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-		<span class="sr-only">Previous</span>
+			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
 	    </a>
 	    <a class="right carousel-control" href="#carousel-noticeboard" role="button" data-slide="next">
-		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-		<span class="sr-only">Next</span>
+			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
 	    </a>
 	    <?php
 	}

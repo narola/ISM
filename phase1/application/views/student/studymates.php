@@ -14,7 +14,7 @@
 
 
     $(document).ready(function() {
-	$('#mCSB_3_scrollbar_vertical').css("margin-top", "10%");
+		$('#mCSB_3_scrollbar_vertical').css("margin-top", "10%");
     });
     
 </script>

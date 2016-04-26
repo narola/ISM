@@ -2292,7 +2292,10 @@ class PHPWebSocket {
 		} else {
 		    $data['message'] = '<a href="uploads/' . $data['webpath'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50"></a>';
 		}
+	    }else {
+		$data['error'] = 'No topic allocated! or Discussion time is over!';
 	    }
+
 	}
 	$data['type'] = 'discussion';
 	$data['to'] = 'all';
