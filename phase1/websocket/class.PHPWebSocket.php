@@ -1548,7 +1548,6 @@ class PHPWebSocket {
 		    . "AND YEAR(`tg`.`created_date`) = '$year' "
 		    . "AND `tg`.`is_delete` = 0 LIMIT 1";
 	    $row = mysqli_query($link, $query);
-
 	    $score = 0;
 
 	    // Check topic is must allocated to group with perticular week. 
